@@ -42,12 +42,17 @@
         .ProjectInfo_Inset > table > tbody > tr > td {
             vertical-align: top;
         }
+        #save{
+            background-color: #f3f3f3;
+            font-weight: 600;
+            color: #4f4f4f;
+        }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
         <div class="Active ThemePrimaryColor TitleBar">
-            <div class="Title"><span class="Text"></span><span class="SecondaryText"></span></div>
+            <div class="Title"><span class="Text">转发/修改</span><span class="SecondaryText"></span></div>
             <div class="TitleBarButton Star" id="za129bcc0139b41ea8e2f627eb64b9cd3" title="Bookmark this page">
                 <div class="TitleBarIcon Star"></div>
             </div>
@@ -115,7 +120,7 @@
                                                 </td>
                                                 <td>
                                                     <div>
-                                                        <a class="ProjectInfo_Button" href="#" onclick="projectInfo.getProjectInfo(); return false;"><%=thisProject.name %></a>
+                                                        <a class="ProjectInfo_Button" href="#" onclick="OpenPro('<%=thisProject.id %>')"><%=thisProject.name %></a>
                                                     </div>
                                                     <div class="ProjectInfo_Text"><%=((DateTime)thisProject.start_date).ToString("yyyy-MM-dd") %> - <%=((DateTime)thisProject.end_date).ToString("yyyy-MM-dd") %></div>
                                                 </td>
@@ -410,7 +415,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="Editor CheckBox" data-editor-id="FilterResourcesByProjectBillingRoles" data-rdp="FilterResourcesByProjectBillingRoles">
+                          <%--      <div class="Editor CheckBox" data-editor-id="FilterResourcesByProjectBillingRoles" data-rdp="FilterResourcesByProjectBillingRoles">
                                     <div class="InputField">
                                         <div>
                                             <input id="AddThisRes" type="checkbox" value="true" name="FilterResByProBilRoles" />
@@ -433,7 +438,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>--%>
                             </div>
                         </div>
                     </div>
@@ -614,4 +619,9 @@
         }
         // 成员不用清除，查找带回需要添加部门过滤
     });
+
+    // 项目查看
+    function OpenPro(pro_id) {
+        window.open("ProjectView?id=" + pro_id, '_blank', 'left=200,top=200,width=900,height=800', false);
+    }
 </script>

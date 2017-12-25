@@ -369,10 +369,7 @@
             border: transparent;
             padding: 5px;
         }
-        /*å³ä¸‹*/
-        #Gantt_gridBodyContainer {
-            overflow: scroll;
-        }
+  
 
         .Gantt_TodayBar {
             position: absolute;
@@ -584,7 +581,7 @@
             position: fixed;
             top: 105px;
             bottom: 0;
-            left: 210px;
+            left: 300px;
             right: 0;
         }
 
@@ -697,7 +694,7 @@
         <div class="ScrollingContentContainer">
             <div style="padding: 0px;" class="ScrollingContainer">
                 <!--上左-->
-                <div class="Gantt_divTable" id="Gantt_container" style="width: 372px;">
+                <div class="Gantt_divTable" id="Gantt_container" style="width: 372px;max-width:300px;min-width:300px;">
                     <div class="Gantt_titleFont Gantt_divTableRowHeader">
                         <div class="Gantt_headerTitle Gantt_idHeader Gantt_divTableColumn Gantt_header">ID</div>
                         <div class="Gantt_headerTitle Gantt_title Gantt_divTableColumn Gantt_header" id="Gantt_headerTitle">
@@ -716,7 +713,7 @@
                    <div class="Gantt_divTableRow" style="height: 17px;">
                         <div class="Gantt_blankItem"></div>
                         <div class="Gantt_blankItem"></div>
-                        <div class="Gantt_idFont Gantt_id Gantt_divTableColumnMonth"></div>
+                        <div class="Gantt_idFont Gantt_id Gantt_divTableColumnMonth" style="display:none;"></div>
                     </div>
                 </div>
                 <!--下右-->
@@ -818,7 +815,7 @@
         $("#MonthlyButton").addClass("SelectedState");
         <%}%>
 
-            Xian();
+            //Xian();
 
     })
 

@@ -38,6 +38,14 @@ namespace EMT.DoneNOW.Web
                         var cosId = context.Request.QueryString["code_id"];
                         GetSinCodeRule(context,long.Parse(cosId));
                         break;
+                    case "GetCostCodeByType":
+                        var cosTypeId = context.Request.QueryString["type_id"];
+                        GetCostCodeByType(context,int.Parse(cosTypeId));
+                        break;
+                    case "GetGenListByTableId":
+                        var ggTableId = context.Request.QueryString["table_id"];
+                        GetGenListByTableId(context,int.Parse(ggTableId));
+                        break;
                     default:
                         break;
                 }
@@ -122,7 +130,27 @@ namespace EMT.DoneNOW.Web
             }
 
         }
-
-
+        /// <summary>
+        /// 根据类型获取相应的物料代码
+        /// </summary>
+        private void GetCostCodeByType(HttpContext context,int type_id)
+        {
+            var codeList = new d_cost_code_dal().GetListCostCode(type_id);
+            if (codeList != null && codeList.Count > 0)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(codeList));
+            }
+        }
+        /// <summary>
+        /// 根据字典表ID 获取相应信息
+        /// </summary>
+        private void GetGenListByTableId(HttpContext context, int table_id)
+        {
+            var genList = new d_general_dal().GetGeneralByTableId(table_id);
+            if (genList != null && genList.Count > 0)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(genList));
+            }
+        }
     }
 }

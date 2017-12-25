@@ -8,6 +8,13 @@
     <link href="../Content/reset.css" rel="stylesheet" />
     <title></title>
     <style>
+        html, body {
+            -ms-overflow-style: scrollbar;
+        }
+        @-ms-viewport {
+  width: device-width;
+}
+
         .Gantt_divTable {
             display: block;
             position: relative;
@@ -101,7 +108,7 @@
 
         /*表格图形部分*/
         #Gantt_gridBodyContainer {
-             overflow: scroll;
+            overflow: scroll;
             position: fixed;
             top: 62px;
             bottom: 0;
@@ -153,66 +160,74 @@
                 background-color: #fcf3e6;
                 height: 10px;
             }
-            .grid thead tr td {
-    background-color: #cbd9e4;
-    border-color: #98b4ca;
-    color: #64727a;
-}
 
-.TimelineGridHeader thead td {
-    padding: 10px 0 10px 0;
-}
-.grid thead td {
-    border-width: 1px;
-    border-style: solid;
-    font-size: 13px;
-    font-weight: bold;
-    height: 19px;
-    padding: 4px 4px 4px 4px;
-    word-wrap: break-word;
-    vertical-align: top;
-}
-.TextUppercase {
-    text-transform: uppercase;
-}
-.TimelineSecondaryHeader {
-    font-size: 12px;
-}
-.grid thead tr td {
-    background-color: #cbd9e4;
-    border-color: #98b4ca;
-    color: #64727a;
-}
+        .grid thead tr td {
+            background-color: #cbd9e4;
+            border-color: #98b4ca;
+            color: #64727a;
+        }
 
-.TimelineGridHeader thead td {
-    padding: 10px 0 10px 0;
-}
-.grid thead td {
-    border-width: 1px;
-    border-style: solid;
-    font-size: 13px;
-    font-weight: bold;
-    height: 19px;
-    padding: 4px 4px 4px 4px;
-    word-wrap: break-word;
-    vertical-align: top;
-}
-.TextUppercase {
-    text-transform: uppercase;
-}
-.TimelineSecondaryHeader {
-    font-size: 12px;
-}
+        .TimelineGridHeader thead td {
+            padding: 10px 0 10px 0;
+        }
+
+        .grid thead td {
+            border-width: 1px;
+            border-style: solid;
+            font-size: 13px;
+            font-weight: bold;
+            height: 19px;
+            padding: 4px 4px 4px 4px;
+            word-wrap: break-word;
+            vertical-align: top;
+        }
+
+        .TextUppercase {
+            text-transform: uppercase;
+        }
+
+        .TimelineSecondaryHeader {
+            font-size: 12px;
+        }
+
+        .grid thead tr td {
+            background-color: #cbd9e4;
+            border-color: #98b4ca;
+            color: #64727a;
+        }
+
+        .TimelineGridHeader thead td {
+            padding: 10px 0 10px 0;
+        }
+
+        .grid thead td {
+            border-width: 1px;
+            border-style: solid;
+            font-size: 13px;
+            font-weight: bold;
+            height: 19px;
+            padding: 4px 4px 4px 4px;
+            word-wrap: break-word;
+            vertical-align: top;
+        }
+
+        .TextUppercase {
+            text-transform: uppercase;
+        }
+
+        .TimelineSecondaryHeader {
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
-      <div class="Gantt_divTable" id="Gantt_dateContainer">
-          <asp:Literal ID="headText" runat="server"></asp:Literal>
-      </div>
-      <div class="Gantt_divTable" id="Gantt_gridBodyContainer" onscroll="Gantt_dateContainer.scrollLeft = this.scrollLeft;">
-          <asp:Literal ID="bodyText" runat="server"></asp:Literal>
-      </div>
+        <div class="Gantt_divTable" id="Gantt_dateContainer">
+            <asp:Literal ID="headText" runat="server"></asp:Literal>
+        </div>
+        <div class="Gantt_divTable" id="Gantt_gridBodyContainer" onscroll="Gantt_dateContainer.scrollLeft = this.scrollLeft;">
+            <asp:Literal ID="bodyText" runat="server"></asp:Literal>
+        </div>
     </form>
 </body>
 </html>

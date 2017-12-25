@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
@@ -7,23 +8,19 @@ using System.Runtime.Serialization;
 
 namespace EMT.DoneNOW.Core
 {
-    [Table("ivt_warehouse")]
+    [Table("ctt_contract_cost_product_sn")]
     [Serializable]
     [DataContract]
-    public partial class ivt_warehouse : SoftDeleteCore
+    public partial class ctt_contract_cost_product_sn : SoftDeleteCore
     {
 
         [Key]
         [DataMember]
         public Int64 id { get; set; }
         [DataMember]
-        public String name { get; set; }
+        public Int64 contract_cost_product_id { get; set; }
         [DataMember]
-        public SByte is_default { get; set; }
-        [DataMember]
-        public SByte is_active { get; set; }
-        [DataMember]
-        public Int64? resource_id { get; set; }
+        public String sn { get; set; }
 
 
     }

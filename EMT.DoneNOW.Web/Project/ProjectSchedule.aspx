@@ -268,6 +268,9 @@
             position: absolute;
             left: 5px;
         }
+        .NoClickNow{   /* 现在不实现的功能，变灰标识。 */
+            color:grey;
+        }
     </style>
     <title></title>
 </head>
@@ -538,7 +541,7 @@
                                     <div class="DropDownButtonContainer">
                                         <div class="Button ButtonIcon" tabindex="0" style="outline: none; z-index: 21; cursor: pointer;">
                                             <span class="Text">
-                                                <input type="checkbox" class="vm" id="LeftSelectButton">
+                                                <input type="checkbox" class="vm" id="LeftSelectButton" />
                                             </span>
                                             <span class="Icon Right vm" id="TableDropButton"></span>
                                         </div>
@@ -560,7 +563,7 @@
                                                          <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_MODIFY"))
                                                              { %>
                                                         <div class="Button1" id="ForwardModifyButton" tabindex="0" onclick="ModifyManyTask()">
-                                                            <span class="Text">前进/修改</span>
+                                                            <span class="Text">转发/修改</span>
                                                         </div><%} %>
                                                         <%--  <div class="Button1" id="AddToMyWorkListButton" tabindex="0">
                                                                 <span class="Text">添加到我的工作列表中</span>
@@ -1869,7 +1872,7 @@
             </div>
         </div>
 
-        <div class="menu" id="projectMenu" style="background-color: white;">
+        <div class="menu" id="projectMenu" style="background-color: white;">  <%--margin-left:115px;margin-top:6px;--%>
             <%--菜单--%>
             <ul>
                 <li class="" style="top: 27px; left: 49px; height: 100px; background-color: white;" id="">
@@ -1928,6 +1931,7 @@
 
             </ul>
         </div>
+
         <div class="menu" id="taskMenu" style="background-color: white;">
             <%--菜单--%>
             <ul>
@@ -1961,17 +1965,17 @@
                                  <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_MODIFY"))
                                       { %>
                                 <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="ModifySingTask()">
-                                    <span class="Text">前进/修改</span>
+                                    <span class="Text">转发/修改</span>
                                 </div><%} %>
                                    <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_ADD_WORK_LIST"))
                                       { %>
-                                <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="">
+                                <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu NoClickNow"  id="" tabindex="0" onclick="">
                                     <span class="Text">添加到我的工作清单</span>
                                 </div><%} %>
-                                <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="">
+                                <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu NoClickNow" id="" tabindex="0" onclick="">
                                     <span class="Text">添加到主负责人的工作列表</span>
                                 </div>
-                                <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="">
+                                <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu NoClickNow" id="" tabindex="0" onclick="">
                                     <span class="Text">添加到其它成员的工作列表</span>
                                 </div>
                                  <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SERIAL_DELETE"))
@@ -2918,7 +2922,7 @@
             menu = document.getElementById("taskMenu");
         }
 
-        var noTimeSetValue = '<%=new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_ENTRY_REQUIRED) %>';
+        var noTimeSetValue = '<%=(new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_ENTRY_REQUIRED).setting_value) %>';ss
         if (noTimeSetValue == '0') {
             $("#AddNoTimeEntryId").css("color", "black");
             $("#AddNoTimeEntryId").click(function () {

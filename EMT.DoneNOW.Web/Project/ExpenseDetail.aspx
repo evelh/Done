@@ -161,7 +161,7 @@
 
                                 <%if (thisExp != null)
                                     {
-                                        var thisCate = dgDal.FindNoDeleteById(thisExp.expense_cost_code_id);
+                                        var thisCate = dgDal.FindNoDeleteById((long)thisExp.expense_cost_code_id);
                                 %>
                                 <%=thisCate!=null?thisCate.name:"" %>
                                 <%} %>

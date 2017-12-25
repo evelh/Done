@@ -310,9 +310,29 @@
                 .menu ul .disabled {
                     color: #AAAAAA;
                 }
-                .layui-layer-btn {
-                    font-size:10pt;
-                }
+
+        .layui-layer-btn {
+            font-size: 10pt;
+        }
+
+        #BackgroundOverLay {
+            width: 100%;
+            height: 100%;
+            background: black;
+            opacity: 0.6;
+            z-index: 25;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+
+        .Dialog.Large {
+            position: fixed;
+            background-color: #ffffff;
+            border: solid 4px #b9b9b9;
+            display: none;
+        }
     </style>
 </head>
 <body class="Linen AutotaskBlueTheme">
@@ -1368,6 +1388,7 @@
                                 <div class="Spacer"></div>
                             </div>
                             <div class="DescriptionText">与此项目关联的合同将决定这个项目可用的角色。</div>
+                            <% if (rateList != null && rateList.Count > 0){ %>
                             <div class="Content">
                                 <div class="Large Column">
                                     <div class="CustomLayoutContainer">
@@ -1400,43 +1421,43 @@
                                                     </td>
                                                 </tr>
                                                 <%if (rateList != null && rateList.Count > 0)
-                                                    {
-                                                        var roleDal = new EMT.DoneNOW.DAL.sys_role_dal();
-                                                        var stbDal = new EMT.DoneNOW.DAL.sdk_task_budget_dal();
-                                                        var proBLL = new EMT.DoneNOW.BLL.ProjectBLL();
-                                                        var yuguTime = proBLL.ESTIMATED_HOURS(thisProject.id);
-                                                        var shijiTime = proBLL.ProWorkHours(thisProject.id);
-                                                        foreach (var rate in rateList)
-                                                        {
-                                                            EMT.DoneNOW.Core.sdk_task_budget stb = null;
-                                                            var thisrole = roleDal.FindNoDeleteById(rate.role_id);
-                                                            if (!isAdd && thisTask != null)
-                                                            {
-                                                                stb = stbDal.GetSinByTIdRid(thisTask.id, rate.id);
-                                                            }
+                                                                              {
+                                                                                  var roleDal = new EMT.DoneNOW.DAL.sys_role_dal();
+                                                                                  var stbDal = new EMT.DoneNOW.DAL.sdk_task_budget_dal();
+                                                                                  var proBLL = new EMT.DoneNOW.BLL.ProjectBLL();
+                                                                                  var yuguTime = proBLL.ESTIMATED_HOURS(thisProject.id);
+                                                                                  var shijiTime = proBLL.ProWorkHours(thisProject.id);
+                                                                                  foreach (var rate in rateList)
+                                                                                  {
+                                                                                      EMT.DoneNOW.Core.sdk_task_budget stb = null;
+                                                                                      var thisrole = roleDal.FindNoDeleteById(rate.role_id);
+                                                                                      if (!isAdd && thisTask != null)
+                                                                                      {
+                                                                                          stb = stbDal.GetSinByTIdRid(thisTask.id, rate.id);
+                                                                                      }
                                                 %>
                                                 <tr>
                                                     <td>
-                                                        <span class="PhaseEditor_Text"><%=thisrole==null?"":thisrole.name %></span>
+                                                        <span class="PhaseEditor_Text"><%=thisrole == null ? "" : thisrole.name %></span>
                                                     </td>
                                                     <td class="PhaseEditor_numericInput">
-                                                        <span class="PhaseEditor_Text">¥<%=rate.rate!=null?((decimal)rate.rate).ToString("#0.00"):"" %></span>
+                                                        <span class="PhaseEditor_Text">¥<%=rate.rate != null ? ((decimal)rate.rate).ToString("#0.00") : "" %></span>
                                                     </td>
                                                     <td class="PhaseEditor_numericInput">
                                                         <span class="PhaseEditor_Text"><%=yuguTime.ToString("#0.00") %></span>
                                                     </td>
                                                     <td class="col4 PhaseEditor_numericInput">
-                                                        <input class="PhaseEditor_inputText" type="text" id="<%=rate.id %>_esHours" name="<%=rate.id %>_esHours" value="<%=stb==null?"":((int)stb.estimated_hours).ToString("#0.00") %>" />
-                                                        <div class="PhaseEditor_Text PhaseEditor_hoursRemaining">&nbsp;/&nbsp;<%=stb==null?"":stb.estimated_hours.ToString("#0.00") %></div>
+                                                        <input class="PhaseEditor_inputText" type="text" id="<%=rate.id %>_esHours" name="<%=rate.id %>_esHours" value="<%=stb == null ? "" : ((int)stb.estimated_hours).ToString("#0.00") %>" />
+                                                        <div class="PhaseEditor_Text PhaseEditor_hoursRemaining">&nbsp;/&nbsp;<%=stb == null ? "" : stb.estimated_hours.ToString("#0.00") %></div>
                                                     </td>
                                                     <td class="PhaseEditor_numericInput">
                                                         <span class="PhaseEditor_Text"><%=shijiTime.ToString("#0.00") %></span>
                                                     </td>
                                                 </tr>
                                                 <%}
-                                                    }
-                                                    else
-                                                    { %>
+                                                                              }
+                                                                              else
+                                                                              { %>
 
                                                 <%} %>
 
@@ -1452,7 +1473,10 @@
                                     <div class="Medium Column"><a class="Button ButtonIcon NormalState" id="RecalculateBudgetButton" tabindex="0"><span class="Icon"></span><span class="Text">Recalculate</span></a></div>
                                 </div>
                             </div>
+                            <%} %>
                         </div>
+
+
                         <%} %>
                     </div>
                     <%if (!isAdd)
@@ -1743,7 +1767,7 @@
             </div>
         </div>
 
-        <div class="Dialog Large" style="margin-left: -442px; margin-top: -340px; z-index: 100; height: 650px;" id="Nav2">
+        <div class="Dialog Large" style="margin-left: 100px; margin-top: 100px; z-index: 100; height: 650px;" id="Nav2">
             <div>
                 <div class="DialogContentContainer">
                     <div class="CancelDialogButton"></div>
@@ -1924,7 +1948,7 @@
         </div>
         <!--黑色幕布-->
         <div id="BackgroundOverLay"></div>
-        <div class="Dialog Large" style="margin-left: -442px; margin-top: -340px; z-index: 100; height: 650px; display: none;" id="CompletionReasonDialog">
+        <div class="Dialog Large" style="margin-left: 100px; margin-top: 100px; z-index: 100; height: 650px; display: none;" id="CompletionReasonDialog">
             <div>
                 <div class="DialogContentContainer">
                     <div class="CancelDialogButton" id="CloseStatusReson"></div>
@@ -1950,7 +1974,7 @@
                             </div>
                         </div>
                         <div class="ButtonContainer">
-                            <a class="Button ButtonIcon Save NormalState" id="SaveAndCloseCompleteButton" tabindex="0"><span class="Icon"></span><span class="Text">
+                            <a class="Button ButtonIcon Save NormalState" id="SaveAndCloseCompleteButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">
                                 <asp:Button ID="save_close2" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="save_close2_Click" /></span></a>
                         </div>
                     </div>
@@ -2001,12 +2025,14 @@
             </ul>
         </div>
 
-        <input type="hidden" id="IsEditEsTime" name="IsEditEsTime" value=""/><!--ti   -->
+        <input type="hidden" id="IsEditEsTime" name="IsEditEsTime" value="" /><!--ti   -->
         <% EMT.DoneNOW.Core.v_task_all thisVTask = null;
-            if (!isAdd) {
-                thisVTask = new EMT.DoneNOW.DAL.v_task_all_dal().FindById(thisTask.id);            } %>
-        <input type="hidden" id="shengyuTime" value="<%=thisVTask!=null&&thisVTask.remain_hours!=null?((decimal)thisVTask.remain_hours).ToString("#0.00"):"" %>"/>
-        <input type="hidden" id="olfEsTime" name="olfEsTime" value="<%=thisTask!=null?thisTask.estimated_hours.ToString("#0.00"):"" %>"/>
+            if (!isAdd)
+            {
+                thisVTask = new EMT.DoneNOW.DAL.v_task_all_dal().FindById(thisTask.id);
+            } %>
+        <input type="hidden" id="shengyuTime" value="<%=thisVTask!=null&&thisVTask.remain_hours!=null?((decimal)thisVTask.remain_hours).ToString("#0.00"):"" %>" />
+        <input type="hidden" id="olfEsTime" name="olfEsTime" value="<%=thisTask!=null?thisTask.estimated_hours.ToString("#0.00"):"" %>" />
     </form>
 </body>
 </html>
@@ -2219,9 +2245,40 @@
                 $(this).val("");
             }
         }
+        if (startDateVal != "") {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ProjectAjax.ashx?act=CheckDate&project_id=<%=thisProject.id %>&date=" + startDateVal,
+                async: false,
+                success: function (data) {
+                    if (data == "True") {
+                        LayerConfirm("开始时间在周末或者节假日内，是否继续", "是", "否", function () { }, function () { $("#estimated_beginTime").val(""); });
+                    } else {
+                        // $("#estimated_beginTime").val("");
+                    }
+                }
+            })
+        }
     })
     $("#estimated_end_date").blur(function () {
-        // isEnd = "";
+
+        var thisValue = $(this).val();
+        if (thisValue != "") {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ProjectAjax.ashx?act=CheckDate&project_id=<%=thisProject.id %>&date=" + thisValue,
+                async: false,
+                success: function (data) {
+                    if (data == "True") {
+                        LayerConfirm("结束时间在周末或者节假日内，是否继续", "是", "否", function () { }, function () { $(this).val(""); });
+                    }
+                    else {
+                       //  $(this).val("");
+                    }
+                }
+            })
+        }
+
     })
     <%} %>
 
@@ -2241,7 +2298,7 @@
         // 判断主负责人是否在该部门中  todo
         var res_id = $("#owner_resource_idHidden").val();
         var dId = $(this).val();
-        if (res_id != "" && dId != "0") {
+        if (res_id != "" && dId != "0" && dId != "") {
             $.ajax({
                 type: "GET",
                 url: "../Tools/DepartmentAjax.ashx?act=IsHasRes&department_id=" + dId + "&resource_id=" + res_id,
@@ -2975,56 +3032,32 @@
         }
         debugger;
 
-
-
         // 校验开始结束时间是否在节假日内或者周末内
-        if (isStar == "") {
-            $.ajax({
-                type: "GET",
-                url: "../Tools/ProjectAjax.ashx?act=CheckDate&project_id=<%=thisProject.id %>&date=" + estimated_beginTime,
-                async: false,
-                success: function (data) {
-                    if (data == "True") {
-                        LayerConfirm("开始时间在周末或者节假日内，是否继续", "是", "否", function () { isStar = "1"; if (SubmitCheck()) { return true; } else { return false;} }, function () { return false; });
-                    } else {
-                        isStar = "1";
-                    }
-                }
-            })
-        }
+        //if (isStar == "") {
 
-        if (isStar != "1") {
-            return false;
-        }
+        //}
 
-        if (isEnd == "") {
-            $.ajax({
-                type: "GET",
-                url: "../Tools/ProjectAjax.ashx?act=CheckDate&project_id=<%=thisProject.id %>&date=" + estimated_end_date,
-                async: false,
-                success: function (data) {
-                    if (data == "True") {
-                        LayerConfirm("结束时间在周末或者节假日内，是否继续", "是", "否", function () { isEnd = "1"; if (SubmitCheck()) { return true; } else { return false; } }, function () { return false; });
-                    }
-                    else {
-                        isEnd = "1";
-                    }
-                }
-            })
-        }
+        //if (isStar != "1") {
+        //    return false;
+        //}
 
-        if (isEnd != "1") {
-            return false;
-        }
-        <%if (!isAdd&&type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE){ %>
+        //if (isEnd == "") {
+
+        //}
+
+        //if (isEnd != "1") {
+        //    return false;
+        //}
+        <%if (!isAdd && type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
+    { %>
         var estimated_hours = $("#estimated_hours").val();
         var oldTime = $("#olfEsTime").val();
         var thisStatus = $("#status_id").val();
         var shengyuTime = $("#shengyuTime").val();
         <%if (thisTask != null && thisTask.projected_variance != 0)
-       { %>
+    { %>
         if (status_id != '<%=EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>' && estimated_hours != oldTime && shengyuTime != "" && Number(shengyuTime) > 0) {
-            LayerConfirm("您正在修改预估时间，任务剩余时间为" + shengyuTime + "小时，将其保留，还是置为0", "保留", "置为0", function () { isShowAlert = "1"; if (SubmitCheck()) { return true; } else { return false; } }, function () { isShowAlert = "1"; $("#IsEditEsTime").val("0"); if (SubmitCheck()) { return true; } else { return false; }  });
+            LayerConfirm("您正在修改预估时间，任务剩余时间为" + shengyuTime + "小时，将其保留，还是置为0", "保留", "置为0", function () { isShowAlert = "1"; if (SubmitCheck()) { return true; } else { return false; } }, function () { isShowAlert = "1"; $("#IsEditEsTime").val("0"); if (SubmitCheck()) { return true; } else { return false; } });
             if (isShowAlert != "1") {
                 return false;
             }
@@ -3143,7 +3176,7 @@
 
 
 
-        if (status_id == '<%=EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>') {
+        if (status_id == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>') {
             // 系统设置
             <%var thisSet = new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.PRO_TASK_DONE_REASON);
     if (thisSet != null && thisSet.setting_value == "1")

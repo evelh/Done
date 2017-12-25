@@ -94,9 +94,11 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Decimal? hours_rate_deduction { get; set; }
         [DataMember]
-        public Int64? work_entry_record_id { get; set; }
+        public Int64? work_entry_report_id { get; set; }
         [DataMember]
         public Int64 batch_id { get; set; }
+        [DataMember]
+        public Int64? timeoff_request_id { get; set; }
 
 
     }

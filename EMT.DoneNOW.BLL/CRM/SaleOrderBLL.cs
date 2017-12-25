@@ -134,6 +134,74 @@ namespace EMT.DoneNOW.BLL
         {
             return _dal.FindById(id);
         }
+        /// <summary>
+        /// 根据成本状态更改销售订单状态
+        /// </summary>
+        /// <param name="cost_id"></param>
+        /// <param name="isDoneOrder">是否将销售订单完成</param>
+        /// <returns></returns>
+        public bool ChangeSaleOrderStatus(long cost_id,long user_id, out bool isDoneOrder)
+        {
+            isDoneOrder = false;
+            var thisOrder = _dal.GetOrderByCostId(cost_id);
+            var thisCost = new ctt_contract_cost_dal().FindNoDeleteById(cost_id);
+            if (thisOrder != null&&thisCost!=null)
+            {
+                var oldOrderStatus = thisOrder.status_id;
+                if (thisCost.status_id == (int)DicEnum.COST_STATUS.PENDING_DELIVERY&& oldOrderStatus== (int)SALES_ORDER_STATUS.OPEN)
+                {
+                    thisOrder.status_id = (int)SALES_ORDER_STATUS.IN_PROGRESS;
+
+                }else if(thisCost.status_id == (int)DicEnum.COST_STATUS.ALREADY_DELIVERED&&(oldOrderStatus == (int)SALES_ORDER_STATUS.OPEN|| oldOrderStatus == (int)SALES_ORDER_STATUS.IN_PROGRESS))
+                {
+                    thisOrder.status_id = (int)SALES_ORDER_STATUS.PARTIALLY_FULFILLED;
+
+                    var proList = new ctt_contract_cost_product_dal().GetListByCostId(cost_id);
+                    if(proList!=null&& proList.Count > 0)
+                    {
+                        if (!proList.Any(_ => _.status_id != (int)CONTRACT_COST_PRODUCT_STATUS.DISTRIBUTION))
+                        {
+                            isDoneOrder = true;
+                        }
+                    }
+                }
+                // 如果销售订单下的产品部分已配送，且销售订单状态为“进行中”/“新建”，则将其状态置为“部分发货”
+                if (oldOrderStatus != thisOrder.status_id)
+                {
+                    var oldOrder = _dal.FindNoDeleteById(thisOrder.id);
+
+                    _dal.Update(thisOrder);
+                    OperLogBLL.OperLogUpdate<crm_sales_order>(thisOrder, oldOrder, thisOrder.id, user_id, OPER_LOG_OBJ_CATE.SALE_ORDER, "修改销售订单状态");
+
+                }
+                return true;
+
+            }
+            return false;
+        }
+        /// <summary>
+        /// 通过成本完成销售订单
+        /// </summary>
+        public bool DoneSaleByCost(long costId,long user_id)
+        {
+            var thisSale = _dal.GetOrderByCostId(costId);
+            if (thisSale == null)
+            {
+                return false;
+            }
+            if (thisSale.status_id != (int)DicEnum.SALES_ORDER_STATUS.FULFILLED)
+            {
+                var oldSale = _dal.FindNoDeleteById(thisSale.id);
+                thisSale.status_id = (int)DicEnum.SALES_ORDER_STATUS.FULFILLED;
+                thisSale.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                thisSale.update_user_id = user_id;
+                _dal.Update(thisSale);
+                OperLogBLL.OperLogUpdate<crm_sales_order>(thisSale, oldSale, thisSale.id, user_id, OPER_LOG_OBJ_CATE.SALE_ORDER, "修改销售订单状态");
+            }
+
+
+            return true;
+        }
 
     }
 }

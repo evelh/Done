@@ -60,7 +60,7 @@ namespace EMT.DoneNOW.Web.Project
                 objId = 0;
             
             contextMenu = new List<PageContextMenuDto>();
-            contextMenu.Add(new PageContextMenuDto { text = "查看项目", click_function = "View()" });
+            contextMenu.Add(new PageContextMenuDto { text = "查看项目", click_function = "ShowProject()" });
             contextMenu.Add(new PageContextMenuDto { text = "编辑项目", click_function = "Edit()" });
             contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "NewProNote()" });
             contextMenu.Add(new PageContextMenuDto { text = "新增项目日历条目", click_function = "NewProCalendar()" });

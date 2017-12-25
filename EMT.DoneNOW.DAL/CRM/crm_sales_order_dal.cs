@@ -43,6 +43,13 @@ namespace EMT.DoneNOW.DAL
         {
             return FindSignleBySql<crm_sales_order>($"select * from crm_sales_order where delete_time = 0 and id = {id} ");
         }
+        /// <summary>
+        /// 根据成本id获取关联的销售订单
+        /// </summary>
+        public crm_sales_order GetOrderByCostId(long cost_id)
+        {
+            return FindSignleBySql<crm_sales_order>($"SELECT * from crm_sales_order cso INNER join ctt_contract_cost ccc on cso.opportunity_id = ccc.opportunity_id where ccc.id = {cost_id} and cso.delete_time = 0 and ccc.delete_time = 0");
+        }
 
     }
 }

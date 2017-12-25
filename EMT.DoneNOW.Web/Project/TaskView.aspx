@@ -797,7 +797,11 @@
                                                         <tr onclick="ShowTvbDetail('<%=thisTaskExp.id %>')" class="rightMenu expTR" data-val="<%=thisTaskExp.id %>">
                                                             <td>
                                                                 <img src="../Images/MagnifyPlus.png" id="<%=thisTaskExp.id %>_img" />
-                                                                <img src="../Images/imgGridEdit.png" onclick="EditTaskExp('<%=thisTaskExp.id %>')" />
+                                                             
+                                                                    <img src="../Images/imgGridEdit.png" onclick="EditTaskExp('<%=thisTaskExp.id %>')"/>
+                                                              
+                                                                
+                                                                
                                                             </td>
                                                             <td>
                                                                 <%switch (thisTaskExp.type_id)
@@ -1145,6 +1149,9 @@
             })
         }
     })
+    //$(".EditExpense").click(function (event) {
+    //    event.stopPropagation();
+    //})
     // 修改工时和备注
     function EditThis(type, id) {
         if (type == "entry") {
@@ -1232,7 +1239,25 @@
     }
     // 编辑费用
     function EditTaskExp(eid) {
-        window.open("ExpenseManage.aspx?id=" + eid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASK_EXPENSE_EDIT %>', 'left=200,top=200,width=1080,height=800', false);
+        // 检验是否审批提交  expense_id  CheckExpenEdit
+        $.ajax({
+            type: "GET",
+            url: "../Tools/ProjectAjax.ashx?act=CheckExpenEdit&expense_id=" + eid,
+            async: false,
+            //dataType: "json",
+            success: function (data) {
+                if (data != "") {
+                    if (data == "True") {
+                        window.open("ExpenseManage.aspx?id=" + eid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASK_EXPENSE_EDIT %>', 'left=200,top=200,width=1080,height=800', false);
+                    } else {
+                        LayerMsg("该费用已经审批提交或者该费用报表状态不可以编辑");
+                        // return false;
+                    }
+                }
+               //  history.go(0);
+            }
+        })
+      
     }
     function DeleteExp() {
         LayerConfirm("确认要删除吗？", "确认", "取消", function () {
@@ -1240,16 +1265,17 @@
                 type: "GET",
                 url: "../Tools/ProjectAjax.ashx?act=DeleteExpense&exp_id=" + entityid,
                 async: false,
-                dataType: json,
+                dataType: "json",
                 success: function (data) {
                     if (data != "") {
-                        if (data.result == "True") {
+                        if (data.result ) {
                             LayerMsg("删除成功");
+                            history.go(0);
                         } else {
                             LayerMsg("删除失败。" + data.reason);
                         }
                     }
-                    history.go(0);
+                   
                 }
             })
         }, function () { });

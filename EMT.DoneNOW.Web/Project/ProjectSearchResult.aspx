@@ -514,7 +514,7 @@
     function View(id) {
         window.open("ProjectView.aspx?id=" + id, '_blank', 'left=200,top=200,width=900,height=800', false);
     }
-    function View() {
+    function ShowProject() {
         window.open("ProjectView.aspx?id=" + entityid, '_blank', 'left=200,top=200,width=900,height=800', false);
     }
 

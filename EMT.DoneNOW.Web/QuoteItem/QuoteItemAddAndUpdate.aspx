@@ -241,7 +241,7 @@
     <form id="form1" runat="server">
         <div class="header"><%=isAdd?"添加报价项":"修改报价项" %>-<%=type %></div>
         <input type="hidden" id="ItemTypeId" value="" runat="server"/>
-        <input type="hidden" name="object_id" id="object_id"/>
+        <%--<input type="hidden" name="object_id" id="object_id"/>--%>
         <div class="header-title">
             <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
@@ -286,7 +286,7 @@
                                                     <i id="callbackCost" onclick="chooseDegression()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px;padding:1px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                        <i id="callBackCharge" onclick="chooseCharge()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px;padding:1px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp;</i>
                                                        <i id="callBackShip" onclick="chooseShip()" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 5px;padding:1px; background: url(../Images/data-selector.png) no-repeat;display:none;">&nbsp;&nbsp;&nbsp;&nbsp</i>
-                                                    <input type="hidden" id="nameHidden" value="<%=quote_item==null?"":quote_item.id.ToString() %>"/>
+                                                    <input type="hidden" id="nameHidden" name="object_id" value="<%=quote_item==null?"":quote_item.object_id.ToString() %>"/>
                                                 </div>
                                             </td>
                                         </tr>
@@ -486,19 +486,15 @@
                                                 <th>Available</th>
                                                 <th>可用</th>
                                             </tr>
-                                            <tr>
-                                                <td><span id="Inventory_Location"></span></td>
-                                                <td><span id="On_Hand"></span></td>
-                                                <td><span id="On_Order"></span></td>
-                                                <td><span id="Back_Order"></span></td>
-                                                <td><span id="Reserved_Picked"></span></td>
-                                                <td><span id="Available"></span></td>
-                                                <td><input type="text" id="Reserved" value=""/></td>
-                                            </tr>
+                                            <tbody id="wareTbody">
+
+                                            </tbody>
+                                            
                                         </table>
                                     </div>
             </div>
         </div>
+        <input type="hidden" id="wareIds" name="wareIds" value=""/>
     </form>
 </body>
 </html>
@@ -683,6 +679,7 @@
         }
         else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.PRODUCT %>) // 产品的处理
         {
+            debugger;
             $("#productShow").css("display", "");
             $("#callBackManyProduct").css("display", "");
             $("#MSRP_tr").css("display", "");
@@ -691,6 +688,57 @@
             $("#callBackChooseRole").css("display", "none");
             $("#callBackChooseProduct").css("display", "");// callBackChooseProduct
             $("#AddProduct").css("display", "");
+
+            var product_id = $("#nameHidden").val();
+            if (product_id != "") {
+                // 获取平均值和最大值
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    dataType: "json",
+                    url: "../Tools/ProductAjax.ashx?act=GetProData&product_id=" + product_id,
+                    // data: { CompanyName: companyName },
+                    success: function (data) {
+                        if (data != "") {
+                            $("#avgCost").text(toDecimal2(data.avg));
+                            $("#highCost").text(toDecimal2(data.max));
+                        }
+                    },
+                });
+                // 获取库存信息
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    dataType: "json",
+                    url: "../Tools/ProductAjax.ashx?act=GetPageWare&product_id=" + product_id,
+                    success: function (data) {
+                        if (data != "") {
+                            $("#productListTable").css("display", "");
+
+                            var wareHtml = "";
+                            for (var i = 0; i < data.length; i++) {
+                                wareHtml += "<tr><td><span>" + data[i].wareName + "</span></td><td><span>" + data[i].onHand + "</span></td><td><span>" + data[i].onOrder + "</span></td><td><span>" + data[i].backOrder + "</span></td><td><span>" + data[i].picked + "</span></td><td><span>" + data[i].available + "</span></td><td><input type='text' class='CheckUse' name='" + data[i].ware_id + "_available' id='" + data[i].ware_id + "_available' value='0' /><input type='hidden' id='" + data[i].ware_id + "_use' name='" + data[i].ware_id + "_use' value='" + data[i].available + "'/><input type='hidden' id='" + data[i].ware_id + "_hand' name='" + data[i].ware_id + "_hand' value='" + data[i].onHand + "'/><input type='hidden' value='" + data[i].ware_id +"'/></td></tr>";
+                            }
+
+                            $("#wareTbody").html(wareHtml);
+                        } else {
+                            $("#productListTable").css("display", "none");
+                            $("#wareTbody").html("");
+                        }
+                    },
+                    error: function (data) {
+                        $("#productListTable").css("display", "none");
+                        $("#wareTbody").html("");
+                    },
+                });
+                <%if (thisReserList != null && thisReserList.Count > 0){
+                foreach (var thisReser in thisReserList)
+                {%>
+                $("#<%=thisReser.warehouse_id %>_available").val('<%=thisReser.quantity %>');
+                $("#<%=thisReser.warehouse_id %>_hand").val('<%=thisReser.quantity %>');
+                        <%
+                }}%>
+            }
         }
         else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.SERVICE %>)  // 服务和初始费用
         {
@@ -886,8 +934,45 @@
 
 
         var typeValue = $("#ItemTypeId").val();
-        if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.PRODUCT %>)
+        if (typeValue =='<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.PRODUCT %>')
         {
+            var isPass = "";
+            var wareIds = "";
+            $(".CheckUse").each(function () {
+                var thisValue = $(this).val();
+                var thisMax = $(this).next().val();
+                // var num = $(this).next().next().val();
+                var thisWareId = $(this).next().next().next().val();
+                wareIds += thisWareId + ",";
+                if (Number(thisValue) > Number(thisMax)) {
+                    isPass = "1";
+                    // return false;
+                }
+                if (Number(thisValue) > Number(quantity)) {
+                    isPass = "1";
+                    // return false;
+                }
+                if (Number(thisValue) < 0) {
+                    isPass = "1";
+                }
+                <%if (!isAdd)
+            { %>
+                var oldValue = $(this).next().next().val();
+                if (Number(thisValue) > (Number(oldValue) + Number(thisMax))) {
+                    isPass = "1";
+                }
+                <%}%>
+            })
+            if (isPass != "")
+            {
+                alert("为此报价项预留不可超过可用数和数量，请检查后重新提交");
+                return false;
+            }
+            if (wareIds != "")
+            {
+                wareIds = wareIds.substring(0, wareIds.length - 1);
+                $("#wareIds").val(wareIds);
+            }
             //var Reserved = $("#Reserved").val();
             //if (Reserved != "" && (!isNaN(quantity)) && (!isNaN(quantity))) {
             //    debugger;
@@ -1005,16 +1090,40 @@
                 // data: { CompanyName: companyName },
                 success: function (data) {
                     if (data != "") {
-                        $("#avgCost").text(data.avg);  
-                        $("#highCost").text(data.max);
+                        $("#avgCost").text(toDecimal2(data.avg));  
+                        $("#highCost").text(toDecimal2(data.max));
                     }
                 },
             });
+            // GetPageWare
+            $.ajax({
+                type: "GET",
+                async: false,
+                dataType: "json",
+                url: "../Tools/ProductAjax.ashx?act=GetPageWare&product_id=" + product_id,
+                success: function (data) {
+                    if (data != "") {
+                        $("#productListTable").css("display", "");
 
+                        var wareHtml = "";
+                        for (var i = 0; i < data.length; i++) {
+                            wareHtml += "<tr><td><span>" + data[i].wareName + "</span></td><td><span>" + data[i].onHand + "</span></td><td><span>" + data[i].onOrder + "</span></td><td><span>" + data[i].backOrder + "</span></td><td><span>" + data[i].picked + "</span></td><td><span>" + data[i].available + "</span></td><td><input type='text' class='CheckUse' name='" + data[i].ware_id + "_available' value='0' /><input type='hidden' id='" + data[i].ware_id + "_use' name='" + data[i].ware_id + "_use' value='" + data[i].available + "'/><input type='hidden' id='" + data[i].ware_id + "_hand' name='" + data[i].ware_id + "_hand' value='" + data[i].onHand + "'/><input type='hidden' value='" + data[i].ware_id+"'/></td></tr>";
+                        }
 
-            //$("#productListTable").css("display", "");  // todo涉及到库存暂时不做
+                        $("#wareTbody").html(wareHtml);
+                    } else {
+                        $("#productListTable").css("display", "none");
+                        $("#wareTbody").html("");
+                    }
+                },
+                error: function (data) {
+                    $("#productListTable").css("display", "none");
+                    $("#wareTbody").html("");
+                },
+            });
         } else {
-            //$("#productListTable").css("display", "none");
+            $("#productListTable").css("display", "none");
+            $("#wareTbody").html("");
         }
     }
     // 查找带回服务
@@ -1137,7 +1246,7 @@
     }
 
     function GetDataByCharge() {
-        // - todo 根据费用填充数据
+        //  根据费用填充数据
         var charge_id = $("#nameHidden").val();
         if (charge_id != "") {
             $("#object_id").val(charge_id);

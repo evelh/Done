@@ -376,6 +376,11 @@
                                                 <div class="Content">
                                                     <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SHIPED_LIST %>&isCheck=1" target="PageFrame"> 
                                                         <span class="Text">已配送列表</span>
+													</a>
+                                                </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASE_ORDER_HISTORY %>" target="PageFrame"> 
+                                                        <span class="Text">采购订单历史</span>
                                                     </a>
                                                 </div>
                                             </div>

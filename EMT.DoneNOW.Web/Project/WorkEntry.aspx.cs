@@ -89,6 +89,12 @@ namespace EMT.DoneNOW.Web.Project
                     thisWorkEntry = new sdk_work_entry_dal().FindNoDeleteById(long.Parse(id));
                     if (thisWorkEntry != null)
                     {
+                        if (thisWorkEntry.approve_and_post_date != null || thisWorkEntry.approve_and_post_user_id != null)
+                        {
+                            Response.Write("<script>alert('审批提交的工时不可以更改！')window.close();</script>");
+                            Response.End();
+                        }
+
                         if (!resList.Any(_ => _.val == thisWorkEntry.create_user_id.ToString()))
                         {
                             Response.Write("<script>alert('系统设置不能代理操作！')window.close();</script>");
@@ -133,6 +139,18 @@ namespace EMT.DoneNOW.Web.Project
                     if (thisProjetc != null)
                     {
                         thisAccount = new crm_account_dal().FindNoDeleteById(thisProjetc.account_id);
+                    }
+                }
+                // 项目关联合同，并且合同中设置-工时录入需要输入开始结束时间
+                if (thisProjetc != null && thisProjetc.contract_id != null)
+                {
+                    var thisCttContract = new ctt_contract_dal().FindNoDeleteById((long)thisProjetc.contract_id);
+                    if (thisCttContract != null)
+                    {
+                        if (thisCttContract.timeentry_need_begin_end == 1)
+                        {
+                            noTime = false;
+                        }
                     }
                 }
 

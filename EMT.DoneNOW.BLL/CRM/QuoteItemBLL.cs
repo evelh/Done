@@ -24,7 +24,7 @@ namespace EMT.DoneNOW.BLL
             dic.Add("quote_item_tax_cate", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.QUOTE_ITEM_TAX_CATE)));        // 
             dic.Add("quote_item_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.QUOTE_ITEM_TYPE)));        // 
             dic.Add("quote_group_by", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.QUOTE_GROUP_BY)));
-
+            
 
             return dic;
 
@@ -35,7 +35,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="quote_item"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public ERROR_CODE Insert(crm_quote_item quote_item, long user_id)
+        public ERROR_CODE Insert(crm_quote_item quote_item, Dictionary<long, int> wareDic, long user_id, bool isSaleOrder = false, long? saleOrderId = null)
         {
             if (quote_item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT)
             {
@@ -92,8 +92,8 @@ namespace EMT.DoneNOW.BLL
             {
                 if (quote_item.optional != 1 && quote_item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && quote_item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES)
                 {
-                    decimal? changeRevenue = quote_item.quantity * quote_item.unit_price ;
-                    decimal? changeCost = quote_item.quantity * quote_item.unit_cost ;
+                    decimal? changeRevenue = quote_item.quantity * quote_item.unit_price;
+                    decimal? changeCost = quote_item.quantity * quote_item.unit_cost;
 
                     switch (quote_item.period_type_id)
                     {
@@ -168,7 +168,7 @@ namespace EMT.DoneNOW.BLL
                             {
                                 oppo.semi_annual_cost = changeCost;
                             }
-    
+
                             break;
                         case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR:
                             if (oppo.yearly_revenue != null)
@@ -204,6 +204,92 @@ namespace EMT.DoneNOW.BLL
                     new OpportunityBLL().Update(param, user.id);
                 }
             }
+            if (quote_item.type_id == (int)QUOTE_ITEM_TYPE.PRODUCT)
+            {
+                if (wareDic != null && wareDic.Count > 0)
+                {
+                    var irDal = new ivt_reserve_dal();
+                    var iwDal = new ivt_warehouse_dal();
+                    foreach (var thisPageWare in wareDic)
+                    {
+                        var thisWareHouse = iwDal.FindNoDeleteById(thisPageWare.Key);
+                        if (thisWareHouse != null)
+                        {
+                            var thisReserve = new ivt_reserve()
+                            {
+                                id = irDal.GetNextIdCom(),
+                                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                create_user_id = user_id,
+                                update_user_id = user_id,
+                                quote_item_id = quote_item.id,
+                                warehouse_id = thisPageWare.Key,
+                                quantity = thisPageWare.Value,
+                                resource_id = thisWareHouse.resource_id,
+                            };
+                            irDal.Insert(thisReserve);
+                            OperLogBLL.OperLogAdd<ivt_reserve>(thisReserve, thisReserve.id, user_id, OPER_LOG_OBJ_CATE.WAREHOUSE_RESERVE, "新增库存预留");
+                        }
+
+                    }
+
+                }
+            }
+
+            if (isSaleOrder && saleOrderId != null&&(quote_item.type_id==(int)DicEnum.QUOTE_ITEM_TYPE.PRODUCT|| quote_item.type_id == (int)DicEnum.QUOTE_ITEM_TYPE.DEGRESSION|| quote_item.type_id == (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES))
+            {
+                var cccDal = new ctt_contract_cost_dal();
+                var costList = cccDal.GetListBySaleOrderId((long)saleOrderId);
+                if (costList != null && costList.Count > 0)
+                {
+                    int status_id = 0;
+                    long cost_code_id = (long)quote_item.object_id;
+                    if (quote_item.type_id == (int)QUOTE_ITEM_TYPE.PRODUCT)
+                    {
+
+                        status_id = (int)COST_STATUS.PENDING_PURCHASE;
+                        var thisProduct = new ivt_product_dal().FindNoDeleteById(cost_code_id);
+                        if (thisProduct != null)
+                        {
+                            cost_code_id = thisProduct.cost_code_id;
+                        }
+                    }
+                    else
+                    {
+                        status_id = (int)COST_STATUS.PENDING_DELIVERY;
+                    }
+                    ctt_contract_cost cost = new ctt_contract_cost()
+                    {
+                        id = _dal.GetNextIdCom(),
+                        opportunity_id = costList[0].opportunity_id,
+                        quote_item_id = quote_item.id,
+                        cost_code_id = cost_code_id,
+                        product_id = costList[0].product_id,
+                        name = quote_item.name,
+                        description = quote_item.description,
+                        date_purchased = DateTime.Now,
+                        is_billable = 1,
+                        bill_status = 0,
+                        cost_type_id = (int)COST_TYPE.OPERATIONA,
+                        status_id = status_id,
+                        quantity = quote_item.quantity,
+                        unit_price = quote_item.unit_price,
+                        unit_cost = quote_item.unit_cost,
+                        extended_price = quote_item.unit_price * quote_item.quantity,
+                        create_user_id = user.id,
+                        update_user_id = user.id,
+                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        project_id = costList[0].project_id,
+                        contract_id = costList[0].contract_id,
+                        task_id = costList[0].task_id,
+                        sub_cate_id = costList[0].sub_cate_id,
+                    };
+                    cccDal.Insert(cost);
+                    OperLogBLL.OperLogAdd<ctt_contract_cost>(cost, cost.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_COST, "新增成本");
+                }
+            }
+
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -212,7 +298,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="quote_item"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public ERROR_CODE Update(crm_quote_item quote_item, long user_id)
+        public ERROR_CODE Update(crm_quote_item quote_item, Dictionary<long, int> wareDic, long user_id, bool isSaleOrder = false, long? saleOrderId = null)
         {
             if (quote_item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT)
             {
@@ -380,6 +466,147 @@ namespace EMT.DoneNOW.BLL
                 }
             }
 
+
+            if (quote_item.type_id == (int)QUOTE_ITEM_TYPE.PRODUCT)
+            {
+                var irDal = new ivt_reserve_dal();
+                var iwDal = new ivt_warehouse_dal();
+                var oldReserList = irDal.GetListByItemId(quote_item.id);
+                if (wareDic != null && wareDic.Count > 0)
+                {
+                    if (oldReserList != null && oldReserList.Count > 0)
+                    {
+                        foreach (var thisPageWare in wareDic)
+                        {
+                            var thisWareHouse = iwDal.FindNoDeleteById(thisPageWare.Key);
+
+                            var thisOldReser = oldReserList.FirstOrDefault(_ => _.warehouse_id == thisPageWare.Key);
+                            if (thisOldReser != null)
+                            {
+                                oldReserList.Remove(thisOldReser);
+                                if (thisWareHouse != null)
+                                {
+                                    if (thisOldReser.quantity != thisPageWare.Value || thisOldReser.resource_id != thisWareHouse.resource_id)
+                                    {
+                                        thisOldReser.quantity = thisPageWare.Value;
+                                        thisOldReser.resource_id = thisWareHouse.resource_id;
+                                        var thisOld = irDal.FindNoDeleteById(thisOldReser.id);
+                                        irDal.Update(thisOldReser);
+                                        OperLogBLL.OperLogUpdate<ivt_reserve>(thisOldReser, thisOld, thisOldReser.id, user_id, OPER_LOG_OBJ_CATE.WAREHOUSE_RESERVE, "修改库存预留");
+                                    }
+                                }
+                            }
+                            else
+                            {
+
+                                if (thisWareHouse != null)
+                                {
+                                    var thisReserve = new ivt_reserve()
+                                    {
+                                        id = irDal.GetNextIdCom(),
+                                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        create_user_id = user_id,
+                                        update_user_id = user_id,
+                                        quote_item_id = quote_item.id,
+                                        warehouse_id = thisPageWare.Key,
+                                        quantity = thisPageWare.Value,
+                                        resource_id = thisWareHouse.resource_id,
+                                    };
+                                    irDal.Insert(thisReserve);
+                                    OperLogBLL.OperLogAdd<ivt_reserve>(thisReserve, thisReserve.id, user_id, OPER_LOG_OBJ_CATE.WAREHOUSE_RESERVE, "新增库存预留");
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var thisPageWare in wareDic)
+                        {
+                            var thisWareHouse = iwDal.FindNoDeleteById(thisPageWare.Key);
+                            if (thisWareHouse != null)
+                            {
+                                var thisReserve = new ivt_reserve()
+                                {
+                                    id = irDal.GetNextIdCom(),
+                                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    create_user_id = user_id,
+                                    update_user_id = user_id,
+                                    quote_item_id = quote_item.id,
+                                    warehouse_id = thisPageWare.Key,
+                                    quantity = thisPageWare.Value,
+                                    resource_id = thisWareHouse.resource_id,
+                                };
+                                irDal.Insert(thisReserve);
+                                OperLogBLL.OperLogAdd<ivt_reserve>(thisReserve, thisReserve.id, user_id, OPER_LOG_OBJ_CATE.WAREHOUSE_RESERVE, "新增库存预留");
+                            }
+                        }
+                    }
+                }
+
+                if (oldReserList != null && oldReserList.Count > 0)
+                {
+                    oldReserList.ForEach(_ =>
+                    {
+                        irDal.SoftDelete(_, user_id);
+                        OperLogBLL.OperLogDelete<ivt_reserve>(_, _.id, user_id, OPER_LOG_OBJ_CATE.WAREHOUSE_RESERVE, "删除库存预留");
+                    });
+                }
+            }
+
+
+            if (isSaleOrder && saleOrderId != null&& (quote_item.type_id == (int)DicEnum.QUOTE_ITEM_TYPE.PRODUCT || quote_item.type_id == (int)DicEnum.QUOTE_ITEM_TYPE.DEGRESSION || quote_item.type_id == (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES))
+            {
+                var cccDal = new ctt_contract_cost_dal();
+                var thisCost = cccDal.GetSinBuQuoteItem(quote_item.id);
+                if (thisCost != null)
+                {
+                    long? product_id = thisCost.product_id;
+                    int status_id = thisCost.status_id;
+                    long cost_code_id = thisCost.cost_code_id;
+                    if (quote_item.type_id == (int)QUOTE_ITEM_TYPE.PRODUCT)
+                    {
+                        product_id = quote_item.object_id;
+                        status_id = thisCost.status_id;
+                        var thisProduct = new ivt_product_dal().FindNoDeleteById((long)quote_item.object_id);
+                        if (thisProduct != null)
+                        {
+                            cost_code_id = thisProduct.cost_code_id;
+                        }
+                        if (status_id != (int)COST_STATUS.UNDETERMINED && status_id != (int)COST_STATUS.PENDING_APPROVAL && status_id != (int)COST_STATUS.CANCELED)
+                        {
+                            if (thisCost.quantity != quote_item.quantity)
+                            {
+                                status_id = (int)COST_STATUS.PENDING_PURCHASE;
+                                var appSet = new SysSettingBLL().GetSetById(DTO.SysSettingEnum.CTT_COST_APPROVAL_VALUE);
+                                if (appSet != null && !string.IsNullOrEmpty(appSet.setting_value))
+                                {
+                                    if (((decimal)quote_item.quantity * (decimal)quote_item.unit_price) > decimal.Parse(appSet.setting_value)) // 金额超出（待审批）
+                                    {
+                                        status_id = (int)COST_STATUS.PENDING_APPROVAL;
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    thisCost.product_id = product_id;
+                    thisCost.cost_code_id = cost_code_id;
+                    thisCost.name = quote_item.name;
+                    thisCost.description = quote_item.description;
+                    thisCost.unit_price = quote_item.unit_price;
+                    thisCost.unit_cost = quote_item.unit_cost;
+                    thisCost.quantity = quote_item.quantity;
+                    thisCost.status_id = status_id;
+
+                    var olderCost = cccDal.FindNoDeleteById(thisCost.id);
+                    cccDal.Update(thisCost);
+                    OperLogBLL.OperLogUpdate<ctt_contract_cost>(thisCost, olderCost, thisCost.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_COST, "修改成本");
+
+                }
+            }
+
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -424,7 +651,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     if (quote_item.optional != 1 && quote_item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && quote_item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES)
                     {
-                        decimal? changeRevenue = quote_item.quantity * quote_item.unit_price ;
+                        decimal? changeRevenue = quote_item.quantity * quote_item.unit_price;
                         decimal? changeCost = quote_item.quantity * quote_item.unit_cost;
 
 
@@ -606,6 +833,23 @@ namespace EMT.DoneNOW.BLL
             }
             return totalMoney;
         }
+        /// <summary>
+        /// 在销售订单下新增
+        /// </summary>
+        /// <returns></returns>
+        public ERROR_CODE InsertBySale(crm_quote_item param, long user_id)
+        {
+            return ERROR_CODE.SUCCESS;
+        }
+        /// <summary>
+        /// 在销售订单下编辑
+        /// </summary>
+        /// <returns></returns>
+        public ERROR_CODE EditBySale()
+        {
+            return ERROR_CODE.SUCCESS;
+        }
+
 
     }
 }

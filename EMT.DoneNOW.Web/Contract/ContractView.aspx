@@ -118,6 +118,7 @@
                 <li class="MenuLink"><a href="ContractView.aspx?type=note&id=<%=contract.id %>">备注</a></li>
                 <li class="MenuLink">工单-暂未实现</li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=udf&id=<%=contract.id %>">自定义字段</a></li>
+                 <li class="MenuLink"><a href="ContractView.aspx?type=project&id=<%=contract.id %>">项目</a></li>
             </ul>
         </div>
         <div class="Right">

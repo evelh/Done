@@ -190,6 +190,10 @@ namespace EMT.DoneNOW.Web
                         var rule_id = context.Request.QueryString["rule_id"];
                         DeleteContractRule(context,long.Parse(rule_id));
                         break;
+                    case "GetCostAccount":
+                        var gaAccId = context.Request.QueryString["cost_id"];
+                        GetCostAccount(context,long.Parse(gaAccId));
+                        break;
                     default:
                         break;
                 }
@@ -747,6 +751,21 @@ namespace EMT.DoneNOW.Web
         {
             var result = new ContractBLL().DeleteContractRule(rule_id,LoginUserId);
             context.Response.Write(result);
+        }
+        /// <summary>
+        /// 获取成本的客户信息
+        /// </summary>
+        private void GetCostAccount(HttpContext context, long cost_id)
+        {
+            var accountId = new ContractCostBLL().GetAccountIdByCostId(cost_id);
+            if (accountId != null)
+            {
+                var account = new CompanyBLL().GetCompany((long)accountId);
+                if (account != null)
+                {
+                    context.Response.Write(new Tools.Serialize().SerializeJson(account));
+                }
+            }
         }
     }
 }

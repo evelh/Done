@@ -2365,24 +2365,31 @@ namespace EMT.DoneNOW.BLL
                 var thisEntry = sweDal.FindNoDeleteById(id);
                 if (thisEntry != null)
                 {
-                    //if (thisEntry.approve_and_post_date == null && thisEntry.approve_and_post_user_id == null)
-                    //{
-                        if(thisEntry.hours_rate_deduction != null || thisEntry.work_entry_record_id != null)
+                    if (thisEntry.approve_and_post_date == null && thisEntry.approve_and_post_user_id == null)
+                    {
+                        if (thisEntry.hours_rate_deduction != null || thisEntry.hours_billed_deduction != null)
                         {
                             var olsEntry = sweDal.FindNoDeleteById(id);
                             thisEntry.hours_billed_deduction = null;
-                            thisEntry.work_entry_record_id = null;
+                            thisEntry.hours_rate_deduction = null;
                             thisEntry.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                             thisEntry.update_user_id = user_id;
-                           
+
                             sweDal.Update(thisEntry);
                             OperLogBLL.OperLogUpdate<sdk_work_entry>(thisEntry, olsEntry, olsEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "工时恢复初始值");
                             return true;
+                        }
+                        else
+                        {
+                            reason = "工时已经是初始值，无需恢复";
+                            return false;
+                        }
                     }
                     else
                     {
-                        reason = "工时已经是初始值，无需恢复";
+                        reason = "工时已经审批";
                         return false;
+
                     }
                     //}
                 }
@@ -2891,13 +2898,16 @@ namespace EMT.DoneNOW.BLL
         /// 审批提交工时
         /// </summary>
         public ERROR_CODE PostWorkEntry(long id, int date, long user_id, string postType = "")
-        {
+         {
             try
             {
                 var sweDal = new sdk_work_entry_dal();
                 var oldEntry = sweDal.FindNoDeleteById(id);
                 if (oldEntry != null)
                 {
+                    #region 获取条目相关属性
+                    decimal? aa = null;
+                    var cc = aa ?? null;
                     d_general thisTaxCate = null;//税收种类
                     d_general thisTaxRegion = null;//税区
                     decimal? tax_rate = 0;//税率
@@ -2959,7 +2969,7 @@ namespace EMT.DoneNOW.BLL
                             block_hour_multiplier = thisConRole.block_hour_multiplier;
                         }
                     }
-
+                    #endregion
                     decimal? rate = new ContractRateBLL().GetRateByCodeAndRole((long)oldEntry.cost_code_id, (long)oldEntry.role_id);
                     Dictionary<int, decimal> block = new Dictionary<int, decimal>();//存储预付id，和总价
                     if (thisContract != null)
@@ -2971,7 +2981,7 @@ namespace EMT.DoneNOW.BLL
 
                             var thisEntryRate = new ContractRateBLL().GetRateByCodeAndRole((long)oldEntry.cost_code_id, (long)oldEntry.role_id);
                             var totalMoney = oldEntry.hours_billed * thisEntryRate;  // 这个工时的总额
-                            var block_hours = sweDal.ExecuteDataTable($"SELECT b.id,round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={thisContract.id} and b.status=1 ORDER BY b.start_date");
+                            var block_hours = sweDal.ExecuteDataTable($"SELECT b.id,round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={thisContract.id} and b.status_id=1 ORDER BY b.start_date");
                             foreach (DataRow i in block_hours.Rows)
                             {
                                 if (i[1] != null && Convert.ToDecimal(i[1]) > 0)
@@ -2999,7 +3009,7 @@ namespace EMT.DoneNOW.BLL
                                                 task_id = oldEntry.task_id,
                                                 extended_price = i.Value,
                                                 account_id = thisAccount.id,
-                                                quantity = oldEntry.hours_billed,
+                                                quantity = oldEntry.hours_billed_deduction??oldEntry.hours_billed,
                                                 bill_create_user_id = oldEntry.create_user_id,
                                                 purchase_order_no = thisTask.purchase_order_no,
                                                 tax_category_name = thisTaxCate != null ? thisTaxCate.name : null,
@@ -3007,7 +3017,7 @@ namespace EMT.DoneNOW.BLL
                                                 effective_tax_rate = tax_rate,
                                                 // tax_dollars = oldEntry.hours_billed * price * tax_rate,
                                                 role_id = oldEntry.role_id,
-                                                rate = rate,
+                                                rate = oldEntry.hours_rate_deduction ?? rate,
                                                 contract_block_id = i.Key,
                                                 block_hour_multiplier = block_hour_multiplier,
                                                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -3037,7 +3047,7 @@ namespace EMT.DoneNOW.BLL
                                                 task_id = oldEntry.task_id,
                                                 extended_price = i.Value,
                                                 account_id = thisAccount.id,
-                                                quantity = oldEntry.hours_billed,
+                                                quantity = oldEntry.hours_billed_deduction ?? oldEntry.hours_billed,
                                                 bill_create_user_id = oldEntry.create_user_id,
                                                 purchase_order_no = thisTask.purchase_order_no,
                                                 tax_category_name = thisTaxCate != null ? thisTaxCate.name : null,
@@ -3045,7 +3055,7 @@ namespace EMT.DoneNOW.BLL
                                                 effective_tax_rate = tax_rate,
                                                 // tax_dollars = oldEntry.hours_billed * price * tax_rate,
                                                 role_id = oldEntry.role_id,
-                                                rate = rate,
+                                                rate = oldEntry.hours_rate_deduction ?? rate,
                                                 contract_block_id = i.Key,
                                                 block_hour_multiplier = block_hour_multiplier,
                                                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -3072,7 +3082,7 @@ namespace EMT.DoneNOW.BLL
                                         task_id = oldEntry.task_id,
                                         // extended_price = i.Value,
                                         account_id = thisAccount.id,
-                                        quantity = oldEntry.hours_billed,
+                                        quantity = oldEntry.hours_billed_deduction ?? oldEntry.hours_billed,
                                         bill_create_user_id = oldEntry.create_user_id,
                                         purchase_order_no = thisTask.purchase_order_no,
                                         tax_category_name = thisTaxCate != null ? thisTaxCate.name : null,
@@ -3080,7 +3090,7 @@ namespace EMT.DoneNOW.BLL
                                         effective_tax_rate = tax_rate,
                                         // tax_dollars = oldEntry.hours_billed * price * tax_rate,
                                         role_id = oldEntry.role_id,
-                                        rate = rate,
+                                        rate = oldEntry.hours_rate_deduction ?? rate,
                                         // contract_block_id = i.Key,
                                         block_hour_multiplier = block_hour_multiplier,
                                         create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -3112,7 +3122,7 @@ namespace EMT.DoneNOW.BLL
                                             task_id = oldEntry.task_id,
                                             extended_price = i.Value,
                                             account_id = thisAccount.id,
-                                            quantity = oldEntry.hours_billed,
+                                            quantity = oldEntry.hours_billed_deduction ?? oldEntry.hours_billed,
                                             bill_create_user_id = oldEntry.create_user_id,
                                             purchase_order_no = thisTask.purchase_order_no,
                                             tax_category_name = thisTaxCate != null ? thisTaxCate.name : null,
@@ -3120,7 +3130,7 @@ namespace EMT.DoneNOW.BLL
                                             effective_tax_rate = tax_rate,
                                             // tax_dollars = oldEntry.hours_billed * price * tax_rate,
                                             role_id = oldEntry.role_id,
-                                            rate = rate,
+                                            rate = oldEntry.hours_rate_deduction ?? rate,
                                             contract_block_id = i.Key,
                                             block_hour_multiplier = block_hour_multiplier,
                                             create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -3166,6 +3176,7 @@ namespace EMT.DoneNOW.BLL
                                                 ccb1.create_user_id = ccb1.update_user_id = user_id;
                                                 ccb1.update_time = ccb1.create_time;
                                                 ccb1.update_user_id = user_id;
+                                                ccb1.is_billed = 1;
                                                 ccb_dal.Insert(ccb1);
                                                 OperLogBLL.OperLogAdd<ctt_contract_block>(ccb1, ccb1.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, "新增(自动续费功能)合同成本预付时间或费用");
 
@@ -3178,7 +3189,7 @@ namespace EMT.DoneNOW.BLL
                                                     task_id = oldEntry.task_id,
                                                     extended_price = ccb1.rate,
                                                     account_id = thisAccount.id,
-                                                    quantity = oldEntry.hours_billed,
+                                                    quantity = oldEntry.hours_billed_deduction ?? oldEntry.hours_billed,
                                                     bill_create_user_id = oldEntry.create_user_id,
                                                     purchase_order_no = thisTask.purchase_order_no,
                                                     tax_category_name = thisTaxCate != null ? thisTaxCate.name : null,
@@ -3186,7 +3197,7 @@ namespace EMT.DoneNOW.BLL
                                                     effective_tax_rate = tax_rate,
                                                     // tax_dollars = oldEntry.hours_billed * price * tax_rate,
                                                     role_id = oldEntry.role_id,
-                                                    rate = rate,
+                                                    rate = oldEntry.hours_rate_deduction ?? rate,
                                                     contract_block_id = ccb1.id,
                                                     block_hour_multiplier = block_hour_multiplier,
                                                     create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -3217,6 +3228,7 @@ namespace EMT.DoneNOW.BLL
                                                 ccb2.create_user_id = ccb2.update_user_id = user_id;
                                                 ccb2.update_time = ccb2.create_time;
                                                 ccb2.update_user_id = user_id;
+                                                ccb2.is_billed = 1;
                                                 ccb_dal.Insert(ccb2);
                                                 OperLogBLL.OperLogAdd<ctt_contract_block>(ccb2, ccb2.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, "新增(自动续费功能)合同成本预付时间或费用");
 
@@ -3229,7 +3241,7 @@ namespace EMT.DoneNOW.BLL
                                                     task_id = oldEntry.task_id,
                                                     extended_price = ccb2.rate,
                                                     account_id = thisAccount.id,
-                                                    quantity = oldEntry.hours_billed,
+                                                    quantity = oldEntry.hours_billed_deduction ?? oldEntry.hours_billed,
                                                     bill_create_user_id = oldEntry.create_user_id,
                                                     purchase_order_no = thisTask.purchase_order_no,
                                                     tax_category_name = thisTaxCate != null ? thisTaxCate.name : null,
@@ -3237,7 +3249,7 @@ namespace EMT.DoneNOW.BLL
                                                     effective_tax_rate = tax_rate,
                                                     // tax_dollars = oldEntry.hours_billed * price * tax_rate,
                                                     role_id = oldEntry.role_id,
-                                                    rate = rate,
+                                                    rate = oldEntry.hours_rate_deduction ?? rate,
                                                     contract_block_id = ccb2.id,
                                                     block_hour_multiplier = block_hour_multiplier,
                                                     create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -3264,7 +3276,7 @@ namespace EMT.DoneNOW.BLL
                                                 task_id = oldEntry.task_id,
                                                 extended_price = totalMoney-extend,
                                                 account_id = thisAccount.id,
-                                                quantity = oldEntry.hours_billed,
+                                                quantity = oldEntry.hours_billed_deduction ?? oldEntry.hours_billed,
                                                 bill_create_user_id = oldEntry.create_user_id,
                                                 purchase_order_no = thisTask.purchase_order_no,
                                                 tax_category_name = thisTaxCate != null ? thisTaxCate.name : null,
@@ -3272,7 +3284,7 @@ namespace EMT.DoneNOW.BLL
                                                 effective_tax_rate = tax_rate,
                                                 // tax_dollars = oldEntry.hours_billed * price * tax_rate,
                                                 role_id = oldEntry.role_id,
-                                                rate = rate,
+                                                rate = oldEntry.hours_rate_deduction ?? rate,
                                                 contract_block_id = null,
                                                 block_hour_multiplier = block_hour_multiplier,
                                                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -3289,7 +3301,38 @@ namespace EMT.DoneNOW.BLL
                                         }
                                     }
                                 }
-
+                                else
+                                {
+                                    var thisDed = new crm_account_deduction()
+                                    {
+                                        id = cad_dal.GetNextIdCom(),
+                                        type_id = (int)ACCOUNT_DEDUCTION_TYPE.LABOUR,
+                                        object_id = id,
+                                        posted_date = thisDate,
+                                        task_id = oldEntry.task_id,
+                                        extended_price = oldEntry.hours_billed * price,
+                                        account_id = thisAccount.id,
+                                        quantity = oldEntry.hours_billed_deduction ?? oldEntry.hours_billed,
+                                        bill_create_user_id = oldEntry.create_user_id,
+                                        purchase_order_no = thisTask.purchase_order_no,
+                                        tax_category_name = thisTaxCate != null ? thisTaxCate.name : null,
+                                        tax_region_name = thisTaxRegion != null ? thisTaxRegion.name : null,
+                                        effective_tax_rate = tax_rate,
+                                        tax_dollars = oldEntry.hours_billed * price * tax_rate,
+                                        role_id = oldEntry.role_id,
+                                        rate = oldEntry.hours_rate_deduction ?? rate,
+                                        block_hour_multiplier = block_hour_multiplier,
+                                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        create_user_id = user_id,
+                                        update_user_id = user_id,
+                                        contract_id = thisContract.id,
+                                    };
+                                    
+                                    
+                                    cad_dal.Insert(thisDed);
+                                    OperLogBLL.OperLogAdd<crm_account_deduction>(thisDed, thisDed.id, user_id, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "审批提交工时");
+                                }
 
                                 
                             }
@@ -3328,7 +3371,7 @@ namespace EMT.DoneNOW.BLL
                                                 task_id = oldEntry.task_id,
                                                 extended_price = i.Value,
                                                 account_id = thisAccount.id,
-                                                quantity = oldEntry.hours_billed,
+                                                quantity = oldEntry.hours_billed_deduction ?? oldEntry.hours_billed,
                                                 bill_create_user_id = oldEntry.create_user_id,
                                                 purchase_order_no = thisTask.purchase_order_no,
                                                 tax_category_name = thisTaxCate != null ? thisTaxCate.name : null,
@@ -3336,7 +3379,7 @@ namespace EMT.DoneNOW.BLL
                                                 effective_tax_rate = tax_rate,
                                                 // tax_dollars = oldEntry.hours_billed * price * tax_rate,
                                                 role_id = oldEntry.role_id,
-                                                rate = rate,
+                                                rate = oldEntry.hours_rate_deduction ?? rate,
                                                 contract_block_id = i.Key,
                                                 block_hour_multiplier = block_hour_multiplier,
                                                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -3366,7 +3409,7 @@ namespace EMT.DoneNOW.BLL
                                                 task_id = oldEntry.task_id,
                                                 extended_price = i.Value,
                                                 account_id = thisAccount.id,
-                                                quantity = oldEntry.hours_billed,
+                                                quantity = oldEntry.hours_billed_deduction ?? oldEntry.hours_billed,
                                                 bill_create_user_id = oldEntry.create_user_id,
                                                 purchase_order_no = thisTask.purchase_order_no,
                                                 tax_category_name = thisTaxCate != null ? thisTaxCate.name : null,
@@ -3374,7 +3417,7 @@ namespace EMT.DoneNOW.BLL
                                                 effective_tax_rate = tax_rate,
                                                 // tax_dollars = oldEntry.hours_billed * price * tax_rate,
                                                 role_id = oldEntry.role_id,
-                                                rate = rate,
+                                                rate = oldEntry.hours_rate_deduction ?? rate,
                                                 contract_block_id = i.Key,
                                                 block_hour_multiplier = block_hour_multiplier,
                                                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -3400,7 +3443,7 @@ namespace EMT.DoneNOW.BLL
                                         task_id = oldEntry.task_id,
                                         // extended_price = i.Value,
                                         account_id = thisAccount.id,
-                                        quantity = oldEntry.hours_billed,
+                                        quantity = oldEntry.hours_billed_deduction ?? oldEntry.hours_billed,
                                         bill_create_user_id = oldEntry.create_user_id,
                                         purchase_order_no = thisTask.purchase_order_no,
                                         tax_category_name = thisTaxCate != null ? thisTaxCate.name : null,
@@ -3408,7 +3451,7 @@ namespace EMT.DoneNOW.BLL
                                         effective_tax_rate = tax_rate,
                                         // tax_dollars = oldEntry.hours_billed * price * tax_rate,
                                         role_id = oldEntry.role_id,
-                                        rate = rate,
+                                        rate = oldEntry.hours_rate_deduction ?? rate,
                                         // contract_block_id = i.Key,
                                         block_hour_multiplier = block_hour_multiplier,
                                         create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -3439,7 +3482,7 @@ namespace EMT.DoneNOW.BLL
                                             task_id = oldEntry.task_id,
                                             extended_price = i.Value,
                                             account_id = thisAccount.id,
-                                            quantity = oldEntry.hours_billed,
+                                            quantity = oldEntry.hours_billed_deduction ?? oldEntry.hours_billed,
                                             bill_create_user_id = oldEntry.create_user_id,
                                             purchase_order_no = thisTask.purchase_order_no,
                                             tax_category_name = thisTaxCate != null ? thisTaxCate.name : null,
@@ -3447,7 +3490,7 @@ namespace EMT.DoneNOW.BLL
                                             effective_tax_rate = tax_rate,
                                             // tax_dollars = oldEntry.hours_billed * price * tax_rate,
                                             role_id = oldEntry.role_id,
-                                            rate = rate,
+                                            rate = oldEntry.hours_rate_deduction ?? rate,
                                             contract_block_id = i.Key,
                                             block_hour_multiplier = block_hour_multiplier,
                                             create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -3511,7 +3554,7 @@ namespace EMT.DoneNOW.BLL
                                                     task_id = oldEntry.task_id,
                                                     extended_price = ccb1.quantity * ccb1.rate,
                                                     account_id = thisAccount.id,
-                                                    quantity = oldEntry.hours_billed,
+                                                    quantity = oldEntry.hours_billed_deduction ?? oldEntry.hours_billed,
                                                     bill_create_user_id = oldEntry.create_user_id,
                                                     purchase_order_no = thisTask.purchase_order_no,
                                                     tax_category_name = thisTaxCate != null ? thisTaxCate.name : null,
@@ -3519,7 +3562,7 @@ namespace EMT.DoneNOW.BLL
                                                     effective_tax_rate = tax_rate,
                                                     // tax_dollars = oldEntry.hours_billed * price * tax_rate,
                                                     role_id = oldEntry.role_id,
-                                                    rate = rate,
+                                                    rate = oldEntry.hours_rate_deduction ?? rate,
                                                     contract_block_id = ccb1.id,
                                                     block_hour_multiplier = block_hour_multiplier,
                                                     create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -3569,7 +3612,7 @@ namespace EMT.DoneNOW.BLL
                                                     task_id = oldEntry.task_id,
                                                     extended_price = ccb2.rate,
                                                     account_id = thisAccount.id,
-                                                    quantity = oldEntry.hours_billed,
+                                                    quantity = oldEntry.hours_billed_deduction ?? oldEntry.hours_billed,
                                                     bill_create_user_id = oldEntry.create_user_id,
                                                     purchase_order_no = thisTask.purchase_order_no,
                                                     tax_category_name = thisTaxCate != null ? thisTaxCate.name : null,
@@ -3577,7 +3620,7 @@ namespace EMT.DoneNOW.BLL
                                                     effective_tax_rate = tax_rate,
                                                     // tax_dollars = oldEntry.hours_billed * price * tax_rate,
                                                     role_id = oldEntry.role_id,
-                                                    rate = rate,
+                                                    rate = oldEntry.hours_rate_deduction ?? rate,
                                                     contract_block_id = ccb2.id,
                                                     block_hour_multiplier = block_hour_multiplier,
                                                     create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -3604,7 +3647,7 @@ namespace EMT.DoneNOW.BLL
                                                 task_id = oldEntry.task_id,
                                                 extended_price = totalMoney - extend,
                                                 account_id = thisAccount.id,
-                                                quantity = oldEntry.hours_billed,
+                                                quantity = oldEntry.hours_billed_deduction ?? oldEntry.hours_billed,
                                                 bill_create_user_id = oldEntry.create_user_id,
                                                 purchase_order_no = thisTask.purchase_order_no,
                                                 tax_category_name = thisTaxCate != null ? thisTaxCate.name : null,
@@ -3612,7 +3655,7 @@ namespace EMT.DoneNOW.BLL
                                                 effective_tax_rate = tax_rate,
                                                 // tax_dollars = oldEntry.hours_billed * price * tax_rate,
                                                 role_id = oldEntry.role_id,
-                                                rate = rate,
+                                                rate = oldEntry.hours_rate_deduction ?? rate,
                                                 contract_block_id = null,
                                                 block_hour_multiplier = block_hour_multiplier,
                                                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -3629,9 +3672,41 @@ namespace EMT.DoneNOW.BLL
                                         }
                                     }
                                 }
+                                else
+                                {
+                                    var thisDed = new crm_account_deduction()
+                                    {
+                                        id = cad_dal.GetNextIdCom(),
+                                        type_id = (int)ACCOUNT_DEDUCTION_TYPE.LABOUR,
+                                        object_id = id,
+                                        posted_date = thisDate,
+                                        task_id = oldEntry.task_id,
+                                        extended_price = oldEntry.hours_billed * price,
+                                        account_id = thisAccount.id,
+                                        quantity = oldEntry.hours_billed_deduction ?? oldEntry.hours_billed,
+                                        bill_create_user_id = oldEntry.create_user_id,
+                                        purchase_order_no = thisTask.purchase_order_no,
+                                        tax_category_name = thisTaxCate != null ? thisTaxCate.name : null,
+                                        tax_region_name = thisTaxRegion != null ? thisTaxRegion.name : null,
+                                        effective_tax_rate = tax_rate,
+                                        tax_dollars = oldEntry.hours_billed * price * tax_rate,
+                                        role_id = oldEntry.role_id,
+                                        rate = oldEntry.hours_rate_deduction ?? rate,
+                                        block_hour_multiplier = block_hour_multiplier,
+                                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        create_user_id = user_id,
+                                        update_user_id = user_id,
+                                        contract_id = thisContract.id,
+                                    };
+
+                                    cad_dal.Insert(thisDed);
+                                    OperLogBLL.OperLogAdd<crm_account_deduction>(thisDed, thisDed.id, user_id, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "审批提交工时");
+                                }
                             }
                         }
                     }
+
                     if (thisContract == null || thisContract.type_id != (int)CONTRACT_TYPE.RETAINER || thisContract.type_id != (int)CONTRACT_TYPE.RETAINER)
                     {
                         var thisDed = new crm_account_deduction()
@@ -3643,7 +3718,7 @@ namespace EMT.DoneNOW.BLL
                             task_id = oldEntry.task_id,
                             extended_price = oldEntry.hours_billed * price,
                             account_id = thisAccount.id,
-                            quantity = oldEntry.hours_billed,
+                            quantity = oldEntry.hours_billed_deduction ?? oldEntry.hours_billed,
                             bill_create_user_id = oldEntry.create_user_id,
                             purchase_order_no = thisTask.purchase_order_no,
                             tax_category_name = thisTaxCate != null ? thisTaxCate.name : null,
@@ -3651,7 +3726,7 @@ namespace EMT.DoneNOW.BLL
                             effective_tax_rate = tax_rate,
                             tax_dollars = oldEntry.hours_billed * price * tax_rate,
                             role_id = oldEntry.role_id,
-                            rate = rate,
+                            rate = oldEntry.hours_rate_deduction ?? rate,
                             block_hour_multiplier = block_hour_multiplier,
                             create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                             update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -3743,7 +3818,7 @@ namespace EMT.DoneNOW.BLL
                         posted_date = thisDate,
                         contract_id = contract_id,
                         task_id = oldExp.task_id,
-                        extended_price = oldExp.amount,
+                        extended_price = oldExp.amount_deduction??oldExp.amount,
                         account_id = oldExp.account_id,
                         quantity = 1,
                         bill_create_user_id = oldExp.create_user_id,
@@ -3773,6 +3848,73 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.ERROR;
             }
             return ERROR_CODE.SUCCESS;
+        }
+
+        /// <summary>
+        /// 修改工时的审批计费时长和审批费率信息
+        /// </summary>
+        public bool EditEntryApp(long eId,decimal? hours_billed_deduction,decimal? hours_rate_deduction,long user_id)
+        {
+            try
+            {
+                var sweDal = new sdk_work_entry_dal();
+                var thisEntry = sweDal.FindNoDeleteById(eId);
+                if (thisEntry != null)
+                {
+                    if(thisEntry.approve_and_post_date==null&& thisEntry.approve_and_post_user_id == null)
+                    {
+                        if(thisEntry.hours_billed_deduction!= hours_billed_deduction|| thisEntry.hours_rate_deduction!= hours_rate_deduction)
+                        {
+                            var oldEntry = sweDal.FindNoDeleteById(thisEntry.id);
+                            thisEntry.hours_billed_deduction = hours_billed_deduction;
+                            thisEntry.hours_rate_deduction = hours_rate_deduction;
+                            sweDal.Update(thisEntry);
+                            OperLogBLL.OperLogUpdate<sdk_work_entry>(thisEntry, oldEntry, thisEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "修改工时信息");
+                        }
+                        return true;
+                    }
+                }
+                return false;
+               
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
+
+        /// <summary>
+        /// 修改费用审批总价
+        /// </summary>
+        public bool EditExpApp(long eid,decimal? amount_deduction,long user_id)
+        {
+            try
+            {
+                var seDal = new sdk_expense_dal();
+                var thisExp = seDal.FindNoDeleteById(eid);
+                if (thisExp != null)
+                {
+                    if (thisExp.approve_and_post_date == null && thisExp.approve_and_post_user_id == null)
+                    {
+                        if (thisExp.amount_deduction != amount_deduction)
+                        {
+                            var oldExp = seDal.FindNoDeleteById(thisExp.id);
+                            thisExp.amount_deduction = amount_deduction;
+
+                            seDal.Update(thisExp);
+                            OperLogBLL.OperLogUpdate<sdk_expense>(thisExp, oldExp, thisExp.id, user_id, OPER_LOG_OBJ_CATE.SDK_EXPENSE, "修改费用信息");
+                        }
+                        return true;
+                    }
+                }
+                return false;
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
