@@ -372,5 +372,34 @@ w.name as location_name
 
             return true;
         }
+
+        /// <summary>
+        /// 获取某个采购项的已接收数
+        /// </summary>
+        /// <param name="orderProductId"></param>
+        /// <returns></returns>
+        public int GetReceivedCnt(long orderProductId)
+        {
+            string sql = $"select count(quantity_received) from ivt_receive where order_product_id={orderProductId} and delete_time=0";
+            var count = dal.FindSignleBySql<int?>(sql);
+            return count == null ? 0 : (int)count;
+        }
+
+        /// <summary>
+        /// 判断采购项对应产品是否序列化的
+        /// </summary>
+        /// <param name="orderProductId"></param>
+        /// <returns></returns>
+        public bool IsProductSerialized(long orderProductId)
+        {
+            string sql = $"select is_serialized from ivt_product where id=(select product_id from ivt_order_product where id={orderProductId})";
+            var is_serialized = dal.FindSignleBySql<int>(sql);
+            return is_serialized == 1;
+        }
+
+        //public bool PurchaseShip(string costPdtIds, long userId)
+        //{
+        //    ctt_contract_cost_product_dal 
+        //}
     }
 }

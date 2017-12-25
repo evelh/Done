@@ -574,6 +574,10 @@ namespace EMT.DoneNOW.DTO
             CONTRACT_NOTIFY_RULE=1566,          // 合同通知规则
             PURCHASE_ORDER = 1567,                  // 采购订单查询
             PURCHASE_ITEM = 1568,                   // 采购订单采购项
+            PURCHASE_RECEIVE = 1571,                // 采购接收查询
+            SHIPPING_LIST = 1572,                   // 库存管理-配送管理-配送列表查询
+            SHIPED_LIST = 1573,                     // 库存管理-配送管理-已配送列表查询
+            SHIPPING_ITEM_SERIAL_NUM = 1575,        // 库存管理-产品序列号查找带回（取消接收用）
 
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
@@ -695,6 +699,8 @@ namespace EMT.DoneNOW.DTO
             INVENTORY_ITEM_TRANSFER_SN = 1396,          // 库存转移序号
             PROJECT_PHASE_WORK_HOURS = 1398,            // 项目阶段预估工时
             PURCHASE_ORDER_ITEM = 1399,                 // 采购项
+            PURCHASE_RECEIVE = 1402,                    // 采购接收
+            PURCHASE_RECEIVE_SN = 1403,                 // 采购接收串号
         }
 
         /// <summary>
@@ -1249,6 +1255,10 @@ namespace EMT.DoneNOW.DTO
         CONTRACT_NOTIFY_RULE=145,          // 合同通知规则
         PurchaseOrder = 146,            // 采购订单查询
         PurchaseItem = 147,             // 采购订单采购项
+        PurchaseReceive = 150,          // 采购接收
+        ShippingList = 151,             // 库存管理-配送管理-配送列表查询
+        ShipedList = 152,               // 库存管理-配送管理-已配送列表查询
+        ShippingItemSerailNum = 154,    // 库存管理-产品序列号查找带回（取消接收用）
 
         //以下是还没有配查询语句的枚举（系统管理）
         REVOKE_LABOUR,                 //撤销工时审批

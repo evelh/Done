@@ -248,8 +248,10 @@
     <Content Include="Images\zoom-out.png" />
     <Content Include="Inventory\AddPurchaseItem.aspx" />
     <Content Include="Inventory\AddPurchaseOrder.aspx" />
+    <Content Include="Inventory\EditItemSerialNum.aspx" />
     <Content Include="Inventory\InventoryItem.aspx" />
     <Content Include="Inventory\InventoryLocation.aspx" />
+    <Content Include="Inventory\ReceivePurchaseOrder.aspx" />
     <Content Include="Inventory\RejectPurchase.aspx" />
     <Content Include="Inventory\TransferItem.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempBody.aspx" />
@@ -410,6 +412,9 @@
     <Content Include="Scripts\Search\PurchaseFulfillment.js" />
     <Content Include="Scripts\Search\PurchaseItem.js" />
     <Content Include="Scripts\Search\PurchaseOrder.js" />
+    <Content Include="Scripts\Search\PurchaseReceive.js" />
+    <Content Include="Scripts\Search\ShipedList.js" />
+    <Content Include="Scripts\Search\ShippingList.js" />
     <Content Include="Tools\PurchaseOrderAjax.ashx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\alert.png" />
@@ -1235,13 +1240,20 @@
     </Compile>
     <Compile Include="Inventory\AddPurchaseOrder.aspx.designer.cs">
       <DependentUpon>AddPurchaseOrder.aspx</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="Contract\NotiRuleManage.aspx.cs">
       <DependentUpon>NotiRuleManage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Contract\NotiRuleManage.aspx.designer.cs">
       <DependentUpon>NotiRuleManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\EditItemSerialNum.aspx.cs">
+      <DependentUpon>EditItemSerialNum.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\EditItemSerialNum.aspx.designer.cs">
+      <DependentUpon>EditItemSerialNum.aspx</DependentUpon>
     </Compile>
     <Compile Include="Inventory\InventoryItem.aspx.cs">
       <DependentUpon>InventoryItem.aspx</DependentUpon>
@@ -1256,6 +1268,13 @@
     </Compile>
     <Compile Include="Inventory\InventoryLocation.aspx.designer.cs">
       <DependentUpon>InventoryLocation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\ReceivePurchaseOrder.aspx.cs">
+      <DependentUpon>ReceivePurchaseOrder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\ReceivePurchaseOrder.aspx.designer.cs">
+      <DependentUpon>ReceivePurchaseOrder.aspx</DependentUpon>
     </Compile>
     <Compile Include="Inventory\RejectPurchase.aspx.cs">
       <DependentUpon>RejectPurchase.aspx</DependentUpon>

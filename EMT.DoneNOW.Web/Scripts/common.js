@@ -233,6 +233,7 @@ var windowObj = {
     inventoryLocation: 'inventoryLocation',
     inventoryOrder: 'inventoryOrder',
     inventoryItem: 'inventoryItem',
+    inventoryItemSerailNum: 'inventoryItemSerailNum',
     inventoryOrderItem: 'inventoryOrderItem',
     project: 'project',
     projectTeam: 'projectTeam',
@@ -240,7 +241,7 @@ var windowObj = {
     projectAttach: 'projectAttach',
     projectUdf: 'projectUdf',
     expense: "expense",
-    workEntry:"workEntry",
+    workEntry: "workEntry",
 }
 var windowType = {
     blank: '_blank',

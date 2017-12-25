@@ -203,6 +203,16 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 根据采购项id列表获取采购项
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public List<ivt_order_product> GetPurchaseItems(string ids)
+        {
+            return pdtDal.FindListBySql($"select * from ivt_order_product where id in ({ids})");
+        }
+
+        /// <summary>
         /// 获取采购订单产品
         /// </summary>
         /// <param name="productId"></param>
@@ -262,6 +272,162 @@ namespace EMT.DoneNOW.BLL
                 return true;
             pdtDal.Update(pdt);
             OperLogBLL.OperLogUpdate(desc, pdt.id, userId, DTO.DicEnum.OPER_LOG_OBJ_CATE.PURCHASE_ORDER_ITEM, "编辑采购项");
+            return true;
+        }
+
+        /// <summary>
+        /// 采购订单接收
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="vendor_invoice_no"></param>
+        /// <param name="freight_cost"></param>
+        /// <param name="items"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool OrderReceive(long orderId, string vendor_invoice_no, decimal freight_cost, List<InventoryOrderReceiveItemDto> items, long userId)
+        {
+            bool haveAllReceive = false;
+            bool haveUnReceive = false;
+            bool havePartReceive = false;
+
+            ivt_receive_dal recvDal = new ivt_receive_dal();
+            ivt_receive_sn_dal recvSnDal = new ivt_receive_sn_dal();
+            ivt_warehouse_product_dal lctPdtDal = new ivt_warehouse_product_dal();
+            ivt_warehouse_product_sn_dal lctPdtSnDal = new ivt_warehouse_product_sn_dal();
+            InventoryProductBLL ivtPdtBll = new InventoryProductBLL();
+            foreach (var item in items)
+            {
+                ivt_order_product orderPdt = dal.FindSignleBySql<ivt_order_product>($"select * from ivt_order_product where id={item.id}");
+                int recvedCnt = ivtPdtBll.GetReceivedCnt(item.id);
+
+                // 判断采购产品全部接收还是部分接收
+                if(!havePartReceive)
+                {
+                    if ((orderPdt.quantity - recvedCnt - item.count > 0) && (recvedCnt + item.count > 0))     // 部分接收
+                        havePartReceive = true;
+                    else if (recvedCnt + item.count > 0)
+                        haveAllReceive = true;
+                    else
+                        haveUnReceive = true;
+                }
+
+                // 保存采购接收
+                ivt_receive recv = new ivt_receive();
+                recv.id = recvDal.GetNextIdCom();
+                recv.order_product_id = item.id;
+                recv.quantity_received = item.count;
+                recv.quantity_backordered = orderPdt.quantity - recvedCnt - item.count;
+                recv.has_been_exported = 0;
+                recv.unit_cost = item.cost;
+                recv.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                recv.create_user_id = userId;
+                recv.update_time = recv.create_time;
+                recv.update_user_id = userId;
+                recvDal.Insert(recv);
+                OperLogBLL.OperLogAdd<ivt_receive>(recv, recv.id, userId, DicEnum.OPER_LOG_OBJ_CATE.PURCHASE_RECEIVE, "新增采购接收");
+
+                // 修改库存仓库库存数量
+                var lctPdt = lctPdtDal.FindSignleBySql<ivt_warehouse_product>($"select ivt_warehouse_product where warehouse_id={orderPdt.warehouse_id} and product_id={orderPdt.product_id} and delete_time=0");
+                if (lctPdt == null)
+                {
+                    lctPdt = new ivt_warehouse_product();
+                    lctPdt.id = lctPdtDal.GetNextIdCom();
+                    lctPdt.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                    lctPdt.create_user_id = userId;
+                    lctPdt.update_time = lctPdt.create_time;
+                    lctPdt.update_user_id = userId;
+                    lctPdt.warehouse_id = orderPdt.warehouse_id;
+                    lctPdt.product_id = orderPdt.product_id;
+                    lctPdt.quantity = item.count;
+                    lctPdt.quantity_minimum = 0;
+                    lctPdt.quantity_maximum = item.count;
+                    lctPdtDal.Insert(lctPdt);
+                    OperLogBLL.OperLogAdd<ivt_warehouse_product>(lctPdt, lctPdt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ITEM, "新增仓库产品");
+                }
+                else
+                {
+                    ivt_warehouse_product pdtOld = lctPdtDal.FindById(lctPdt.id);
+                    lctPdt.quantity = lctPdt.quantity + item.count;
+                    lctPdt.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                    lctPdt.update_user_id = userId;
+                    lctPdtDal.Update(lctPdt);
+                    OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ivt_warehouse_product>(pdtOld, lctPdt), lctPdt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ITEM, "修改仓库产品数量");
+                }
+
+                // 序列化产品记录序列号
+                if (item.sns.Count!=0)
+                {
+                    if (item.count>0)
+                    {
+                        foreach(var sn in item.sns)
+                        {
+                            // 保存接收串号
+                            ivt_receive_sn rsn = new ivt_receive_sn();
+                            rsn.id = recvSnDal.GetNextIdCom();
+                            rsn.receive_id = recv.id;
+                            rsn.sn = sn;
+                            rsn.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                            rsn.create_user_id = userId;
+                            rsn.update_time = rsn.create_time;
+                            rsn.update_user_id = userId;
+                            recvSnDal.Insert(rsn);
+                            OperLogBLL.OperLogAdd<ivt_receive_sn>(rsn, rsn.id, userId, DicEnum.OPER_LOG_OBJ_CATE.PURCHASE_RECEIVE_SN, "新增采购接收串号");
+
+                            // 保存库存产品串号
+                            ivt_warehouse_product_sn lpsn = new ivt_warehouse_product_sn();
+                            lpsn.id = lctPdtSnDal.GetNextIdCom();
+                            lpsn.warehouse_product_id = lctPdt.id;
+                            lpsn.sn = sn;
+                            lpsn.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                            lpsn.create_user_id = userId;
+                            lpsn.update_time = lpsn.create_time;
+                            lpsn.update_user_id = userId;
+                            lctPdtSnDal.Insert(lpsn);
+                            OperLogBLL.OperLogAdd<ivt_warehouse_product_sn>(lpsn, lpsn.id, userId, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ITEM_SN, "新增库存产品串号");
+                        }
+                    }
+                    else
+                    {
+                        string ids = "";
+                        foreach(var rsnid in item.sns)
+                        {
+                            ids += rsnid + ",";
+                        }
+                        ids = ids.Remove(ids.Length - 1, 1);
+                        // 删除接收串号
+                        recvSnDal.ExecuteSQL($"update ivt_receive_sn set delete_time='{Tools.Date.DateHelper.ToUniversalTimeStamp()}',delete_user_id={userId} where id in({ids})");
+                        // 删除库存产品串号
+                        lctPdtSnDal.ExecuteSQL($"update ivt_warehouse_product_sn set delete_time='{Tools.Date.DateHelper.ToUniversalTimeStamp()}',delete_user_id={userId} where warehouse_product_id={lctPdt.id} and sn in(select sn from ivt_receive_sn where id in({ids}))");
+                    }
+                }
+                
+            }
+
+            ivt_order order = dal.FindById(orderId);
+            ivt_order orderOld = dal.FindById(orderId);
+            if (havePartReceive||(haveAllReceive&&haveUnReceive))
+            {
+                order.status_id = (int)DicEnum.PURCHASE_ORDER_STATUS.RECEIVED_PARTIAL;
+            }
+            else if(haveAllReceive)
+            {
+                order.status_id = (int)DicEnum.PURCHASE_ORDER_STATUS.RECEIVED_FULL;
+            }
+            else
+            {
+                order.status_id = (int)DicEnum.PURCHASE_ORDER_STATUS.SUBMITTED;
+            }
+            order.vendor_invoice_no = vendor_invoice_no;
+            order.freight_cost = freight_cost;
+            order.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            order.update_user_id = userId;
+            string desc = OperLogBLL.CompareValue<ivt_order>(orderOld, order);
+            if (!string.IsNullOrEmpty(desc))
+            {
+                dal.Update(order);
+                OperLogBLL.OperLogUpdate(desc, order.id, userId, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ORDER, "采购订单接收");
+            }
+
             return true;
         }
     }

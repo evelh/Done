@@ -363,6 +363,21 @@
                                                         <span class="Text">采购订单</span>
                                                     </a>
                                                 </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASE_RECEIVE %>&isCheck=1" target="PageFrame"> 
+                                                        <span class="Text">接收</span>
+                                                    </a>
+                                                </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SHIPPING_LIST %>&isCheck=1" target="PageFrame"> 
+                                                        <span class="Text">配送列表</span>
+                                                    </a>
+                                                </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SHIPED_LIST %>&isCheck=1" target="PageFrame"> 
+                                                        <span class="Text">已配送列表</span>
+                                                    </a>
+                                                </div>
                                             </div>
                                             <div class="Group">
                                                 <div class="Heading">

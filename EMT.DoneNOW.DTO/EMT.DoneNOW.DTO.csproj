@@ -73,6 +73,7 @@
     <Compile Include="ExpenseDto.cs" />
     <Compile Include="FormTmplOpportunityDto.cs" />
     <Compile Include="InventoryItemEditDto.cs" />
+    <Compile Include="InventoryOrderReceiveItemDto.cs" />
     <Compile Include="InvioceTempDto.cs" />
     <Compile Include="InvoiceDeductionDto.cs" />
     <Compile Include="LoseOpportunityDto.cs" />

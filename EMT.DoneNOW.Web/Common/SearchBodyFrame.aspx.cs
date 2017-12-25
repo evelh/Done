@@ -255,6 +255,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.PROJECT_TEMP_SEARCH:
                     addBtn = "新增项目模板";
                     break;
+                case (int)DicEnum.QUERY_CATE.PURCHASE_RECEIVE:
+                    addBtn = "接收";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -824,9 +827,9 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.PurchaseOrder:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "提交", click_function = "Delete()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "收货/取消收货", click_function = "Delete()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "查看/打印", click_function = "Delete()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "发送邮件", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "接收/取消接收", click_function = "Receive()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看/打印", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "发送邮件", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "取消", click_function = "Delete()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;

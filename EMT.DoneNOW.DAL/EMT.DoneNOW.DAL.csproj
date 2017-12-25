@@ -114,6 +114,8 @@
     <Compile Include="Dictionary\d_time_zone_dal.cs" />
     <Compile Include="IVT\ivt_order_dal.cs" />
     <Compile Include="IVT\ivt_order_product_dal.cs" />
+    <Compile Include="IVT\ivt_receive_dal.cs" />
+    <Compile Include="IVT\ivt_receive_sn_dal.cs" />
     <Compile Include="IVT\ivt_transfer_dal.cs" />
     <Compile Include="IVT\ivt_product_vendor_dal.cs" />
     <Compile Include="IVT\ivt_service_bundle_dal.cs" />

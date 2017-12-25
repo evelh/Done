@@ -180,6 +180,15 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.PROJECT_PROPOSAL_SEARCH:
                     currentQuery.page_name = "项目提案查询";
                     break;
+                case (int)DicEnum.QUERY_CATE.SHIPPING_LIST:
+                    currentQuery.page_name = "配送列表查询";
+                    break;
+                case (int)DicEnum.QUERY_CATE.SHIPED_LIST:
+                    currentQuery.page_name = "已配送列表查询";
+                    break;
+                case (int)DicEnum.QUERY_CATE.PURCHASE_RECEIVE:
+                    currentQuery.page_name = "采购接收查询";
+                    break;
                 default:
                     currentQuery.page_name = "";
                     break;
