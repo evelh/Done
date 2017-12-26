@@ -10,7 +10,7 @@ namespace EMT.DoneNOW.DAL
     {
         public List<DictionaryEntryDto> GetDictionary(d_general_table tableInfo)
         {
-            string where = $"SELECT * FROM d_general WHERE general_table_id='{tableInfo.id}' order by id";
+            string where = $"SELECT * FROM d_general WHERE general_table_id='{tableInfo.id}' and delete_time = 0 order by id";
             List<d_general> all = FindListBySql(QueryStringDeleteFlag(where));
             List<DictionaryEntryDto> list = new List<DictionaryEntryDto>();
             if (all == null)

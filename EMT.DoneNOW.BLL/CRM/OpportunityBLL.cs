@@ -1202,6 +1202,9 @@ namespace EMT.DoneNOW.BLL
                             remark = "将报价项转换为计费项"
 
                         });
+
+                        #region 如果报价项是产品，有预留产品库存的时候，进行拣货操作
+                        #endregion
                     }
                     else
                     {

@@ -249,9 +249,21 @@ namespace EMT.DoneNOW.BLL
 
                         status_id = (int)COST_STATUS.PENDING_PURCHASE;
                         var thisProduct = new ivt_product_dal().FindNoDeleteById(cost_code_id);
-                        if (thisProduct != null)
+                        if (thisProduct != null) 
                         {
                             cost_code_id = thisProduct.cost_code_id;
+                        }
+                        else
+                        {
+                            return ERROR_CODE.ERROR;
+                        }
+                        var appSet = new SysSettingBLL().GetSetById(DTO.SysSettingEnum.CTT_COST_APPROVAL_VALUE);
+                        if (appSet != null && !string.IsNullOrEmpty(appSet.setting_value)&& thisProduct.does_not_require_procurement == 1) // 该产品走采购流程，并且价格大于设置，则带审批
+                        {
+                            if (((decimal)quote_item.quantity * (decimal)quote_item.unit_price) > decimal.Parse(appSet.setting_value)) // 金额超出（待审批）
+                            {
+                                status_id = (int)COST_STATUS.PENDING_APPROVAL;
+                            }
                         }
                     }
                     else
@@ -574,13 +586,17 @@ namespace EMT.DoneNOW.BLL
                         {
                             cost_code_id = thisProduct.cost_code_id;
                         }
+                        else
+                        {
+                            return ERROR_CODE.ERROR;
+                        }
                         if (status_id != (int)COST_STATUS.UNDETERMINED && status_id != (int)COST_STATUS.PENDING_APPROVAL && status_id != (int)COST_STATUS.CANCELED)
                         {
                             if (thisCost.quantity != quote_item.quantity)
                             {
                                 status_id = (int)COST_STATUS.PENDING_PURCHASE;
                                 var appSet = new SysSettingBLL().GetSetById(DTO.SysSettingEnum.CTT_COST_APPROVAL_VALUE);
-                                if (appSet != null && !string.IsNullOrEmpty(appSet.setting_value))
+                                if (appSet != null && !string.IsNullOrEmpty(appSet.setting_value)&& thisProduct.does_not_require_procurement == 1)
                                 {
                                     if (((decimal)quote_item.quantity * (decimal)quote_item.unit_price) > decimal.Parse(appSet.setting_value)) // 金额超出（待审批）
                                     {

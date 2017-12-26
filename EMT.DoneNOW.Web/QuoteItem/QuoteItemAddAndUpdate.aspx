@@ -1132,7 +1132,7 @@
                 url: "../Tools/ProductAjax.ashx?act=GetProductCost&product_id=" + product_id,
                 // data: { CompanyName: companyName },
                 success: function (data) {
-                    if (data != "") {
+                    if (data != "" && data != null) {
                         $("#unit_cost").val(data);
                         Markup();
                     }

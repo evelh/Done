@@ -26,6 +26,9 @@ namespace EMT.DoneNOW.Web
                     break;
                 case "createPurchaseOrder":
                     break;
+                case "isEditOrder":
+                    isEditOrder(context);
+                    break;
                 default:
                     break;
 
@@ -64,5 +67,40 @@ namespace EMT.DoneNOW.Web
             context.Response.Write(new Tools.Serialize().SerializeJson(true));
         }
 
+        /// <summary>
+        /// 判断采购单是否可编辑
+        /// </summary>
+        private void isEditOrder(HttpContext context)
+        {
+            bool result = true;
+            var id = context.Request.QueryString["id"];
+            try
+            {
+                if (!string.IsNullOrEmpty(id))
+                {
+                    var thisOrder = new DAL.ivt_order_dal().FindNoDeleteById(long.Parse(id));
+                    if(thisOrder!=null&&thisOrder.status_id!=(int)DTO.DicEnum.PURCHASE_ORDER_STATUS.RECEIVED_FULL&& thisOrder.status_id != (int)DTO.DicEnum.PURCHASE_ORDER_STATUS.CANCELED)
+                    {
+                        result = true;
+                    }
+                    else
+                    {
+                        result = false;
+                    }
+                }
+                else
+                {
+                    result = false;
+                }
+            }
+            catch (Exception)
+            {
+
+                result = false;
+            }
+           
+            context.Response.Write(result);
+
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿$(function () {
     $(".General").hide();
+    $(".page").hide();
 })
 function Add() {
     var project_id = $("#id").val();

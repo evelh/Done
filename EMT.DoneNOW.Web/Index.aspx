@@ -279,24 +279,24 @@
                                                 <div class="Heading">
                                                     <div class="Text">搜索</div>
                                                 </div>
-                                                <%if (CheckAuth("MENU_PROJECT_PROJECT"))
+                                                <%if (CheckAuth("SEARCH_PROJECT_PROJECT"))
                                                 { %>
                                                 <div class="Content">
                                                     <a class="Button ButtonIcon NormalState" href="Project/ProjectSearch.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_SEARCH %>" target="PageFrame">
-                                                        <span class="Text">项目</span>
+                                                        <span class="Text">项目管理</span>
                                                     </a>
                                                 </div>
                                                 <%}%>
 
                                                 <div class="Content">
                                                     <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_TEMP_SEARCH %>" target="PageFrame">
-                                                        <span class="Text">项目模板</span>
+                                                        <span class="Text">项目模板管理</span>
                                                     </a>
                                                 </div>
 
                                                 <div class="Content">
                                                     <a class="Button ButtonIcon NormalState" href="Project/ProjectSearch.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_PROPOSAL_SEARCH %>" target="PageFrame">
-                                                        <span class="Text">项目提案</span>
+                                                        <span class="Text">项目提案管理</span>
                                                     </a>
                                                 </div>
                                             </div>

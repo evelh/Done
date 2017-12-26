@@ -3,7 +3,7 @@
 })
 
 function View(id) {
-    OpenWindow("ProjectView.aspx?id=" + id, windowObj.project + windowType.blank);
+    OpenWindow("../Project/ProjectView.aspx?id=" + id, windowObj.project + windowType.blank);
 }
 
 function ViewDetail() {

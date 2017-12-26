@@ -527,9 +527,9 @@ namespace EMT.DoneNOW.BLL
         /// <param name="ipId"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public decimal GetProCost(long ipId,long user_id)
+        public decimal? GetProCost(long ipId,long user_id)
         {
-            decimal thisCost = 0;
+            decimal? thisCost = null;
             var thisPro = _dal.FindNoDeleteById(ipId);
             if (thisPro != null)
             {

@@ -458,9 +458,7 @@
                 height: 22px;
             }
 
-        .dataGridHeader {
-            background-color: #cbd9e4;
-        }
+       
 
         .dataGridHeader {
             border-left: outset 1px;
@@ -468,10 +466,10 @@
             border-bottom: outset 1px;
             font-size: 9px;
             font-weight: bold;
-            color: #555;
+            color: white;
             text-decoration: none;
             height: 25px;
-            background-color: buttonface;
+            background-color: #356995;
             vertical-align: top;
         }
 
@@ -885,9 +883,9 @@
                     <table class="dataGridBody" border="1" id="ucCostEdit_dgItemsNeeded_dgItemsNeeded_datagrid" style="width: 100%; border-collapse: collapse; border-top-width: 0px;">
                         <tr class="dataGridHeader">
                             <td align="left">库存位置</td>
-                            <td align="right">库存数</td>
-                            <td align="right">预留和拣货</td>
-                            <td align="right">可用数</td>
+                            <td align="left">库存数</td>
+                            <td align="left">预留和拣货</td>
+                            <td align="left">可用数</td>
                             <% if (!isAdd && conCost.quantity != 0)
                                 { %>
                             <td>拣货</td>
@@ -1610,8 +1608,28 @@
                     },
                 });
             }
-            GetStillNeed();
             // 展示库存信息
+            GetStillNeed();
+            
+            // 获取单元成本
+            <%if (isAdd)
+    { %>
+            $.ajax({
+                type: "GET",
+                async: false,
+                // dataType: "json",
+                url: "../Tools/ProductAjax.ashx?act=GetProductCost&product_id=" + product_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "" && data != null) {
+                        $("#unit_cost").val(toDecimal4(data));
+                        // $("#unit_cost").val(data);
+                        // Markup();
+                        GetSumCost();
+                    }
+                },
+            });
+            <%}%>
         }
     }
     // costIdHidden  costId
