@@ -142,7 +142,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public SByte can_client_portal_user_complete_task { get; set; }
         [DataMember]
-        public Int32? problem_ticket_id { get; set; }
+        public Int64? problem_ticket_id { get; set; }
         [DataMember]
         public Int32? ticket_type_id { get; set; }
         [DataMember]
@@ -185,6 +185,10 @@ namespace EMT.DoneNOW.Core
         public Decimal? budgeted_hours { get; set; }
         [DataMember]
         public Int64? installed_product_id { get; set; }
+        [DataMember]
+        public Int32? cate_id { get; set; }
+        [DataMember]
+        public Int64? service_id { get; set; }
 
 
     }

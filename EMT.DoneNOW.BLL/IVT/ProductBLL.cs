@@ -521,5 +521,63 @@ namespace EMT.DoneNOW.BLL
 
             return ERROR_CODE.SUCCESS;
         }
+        /// <summary>
+        /// 获取产品的成本（根据系统设置相关）
+        /// </summary>
+        /// <param name="ipId"></param>
+        /// <param name="user_id"></param>
+        /// <returns></returns>
+        public decimal GetProCost(long ipId,long user_id)
+        {
+            decimal thisCost = 0;
+            var thisPro = _dal.FindNoDeleteById(ipId);
+            if (thisPro != null)
+            {
+                if (thisPro.unit_cost != null)
+                {
+                    thisCost = (decimal)thisPro.unit_cost;
+                }
+
+                var thisSysSet  = new SysSettingBLL().GetSetById(DTO.SysSettingEnum.INVENTORY_ACCOUNTING_METHOD);
+                if (thisSysSet != null)
+                {
+                    var iopDal = new ivt_order_product_dal();
+                    if (thisSysSet.setting_value == ((int)INVENTORY_ACCOUNTING_METHOD.AVERAGE_COST).ToString())
+                    {
+                        var avgCosr = iopDal.GetAvgByPro(thisPro.id);
+                        if (avgCosr != null)
+                        {
+                            thisCost = (decimal)avgCosr;
+                        }
+                    }
+                    else if (thisSysSet.setting_value == ((int)INVENTORY_ACCOUNTING_METHOD.FIFO).ToString())
+                    {
+                        var firCosr = iopDal.GetFirstByPro(thisPro.id);
+                        if (firCosr != null)
+                        {
+                            if (firCosr.unit_cost != null)
+                            {
+                                thisCost = (decimal)firCosr.unit_cost;
+                            }
+                        }
+                    }
+                    else if (thisSysSet.setting_value == ((int)INVENTORY_ACCOUNTING_METHOD.LIFO).ToString())
+                    {
+                        var lasCosr = iopDal.GetFirstByPro(thisPro.id);
+                        if (lasCosr != null)
+                        {
+
+                            if (lasCosr.unit_cost != null)
+                            {
+                                thisCost = (decimal)lasCosr.unit_cost;
+                            }
+                        }
+                    }
+                }
+                
+            }
+            
+            return thisCost;
+        }
     }
 }

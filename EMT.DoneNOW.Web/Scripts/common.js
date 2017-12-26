@@ -236,6 +236,7 @@ var windowObj = {
     inventoryItemSerailNum: 'inventoryItemSerailNum',
     inventoryOrderItem: 'inventoryOrderItem',
     project: 'project',
+    projectReport:'projectReport',
     projectTeam: 'projectTeam',
     projectCalendar: 'projectCalendar',
     projectAttach: 'projectAttach',

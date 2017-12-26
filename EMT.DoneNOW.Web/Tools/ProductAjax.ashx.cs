@@ -132,6 +132,10 @@ namespace EMT.DoneNOW.Web
                 case "DoneCostSale":
                     DoneCostSale(context);
                     break;
+                case "GetProductCost":
+                    var gpId = context.Request.QueryString["product_id"];
+                    GetProductCost(context,long.Parse(gpId));
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     break;
@@ -520,7 +524,10 @@ namespace EMT.DoneNOW.Web
             }
             
         }
-
+        /// <summary>
+        /// 通过成本完成销售订单
+        /// </summary>
+        /// <param name="context"></param>
         private void DoneCostSale(HttpContext context)
         {
             var result = true;
@@ -530,6 +537,14 @@ namespace EMT.DoneNOW.Web
                 result = new SaleOrderBLL().DoneSaleByCost(long.Parse(thisCostId),LoginUserId);
             }
             context.Response.Write(result);
+        }
+        /// <summary>
+        /// 获取到产品的成本（根据系统设置，决定如何获取）
+        /// </summary>
+        private void GetProductCost(HttpContext context,long ipId)
+        {
+            var thisCost = new ProductBLL().GetProCost(ipId,LoginUserId);
+            context.Response.Write(thisCost.ToString("#0.00"));
         }
     }
 }

@@ -1121,6 +1121,24 @@
                     $("#wareTbody").html("");
                 },
             });
+
+            // 新增时，获取成本信息，先进先出，或者先进后出等决定单位成本
+            <%if (isAdd)
+    { %>
+            $.ajax({
+                type: "GET",
+                async: false,
+                // dataType: "json",
+                url: "../Tools/ProductAjax.ashx?act=GetProductCost&product_id=" + product_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "") {
+                        $("#unit_cost").val(data);
+                        Markup();
+                    }
+                },
+            });
+            <%}%>
         } else {
             $("#productListTable").css("display", "none");
             $("#wareTbody").html("");

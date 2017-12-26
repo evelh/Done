@@ -831,7 +831,26 @@ namespace EMT.DoneNOW.DTO
             NEED_NONE = 1019,           // 不需要
         }
         /// <summary>
-        /// 系统管理：系统配置： 工时是否可以代理操作
+        /// 系统管理：系统配置：库存记账方法 - 83
+        /// </summary>
+        public enum INVENTORY_ACCOUNTING_METHOD
+        {
+            /// <summary>
+            /// 平均
+            /// </summary>
+            AVERAGE_COST = 1030,
+            /// <summary>
+            /// 先进先出
+            /// </summary>
+            FIFO = 1031,
+            /// <summary>
+            /// 后进先出
+            /// </summary>
+            LIFO = 1032,
+        }
+
+        /// <summary>
+        /// 系统管理：系统配置： 工时是否可以代理操作  - 90
         /// </summary>
         public enum PROXY_TIME_ENTRY
         {

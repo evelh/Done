@@ -21,6 +21,10 @@
                 <span class="Icon" style="width: 0; margin: 0;"></span>
                 <span class="Text">标记</span>
             </li>
+              <li class="Button ButtonIcon NormalState" id="Button" tabindex="0" onclick="DueReport()">
+                <span class="Icon" style="width: 0; margin: 0;"></span>
+                <span class="Text">项目截止报表</span>
+            </li>
         </ul>
     </div>
     <div class="DropDownMenu" id="D1" style="top: 25px;">
@@ -34,14 +38,14 @@
                 { %>
             <%if (CheckAuth("PRO_PROJECT_VIEW_CALENDAR_ADD"))
                 { %>
-            <li><span class="DropDownMenuItemText">添加项目模板日历</span></li>
+            <li  onclick="AddProCalendar()"><span class="DropDownMenuItemText">添加项目模板日历</span></li>
             <%} %>
             <%}
                 else
                 { %>
             <%if (CheckAuth("PRO_PROJECT_VIEW_CALENDAR_ADD"))
                 { %>
-            <li><span class="DropDownMenuItemText">添加项目日历</span></li>
+            <li onclick="AddProCalendar()"><span class="DropDownMenuItemText">添加项目日历</span></li>
             <%} %>
             <%} %>
 
@@ -49,14 +53,14 @@
                 { %>
             <%if (CheckAuth("PRO_PROJECT_VIEW_NOTE_ADD"))
                 { %>
-            <li><span class="DropDownMenuItemText">添加项目模板备注</span></li>
+            <li onclick="AddProNote()"><span class="DropDownMenuItemText">添加项目模板备注</span></li>
             <%} %>
             <%}
                 else
                 { %>
             <%if (CheckAuth("PRO_PROJECT_VIEW_NOTE_ADD"))
                 { %>
-            <li><span class="DropDownMenuItemText">添加项目备注</span></li>
+            <li onclick="AddProNote()"><span class="DropDownMenuItemText">添加项目备注</span></li>
             <%} %>
             <%} %>
 
@@ -65,7 +69,7 @@
                 { %>
             <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_COMPLETE"))
                 { %>
-            <li><span class="DropDownMenuItemText">完成项目</span></li>
+            <li onclick="CompletePro()"><span class="DropDownMenuItemText">完成项目</span></li>
             <%} %>
             <%} %>
 
@@ -93,7 +97,7 @@
             <%} %>
             <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_DIS_PROJECT"))
                 { %>
-            <li><span class="DropDownMenuItemText">激活项目</span></li>
+            <%--<li><span class="DropDownMenuItemText">激活项目</span></li>--%>
             <%} %>
             <%if (!isTemp)
                 { %>
@@ -541,7 +545,7 @@
                                             <td>
                                                  <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_COST"))
                                                      { %>
-                                                <a><%=costNum %></a>
+                                                <a onclick="TranToOther('cost')"><%=costNum %></a>
                                                 <%} %>
                                             </td>
                                         </tr>
@@ -550,7 +554,7 @@
                                             </td>
                                             <td> <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_RATE"))
                                                      { %>
-                                                <a><%=rateNum %></a> <%} %>
+                                                <a onclick="TranToOther('rate')"><%=rateNum %></a> <%} %>
                                             </td>
                                         </tr>
                                         <tr height="24px">
@@ -558,7 +562,7 @@
                                             </td>
                                             <td> <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_NOTE"))
                                                      { %>
-                                                <a><%=noteNum %></a>  <%} %>
+                                                <a onclick="TranToOther('note')"><%=noteNum %></a>  <%} %>
                                             </td>
                                         </tr>
                                         <tr height="24px">
@@ -566,7 +570,7 @@
                                             </td>
                                             <td><%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_CALENDAR"))
                                                      { %>
-                                                <a><%=caleNum %></a><%} %>
+                                                <a onclick="TranToOther('Calendar')"><%=caleNum %></a><%} %>
                                             </td>
                                         </tr>
                                         <tr height="24px">
@@ -740,4 +744,33 @@
     function ToTaskList(queryType,showType) {
         location.href = "ProjectSchedule?project_id=<%=thisProject.id %>&pageShowType=" + showType + "&QeryTypeId=" + queryType;
     }
+
+    function TranToOther(type) {
+        if (type == "cost") {
+
+            location.href = "../Common/SearchBodyFrame.aspx?id=<%=thisProject.id %>&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_COST_EXPENSE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_COST_EXPENSE %>&isCheck=1";
+        } else if (type == "rate"){
+            location.href = "../Common/SearchBodyFrame.aspx?id=<%=thisProject.id %>&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_RATE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_RATE %>";
+        } else if (type == "note"){
+            location.href = "ProjectNoteShow?project_id=<%=thisProject.id %>";
+        } else if (type == "Calendar") {
+            location.href = "ProjectCalendarShow?project_id=<%=thisProject.id %>";
+        }
+    }
+
+    function AddProCalendar() {
+        window.open("../Project/ProjectCalendar.aspx?project_id=<%=thisProject.id %>", windowObj.projectCalendar + windowType.add, 'left=200,top=200,width=1080,height=800', false);
+    }
+
+    function AddProNote() {
+        window.open("../Project/TaskNote.aspx?project_id=<%=thisProject.id %>", windowObj.notes + windowType.add, 'left=200,top=200,width=1080,height=800', false);
+    }
+    function CompletePro() {
+        window.open("../Project/ProjectCompleteWizard.aspx?id=<%=thisProject.id %>", windowObj.project + windowType.manage, 'left=200,top=200,width=1080,height=800', false);
+    }
+
+    function DueReport() {
+        // ProjectClosingReport
+        location.href ="../Project/ProjectClosingReport.aspx?id=<%=thisProject.id %>";
+    } 
 </script>

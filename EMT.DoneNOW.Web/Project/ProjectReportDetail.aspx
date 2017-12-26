@@ -97,7 +97,7 @@
                     {
                         var dgDal = new EMT.DoneNOW.DAL.d_general_dal();
                         var dgtDal = new EMT.DoneNOW.DAL.d_general_table_dal();
-                        var statusList = dgDal.GetDictionary(dgtDal.GetById((int)EMT.DoneNOW.DTO.GeneralTableEnum.PROJECT_STATUS));
+                        var statusList = dgDal.GetDictionary(dgtDal.GetById((int)EMT.DoneNOW.DTO.GeneralTableEnum.TICKET_STATUS));
                         bool isHasData = false;
                         if (taskList != null && taskList.Count > 0)
                         {
@@ -120,7 +120,8 @@
                                             type = "任务";
                                             break;
                                         case (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_ISSUE:
-                                            imgSrc = "";// ISSUE
+                                           // imgSrc = "";// ISSUE
+                                            imgSrc += "task.png";
                                             // type = "问题";
                                             break;
                                         default:

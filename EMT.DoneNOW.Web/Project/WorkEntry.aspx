@@ -1501,6 +1501,7 @@
         $(".PageAddPage").show();
         $("#NewEntryAddDiv").hide(); 
         $("#IsHasEntryAdd").val("");
+        $("#PageMangeEntryId").val("");
         
     }
     //$("#SumOpenBigDiv").click(function () {

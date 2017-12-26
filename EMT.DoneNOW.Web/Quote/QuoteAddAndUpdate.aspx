@@ -87,7 +87,7 @@
                         <td>
                             <div class="clear">
                                 <label>报价名称<span class="red">*</span></label>
-                                <input type="text" name="name" id="name" value="<%=isAdd?"":quote.name %>" />
+                                <input type="text" name="name" id="name" value="<%=isAdd?(opportunity==null?opportunity.name:""):quote.name %>" />
                             </div>
                         </td>
                         <td></td>
