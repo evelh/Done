@@ -40,6 +40,12 @@ namespace EMT.DoneNOW.Web.Inventory
                 itemDescType = generalBll.GetDicValues(GeneralTableEnum.ITEM_DESC_DISPLAY_TYPE);
                 if (!isAdd)
                     orderEdit = bll.GetPurchaseOrder(orderId);
+
+                // 库存产品列表中创建采购订单
+                if (isAdd && (!string.IsNullOrEmpty(Request.QueryString["ids"])))
+                {
+                    Session["PurchaseOrderItem"] = new InventoryProductBLL().InitPurchaseOrderItems(Request.QueryString["ids"]);
+                }
             }
             else
             {

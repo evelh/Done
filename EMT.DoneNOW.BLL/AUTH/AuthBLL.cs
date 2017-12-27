@@ -678,7 +678,7 @@ namespace EMT.DoneNOW.BLL
         {
             string sn = "SEARCH_" + queryType.ToString().ToUpper() + "_ADD";    // 新增按钮的sn
 
-            AuthPermitDto permit = allPermitsDtoList.Find(_ => _.permit.sn.Equals(sn));
+            AuthPermitDto permit = allPermitsDtoList.Find(_ => sn.Equals(_.permit.sn));
             if (permit == null)     // 该按钮不需要权限
                 return true;
 
@@ -746,12 +746,12 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public static bool CheckAuth(long levelId, List<AuthPermitDto> userPermit, string sn)
         {
-            AuthPermitDto permit = userPermit.Find(_ => _.permit.sn.Equals(sn));
+            AuthPermitDto permit = userPermit.Find(_ => sn.Equals(_.permit.sn));
             if (permit != null)
                 return true;
 
             var list = secLevelPermitDic[levelId];
-            permit = list.availablePermitList.Find(_ => _.permit.sn.Equals(sn));
+            permit = list.availablePermitList.Find(_ => sn.Equals(_.permit.sn));
             if (permit != null)
                 return true;
 

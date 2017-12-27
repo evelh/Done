@@ -51,6 +51,15 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 获取本公司
+        /// </summary>
+        /// <returns></returns>
+        public crm_account GetThisCompany()
+        {
+            return _dal.FindSignleBySql<crm_account>("select * from crm_account where oid=0 and delete_time = 0");
+        }
+
+        /// <summary>
         /// 根据与客户相关联的各种类型的ID 或者客户ID去获取客户信息
         /// </summary>
         /// <param name="id"></param>

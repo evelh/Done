@@ -266,8 +266,8 @@ namespace EMT.DoneNOW.Web
             // 判断权限
             if (!string.IsNullOrEmpty(addBtn))
             {
-                //if (!CheckAddAuth((QueryType)queryTypeId))  // 没有权限，不显示新增按钮
-                //    addBtn = "";
+                if (!CheckAddAuth((QueryType)queryTypeId))  // 没有权限，不显示新增按钮
+                    addBtn = "";
             }
         }
 
@@ -424,8 +424,8 @@ namespace EMT.DoneNOW.Web
                                     oi.Add("仓库", item.locationName);
                                 else if (rsltClmn.name == "成本")
                                     oi.Add("成本", item.unit_cost);
-                                else if (rsltClmn.name == "库存数")
-                                    oi.Add("库存数", item.quantity);
+                                else if (rsltClmn.name == "采购数量")
+                                    oi.Add("采购数量", item.quantity);
                                 else
                                     oi.Add(rsltClmn.name, "");
                             }
@@ -439,7 +439,9 @@ namespace EMT.DoneNOW.Web
                     {
                         foreach (var item in queryResult.result)
                         {
-                            int quantity = int.Parse(item["库存数"].ToString());
+                            if (string.IsNullOrEmpty(item["采购数量"].ToString()) || string.IsNullOrEmpty(item["成本"].ToString()))
+                                continue;
+                            int quantity = int.Parse(item["采购数量"].ToString());
                             decimal cost = decimal.Parse(item["成本"].ToString());
                             totalSale += (quantity * cost);
                         }
@@ -826,11 +828,11 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.PurchaseOrder:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "提交", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "提交", click_function = "Submit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "接收/取消接收", click_function = "Receive()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看/打印", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "发送邮件", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "取消", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "取消", click_function = "Cancle()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 case (long)QueryType.PurchaseItem:
@@ -879,8 +881,8 @@ namespace EMT.DoneNOW.Web
             var menus = base.GetSearchContextMenu((QueryType)queryTypeId);  // 获取该用户不可见的菜单名称 PROJECT_UDF
             for (int i = contextMenu.Count - 1; i >= 0; --i)
             {
-                //if (menus.Exists(_ => contextMenu[i].text.Equals(_)))
-                //    contextMenu.RemoveAt(i);
+                if (menus.Exists(_ => contextMenu[i].text.Equals(_)))
+                    contextMenu.RemoveAt(i);
             }
         }
 

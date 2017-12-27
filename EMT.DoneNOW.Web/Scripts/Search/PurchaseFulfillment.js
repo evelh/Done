@@ -18,9 +18,7 @@ function Add() {
     });
     if (ids != "") {
         ids = ids.substring(0, ids.length - 1);
-        requestData("/Tools/PurchaseOrderAjax.ashx?act=createPurchaseOrder&ids=" + ids, null, function (data) {
-            window.location.reload();
-        })
+        window.open('../Inventory/AddPurchaseOrder.aspx?act=add&ids=' + ids, windowObj.inventoryOrder + windowType.manage, 'left=0,top=0,location=no,status=no,width=900,height=1020', false);
     } else {
         LayerMsg("请选择待采购产品！");
     }

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>新增采购订单</title>
+  <title><%if (isAdd) { %>新增<%} else { %>编辑<%} %>采购订单</title>
   <link rel="stylesheet" type="text/css" href="../Content/base.css" />
   <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
   <link href="../Content/index.css" rel="stylesheet" />
@@ -16,7 +16,7 @@
   </style>
 </head>
 <body>
-  <div class="header">新增采购订单</div>
+  <div class="header"><%if (isAdd) { %>新增<%} else { %>编辑<%} %>采购订单</div>
   <div class="header-title" style="min-width: 700px;">
     <ul>
       <li id="SaveClose">
@@ -153,11 +153,18 @@
           </tr>
         </table>
         <table border="none" cellspacing="" cellpadding="" style="width: 350px;">
+          <%
+              EMT.DoneNOW.Core.crm_location purchaseLocation = null;
+              if(!isAdd)
+              {
+                purchaseLocation= new EMT.DoneNOW.BLL.LocationBLL().GetLocation(orderEdit.location_id);
+              }
+              %>
           <tr>
             <td>
               <div class="clear">
-                <label>名称<span class="red">*</span></label>
-                <input type="text" name="company_name" id="company_name" value="" class="shipInput" />
+                <label>标签</label>
+                <input type="text" name="location_label" id="company_name" value="<%=isAdd?"":purchaseLocation.location_label %>" class="shipInput" />
               </div>
             </td>
           </tr>
@@ -189,13 +196,6 @@
               </div>
             </td>
           </tr>
-          <%
-              EMT.DoneNOW.Core.crm_location purchaseLocation = null;
-              if(!isAdd)
-              {
-                purchaseLocation= new EMT.DoneNOW.BLL.LocationBLL().GetLocation(orderEdit.location_id);
-              }
-              %>
           <tr>
             <td>
               <div class="clear">
@@ -302,7 +302,7 @@
     </div>
 
     <div id="showItem" style="width:100%;">
-      <iframe src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASE_ITEM %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PurchaseItem %>&con1171=<%=orderId %>" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
+      <iframe id="itemFrame" src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASE_ITEM %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PurchaseItem %>&con1171=<%=orderId %>" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
     </div>
   </form>
   <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
@@ -360,6 +360,7 @@
         haveVendor = 0;
         return;
       } else {
+        haveVendor = 1;
         requestData("/Tools/CompanyAjax.ashx?act=propertyJson&account_id=" + $("#venderNameHidden").val() + "&property=tax_region_id", null, function (data) {
           $("#tax_region_id").val(data);
           $("#autoFillOrder1").attr("disabled", false);
@@ -417,7 +418,7 @@
         $("#postal_code").val("");
         return;
       }
-      var accId = 0;
+      var accId = <%=new EMT.DoneNOW.BLL.CompanyBLL().GetThisCompany().id %>;
       if (type == 2)
         accId = $("#purchaseCompanyHidden").val();
       requestData("/Tools/CompanyAjax.ashx?act=Location&account_id=" + accId, null, function (data) {
@@ -439,7 +440,29 @@
         $("#fax").val(data);
       })
     }
-
+    <%if (isAdd || (!isAdd && orderEdit.ship_to_type_id == (int)EMT.DoneNOW.DTO.DicEnum.INVENTORY_ORDER_SHIP_ADDRESS_TYPE.WORK_ADDRESS)) { %>
+    SelectShipAddr(0);
+    <%} %>
+    $("#autoFillOrder1").click(function () {
+      if (haveVendor == 0) {
+        return;
+      }
+      requestData("/Tools/PurchaseOrderAjax.ashx?act=AddPurchaseItemDefault&isDefault=1&vendorId=" + $("#venderNameHidden").val(), null, function (data) {
+        $("#itemFrame").attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASE_ITEM %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PurchaseItem %>&con1171=<%=orderId %>");
+      })
+      $("#autoFillOrder1").attr("disabled", true);
+      $("#autoFillOrder2").attr("disabled", true);
+    })
+    $("#autoFillOrder2").click(function () {
+      if (haveVendor == 0) {
+        return;
+      }
+      requestData("/Tools/PurchaseOrderAjax.ashx?act=AddPurchaseItemDefault&isDefault=0&vendorId=" + $("#venderNameHidden").val(), null, function (data) {
+        $("#itemFrame").attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASE_ITEM %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PurchaseItem %>&con1171=<%=orderId %>");
+      })
+      $("#autoFillOrder1").attr("disabled", true);
+      $("#autoFillOrder2").attr("disabled", true);
+    })
 </script>
 </body>
 </html>

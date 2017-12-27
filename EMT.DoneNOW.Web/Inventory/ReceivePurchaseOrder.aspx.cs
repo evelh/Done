@@ -49,6 +49,11 @@ namespace EMT.DoneNOW.Web.Inventory
                 return;
             }
             order = bll.GetPurchaseOrder(orderId);
+            if (order.status_id == (int)DicEnum.PURCHASE_ORDER_STATUS.NEW || order.status_id == (int)DicEnum.PURCHASE_ORDER_STATUS.CANCELED)
+            {
+                Response.Write("<script>alert('新增和取消状态的订单不能接收/取消接收');window.close();</script>");
+                Response.End();
+            }
 
             QueryCommonBLL queryBll = new QueryCommonBLL();
             QueryParaDto queryPara = new QueryParaDto();
@@ -92,10 +97,13 @@ namespace EMT.DoneNOW.Web.Inventory
                     recvItem.count = int.Parse(recvCnt);
                     recvItem.cost = string.IsNullOrEmpty(cost) ? 0 : decimal.Parse(cost);
 
-                    if (sns[recvItem.id] != null)
+                    if (sns.ContainsKey(recvItem.id))
                     {
+                        sns[recvItem.id] = sns[recvItem.id].Replace("\r\n", ",");
                         recvItem.sns = sns[recvItem.id].Split(',').ToList();
+                        recvItem.sns.RemoveAll(_ => string.IsNullOrEmpty(_));
                     }
+                    itemList.Add(recvItem);
                 }
                 if (itemList.Count==0)
                 {

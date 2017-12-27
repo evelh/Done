@@ -122,7 +122,7 @@
           <td><%=rslt["销售订单（客户）"] %></td>
           <td><%=rslt["工单或项目或合同"] %></td>
           <td id="orderCnt<%=rslt["采购项id"] %>"><%=rslt["采购数量"] %></td>
-          <td><%=received %></td>
+          <td id="receivedCnt<%=rslt["采购项id"] %>"><%=received %></td>
           <td><input type="text" style="width:60px;" id="receive<%=rslt["采购项id"] %>" name="receive<%=rslt["采购项id"] %>" /></td>
           <td><input type="text" style="width:60px;" value="<%=rslt["成本"] %>" id="cost<%=rslt["采购项id"] %>" name="cost<%=rslt["采购项id"] %>" /></td>
           <td><%if (bll.IsProductSerialized(long.Parse(rslt["采购项id"].ToString()))) { %><input type="button" value="新增或编辑" onclick='editSerialNum(<%=rslt["采购项id"] %>)' /><%} %></td>
@@ -138,10 +138,20 @@
   <script src="../Scripts/common.js"></script>
   <script>
     function editSerialNum(id) {
-      var cnt = $("#receive" + id).val();
-      if (cnt == 0 || cnt == "")
+      var cnt = parseInt($("#receive" + id).val());
+      if (cnt == 0 || cnt == "" || cnt == NaN) {
+        LayerMsg("请先输入正确的本次接收数");
         return;
-      window.open('../Inventory/EditItemSerialNum.aspx?id=<%=Request.QueryString["id"]%>&num=' + cnt, windowObj.inventoryItemSerailNum + windowType.add, 'left=0,top=0,location=no,status=no,width=400,height=500', false);
+      }
+      if (cnt < 0 && (cnt + parseInt($("#receivedCnt" + id).text()) < 0)) {
+        LayerMsg("取消接收数不能大于已接收数");
+        return;
+      }
+      if (cnt > 0 && (cnt > parseInt($("#unreceivedCnt" + id).text()))) {
+        LayerMsg("接收数不能大于尚未接收数");
+        return;
+      }
+      window.open('../Inventory/EditItemSerialNum.aspx?id=' + id + '&num=' + cnt, windowObj.inventoryItemSerailNum + windowType.add, 'left=0,top=0,location=no,status=no,width=400,height=500', false);
     }
     function autoCalcReceive() {
       if ($("#itemIds").val() == "") {

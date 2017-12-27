@@ -193,6 +193,87 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 采购订单提交
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool SubmitOrder(long orderId,long userId)
+        {
+            ivt_order order = dal.FindById(orderId);
+
+            if (order.status_id != (int)DicEnum.PURCHASE_ORDER_STATUS.NEW && order.status_id != (int)DicEnum.PURCHASE_ORDER_STATUS.CANCELED)
+                return false;
+
+            ivt_order orderOld = dal.FindById(orderId);
+
+            order.status_id = (int)DicEnum.PURCHASE_ORDER_STATUS.SUBMITTED;
+            order.submitted_resource_id = userId;
+            order.submit_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+
+            dal.Update(order);
+            OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ivt_order>(orderOld, order), order.id, userId, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ORDER, "采购订单提交");
+
+            // TODO:成本状态
+
+
+            return true;
+        }
+
+        /// <summary>
+        /// 取消采购订单
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool CancleOrder(long orderId, long userId)
+        {
+            ivt_order order = dal.FindById(orderId);
+
+            if (order.status_id != (int)DicEnum.PURCHASE_ORDER_STATUS.NEW && order.status_id != (int)DicEnum.PURCHASE_ORDER_STATUS.SUBMITTED)
+                return false;
+
+            ivt_order orderOld = dal.FindById(orderId);
+
+            order.status_id = (int)DicEnum.PURCHASE_ORDER_STATUS.CANCELED;
+            order.submitted_resource_id = userId;
+            order.submit_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+
+            dal.Update(order);
+            OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ivt_order>(orderOld, order), order.id, userId, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ORDER, "采购订单取消");
+
+            // TODO:成本状态
+
+
+            return true;
+        }
+
+        /// <summary>
+        /// 删除采购订单
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool DeleteOrder(long orderId, long userId)
+        {
+            ivt_order order = dal.FindById(orderId);
+
+            if (order.status_id != (int)DicEnum.PURCHASE_ORDER_STATUS.NEW && order.status_id != (int)DicEnum.PURCHASE_ORDER_STATUS.SUBMITTED && order.status_id != (int)DicEnum.PURCHASE_ORDER_STATUS.CANCELED)
+                return false;
+            
+            order.delete_user_id = userId;
+            order.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+
+            dal.Update(order);
+            OperLogBLL.OperLogDelete<ivt_order>(order, order.id, userId, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ORDER, "删除采购订单");
+
+            // TODO:成本状态
+
+
+            return true;
+        }
+
+        /// <summary>
         /// 获取采购订单
         /// </summary>
         /// <param name="id"></param>
@@ -327,7 +408,7 @@ namespace EMT.DoneNOW.BLL
                 OperLogBLL.OperLogAdd<ivt_receive>(recv, recv.id, userId, DicEnum.OPER_LOG_OBJ_CATE.PURCHASE_RECEIVE, "新增采购接收");
 
                 // 修改库存仓库库存数量
-                var lctPdt = lctPdtDal.FindSignleBySql<ivt_warehouse_product>($"select ivt_warehouse_product where warehouse_id={orderPdt.warehouse_id} and product_id={orderPdt.product_id} and delete_time=0");
+                var lctPdt = lctPdtDal.FindSignleBySql<ivt_warehouse_product>($"select * from ivt_warehouse_product where warehouse_id={orderPdt.warehouse_id} and product_id={orderPdt.product_id} and delete_time=0");
                 if (lctPdt == null)
                 {
                     lctPdt = new ivt_warehouse_product();

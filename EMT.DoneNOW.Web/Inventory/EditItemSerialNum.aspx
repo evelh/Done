@@ -28,7 +28,7 @@
         <div>
           <label>序列号：<span id="snCnt">0</span></label>
         </div>
-        <textarea style="float:left;" id="sn" name="sn" <%if (itemCnt < 0) { %> readonly="readonly" <%} %>></textarea>
+        <textarea style="float:left;" id="sn" name="sn" <%if (itemCnt < 0) { %> readonly="readonly" <%} %>><%=editSn %></textarea>
         <input type="hidden" id="serailNum" />
         <input type="hidden" id="serailNumHidden" name="selectedSn" />
         <%if (itemCnt < 0) { %>
@@ -37,6 +37,8 @@
       </div>
     </div>
   </form>
+  <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../Scripts/common.js"></script>
   <script>
     var pdtCnt = 0;
     function GetProductSn() {
@@ -56,8 +58,34 @@
       $("#snCnt").val(pdtCnt);
     }
     $("#SaveClose").click(function () {
+      <% if (itemCnt > 0) { %>
+      if (<%=itemCnt%>!=getSNCnt()) {
+        LayerMsg("序列号数应等于接收数");
+        return;
+      }
+    <%} else { %>
+      if (<%=itemCnt%>+getSNCnt() != 0) {
+        LayerMsg("序列号数应等于接收数");
+        return;
+      }
+    <%} %>
       $("#form1").submit();
     })
+    $("#sn").change(function () {
+      $("#snCnt").text("总数：" + getSNCnt());
+    })
+    function getSNCnt() {
+      var sns = $("#sn").val().split("\n");
+      var cnt = 0;
+      var tmp;
+      for (var i = 0; i < sns.length; ++i) {
+        tmp = sns[i].replace("\n", "").replace(/ /g, "");
+        if (tmp != "")
+          cnt++;
+      }
+      return cnt;
+    }
+    $("#snCnt").text("总数：" + getSNCnt());
   </script>
 </body>
 </html>

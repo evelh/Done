@@ -33,13 +33,13 @@ namespace EMT.DoneNOW.Web.Inventory
                     sns[itemId] = Request.Form["selectedSn"];
                 }
                 Session["PurchaseOrderItemSn"] = sns;
-                Response.Write("<script>window.close();self.opener.location.reload();</script>");
+                Response.Write("<script>window.close();</script>");
                 Response.End();
             }
             else
             {
                 var sns = Session["PurchaseReceiveItemSn"] as Dictionary<long, string>;
-                if (!string.IsNullOrEmpty(sns[itemId]))
+                if (sns.ContainsKey(itemId))
                 {
                     editSn = sns[itemId];
                 }

@@ -33,8 +33,10 @@ namespace EMT.DoneNOW.Web.Inventory
                         foreach (var s in snList)
                             sn += s.sn + "\n";
                     }
+                    locationList = new InventoryLocationBLL().GetLocationList();
                 }
-                locationList = new InventoryLocationBLL().GetLocationListUnResource();
+                else
+                    locationList = new InventoryLocationBLL().GetLocationListUnResource();
             }
             else
             {

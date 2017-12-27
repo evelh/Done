@@ -380,7 +380,7 @@ w.name as location_name
         /// <returns></returns>
         public int GetReceivedCnt(long orderProductId)
         {
-            string sql = $"select count(quantity_received) from ivt_receive where order_product_id={orderProductId} and delete_time=0";
+            string sql = $"select sum(quantity_received) from ivt_receive where order_product_id={orderProductId} and delete_time=0";
             var count = dal.FindSignleBySql<int?>(sql);
             return count == null ? 0 : (int)count;
         }
@@ -397,9 +397,160 @@ w.name as location_name
             return is_serialized == 1;
         }
 
-        //public bool PurchaseShip(string costPdtIds, long userId)
-        //{
-        //    ctt_contract_cost_product_dal 
-        //}
+        /// <summary>
+        /// 根据库存产品id列表获取采购订单的采购项信息
+        /// </summary>
+        /// <param name="pdtIds"></param>
+        /// <returns></returns>
+        public PurchaseOrderItemManageDto InitPurchaseOrderItems(string pdtIds)
+        {
+            PurchaseOrderItemManageDto dto = new PurchaseOrderItemManageDto();
+            string sql = $"select product_id,warehouse_id,(select name from ivt_product where id=product_id) as product,(select unit_cost from ivt_product where id=product_id) as unit_cost,(select name from ivt_warehouse where id=warehouse_id) as locationName,(quantity_maximum-quantity) as quantity from ivt_warehouse_product where id in({pdtIds})";
+            dto.items = dal.FindListBySql<PurchaseItemDto>(sql);
+            for (var i = 0; i < dto.items.Count; ++i)
+            {
+                dto.items[i].id = dto.index++;
+                if (dto.items[i].quantity < 0)
+                    dto.items[i].quantity = 0;
+            }
+            if (dto.items.Count==0)
+            {
+                sql = $"select id,product_id,(select id from ivt_warehouse where is_default=1 and delete_time=0) as warehouse_id,unit_cost,(select name from ivt_product where id=product_id) as product,(select name from ivt_warehouse where is_default=1 and delete_time=0) as locationName from ctt_contract_cost where id in({pdtIds})";
+                dto.items = dal.FindListBySql<PurchaseItemDto>(sql);
+                if (dto.items.Count == 0)
+                    return dto;
+
+                QueryCommonBLL queryBll = new QueryCommonBLL();
+                QueryParaDto queryPara = new QueryParaDto();
+                queryPara.query_params = new List<Para>();
+                queryPara.query_type_id = (long)QueryType.PurchaseFulfillment;
+                queryPara.para_group_id = 156;
+                queryPara.page = 1;
+                queryPara.page_size = 500;
+                QueryResultDto queryResult = queryBll.GetResult(0, queryPara);
+                if (queryResult.count == 0)
+                    return dto;
+                for (var i = 0; i < dto.items.Count; ++i)
+                {
+                    var find = queryResult.result.Find(_ => _["成本id"].ToString().Equals(dto.items[i].id.ToString()));
+                    if (find == null)
+                        continue;
+                    dto.items[i].quantity = (int)(string.IsNullOrEmpty(find["采购数量"].ToString()) ? 0 : decimal.Parse(find["采购数量"].ToString()));
+                    dto.items[i].id = dto.index++;
+                }
+            }
+            return dto;
+        }
+
+        /// <summary>
+        /// 获取供应商包含指定供应商的采购项
+        /// </summary>
+        /// <param name="onlyDefault">只有默认供应商</param>
+        /// <param name="vendorId">供应商id</param>
+        /// <returns></returns>
+        public List<PurchaseItemDto> GetDefaultOrderItems(bool onlyDefault, long vendorId)
+        {
+            string sql = $"select * from ivt_product where id in(select product_id from ivt_product_vendor where vendor_account_id={vendorId}";
+            if (onlyDefault)
+                sql += " and is_default=1 ";
+            sql += " and delete_time=0 ) and delete_time=0";
+            var list = dal.FindListBySql<ivt_product>(sql);
+
+            if (list == null)
+                return new List<PurchaseItemDto>();
+
+            List<PurchaseItemDto> itemList = new List<PurchaseItemDto>();
+            for (int i = 0; i < list.Count; ++i)
+            {
+                var lctList = dal.FindListBySql($"select id,warehouse_id,product_id,quantity,quantity_minimum,quantity_maximum,(select name from ivt_warehouse where id=warehouse_id) as bin from ivt_warehouse_product where product_id={list[i].id} and delete_time=0");
+                if (lctList == null || lctList.Count == 0)
+                    continue;
+                foreach (var lctPdt in lctList)
+                {
+                    if (lctPdt.quantity >= lctPdt.quantity_minimum)
+                        continue;
+                    PurchaseItemDto itm = new PurchaseItemDto();
+                    itm.product = list[i].name;
+                    itm.product_id = list[i].id;
+                    itm.locationName = lctPdt.bin;
+                    itm.warehouse_id = (long)lctPdt.warehouse_id;
+                    itm.quantity = lctPdt.quantity_maximum - lctPdt.quantity;
+                    itm.unit_cost = list[i].unit_cost;
+                    itemList.Add(itm);
+                }
+            }
+            return itemList;
+        }
+
+        /// <summary>
+        /// 配送
+        /// </summary>
+        /// <param name="costPdtIds">成本产品id</param>
+        /// <param name="isEditSaleOrder">是否修改销售订单状态</param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public string PurchaseShip(string costPdtIds, bool isEditSaleOrder, long userId)
+        {
+            ctt_contract_cost_product_dal cstPdtDal = new ctt_contract_cost_product_dal();
+            var pdtList = cstPdtDal.FindListBySql<ctt_contract_cost_product>($"select * from ctt_contract_cost_product where id in({costPdtIds})");
+            if (pdtList == null || pdtList.Count == 0)
+                return "";
+
+            foreach (var pdt in pdtList)
+            {
+                if (pdt.status_id != (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.PENDING_DISTRIBUTION)
+                    return "状态为“待配送”的成本产品才能配送";
+            }
+
+            foreach (var pdt in pdtList)
+            {
+                var pdtOld = cstPdtDal.FindById(pdt.id);
+                pdt.status_id = (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.DISTRIBUTION;
+                pdt.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                pdt.shipping_time = pdt.update_time;
+                pdt.update_user_id = userId;
+                cstPdtDal.Update(pdt);
+                OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_cost_product>(pdtOld, pdt), pdt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "成本产品配送");
+
+                // TODO:检查成本产品是否全部配送
+            }
+
+            return "";
+        }
+
+        /// <summary>
+        /// 取消配送
+        /// </summary>
+        /// <param name="costPdtIds">成本产品id</param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public string PurchaseUnShip(string costPdtIds, long userId)
+        {
+            ctt_contract_cost_product_dal cstPdtDal = new ctt_contract_cost_product_dal();
+            var pdtList = cstPdtDal.FindListBySql<ctt_contract_cost_product>($"select * from ctt_contract_cost_product where id in({costPdtIds})");
+            if (pdtList == null || pdtList.Count == 0)
+                return "";
+
+            foreach (var pdt in pdtList)
+            {
+                if (pdt.status_id != (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.DISTRIBUTION)
+                    return "状态为“待配送”的成本产品才能配送";
+            }
+
+            foreach (var pdt in pdtList)
+            {
+                var pdtOld = cstPdtDal.FindById(pdt.id);
+                pdt.status_id = (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.PENDING_DISTRIBUTION;
+                pdt.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                pdt.shipping_time = null;
+                pdt.update_user_id = userId;
+                cstPdtDal.Update(pdt);
+                OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_cost_product>(pdtOld, pdt), pdt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "成本产品配送");
+
+                // TODO:检查成本产品是否全部配送
+            }
+
+            return "";
+        }
     }
 }

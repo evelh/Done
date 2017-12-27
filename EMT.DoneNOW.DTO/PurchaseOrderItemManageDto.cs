@@ -26,7 +26,7 @@ namespace EMT.DoneNOW.DTO
         public string product;
         public string locationName;
         public int quantity;
-        public decimal unit_cost;
+        public decimal? unit_cost;
         public string note = "";
         public int was_auto_filled = 0;
     }

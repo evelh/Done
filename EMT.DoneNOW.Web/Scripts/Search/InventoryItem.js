@@ -8,7 +8,7 @@ function Transfer() {
     window.open('../Inventory/TransferItem.aspx?id=' + entityid, windowObj.inventoryItem + windowType.manage, 'left=0,top=0,location=no,status=no,width=400,height=500', false);
 }
 function Order() {
-
+    window.open('../Inventory/AddPurchaseOrder.aspx?act=add&ids=' + entityid, windowObj.inventoryOrder + windowType.manage, 'left=0,top=0,location=no,status=no,width=900,height=1020', false);
 }
 function Delete() {
     LayerConfirm("删除不可恢复，请确认", "确定", "取消", function () {

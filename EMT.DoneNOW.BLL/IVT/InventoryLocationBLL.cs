@@ -29,6 +29,16 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 获取所有的仓库列表
+        /// </summary>
+        /// <returns></returns>
+        public List<ivt_warehouse> GetLocationList()
+        {
+            string sql = "select * from ivt_warehouse where delete_time=0";
+            return dal.FindListBySql(sql);
+        }
+
+        /// <summary>
         /// 新增库存仓库
         /// </summary>
         /// <param name="name"></param>

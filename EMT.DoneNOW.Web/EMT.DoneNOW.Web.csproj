@@ -379,6 +379,7 @@
     <Content Include="Quote\QuoteLost.aspx" />
     <Content Include="Quote\QuotePreview.aspx" />
     <Content Include="Quote\QuoteView.aspx" />
+    <Content Include="Refresh.aspx" />
     <Content Include="RichText\css\FootEdit.css" />
     <Content Include="RichText\css\HeadEdit.css" />
     <Content Include="RichText\css\QuoteBody.css" />
@@ -1795,6 +1796,13 @@
     </Compile>
     <Compile Include="Common\SelectCallBack.aspx.designer.cs">
       <DependentUpon>SelectCallBack.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Refresh.aspx.cs">
+      <DependentUpon>Refresh.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Refresh.aspx.designer.cs">
+      <DependentUpon>Refresh.aspx</DependentUpon>
     </Compile>
     <Compile Include="Tools\PurchaseOrderAjax.ashx.cs">
       <DependentUpon>PurchaseOrderAjax.ashx</DependentUpon>
