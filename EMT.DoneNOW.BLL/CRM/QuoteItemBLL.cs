@@ -299,6 +299,26 @@ namespace EMT.DoneNOW.BLL
                     };
                     cccDal.Insert(cost);
                     OperLogBLL.OperLogAdd<ctt_contract_cost>(cost, cost.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_COST, "新增成本");
+                    if (quote_item.type_id == (int)QUOTE_ITEM_TYPE.PRODUCT)
+                    {
+                        var ccBll = new ContractCostBLL();
+                        var irDal = new ivt_reserve_dal();
+                        var thisPro = new ivt_product_dal().FindNoDeleteById((long)quote_item.object_id);
+                        var thisProResList = irDal.GetListByItemId(quote_item.id);
+                        if (thisProResList != null && thisProResList.Count > 0 && thisPro != null)
+                        {
+                            foreach (var thisProRes in thisProResList)
+                            {
+                                ccBll.AddCostProduct(cost.id, thisPro.id, thisProRes.warehouse_id, thisProRes.quantity, "", "", user.id);
+
+                                irDal.SoftDelete(thisProRes, user.id);
+                                OperLogBLL.OperLogDelete<ivt_reserve>(thisProRes, thisProRes.id, user.id, OPER_LOG_OBJ_CATE.WAREHOUSE_RESERVE, "删除产品预留");
+                            }
+                           
+                        }
+                    }
+
+
                 }
             }
 
@@ -619,7 +639,24 @@ namespace EMT.DoneNOW.BLL
                     var olderCost = cccDal.FindNoDeleteById(thisCost.id);
                     cccDal.Update(thisCost);
                     OperLogBLL.OperLogUpdate<ctt_contract_cost>(thisCost, olderCost, thisCost.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_COST, "修改成本");
+                    if (quote_item.type_id == (int)QUOTE_ITEM_TYPE.PRODUCT)
+                    {
+                        var ccBll = new ContractCostBLL();
+                        var irDal = new ivt_reserve_dal();
+                        var thisPro = new ivt_product_dal().FindNoDeleteById((long)quote_item.object_id);
+                        var thisProResList = irDal.GetListByItemId(quote_item.id);
+                        if (thisProResList != null && thisProResList.Count > 0 && thisPro != null)
+                        {
+                            foreach (var thisProRes in thisProResList)
+                            {
+                                ccBll.AddCostProduct(thisCost.id, thisPro.id, thisProRes.warehouse_id, thisProRes.quantity, "", "", user.id);
 
+                                irDal.SoftDelete(thisProRes, user.id);
+                                OperLogBLL.OperLogDelete<ivt_reserve>(thisProRes, thisProRes.id, user.id, OPER_LOG_OBJ_CATE.WAREHOUSE_RESERVE, "删除产品预留");
+                            }
+
+                        }
+                    }
                 }
             }
 

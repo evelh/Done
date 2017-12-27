@@ -610,6 +610,14 @@
                                     {
                                         continue;
                                     }
+                                    if (para.name == "告警")
+                                    {
+                                        if (!CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_ALARM"))
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                    
                             %>
                             <td width="<%=para.length * 32 %>px">
                                 <%=para.name %>
@@ -701,7 +709,7 @@
                                     { continue; }
                                     else if (para.name == "告警")
                                     {
-                                        if (CheckAuth(""))
+                                        if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_ALARM"))
                                         {
 
                                         
@@ -2922,7 +2930,7 @@
             menu = document.getElementById("taskMenu");
         }
 
-        var noTimeSetValue = '<%=(new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_ENTRY_REQUIRED).setting_value) %>';ss
+        var noTimeSetValue = '<%=(new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_ENTRY_REQUIRED).setting_value) %>';
         if (noTimeSetValue == '0') {
             $("#AddNoTimeEntryId").css("color", "black");
             $("#AddNoTimeEntryId").click(function () {

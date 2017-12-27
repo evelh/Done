@@ -66,17 +66,34 @@ namespace EMT.DoneNOW.Web.Activity
                 else
                 {
                     string attLink = Request.Form["attLink"];
+                    string isNoFunc = Request.QueryString["noFunc"];
                     if (new AttachmentBLL().AddAttachment(objType, objId, actType, attName, attLink, null, null, null, 0, GetLoginUserId()))
                     {
-                        if (action == "saveNew")
+                        if (!string.IsNullOrEmpty(isNoFunc))
                         {
-                            Response.Write($"<script>alert('添加附件成功');window.location.href='AddAttachment?objType={objType}&objId={objId}';self.opener.RequestActivity();</script>");
+                            if (action == "saveNew")
+                            {
+                                Response.Write($"<script>alert('添加附件成功');window.location.href='AddAttachment?objType={objType}&objId={objId}&noFunc=1';self.opener.location.reload();</script>");
+                            }
+                            else
+                            {
+                                Response.Write($"<script>alert('添加附件成功');window.close();self.opener.location.reload();</script>");
+                            }
+                            return;
                         }
                         else
                         {
-                            Response.Write($"<script>alert('添加附件成功');window.close();self.opener.RequestActivity();</script>");
+                            if (action == "saveNew")
+                            {
+                                Response.Write($"<script>alert('添加附件成功');window.location.href='AddAttachment?objType={objType}&objId={objId}';self.opener.RequestActivity();</script>");
+                            }
+                            else
+                            {
+                                Response.Write($"<script>alert('添加附件成功');window.close();self.opener.RequestActivity();</script>");
+                            }
+                            return;
                         }
-                        return;
+                      
                     }
                     else
                     {

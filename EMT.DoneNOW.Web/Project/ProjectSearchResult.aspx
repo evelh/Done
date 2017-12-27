@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../Content/index.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
-    <link rel="stylesheet" type="text/css" href="../Content/searchList.css" />
+    <link rel="stylesheet" type="text/css" href="../Content/searchLi时间轴st.css" />
     <link href="../Content/Roles.css" rel="stylesheet" />
     <title></title>
     <style>
@@ -161,7 +161,7 @@
                         { %>
                     <li id="ListView" onclick="Show()" style="display:none;"><i style=" background-image: url(../Images/list-view.png);"></i></li>
 
-                    <li id="TimeLine" style="">时间轴:</li>
+                    <li id="TimeLine" style="border: 0px solid #bcbcbc;background: linear-gradient(to bottom,#fff 0,#fbfbfb 100%);">时间轴:</li>
                     <li id="btnDay"><span style="margin-right: 5px; margin-left: 5px;">天</span></li>
                     <li id="btnWeek"><span style="margin-right: 5px; margin-left: 5px;">周</span></li>
                     <li id="btnMonth"><span style="margin-right: 5px; margin-left: 5px;">月</span></li>

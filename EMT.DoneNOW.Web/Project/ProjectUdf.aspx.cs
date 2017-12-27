@@ -72,7 +72,16 @@ namespace EMT.DoneNOW.Web.Project
             }
 
 
-            new UserDefinedFieldsBLL().EditUdf(cate, objectId, udf.id,udfValue,Request.Form["description"],LoginUserId, operCate);
+            var result =  new UserDefinedFieldsBLL().EditUdf(cate, objectId, udf.id,udfValue,Request.Form["description"],LoginUserId, operCate);
+            if (result)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功');window.close();self.opener.location.reload();</script>");
+            }
+            else
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存失败');window.close();self.opener.location.reload();</script>");
+            }
+          
         }
     }
 }

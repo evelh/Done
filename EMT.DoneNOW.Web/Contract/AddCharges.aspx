@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddCharges.aspx.cs" Inherits="EMT.DoneNOW.Web.Contract.AddCharges" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddCharges.aspx.cs" Inherits="EMT.DoneNOW.Web.Contract.AddCharges"   ValidateRequest="false"%>
 
 <!DOCTYPE html>
 
@@ -550,6 +550,21 @@
     border: 1px solid #d3d3d3;
     margin: 0 10px 10px 10px;
     padding: 12px 28px 4px 28px;
+}
+        #LoadingIndicator {
+    width: 100px;
+    height:100px;
+    background-image: url(../Images/Loading.gif);
+    background-repeat: no-repeat;
+    background-position: center center;
+    z-index: 30;
+    margin:auto;
+    position: absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right: 0;
+    display: none;
 }
     </style>
 </head>
@@ -1261,6 +1276,8 @@
             </div>
 
         </div>
+
+        <div id="LoadingIndicator"></div>
     </form>
 </body>
 </html>
@@ -1871,6 +1888,9 @@
                 return false;
             }
             //var costProId = $("#ShowCostProId").val();
+           // $("#BackgroundOverLay").show();
+            $("#LoadingIndicator").show();
+            $("#ShoePickPageDialog").hide();
             $.ajax({
                 type: "GET",
                 async: false,
@@ -1890,7 +1910,7 @@
                             }
                         }
                         else {
-                            LayerMsg("拣货成功");
+                            LayerMsg("拣货失败");
                             history.go(0);
                         }
                     }
@@ -1968,6 +1988,9 @@
         var productId = $("#product_idHidden").val();
         var costId = '<%=conCost==null?"":conCost.id.ToString() %>';
         var costProId = $("#ShowCostProId").val();
+        // $("#BackgroundOverLay").show();
+        $("#LoadingIndicator").show();
+        $("#ShowUnPickPageDialog").hide();
         $.ajax({
             type: "GET",
             async: false,
@@ -2423,6 +2446,9 @@
             return false;
         }
         var costProId = $("#ShowCostProId").val();
+        // $("#BackgroundOverLay").show();
+        $("#LoadingIndicator").show();
+        $("#ShowTranPageDialog").hide();
         $.ajax({
             type: "GET",
             async: false,
@@ -2572,6 +2598,9 @@
         var BillMoney = $("#BillMoney").val();
         var BillCost = $("#BillCost").val();
         var costProId = $("#ShowCostProId").val();
+        // $("#BackgroundOverLay").show();
+        $("#LoadingIndicator").show();
+        $("#ShowShipPageDialog").hide();
         $.ajax({
             type: "GET",
             async: false,
@@ -2599,6 +2628,8 @@
     function UnShipItem(costPro) {
 
         LayerConfirm("确定要取消配送这些条目吗？", "是", "否", function () {
+            $("#BackgroundOverLay").show();
+            $("#LoadingIndicator").show();
             $.ajax({
                 type: "GET",
                 async: false,

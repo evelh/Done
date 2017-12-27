@@ -84,7 +84,7 @@
                 <%} %>
                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE"))
                     { %>
-                <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Schedule">列表</a></li>   <%} %>
+                <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Schedule">日程表</a></li>   <%} %>
                    <%if (CheckAuth("PRO_PROJECT_TEAM"))
                     { %>
                 <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=Team">团队</a></li> <%} %>

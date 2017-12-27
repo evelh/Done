@@ -37,7 +37,10 @@ function DeleteNote() {
 
 function Add() {
     debugger;
-    var object_id = $("#id").val();
+    var object_id = "";
+    if ($("input[name = 'con1054']").val() != undefined) {
+        object_id = $("input[name = 'con1054']").val();
+    }
     if (object_id != "") {
         debugger;
         var parAddType = $("#AddNoteType", parent.document).val();
