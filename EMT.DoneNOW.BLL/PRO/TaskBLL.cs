@@ -1490,7 +1490,7 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         public string ReturnTaskNo()
         {
-            string no = "P" + DateTime.Now.ToString("yyyyMMdd");
+            string no = "T" + DateTime.Now.ToString("yyyyMMdd");
             var taskList = _dal.GetTaskByNo(no);
             if (taskList != null && taskList.Count > 0)
             {

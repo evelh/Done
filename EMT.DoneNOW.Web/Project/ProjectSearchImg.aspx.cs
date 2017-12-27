@@ -161,14 +161,15 @@ namespace EMT.DoneNOW.Web.Project
                                         var monthDayNum = RetuenMonthDay(start_date);  // 开始日期的月份的总天数
                                         var surplusDays = (monthDayNum - start_date.Day + 1);  // 开始结束时间 --剩余天数
                                         var thisMonthWidth = surplusDays * DayWidth;  // 计算出这个月份占的宽度
-                                        headInfo.Append($"<div class='Gantt_monthHolder' style='width: {thisMonthWidth}px;'>{start_date.Year.ToString() + '.' + start_date.Month.ToString()}</div>");
+                                        headInfo.Append($"<div class='Gantt_monthHolder' style='width: {thisMonthWidth}px;line-height: 55px;'>{start_date.Year.ToString() + '.' + start_date.Month.ToString()}</div>");
                                     }
                                     else if (i == monthNum - 1)
                                     {
                                         var monthDayNum = RetuenMonthDay(end_date);  // 开始日期的月份的总天数
                                         var surplusDays = end_date.Day;  // 开始结束时间
-                                        var thisMonthWidth = surplusDays * DayWidth;  // 计算出这个月份占的宽度
-                                        headInfo.Append($"<div class='Gantt_monthHolder' style='width: {thisMonthWidth}px;'>{end_date.Year.ToString() + '.' + end_date.Month.ToString()}</div>");
+                                       // var thisMonthWidth = surplusDays * DayWidth;  // 计算出这个月份占的宽度
+                                        var thisMonthWidth = 31 * DayWidth;  // 计算出这个月份占的宽度
+                                        headInfo.Append($"<div class='Gantt_monthHolder' style='width: {thisMonthWidth}px;line-height: 55px;'>{end_date.Year.ToString() + '.' + end_date.Month.ToString()}</div>");
                                     }
 
                                 }
@@ -176,7 +177,7 @@ namespace EMT.DoneNOW.Web.Project
                                 {
                                     var monthDayNum = RetuenMonthDay(start_date.AddMonths(i));  // 开始日期的月份的总天数
                                     var thisMonthWidth = monthDayNum * DayWidth;
-                                    headInfo.Append($"<div class='Gantt_monthHolder' style='width: {thisMonthWidth}px;'>{start_date.AddMonths(i).Year.ToString() + '.' + start_date.AddMonths(i).Month.ToString()}</div>");
+                                    headInfo.Append($"<div class='Gantt_monthHolder' style='width: {thisMonthWidth}px;line-height: 55px;'>{start_date.AddMonths(i).Year.ToString() + '.' + start_date.AddMonths(i).Month.ToString()}</div>");
                                 }
                                 headInfo.Append("</div>");
                             }
@@ -187,6 +188,7 @@ namespace EMT.DoneNOW.Web.Project
                     headText.Text = headInfo.ToString();
 
                     // bodyText
+
 
                     StringBuilder bodyInfo = new StringBuilder();
                     bodyInfo.Append($"<div id='Gantt_gridContainer' style='background: url(../Images / monthlyGridContainer.png;) left top; border-right: 1px solid rgb(242, 242, 242); width: 2296px;'>");

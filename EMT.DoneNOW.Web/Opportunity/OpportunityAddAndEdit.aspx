@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OpportunityAddAndEdit.aspx.cs" Inherits="EMT.DoneNOW.Web.Opportunity.OopportunityAdd" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OpportunityAddAndEdit.aspx.cs" Inherits="EMT.DoneNOW.Web.Opportunity.OopportunityAdd" ValidateRequest="false" %>
 
 <!DOCTYPE html>
 
@@ -492,10 +492,10 @@
                                         canView = true;
                                       %>
                                   <%if (!isAdd && !canView) { %>
-                                  <input type="hidden" name="<%=udf.id %>" value="<%=opportunity_udfValueList.FirstOrDefault(_ => _.id == udf.id).value %>" />
+                                  <input type="hidden" name="<%=udf.id %>" value="<%=opportunity_udfValueList.FirstOrDefault(_ => _.id == udf.id)!=null?opportunity_udfValueList.FirstOrDefault(_ => _.id == udf.id).value:"" %>" />
                                   <input type="text" readonly="readonly" value="****" />
                                   <%} else { %>
-                                  <input type="text" name="<%=udf.id %>" class="sl_cdt" <%if (!canEdit) { %> readonly="readonly" <%} %> value="<%=isAdd?"":opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
+                                  <input type="text" name="<%=udf.id %>" class="sl_cdt" <%if (!canEdit) { %> readonly="readonly" <%} %> value="<%=isAdd?"":(opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id)!=null?opportunity_udfValueList.FirstOrDefault(_ => _.id == udf.id).value:"") %>" />
                                   <%} %>
                                 </div>
 
@@ -521,10 +521,10 @@
                                         canView = true;
                                       %>
                                   <%if (!isAdd && !canView) { %>
-                                  <input type="hidden" name="<%=udf.id %>" value="<%=opportunity_udfValueList.FirstOrDefault(_ => _.id == udf.id).value %>" />
+                                  <input type="hidden" name="<%=udf.id %>" value="<%=opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id)!=null?opportunity_udfValueList.FirstOrDefault(_ => _.id == udf.id).value:"" %>" />
                                   <textarea disabled="disabled">****</textarea>
                                   <%} else { %>
-                                  <textarea name="<%=udf.id %>" <%if (!canEdit) { %> readonly="readonly" <%} %> rows="2" cols="20"><%=isAdd?"":opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %></textarea>
+                                  <textarea name="<%=udf.id %>" <%if (!canEdit) { %> readonly="readonly" <%} %> rows="2" cols="20"><%=isAdd?"":(opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id)!=null?opportunity_udfValueList.FirstOrDefault(_ => _.id == udf.id).value:"") %></textarea>
                                   <%} %>
                                 </div>
 
@@ -552,7 +552,7 @@
                                   <input type="hidden" name="<%=udf.id %>" value="<%=opportunity_udfValueList.FirstOrDefault(_ => _.id == udf.id).value %>" />
                                   <input type="text" readonly="readonly" value="****" />
                                   <%} else { %>
-                                  <input type="text" name="<%=udf.id %>" class="sl_cdt" <%if (!canEdit) { %> readonly="readonly" <%}else{ %> onclick="WdatePicker()" <%} %> value="<%=isAdd?"":opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
+                                  <input type="text" name="<%=udf.id %>" class="sl_cdt" <%if (!canEdit) { %> readonly="readonly" <%}else{ %> onclick="WdatePicker()" <%} %> value="<%=isAdd?"":(opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id)!=null?opportunity_udfValueList.FirstOrDefault(_ => _.id == udf.id).value:"") %>" />
                                   <%} %>
 
                                 </div>
@@ -582,7 +582,7 @@
                                   <input type="hidden" name="<%=udf.id %>" value="<%=opportunity_udfValueList.FirstOrDefault(_ => _.id == udf.id).value %>" />
                                   <input type="text" readonly="readonly" value="****" />
                                   <%} else { %>
-                                  <input type="text" name="<%=udf.id %>" class="sl_cdt" <%if (!canEdit) { %> readonly="readonly" <%} else { %> maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" <%} %> value="<%=isAdd?"":opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
+                                  <input type="text" name="<%=udf.id %>" class="sl_cdt" <%if (!canEdit) { %> readonly="readonly" <%} else { %> maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" <%} %> value="<%=isAdd?"":(opportunity_udfValueList.FirstOrDefault(_=>_.id==udf.id)!=null?opportunity_udfValueList.FirstOrDefault(_ => _.id == udf.id).value:"") %>" />
                                   <%} %>
                                 </div>
                             </td>

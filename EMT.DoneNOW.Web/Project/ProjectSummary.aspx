@@ -458,7 +458,7 @@
                                             <td class="FieldLabels">活动任务
                                             </td>
                                             <td>
-                                                  <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_ACTIVE_TASK"))
+                                                  <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SEARCH"))
                                                       { %>
                                                 <a onclick="ToTaskList('<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_TASK_INCOMPLETE %>','TaskNoComplete')"><%=openTaskNum %></a>
                                                 <%} %>
@@ -468,7 +468,7 @@
                                             <td class="FieldLabels">过期任务
                                             </td>
                                             <td>
-                                                   <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_OVERDUE_TASK"))
+                                                   <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SEARCH"))
                                                        { %>
                                                 <a onclick="ToTaskList('<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_TASK_OVERDUE %>','ExpiredTask')"><%=overTaskNum %></a><%} %>
                                             </td>
@@ -477,7 +477,7 @@
                                             <td class="FieldLabels">已完成任务
                                             </td>
                                             <td>
-                                                <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_COMPLETE_TASK"))
+                                                <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SEARCH"))
                                                        { %>
                                                 <a onclick="ToTaskList('<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_TASK_COMPLETE %>','TaskComplete')"><%=comTaskNum %></a><%} %>
                                             </td>
@@ -486,7 +486,7 @@
                                             <td class="FieldLabels">问题
                                             </td>
                                             <td>
-                                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_ISSUE"))
+                                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_SEARCH"))
                                                        { %>
                                                 <a onclick="ToTaskList('<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_ISSUE %>','Issues')"><%=issuesNum %></a><%} %>
                                             </td>
@@ -543,7 +543,7 @@
                                             <td class="FieldLabels">成本
                                             </td>
                                             <td>
-                                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_COST"))
+                                                 <%if (CheckAuth("PRO_PROJECT_VIEW_EXPENSES_SEARCH"))
                                                      { %>
                                                 <a onclick="TranToOther('cost')"><%=costNum %></a>
                                                 <%} %>
@@ -552,7 +552,7 @@
                                         <tr height="24px">
                                             <td class="FieldLabels">费率
                                             </td>
-                                            <td> <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_RATE"))
+                                            <td> <%if (CheckAuth("PRO_PROJECT_VIEW__RATE_SEARCH"))
                                                      { %>
                                                 <a onclick="TranToOther('rate')"><%=rateNum %></a> <%} %>
                                             </td>
@@ -560,7 +560,7 @@
                                         <tr height="24px">
                                             <td class="FieldLabels">备注
                                             </td>
-                                            <td> <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_NOTE"))
+                                            <td> <%if (CheckAuth("PRO_PROJECT_VIEW_NOTE_SEARCH"))
                                                      { %>
                                                 <a onclick="TranToOther('note')"><%=noteNum %></a>  <%} %>
                                             </td>
@@ -568,7 +568,7 @@
                                         <tr height="24px">
                                             <td class="FieldLabels">日历
                                             </td>
-                                            <td><%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_CALENDAR"))
+                                            <td><%if (CheckAuth("PRO_PROJECT_VIEW_CALENDAR_SEARCH"))
                                                      { %>
                                                 <a onclick="TranToOther('Calendar')"><%=caleNum %></a><%} %>
                                             </td>
@@ -576,17 +576,15 @@
                                         <tr height="24px">
                                             <td class="FieldLabels">公告
                                             </td>
-                                            <td><%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_NOTICE"))
-                                                     { %>
-                                                <a><%=annNum %></a><%} %>
+                                            <td>
+                                                <a><%=annNum %></a>
                                             </td>
                                         </tr>
                                         <tr height="24px">
                                             <td class="FieldLabels">配置项
                                             </td>
-                                            <td><%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_CONITEM"))
-                                                     { %>
-                                                <a><%=ciNum %></a><%} %>
+                                            <td>
+                                                <a><%=ciNum %></a>
                                             </td>
                                         </tr>
                                     </tbody>

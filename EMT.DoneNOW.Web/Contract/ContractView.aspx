@@ -84,7 +84,7 @@
                 <li class="MenuLink">例外因素-暂未实现</li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=charge&id=<%=contract.id %>">成本</a></li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=defaultCost&id=<%=contract.id %>">默认成本</a></li>
-                <li class="MenuLink">备注-暂未实现</li>
+              <li class="MenuLink"><a href="ContractView.aspx?type=note&id=<%=contract.id %>">备注</a></li>
                 <% if (contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.TIME_MATERIALS
                         ||contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER
                         ||contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.FIXED_PRICE) { %>
@@ -113,12 +113,12 @@
                 <li class="MenuLink"><a href="ContractView.aspx?type=rule&id=<%=contract.id %>">通知发送规则</a></li>
                 <%} %>
                 <% if (contract.type_id != (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET) { %>
-                <li class="MenuLink">项目管理-暂未实现</li>
+                <li class="MenuLink"><a href="ContractView.aspx?type=project&id=<%=contract.id %>">项目</a></li>
                 <%} %>
-                <li class="MenuLink"><a href="ContractView.aspx?type=note&id=<%=contract.id %>">备注</a></li>
+                
                 <li class="MenuLink">工单-暂未实现</li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=udf&id=<%=contract.id %>">自定义字段</a></li>
-                 <li class="MenuLink"><a href="ContractView.aspx?type=project&id=<%=contract.id %>">项目</a></li>
+                 
             </ul>
         </div>
         <div class="Right">

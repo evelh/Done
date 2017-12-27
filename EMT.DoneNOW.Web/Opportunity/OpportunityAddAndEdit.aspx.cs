@@ -124,7 +124,7 @@ namespace EMT.DoneNOW.Web.Opportunity
 
                 if (!isAdd)
                 {
-                 //   opportunity_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.OPPORTUNITY, opportunity.id, opportunity_udfList);
+                   opportunity_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.OPPORTUNITY, opportunity.id, opportunity_udfList);
                     resource_id.SelectedValue = opportunity.resource_id.ToString();
                     stage_id.SelectedValue = opportunity.stage_id == null ? "0" : opportunity.stage_id.ToString();
                     interest_degree_id.SelectedValue = opportunity.interest_degree_id == null ? "0" : opportunity.interest_degree_id.ToString();

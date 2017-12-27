@@ -204,12 +204,20 @@
             <div class="ButtonContainer">
                  <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_CONTEXT_EDIT_TASK"))
                      { %>
-                <a class="NormalState Button ButtonIcon Save" id="SaveDropDownButton_LeftButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">修改</span></a>
+                <a class="NormalState Button ButtonIcon Save" id="SaveDropDownButton_LeftButton" tabindex="0" onclick="EditTask()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">修改</span></a>
                 <%} %>
-                <a class="NormalState Button ButtonIcon Cancel" id="PrintButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></span><span class="Text">打印</span></a>
+                <a class="NormalState Button ButtonIcon Cancel" id="PrintButton" tabindex="0">
+                    <%--<span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></span>--%>
+                    <span class="Text">打印</span>
+
+                </a>
                  <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_CONTEXT_SHOW_HISTORY"))
                      { %>
-                <a class="NormalState Button ButtonIcon Cancel" id="TaskHistoryButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></span><span class="Text"><%=taskType %>历史</span></a>
+                <a class="NormalState Button ButtonIcon Cancel" id="TaskHistoryButton" tabindex="0" onclick="ShowHistory()">
+                   <%-- <span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></span>--%>
+                    <span class="Text"><%=taskType %>历史</span>
+
+                </a>
                  <%} %>
                 <a class="NormalState Button ButtonIcon Cancel" id="CancelButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></span><span class="Text">关闭</span></a>
             </div>
@@ -1283,4 +1291,12 @@
     $("#CancelButton").click(function () {
         window.close();
     })
+
+    function EditTask() {
+        window.open("TaskAddOrEdit.aspx?id=<%=thisTask==null?"":thisTask.id.ToString() %>", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASKEDIT %>', 'left=200,top=200,width=1080,height=800', false);
+    }
+
+    function ShowHistory() {
+        window.open("TaskHistory.aspx?task_id=<%=thisTask==null?"":thisTask.id.ToString() %>", '_blank', 'left=200,top=200,width=1080,height=800', false);
+    }
 </script>

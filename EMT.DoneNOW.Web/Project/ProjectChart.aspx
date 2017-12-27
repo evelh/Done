@@ -174,9 +174,7 @@
             width: 100%;
         }
 
-        .Gantt_title {
-            min-width: 150px;
-        }
+       
         /*ä¸Šå³*/
         #Gantt_dateContainer {
             height: 67px;
@@ -299,9 +297,7 @@
             padding: 5px;
         }
 
-        .Gantt_title {
-            min-width: 150px;
-        }
+      
 
         .Gantt_projectFont {
             font-size: 12px;
@@ -514,7 +510,9 @@
             position: relative;
             overflow: hidden;
         }
-
+         .Gantt_title {
+            min-width: 250px;
+        }
         .Gantt_titleFont {
             cursor: default;
             font-size: 12px;
@@ -581,7 +579,7 @@
             position: fixed;
             top: 105px;
             bottom: 0;
-            left: 300px;
+            left: 301px;
             right: 0;
         }
 
@@ -703,12 +701,12 @@
                     </div>
                 </div>
                 <!--上右-->
-                <div class="Gantt_divTable" id="Gantt_dateContainer">
+                <div class="Gantt_divTable" id="Gantt_dateContainer" style="border-left: 1px solid #98b4ca;">
                     <asp:Literal ID="liCalendar" runat="server"></asp:Literal>
 
                 </div>
                 <!--下右-->
-                <div class="Gantt_divTable" id="Gantt_taskContainer" style="height: 367px; min-height: 367px;">
+                <div class="Gantt_divTable" id="Gantt_taskContainer" style="height: 367px; min-height: 367px;width:300px;border-right: 1px solid #98b4ca;">
                     <asp:Literal ID="liLeftTable" runat="server"></asp:Literal>
                    <div class="Gantt_divTableRow" style="height: 17px;">
                         <div class="Gantt_blankItem"></div>
@@ -718,7 +716,38 @@
                 </div>
                 <!--下右-->
                 <div class="Gantt_divTable" id="Gantt_gridBodyContainer" onscroll="Gantt_taskContainer.scrollTop = this.scrollTop;Gantt_dateContainer.scrollLeft = this.scrollLeft;" style="height: 367px; min-height: 367px;">
-                    <div id="Gantt_gridContainer" style="background: url(../Images/dailyGridContainer.png) 86px 0%; width: 2967px;">
+                    <% 
+                        int left = 4;
+                        if (start_date.DayOfWeek == DayOfWeek.Monday)
+                        {
+                            left += 42 * 5;
+                        }
+                        else  if (start_date.DayOfWeek == DayOfWeek.Tuesday)
+                        {
+                            left += 42 * 4;
+                        }
+                        else  if (start_date.DayOfWeek == DayOfWeek.Wednesday)
+                        {
+                            left += 42 * 3;
+                        }
+                        else  if (start_date.DayOfWeek == DayOfWeek.Thursday)
+                        {
+                            left += 42 * 2;
+                        }
+                         else  if (start_date.DayOfWeek == DayOfWeek.Friday)
+                        {
+                            left = 42 ;
+                        }
+                         else  if (start_date.DayOfWeek == DayOfWeek.Saturday)
+                        {
+                            left = 0 ;
+                        }
+                          else  if (start_date.DayOfWeek == DayOfWeek.Sunday)
+                        {
+                            left = -42 ;
+                        }
+                        %>
+                    <div id="Gantt_gridContainer" style="background: url(../Images/dailyGridContainer.png) <%=left %>px 0%; width: 2967px;">
                         <asp:Literal ID="liRightImg" runat="server"></asp:Literal>
                     </div>
                 </div>

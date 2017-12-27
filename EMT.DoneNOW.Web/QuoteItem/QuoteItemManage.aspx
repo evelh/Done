@@ -24,6 +24,9 @@
         .serial_number {
             text-align: right;
         }
+        .quoteName a{
+            cursor:pointer;
+        }
     </style>
 </head>
 <body>
@@ -308,7 +311,7 @@
                             <% if (distributionList != null && distributionList.Count > 0)
                                 {%>
                             <tr>
-                                <td>配送类型的报价项</td>
+                                <td>配送</td>
                                 <td colspan="<%=IssaleOrder?13:12 %>"></td>
                             </tr>
                             <% foreach (var quoteItem in distributionList)
@@ -570,7 +573,7 @@
                                 <td><%=(decimal.Round(decimal.Parse((groupAllTaxPrcie+quoteItemList.Where(_=>_.optional!=1).Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent==null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent):0)).ToString()),2).ToString()) %></td>
                             </tr>
                             <tr>
-                                <td>可选的报价项</td>
+                                <td>可选报价项</td>
                                 <td colspan="<%=IssaleOrder?13:12 %>"></td>
                             </tr>
                             <%  
@@ -873,7 +876,7 @@
                                 if (distributionList != null && distributionList.Count > 0)
                                 {%>
                             <tr>
-                                <td>配送类型的报价项</td>
+                                <td>配送</td>
                                 <td colspan="<%=IssaleOrder?13:12 %>"></td>
                             </tr>
                             <% foreach (var quoteItem in distributionList)
@@ -1136,7 +1139,7 @@
                                 <td><%=(decimal.Round(decimal.Parse((groupAllTaxPrcie+quoteItemList.Where(_=>_.optional!=1).Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent==null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent):0)).ToString()),2).ToString()) %></td>
                             </tr>
                             <tr>
-                                <td>可选的报价项</td>
+                                <td>可选报价项</td>
                                 <td colspan="<%=IssaleOrder?13:12 %>"></td>
                             </tr>
                             <%  
@@ -1368,7 +1371,7 @@
                                 if (distributionList != null && distributionList.Count > 0)
                                 {%>
                             <tr>
-                                <td>配送类型的报价项</td>
+                                <td>配送</td>
                                 <td colspan="<%=IssaleOrder?13:12 %>"></td>
                             </tr>
                             <% foreach (var quoteItem in distributionList)
@@ -1637,7 +1640,7 @@
                             </tr>
 
                             <tr>
-                                <td>可选的报价项</td>
+                                <td>可选报价项</td>
                                 <td colspan="<%=IssaleOrder?13:12 %>"></td>
                             </tr>
                             <%  

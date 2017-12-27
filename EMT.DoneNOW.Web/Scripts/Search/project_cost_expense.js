@@ -32,11 +32,11 @@ function AddExpense() {
     }
 }
 // 检查是成本还是费用
-function CheckIsCost() {
+function CheckIsCost(id) {
     var IsCost = "";
     $.ajax({
         type: "GET",
-        url: "../Tools/ContractAjax.ashx?act=GetSinCost&cost_id=" + entityid,
+        url: "../Tools/ContractAjax.ashx?act=GetSinCost&cost_id=" + id,
         async: false,
         dataType: "json",
         success: function (data) {
@@ -54,7 +54,7 @@ function CheckIsCost() {
 // 特殊命名，view代表修改
 function View(id) {
     if (id != "" && id != undefined) {
-        if (CheckIsCost()) {
+        if (CheckIsCost(id)) {
             OpenWindow("../Contract/AddCharges.aspx?id=" + id, windowObj.contractCost + windowType.edit);
 
         } else {
@@ -64,7 +64,7 @@ function View(id) {
    
 }
 function Edit() {
-    if (CheckIsCost()) {
+    if (CheckIsCost(entityid)) {
         OpenWindow("../Contract/AddCharges.aspx?id=" + entityid, windowObj.contractCost + windowType.edit);
 
     } else {
@@ -73,7 +73,7 @@ function Edit() {
 }
 // 查看详情
 function ShowDetailes(){
-    if (CheckIsCost()) {
+    if (CheckIsCost(entityid)) {
         OpenWindow("../Contract/ChargeDetails.aspx?id=" + entityid, windowObj.contractCost + windowType.view);
     } else {
         OpenWindow("../Project/ExpenseDetail.aspx?id=" + entityid, windowObj.expense + windowType.view);
@@ -103,7 +103,7 @@ $("#CheckAll").click(function () {
 })
 // 当前成本/费用设置为可计费
 function SingBill() {
-    if (CheckIsCost()) {
+    if (CheckIsCost(entityid)) {
         ChangeIsbilled(1);
     } else {
         $.ajax({
@@ -147,7 +147,7 @@ function ChooseBill() {
 }
 // 当前成本/费用设置为不可计费
 function SingNonBill() {
-    if (CheckIsCost()) {
+    if (CheckIsCost(entityid)) {
         ChangeIsbilled(0);
     } else {
         $.ajax({
@@ -191,7 +191,7 @@ function ChooseNonBill() {
 // 删除当期成本/费用
 function SingDelete() {
     debugger;
-    if (CheckIsCost()) {
+    if (CheckIsCost(entityid)) {
         $.ajax({
             type: "GET",
             url: "../Tools/ContractAjax.ashx?act=deleteCost&cost_id=" + entityid,
@@ -304,7 +304,7 @@ $(".dn_tr").bind("contextmenu", function (event) {
         $("#ChooseDeleteMenu").css("color", "grey");
     }
 
-    if (CheckIsCost()) {  // 对成本进行校验
+    if (CheckIsCost(entityid)) {  // 对成本进行校验
         $.ajax({
             type: "GET",
             url: "../Tools/ContractAjax.ashx?act=GetSinCost&cost_id=" + entityid,

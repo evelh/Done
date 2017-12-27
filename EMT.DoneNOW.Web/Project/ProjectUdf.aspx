@@ -24,7 +24,7 @@
                     <li class="Button ButtonIcon NormalState" tabindex="0"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -33px 2px;" class="icon-1">&nbsp;&nbsp;&nbsp;&nbsp;</i>
                         <asp:Button ID="SaveClose" runat="server" Text="保存并关闭" BorderStyle="None" Style="outline: none; background: transparent; cursor: pointer; border: none;" OnClick="SaveClose_Click" />
                     </li>
-                    <li class="Button ButtonIcon NormalState" tabindex="0">
+                    <li class="Button ButtonIcon NormalState" tabindex="0" id="ClosePage">
                     关闭    
                     </li>
 
@@ -129,5 +129,9 @@
 
 
         return true;
+    })
+
+    $("#ClosePage").click(function () {
+        window.close();
     })
 </script>

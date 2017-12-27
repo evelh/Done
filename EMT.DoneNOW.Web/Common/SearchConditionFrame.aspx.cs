@@ -44,31 +44,31 @@ namespace EMT.DoneNOW.Web
             switch (catId)
             {
                 case (int)DicEnum.QUERY_CATE.COMPANY:
-                    currentQuery.page_name = "客户查询";
+                    currentQuery.page_name = "客户管理";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTACT:
-                    currentQuery.page_name = "联系人查询";
+                    currentQuery.page_name = "联系人管理";
                     break;
                 case (int)DicEnum.QUERY_CATE.OPPORTUNITY:
-                    currentQuery.page_name = "商机查询";
+                    currentQuery.page_name = "商机管理";
                     break;
                 case (int)DicEnum.QUERY_CATE.QUOTE:
-                    currentQuery.page_name = "报价查询";
+                    currentQuery.page_name = "报价管理";
                     break;
                 case (int)DicEnum.QUERY_CATE.QUOTE_TEMPLATE:
-                    currentQuery.page_name = "报价模板查询";
+                    currentQuery.page_name = "报价模板管理";
                     break;
                 case (int)DicEnum.QUERY_CATE.INSTALLEDPRODUCT:
-                    currentQuery.page_name = "配置项查询";
+                    currentQuery.page_name = "配置项管理";
                     break;
                 case (int)DicEnum.QUERY_CATE.SUBSCRIPTION:
-                    currentQuery.page_name = "订阅查询";
+                    currentQuery.page_name = "订阅管理";
                     break;
                 case (int)DicEnum.QUERY_CATE.SALEORDER:
-                    currentQuery.page_name = "销售订单查询";
+                    currentQuery.page_name = "销售订单管理";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT:
-                    currentQuery.page_name = "合同查询";
+                    currentQuery.page_name = "合同管理";
                     break;
                 case (int)DicEnum.QUERY_CATE.SYS_ROLE:
                     currentQuery.page_name = "角色管理";
@@ -148,10 +148,10 @@ namespace EMT.DoneNOW.Web
                     currentQuery.page_name = "审批并提交";
                     break;
                 case (int)DicEnum.QUERY_CATE.GENERATE_INVOICE:
-                    currentQuery.page_name = "待生成发票的条目查询";
+                    currentQuery.page_name = "待生成发票的条目管理";
                     break;
                 case (int)DicEnum.QUERY_CATE.PROJECT_SEARCH:
-                    currentQuery.page_name = "项目查询";
+                    currentQuery.page_name = "项目管理";
 					break;
                 case (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH:  
                     currentQuery.page_name = "备注查询";
@@ -175,10 +175,10 @@ namespace EMT.DoneNOW.Web
                     currentQuery.page_name = "采购订单查询";
 					break;
                 case (int)DicEnum.QUERY_CATE.PROJECT_TEMP_SEARCH:
-                    currentQuery.page_name = "项目模板查询";
+                    currentQuery.page_name = "项目模板管理";
                     break;
                 case (int)DicEnum.QUERY_CATE.PROJECT_PROPOSAL_SEARCH:
-                    currentQuery.page_name = "项目提案查询";
+                    currentQuery.page_name = "项目提案管理";
                     break;
                 case (int)DicEnum.QUERY_CATE.SHIPPING_LIST:
                     currentQuery.page_name = "配送列表查询";
@@ -190,7 +190,7 @@ namespace EMT.DoneNOW.Web
                     currentQuery.page_name = "采购接收查询";
 					break;
                 case (int)DicEnum.QUERY_CATE.PURCHASE_ORDER_HISTORY:
-                    currentQuery.page_name = "采购订单历史查询";
+                    currentQuery.page_name = "采购订单历史";
                     break;
                 default:
                     currentQuery.page_name = "";

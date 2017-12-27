@@ -544,7 +544,11 @@ namespace EMT.DoneNOW.Web
         private void GetProductCost(HttpContext context,long ipId)
         {
             var thisCost = new ProductBLL().GetProCost(ipId,LoginUserId);
-            context.Response.Write(thisCost.ToString("#0.00"));
+            if (thisCost != null)
+            {
+                context.Response.Write(((decimal)thisCost).ToString("#0.00"));
+            }
+            
         }
     }
 }

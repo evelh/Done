@@ -1103,11 +1103,16 @@ namespace EMT.DoneNOW.BLL
         public void InsertContract(Dictionary<long, string> costCodeList, crm_opportunity opportunity, UserInfoDto user, long? contract_id, out string ids, long? project_id = null, long? task_id = null)
         {
             ids = "";
-            var qiDal = new crm_quote_item_dal();
-            var cccDal = new ctt_contract_cost_dal();
-            var qiBLL = new QuoteItemBLL();
+           
             if (costCodeList != null && costCodeList.Count > 0)
             {
+                var qiDal = new crm_quote_item_dal();
+                var cccDal = new ctt_contract_cost_dal();
+                var qiBLL = new QuoteItemBLL();
+                var ccBll = new ContractCostBLL();
+                var irDal = new ivt_reserve_dal();
+                var cccpDal = new ctt_contract_cost_product_dal();
+                var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 foreach (var item in costCodeList)
                 {
                     var quote_item = qiDal.GetQuoteItem(item.Key);
@@ -1202,6 +1207,26 @@ namespace EMT.DoneNOW.BLL
                             remark = "将报价项转换为计费项"
 
                         });
+
+                        #region 如果报价项是产品，有预留产品库存的时候，进行拣货操作
+                        if (quote_item.type_id == (int)QUOTE_ITEM_TYPE.PRODUCT&& quote_item.object_id!=null)
+                        {
+                            var thisPro = new ivt_product_dal().FindNoDeleteById((long)quote_item.object_id);
+                            var thisProResList = irDal.GetListByItemId(quote_item.id);
+                            if(thisProResList!=null&& thisProResList.Count > 0&& thisPro!=null)
+                            {
+                                foreach (var thisProRes in thisProResList)
+                                {
+                                    ccBll.AddCostProduct(cost.id, thisPro.id, thisProRes.warehouse_id,thisProRes.quantity,"","",user.id);
+
+                                    irDal.SoftDelete(thisProRes, user.id);
+                                    OperLogBLL.OperLogDelete<ivt_reserve>(thisProRes, thisProRes.id, user.id, OPER_LOG_OBJ_CATE.WAREHOUSE_RESERVE, "删除产品预留");
+                                }
+
+                                
+                            }
+                        }
+                        #endregion
                     }
                     else
                     {

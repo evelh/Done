@@ -298,7 +298,7 @@
                 <!--第一个下拉-->
                 <li class="DropDownButton" style="top: 25px; left: 47px;" id="Down1">
                     <div class="DropDownButtonDiv">
-                        <div class="Group">
+                       <%-- <div class="Group">
                             <div class="Heading">
                                 <div class="Text">在下面打开</div>
                             </div>
@@ -316,11 +316,11 @@
                                     <span class="Text">问题</span>
                                 </div><%} %>
                             </div>
-                        </div>
+                        </div>--%>
                         <div class="Group">
-                            <div class="Heading">
+                           <%-- <div class="Heading">
                                 <div class="Text">在新的弹窗打开</div>
-                            </div>
+                            </div>--%>
                             <div class="Content">  <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_ADD_TASK")) { %>
                                 <div class="Button1" id="NewTaskInCurrentPageButton" tabindex="0" onclick="AddNewTask('<%=(int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_TASK %>')">
                                     <span class="Text">任务</span>
@@ -610,6 +610,14 @@
                                     {
                                         continue;
                                     }
+                                    if (para.name == "告警")
+                                    {
+                                        if (!CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_ALARM"))
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                    
                             %>
                             <td width="<%=para.length * 32 %>px">
                                 <%=para.name %>
@@ -701,7 +709,7 @@
                                     { continue; }
                                     else if (para.name == "告警")
                                     {
-                                        if (CheckAuth(""))
+                                        if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_ALARM"))
                                         {
 
                                         
@@ -2552,7 +2560,7 @@
                     dataType: "json",
                     success: function (data) {
                         if (data != "") {
-
+                            LayerMsg("创建基准成功");
                         }
                         history.go(0);
                     },
@@ -2922,7 +2930,7 @@
             menu = document.getElementById("taskMenu");
         }
 
-        var noTimeSetValue = '<%=(new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_ENTRY_REQUIRED).setting_value) %>';ss
+        var noTimeSetValue = '<%=(new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_ENTRY_REQUIRED).setting_value) %>';
         if (noTimeSetValue == '0') {
             $("#AddNoTimeEntryId").css("color", "black");
             $("#AddNoTimeEntryId").click(function () {

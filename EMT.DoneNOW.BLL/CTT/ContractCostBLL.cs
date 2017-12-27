@@ -410,7 +410,8 @@ namespace EMT.DoneNOW.BLL
             try
             {
                 var thisCost = _dal.FindNoDeleteById(cost_id);
-                if (thisCost != null)
+                var thisPro = new ivt_product_dal().FindNoDeleteById(product_id);
+                if (thisCost != null&& thisPro!=null)
                 {
                     var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                     var cccpDal = new ctt_contract_cost_product_dal();
@@ -422,7 +423,7 @@ namespace EMT.DoneNOW.BLL
                         {
                             return false;
                         }
-                        
+
                         var iwDal = new ivt_warehouse_dal();
                         var resWare = iwDal.GetSinByResId(user_id);
                         if (resWare == null)
@@ -443,7 +444,8 @@ namespace EMT.DoneNOW.BLL
                             OperLogBLL.OperLogAdd<ivt_warehouse>(resWare, resWare.id, user_id, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_LOCATION, "新增员工仓库");
                         }
                         ware_id = resWare.id;
-                    }else if(tranType == "toItem")
+                    }
+                    else if (tranType == "toItem")
                     {
                         status_id = (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.DISTRIBUTION;
                     }
@@ -462,9 +464,10 @@ namespace EMT.DoneNOW.BLL
                     };
                     cccpDal.Insert(cccp);
                     OperLogBLL.OperLogAdd<ctt_contract_cost_product>(cccp, cccp.id, user_id, DicEnum.OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "新增成本关联产品");
-                    AddCostProductSn(cccp.id, snIds, user_id);
-
-
+                    if (thisPro.is_serialized == 1)
+                    {
+                        AddCostProductSn(cccp.id, snIds, pickNum, product_id, user_id);
+                    }
                     return true;
                 }
             }
@@ -478,13 +481,14 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 批量添加产品串号
         /// </summary>
-        public bool AddCostProductSn(long cccpId, string snIds, long user_id)
+        public bool AddCostProductSn(long cccpId, string snIds, int pickNum, long product_id, long user_id)
         {
+
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            var iwpsDal = new ivt_warehouse_product_sn_dal();
+            var cccpsDal = new ctt_contract_cost_product_sn_dal();
             if (!string.IsNullOrEmpty(snIds))
             {
-                var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                var iwpsDal = new ivt_warehouse_product_sn_dal();
-                var cccpsDal = new ctt_contract_cost_product_sn_dal();
                 var snIdArr = snIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var snId in snIdArr)
                 {
@@ -506,6 +510,38 @@ namespace EMT.DoneNOW.BLL
                     }
                 }
                 return true;
+            }
+            else if (pickNum > 0)
+            {
+                var thisCccp = new ctt_contract_cost_product_dal().FindNoDeleteById(cccpId);
+                if (thisCccp != null && thisCccp.warehouse_id != null)
+                {
+                    var iwp = new ivt_warehouse_product_dal().GetSinWarePro((long)thisCccp.warehouse_id, product_id);
+                    if (iwp != null)
+                    {
+                        var iwpSnList = iwpsDal.GetSnByWareProId(iwp.id);
+                        if (iwpSnList != null && iwpSnList.Count > 0 && pickNum <= iwpSnList.Count)
+                        {
+                            iwpSnList = iwpSnList.Take(pickNum).ToList();
+                            foreach (var iwpSn in iwpSnList)
+                            {
+                                var thisCostSn = new ctt_contract_cost_product_sn()
+                                {
+                                    id = cccpsDal.GetNextIdCom(),
+                                    contract_cost_product_id = cccpId,
+                                    create_time = timeNow,
+                                    create_user_id = user_id,
+                                    sn = iwpSn.sn,
+                                    update_time = timeNow,
+                                    update_user_id = user_id,
+                                };
+                                cccpsDal.Insert(thisCostSn);
+                                OperLogBLL.OperLogAdd<ctt_contract_cost_product_sn>(thisCostSn, thisCostSn.id, user_id, DicEnum.OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT_SN, "新增成本关联产品串号");
+                            }
+                        }
+                    }
+                }
+
             }
             return false;
         }
@@ -668,7 +704,7 @@ namespace EMT.DoneNOW.BLL
 
                 // 原仓库减少，目标仓库增多
                 string[] sqlArr = new string[] { $"update ivt_warehouse_product set quantity=quantity-{pickNum},update_user_id={user_id},update_time={timeNow} where id={oldFromWarePro.id} and delete_time = 0", $"update ivt_warehouse_product set quantity=quantity+{pickNum},update_user_id={user_id},update_time={timeNow} where id={fromWare.id} and delete_time = 0" };
-                var result = iwDal.SQLTransaction(null,sqlArr);
+                var result = iwDal.SQLTransaction(null, sqlArr);
                 if (result)
                 {
                     var nowoldFromWarePro = iwpDal.FindNoDeleteById(oldFromWarePro.id);
@@ -764,18 +800,18 @@ namespace EMT.DoneNOW.BLL
         /// <param name="snIds"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public bool UpdateCostProSn(long newCostProId, long oldCostProId, string snIds, long user_id,int changeNum)
+        public bool UpdateCostProSn(long newCostProId, long oldCostProId, string snIds, long user_id, int changeNum)
         {
             var iwpsDal = new ivt_warehouse_product_sn_dal();
             var cccpsDal = new ctt_contract_cost_product_sn_dal();
             var oldProList = cccpsDal.GetListByCostProId(oldCostProId);
-            if ( oldProList != null && oldProList.Count > 0)
+            if (oldProList != null && oldProList.Count > 0)
             {
                 var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 if (!string.IsNullOrEmpty(snIds))
                 {
                     var snArr = snIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    
+
                     foreach (var snId in snArr)
                     {
 
@@ -796,7 +832,8 @@ namespace EMT.DoneNOW.BLL
                 else if (changeNum > 0)
                 {
                     oldProList = oldProList.Take(changeNum).ToList();
-                    oldProList.ForEach(_ => {
+                    oldProList.ForEach(_ =>
+                    {
                         var thisOldSn = cccpsDal.FindNoDeleteById(_.id);
                         if (thisOldSn != null)
                         {
@@ -806,10 +843,10 @@ namespace EMT.DoneNOW.BLL
                             cccpsDal.Update(_);
                             OperLogBLL.OperLogUpdate<ctt_contract_cost_product_sn>(_, thisOldSn, _.id, user_id, OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT_SN, "修改成本产品串号");
                         }
-                      
+
                     });
                 }
-               
+
             }
             else
             {
@@ -893,7 +930,7 @@ namespace EMT.DoneNOW.BLL
                 iwpDal.Update(thisFromWarePro);
                 OperLogBLL.OperLogUpdate<ivt_warehouse_product>(thisFromWarePro, oldFromWarePro, thisFromWarePro.id, user_id, OPER_LOG_OBJ_CATE.INVENTORY_ITEM, "仓库产品移出操作");
                 // 产品串号删除
-                DeleteSns(thisFromWarePro.id,snIds, user_id, pickNum);
+                DeleteSns(thisFromWarePro.id, snIds, user_id, pickNum);
             }
             catch (Exception msg)
             {
@@ -904,11 +941,11 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 批量删除库存产品串号
         /// </summary>
-        public bool DeleteSns(long iwpId, string snIds, long user_id,int pickNum)
+        public bool DeleteSns(long iwpId, string snIds, long user_id, int pickNum)
         {
             var iwpsDal = new ivt_warehouse_product_sn_dal();
             var thisSnList = iwpsDal.GetSnByWareProId(iwpId);
-            if(thisSnList!=null&& thisSnList.Count > 0)
+            if (thisSnList != null && thisSnList.Count > 0)
             {
                 if (!string.IsNullOrEmpty(snIds))
                 {
@@ -929,13 +966,14 @@ namespace EMT.DoneNOW.BLL
                 else if (pickNum > 0)
                 {
                     thisSnList = thisSnList.Take(pickNum).ToList();
-                    thisSnList.ForEach(_ => {
+                    thisSnList.ForEach(_ =>
+                    {
                         iwpsDal.SoftDelete(_, user_id);
                         OperLogBLL.OperLogDelete<ivt_warehouse_product_sn>(_, _.id, user_id, OPER_LOG_OBJ_CATE.INVENTORY_ITEM_SN, "删除库存产品串号");
                     });
                 }
             }
-           
+
             return false;
         }
         /// <summary>
@@ -1144,7 +1182,7 @@ namespace EMT.DoneNOW.BLL
                     };
                     cccpDal.Insert(toCccp);
                     OperLogBLL.OperLogAdd<ctt_contract_cost_product>(toCccp, toCccp.id, user_id, DicEnum.OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "新增成本关联产品");
-                    AddCostProductSn(toCccp.id, snIds, user_id);
+                    // AddCostProductSn(toCccp.id, snIds, user_id);
 
                     // 改变原来的数量
                     // 改变转移的数量
@@ -1376,11 +1414,11 @@ namespace EMT.DoneNOW.BLL
                         cccpDal.Update(thisCCCP);
                         OperLogBLL.OperLogUpdate<ctt_contract_cost_product>(thisCCCP, oldThisCccp, thisCCCP.id, user_id, DicEnum.OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "修改成本关联产品");
                     }
-                    
+
                 }
                 else
                 {
-                    var thisCostPRo= cccpDal.FindNoDeleteById(costProId);
+                    var thisCostPRo = cccpDal.FindNoDeleteById(costProId);
                     if (thisCostPRo != null)
                     {
                         var oldThisCccp = cccpDal.FindNoDeleteById(costProId);
@@ -1393,17 +1431,17 @@ namespace EMT.DoneNOW.BLL
                 }
             }
             #endregion
-            
+
             #region 发送邮件
             // todo 邮件中放入 html 代码
             #endregion
             return true;
         }
-        
+
         /// <summary>
         /// 取消拣货
         /// </summary>
-        public bool UnShipItem(long costProId,long user_id,out bool isDelete)
+        public bool UnShipItem(long costProId, long user_id, out bool isDelete)
         {
             isDelete = true;
             var cccpDal = new ctt_contract_cost_product_dal();
@@ -1452,22 +1490,23 @@ namespace EMT.DoneNOW.BLL
                 update_user_id = user_id,
                 type_id = (int)INVENTORY_TRANSFER_TYPE.PROJECT,
                 product_id = (long)thisCost.product_id,
-               from_warehouse_id = (long)thisCostPro.warehouse_id,
-                quantity = 0-thisCostPro.quantity,
+                from_warehouse_id = (long)thisCostPro.warehouse_id,
+                quantity = 0 - thisCostPro.quantity,
                 //to_warehouse_id = (long)thisCostPro.warehouse_id,
                 to_account_id = GetAccountIdByCostId(thisCost.id),
                 to_contract_id = thisCost.contract_id,
                 to_project_id = thisCost.project_id,
-                to_task_id  =thisCost.task_id,
+                to_task_id = thisCost.task_id,
             };
             itDal.Insert(it);
             OperLogBLL.OperLogAdd<ivt_transfer>(it, it.id, user_id, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ITEM_TRANSFER, "新增库存转移");
             // 插入串号
             // InsertTransSn(it.id, snIds, user_id);
-           if(thisCostProSnList!=null&& thisCostProSnList.Count > 0)
+            if (thisCostProSnList != null && thisCostProSnList.Count > 0)
             {
                 var itsDal = new ivt_transfer_sn_dal();
-                thisCostProSnList.ForEach(_ => {
+                thisCostProSnList.ForEach(_ =>
+                {
                     var its = new ivt_transfer_sn()
                     {
                         id = itsDal.GetNextIdCom(),
@@ -1499,7 +1538,8 @@ namespace EMT.DoneNOW.BLL
                 if (thisCostProSnList != null && thisCostProSnList.Count > 0)
                 {
                     var iwpsDal = new ivt_warehouse_product_sn_dal();
-                    thisCostProSnList.ForEach(_ => {
+                    thisCostProSnList.ForEach(_ =>
+                    {
                         var its = new ivt_warehouse_product_sn()
                         {
                             id = iwpsDal.GetNextIdCom(),
@@ -1530,8 +1570,8 @@ namespace EMT.DoneNOW.BLL
                     }
                     else
                     {
-                        _dal.SoftDelete(thisShipCost,user_id);
-                        OperLogBLL.OperLogDelete<ctt_contract_cost>(thisShipCost, thisShipCost.id,user_id, OPER_LOG_OBJ_CATE.CONTRACT_COST,"删除成本");
+                        _dal.SoftDelete(thisShipCost, user_id);
+                        OperLogBLL.OperLogDelete<ctt_contract_cost>(thisShipCost, thisShipCost.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_COST, "删除成本");
                     }
                 }
             }

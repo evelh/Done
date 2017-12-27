@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddCharges.aspx.cs" Inherits="EMT.DoneNOW.Web.Contract.AddCharges" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddCharges.aspx.cs" Inherits="EMT.DoneNOW.Web.Contract.AddCharges"   ValidateRequest="false"%>
 
 <!DOCTYPE html>
 
@@ -458,9 +458,7 @@
                 height: 22px;
             }
 
-        .dataGridHeader {
-            background-color: #cbd9e4;
-        }
+       
 
         .dataGridHeader {
             border-left: outset 1px;
@@ -468,10 +466,10 @@
             border-bottom: outset 1px;
             font-size: 9px;
             font-weight: bold;
-            color: #555;
+            color: white;
             text-decoration: none;
             height: 25px;
-            background-color: buttonface;
+            background-color: #356995;
             vertical-align: top;
         }
 
@@ -552,6 +550,21 @@
     border: 1px solid #d3d3d3;
     margin: 0 10px 10px 10px;
     padding: 12px 28px 4px 28px;
+}
+        #LoadingIndicator {
+    width: 100px;
+    height:100px;
+    background-image: url(../Images/Loading.gif);
+    background-repeat: no-repeat;
+    background-position: center center;
+    z-index: 30;
+    margin:auto;
+    position: absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right: 0;
+    display: none;
 }
     </style>
 </head>
@@ -885,9 +898,9 @@
                     <table class="dataGridBody" border="1" id="ucCostEdit_dgItemsNeeded_dgItemsNeeded_datagrid" style="width: 100%; border-collapse: collapse; border-top-width: 0px;">
                         <tr class="dataGridHeader">
                             <td align="left">库存位置</td>
-                            <td align="right">库存数</td>
-                            <td align="right">预留和拣货</td>
-                            <td align="right">可用数</td>
+                            <td align="left">库存数</td>
+                            <td align="left">预留和拣货</td>
+                            <td align="left">可用数</td>
                             <% if (!isAdd && conCost.quantity != 0)
                                 { %>
                             <td>拣货</td>
@@ -1263,6 +1276,8 @@
             </div>
 
         </div>
+
+        <div id="LoadingIndicator"></div>
     </form>
 </body>
 </html>
@@ -1610,8 +1625,28 @@
                     },
                 });
             }
-            GetStillNeed();
             // 展示库存信息
+            GetStillNeed();
+            
+            // 获取单元成本
+            <%if (isAdd)
+    { %>
+            $.ajax({
+                type: "GET",
+                async: false,
+                // dataType: "json",
+                url: "../Tools/ProductAjax.ashx?act=GetProductCost&product_id=" + product_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "" && data != null) {
+                        $("#unit_cost").val(toDecimal4(data));
+                        // $("#unit_cost").val(data);
+                        // Markup();
+                        GetSumCost();
+                    }
+                },
+            });
+            <%}%>
         }
     }
     // costIdHidden  costId
@@ -1853,6 +1888,9 @@
                 return false;
             }
             //var costProId = $("#ShowCostProId").val();
+           // $("#BackgroundOverLay").show();
+            $("#LoadingIndicator").show();
+            $("#ShoePickPageDialog").hide();
             $.ajax({
                 type: "GET",
                 async: false,
@@ -1872,7 +1910,7 @@
                             }
                         }
                         else {
-                            LayerMsg("拣货成功");
+                            LayerMsg("拣货失败");
                             history.go(0);
                         }
                     }
@@ -1950,6 +1988,9 @@
         var productId = $("#product_idHidden").val();
         var costId = '<%=conCost==null?"":conCost.id.ToString() %>';
         var costProId = $("#ShowCostProId").val();
+        // $("#BackgroundOverLay").show();
+        $("#LoadingIndicator").show();
+        $("#ShowUnPickPageDialog").hide();
         $.ajax({
             type: "GET",
             async: false,
@@ -2405,6 +2446,9 @@
             return false;
         }
         var costProId = $("#ShowCostProId").val();
+        // $("#BackgroundOverLay").show();
+        $("#LoadingIndicator").show();
+        $("#ShowTranPageDialog").hide();
         $.ajax({
             type: "GET",
             async: false,
@@ -2554,6 +2598,9 @@
         var BillMoney = $("#BillMoney").val();
         var BillCost = $("#BillCost").val();
         var costProId = $("#ShowCostProId").val();
+        // $("#BackgroundOverLay").show();
+        $("#LoadingIndicator").show();
+        $("#ShowShipPageDialog").hide();
         $.ajax({
             type: "GET",
             async: false,
@@ -2581,6 +2628,8 @@
     function UnShipItem(costPro) {
 
         LayerConfirm("确定要取消配送这些条目吗？", "是", "否", function () {
+            $("#BackgroundOverLay").show();
+            $("#LoadingIndicator").show();
             $.ajax({
                 type: "GET",
                 async: false,
