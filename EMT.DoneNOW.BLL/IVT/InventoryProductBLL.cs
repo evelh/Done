@@ -502,6 +502,13 @@ w.name as location_name
                     return "状态为“待配送”的成本产品才能配送";
             }
 
+            ctt_contract_cost_dal costDal = new ctt_contract_cost_dal();
+            ivt_transfer_dal tsfDal = new ivt_transfer_dal();
+            ctt_contract_dal cttDal = new ctt_contract_dal();
+            pro_project_dal proDal = new pro_project_dal();
+            sdk_task_dal tskDal = new sdk_task_dal();
+            ivt_warehouse_product_sn_dal lctPdtSnDal = new ivt_warehouse_product_sn_dal();
+            ivt_transfer_sn_dal tsfSnDal = new ivt_transfer_sn_dal();
             foreach (var pdt in pdtList)
             {
                 var pdtOld = cstPdtDal.FindById(pdt.id);
@@ -511,8 +518,77 @@ w.name as location_name
                 pdt.update_user_id = userId;
                 cstPdtDal.Update(pdt);
                 OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_cost_product>(pdtOld, pdt), pdt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "成本产品配送");
+                
+                var cost = costDal.FindById(pdt.contract_cost_id);
+                var cnt = dal.FindSignleBySql<int>($"select count(0) from ctt_contract_cost_product where contract_cost_id={pdt.contract_cost_id} and status_id<>{(int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.DISTRIBUTION} and delete_time=0");
+                if (cnt == 0)   // 产品全部已配送，修改成本状态
+                {
+                    var costOld = costDal.FindById(pdt.contract_cost_id);
+                    cost.status_id = (int)DicEnum.COST_STATUS.ALREADY_DELIVERED;
+                    cost.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                    cost.update_user_id = userId;
+                    costDal.Update(cost);
+                    OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_cost>(costOld, cost), cost.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_COST, "修改成本状态已配送");
+                }
 
-                // TODO:检查成本产品是否全部配送
+                ivt_transfer transfer = new ivt_transfer();
+                transfer.id = tsfDal.GetNextIdCom();
+                transfer.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                transfer.create_user_id = userId;
+                transfer.update_time = transfer.create_time;
+                transfer.update_user_id = userId;
+                transfer.product_id = (long)cost.product_id;
+                transfer.type_id = (int)DicEnum.INVENTORY_TRANSFER_TYPE.PROJECT;
+                transfer.from_warehouse_id = (long)pdt.warehouse_id;
+                transfer.quantity = pdt.quantity;
+                if (cost.contract_id != null)
+                    transfer.to_account_id = cttDal.FindById((long)cost.contract_id).account_id;
+                else if (cost.project_id != null)
+                    transfer.to_account_id = proDal.FindById((long)cost.project_id).account_id;
+                else if (cost.task_id != null)
+                    transfer.to_account_id = tskDal.FindById((long)cost.task_id).account_id;
+                transfer.to_contract_id = cost.contract_id;
+                transfer.to_project_id = cost.project_id;
+                transfer.to_task_id = cost.task_id;
+                tsfDal.Insert(transfer);
+                OperLogBLL.OperLogAdd<ivt_transfer>(transfer, transfer.id, userId, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ITEM_TRANSFER, "产品配送转移库存");
+
+                // 保存库存数修改
+                var lctPdt = dal.FindSignleBySql<ivt_warehouse_product>($"select * from ivt_warehouse_product where product_id={cost.product_id} and warehouse_id={(long)pdt.warehouse_id} and delete_time=0");
+                if (lctPdt != null)
+                {
+                    var lctPdtOld = dal.FindById(lctPdt.id);
+                    lctPdt.quantity = lctPdt.quantity - pdt.quantity;
+                    lctPdt.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                    lctPdt.update_user_id = userId;
+                    dal.Update(lctPdt);
+                    OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ivt_warehouse_product>(lctPdtOld, lctPdt), lctPdt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ITEM, "修改库存产品库存数");
+
+                    var sns = costDal.FindListBySql<string>($"select sn from ctt_contract_cost_product_sn where contract_cost_product_id={pdt.id} and delete_time=0");
+                    if (sns == null || sns.Count == 0)
+                        continue;
+
+                    foreach (var sn in sns)
+                    {
+                        var lctPdtSn = lctPdtSnDal.FindSignleBySql<ivt_warehouse_product_sn>($"select * from ivt_warehouse_product_sn where sn='{sn}' and warehouse_product_id={lctPdt}");
+                        lctPdtSn.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                        lctPdtSn.delete_user_id = userId;
+                        lctPdtSnDal.Update(lctPdtSn);
+                        OperLogBLL.OperLogDelete<ivt_warehouse_product_sn>(lctPdtSn, lctPdtSn.id, userId, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ITEM_SN, "配送产品删除库存产品串号");
+
+                        ivt_transfer_sn tsfSn = new ivt_transfer_sn();
+                        tsfSn.id = tsfSnDal.GetNextIdCom();
+                        tsfSn.sn = sn;
+                        tsfSn.transfer_id = transfer.id;
+                        tsfSn.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                        tsfSn.create_user_id = userId;
+                        tsfSn.update_time = tsfSn.create_time;
+                        tsfSn.update_user_id = userId;
+                        tsfSnDal.Insert(tsfSn);
+                        OperLogBLL.OperLogAdd<ivt_transfer_sn>(tsfSn, tsfSn.id, userId, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ITEM_TRANSFER_SN, "配送产品新增转移产品串号");
+                    }
+
+                }
             }
 
             return "";
@@ -530,13 +606,7 @@ w.name as location_name
             var pdtList = cstPdtDal.FindListBySql<ctt_contract_cost_product>($"select * from ctt_contract_cost_product where id in({costPdtIds})");
             if (pdtList == null || pdtList.Count == 0)
                 return "";
-
-            foreach (var pdt in pdtList)
-            {
-                if (pdt.status_id != (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.DISTRIBUTION)
-                    return "状态为“待配送”的成本产品才能配送";
-            }
-
+            return "";
             foreach (var pdt in pdtList)
             {
                 var pdtOld = cstPdtDal.FindById(pdt.id);
@@ -548,6 +618,7 @@ w.name as location_name
                 OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_cost_product>(pdtOld, pdt), pdt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "成本产品配送");
 
                 // TODO:检查成本产品是否全部配送
+
             }
 
             return "";

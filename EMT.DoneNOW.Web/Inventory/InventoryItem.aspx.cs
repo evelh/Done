@@ -13,7 +13,8 @@ namespace EMT.DoneNOW.Web.Inventory
     public partial class InventoryItem : BasePage
     {
         protected InventoryItemEditDto product;
-        protected string sn = null;
+        protected string sn = null;             // 产品序列号
+        protected bool isSerialized = false;    // 是否序列化产品
         protected int snCnt = 0;
         protected List<ivt_warehouse> locationList;
         private InventoryProductBLL bll = new InventoryProductBLL();
@@ -26,8 +27,9 @@ namespace EMT.DoneNOW.Web.Inventory
                 {
                     long pdId = Convert.ToInt64(id);
                     product = bll.GetIvtProductEdit(pdId);
+                    isSerialized = new ProductBLL().GetProduct(product.product_id).is_serialized == 1;
                     var snList = bll.GetProductSnList(pdId);
-                    if (snList !=null &&snList.Count>0)
+                    if (snList != null && snList.Count > 0)
                     {
                         snCnt = snList.Count;
                         foreach (var s in snList)

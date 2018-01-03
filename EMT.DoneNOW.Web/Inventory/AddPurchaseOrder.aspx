@@ -332,6 +332,14 @@
       $("#subAct").val("Cancle");
       $("#form1").submit();
     })
+    $("#SaveSubmit").click(function () {
+      $("#subAct").val("SaveSubmit");
+      $("#form1").submit();
+    })
+    $("#SubmitEmail").click(function () {
+      $("#subAct").val("SubmitEmail");
+      $("#form1").submit();
+    })
     function submitCheck() {
       if ($("#venderNameHidden").val() == "") {
         LayerMsg("请选择供应商");
@@ -418,7 +426,7 @@
         $("#postal_code").val("");
         return;
       }
-      var accId = <%=new EMT.DoneNOW.BLL.CompanyBLL().GetThisCompany().id %>;
+      var accId = <%=thisCompanyId %>;
       if (type == 2)
         accId = $("#purchaseCompanyHidden").val();
       requestData("/Tools/CompanyAjax.ashx?act=Location&account_id=" + accId, null, function (data) {

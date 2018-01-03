@@ -138,7 +138,7 @@
               </td>
             </tr>
             <%} %>
-            <tr id="snTr" <%if (sn == null) { %> style="display:none;" <%} %>>
+            <tr id="snTr" <%if (!isSerialized) { %> style="display:none;" <%} %>>
               <td class="FieldLabels">产品序列号<span class="errorSmall">*</span>
                 <br /><span style="font-size:11px;color:#666;padding:3px 0 3px 0;">每个序列号占一行</span>
                 <div style="padding-bottom:6px;">
@@ -156,7 +156,7 @@
   <script type="text/javascript" src="../Scripts/common.js"></script>
   <script>
     var isSnPd = 0;
-    <%if (sn != null) { %>
+    <%if (isSerialized) { %>
     isSnPd = 1;
     <%}%>
     $("#sn").change(function () {
@@ -200,10 +200,6 @@
       }
       if (isSnPd == 1) {
         var snCnt = getSNCnt();
-        if (snCnt == 0) {
-          LayerMsg("请输入产品序列号");
-          return;
-        }
         if (snCnt != parseInt($("#quantity").val())) {
           LayerMsg("输入的串号数必须等于库存数！");
           return;

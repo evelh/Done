@@ -18,6 +18,7 @@ namespace EMT.DoneNOW.Web.Inventory
         protected List<DictionaryEntryDto> itemDescType;    // 采购项描述信息显示内容类型
         protected long orderId = 0;     // 采购订单id
         protected bool isAdd;
+        protected long thisCompanyId = new CompanyBLL().GetThisCompany().id;
         protected ivt_order orderEdit;
         private InventoryOrderBLL bll = new InventoryOrderBLL();
         protected void Page_Load(object sender, EventArgs e)
@@ -69,7 +70,10 @@ namespace EMT.DoneNOW.Web.Inventory
 
                 var shipType= Request.Form["shipAddr"];
                 if (shipType == "0")
+                {
                     order.ship_to_type_id = (int)DicEnum.INVENTORY_ORDER_SHIP_ADDRESS_TYPE.WORK_ADDRESS;
+                    order.purchase_account_id = thisCompanyId;
+                }
                 else if (shipType == "1")
                     order.ship_to_type_id = (int)DicEnum.INVENTORY_ORDER_SHIP_ADDRESS_TYPE.OTHER_ADDRESS;
                 else if (shipType == "2")

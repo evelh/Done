@@ -23,6 +23,7 @@ namespace EMT.DoneNOW.DTO
         public long id;
         public long product_id;
         public long warehouse_id;
+        public long? costId;
         public string product;
         public string locationName;
         public int quantity;
