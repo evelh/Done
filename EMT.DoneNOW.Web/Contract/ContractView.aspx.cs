@@ -90,6 +90,10 @@ namespace EMT.DoneNOW.Web.Contract
                         viewContractIframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CONTRACT_PROJECT + "&type=" + (int)QueryType.CONTRACT_PROJECT + "&con1175=" + contract.id;
                         ShowTitle.Text = "合同项目-" + contract.name + (conAccount == null ? "" : $"({conAccount.name})");
                         break;
+                    case "exclusions":
+                        ShowTitle.Text = "例外因素-" + contract.name + (conAccount == null ? "" : $"({conAccount.name})");
+                        viewContractIframe.Src = "ContractExclusions?contract_id="+ contract.id;
+                        break;
                     default:
                         ShowTitle.Text = "摘要-" + contract.name;
                         viewContractIframe.Src = "ContractSummary.aspx?id=" + contract.id;

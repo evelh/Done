@@ -24,7 +24,7 @@
                     <li class="Button ButtonIcon NormalState" tabindex="0"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -33px 2px;" class="icon-1">&nbsp;&nbsp;&nbsp;&nbsp;</i>
                         <asp:Button ID="SaveClose" runat="server" Text="保存并关闭" BorderStyle="None" Style="outline: none; background: transparent; cursor: pointer; border: none;" OnClick="SaveClose_Click" />
                     </li>
-                    <li class="Button ButtonIcon NormalState" tabindex="0" id="ClosePage">
+                    <li class="Button ButtonIcon NormalState" tabindex="0" id="ClosePage" style="color: black;">
                     关闭    
                     </li>
 
@@ -84,8 +84,41 @@
                                         <%}
                                             else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
                                             {%>
+                                        <tr>
+                                            <td class="FieldLabels">
+                                                <label><%=udf.name %></label>
+                                                <div>
+                                                    <select id="<%=udf.id %>" name="<%=udf.id %>" style="width:150px;">
 
-                                        <%} %>
+                                                    
+                                        <%
+                                            if (udf.value_list != null && udf.value_list.Count > 0)
+                                            {
+
+                                                foreach (var thisUdfValue in udf.value_list)
+                                                {
+                                                    if (thisUdfValue.val == udfValue.ToString())
+                                                    {
+  %>
+                                                        
+                                                        <option value="<%=thisUdfValue.val %>" selected="selected"><%=thisUdfValue.show %></option>
+                                                     <%
+                                                    }
+                                                    else
+                                                    {
+                                                         %>
+                                                        
+                                                        <option value="<%=thisUdfValue.val %>"><%=thisUdfValue.show %></option>
+                                                     <%
+                                                    }
+                                                   
+                                                    }
+                                                }%></select>
+                                                     </div>
+                                            </td>
+                                        </tr>
+                                                    <%
+                                          } %>
                                         <tr>
                                             <td class="FieldLabels">
                                                 <label>修改原因</label>

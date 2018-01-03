@@ -1508,7 +1508,10 @@ namespace EMT.DoneNOW.DTO
     /// </summary>
     public enum CostCode
     {
+        // 1159
         ENTERTAINMENT_EXPENSE=17,    // 娱乐费用（招待费用）
         MILEAGE=18,             // 总里程
+        // 1161
+        CHANGEORDER=36,           // 变更
     }
 }

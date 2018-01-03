@@ -538,6 +538,10 @@ namespace EMT.DoneNOW.BLL
             {
                 thisTask.estimated_duration = GetDayByTime((long)thisTask.estimated_begin_time, Tools.Date.DateHelper.ToUniversalTimeStamp((DateTime)thisTask.estimated_end_date), (long)thisTask.project_id);
             }
+            else
+            {
+                thisTask.estimated_end_date = RetrunMaxTime((long)thisTask.project_id, Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time), (int)thisTask.estimated_duration);
+            }
             var user = UserInfoBLL.GetUserInfo(user_id);
             bool isPhase = thisTask.type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE;
             if (!isPhase)

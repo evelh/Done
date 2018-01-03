@@ -81,7 +81,7 @@
                 <li class="MenuLink"><a href="ContractView.aspx?id=<%=contract.id %>">摘要</a></li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=InternalCost&id=<%=contract.id %>">内部成本</a></li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=item&id=<%=contract.id %>">配置项</a></li>
-                <li class="MenuLink">例外因素-暂未实现</li>
+                <li class="MenuLink"><a href="ContractView.aspx?type=exclusions&id=<%=contract.id %>">例外因素</a></li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=charge&id=<%=contract.id %>">成本</a></li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=defaultCost&id=<%=contract.id %>">默认成本</a></li>
               <li class="MenuLink"><a href="ContractView.aspx?type=note&id=<%=contract.id %>">备注</a></li>

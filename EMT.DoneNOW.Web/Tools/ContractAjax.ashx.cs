@@ -194,6 +194,9 @@ namespace EMT.DoneNOW.Web
                         var gaAccId = context.Request.QueryString["cost_id"];
                         GetCostAccount(context,long.Parse(gaAccId));
                         break;
+                    case "SaveExclu":   // 保存合同例外因素信息
+                        SaveExclu(context);
+                        break;
                     default:
                         break;
                 }
@@ -765,6 +768,17 @@ namespace EMT.DoneNOW.Web
                 {
                     context.Response.Write(new Tools.Serialize().SerializeJson(account));
                 }
+            }
+        }
+        /// <summary>
+        /// 保存合同的例外因素
+        /// </summary>
+        private void SaveExclu(HttpContext context)
+        {
+            var contract_id = context.Request.QueryString["contract_id"];
+            if (!string.IsNullOrEmpty(contract_id))
+            {
+                
             }
         }
     }

@@ -717,11 +717,19 @@
                                         {
                                 %>
                                 <td>
-                                    <div class="Icon" style="background: url(../Images/Icons.png) no-repeat -86px -32px; height: 16px; width: 16px;" onclick="ShowAlarm('<%=id %>')"></div>
+                              <%--      <div class="Icon" style="background: url(../Images/Icons.png) no-repeat -86px -32px; height: 16px; width: 16px;" onclick="ShowAlarm('<%=id %>')"></div>--%>
                                 </td>
                                 <%
                                     }
-                                    else if (rslt[para.name].ToString() == "1")
+                                    else if (rslt[para.name].ToString() == "1"||rslt[para.name].ToString() == "2")
+                                    {
+                                %>
+                                <td>
+                                    <div class="Icon" style="background: url(../Images/Icons.png) no-repeat -86px -32px; height: 16px; width: 16px;" onclick="ShowAlarm('<%=id %>')"></div>
+                               <%--     <div class="Icon" style="background: url(../Images/Icons.png) no-repeat -70px -112px; height: 16px; width: 16px;" onclick="ShowAlarm('<%=id %>')"></div>--%>
+                                </td>
+                                <%
+                                    } else if (rslt[para.name].ToString() == "3")
                                     {
                                 %>
                                 <td>
@@ -1481,7 +1489,7 @@
         </div>
         <!--黑色幕布-->
         <div id="BackgroundOverLay"></div>
-        <div class="Dialog Large" style="margin-left: -442px; margin-top: -229px; z-index: 100; display: none;" id="ShowReason">
+        <div class="Dialog Large" style="margin-left: -370px; margin-top: -229px; z-index: 100; display: none;max-width:500px;" id="ShowReason">
             <div>
                 <div class="DialogContentContainer">
                     <div class="CancelDialogButton" id="CloseReason()"></div>
@@ -1522,7 +1530,7 @@
                                         </div>
                                         <div class="Editor TextArea" data-editor-id="" data-rdp="" style="top: 80px;">
                                             <div class="InputField">
-                                                <textarea class="Medium" id="taskReason" name="" placeholder="" data-val-required="Required" data-val-editor-id="" data-val-position="0" style="border: solid 1px #D7D7D7; padding: 0px 0 5px 0;"></textarea>
+                                                <textarea class="Medium" id="taskReason" name="" placeholder="" style="border: solid 1px #D7D7D7; padding: 0px 0 5px 0;max-width:330px;min-height:175px;"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -1803,7 +1811,7 @@
                                     <span style="display:block;margin: 10px 0px;"><input type="checkbox" id="DisAfterTask"/>将此任务与后续任务脱离关系</span>
                                 </div>
                                 <div>
-                                    <input  class="Button" type="button" id="ChangePreTask" value="确认更改"/>
+                                    <input  class="Button" type="button" id="ChangePreTask" value="确认更改" style="width: 65px;height: 30px;"/>
                                 </div>
                             </div>
                         </div>
@@ -2629,6 +2637,15 @@
         $("#ShowReason").hide();
         $("#BackgroundOverLay").hide();
     })
+    //// 任务的完成操作--
+    //$("#SaveAndCloseButton").click(function () {
+    //    var reason = $("#taskReason").val();
+    //    if (reason == "") {
+    //        LayerMsg("请填写任务完成原因");
+    //    } else {
+    //        ComPro(reason);
+    //    }
+    //})
 
     // 完成项目
     function ComPro(reason) {
@@ -2742,7 +2759,7 @@
         $("#SaveAndCloseButton").unbind("click").click(function () {
             var ids = GetChooseTaskId();
             if (ids == "") {
-                LayerMsg("前选择任务");
+                LayerMsg("请选择任务");
                 return false;
             }
             var reason = $("#taskReason").val();
@@ -2929,6 +2946,8 @@
             }
             menu = document.getElementById("taskMenu");
         }
+
+        // 是否需要输入开始结束时间相关
 
         var noTimeSetValue = '<%=(new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_ENTRY_REQUIRED).setting_value) %>';
         if (noTimeSetValue == '0') {
@@ -3136,7 +3155,7 @@
             $.ajax({
                 type: "GET",
                 async: false,
-                url: "../Tools/ProjectAjax.ashx?act=CompleteTask&ids=" + ids + "&reason=" + reason,
+                url: "../Tools/ProjectAjax.ashx?act=CompleteTask&ids=" + entityid + "&reason=" + reason,
                 success: function (data) {
                     if (data == "True") {
 
@@ -3198,7 +3217,8 @@
 
     function AddChangeOrder() {
         if (entityid != "" && entityid != undefined) {
-            window.open("../Contract/AddCharges.aspx?task_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConChargeAdd %>', 'left=200,top=200,width=1080,height=800', false);
+            // cost_code_id
+            window.open("../Contract/AddCharges.aspx?task_id=" + entityid +"&cost_code_id=<%=(int)EMT.DoneNOW.DTO.CostCode.CHANGEORDER %>", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConChargeAdd %>', 'left=200,top=200,width=1080,height=800', false);
         }
     }
 
@@ -3263,6 +3283,7 @@
        
         var isShow = 0;
         debugger;
+        // 在前驱任务之前完成
         $.ajax({
             type: "GET",
             async: false,
@@ -3274,7 +3295,7 @@
                 }
             },
          });
-        
+        // 任务有开始时间不早于 字段
          $.ajax({
              type: "GET",
              async: false,
@@ -3292,7 +3313,7 @@
              },
            
         });
-
+        // 检查任务的开始结束时间是否在节假日和周末时间内
          $.ajax({
              type: "GET",
              async: false,
@@ -3319,6 +3340,7 @@
              },
              
          });
+        // 任务计划范围内 负责人有请假记录
          $.ajax({
              type: "GET",
              async: false,
@@ -3375,6 +3397,8 @@
                         $("#ShowAlertTaskId").val("");
                         $("#qianquAlarm").hide();
                         $("#clearEarilyThan").hide();
+
+                        history.go(0);
                     },
                 });
             }

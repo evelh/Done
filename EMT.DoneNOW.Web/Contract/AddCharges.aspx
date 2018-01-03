@@ -566,6 +566,10 @@
     right: 0;
     display: none;
 }
+        a{
+            color: #376597;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -610,6 +614,7 @@
                                 <td colspan="2" style="color: red;">
                                     <div id="ShowMessage" style="display: none;">
                                         This contract charge is associated with a recurring purchase. You can only edit some of the fields on this page. If you need to edit Quantity, Unit Price, or Date Purchased, you will need to edit the associated recurring purchase.
+                                        这项合同费用与经常性购买有关。您只能编辑此页上的一些字段。如果您需要编辑数量，单价，或日期购买，您将需要编辑相关的经常性购买。 
                                     </div>
                                 </td>
                             </tr>
@@ -640,17 +645,17 @@
                                         <span class="errorSmallClass">*</span>
                                                     </span>
                                                     <div>
-                                                        <%
+                                                  <%--      <%
                                                             EMT.DoneNOW.Core.d_cost_code costCode = null;
                                                             if (!isAdd)
                                                             {
                                                                 costCode = new EMT.DoneNOW.DAL.d_cost_code_dal().FindNoDeleteById(conCost.cost_code_id);
                                                             }
-                                                        %>
-                                                        <input type="text" name="costName" id="costId" style="width: 294px;" value="<%=costCode!=null?costCode.name:"" %>">
+                                                        %>--%>
+                                                        <input type="text" name="costName" id="costId" style="width: 294px;" value="<%=costCode!=null?costCode.name:"" %>" />
 
                                                         <input type="hidden" name="cost_code_id" id="costIdHidden" value="<%=costCode!=null?costCode.id.ToString():"" %>" />
-                                                        <img src="../Images/data-selector.png" style="vertical-align: middle;" id="ChoosethisCostCode" onclick="ChooseCostCode()">
+                                                        <img src="../Images/data-selector.png" style="vertical-align: middle;" id="ChoosethisCostCode" onclick="ChooseCostCode()" />
                                                     </div>
                                                 </td>
                                             </tr>
@@ -1379,7 +1384,14 @@
             }
         }
 
-        <%}%>
+        <%} else {
+        if (costCode != null)
+        {
+            
+        %>
+        GetDataByCostCode();
+        <%
+        }}%>
         <%if ((!isAdd) && conCost.bill_status != null && conCost.bill_status == 1)
     { %>
         // 禁用全部控件，只可以修改状态，可以勾选创建配置项
@@ -1669,7 +1681,7 @@
                 success: function (data) {
                     if (data != "") {
                         debugger;
-
+                        $("#name").val(data.name);
                         if (data.unit_price != undefined && data.unit_price != "") {
                             $("#unit_price").val(toDecimal4(data.unit_price));
                         }
@@ -1789,13 +1801,22 @@
         <%}
     else
     {%>
+        var oldProduct = '<%=conCost!=null&&conCost.product_id!=null?((long)conCost.product_id).ToString():"" %>'; // ShowPickedPage
+        var product_idHidden = $("#product_idHidden").val();
+
         var quantity = $("#quantity").val();
         var oldQuan = '<%=conCost!=null&&conCost.quantity!=null?((decimal)conCost.quantity).ToString():"" %>';
+
+
         if (oldQuan != quantity) {
             LayerMsg("数量发生变更，请先进行保存再拣货");
             return false;
         }
         else {
+            if (oldProduct != product_idHidden && oldProduct != "") {
+                LayerMsg("产品变更，请先进行保存");
+                return false;
+            }
             var needNum = $("#NeedNum").html();
             if (Number(quantity) < Number(needNum)) {
                 $("#PickNum").val(parseInt(quantity));
@@ -2238,7 +2259,7 @@
     function getDate24Hours() {
         var myDate = new Date();
         var years = myDate.getFullYear();
-        var month = myDate.getMonth();
+        var month = myDate.getMonth()+1;
         var day = myDate.getDay();
         var hours = myDate.getHours();
         var minutes = myDate.getMinutes();

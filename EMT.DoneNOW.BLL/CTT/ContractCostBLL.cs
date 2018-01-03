@@ -1470,7 +1470,7 @@ namespace EMT.DoneNOW.BLL
             if (thisCost.status_id == (int)DicEnum.COST_STATUS.ALREADY_DELIVERED)
             {
                 var oldThisCost = _dal.FindNoDeleteById(thisCost.id);
-                thisCost.status_id = (int)DicEnum.COST_STATUS.ALREADY_DELIVERED;
+                thisCost.status_id = (int)DicEnum.COST_STATUS.PENDING_DELIVERY;
                 thisCost.update_time = timeNow;
                 thisCost.update_user_id = user_id;
                 _dal.Update(thisCost);

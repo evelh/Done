@@ -196,6 +196,7 @@
     <Content Include="Contract\ChargeDetails.aspx" />
     <Content Include="Contract\ContractAdd.aspx" />
     <Content Include="Contract\ContractCopy.aspx" />
+    <Content Include="Contract\ContractExclusions.aspx" />
     <Content Include="Contract\ContractMilestone.aspx" />
     <Content Include="Contract\ContractNoteShow.aspx" />
     <Content Include="Contract\ContractRenew.aspx" />
@@ -1161,6 +1162,13 @@
     </Compile>
     <Compile Include="Contract\ContractCopy.aspx.designer.cs">
       <DependentUpon>ContractCopy.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\ContractExclusions.aspx.cs">
+      <DependentUpon>ContractExclusions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\ContractExclusions.aspx.designer.cs">
+      <DependentUpon>ContractExclusions.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\ContractMilestone.aspx.cs">
       <DependentUpon>ContractMilestone.aspx</DependentUpon>

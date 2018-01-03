@@ -452,6 +452,7 @@
                                                             <tbody id="AddEntry">
                                                                 <%if (entryList != null && entryList.Count > 0)
                                                                     {
+                                                                        entryList = entryList.OrderBy(_ => _.start_time??0).ToList();
                                                                         foreach (var thisEnt in entryList)
                                                                         {%>
                                                                 <tr data-val="<%=thisEnt.id %>" class="PageAddPage" id="entryAdd_<%=thisEnt.id %>" onclick="EditThis('<%=thisEnt.id %>')">

@@ -19,6 +19,7 @@ namespace EMT.DoneNOW.Web.Contract
         protected pro_project thisProject = null;
         protected sdk_task thisTask = null;
         protected Dictionary<string, object> dic = new ContractBLL().GetField();
+        protected d_cost_code costCode = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -27,6 +28,14 @@ namespace EMT.DoneNOW.Web.Contract
                 var contract_id = Request.QueryString["contract_id"];
                 var project_id = Request.QueryString["project_id"];
                 var task_id = Request.QueryString["task_id"];
+
+                var costCodeId = Request.QueryString["cost_code_id"];
+                if (!string.IsNullOrEmpty(costCodeId))
+                {
+                    costCode = new d_cost_code_dal().FindNoDeleteById(long.Parse(costCodeId));
+
+                }
+
                 #region 下拉框赋值
                 cost_type_id.DataTextField = "show";
                 cost_type_id.DataValueField = "val";
@@ -38,10 +47,8 @@ namespace EMT.DoneNOW.Web.Contract
                 // status_id
                 status_id.DataTextField = "show";
                 status_id.DataValueField = "val";
-                status_id.DataSource = dic.FirstOrDefault(_ => _.Key == "chargeStatus").Value;
-                status_id.DataBind();
-                status_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
-                status_id.SelectedValue = ((int)DicEnum.COST_STATUS.PENDING_DELIVERY).ToString();
+                var statuList =   dic.FirstOrDefault(_ => _.Key == "chargeStatus").Value as List<DictionaryEntryDto>;
+               
                 #endregion
                 if (!string.IsNullOrEmpty(contract_id))
                 {
@@ -60,8 +67,11 @@ namespace EMT.DoneNOW.Web.Contract
                     if (conCost != null)
                     {
                         isAdd = false;
+                        costCode = new d_cost_code_dal().FindNoDeleteById(conCost.cost_code_id);
+
                         cost_type_id.SelectedValue = conCost.cost_type_id == null ? ((int)DicEnum.COST_TYPE.OPERATIONA).ToString() : conCost.cost_type_id.ToString();
                         status_id.SelectedValue = conCost.status_id.ToString();
+                        
                         if (conCost.contract_id != null) {
                             contract = new ctt_contract_dal().FindNoDeleteById((long)conCost.contract_id);
                         }
@@ -80,6 +90,18 @@ namespace EMT.DoneNOW.Web.Contract
                             AddConfigItem.Checked = conCost.create_ci == 1;
                         }
 
+                        if (conCost.status_id == (int)DicEnum.COST_STATUS.UNDETERMINED)
+                        {
+                            statuList = statuList.Where(_ => _.val == (conCost.status_id).ToString() || _.val == ((int)DicEnum.COST_STATUS.PENDING_PURCHASE).ToString() || _.val == ((int)DicEnum.COST_STATUS.CANCELED).ToString()).ToList();
+                        }else if (conCost.status_id == (int)DicEnum.COST_STATUS.CANCELED)
+                        {
+                            statuList = statuList.Where(_ => _.val == (conCost.status_id).ToString() || _.val == ((int)DicEnum.COST_STATUS.PENDING_PURCHASE).ToString() || _.val == ((int)DicEnum.COST_STATUS.CANCELED).ToString()).ToList();
+                        }
+                        else
+                        {
+                            statuList = statuList.Where(_ => _.val == (conCost.status_id).ToString() || _.val == ((int)DicEnum.COST_STATUS.CANCELED).ToString()).ToList();
+                        }
+
 
                     }
                 }
@@ -95,6 +117,11 @@ namespace EMT.DoneNOW.Web.Contract
                         thisProject = new pro_project_dal().FindNoDeleteById((long)thisTask.project_id);
                     }
                 }
+
+                status_id.DataSource = statuList;
+                status_id.DataBind();
+                //status_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+                status_id.SelectedValue = ((int)DicEnum.COST_STATUS.PENDING_DELIVERY).ToString();
 
             }
             catch (Exception)

@@ -21,7 +21,21 @@ namespace EMT.DoneNOW.DAL
         /// </summary>
         public List<sys_role> GetContarctNoRate(long contract_id)
         {
-            return FindListBySql($" SELECT * from sys_role where id not in(select c.role_id from ctt_contract_rate c where contract_id = 1389 and delete_time = 0 ) and delete_time = 0;");
+            return FindListBySql($" SELECT * from sys_role where id not in(select c.role_id from ctt_contract_rate c where contract_id = {contract_id} and delete_time = 0 ) and delete_time = 0;");
+        }
+        /// <summary>
+        /// 获取合同例外因素相关角色
+        /// </summary>
+        public List<sys_role> GetConExcRole(long contract_id)
+        {
+            return FindListBySql("SELECT * from sys_role where id  in (SELECT role_id FROM ctt_contract_exclusion_role WHERE contract_id=1377 AND delete_time=0) and delete_time = 0 ");
+        }
+        /// <summary>
+        /// 获取不在该合同例外因素内的角色
+        /// </summary>
+        public List<sys_role> GetNotConExcRole(long contract_id)
+        {
+            return FindListBySql("SELECT * from sys_role where id not in (SELECT role_id FROM ctt_contract_exclusion_role WHERE contract_id=1377 AND delete_time=0) and delete_time = 0 ");
         }
     }
 }

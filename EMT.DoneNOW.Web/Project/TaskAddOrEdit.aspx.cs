@@ -453,28 +453,36 @@ namespace EMT.DoneNOW.Web.Project
                     TimeSpan ts1 = new TimeSpan((DateTime.Parse(startString)).Ticks);
                     TimeSpan ts2 = new TimeSpan(((DateTime)pageTask.estimated_end_date).Ticks);
                     TimeSpan ts = ts1.Subtract(ts2).Duration();
-                
-                    //pageTask.estimated_duration = ts.Days + 1;
+
+                //pageTask.estimated_duration = ts.Days + 1;
                 // }
                 // RetrunMaxTime 计算结束时间
-                if (thisProject.use_resource_daily_hours == 1)  // 用工作量为固定工作任务计算时间
+                if (type_id != (int)DicEnum.TASK_TYPE.PROJECT_PHASE)
                 {
-                    decimal teaNum = 0;
-                    var dayWorkHours = (decimal)thisProject.resource_daily_hours;
-                    if (!string.IsNullOrEmpty(param.resDepIds))
+                    if (thisProject.use_resource_daily_hours == 1)  // 用工作量为固定工作任务计算时间
                     {
-                        teaNum += param.resDepIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Count();
-                    }
-                    if (pageTask.owner_resource_id != null)
-                    {
-                        teaNum += 1;
-                    }
-                    teaNum = teaNum == 0 ? 1 : teaNum;
-                    var workHours = pageTask.estimated_hours;
-                    pageTask.estimated_duration = (int)Math.Ceiling(((workHours/teaNum)/ dayWorkHours));
-                    pageTask.estimated_end_date = new TaskBLL().RetrunMaxTime(thisProject.id, DateTime.Parse(startString), (int)pageTask.estimated_duration);
+                        decimal teaNum = 0;
+                        var dayWorkHours = (decimal)thisProject.resource_daily_hours;
+                        if (!string.IsNullOrEmpty(param.resDepIds))
+                        {
+                            teaNum += param.resDepIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Count();
+                        }
+                        if (pageTask.owner_resource_id != null)
+                        {
+                            teaNum += 1;
+                        }
+                        teaNum = teaNum == 0 ? 1 : teaNum;
+                        var workHours = pageTask.estimated_hours;
+                        pageTask.estimated_duration = (int)Math.Ceiling(((workHours / teaNum) / dayWorkHours));
+                        pageTask.estimated_end_date = new TaskBLL().RetrunMaxTime(thisProject.id, DateTime.Parse(startString), (int)pageTask.estimated_duration);
 
+                    }
                 }
+                else
+                {
+                    pageTask.estimated_duration =new TaskBLL().GetDayByTime((long)pageTask.estimated_begin_time, Tools.Date.DateHelper.ToUniversalTimeStamp((DateTime)pageTask.estimated_end_date), (long)thisProject.id);
+                }
+                    
             
             }
             if (isAdd)

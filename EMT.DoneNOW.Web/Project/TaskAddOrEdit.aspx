@@ -1369,7 +1369,7 @@
                                         </div>
                                         <div class="Editor TextBox LabeledValue" data-editor-id="Duration">
                                             <div class="InputField">
-                                                <span class="Value"><%=isAdd ? "" : thisTask.estimated_hours.ToString("#0.00")  %></span><span class="CustomHtml"><div class="StandardText">days</div>
+                                                <span class="Value"><%=thisTask!=null&&thisTask.estimated_duration!=null?thisTask.estimated_duration.ToString():""  %></span><span class="CustomHtml"><div class="StandardText">days</div>
                                                 </span>
                                             </div>
                                         </div>
@@ -3174,19 +3174,22 @@
             <%}%>
         }
 
-
-
+        <%if (!(thisTask != null && thisTask.status_id == (int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE))
+    {%>
         if (status_id == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>') {
             // 系统设置
             <%var thisSet = new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.PRO_TASK_DONE_REASON);
     if (thisSet != null && thisSet.setting_value == "1")
     {%>
-            $("#CompletionReasonDialog").show();
-            $("#BackgroundOverLay").show();
+                $("#CompletionReasonDialog").show();
+                $("#BackgroundOverLay").show();
     <%}
     %>
             return false;
-        }
+            }
+        <%}%>
+
+    
                 <%}%>
 
 
