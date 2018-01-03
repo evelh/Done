@@ -612,7 +612,7 @@
                                                 {%>
                                         <tr height="20">
                                             <td width="65%" valign="top" class="FieldLabels" style="font-size: 12px; color: #4F4F4F; font-weight: bold;"><%=ann.name %></td>
-                                            <td width="20%" valign="top" class="FieldLabels" style="font-size: 12px; color: #4F4F4F; font-weight: bold;"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime(ann.start_date).ToString("yyyy-MM-dd") %></td>
+                                            <td width="20%" valign="top" class="FieldLabels" style="font-size: 12px; color: #4F4F4F; font-weight: bold;"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime(ann.create_time).ToString("yyyy-MM-dd") %></td>
                                             <% var thisRes = sysresList.FirstOrDefault(_ => _.val == ann.create_user_id.ToString()); %>
                                             <td width="15%" align="left" valign="top" class="FieldLabels" style="font-size: 12px; color: #4F4F4F; font-weight: bold;"><%=thisRes==null?"":thisRes.show %></td>
                                         </tr>

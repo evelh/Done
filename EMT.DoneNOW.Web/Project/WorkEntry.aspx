@@ -215,7 +215,7 @@
                                 <td rowspan="6" valign="bottom" style="padding-left: 20px; padding-bottom: 19px;">
                                     <% if (!noTime)
                                         {%>
-                                    <div id="tblStartStop" name="tblStartStop" style="position: relative; visibility: visible; display: block; background-color: rgb(240, 245, 251); border: 1px solid rgb(211, 211, 211); padding: 20px; width: 330px;">
+                                 <%--   <div id="tblStartStop" name="tblStartStop" style="position: relative; visibility: visible; display: block; background-color: rgb(240, 245, 251); border: 1px solid rgb(211, 211, 211); padding: 20px; width: 330px;">
                                         <table border="0" cellspacing="0" cellpadding="0">
                                             <tbody>
                                                 <tr>
@@ -278,7 +278,7 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </div>
+                                    </div>--%>
                                     <% }%>
                                 </td>
                             </tr>
@@ -388,8 +388,7 @@
                                 <td valign="top" align="center">
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0" id="Table6">
                                         <tbody>
-                                            <%if (noTime)
-                                                { %>
+                                            
 
                                             <tr>
                                                 <td colspan="2">
@@ -408,15 +407,12 @@
                                                                             估算差异
 							<span id="errorSmall">*</span>
                                                                         </div>
-                                                                        <div style="float: left; margin-left: 20px; min-width: 100px;">
+                                                                        <div style="float: left; margin-left: 20px; min-width: 100px;" id="yuguDiv">
                                                                             <%
                                                                                 if (v_task != null)
                                                                                 {
                                                                                     var esHours = v_task.remain_hours == null ? 0 : (decimal)v_task.remain_hours + v_task.worked_hours == null ? 0 : (decimal)v_task.worked_hours - v_task.change_Order_Hours == null ? 0 : (decimal)v_task.change_Order_Hours - v_task.estimated_hours == null ? 0 : (decimal)v_task.estimated_hours;
-                                                                            %><%=esHours.ToString("#0.00") %><%                                                                                                                                                                                                                                            }
-
-
-                                                                            %>
+                                                                            %><%=esHours.ToString("#0.00") %>                                                                                                                                                                                                                                           <%} %>
                                                                         </div>
                                                                     </td>
                                                                 </tr>
@@ -425,7 +421,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                                <%} %>
+                                               
                                             <tr>
                                                 <td width="50%" class="FieldLabels" colspan="2">
                                                     <div>
@@ -439,9 +435,18 @@
                                                                     <%if (noTime)
                                                                         { %>
                                                                     <th style="min-width: 100px;">工作时长</th>
+                                                                    <%}
+                                                                    else
+                                                                    { %>
+                                                                    <th style="min-width: 100px;">开始时间</th>
+                                                                    <th style="min-width: 100px;">结束时间</th>
+                                                                     <th style="min-width: 100px;">工作时长</th>
+                                                                    <th style="min-width: 100px;">偏移量</th>
+                                                                    <th style="min-width: 100px;">计费时长</th>
+                                                                   
                                                                     <%} %>
-                                                                    <th style="min-width: 100px;">工作说明</th>
-                                                                    <th style="min-width: 100px;">内部说明</th>
+                                                                <%--    <th style="min-width: 100px;">工作说明</th>
+                                                                    <th style="min-width: 100px;">内部说明</th>--%>
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="AddEntry">
@@ -457,9 +462,13 @@
                                                                       <%if (noTime)
                                                                           { %>
                                                                     <td><span id='entry_work_span_<%=thisEnt.id %>'><%=thisEnt.hours_worked != null ? ((decimal)thisEnt.hours_worked).ToString("#0.00") : "" %></span><input type='hidden' name='entry_work_hour_<%=thisEnt.id %>' id='entry_work_hour_<%=thisEnt.id %>' value='<%=thisEnt.hours_worked != null ? ((decimal)thisEnt.hours_worked).ToString("#0.00") : "" %>' /></td>
+                                                                    <%}
+                                                                        else
+                                                                        { %>
+                                                                   <td><span id='entry_start_date_span_<%=thisEnt.id %>'><%=thisEnt.end_time!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEnt.start_time).ToString("HH:mm"):DateTime.Now.ToString("HH:mm") %></span><input type='hidden' name='entry_start_date_<%=thisEnt.id %>' id='entry_start_date_<%=thisEnt.id %>' value='<%=thisEnt.end_time!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEnt.start_time).ToString("HH:mm"):DateTime.Now.ToString("HH:mm") %>' /></td><td><span id='entry_end_date_span_<%=thisEnt.id %>'><%=thisEnt.end_time!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEnt.end_time).ToString("HH:mm"):DateTime.Now.ToString("HH:mm") %></span><input type='hidden' name='entry_end_date_<%=thisEnt.id %>' id='entry_end_date_<%=thisEnt.id %>' value='<%=thisEnt.end_time!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEnt.end_time).ToString("HH:mm"):DateTime.Now.ToString("HH:mm") %>' /></td><td><span id='entry_worked_span_<%=thisEnt.id %>'><%=thisEnt.hours_worked==null?"0.00":((decimal)thisEnt.hours_worked).ToString("#0.00") %></span><input type='hidden' name='entry_worked_<%=thisEnt.id %>' id='entry_worked_<%=thisEnt.id %>' value='<%=thisEnt.hours_worked==null?"0.00":((decimal)thisEnt.hours_worked).ToString("#0.00") %>' /></td><td><span id='entry_offset_span_<%=thisEnt.id %>'><%=thisEnt.offset_hours.ToString("#0.00") %></span><input type='hidden' name='entry_offset_<%=thisEnt.id %>' id='entry_offset_<%=thisEnt.id %>' value='<%=thisEnt.offset_hours.ToString("#0.00") %>' /></td><td><span id='entry_billed_span_<%=thisEnt.id %>'><%=thisEnt.hours_billed==null?"0.00":((decimal)thisEnt.hours_billed).ToString("#0.00") %></span><input type='hidden' name='entry_billed_<%=thisEnt.id %>' id='entry_billed_<%=thisEnt.id %>' value='<%=thisEnt.hours_billed==null?"0.00":((decimal)thisEnt.hours_billed).ToString("#0.00") %>' /></td>
                                                                     <%} %>
-                                                                    <td><span id='entry_sum_note_<%=thisEnt.id %>'><%=thisEnt.summary_notes %></span> </td>
-                                                                    <td><span id='entry_ine_note_<%=thisEnt.id %>'><%=thisEnt.internal_notes %></span></td>
+                                                                 <%--   <td><span id='entry_sum_note_<%=thisEnt.id %>'><%=thisEnt.summary_notes %></span> </td>
+                                                                    <td><span id='entry_ine_note_<%=thisEnt.id %>'><%=thisEnt.internal_notes %></span></td>--%>
 
                                                                 </tr>
                                                                 <%}
@@ -472,18 +481,35 @@
                                                                 <tr>
                                                                     <td style="min-width: 15px;"></td>
                                                                     <td style="min-width: 50px;"> 
-                                                                        <input type="text" id="AddNewEntryDate" value="" onclick="WdatePicker()" /></td>
+                                                                        <input type="text" id="AddNewEntryDate" value="" onclick="WdatePicker()"  style="width:80px;"/></td>
                                                                     <%if (noTime)
                                                                         { %>
                                                                     <td style="min-width: 50px;">
                                                                         <input type="text" id="AddNewEntryWorkHour" value="" maxlength="5" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /></td>
+                                                                    <%}
+                                                                    else
+                                                                    {%>
+                                                                    <td style="min-width: 50px;">
+                                                                         <input type="text" size="8" id="AddNewEntryStartTime" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=DateTime.Now.ToString("HH:mm") %>" />&nbsp;<img src="../Images/time.png" border="0" style="vertical-align: middle; margin-bottom: 2px;" />
+                                                                    </td>
+                                                                    <td style="min-width: 50px;">
+                                                                    <input type="text"  id="AddNewEntryEndTime" size="8" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=DateTime.Now.ToString("HH:mm") %>" />&nbsp;<img src="../Images/time.png" border="0" style="vertical-align: middle; margin-bottom: 2px;" />  </td>
+                                                                    <td>
+                                                                        <input style="text-align: right; color: #6d6d6d; background-color: #dbdbdb;" type="text"  id="AddNewEntryHoursWorked" readonly="" value="<%="0.00" %>" />
+                                                                    </td>
+                                                                    <td>
+<input style="text-align: right;" type="text"  id="AddNewEntryOffsetHours" value="0.00" class="decimal2" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input style="text-align: right; color: #6d6d6d; background-color: #dbdbdb;" type="text" id="AddNewEntryHoursBilled" readonly="" value="0.00" />
+                                                                    </td>
                                                                     <%} %>
-                                                                    <td style="min-width: 100px;">
+                                                                <%--    <td style="min-width: 100px;">
                                                                         <textarea rows="3" id="AddNewEntrySumNote" style="resize: none;"></textarea> <img src="../Images/MagnifyPlus.png" id="img_AddNewEntrySumNote" class="ShowBigDiv" />
                                                                     </td>
                                                                     <td style="min-width: 100px;">
                                                                         <textarea rows="3" id="AddNewEntryIneNote" style="resize: none;"></textarea><img src="../Images/MagnifyPlus.png"  id="img_AddNewEntryIneNote" class="ShowBigDiv"/>
-                                                                    </td>
+                                                                    </td>--%>
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>
@@ -513,7 +539,7 @@
                                             <tr>
                                                 <td colspan="2" class="FieldLabels">
                                                     <div>
-                                                        <textarea name="summary_notes" tabindex="19" maxlength="1000" rows="9" style="width: 98%" id="summary_notes"><%=thisWorkEntry!=null?thisWorkEntry.summary_notes:"" %></textarea>
+                                                        <textarea name="summary_notes" tabindex="19" maxlength="1000" rows="9" style="width: 98%" id="summary_notes"></textarea>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -525,7 +551,7 @@
                                             <tr>
                                                 <td colspan="2" class="FieldLabels">
                                                     <div>
-                                                        <textarea name="internal_notes" tabindex="20" maxlength="1000" rows="6" style="width: 98%;" id="internal_notes"><%=thisWorkEntry==null?"":thisWorkEntry.internal_notes %></textarea>
+                                                        <textarea name="internal_notes" tabindex="20" maxlength="1000" rows="6" style="width: 98%;" id="internal_notes"></textarea>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -588,13 +614,13 @@
                                                                                     <td class="fieldLabels" width="357px" style="padding-left: 10px">
                                                                                         <div class="CheckBoxList">
 
-                                                                                            <div class="checkbox" style="padding-bottom: 0px;">
+                                                                                            <div class="checkbox" style="padding-bottom: 0px;display: none;">
                                                                                                 <input type="checkbox" name="ccDetail" id="ccDetail" checked="" origchecked="true">&nbsp;<span style="cursor: default;" onclick="document.form1.ccDetail.checked=!document.form1.ccDetail.checked">Include  Details from Summary tab</span>
                                                                                             </div>
                                                                                             <div class="checkbox" style="padding-bottom: 0px;">
                                                                                                 <input type="checkbox" name="ccNext" id="ccNext" checked="" origchecked="true">&nbsp;<span style="cursor: default;" onclick="document.form1.ccNext.checked=!document.form1.ccNext.checked">任务负责人</span>
                                                                                             </div>
-                                                                                            <div class="checkbox" style="padding-bottom: 0px;">
+                                                                                            <div class="checkbox" style="padding-bottom: 0px;display: none;">
                                                                                                 <input type="checkbox" name="ccForResource" id="ccForResource" style="visibility: visible;" disabled="" origchecked="true">&nbsp;<span style="cursor: default;" id="ForResourceName" onclick="if(!this.disabled) document.form1.ccForResource.checked=!document.form1.ccForResource.checked">li, li</span>
                                                                                             </div>
 
@@ -694,6 +720,11 @@
                     </table>
                 </div>
             </div>
+        </div>
+        <input type="hidden" id="shijiTime" value=""/>
+        <input type="hidden" id="yuguTime" value=""/>
+        <input type="hidden" id="bianTime" value=""/>
+        <input type="hidden" id="" value=""/>
     </form>
 </body>
 </html>
@@ -1011,7 +1042,7 @@
         }
     }
 
-    $("#tmeDate").blur(function () {
+    $("#AddNewEntryDate").blur(function () {
         var thisValue = $(this).val();
         if (thisValue == "") {
             thisValue = '<%=DateTime.Now.ToString("yyyy-MM-dd") %>';
@@ -1030,7 +1061,7 @@
         }
     })
 
-    $("#startTime").blur(function () {
+    $("#AddNewEntryStartTime").blur(function () {
         var thisValue = JiSuanBillHour();
         if (thisValue == "0") {
             $(thisValue).val("");
@@ -1038,7 +1069,7 @@
             JiSuanWorkHours();
         }
     })
-    $("#endTime").blur(function () {
+    $("#AddNewEntryEndTime").blur(function () {
         var thisValue = JiSuanBillHour();
         if (thisValue == "0") {
             $(thisValue).val("");
@@ -1046,15 +1077,15 @@
             JiSuanWorkHours();
         }
     })
-    $("#offset_hours").blur(function () {
+    $("#AddNewEntryOffsetHours").blur(function () {
         var thisValue = $(this).val();
         if (thisValue != "" && (!isNaN(thisValue))) {
-            var bills = $("#hours_billed").val();
+            var bills = $("#AddNewEntryHoursWorked").val();
             if (bills != "" && (!isNaN(bills))) {
                 var newBills = Number(bills) + Number(thisValue);
-                $("#hours_billed").val(toDecimal2(newBills));
+                $("#AddNewEntryHoursBilled").val(toDecimal2(newBills));
             } else {
-                $("#hours_billed").val(toDecimal2(thisValue));
+                $("#AddNewEntryHoursBilled").val(toDecimal2(thisValue));
             }
         }
     })
@@ -1064,9 +1095,9 @@
         // hours_billed
         // 根据系统设置进行判断如何取整
 
-        var startDate = $("#startTime").val();
-        var endDate = $("#endTime").val();
-        var dayDate = $("#tmeDate").val();
+        var startDate = $("#AddNewEntryStartTime").val();
+        var endDate = $("#AddNewEntryEndTime").val();
+        var dayDate = $("#AddNewEntryDate").val();
         if (startDate != "" && endDate != "" && dayDate != "") {
             startDate = dayDate + " " + startDate;
             endDate = dayDate + " " + endDate;
@@ -1098,25 +1129,25 @@
                 }
             }
 
-            var billOff = $("#offset_hours").val();
+            var billOff = $("#AddNewEntryOffsetHours").val();
             if (billOff != "" && (!isNaN(billOff))) {
                 bills = bills + Number(billOff);
             }
-            $("#hours_billed").val(toDecimal2(bills));
+            $("#AddNewEntryHoursBilled").val(toDecimal2(bills));
 
 
             return "1";
         } else {
-            $("#hours_billed").val("0.00");
+            $("#AddNewEntryHoursBilled").val("0.00");
             return "";
         }
     }
 
 
     function JiSuanWorkHours() {
-        var startDate = $("#startTime").val();
-        var endDate = $("#endTime").val();
-        var dayDate = $("#tmeDate").val();
+        var startDate = $("#AddNewEntryStartTime").val();
+        var endDate = $("#AddNewEntryEndTime").val();
+        var dayDate = $("#AddNewEntryDate").val();
         if (startDate != "" && endDate != "" && dayDate != "") {
             startDate = dayDate + " " + startDate;
             endDate = dayDate + " " + endDate;
@@ -1137,9 +1168,9 @@
                     bills = 24;
                 }
             }
-            $("#hours_worked").val(toDecimal2(bills));
+            $("#AddNewEntryHoursWorked").val(toDecimal2(bills));
         } else {
-            $("#hours_worked").val("0.00");
+            $("#AddNewEntryHoursWorked").val("0.00");
         }
     }
 
@@ -1177,39 +1208,39 @@
         }
         <% if (!noTime)
     { %>
-        var startTime = $("#startTime").val();
-        if (startTime == "" || startTime == null) {
-            LayerMsg("请填写开始时间！");
-            return false;
-        }// tmeDate
-        var endTime = $("#endTime").val();
-        if (endTime == "" || endTime == null) {
-            LayerMsg("请填写结束时间！");
-            return false;
-        }
-        var tmeDate = $("#tmeDate").val();
-        if (tmeDate == "" || tmeDate == null)
-        {
-            LayerMsg("请填写日期！");
-            return false;
-        }
+        //var startTime = $("#startTime").val();
+        //if (startTime == "" || startTime == null) {
+        //    LayerMsg("请填写开始时间！");
+        //    return false;
+        //}// tmeDate
+        //var endTime = $("#endTime").val();
+        //if (endTime == "" || endTime == null) {
+        //    LayerMsg("请填写结束时间！");
+        //    return false;
+        //}
+        //var tmeDate = $("#tmeDate").val();
+        //if (tmeDate == "" || tmeDate == null)
+        //{
+        //    LayerMsg("请填写日期！");
+        //    return false;
+        //}
 
-        var hours_worked = $("#hours_worked").val();
-        if (hours_worked == "") {
-            LayerMsg("请填写工作时长！");
-            return false;
-        }
-        if (isNaN(hours_worked) || Number(hours_worked) <= 0) {
-            LayerMsg("工作时长要大于0！");
-            return false;
-        }
+        //var hours_worked = $("#hours_worked").val();
+        //if (hours_worked == "") {
+        //    LayerMsg("请填写工作时长！");
+        //    return false;
+        //}
+        //if (isNaN(hours_worked) || Number(hours_worked) <= 0) {
+        //    LayerMsg("工作时长要大于0！");
+        //    return false;
+        //}
         <%}%>
         var remain_hours = $("#remain_hours").val();
         if (remain_hours == "" || remain_hours == null || remain_hours == undefined) {
             LayerMsg("请填写剩余时间！");
             return false;
         }
-        var workSummary1 = $("#summary_notes").val();
+     <%--   var workSummary1 = $("#summary_notes").val();
         if (workSummary1 == "" || workSummary1 == null) {
             var noteValue = '<%=new EMT.DoneNOW.BLL.SysSettingBLL().GetValueById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_REQUIRED_SUMMAY_NOTE) %>';
             if (noteValue == "1") {
@@ -1218,7 +1249,7 @@
                 return false;
                 <%}%>
             }
-        }
+        }--%>
 
 
 
@@ -1374,11 +1405,17 @@
             }
 
             $("#NewEntryAddDiv").show();
+            var AddNewEntryDate = $("#AddNewEntryDate").val();
+            if (AddNewEntryDate != "") {
+                $("#sumNotes1").html(AddNewEntryDate); 
+                $("#intNotes1").html(AddNewEntryDate);
+            }
 
         }
     }
     var entryAddNum = 0;
-    function SaveNewEntry(saveType, TrId) {  // saveType 代表新增还是修改
+    function SaveNewEntry() {  // saveType 代表新增还是修改
+        var saveType = "";
         var TrId = $("#PageMangeEntryId").val();
         if (TrId != "") {
             saveType = "Edit";
@@ -1398,13 +1435,42 @@
             LayerMsg("请填写工作时长");
             return false;
         }
+        <%}
+    else
+    {
+        %>
+        var AddNewEntryStartTime = $("#AddNewEntryStartTime").val();
+        if (AddNewEntryStartTime == "") {
+            LayerMsg("请填写开始时间");
+            return false;
+        }
+        var AddNewEntryEndTime = $("#AddNewEntryEndTime").val();
+        if (AddNewEntryEndTime == "") {
+            LayerMsg("请填写结束时间");
+            return false;
+        }
+        var AddNewEntryHoursWorked = $("#AddNewEntryHoursWorked").val();
+        if (AddNewEntryHoursWorked == "") {
+            LayerMsg("请填写工作时长");
+            return false;
+        }
+        if (Number(AddNewEntryHoursWorked) <= 0) {
+            LayerMsg("工作时长不能小于0 ");
+            return false;
+        }
+        if (Number(AddNewEntryHoursWorked) >= 24) {
+            LayerMsg("工作时长不能大于24");
+            return false;
+        }
+        var AddNewEntryOffsetHours = $("#AddNewEntryOffsetHours").val();
+        var AddNewEntryHoursBilled = $("#AddNewEntryHoursBilled").val();
         <%}%>
         if (Number(AddNewEntryWorkHour) <= 0 || Number(AddNewEntryWorkHour) >= 24) {
             LayerMsg("工作时长超出范围");
             return false;
         }
         
-        var sumNoteVals = $("#AddNewEntrySumNote").val();
+        var sumNoteVals = $("#summary_notes").val();
 
         if (sumNoteVals == "") {
             var noteValue = '<%=new EMT.DoneNOW.BLL.SysSettingBLL().GetValueById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_REQUIRED_SUMMAY_NOTE) %>';
@@ -1413,7 +1479,7 @@
                 return false;
             }
         }// 
-        var ineNoteVals = $("#AddNewEntryIneNote").val();
+        var ineNoteVals = $("#internal_notes").val();
         if (saveType == "Add") {
             entryAddNum--;
             // onclick=\"RemoveThis('" + entryAddNum + "')\"
@@ -1421,8 +1487,11 @@
             <%if (noTime)
     { %>
             addNewHtml+= "<td><span id='entry_work_span_" + entryAddNum + "'>" + AddNewEntryWorkHour + " </span><input type='hidden' name='entry_work_hour_" + entryAddNum + "' id='entry_work_hour_" + entryAddNum + "' value='" + AddNewEntryWorkHour + "' /></td>";
+            <%} else {%>
+            addNewHtml += "<td><span id='entry_start_date_span_" + entryAddNum + "'>" + AddNewEntryStartTime + "</span><input type='hidden' name='entry_start_date_" + entryAddNum + "' id='entry_start_date_" + entryAddNum + "' value='" + AddNewEntryStartTime + "' /></td><td><span id='entry_end_date_span_" + entryAddNum + "'>" + AddNewEntryEndTime + "</span><input type='hidden' name='entry_end_date_" + entryAddNum + "' id='entry_end_date_" + entryAddNum + "' value='" + AddNewEntryEndTime + "' /></td><td><span id='entry_worked_span_" + entryAddNum + "'>" + AddNewEntryHoursWorked + "</span><input type='hidden' name='entry_worked_" + entryAddNum + "' id='entry_worked_" + entryAddNum + "' value='" + AddNewEntryHoursWorked + "' /></td><td><span id='entry_offset_span_" + entryAddNum + "'>" + AddNewEntryOffsetHours + "</span><input type='hidden' name='entry_offset_" + entryAddNum + "' id='entry_offset_" + entryAddNum + "' value='" + AddNewEntryOffsetHours + "' /></td><td><span id='entry_billed_span_" + entryAddNum + "'>" + AddNewEntryHoursBilled+"</span><input type='hidden' name='entry_billed_" + entryAddNum + "' id='entry_billed_" + entryAddNum + "' value='" + AddNewEntryHoursBilled +"' /></td>";
             <%}%>
-            addNewHtml+= "<td><span id='entry_sum_note_" + entryAddNum + "'>" + sumNoteVals + "</span> </td > <td><span id='entry_ine_note_" + entryAddNum + "'>" + ineNoteVals + "</span></td></tr > ";
+            //<td><span id='entry_sum_note_" + entryAddNum + "'>" + sumNoteVals + "</span> </td > <td><span id='entry_ine_note_" + entryAddNum + "'>" + ineNoteVals + "</span></td>
+            addNewHtml+= "</tr> ";
             $("#AddEntry").append(addNewHtml);
             $(".RemoveThisTr").click(function (event) {
 
@@ -1434,8 +1503,8 @@
         else {
             $("#summ_" + TrId).val(sumNoteVals);
             $("#inter_" + TrId).val(ineNoteVals);
-            $("#entry_sum_note_" + TrId).html(sumNoteVals);
-            $("#entry_ine_note_" + TrId).html(ineNoteVals);
+            //$("#entry_sum_note_" + TrId).html(sumNoteVals);
+            //$("#entry_ine_note_" + TrId).html(ineNoteVals);
             $("#entry_date_span_" + TrId).html(AddNewEntryDate);
             $("#entry_date_" + TrId).val(AddNewEntryDate);
             <%if (noTime)
@@ -1449,6 +1518,11 @@
         $("#PageMangeEntryId").val("");
         $("#IsHasEntryAdd").val("");
         $("#NewEntryAddDiv").hide();
+
+        $("#sumNotes1").html("");
+        $("#intNotes1").html("");
+        $("#summary_notes").val("");
+        $("#internal_notes").val("");
         return true;
     }
     // 移除新增的工时
@@ -1481,13 +1555,28 @@
 
         }
         else {
-            $("#AddNewEntryDate").val($("#entry_date_" + TrId).val());
+            var thisDate = $("#entry_date_" + TrId).val();
+            $("#AddNewEntryDate").val(thisDate);
             <%if (noTime)
     { %>
             $("#AddNewEntryWorkHour").val($("#entry_work_hour_" + TrId).val());
+            <%}
+    else
+    {%>
+            $("#AddNewEntryStartTime").val($("#entry_start_date_" + TrId).val());
+            $("#AddNewEntryEndTime").val($("#entry_end_date_" + TrId).val());
+            $("#AddNewEntryHoursWorked").val($("#entry_worked_" + TrId).val());
+            $("#AddNewEntryOffsetHours").val($("#entry_offset_" + TrId).val());
+            $("#AddNewEntryHoursBilled").val($("#entry_billed_" + TrId).val());
             <%}%>
-            $("#AddNewEntrySumNote").val($("#summ_" + TrId).val());
-            $("#AddNewEntryIneNote").val($("#inter_" + TrId).val());
+            //$("#AddNewEntrySumNote").val($("#summ_" + TrId).val());
+            //$("#AddNewEntryIneNote").val($("#inter_" + TrId).val());
+
+            $("#summary_notes").val($("#summ_" + TrId).val());
+            $("#internal_notes").val($("#inter_" + TrId).val());
+
+            $("#sumNotes1").html(thisDate);
+            $("#intNotes1").html(thisDate);
 
             $("#entryAdd_" + TrId).hide();
             $("#IsHasEntryAdd").val("1");
@@ -1502,6 +1591,10 @@
         $("#NewEntryAddDiv").hide(); 
         $("#IsHasEntryAdd").val("");
         $("#PageMangeEntryId").val("");
+        $("#sumNotes1").html("");
+        $("#intNotes1").html("");
+        $("#summary_notes").val("");
+        $("#internal_notes").val("");
         
     }
     //$("#SumOpenBigDiv").click(function () {
@@ -1532,4 +1625,76 @@
         $("#BigTextDiv").hide();
     })
 
+    // 根据改变的task的值，动态获取剩余时间
+    $("#task_id").change(function () {
+        var thisTaskId = $(this).val();
+        if (thisTaskId != "" && thisTaskId != "0" && thisTaskId != undefined) {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ProjectAjax.ashx?act=GetVTask&task_id=" + thisTaskId,
+                dataType:"json",
+                success: function (data) {
+                    if (data != "" ) {
+                        if (data.remain_hours != undefined && data.remain_hours != null) {
+                            $("#remain_hours").val(toDecimal2(data.remain_hours));
+                        } else {
+                            $("#remain_hours").val("");
+                        }
+                        if (data.worked_hours != null) {
+                            $("#shijiTime").val(toDecimal2(data.worked_hours));
+                        } else {
+                            $("#shijiTime").val("0");
+                        }
+                        // change_Order_Hours
+                        if (data.estimated_hours != null) {
+                            $("#yuguTime").val(toDecimal2(data.estimated_hours));
+                        } else {
+                            $("#yuguTime").val("0");
+                        }
+                        if (data.change_Order_Hours != null) {
+                            $("#bianTime").val(toDecimal2(data.change_Order_Hours));
+                        } else {
+                            $("#bianTime").val("0");
+                        }
+                        $("#yuguDiv").html("");
+                    }
+                    else {
+                        $("#remain_hours").val("");
+                        $("#shijiTime").val("");
+                        $("#yuguTime").val("");
+                        $("#bianTime").val("");
+                        $("#yuguDiv").html("");
+                    }
+                },
+            });
+        }
+        else {
+            $("#remain_hours").val("");
+            $("#remain_hours").val("");
+            $("#shijiTime").val("");
+            $("#yuguTime").val("");
+            $("#bianTime").val("");
+            $("#yuguDiv").html("");
+        }
+        EsDiff();
+    })
+    $("#remain_hours").blur(function () {
+        EsDiff();
+    })
+
+    function EsDiff() {
+        var remain_hours = $("#remain_hours").val();
+        var shijiTime = $("#shijiTime").val();
+        var yuguTime = $("#yuguTime").val();
+        var bianTime = $("#bianTime").val();
+
+        if (remain_hours != "" && shijiTime != "" && yuguTime != "" && bianTime != "") {
+
+            var total = Number(remain_hours) + Number(shijiTime) - Number(yuguTime) - Number(bianTime);
+            $("#yuguDiv").html(toDecimal2(total));
+        } else {
+            $("#yuguDiv").html("");
+        }
+    }
 </script>

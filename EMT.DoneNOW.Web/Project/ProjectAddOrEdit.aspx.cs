@@ -24,6 +24,7 @@ namespace EMT.DoneNOW.Web.Project
         protected string thisType = ""; // 项目的类型--type_id
         protected string isFromTemp = ""; // 入口是否从模板添加
         protected string isTemp = "";     // 是否添加模板-- 模板
+        protected string callBaclFunction = "";
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -57,9 +58,14 @@ namespace EMT.DoneNOW.Web.Project
                 //        return;
                 //    }
                 //}
+                var accountIdString = Request.QueryString["account_id"];
+                if (!string.IsNullOrEmpty(accountIdString))
+                {
+                    account = new CompanyBLL().GetCompany(long.Parse(accountIdString));
+                }
+                callBaclFunction = Request.QueryString["callFunc"];
 
-
-                    isFromTemp = Request.QueryString["isFromTemp"];
+                isFromTemp = Request.QueryString["isFromTemp"];
                 isTemp = Request.QueryString["isTemp"];
                
 
@@ -424,6 +430,10 @@ namespace EMT.DoneNOW.Web.Project
             if (param.project.id == 0)
             {
                 result = new ProjectBLL().AddPro(param, GetLoginUserId());
+                if (!string.IsNullOrEmpty(callBaclFunction) && param.project_id != null)
+                {
+                    Response.Write("<script>window.opener." + callBaclFunction + "('" + param.project_id + "');</script>");
+                }
             }
             else
             {
@@ -437,11 +447,16 @@ namespace EMT.DoneNOW.Web.Project
             var result = Save();
             if (result)
             {
-                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存项目成功！');window.close();self.opener.location.reload();</script>");
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存项目成功！');window.close();</script>");
+                
             }
             else
             {
-                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存项目失败！');window.close();self.opener.location.reload();</script>");
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存项目失败！');window.close();</script>");
+            }
+            if (string.IsNullOrEmpty(callBaclFunction))
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "刷新主页面", "<script>self.opener.location.reload();</script>");
             }
         }
     }

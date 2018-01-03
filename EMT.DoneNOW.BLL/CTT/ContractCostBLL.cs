@@ -592,7 +592,7 @@ namespace EMT.DoneNOW.BLL
 
                         if (IsAddNum)
                         {
-                            // 带采购
+                            // 待采购
                             thisCost.status_id = (int)DicEnum.COST_STATUS.PENDING_PURCHASE;
                         }
                     }

@@ -213,7 +213,7 @@ namespace EMT.DoneNOW.BLL
                     foreach (var thisPageWare in wareDic)
                     {
                         var thisWareHouse = iwDal.FindNoDeleteById(thisPageWare.Key);
-                        if (thisWareHouse != null)
+                        if (thisWareHouse != null&& thisPageWare.Value!=0)
                         {
                             var thisReserve = new ivt_reserve()
                             {
@@ -518,6 +518,12 @@ namespace EMT.DoneNOW.BLL
                                 oldReserList.Remove(thisOldReser);
                                 if (thisWareHouse != null)
                                 {
+                                    if (thisPageWare.Value == 0)
+                                    {
+                                        irDal.SoftDelete(thisOldReser, user_id);
+                                        OperLogBLL.OperLogDelete<ivt_reserve>(thisOldReser, thisOldReser.id, user_id, OPER_LOG_OBJ_CATE.WAREHOUSE_RESERVE, "删除库存预留");
+                                        continue;
+                                    }
                                     if (thisOldReser.quantity != thisPageWare.Value || thisOldReser.resource_id != thisWareHouse.resource_id)
                                     {
                                         thisOldReser.quantity = thisPageWare.Value;
@@ -531,7 +537,7 @@ namespace EMT.DoneNOW.BLL
                             else
                             {
 
-                                if (thisWareHouse != null)
+                                if (thisWareHouse != null&& thisPageWare.Value!=0)
                                 {
                                     var thisReserve = new ivt_reserve()
                                     {

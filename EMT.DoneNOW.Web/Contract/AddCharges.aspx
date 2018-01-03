@@ -1647,6 +1647,9 @@
                 },
             });
             <%}%>
+
+
+
         }
     }
     // costIdHidden  costId
@@ -1753,10 +1756,10 @@
                         for (var i = 0; i < data.length; i++) {
                             pageHtml += "<tr><td>" + data[i].wareName + "</td><td>" + data[i].onHand + "</td><td>" + data[i].picked + "</td><td>" + data[i].available + "</td>";
                              <% if (!isAdd && conCost.quantity != 0)
-    { %>
+                             { %>
                             pageHtml += "<td>";
                             if (Number(data[i].available) > 0) {
-                                pageHtml += "<a onclick=\"ShowPickedPage('" + data[i].ware_id + "','" + data[i].wareName + "')\">拣货</a>";
+                                pageHtml += "<a onclick=\"ShowPickedPage('" + data[i].ware_id + "','" + data[i].wareName + "','" + data[i].available+"')\">拣货</a>";
                                 pageHtml += "<input type='hidden' id='" + data[i].ware_id + "_pick_avail' value='" + data[i].available + "'/>";
                             }
 
@@ -1779,18 +1782,35 @@
         }
     }
     // 展示拣货弹出框
-    function ShowPickedPage(ware_id, ware_name) {
+    function ShowPickedPage(ware_id, ware_name, available) {
           <%if (isAdd)
     { %>
         LayerMsg("请先进行保存");
         <%}
     else
     {%>
-        $("#BackgroundOverLay").show();
-        $("#ShoePickPageDialog").show();
-        $("#lblFromLocation").html(ware_name);
-        $("#pickWareId").val(ware_id);
+        var quantity = $("#quantity").val();
+        var oldQuan = '<%=conCost!=null&&conCost.quantity!=null?((decimal)conCost.quantity).ToString():"" %>';
+        if (oldQuan != quantity) {
+            LayerMsg("数量发生变更，请先进行保存再拣货");
+            return false;
+        }
+        else {
+            var needNum = $("#NeedNum").html();
+            if (Number(quantity) < Number(needNum)) {
+                $("#PickNum").val(parseInt(quantity));
+            }
+            else {
+                $("#PickNum").val(parseInt(needNum));
+            }
+            
+            $("#BackgroundOverLay").show();
+            $("#ShoePickPageDialog").show();
+            $("#lblFromLocation").html(ware_name);
+            $("#pickWareId").val(ware_id);
         // $("#ShoePickPageDialog").show();
+        }
+        
         <%}%>
 
     }
@@ -1972,8 +1992,7 @@
         var unPickIds = "";
         var isShow = $("#ShowSerSelect").val();
         if (isShow == "") {
-            alert(1);
-            return false;
+           
         }
         else {
             unPickIds = $("#UnPickSerNumIdsHidden").val();
@@ -2510,7 +2529,7 @@
                     var shipNum = 0;
                     for (var i = 0; i < data.length; i++) {
                         shipNum += Number(data[i].quantity);
-                        pickHtml += "<tr><td>" + data[i].wareName + "</td><td>" + data[i].sn + "</td><td>" + data[i].quantity + "</td><td>" + (data[i].vendorNo == null ? "" : data[i].vendorNo) + "</td><td>" + data[i].statusName + "</td>";
+                        pickHtml += "<tr><td>" + data[i].wareName + "</td><td>" + (data[i].sn == null ? "" : data[i].sn) + "</td><td>" + data[i].quantity + "</td><td>" + (data[i].vendorNo == null ? "" : data[i].vendorNo) + "</td><td>" + data[i].statusName + "</td>";
 
                         <%--if (data[i].statusId == '<%=(int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_COST_PRODUCT_STATUS.PICKED %>' || data[i].statusId == '<%=(int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_COST_PRODUCT_STATUS.ON_ORDER %>')--%>
                         if (data[i].statusId != '<%=(int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_COST_PRODUCT_STATUS.DISTRIBUTION %>')
@@ -2534,13 +2553,20 @@
                         pickHtml += "<td></td></tr>";
                     }
                     var NeedNum = $("#NeedNum").html();
-                    if (NeedNum != "") {
+                    if (NeedNum != "")
+                    {
                         if (Number(shipNum) == Number(NeedNum)) {
                             $("#AssignSectionHeader").hide();
                         } else {
                             $("#NeedNum").html((Number(NeedNum) - Number(shipNum)));
                         }
                         $("#pickedNum").html(Number(shipNum));
+                    }
+                    if (Number(shipNum) == 0) {
+                        $("#ShowPiecedDiv").hide();
+                    }
+                    if ((Number(NeedNum) - Number(shipNum)) == 0) {
+                        $("#AssignSectionHeader").hide();
                     }
 
                     $("#PickedTbody").html(pickHtml);

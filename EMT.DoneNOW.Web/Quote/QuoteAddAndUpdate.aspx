@@ -87,7 +87,7 @@
                         <td>
                             <div class="clear">
                                 <label>报价名称<span class="red">*</span></label>
-                                <input type="text" name="name" id="name" value="<%=isAdd?(opportunity==null?opportunity.name:""):quote.name %>" />
+                                <input type="text" name="name" id="name" value="<%=isAdd?(opportunity!=null?opportunity.name:""):quote.name %>" />
                             </div>
                         </td>
                         <td></td>
@@ -187,6 +187,8 @@
                                 <select name="project_id" id="project_id">
                                 </select>
                                 <input type="hidden" name="project_idHidden" id="project_idHidden" value="<%=(!isAdd&&quote.project_id!=null)?quote.project_id.ToString():"" %>"/>
+                                <i onclick="AddProjectProposal()" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
+                                <i onclick="AddProposalFromTemp()" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -128px 0;"></i>
                              <%--   <i onclick="javascript:window.open('../Contact/AddContact.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>--%>
                             </div>
                         </td>
@@ -735,6 +737,56 @@
         else {
             $("#project_id").html("<option value='0'>暂无项目提案</option>");
         }
+    }
+    // 添加项目提案
+    function AddProjectProposal() {
+        var account_id = $("#ParentComoanyNameHidden").val();
+        if (account_id != "") {
+            window.open("../Project/ProjectAddOrEdit.aspx?callFunc=NameProject&type_id=<%=(int)EMT.DoneNOW.DTO.DicEnum.PROJECT_TYPE.PROJECT_DAY %>&account_id=" + account_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.PROJECT_ADD %>', 'left=200,top=200,width=600,height=800', false);
+        }
+    }
+
+    function AddProposalFromTemp() {
+        var account_id = $("#ParentComoanyNameHidden").val();
+        if (account_id != "") {
+            window.open("../Project/ProjectAddOrEdit.aspx?callFunc=NameProject&type_id=<%=(int)EMT.DoneNOW.DTO.DicEnum.PROJECT_TYPE.PROJECT_DAY %>&isFromTemp=1&account_id=" + account_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.PROJECT_ADD %>', 'left=200,top=200,width=600,height=800', false);
+        }
+    }
+
+
+
+     function NameProject(id) {
+        //var values = document.getElementById("opportunity_id");
+        //var thisOption = new Option(name, id);
+        //values.add(thisOption);
+        var account_id = $("#ParentComoanyNameHidden").val();
+        if (account_id != "") {
+            var oldValue = $("#project_id").val();
+            $("#project_id").html("<option value='0'>暂无项目提案</option>");
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/CompanyAjax.ashx?act=project&account_id=" + account_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "") {
+                        $("#project_id").html(data);
+                    }
+
+                },
+            });
+            $("#project_id option").each(function () {
+                if ($(this).val() == id) {
+                    oldValue = id;
+                }
+            })
+            $("#project_id").val(oldValue);
+
+
+        } else {
+            $("#project_id").html("<option value='0'>暂无项目提案</option>");
+        }
+
     }
 
     function GetDataByOp() {

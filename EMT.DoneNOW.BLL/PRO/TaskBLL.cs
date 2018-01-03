@@ -2511,15 +2511,15 @@ namespace EMT.DoneNOW.BLL
                 newEntry.update_user_id = user_id;
                 newEntry.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 newEntry.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                if (newEntry.hours_worked != null)
-                {
-                    new sdk_work_entry_dal().Insert(newEntry);
-                    OperLogBLL.OperLogAdd<sdk_work_entry>(newEntry, newEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "新增工时");
-                    if(thisContract!=null&& thisContract.bill_post_type_id != null)
-                    {
-                        new ApproveAndPostBLL().PostWorkEntry(newEntry.id,Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd")),user_id,"A");
-                    }
-                }
+                //if (newEntry.hours_worked != null)
+                //{
+                //    new sdk_work_entry_dal().Insert(newEntry);
+                //    OperLogBLL.OperLogAdd<sdk_work_entry>(newEntry, newEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "新增工时");
+                //    if (thisContract != null && thisContract.bill_post_type_id != null)
+                //    {
+                //        new ApproveAndPostBLL().PostWorkEntry(newEntry.id, Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd")), user_id, "A");
+                //    }
+                //}
 
 
                 #region 页面批量新增操作
@@ -2534,12 +2534,13 @@ namespace EMT.DoneNOW.BLL
                         newEntry.summary_notes = thisEnt.sumNote;
                         newEntry.internal_notes = thisEnt.ineNote;
                         newEntry.batch_id = thisBatchId;
-                        newEntry.start_time = Tools.Date.DateHelper.ToUniversalTimeStamp(thisEnt.time);
-                        newEntry.offset_hours = 0;
-                        newEntry.hours_billed = thisEnt.workHours;
+                        newEntry.start_time = thisEnt.startDate??Tools.Date.DateHelper.ToUniversalTimeStamp(thisEnt.time);
+                        newEntry.offset_hours = thisEnt.offset;
+                        newEntry.end_time = thisEnt.endDate;
+                        newEntry.hours_billed = thisEnt.billHours?? (thisEnt.workHours+ thisEnt.offset);
                         new sdk_work_entry_dal().Insert(newEntry);
                         OperLogBLL.OperLogAdd<sdk_work_entry>(newEntry, newEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "新增工时");
-                        if (thisContract != null && thisContract.bill_post_type_id != null)
+                        if (thisContract != null && thisContract.bill_post_type_id == (int)DicEnum.BILL_POST_TYPE.BILL_NOW)
                         {
                             new ApproveAndPostBLL().PostWorkEntry(newEntry.id, Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd")), user_id, "A");
                         }
@@ -2744,14 +2745,19 @@ namespace EMT.DoneNOW.BLL
                                     newEntry.summary_notes = thisEnt.sumNote;
                                     newEntry.internal_notes = thisEnt.ineNote;
                                     newEntry.hours_worked = thisEnt.workHours;
-                                    newEntry.hours_billed = thisEntry.hours_worked;
+                                    //newEntry.hours_billed = thisEntry.hours_worked;
+                                    newEntry.start_time = thisEnt.startDate ?? Tools.Date.DateHelper.ToUniversalTimeStamp(thisEnt.time);
+                                    newEntry.offset_hours = thisEnt.offset;
+                                    newEntry.end_time = thisEnt.endDate;
+                                    newEntry.hours_billed = thisEnt.billHours ?? (thisEnt.workHours + thisEnt.offset);
                                     if (pageStartTime == null)
                                     {
                                         newEntry.start_time = Tools.Date.DateHelper.ToUniversalTimeStamp(thisEnt.time);
                                     }
                                     sweDal.Update(newEntry);
                                     OperLogBLL.OperLogUpdate<sdk_work_entry>(newEntry, thisEntry, thisEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "工时修改");
-                                    if (thisContract != null && thisContract.bill_post_type_id != null&& newEntry.approve_and_post_date==null&& newEntry.approve_and_post_user_id==null)
+
+                                    if (thisContract != null && thisContract.bill_post_type_id == (int)DicEnum.BILL_POST_TYPE.BILL_NOW && newEntry.approve_and_post_date==null&& newEntry.approve_and_post_user_id==null)
                                     {
                                         new ApproveAndPostBLL().PostWorkEntry(newEntry.id, Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd")), user_id, "A");
                                     }

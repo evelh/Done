@@ -2814,7 +2814,7 @@ namespace EMT.DoneNOW.BLL
                     if (cc.type_id == (int)CONTRACT_TYPE.RETAINER)
                     {
                         //统计预付表中的预付剩余
-                        var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={cc.id} and b.status_id=1");
+                        var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={cc.id} and b.status_id=1 and b.start_date <=(select FROM_UNIXTIME(UNIX_TIMESTAMP(),'%Y-%m-%d' )) and b.end_date >=(select FROM_UNIXTIME(UNIX_TIMESTAMP(),'%Y-%m-%d' ))");
                         decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
 
                         if (thisEntry.hours_billed == null || (thisEntry.hours_billed * (thisEntryRate == null ? 0 : (decimal)thisEntryRate)) < extended_price)
@@ -2976,12 +2976,12 @@ namespace EMT.DoneNOW.BLL
                     {
                         if (thisContract.type_id == (int)CONTRACT_TYPE.RETAINER)
                         {
-                            var re = sweDal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0 ),0),2)) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={thisContract.id} and b.status_id=1");
+                            var re = sweDal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0 ),0),2)) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={thisContract.id} and b.status_id=1 and b.start_date <=(select FROM_UNIXTIME(UNIX_TIMESTAMP(),'%Y-%m-%d' )) and b.end_date >=(select FROM_UNIXTIME(UNIX_TIMESTAMP(),'%Y-%m-%d' ))");
                             decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
 
                             var thisEntryRate = new ContractRateBLL().GetRateByCodeAndRole((long)oldEntry.cost_code_id, (long)oldEntry.role_id);
                             var totalMoney = oldEntry.hours_billed * thisEntryRate;  // 这个工时的总额
-                            var block_hours = sweDal.ExecuteDataTable($"SELECT b.id,round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={thisContract.id} and b.status_id=1 ORDER BY b.start_date");
+                            var block_hours = sweDal.ExecuteDataTable($"SELECT b.id,round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={thisContract.id} and b.status_id=1 and b.start_date <=(select FROM_UNIXTIME(UNIX_TIMESTAMP(),'%Y-%m-%d' )) and b.end_date >=(select FROM_UNIXTIME(UNIX_TIMESTAMP(),'%Y-%m-%d' )) ORDER BY b.start_date");
                             foreach (DataRow i in block_hours.Rows)
                             {
                                 if (i[1] != null && Convert.ToDecimal(i[1]) > 0)
@@ -3340,11 +3340,12 @@ namespace EMT.DoneNOW.BLL
                         }
                         else if (thisContract.type_id == (int)CONTRACT_TYPE.BLOCK_HOURS)
                         {
-                            var re = sweDal.ExecuteDataTable($"SELECT sum(round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={thisContract.id} and b.status_id=1");
+                            // 预付时间不在有效期内不使用
+                            var re = sweDal.ExecuteDataTable($"SELECT sum(round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={thisContract.id} and b.status_id=1 and b.start_date <=(select FROM_UNIXTIME(UNIX_TIMESTAMP(),'%Y-%m-%d' )) and b.end_date >=(select FROM_UNIXTIME(UNIX_TIMESTAMP(),'%Y-%m-%d' ))");
                             decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
                             var thisEntryRate = new ContractRateBLL().GetRateByCodeAndRole((long)oldEntry.cost_code_id, (long)oldEntry.role_id);
                             var totalMoney = oldEntry.hours_billed * thisEntryRate;  // 这个工时的总额
-                            var block_hours = sweDal.ExecuteDataTable($"SELECT b.id,round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={thisContract.id} and b.status_id=1 ORDER BY b.start_date");
+                            var block_hours = sweDal.ExecuteDataTable($"SELECT b.id,round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={thisContract.id} and b.status_id=1 and b.start_date <=(select FROM_UNIXTIME(UNIX_TIMESTAMP(),'%Y-%m-%d' )) and b.end_date >=(select FROM_UNIXTIME(UNIX_TIMESTAMP(),'%Y-%m-%d' )) ORDER BY b.start_date");
                             foreach (DataRow i in block_hours.Rows)
                             {
                                 if (i[1] != null && Convert.ToDecimal(i[1]) > 0)

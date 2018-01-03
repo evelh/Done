@@ -124,7 +124,10 @@ namespace EMT.DoneNOW.Web.Opportunity
 
                 if (!isAdd)
                 {
-                   opportunity_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.OPPORTUNITY, opportunity.id, opportunity_udfList);
+                    opportunity_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.OPPORTUNITY, opportunity.id, opportunity_udfList);
+                    if (!IsPostBack)
+                    {
+                      
                     resource_id.SelectedValue = opportunity.resource_id.ToString();
                     stage_id.SelectedValue = opportunity.stage_id == null ? "0" : opportunity.stage_id.ToString();
                     interest_degree_id.SelectedValue = opportunity.interest_degree_id == null ? "0" : opportunity.interest_degree_id.ToString();
@@ -134,8 +137,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                     win_reason_type_id.SelectedValue = opportunity.win_reason_type_id == null ? "0" : opportunity.win_reason_type_id.ToString();
                     loss_reason_type_id.SelectedValue = opportunity.loss_reason_type_id == null ? "0" : opportunity.loss_reason_type_id.ToString();
                     spread_unit.SelectedValue = opportunity.spread_unit;
-                    if (!IsPostBack)
-                    {
+                    
                         is_use_quote.Checked = opportunity.use_quote == 1;
                     }
                 }
@@ -157,7 +159,7 @@ namespace EMT.DoneNOW.Web.Opportunity
 
                 }
             }
-            catch (Exception)
+            catch (Exception msg)
             {
 
                 Response.End();

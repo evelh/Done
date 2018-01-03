@@ -48,7 +48,7 @@ namespace EMT.DoneNOW.DAL
         /// </summary>
         public crm_sales_order GetOrderByCostId(long cost_id)
         {
-            return FindSignleBySql<crm_sales_order>($"SELECT * from crm_sales_order cso INNER join ctt_contract_cost ccc on cso.opportunity_id = ccc.opportunity_id where ccc.id = {cost_id} and cso.delete_time = 0 and ccc.delete_time = 0");
+            return FindSignleBySql<crm_sales_order>($"SELECT cso.* from crm_sales_order cso INNER join ctt_contract_cost ccc on cso.opportunity_id = ccc.opportunity_id where ccc.id = {cost_id} and cso.delete_time = 0 and ccc.delete_time = 0");
         }
 
     }

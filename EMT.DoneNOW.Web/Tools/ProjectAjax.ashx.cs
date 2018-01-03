@@ -257,6 +257,9 @@ namespace EMT.DoneNOW.Web
                         var ceId = context.Request.QueryString["expense_id"];
                         CheckExpenEdit(context,long.Parse(ceId));
                         break;
+                    case "GetVTask":
+                        GetVTask(context);
+                        break;
                     default:
                         context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                         break;
@@ -1516,6 +1519,22 @@ namespace EMT.DoneNOW.Web
             var result = new TaskBLL().CanEditExpense(eid);
             context.Response.Write(result);
         }
-        
+
+        /// <summary>
+        /// 获取v_task_all 相关取值
+        /// </summary>
+        private void GetVTask(HttpContext context)
+        {
+            var thisEId = context.Request.QueryString["task_id"];
+            if (!string.IsNullOrEmpty(thisEId))
+            {
+                var thisTask = new v_task_all_dal().FindById(long.Parse(thisEId));
+                if (thisTask != null)
+                {
+                    context.Response.Write(new Tools.Serialize().SerializeJson(thisTask));
+                }
+            }
+            
+        }
     }
 }

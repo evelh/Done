@@ -34,11 +34,15 @@ namespace EMT.DoneNOW.DTO
 
     public class PageEntryDto
     {
-        public long id;
-        public DateTime time;
-        public decimal workHours;
-        public string sumNote;
-        public string ineNote;
+        public long id;                  // 相关ID 负数是新增的
+        public DateTime time;            // 工时时间 
+        public decimal workHours;        // 工作时长
+        public string sumNote;          // 说明
+        public string ineNote;          // 内部说明
+        public long? endDate;      // 结束时间
+        public long? startDate;    // 开始时间
+        public decimal offset;         // 偏移量
+        public decimal? billHours;     // 计费时长
 
     }
 }

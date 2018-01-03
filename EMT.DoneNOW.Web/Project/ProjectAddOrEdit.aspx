@@ -1167,8 +1167,8 @@
                                                                     <td class="FieldLabel" width="50%">客户
                                                                         <div>
                                                                             <span style="display: inline-block;">
-                                                                                <input type="text" style="width: 250px;" id="temp_account_id" /></span>
-                                                                            <input type="hidden" id="temp_account_idHidden" />
+                                                                                <input type="text" style="width: 250px;" id="temp_account_id" value="<%=account==null?"":account.name %>" /></span>
+                                                                            <input type="hidden" id="temp_account_idHidden" value="<%=account==null?"":account.id.ToString() %>" />
                                                                             <a class="DataSelectorLinkIcon" onclick="TempChooseAccount()">
                                                                                 <img src="../Images/data-selector.png" /></a>
                                                                         </div>

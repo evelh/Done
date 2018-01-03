@@ -938,6 +938,15 @@ namespace EMT.DoneNOW.DTO
             BILLED=1267,
         }
         /// <summary>
+        /// 合同：工时计费设置 118
+        /// </summary>
+        public enum BILL_POST_TYPE
+        {
+            CHECK_BILL=1270,            // 查核计费
+            ENTRY_APP_BILL =1271,        // 工时表审批计费
+            BILL_NOW =1272,              // 即时计费
+        }
+        /// <summary>
         /// 合同计费对象子类型 --120
         /// </summary>
         public enum BILLING_ENTITY_SUB_TYPE

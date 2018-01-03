@@ -479,12 +479,12 @@
                                         <table class="table table-bordered">
                                             <tr style="background-color:#cbd9e4">
                                                 <th>库存位置</th>
-                                                <th>On Hand</th>
-                                                <th>On Order</th>
-                                                <th>Back Order</th>
-                                                <th>保留/挑选</th>
-                                                <th>Available</th>
-                                                <th>可用</th>
+                                                <th>库存数</th>
+                                                <th>采购中</th>
+                                                <th>尚未接收</th>
+                                                <th>预留和拣货</th>
+                                                <th>可用数</th>
+                                                <th>为此报价预留</th>
                                             </tr>
                                             <tbody id="wareTbody">
 
@@ -1162,8 +1162,9 @@
                     if (data != "") {
                         // $("#name").val(data.name);
                         $("#description").text(data.description);
-                        $("#unit_price").val(data.unit_price); //unit_cost
-                        $("#unit_cost").val(data.unit_cost);
+                        $("#unit_price").val(toDecimal2(data.unit_price)); //unit_cost
+                        $("#unit_cost").val(toDecimal2(data.unit_cost));
+                        Markup();
                     }
                 },
             });
@@ -1189,8 +1190,9 @@
                         // $("#name").val(data.name);
                         //$("#name").attr("disabled","disabled");
                         $("#description").text(data.description);
-                        $("#unit_price").val(data.unit_price); 
-                        $("#unit_cost").val(data.unit_cost);
+                        $("#unit_price").val(toDecimal2(data.unit_price)); 
+                        $("#unit_cost").val(toDecimal2(data.unit_cost));
+                        Markup();
                     }
                 },
             });
@@ -1216,9 +1218,10 @@
                     if (data != "") {
                         // 填充数据
                         $("#name").val(data.name);
-                        $("#unit_price").val(data.unit_price); //unit_cost
-                        $("#unit_cost").val(data.unit_cost);
+                        $("#unit_price").val(toDecimal2(data.unit_price)); //unit_cost
+                        $("#unit_cost").val(toDecimal2(data.unit_cost));
                         // todo 税收种类
+                        Markup();
                     }
                 },
             });
@@ -1281,6 +1284,7 @@
                         $("#unit_price").val(toDecimal2(data.unit_price));
                         $("#unit_cost").val(toDecimal2(data.unit_cost));
                         $("#tax_category_id").val(data.tax_category_id);
+                        Markup();
                     }
                 },
             });

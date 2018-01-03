@@ -68,6 +68,7 @@ namespace EMT.DoneNOW.BLL
                 thisProject.owner_resource_id = thisProject.owner_resource_id == 0 ? null : thisProject.owner_resource_id;
                 _dal.Insert(thisProject);
                 OperLogBLL.OperLogAdd<pro_project>(thisProject, thisProject.id, user.id, OPER_LOG_OBJ_CATE.PROJECT, "新增项目");
+                param.project_id = thisProject.id;
                 #endregion
 
                 #region 2.自定义信息
@@ -2154,6 +2155,7 @@ namespace EMT.DoneNOW.BLL
                 ticket_id = null,
                 start_date = 0,
                 end_date = 0,
+                name = "修改自定义字段-"+ udfColName,
                 description = udfColName + "修改:" + oldValue + "→" + newValue + "。原因:" + desc,
                 create_user_id = user_id,
                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),

@@ -37,6 +37,7 @@
         .Gantt_monthHolder {
             font-size: 13px;
             padding-bottom: 5px;
+            /*line-height:55px;*/
         }
 
         .Gantt_divTableHeader, .Gantt_divWeekTableHeader {

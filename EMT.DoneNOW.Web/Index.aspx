@@ -222,7 +222,7 @@
                                                 <%if (CheckAuth("MENU_CONTRACT_APPROVE_CHARGES"))
                                                     { %>
                                                 <div class="Content">
-                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES %>" target="PageFrame">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_LABOUR %>" target="PageFrame">
                                                         <span class="Text">审批并提交</span>
                                                     </a>
                                                 </div>

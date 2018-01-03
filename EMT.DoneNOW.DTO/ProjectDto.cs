@@ -46,5 +46,6 @@ namespace EMT.DoneNOW.DTO
         public string NoBccWorkIds;
         public string NoBccOtherMail;
 
+        public long? project_id = null;
     }
 }

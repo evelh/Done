@@ -28,7 +28,7 @@ namespace EMT.DoneNOW.Web.Project
         {
             try
             {
-                // todo 是否需要输入开始结束时间
+                //  是否需要输入开始结束时间
                 var isNeedTimeString = Request.QueryString["NoTime"];
                 var noTimeSet = new SysSettingBLL().GetSetById(SysSettingEnum.SDK_ENTRY_REQUIRED);
                 if (!string.IsNullOrEmpty(isNeedTimeString))
@@ -91,7 +91,7 @@ namespace EMT.DoneNOW.Web.Project
                     {
                         if (thisWorkEntry.approve_and_post_date != null || thisWorkEntry.approve_and_post_user_id != null)
                         {
-                            Response.Write("<script>alert('审批提交的工时不可以更改！')window.close();</script>");
+                            Response.Write("<script>alert('审批提交的工时不可以更改！');window.close();</script>");
                             Response.End();
                         }
 
@@ -168,46 +168,85 @@ namespace EMT.DoneNOW.Web.Project
             SdkWorkEntryDto para = new SdkWorkEntryDto();
             var pageEntry = AssembleModel<sdk_work_entry>();
             //var pageRecord = AssembleModel<sdk_work_record>();
-            var startTime = Request.Form["startTime"];
-            var endTime = Request.Form["endTime"];
-            var date = Request.Form["tmeDate"];
-            if(!string.IsNullOrEmpty(startTime)&& !string.IsNullOrEmpty(endTime) && !string.IsNullOrEmpty(date))
-            {
-                var starString = date + " " + startTime;
-                var endString = date + " " + endTime;
-                var startDate = DateTime.Parse(starString);
-                var endDate = DateTime.Parse(endString);
-                if (endDate < startDate)
-                {
-                    endDate = endDate.AddDays(1);
-                }
-                var startLong = Tools.Date.DateHelper.ToUniversalTimeStamp(startDate);
-                var endLong = Tools.Date.DateHelper.ToUniversalTimeStamp(endDate);
-                pageEntry.start_time = startLong;
-                pageEntry.end_time = endLong;
-                //pageRecord.start_time = startLong;
-                //pageRecord.end_time = endLong;
-            }
+            //var startTime = Request.Form["startTime"];
+            //var endTime = Request.Form["endTime"];
+            //var date = Request.Form["tmeDate"];
+            //if(!string.IsNullOrEmpty(startTime)&& !string.IsNullOrEmpty(endTime) && !string.IsNullOrEmpty(date))
+            //{
+            //    var starString = date + " " + startTime;
+            //    var endString = date + " " + endTime;
+            //    var startDate = DateTime.Parse(starString);
+            //    var endDate = DateTime.Parse(endString);
+            //    if (endDate < startDate)
+            //    {
+            //        endDate = endDate.AddDays(1);
+            //    }
+            //    var startLong = Tools.Date.DateHelper.ToUniversalTimeStamp(startDate);
+            //    var endLong = Tools.Date.DateHelper.ToUniversalTimeStamp(endDate);
+            //    pageEntry.start_time = startLong;
+            //    pageEntry.end_time = endLong;
+            //    //pageRecord.start_time = startLong;
+            //    //pageRecord.end_time = endLong;
+            //}
             var PageEntryIds = Request.Form["PageEntryIds"];
             if (!string.IsNullOrEmpty(PageEntryIds))
             {
                 var entArr = PageEntryIds.Split(new char[] { ','},StringSplitOptions.RemoveEmptyEntries);
                 List<PageEntryDto> entDtoList = new List<PageEntryDto>();
-                var hours_worked = Request.Form["hours_worked"];
+                //var hours_worked = Request.Form["hours_worked"];
                 foreach (var thisEntArrId in entArr)
                 {
                     var thisSum = Request.Form["summ_" + thisEntArrId];
                     var thisIne = Request.Form["inter_" + thisEntArrId];
                     var thisDate = Request.Form["entry_date_" + thisEntArrId];
                     var thisHour = Request.Form["entry_work_hour_" + thisEntArrId];
-                    if ((!string.IsNullOrEmpty(thisHour)||!string.IsNullOrEmpty(hours_worked)) && !string.IsNullOrEmpty(thisDate))
+                    var thisHoured = Request.Form["entry_worked_" + thisEntArrId];
+                    if (string.IsNullOrEmpty(thisDate))
+                    {
+                        continue;
+                    }
+                    #region 开始结束时间
+                    var startTime = Request.Form["entry_start_date_"+ thisEntArrId];
+                    var endTime = Request.Form["entry_end_date_"+ thisEntArrId];
+
+                    long? startLongDate = null;
+                    long? endLongDate = null;
+                    if (!string.IsNullOrEmpty(startTime) && !string.IsNullOrEmpty(endTime) )
+                    {
+                        var starString = thisDate + " " + startTime;
+                        var endString = thisDate + " " + endTime;
+                        var startDate = DateTime.Parse(starString);
+                        var endDate = DateTime.Parse(endString);
+                        if (endDate < startDate)
+                        {
+                            endDate = endDate.AddDays(1);
+                        }
+                        startLongDate = Tools.Date.DateHelper.ToUniversalTimeStamp(startDate);
+                        endLongDate = Tools.Date.DateHelper.ToUniversalTimeStamp(endDate);
+                    }
+                    #endregion
+
+                    var thisOffSet = Request.Form["entry_offset_" + thisEntArrId];
+                    var thisBill = Request.Form["entry_billed_" + thisEntArrId];
+
+                    decimal? bill = null;
+                    if (!string.IsNullOrEmpty(thisBill))
+                    {
+                        bill = decimal.Parse(thisBill);
+                    }
+
+                    if ((!string.IsNullOrEmpty(thisHour)||!string.IsNullOrEmpty(thisHoured)) && !string.IsNullOrEmpty(thisDate))
                     {
                         entDtoList.Add(new PageEntryDto() {
                             id = long.Parse(thisEntArrId),
                             sumNote = thisSum,
                             ineNote = thisIne,
                             time = DateTime.Parse(thisDate),
-                            workHours = !string.IsNullOrEmpty(thisHour)? decimal.Parse(thisHour): decimal.Parse(hours_worked),
+                            startDate= startLongDate,
+                            endDate = endLongDate,
+                            workHours = !string.IsNullOrEmpty(thisHour)? decimal.Parse(thisHour): decimal.Parse(thisHoured),
+                            offset = !string.IsNullOrEmpty(thisOffSet)?decimal.Parse(thisOffSet) :0,
+                            billHours = bill,
                         });
                     }
                 }
@@ -228,7 +267,7 @@ namespace EMT.DoneNOW.Web.Project
                 //}
             }
             pageEntry.show_on_invoice = (sbyte)(ShowOnInv.Checked ? 1 : 0);
-            pageEntry.is_billable = (sbyte)(isBilled.Checked?1:0);
+            pageEntry.is_billable = (sbyte)(isBilled.Checked?0:1);
             if (!isAdd)
             {
                 thisWorkEntry.contract_id = pageEntry.contract_id;

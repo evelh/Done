@@ -51,6 +51,7 @@ namespace EMT.DoneNOW.Web.Project
                     switch (dateType)
                     {
                         case "day":
+                            //DayWidth -= 8;
                             for (int i = 0; i < monthNum; i++)
                             {
                                 headInfo.Append($"<div class='Gantt_dateMonthYear Gantt_titleFont Gantt_divTableHeader Gantt_header Gantt_date'>");

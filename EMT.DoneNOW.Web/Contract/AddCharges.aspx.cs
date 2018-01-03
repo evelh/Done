@@ -128,8 +128,8 @@ namespace EMT.DoneNOW.Web.Contract
                 thisConCost.extended_price = thisConCost.unit_price * thisConCost.quantity;
                 thisConCost.contract_id = conCost.contract_id;
                 thisConCost.sub_cate_id = conCost.sub_cate_id;
-
-
+                thisConCost.create_time = conCost.create_time;
+                thisConCost.create_user_id = conCost.create_user_id;
             }
             if (contract != null)
             {

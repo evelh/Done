@@ -499,9 +499,14 @@ namespace EMT.DoneNOW.Web
                 }
                 var costProId = long.Parse(context.Request.QueryString["costProId"]);
                 #endregion
+                var ccBll = new ContractCostBLL();
+                result = ccBll.ShipItem(costId, productId, wareId, ShipNum, shipSerIds, ShipDate, shipping_type_id, shipping_reference_number,LoginUserId, costProId, ShipCostCodeId, BillMoney, BillCost);
+                ccBll.ChangCostStatus(costId, LoginUserId);
+                // 是否完成销售订单（返回页面进行处理）
+                var isDoneOrder = false;
 
-                 result = new ContractCostBLL().ShipItem(costId, productId, wareId, ShipNum, shipSerIds, ShipDate, shipping_type_id, shipping_reference_number,LoginUserId, costProId, ShipCostCodeId, BillMoney, BillCost);
-               
+                new SaleOrderBLL().ChangeSaleOrderStatus(costId, LoginUserId, out isDoneOrder);
+
             }
             catch (Exception)
             {
