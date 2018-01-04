@@ -133,9 +133,11 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.REVOKE_MILESTONES:
                 case (int)DicEnum.QUERY_CATE.REVOKE_RECURRING_SERVICES:
                 case (int)DicEnum.QUERY_CATE.REVOKE_SUBSCRIPTIONS:
+                case (int)DicEnum.QUERY_CATE.REVOKE_LABOUR:
+                case (int)DicEnum.QUERY_CATE.REVOKE_EXPENSE:
                     addBtn = "完成";
                     break;
-                case (int)DicEnum.QUERY_CATE.APPROVE_MILESTONES://审批里程碑
+                case (int)DicEnum.QUERY_CATE.APPROVE_MILESTONES://审批里程碑  
                 case (int)DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS://审批订阅
                 case (int)DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES://审批定期服务
                 case (int)DicEnum.QUERY_CATE.APPROVE_CHARGES://审批成本
@@ -257,6 +259,9 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (int)DicEnum.QUERY_CATE.PURCHASE_RECEIVE:
                     addBtn = "接收";
+                    break;
+                case (int)DicEnum.QUERY_CATE.PROJECT_SEARCH:
+                    addBtn = "添加项目";
                     break;
                 default:
                     addBtn = "";
@@ -873,6 +878,10 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.PURCHASE_ORDER_HISTORY:
                     contextMenu.Add(new PageContextMenuDto { text = "查看采购订单", click_function = "ViewDetail()" });
                     contextMenu.Add(new PageContextMenuDto { text = "修改采购订单", click_function = "Edit()" });
+                    break;
+                case (long)QueryType.PROJECT_SEARCH:
+                    contextMenu.Add(new PageContextMenuDto { text = "查看项目", click_function = "ViewProject()" });
+               
                     break;
                 default:
                     break;

@@ -1222,8 +1222,8 @@ namespace EMT.DoneNOW.BLL
                                     irDal.SoftDelete(thisProRes, user.id);
                                     OperLogBLL.OperLogDelete<ivt_reserve>(thisProRes, thisProRes.id, user.id, OPER_LOG_OBJ_CATE.WAREHOUSE_RESERVE, "删除产品预留");
                                 }
+                                ccBll.ChangCostStatus(cost.id, user.id);
 
-                                
                             }
                         }
                         #endregion

@@ -118,7 +118,7 @@ namespace EMT.DoneNOW.Web.Project
                         }
                         if (!IsPostBack)
                         {
-                            isBilled.Checked = thisWorkEntry.is_billable == 1;
+                            isBilled.Checked = thisWorkEntry.is_billable == 0;
                             ShowOnInv.Checked = thisWorkEntry.show_on_invoice == 1;
                             if (isBilled.Checked)
                             {

@@ -2515,6 +2515,8 @@ namespace EMT.DoneNOW.BLL
                 newEntry.update_user_id = user_id;
                 newEntry.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 newEntry.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+
+                // newEntry.is_billable = 
                 //if (newEntry.hours_worked != null)
                 //{
                 //    new sdk_work_entry_dal().Insert(newEntry);

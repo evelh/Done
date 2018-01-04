@@ -246,7 +246,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
             switch (result)
             {
                 case DTO.ERROR_CODE.SUCCESS:
-                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存报价项成功');self.opener.location.reload();location.href = 'QuoteItemAddAndUpdate.aspx?type_id=" + param.type_id + "&quote_id=" + param.quote_id + "';</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存报价项成功');self.opener.location.reload();location.href = 'QuoteItemAddAndUpdate.aspx?type_id=" + param.type_id + "&quote_id=" + param.quote_id + "&isSaleOrder="+ Request.QueryString["isSaleOrder"] + "&sale_order_id="+ Request.QueryString["sale_order_id"] +"';</script>");
                     break;
                 case DTO.ERROR_CODE.ERROR:
                     break;

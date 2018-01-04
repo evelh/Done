@@ -554,15 +554,17 @@ namespace EMT.DoneNOW.DTO
             SALES_ORDER_VIEW_ATTACHMENT = 1541,     // 销售订单详情-附件查询
             PRO_EXPENSE_REPORT_CALLBACK = 1543,            // 费用报表查找带回 
             PROJECT_CALLBACK = 1544,                // 项目查找带回
-            APPROVE_EXPENSE = 1545,               //费用审批
+            APPROVE_EXPENSE = 1545,                 // 费用审批
+            REVOKE_EXPENSE = 1546,                  // 系统管理-撤销费用审批
             PROJECT_TEAM = 1547,                    // 项目管理-项目详情-团队查询
             PROJECT_COST_EXPENSE = 1548,            // 项目管理-项目详情-成本和费用查询
             INVENTORY_LOCATION = 1549,              // 库存仓库查询
             INVENTORY_ITEM = 1550,                  // 库存产品查询
             PROJECT_NOTE = 1552,                    // 项目管理-项目备注查询
             ACCOUNT_POLICY = 1553,                  // 客户策略
-            APPROVE_LABOUR = 1554,                //工时审批
-            PROJECT_RATE =1556,                      // 项目管理-项目详情-费率查询
+            APPROVE_LABOUR = 1554,                  // 工时审批
+            REVOKE_LABOUR = 1555,                   // 系统管理-撤销工时审批
+            PROJECT_RATE =1556,                     // 项目管理-项目详情-费率查询
             PROJECT_CALENDAR=1557,                  // 项目管理-项目详情-日历查询
             PROJECT_ATTACH = 1558,                  // 项目管理-项目详情-附件查询
             PROJECT_UDF = 1559,                     // 项目管理-项目详情-自定义查询
@@ -581,12 +583,12 @@ namespace EMT.DoneNOW.DTO
             SHIPED_LIST = 1573,                     // 库存管理-配送管理-已配送列表查询
             PURCHASE_ORDER_HISTORY=1574,            // 库存管理-采购订单历史-查询
             SHIPPING_ITEM_SERIAL_NUM = 1575,        // 库存管理-产品序列号查找带回（取消接收用）
-
+            EXC_CONTRACT_CALLBACK = 1576,           // 合同管理-合同详情-例外因素-合同查找带回
 
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
-            REVOKE_LABOUR,                 //撤销工时审批
-            REVOKE_EXPENSE,                //撤销费用审批
+            //REVOKE_LABOUR,                 //撤销工时审批
+            //REVOKE_EXPENSE,                //撤销费用审批
   
             General,                       //general表的通用处理
             Line_Of_Business,              //系统管理：组织：业务条线
@@ -1281,18 +1283,20 @@ namespace EMT.DoneNOW.DTO
         PROJECT_TASK_INCOMPLETE = 114,      // 项目详情-TASK列表-未完成
         PROJECT_TASK_BLOCK = 115,      // 项目详情-TASK列表-影响后续任务完成
         PROJECT_TASK_NOTNOTIME = 116,      // 项目详情-TASK列表-不能按时完成
-        PROJECT_ISSUE = 117,      // 项目详情-TASK列表-问题
-        PROJECT_BASELINE = 118,    // 项目详情-TASK列表-基准
+        PROJECT_ISSUE = 117,            // 项目详情-TASK列表-问题
+        PROJECT_BASELINE = 118,         // 项目详情-TASK列表-基准
         OpportunityViewAttachment = 119,// 商机详情-附件查询
         SalesOrderViewAttachment = 120, // 销售订单详情-附件查询
-        APPROVE_EXPENSE = 124,               //费用审批  approve_expense
+        APPROVE_EXPENSE = 124,          // 费用审批  approve_expense
+        REVOKE_EXPENSE = 125,           // 系统管理-撤销费用审批
         PROJECT_TEAM = 126,             // 项目管理-项目详情-团队查询
         PROJECT_COST_EXPENSE = 127,     // 项目管理-项目详情-成本和费用查询
         InventoryLocation = 128,        // 库存仓库查询
         InventoryItem = 129,            // 库存产品查询
         PROJECT_NOTE = 131,             // 项目管理-项目详情-备注查询
         ACCOUNT_POLICY = 132,           // 客户策略
-        APPROVE_LABOUR = 133,                //工时审批 approve_labour
+        APPROVE_LABOUR = 133,           // 工时审批 approve_labour
+        REVOKE_LABOUR = 134,            // 系统管理-撤销工时审批
         PROJECT_RATE = 135,             // 项目管理-项目详情-费率查询
         PROJECT_CALENDAR = 136,         // 项目管理-项目详情-日历查询
         PROJECT_ATTACH = 137,           // 项目管理-项目详情-附件查询
@@ -1301,7 +1305,7 @@ namespace EMT.DoneNOW.DTO
         InventoryTransfer = 141,        // 库存转移
         PurchaseApproval = 142,         // 采购审批查询
         PurchaseFulfillment = 143,      // 待采购产品查询
-        CONTRACT_NOTIFY_RULE=145,          // 合同通知规则
+        CONTRACT_NOTIFY_RULE=145,       // 合同通知规则
         PurchaseOrder = 146,            // 采购订单查询
         PurchaseItem = 147,             // 采购订单采购项
         CONTRACT_PROJECT=149,           // 合同查看 - 项目
@@ -1312,8 +1316,6 @@ namespace EMT.DoneNOW.DTO
         ShippingItemSerailNum = 154,    // 库存管理-产品序列号查找带回（取消接收用）
 
         //以下是还没有配查询语句的枚举（系统管理）
-        REVOKE_LABOUR,                 //撤销工时审批
-        REVOKE_EXPENSE,                //撤销费用审批               
         General,                       //general表的通用处理
         Line_Of_Business,              //系统管理：组织：业务条线
         Project_Status,                 //项目：项目状态
@@ -1501,6 +1503,8 @@ namespace EMT.DoneNOW.DTO
         ACCOUNT_POLICY,
         EXPENSE_REPORT_CALLBACK,
         SERNUM_CALLBACK,       // 产品序列号查找带回
+
+        EXC_CONTRACT_CALLBACK,
 
     }
     /// <summary>

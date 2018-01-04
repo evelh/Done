@@ -153,7 +153,7 @@
             <div class="contenttitle clear" style="position: fixed; border-bottom: 1px solid #e8e8fa; left: 0; top: 0; background: #fff; width: 100%;">
                 <ul class="clear fl">
                     <li id="AddProject"  class="f1"><i style="background-image: url(../Images/new.png);"></i><span style="margin-right: 5px; margin-left: 5px; ">新增</span><img src="../Images/dropdown.png" /></li>
-                    <li id="coluSelect" onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
+                    <li id="coluSelect" onclick="javascript:window.open('../Common/ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
                     <li id="Print"><i style="background-image: url(../Images/print.png);"></i></li>
 
 

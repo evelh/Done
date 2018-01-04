@@ -258,7 +258,7 @@ namespace EMT.DoneNOW.BLL
                             return ERROR_CODE.ERROR;
                         }
                         var appSet = new SysSettingBLL().GetSetById(DTO.SysSettingEnum.CTT_COST_APPROVAL_VALUE);
-                        if (appSet != null && !string.IsNullOrEmpty(appSet.setting_value)&& thisProduct.does_not_require_procurement == 1) // 该产品走采购流程，并且价格大于设置，则带审批
+                        if (appSet != null && !string.IsNullOrEmpty(appSet.setting_value)&& thisProduct.does_not_require_procurement == 0) // 该产品走采购流程，并且价格大于设置，则带审批
                         {
                             if (((decimal)quote_item.quantity * (decimal)quote_item.unit_price) > decimal.Parse(appSet.setting_value)) // 金额超出（待审批）
                             {
@@ -276,7 +276,7 @@ namespace EMT.DoneNOW.BLL
                         opportunity_id = costList[0].opportunity_id,
                         quote_item_id = quote_item.id,
                         cost_code_id = cost_code_id,
-                        product_id = costList[0].product_id,
+                        product_id = quote_item.object_id,
                         name = quote_item.name,
                         description = quote_item.description,
                         date_purchased = DateTime.Now,
@@ -314,7 +314,8 @@ namespace EMT.DoneNOW.BLL
                                 irDal.SoftDelete(thisProRes, user.id);
                                 OperLogBLL.OperLogDelete<ivt_reserve>(thisProRes, thisProRes.id, user.id, OPER_LOG_OBJ_CATE.WAREHOUSE_RESERVE, "删除产品预留");
                             }
-                           
+                            ccBll.ChangCostStatus(cost.id, user_id);
+
                         }
                     }
 
@@ -622,7 +623,7 @@ namespace EMT.DoneNOW.BLL
                             {
                                 status_id = (int)COST_STATUS.PENDING_PURCHASE;
                                 var appSet = new SysSettingBLL().GetSetById(DTO.SysSettingEnum.CTT_COST_APPROVAL_VALUE);
-                                if (appSet != null && !string.IsNullOrEmpty(appSet.setting_value)&& thisProduct.does_not_require_procurement == 1)
+                                if (appSet != null && !string.IsNullOrEmpty(appSet.setting_value)&& thisProduct.does_not_require_procurement == 0)
                                 {
                                     if (((decimal)quote_item.quantity * (decimal)quote_item.unit_price) > decimal.Parse(appSet.setting_value)) // 金额超出（待审批）
                                     {
@@ -660,7 +661,7 @@ namespace EMT.DoneNOW.BLL
                                 irDal.SoftDelete(thisProRes, user.id);
                                 OperLogBLL.OperLogDelete<ivt_reserve>(thisProRes, thisProRes.id, user.id, OPER_LOG_OBJ_CATE.WAREHOUSE_RESERVE, "删除产品预留");
                             }
-
+                            ccBll.ChangCostStatus(thisCost.id, user_id);
                         }
                     }
                 }

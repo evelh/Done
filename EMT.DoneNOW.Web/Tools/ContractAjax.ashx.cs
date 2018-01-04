@@ -778,7 +778,19 @@ namespace EMT.DoneNOW.Web
             var contract_id = context.Request.QueryString["contract_id"];
             if (!string.IsNullOrEmpty(contract_id))
             {
-                
+                var ccDal = new DAL.ctt_contract_dal();
+                var thisCon = ccDal.FindNoDeleteById(long.Parse(contract_id));
+                if (thisCon != null)
+                {
+                    var excContractId = context.Request.QueryString["exc_contract_id"];
+                    var roleIds = context.Request.QueryString["roleIds"];
+                    var workTypeIds = context.Request.QueryString["typeIds"];
+
+
+                    var result = new ContractBLL().ContractExcManage(thisCon.id, excContractId, roleIds, workTypeIds,LoginUserId);
+
+                    context.Response.Write(result);
+                }
             }
         }
     }

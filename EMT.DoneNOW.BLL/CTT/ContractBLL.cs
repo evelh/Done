@@ -602,7 +602,7 @@ namespace EMT.DoneNOW.BLL
                 ticket_id = null,
                 start_date = 0,
                 end_date = 0,
-                name= "修改自定义字段-"+ udfList[index].col_name,
+                name= "修改自定义字段-"+ udfList[index].name,
                 description = udfList.Find(f => f.id == udfId).name + "修改:" + oldVal.ToString() + "→" + value + "。原因:" + desc,
                 create_user_id = user.id,
                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -1063,6 +1063,242 @@ namespace EMT.DoneNOW.BLL
             {
                 return false;
             }
+            return true;
+        }
+        /// <summary>
+        /// 添加删除合同的例外因素
+        /// </summary>
+        public bool ContractExcManage(long contractId,string excContractId,string roleIds,string typeIds,long user_id)
+        {
+            try
+            {
+                var thisContract = dal.FindNoDeleteById(contractId);
+                if (thisContract != null)
+                {
+                    var oldExcId = thisContract.exclusion_contract_id;
+                    if (!string.IsNullOrEmpty(excContractId))
+                    {
+                        var excCon = dal.FindNoDeleteById(long.Parse(excContractId));
+                        if (excCon != null)
+                        {
+                            thisContract.exclusion_contract_id = excCon.id;
+                        }
+                    }
+                    var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    if(oldExcId!= thisContract.exclusion_contract_id)
+                    {
+                        var oldCon = dal.FindNoDeleteById(contractId);
+                        thisContract.update_time = timeNow;
+                        thisContract.update_user_id = user_id;
+                        dal.Update(thisContract);
+                        OperLogBLL.OperLogUpdate<ctt_contract>(thisContract, oldCon, thisContract.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT, "修改合同");
+                    }
+                
+                    // 角色处理
+                    ConExcRoleMan(contractId, roleIds, user_id);
+
+                    // 工作类型处理 
+                    ConExcWorkTypeMan(contractId, typeIds,user_id);
+
+
+
+
+
+
+
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// 例外因素 - 角色处理
+        /// </summary>
+        public bool ConExcRoleMan(long contractId, string roleIds, long user_id)
+        {
+            var thisContract = dal.FindNoDeleteById(contractId);
+            if (thisContract != null)
+            {
+                var ccerDal = new ctt_contract_exclusion_role_dal();
+                var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                #region  合同的例外因素 角色相关处理
+                var oldRoleList = ccerDal.FindListByContractId(thisContract.id);
+                var srDal = new sys_role_dal();
+                if (oldRoleList != null && oldRoleList.Count > 0)
+                {
+
+                    if (!string.IsNullOrEmpty(roleIds))
+                    {
+                        var rolArr = roleIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (var rol in rolArr)
+                        {
+                            var thisRole = oldRoleList.FirstOrDefault(_ => _.role_id.ToString() == rol);
+                            if (thisRole != null)
+                            {
+                                oldRoleList.Remove(thisRole);
+                            }
+                            else
+                            {
+                                var role = srDal.FindNoDeleteById(long.Parse(rol));
+                                if (role == null)
+                                {
+                                    continue;
+                                }
+                                var ccer = new ctt_contract_exclusion_role()
+                                {
+                                    id = ccerDal.GetNextIdCom(),
+                                    contract_id = thisContract.id,
+                                    create_time = timeNow,
+                                    update_time = timeNow,
+                                    create_user_id = user_id,
+                                    update_user_id = user_id,
+                                    role_id = role.id,
+                                };
+                                ccerDal.Insert(ccer);
+                                OperLogBLL.OperLogAdd<ctt_contract_exclusion_role>(ccer, ccer.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_EXCLUSTION_ROLE, "新增例外因素角色");
+                            }
+                        }
+                    }
+
+
+                    if (oldRoleList.Count > 0)
+                    {
+                        oldRoleList.ForEach(_ => {
+                            ccerDal.SoftDelete(_, user_id);
+                            OperLogBLL.OperLogAdd<ctt_contract_exclusion_role>(_, _.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_EXCLUSTION_ROLE, "移除例外因素角色");
+                        });
+                    }
+
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(roleIds))
+                    {
+                        var rolArr = roleIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                        foreach (var rol in rolArr)
+                        {
+                            var thisRole = srDal.FindNoDeleteById(long.Parse(rol));
+                            if (thisRole == null)
+                            {
+                                continue;
+                            }
+                            var ccer = new ctt_contract_exclusion_role()
+                            {
+                                id = ccerDal.GetNextIdCom(),
+                                contract_id = thisContract.id,
+                                create_time = timeNow,
+                                update_time = timeNow,
+                                create_user_id = user_id,
+                                update_user_id = user_id,
+                                role_id = thisRole.id,
+                            };
+                            ccerDal.Insert(ccer);
+                            OperLogBLL.OperLogAdd<ctt_contract_exclusion_role>(ccer, ccer.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_EXCLUSTION_ROLE, "新增例外因素角色");
+                        }
+
+                    }
+                }
+
+                #endregion
+            }
+
+            return true;
+        }
+        /// <summary>
+        /// 例外因素 - 工作类型处理
+        /// </summary>
+        public bool ConExcWorkTypeMan(long contractId, string typeIds, long user_id)
+        {
+            var thisContract = dal.FindNoDeleteById(contractId);
+            if (thisContract != null)
+            {
+                var cceccDal = new ctt_contract_exclusion_cost_code_dal();
+                var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                #region  合同的例外因素 角色相关处理
+                var oldTypeList = cceccDal.FindListByContractId(thisContract.id);
+                var dccDal = new d_cost_code_dal();
+                if (oldTypeList != null && oldTypeList.Count > 0)
+                {
+
+                    if (!string.IsNullOrEmpty(typeIds))
+                    {
+                        var typeArr = typeIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (var type in typeArr)
+                        {
+                            var thisType = oldTypeList.FirstOrDefault(_ => _.cost_code_id.ToString() == type);
+                            if (thisType != null)
+                            {
+                                oldTypeList.Remove(thisType);
+                            }
+                            else
+                            {
+                                var workType = dccDal.FindNoDeleteById(long.Parse(type));
+                                if (workType == null)
+                                {
+                                    continue;
+                                }
+                                var ccecc = new ctt_contract_exclusion_cost_code()
+                                {
+                                    id = cceccDal.GetNextIdCom(),
+                                    contract_id = thisContract.id,
+                                    create_time = timeNow,
+                                    update_time = timeNow,
+                                    create_user_id = user_id,
+                                    update_user_id = user_id,
+                                    cost_code_id = workType.id,
+                                };
+                                cceccDal.Insert(ccecc);
+                                OperLogBLL.OperLogAdd<ctt_contract_exclusion_cost_code>(ccecc, ccecc.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_EXCLUSTION_COST, "新增例外因素工作类型");
+                            }
+                        }
+                    }
+
+
+                    if (oldTypeList.Count > 0)
+                    {
+                        oldTypeList.ForEach(_ => {
+                            cceccDal.SoftDelete(_, user_id);
+                            OperLogBLL.OperLogAdd<ctt_contract_exclusion_cost_code>(_, _.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_EXCLUSTION_COST, "移除例外因素工作类型");
+                        });
+                    }
+
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(typeIds))
+                    {
+                        var typeArr = typeIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (var type in typeArr)
+                        {
+                            var workType = dccDal.FindNoDeleteById(long.Parse(type));
+                            if (workType == null)
+                            {
+                                continue;
+                            }
+                            var ccecc = new ctt_contract_exclusion_cost_code()
+                            {
+                                id = cceccDal.GetNextIdCom(),
+                                contract_id = thisContract.id,
+                                create_time = timeNow,
+                                update_time = timeNow,
+                                create_user_id = user_id,
+                                update_user_id = user_id,
+                                cost_code_id = workType.id,
+                            };
+                            cceccDal.Insert(ccecc);
+                            OperLogBLL.OperLogAdd<ctt_contract_exclusion_cost_code>(ccecc, ccecc.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_EXCLUSTION_COST, "新增例外因素工作类型");
+                        }
+
+                    }
+                }
+
+                #endregion
+            }
+
             return true;
         }
     }

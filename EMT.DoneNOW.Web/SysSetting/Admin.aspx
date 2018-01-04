@@ -293,7 +293,14 @@
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
                                       <%}%>
+                                         <%if (CheckAuth("SYS_FEATURES_CONTRACT_UNPOST_LABOR")) { %>
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_LABOUR %>" target="PageFrame1">工时</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
+                                      <%}%>
                                     </div>
+
                                     <div class="PageNavigationLinkColumn"> 
                                       <%if (CheckAuth("SYS_FEATURES_CONTRACT_UNPOST_MILESTONE")) { %>
                                         <div class="PageNavigationLink">
@@ -307,7 +314,15 @@
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
                                       <%}%>
+                                         <%if (CheckAuth("SYS_FEATURES_CONTRACT_UNPOST_EXPENSE")) { %>
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_EXPENSE %>" target="PageFrame1">费用</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
+                                      <%}%>
                                     </div>
+
+                                    
                                 </div>
                             </div>
                         </div>

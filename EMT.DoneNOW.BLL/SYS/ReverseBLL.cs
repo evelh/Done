@@ -494,5 +494,146 @@ namespace EMT.DoneNOW.BLL
         {
             return cad_dal.FindSignleBySql<crm_account_deduction>($"select * from crm_account_deduction where id={id} and delete_time=0");
         }
+        /// <summary>
+        /// 撤销工时审批
+        /// </summary>
+        public ERROR_CODE REVOKE_LABOUR(long user_id, string ids, out string re)
+        {
+            re = "";
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var idArr = ids.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                var cadDal = new crm_account_deduction_dal();
+                var sweDal = new sdk_work_entry_dal();
+                var ccbDal = new ctt_contract_block_dal();
+                StringBuilder returnvalue = new StringBuilder();
+                var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                foreach (var accId in idArr)
+                {
+                    var thisCad = cadDal.FindNoDeleteById(long.Parse(accId));
+                    if (thisCad != null)
+                    {
+                        if(thisCad.invoice_id!=null)
+                        {
+                            var ci = new ctt_invoice_dal().FindNoDeleteById((long)thisCad.invoice_id);
+                            if (ci!=null&&ci.is_voided != 1)
+                            {
+                                returnvalue.Append(accId + "条目已经生成发票（发票ID：" + thisCad.invoice_id + "），请先作废该发票\n");
+                            }
+                        }
+                        else
+                        {
+                            #region 删除条目信息
+                            // var oldCad = cadDal.FindNoDeleteById(long.Parse(accId));
+                            cadDal.SoftDelete(thisCad,user_id);
+                            OperLogBLL.OperLogDelete<crm_account_deduction>(thisCad, thisCad.id, user_id, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "删除审批并提交条目");
+                            #endregion
+
+                            #region 修改工时表
+                            if (thisCad.object_id != null)
+                            {
+                                var swe = sweDal.FindNoDeleteById((long)thisCad.object_id);
+                                if (swe != null)
+                                {
+                                    var oldSwe = sweDal.FindNoDeleteById((long)thisCad.object_id);
+                                    swe.approve_and_post_date = null;
+                                    swe.approve_and_post_user_id = null;
+                                    swe.hours_billed_deduction = null;
+                                    swe.hours_rate_deduction = null;
+                                    swe.update_time = timeNow;
+                                    swe.update_user_id = user_id;
+                                    sweDal.Update(swe);
+                                    OperLogBLL.OperLogUpdate<sdk_work_entry>(swe, oldSwe, swe.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "修改工时");
+                                }
+                            }
+                            #endregion
+
+                            #region 修改预付费信息
+                            if (thisCad.contract_block_id != null)
+                            {
+                                var thisCcb = ccbDal.FindNoDeleteById((long)thisCad.contract_block_id);
+                                if (thisCcb != null)
+                                {
+                                    var oldCcb = ccbDal.FindNoDeleteById((long)thisCad.contract_block_id);
+                                    thisCcb.is_billed = 0;
+                                    thisCcb.status_id = 1;
+                                    thisCcb.update_time = timeNow;
+                                    thisCcb.update_user_id = user_id;
+                                    ccbDal.Update(thisCcb);
+                                    OperLogBLL.OperLogUpdate<ctt_contract_block>(thisCcb, oldCcb, thisCcb.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, "修改合同预付");
+                                }
+
+                            }
+                            #endregion
+                        }
+
+                    }
+                    else
+                    {
+
+                    }
+
+                }
+
+            }
+            return ERROR_CODE.SUCCESS;
+        }
+        /// <summary>
+        /// 撤销费用审批
+        /// </summary>
+        public ERROR_CODE REVOKE_EXPENSE(long user_id, string ids, out string re)
+        {
+            re = "";
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var idArr = ids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var cadDal = new crm_account_deduction_dal();
+                var seDal = new sdk_expense_dal();
+                StringBuilder returnvalue = new StringBuilder();
+                var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                foreach (var accId in idArr)
+                {
+                    var thisCad = cadDal.FindNoDeleteById(long.Parse(accId));
+                    if (thisCad != null)
+                    {
+                        if (thisCad.invoice_id != null)
+                        {
+                            var ci = new ctt_invoice_dal().FindNoDeleteById((long)thisCad.invoice_id);
+                            if (ci != null && ci.is_voided != 1)
+                            {
+                                returnvalue.Append(accId + "条目已经生成发票（发票ID：" + thisCad.invoice_id + "），请先作废该发票\n");
+                            }
+                        }
+                        else
+                        {
+                            #region 删除条目信息
+                            // var oldCad = cadDal.FindNoDeleteById(long.Parse(accId));
+                            cadDal.SoftDelete(thisCad, user_id);
+                            OperLogBLL.OperLogDelete<crm_account_deduction>(thisCad, thisCad.id, user_id, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "删除审批并提交条目");
+                            #endregion
+
+                            #region 修改费用表
+                            if (thisCad.object_id != null)
+                            {
+                                var se = seDal.FindNoDeleteById((long)thisCad.object_id);
+                                if (se != null)
+                                {
+                                    var oldSe = seDal.FindNoDeleteById((long)thisCad.object_id);
+                                    se.approve_and_post_date = null;
+                                    se.approve_and_post_user_id = null;
+                                    se.amount_deduction = null;
+                                    se.update_time = timeNow;
+                                    se.update_user_id = user_id;
+                                    seDal.Update(se);
+                                    OperLogBLL.OperLogUpdate<sdk_expense>(se, oldSe, se.id, user_id, OPER_LOG_OBJ_CATE.SDK_EXPENSE, "修改费用");
+                                }
+                            }
+                            #endregion
+                        }
+                    }
+                }
+            }
+            return ERROR_CODE.SUCCESS;
+        }
     }
 }

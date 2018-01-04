@@ -17,6 +17,15 @@ namespace EMT.DoneNOW.DAL
             string sql = $"SELECT * FROM ctt_contract_exclusion_cost_code WHERE contract_id={contractId} AND delete_time=0";
             return FindListBySql(sql);
         }
+        /// <summary>
+        /// 根据合同和工作类型，获取唯一的例外因素
+        /// </summary>
+        public ctt_contract_exclusion_cost_code GetSinCode(long contractId,long codeId)
+        {
+            return FindSignleBySql<ctt_contract_exclusion_cost_code>($"SELECT * from ctt_contract_exclusion_cost_code where contract_id = {contractId} and cost_code_id = {codeId} and delete_time = 0");
+        }
+
+        
     }
 
 }
