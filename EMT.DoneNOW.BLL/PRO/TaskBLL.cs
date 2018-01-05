@@ -61,7 +61,7 @@ namespace EMT.DoneNOW.BLL
                 #region task 相关扩展字段
                 var udf_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TASK);  // 获取合同的自定义字段信息
                 new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.TASK, user.id,
-                    thisTask.id, udf_list, param.udf, DicEnum.OPER_LOG_OBJ_CATE.PROJECT_TASK);
+                    thisTask.id, udf_list, param.udf, DicEnum.OPER_LOG_OBJ_CATE.PROJECT_TASK_INFORMATION);
                 #endregion
                 #region  保存前驱任务相关 根据延迟时间计算task开始结束相关信息
                 var thisDic = param.predic;
@@ -615,7 +615,7 @@ namespace EMT.DoneNOW.BLL
 
                 var udf_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TASK);  // 获取合同的自定义字段信息
                 new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.TASK, udf_list,
-                    thisTask.id, param.udf, user, DicEnum.OPER_LOG_OBJ_CATE.PROJECT_TASK);
+                    thisTask.id, param.udf, user, DicEnum.OPER_LOG_OBJ_CATE.PROJECT_TASK_INFORMATION);
             }
             else
             {

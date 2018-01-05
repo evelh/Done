@@ -1455,12 +1455,18 @@ namespace EMT.DoneNOW.Web
                         var noDoneTask = thisPreList.Where(_ => _.status_id != (int)DicEnum.TICKET_STATUS.DONE).ToList();
                         if(noDoneTask!=null&& noDoneTask.Count > 0)
                         {
-                            hasIds = true;
-                            thisPreList.ForEach(_ => { ids += _.sort_order + ',';  });
-                            if (!string.IsNullOrEmpty(ids))
+                            // 延期任务 状态不是完成，并且时间
+                            var yanqiTask = noDoneTask.Where(_=>_.estimated_end_date<DateTime.Now).ToList();
+                            if(yanqiTask!=null&& yanqiTask.Count > 0)
                             {
-                                ids = ids.Substring(0, ids.Length - 1);
+                                hasIds = true;
+                                thisPreList.ForEach(_ => { ids += _.sort_order + ','; });
+                                if (!string.IsNullOrEmpty(ids))
+                                {
+                                    ids = ids.Substring(0, ids.Length - 1);
+                                }
                             }
+                            
                         }
                      
                     }

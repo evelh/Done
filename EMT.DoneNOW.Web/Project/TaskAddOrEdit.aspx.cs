@@ -477,6 +477,10 @@ namespace EMT.DoneNOW.Web.Project
                         pageTask.estimated_end_date = new TaskBLL().RetrunMaxTime(thisProject.id, DateTime.Parse(startString), (int)pageTask.estimated_duration);
 
                     }
+                    else
+                    {
+
+                    }
                 }
                 else
                 {
@@ -536,7 +540,11 @@ namespace EMT.DoneNOW.Web.Project
                     thisTask.estimated_hours = pageTask.estimated_hours;
                      //      thisTask.estimated_duration = pageTask.estimated_duration;
                     thisTask.hours_per_resource = pageTask.hours_per_resource;
-             //       thisTask.start_no_earlier_than_date = pageTask.start_no_earlier_than_date;
+                    if (thisTask.start_no_earlier_than_date == null)
+                    {
+                        thisTask.start_no_earlier_than_date = pageTask.start_no_earlier_than_date;
+                    }
+                    
                     thisTask.department_id = pageTask.department_id;
                     thisTask.cost_code_id = pageTask.cost_code_id;
                     thisTask.owner_resource_id = pageTask.owner_resource_id;

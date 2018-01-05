@@ -584,12 +584,10 @@ namespace EMT.DoneNOW.DTO
             PURCHASE_ORDER_HISTORY=1574,            // 库存管理-采购订单历史-查询
             SHIPPING_ITEM_SERIAL_NUM = 1575,        // 库存管理-产品序列号查找带回（取消接收用）
             EXC_CONTRACT_CALLBACK = 1576,           // 合同管理-合同详情-例外因素-合同查找带回
-
+            CONTRACT_PRODUCT_SN_CALLBACK = 1577,    // 成本-成本产品序列号查找带回（取消拣货用）
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
-            //REVOKE_LABOUR,                 //撤销工时审批
-            //REVOKE_EXPENSE,                //撤销费用审批
-  
+
             General,                       //general表的通用处理
             Line_Of_Business,              //系统管理：组织：业务条线
             Project_Status,                 //项目：项目状态
@@ -710,7 +708,7 @@ namespace EMT.DoneNOW.DTO
             CTT_CONTRACT_COST_PRODUCT_SN = 1401,        // 成本关联产品的串号
             PURCHASE_RECEIVE = 1402,                    // 采购接收
             PURCHASE_RECEIVE_SN = 1403,                 // 采购接收串号
-
+            PROJECT_TASK_INFORMATION = 1418,            // 任务的扩展信息（自定义信息）
         }
 
         /// <summary>

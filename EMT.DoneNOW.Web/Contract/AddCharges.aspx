@@ -1882,6 +1882,15 @@
     }
     //  拣货操作
     function PickItem() {
+
+        var quantity = $("#quantity").val();
+        var oldQuan = '<%=conCost!=null&&conCost.quantity!=null?((decimal)conCost.quantity).ToString():"" %>';
+        if (quantity != oldQuan) {
+            LayerMsg("数量发生变更，请先进行保存");
+            return false;
+        }
+
+
         var wareId = $("#pickWareId").val();
         var productId = $("#product_idHidden").val();
         if (wareId != "") {
@@ -1889,15 +1898,20 @@
             var pickNum = $("#PickNum").val();
             var thisWareUserNum = $("#" + wareId + "_pick_avail").val();
             if (pickNum == "") {
-                LayerMsg("请填写拣货数量");
+                LayerMsg("请填写拣货数量！");
                 return false;
             }
             if (Number(pickNum) > Number(thisWareUserNum)) {
-                LayerMsg("拣货数量不能大于可用数量");
+                LayerMsg("拣货数量不能大于可用数量！");
                 return false;
             }
             if (Number(pickNum) <= 0) {
-                LayerMsg("拣货数量要大于0");
+                LayerMsg("拣货数量要大于0！");
+                return false;
+            }
+
+            if (Number(pickNum) > Number(quantity)) {
+                LayerMsg("拣货数量要小于成本数量！");
                 return false;
             }
             var serNumIds = "";
@@ -1930,8 +1944,9 @@
             }
             //var costProId = $("#ShowCostProId").val();
            // $("#BackgroundOverLay").show();
-            $("#LoadingIndicator").show();
             $("#ShoePickPageDialog").hide();
+            $("#LoadingIndicator").show();
+            
             $.ajax({
                 type: "GET",
                 async: false,
@@ -1941,7 +1956,7 @@
                     if (data != "") {
                         if (data.result) {
                             if (data.reason) {
-                                LayerConfirm("是否将销售订单状态改为已完成", "是", "否", function () { ChangeSaleStatus(); }, function () {
+                                LayerConfirm("是否将销售订单状态改为已完成", "是", "否", function () { ChangeSaleStatusDone(); }, function () {
                                     LayerMsg("拣货成功");
                                     history.go(0); });
 
@@ -2029,8 +2044,9 @@
         var costId = '<%=conCost==null?"":conCost.id.ToString() %>';
         var costProId = $("#ShowCostProId").val();
         // $("#BackgroundOverLay").show();
-        $("#LoadingIndicator").show();
         $("#ShowUnPickPageDialog").hide();
+        $("#LoadingIndicator").show();
+      
         $.ajax({
             type: "GET",
             async: false,
@@ -2073,7 +2089,7 @@
                 type: "GET",
                 async: false,
                 dataType: "json",
-                url: "../Tools/ProductAjax.ashx?act=GetWareSnByCostWare&cost_pro_id=" + cost_pro_id,
+                url: "../Tools/ProductAjax.ashx?act=GetWareSnByCostWare&cost_pro_id=" + cost_pro_id+"&snType=conPro",
                 success: function (data) {
                     if (data != "") {
                         var ids = "";
@@ -2115,7 +2131,7 @@
                 type: "GET",
                 async: false,
                 dataType: "json",
-                url: "../Tools/ProductAjax.ashx?act=GetWareSnByCostWare&cost_pro_id=" + cost_pro_id,
+                url: "../Tools/ProductAjax.ashx?act=GetWareSnByCostWare&cost_pro_id=" + cost_pro_id + "&snType=conPro",
                 success: function (data) {
                     if (data != "") {
                         var ids = "";
@@ -2175,7 +2191,7 @@
             });
         }
     }
-
+    // 显示配送的DIV
     function ShowShipDiv(ware_id, wareName, quantity, cost_pro_id) {
         var costId = '<%=conCost==null?"":conCost.id.ToString() %>';
         if (costId != "" && ware_id != "") {
@@ -2231,7 +2247,7 @@
                 type: "GET",
                 async: false,
                 dataType: "json",
-                url: "../Tools/ProductAjax.ashx?act=GetWareSnByCostWare&cost_pro_id=" + cost_pro_id,
+                url: "../Tools/ProductAjax.ashx?act=GetWareSnByCostWare&cost_pro_id=" + cost_pro_id + "&snType=conPro",
                 success: function (data) {
                     if (data != "") {
                         var ids = "";
@@ -2297,33 +2313,62 @@
     // 取消拣货的多选查找带回
     function ChooseInPickSerNum() {
         // UnPickSerNumIds
-        var wareId = $("#UnPickWareId").val();
+
+        var costProId = $("#ShowCostProId").val();
+        if (costProId != "") {
+            window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT_PRODUCT_SN_CALLBACK %>&muilt=1&field=UnPickSerNumIds&con1232=" + costProId + "&callBack=GetUnPickDataBySerNumIds", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SERNUM_CALLBACK %>', 'left=200,top=200,width=600,height=800', false);
+        }
+        else {
+            LayerMsg("未找到成本产品相关信息");
+        }
+
+
+
+     <%--   var wareId = $("#UnPickWareId").val();
         var productId = $("#product_idHidden").val();
         if (wareId != "" && productId != "") {
             window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERNUM_CALLBACK %>&muilt=1&field=UnPickSerNumIds&con1172=" + productId + "&con1173=" + wareId + "&callBack=GetUnPickDataBySerNumIds", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SERNUM_CALLBACK %>', 'left=200,top=200,width=600,height=800', false);
         } else {
             LayerMsg("未找到仓库或产品相关信息");
-        }
+        }--%>
     }
 
     function ChooseTranSerNum() {
-        var wareId = $("#TranWareId").val();
+
+        var costProId = $("#ShowCostProId").val();
+        if (costProId != "") {
+            window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT_PRODUCT_SN_CALLBACK %>&muilt=1&field=TranSerNumIds&con1232=" + costProId + "&callBack=GetTranDataBySerNumIds", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SERNUM_CALLBACK %>', 'left=200,top=200,width=600,height=800', false);
+        } else {
+            LayerMsg("未找到仓库或产品相关信息");
+        }
+
+     <%--   var wareId = $("#TranWareId").val();
         var productId = $("#product_idHidden").val();
         if (wareId != "" && productId != "") {
             window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERNUM_CALLBACK %>&muilt=1&field=UnPickSerNumIds&con1172=" + productId + "&con1173=" + wareId + "&callBack=GetTranDataBySerNumIds", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SERNUM_CALLBACK %>', 'left=200,top=200,width=600,height=800', false);
         } else {
             LayerMsg("未找到仓库或产品相关信息");
-        }
+        }--%>
     }
     function ChooseShipSerNum() {
-        // ShipSerNumIdsHidden
+
+
+        var costProId = $("#ShowCostProId").val();
+        if (costProId != "") {
+            window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACT_PRODUCT_SN_CALLBACK %>&muilt=1&field=ShipSerNumIds&con1232=" + costProId + "&callBack=GetShipDataBySerNumIds", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SERNUM_CALLBACK %>', 'left=200,top=200,width=600,height=800', false);
+        } else {
+            LayerMsg("未找到仓库或产品相关信息");
+        }
+
+
+      <%--  // ShipSerNumIdsHidden
         var wareId = $("#TranWareId").val();
         var productId = $("#product_idHidden").val();
         if (wareId != "" && productId != "") {
             window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERNUM_CALLBACK %>&muilt=1&field=ShipSerNumIds&con1172=" + productId + "&con1173=" + wareId + "&callBack=GetShipDataBySerNumIds", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SERNUM_CALLBACK %>', 'left=200,top=200,width=600,height=800', false);
         } else {
             LayerMsg("未找到仓库或产品相关信息");
-        }
+        }--%>
     }
 
     function GetShipDataBySerNumIds() {
@@ -2359,7 +2404,7 @@
                 type: "GET",
                 async: false,
                 dataType: "json",
-                url: "../Tools/ProductAjax.ashx?act=GetSnListByIds&snIds=" + serNumIds,
+                url: "../Tools/ProductAjax.ashx?act=GetSnListByIds&snIds=" + serNumIds +"&snType=conPro",
                 success: function (data) {
                     if (data != "") {
                         var selSnHtml = "";
@@ -2646,21 +2691,33 @@
         var BillCost = $("#BillCost").val();
         var costProId = $("#ShowCostProId").val();
         // $("#BackgroundOverLay").show();
-        $("#LoadingIndicator").show();
         $("#ShowShipPageDialog").hide();
+        $("#LoadingIndicator").show();
+        
         $.ajax({
             type: "GET",
             async: false,
-            // dataType: "json",
+             dataType: "json",
             url: "../Tools/ProductAjax.ashx?act=ShipItem&cost_id=" + costId + "&wareId=" + wareId + "&productId=" + productId + "&ShipNum=" + ShipNum + "&shipSerIds=" + shipSerIds + "&ShipDate=" + ShipDate + "&shipping_type_id=" + shipping_type_id + "&shipping_reference_number=" + shipping_reference_number + "&ShipCostCodeId=" + ShipCostCodeId + "&BillMoney=" + BillMoney + "&BillCost=" + BillCost + "&costProId=" + costProId,
             success: function (data) {
-                if (data == "True") {
-                    LayerMsg("配送成功");
-                   
-                } else {
-                    LayerMsg("配送失败");
+                if (data != "") {
+                    if (data.result) {
+                        if (data.reason) {
+                            LayerConfirm("是否将销售订单状态改为已完成", "是", "否", function () { ChangeSaleStatusDone(); }, function () {
+                                LayerMsg("配送成功");
+                                setTimeout(function () { history.go(0); }, 1500);
+                            });
+                        }
+                        else {
+                            LayerMsg("配送成功");
+                            setTimeout(function () { history.go(0); }, 1500);
+                        }
+                    }else {
+                        LayerMsg("配送失败");
+                    }
                 }
-                history.go(0);
+               
+                
             },
         });
 

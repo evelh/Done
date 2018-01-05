@@ -367,11 +367,33 @@ namespace EMT.DoneNOW.Web
             var thisCostPro = new ctt_contract_cost_product_dal().FindNoDeleteById(cost_pro_id);
             if (thisCostPro != null)
             {
-                var thisSnlist = new ivt_warehouse_product_sn_dal().GetListByCostProId(thisCostPro.id);
-                if(thisSnlist!=null&& thisSnlist.Count > 0)
+                var snType = context.Request.QueryString["snType"];
+                if (snType == "conPro")
                 {
-                    context.Response.Write(new Tools.Serialize().SerializeJson(thisSnlist));
+                    var thisSnlist = new ctt_contract_cost_product_sn_dal ().GetListByCostProId(thisCostPro.id);
+                    if (thisSnlist != null && thisSnlist.Count > 0)
+                    {
+                        if (thisCostPro.quantity != thisSnlist.Count)
+                        {
+                            thisSnlist = thisSnlist.Take(thisCostPro.quantity).ToList();
+                        }
+                        context.Response.Write(new Tools.Serialize().SerializeJson(thisSnlist));
+                    }
                 }
+                else
+                {
+                    var thisSnlist = new ivt_warehouse_product_sn_dal().GetListByCostProId(thisCostPro.id);
+                    if (thisSnlist != null && thisSnlist.Count > 0)
+                    {
+                        if (thisCostPro.quantity != thisSnlist.Count)
+                        {
+                            thisSnlist = thisSnlist.Take(thisCostPro.quantity).ToList();
+                        }
+                        context.Response.Write(new Tools.Serialize().SerializeJson(thisSnlist));
+                    }
+                }
+
+               
             }
         }
 
@@ -382,11 +404,24 @@ namespace EMT.DoneNOW.Web
         {
             if (!string.IsNullOrEmpty(ids))
             {
-                var snList = new ivt_warehouse_product_sn_dal().GetSnByIds(ids);
-                if(snList!=null&& snList.Count > 0)
+                var type = context.Request.QueryString["snType"];
+                if (type == "conPro")
                 {
-                    context.Response.Write(new Tools.Serialize().SerializeJson(snList));
+                    var snList = new ctt_contract_cost_product_sn_dal().GetSnByIds(ids);
+                    if (snList != null && snList.Count > 0)
+                    {
+                        context.Response.Write(new Tools.Serialize().SerializeJson(snList));
+                    }
                 }
+                else
+                {
+                    var snList = new ivt_warehouse_product_sn_dal().GetSnByIds(ids);
+                    if (snList != null && snList.Count > 0)
+                    {
+                        context.Response.Write(new Tools.Serialize().SerializeJson(snList));
+                    }
+                }
+                
             }
             
         }
@@ -465,7 +500,8 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void ShipItem(HttpContext context)
         {
-            var result = true;
+            var result = true;         // 配送结果
+            var isDoneOrder = false;   // 是否完成销售订单
             try
             {
                 
@@ -503,7 +539,7 @@ namespace EMT.DoneNOW.Web
                 result = ccBll.ShipItem(costId, productId, wareId, ShipNum, shipSerIds, ShipDate, shipping_type_id, shipping_reference_number,LoginUserId, costProId, ShipCostCodeId, BillMoney, BillCost);
                 ccBll.ChangCostStatus(costId, LoginUserId);
                 // 是否完成销售订单（返回页面进行处理）
-                var isDoneOrder = false;
+               
 
                 new SaleOrderBLL().ChangeSaleOrderStatus(costId, LoginUserId, out isDoneOrder);
 
@@ -512,7 +548,7 @@ namespace EMT.DoneNOW.Web
             {
                 result = false;
             }
-            context.Response.Write(result);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new { result = result, reason = isDoneOrder }));
         }
         /// <summary>
         /// 取消配送
