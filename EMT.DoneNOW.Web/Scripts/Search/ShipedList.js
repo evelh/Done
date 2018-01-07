@@ -24,7 +24,11 @@ function Ship() {
     if (ids != "") {
         ids = ids.substring(0, ids.length - 1);
         requestData("/Tools/PurchaseOrderAjax.ashx?act=purchaseUnShip&ids=" + ids, null, function (data) {
-            window.location.reload();
+            if (data == "") {
+                window.location.reload();
+            } else {
+                LayerMsg(data);
+            }
         })
     } else {
         LayerMsg("请选择待取消配送产品！");

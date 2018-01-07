@@ -46,6 +46,9 @@ namespace EMT.DoneNOW.Web
                 case "isEditOrder":
                     isEditOrder(context);
                     break;
+                case "deleteItem":
+                    DeletePurchaseItem(context);
+                    break;
                 default:
                     break;
 
@@ -188,6 +191,32 @@ namespace EMT.DoneNOW.Web
            
             context.Response.Write(result);
 
+        }
+
+        /// <summary>
+        /// 删除采购项
+        /// </summary>
+        /// <param name="context"></param>
+        private void DeletePurchaseItem(HttpContext context)
+        {
+            long id = long.Parse(context.Request.QueryString["id"]);
+            if (new InventoryOrderBLL().DeleteOrderItem(id, LoginUserId))
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(true));
+            }
+            else
+            {
+                var items = context.Session["PurchaseOrderItem"] as PurchaseOrderItemManageDto;
+                var item = items.items.Find(_ => _.id == id);
+                if (item == null)
+                    context.Response.Write(new Tools.Serialize().SerializeJson(false));
+                else
+                {
+                    items.items.Remove(item);
+                    context.Session["PurchaseOrderItem"] = items;
+                    context.Response.Write(new Tools.Serialize().SerializeJson(true));
+                }
+            }
         }
     }
 }

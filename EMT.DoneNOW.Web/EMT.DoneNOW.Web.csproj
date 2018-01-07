@@ -257,6 +257,7 @@
     <Content Include="Inventory\ReceivePurchaseOrder.aspx" />
     <Content Include="Inventory\RejectPurchase.aspx" />
     <Content Include="Inventory\TransferItem.aspx" />
+    <Content Include="Inventory\ViewPurchaseOrder.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempBody.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempEdit.aspx" />
     <Content Include="InvoiceTemplate\InvoiceTempTop.aspx" />
@@ -1316,6 +1317,13 @@
     </Compile>
     <Compile Include="Inventory\TransferItem.aspx.designer.cs">
       <DependentUpon>TransferItem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\ViewPurchaseOrder.aspx.cs">
+      <DependentUpon>ViewPurchaseOrder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Inventory\ViewPurchaseOrder.aspx.designer.cs">
+      <DependentUpon>ViewPurchaseOrder.aspx</DependentUpon>
     </Compile>
     <Compile Include="InvoiceTemplate\InvoiceTempBody.aspx.cs">
       <DependentUpon>InvoiceTempBody.aspx</DependentUpon>

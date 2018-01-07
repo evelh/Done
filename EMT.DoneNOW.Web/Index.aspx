@@ -376,28 +376,28 @@
                                                 <%if (CheckAuth("MENU_INVENTORY_PURCHASE_ORDER")) { %>
                                                 <div class="Content">
                                                     <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASE_ORDER %>" target="PageFrame"> 
-                                                        <span class="Text">采购订单</span>
+                                                        <span class="Text">采购订单管理</span>
                                                     </a>
                                                 </div>
                                                 <%} %>
                                                 <%if (CheckAuth("MENU_INVENTORY_RECEIVE")) { %>
                                                 <div class="Content">
                                                     <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASE_RECEIVE %>&isCheck=1" target="PageFrame"> 
-                                                        <span class="Text">接收</span>
+                                                        <span class="Text">采购接收</span>
                                                     </a>
                                                 </div>
                                                 <%} %>
                                                 <%if (CheckAuth("MENU_INVENTORY_SHIPPINT_LIST")) { %>
                                                 <div class="Content">
                                                     <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SHIPPING_LIST %>&isCheck=1" target="PageFrame"> 
-                                                        <span class="Text">配送列表</span>
+                                                        <span class="Text">配送</span>
                                                     </a>
                                                 </div>
                                                 <%} %>
                                                 <%if (CheckAuth("MENU_INVENTORY_SHIPED_LIST")) { %>
                                                 <div class="Content">
                                                     <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SHIPED_LIST %>&isCheck=1" target="PageFrame"> 
-                                                        <span class="Text">已配送列表</span>
+                                                        <span class="Text">已配送</span>
 													                          </a>
                                                 </div>
                                                 <%} %>

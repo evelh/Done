@@ -23,11 +23,24 @@ function Ship() {
     });
     if (ids != "") {
         var edit = 0;
-        LayerConfirm("是否将全部产品已配送的销售订单状态改为“已完成”?", "是", "否", function () { edit = 1; }, function () { edit = 0; });
         ids = ids.substring(0, ids.length - 1);
-        requestData("/Tools/PurchaseOrderAjax.ashx?act=purchaseShip&ids=" + ids + "&isEditSo=" + edit, null, function (data) {
-            window.location.reload();
-        })
+        LayerConfirm("是否将全部产品已配送的销售订单状态改为“已完成”?", "是", "否", function () {
+            requestData("/Tools/PurchaseOrderAjax.ashx?act=purchaseShip&ids=" + ids + "&isEditSo=1", null, function (data) {
+                if (data == "") {
+                    window.location.reload();
+                } else {
+                    LayerMsg(data);
+                }
+            })
+        }, function () {
+            requestData("/Tools/PurchaseOrderAjax.ashx?act=purchaseShip&ids=" + ids + "&isEditSo=0", null, function (data) {
+                if (data == "") {
+                    window.location.reload();
+                } else {
+                    LayerMsg(data);
+                }
+            })
+        });
     } else {
         LayerMsg("请选择待配送产品！");
     }

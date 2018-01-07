@@ -1168,7 +1168,7 @@ namespace EMT.DoneNOW.DTO
         }
 
         /// <summary>
-        /// 采购项描述信息显示类别
+        /// 采购项描述信息显示类别-155
         /// </summary>
         public enum INVENTORY_ORDER_ITEM_DISPLAY_TYPE
         {

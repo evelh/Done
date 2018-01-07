@@ -401,9 +401,7 @@
             $("#address").val(data.address);
             $("#additional_address").val(data.additional_address);
             $("#postal_code").val(data.postal_code);
-          })
-          requestData("/Tools/CompanyAjax.ashx?act=propertyJson&account_id=" + accId + "&property=name", null, function (data) {
-            $("#company_name").val(data);
+            $("#company_name").val(data.location_label);
           })
           requestData("/Tools/CompanyAjax.ashx?act=propertyJson&account_id=" + accId + "&property=phone", null, function (data) {
             $("#phone").val(data);
@@ -437,9 +435,7 @@
         $("#address").val(data.address);
         $("#additional_address").val(data.additional_address);
         $("#postal_code").val(data.postal_code);
-      })
-      requestData("/Tools/CompanyAjax.ashx?act=propertyJson&account_id=" + accId + "&property=name", null, function (data) {
-        $("#company_name").val(data);
+        $("#company_name").val(data.location_label);
       })
       requestData("/Tools/CompanyAjax.ashx?act=propertyJson&account_id=" + accId + "&property=phone", null, function (data) {
         $("#phone").val(data);

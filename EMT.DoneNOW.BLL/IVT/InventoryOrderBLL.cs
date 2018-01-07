@@ -42,7 +42,10 @@ namespace EMT.DoneNOW.BLL
                 if (order.purchase_account_id == null)
                     return false;
                 var lct = lctDal.GetLocationByAccountId((long)order.purchase_account_id);
-                if (lct.address == location.address && lct.district_id == location.district_id && lct.additional_address == location.additional_address && lct.postal_code == location.postal_code)
+                if (lct.address == location.address && lct.district_id == location.district_id
+                    && ((string.IsNullOrEmpty(lct.additional_address) && string.IsNullOrEmpty(location.additional_address)) || (lct.additional_address == location.additional_address))
+                    && ((string.IsNullOrEmpty(lct.postal_code) && string.IsNullOrEmpty(location.postal_code)) || (lct.postal_code == location.postal_code))
+                    && ((string.IsNullOrEmpty(lct.location_label) && string.IsNullOrEmpty(location.location_label)) || (lct.location_label == location.location_label)))
                 {
                     order.location_id = lct.id;
                 }
@@ -193,7 +196,10 @@ namespace EMT.DoneNOW.BLL
 
                 var lctDal = new crm_location_dal();
                 var lct = lctDal.FindById(order.location_id);
-                if (!(lct.address == location.address && lct.district_id == location.district_id && lct.additional_address == location.additional_address && lct.postal_code == location.postal_code))
+                if (!(lct.address == location.address && lct.district_id == location.district_id
+                    && ((string.IsNullOrEmpty(lct.additional_address) && string.IsNullOrEmpty(location.additional_address)) || (lct.additional_address == location.additional_address))
+                    && ((string.IsNullOrEmpty(lct.postal_code) && string.IsNullOrEmpty(location.postal_code)) || (lct.postal_code == location.postal_code))
+                    && ((string.IsNullOrEmpty(lct.location_label) && string.IsNullOrEmpty(location.location_label)) || (lct.location_label == location.location_label))))
                 {
                     location.id = lctDal.GetNextIdCom();
                     location.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
@@ -395,6 +401,16 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 获取采购订单关联的采购项
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        public List<ivt_order_product> GetPurchaseItemsByOrderId(long orderId)
+        {
+            return pdtDal.FindListBySql($"select * from ivt_order_product where order_id={orderId} and delete_time=0");
+        }
+
+        /// <summary>
         /// 获取采购订单产品
         /// </summary>
         /// <param name="productId"></param>
@@ -454,6 +470,47 @@ namespace EMT.DoneNOW.BLL
                 return true;
             pdtDal.Update(pdt);
             OperLogBLL.OperLogUpdate(desc, pdt.id, userId, DTO.DicEnum.OPER_LOG_OBJ_CATE.PURCHASE_ORDER_ITEM, "编辑采购项");
+            return true;
+        }
+
+        /// <summary>
+        /// 删除采购项
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool DeleteOrderItem(long itemId, long userId)
+        {
+            ivt_order_product item = pdtDal.FindById(itemId);
+            if (item == null)
+                return false;
+            item.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            item.delete_user_id = userId;
+            pdtDal.Update(item);
+            OperLogBLL.OperLogDelete<ivt_order_product>(item, item.id, userId, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ITEM, "删除采购项");
+
+            if (item.contract_cost_id != null)
+            {
+                var costDal = new ctt_contract_cost_dal();
+                var costPdtDal = new ctt_contract_cost_product_dal();
+                var cost = costDal.FindById((long)item.contract_cost_id);
+                cost.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                cost.delete_user_id = userId;
+                costDal.Update(cost);
+                OperLogBLL.OperLogDelete<ctt_contract_cost>(cost, cost.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_COST, "删除采购项关联成本");
+
+                var pdts = costPdtDal.FindListBySql($"select * from ctt_contract_cost_product where contract_cost_id={cost.id} and delete_time=0");
+                if (pdts != null && pdts.Count > 0)
+                {
+                    foreach (var pdt in pdts)
+                    {
+                        pdt.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                        pdt.delete_user_id = userId;
+                        costPdtDal.Update(pdt);
+                        OperLogBLL.OperLogDelete<ctt_contract_cost_product>(pdt, pdt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "删除采购项关联成本产品");
+                    }
+                }
+            }
             return true;
         }
 

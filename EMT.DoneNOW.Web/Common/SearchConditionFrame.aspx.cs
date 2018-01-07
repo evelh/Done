@@ -169,10 +169,10 @@ namespace EMT.DoneNOW.Web
                     currentQuery.page_name = "库存转移与更新";
                     break;
                 case (int)DicEnum.QUERY_CATE.PURCHASING_FULFILLMENT:
-                    currentQuery.page_name = "待采购产品查询";
+                    currentQuery.page_name = "待采购产品管理";
                     break;
                 case (int)DicEnum.QUERY_CATE.PURCHASE_ORDER:
-                    currentQuery.page_name = "采购订单查询";
+                    currentQuery.page_name = "采购订单管理";
 					break;
                 case (int)DicEnum.QUERY_CATE.PROJECT_TEMP_SEARCH:
                     currentQuery.page_name = "项目模板管理";
@@ -181,13 +181,13 @@ namespace EMT.DoneNOW.Web
                     currentQuery.page_name = "项目提案管理";
                     break;
                 case (int)DicEnum.QUERY_CATE.SHIPPING_LIST:
-                    currentQuery.page_name = "配送列表查询";
+                    currentQuery.page_name = "配送";
                     break;
                 case (int)DicEnum.QUERY_CATE.SHIPED_LIST:
-                    currentQuery.page_name = "已配送列表查询";
+                    currentQuery.page_name = "已配送";
                     break;
                 case (int)DicEnum.QUERY_CATE.PURCHASE_RECEIVE:
-                    currentQuery.page_name = "采购接收查询";
+                    currentQuery.page_name = "采购接收";
 					break;
                 case (int)DicEnum.QUERY_CATE.PURCHASE_ORDER_HISTORY:
                     currentQuery.page_name = "采购订单历史";

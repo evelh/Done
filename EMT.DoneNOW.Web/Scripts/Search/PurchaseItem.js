@@ -20,5 +20,9 @@ function EditNote() {
 
 }
 function Delete() {
-
+    requestData("/Tools/PurchaseOrderAjax.ashx?act=deleteItem&id=" + entityid, null, function (data) {
+        if (data == true) {
+            window.location.reload();
+        }
+    })
 }

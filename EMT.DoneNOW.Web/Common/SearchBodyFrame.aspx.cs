@@ -830,7 +830,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "提交", click_function = "Submit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "接收/取消接收", click_function = "Receive()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "查看/打印", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看/打印", click_function = "View()" });
                     contextMenu.Add(new PageContextMenuDto { text = "发送邮件", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "取消", click_function = "Cancle()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
