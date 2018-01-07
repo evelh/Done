@@ -64,7 +64,7 @@
                       <td class="FieldLabels">
                         <label><%=udf.name %></label>
                         <div>
-                           <input onclick="WdatePicker()" type="text" value="<%=udfValue %>" name="<%=udf.id %>" class="Wdate" />
+                           <input onclick="WdatePicker()" type="text" value="<%=((DateTime)udfValue).ToString("yyyy-MM-dd") %>" name="<%=udf.id %>" class="Wdate" />
                         </div>
                       </td>
                     </tr>

@@ -563,27 +563,32 @@ namespace EMT.DoneNOW.BLL
                     return;
                 }
                 var oldCostStatus = thisCost.status_id;
-                if (proList.Count == thisCost.quantity)
+                if (proList.Sum(_=>_.quantity) == thisCost.quantity)
                 {
                     // 只要存在采购中
                     if (proList.Any(_ => _.status_id == (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.ON_ORDER))
                     {
                         thisCost.status_id = (int)DicEnum.COST_STATUS.IN_PURCHASING;
                     }
-                    // 全部已拣货、待配送这两种状态
-                    else if (!proList.Any(_ => _.status_id != (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.PICKED) && proList.Any(_ => _.status_id != (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.PENDING_DISTRIBUTION))
-                    {
-                        thisCost.status_id = (int)DicEnum.COST_STATUS.PENDING_DELIVERY;
-                    }
-                    // 全部已配送
-                    else if (!proList.Any(_ => _.status_id != (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.DISTRIBUTION))
-                    {
-                        thisCost.status_id = (int)DicEnum.COST_STATUS.ALREADY_DELIVERED;
-                    }
                     else
                     {
+                        thisCost.status_id = (int)DicEnum.COST_STATUS.PENDING_DELIVERY;
+                        // 全部已拣货、待配送这两种状态
+                        if (!proList.Any(_ => _.status_id != (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.PICKED) && proList.Any(_ => _.status_id != (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.PENDING_DISTRIBUTION))
+                        {
+                            thisCost.status_id = (int)DicEnum.COST_STATUS.PENDING_DELIVERY;
+                        }
+                        // 全部已配送
+                        else if (!proList.Any(_ => _.status_id != (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.DISTRIBUTION))
+                        {
+                            thisCost.status_id = (int)DicEnum.COST_STATUS.ALREADY_DELIVERED;
+                        }
+                        else
+                        {
 
+                        }
                     }
+                  
                 }
                 else
                 {
@@ -713,7 +718,7 @@ namespace EMT.DoneNOW.BLL
                     OperLogBLL.OperLogUpdate<ivt_warehouse_product>(fromWare, nowfromWare, fromWare.id, user_id, OPER_LOG_OBJ_CATE.INVENTORY_ITEM, "仓库产品移入");
 
                     // 修改相关串号信息
-                    UpdateWareProSn(fromWare.id, snIds, user_id);
+                    UpdateWareProSn(fromWare.id, snIds, user_id, oldFromWarePro.id);
                 }
                 else
                 {
@@ -739,8 +744,10 @@ namespace EMT.DoneNOW.BLL
             {
                 var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 var iwpsDal = new ivt_warehouse_product_sn_dal();
+                var ccpsDal = new ctt_contract_cost_product_sn_dal();
                 var itsDal = new ivt_transfer_sn_dal();
                 var snIdArr = snIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                // 拣货时，snId 指仓库产品snID ，其余表示成本产品snId
                 foreach (var snId in snIdArr)
                 {
                     var thisSn = iwpsDal.FindNoDeleteById(long.Parse(snId));
@@ -759,6 +766,25 @@ namespace EMT.DoneNOW.BLL
                         itsDal.Insert(its);
                         OperLogBLL.OperLogAdd<ivt_transfer_sn>(its, its.id, user_id, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ITEM_TRANSFER_SN, "新增库存转移串号");
                     }
+                    else
+                    {
+                        var thisConSn = ccpsDal.FindNoDeleteById(long.Parse(snId));
+                        if (thisConSn != null)
+                        {
+                            var its = new ivt_transfer_sn()
+                            {
+                                id = itsDal.GetNextIdCom(),
+                                transfer_id = transId,
+                                create_time = timeNow,
+                                create_user_id = user_id,
+                                sn = thisConSn.sn,
+                                update_time = timeNow,
+                                update_user_id = user_id,
+                            };
+                            itsDal.Insert(its);
+                            OperLogBLL.OperLogAdd<ivt_transfer_sn>(its, its.id, user_id, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ITEM_TRANSFER_SN, "新增库存转移串号");
+                        }
+                    }
                 }
                 return true;
             }
@@ -768,16 +794,32 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 库存转移时改变仓库产品SN相关信息
         /// </summary>
-        public bool UpdateWareProSn(long newWareProId, string snIds, long user_id)
+        public bool UpdateWareProSn(long newWareProId, string snIds, long user_id,long oldWareProId)
         {
             var iwpsDal = new ivt_warehouse_product_sn_dal();
+            var ccpsDal = new ctt_contract_cost_product_sn_dal();
+
             if (!string.IsNullOrEmpty(snIds))
             {
+                var thisWarePro = new ivt_warehouse_product_dal().FindNoDeleteById(newWareProId);
+                if (thisWarePro == null)
+                {
+                    return false;
+                }
                 var snArr = snIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 foreach (var snId in snArr)
                 {
                     var thisSn = iwpsDal.FindNoDeleteById(long.Parse(snId));
+                    if (thisSn == null)
+                    {
+                        var cttSn = ccpsDal.FindNoDeleteById(long.Parse(snId));
+                        if (cttSn != null)
+                        {
+                            thisSn = iwpsDal.GetSnByWareAndSn(oldWareProId, cttSn.sn);
+                        }
+                    }
+
                     if (thisSn != null)
                     {
                         var oldSn = iwpsDal.FindNoDeleteById(thisSn.id);
@@ -814,10 +856,26 @@ namespace EMT.DoneNOW.BLL
 
                     foreach (var snId in snArr)
                     {
-
+                        var sn = "";
                         var thisSn = iwpsDal.FindNoDeleteById(long.Parse(snId));
-                        var thisCostProSn = oldProList.FirstOrDefault(_ => _.sn == thisSn.sn);
-                        if (thisSn != null && thisCostProSn != null)
+                        if (thisSn != null)
+                        {
+                            sn = thisSn.sn;
+                        }
+                        else
+                        {
+                            var conProSn = cccpsDal.FindNoDeleteById(long.Parse(snId));
+                            if (conProSn != null)
+                            {
+                                sn = conProSn.sn;
+                            }
+                        }
+                        if (string.IsNullOrEmpty(sn))
+                        {
+                            continue;
+                        }
+                        var thisCostProSn = oldProList.FirstOrDefault(_ => _.sn == sn);
+                        if (thisCostProSn != null)
                         {
                             var oldProSn = cccpsDal.FindNoDeleteById(thisCostProSn.id);
                             thisCostProSn.contract_cost_product_id = newCostProId;
@@ -999,6 +1057,7 @@ namespace EMT.DoneNOW.BLL
                     {
                         DeletCostProSn(thisCostPro.id, user_id, "", unPickNum);
                         cccpDal.SoftDelete(thisCostPro, user_id);
+                        OperLogBLL.OperLogDelete<ctt_contract_cost_product>(thisCostPro, thisCostPro.id, user_id, OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "删除成本关联产品");
                     }
                     else
                     {
@@ -1057,13 +1116,11 @@ namespace EMT.DoneNOW.BLL
                 // 未输入 SN Ids 代表 取消全部
                 if (!string.IsNullOrEmpty(snIds))
                 {
-                    snList = cccpsDal.GetListByProAndSnIds(costProId, snIds);
+                    snList = cccpsDal.GetSnByIds(snIds);
                 }
                 else
                 {
                     snList = cccpsDal.GetListByCostProId(costProId);
-
-
                 }
                 if (snList != null && snList.Count > 0)
                 {
@@ -1248,7 +1305,7 @@ namespace EMT.DoneNOW.BLL
                     OperLogBLL.OperLogUpdate<ivt_warehouse_product>(fromWare, nowfromWare, fromWare.id, user_id, OPER_LOG_OBJ_CATE.INVENTORY_ITEM, "仓库产品移入");
 
                     // 修改相关串号信息
-                    UpdateWareProSn(fromWare.id, snIds, user_id);
+                    UpdateWareProSn(fromWare.id, snIds, user_id, oldFromWarePro.id);
                 }
                 else
                 {

@@ -70,7 +70,11 @@ namespace EMT.DoneNOW.Web.Contract
                         costCode = new d_cost_code_dal().FindNoDeleteById(conCost.cost_code_id);
 
                         cost_type_id.SelectedValue = conCost.cost_type_id == null ? ((int)DicEnum.COST_TYPE.OPERATIONA).ToString() : conCost.cost_type_id.ToString();
-                        status_id.SelectedValue = conCost.status_id.ToString();
+                        if (!IsPostBack)
+                        {
+                            status_id.SelectedValue = conCost.status_id.ToString();
+                        }
+                        
                         
                         if (conCost.contract_id != null) {
                             contract = new ctt_contract_dal().FindNoDeleteById((long)conCost.contract_id);
@@ -121,10 +125,18 @@ namespace EMT.DoneNOW.Web.Contract
                 status_id.DataSource = statuList;
                 status_id.DataBind();
                 //status_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
-                status_id.SelectedValue = ((int)DicEnum.COST_STATUS.PENDING_DELIVERY).ToString();
+                if (!IsPostBack)
+                {
+                    if (isAdd)
+                    {
+                        status_id.SelectedValue = ((int)DicEnum.COST_STATUS.PENDING_DELIVERY).ToString();
+                    }
+                    
+                }
+                
 
             }
-            catch (Exception)
+            catch (Exception msg)
             {
                 Response.End();
             }

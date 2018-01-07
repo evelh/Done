@@ -99,8 +99,12 @@ namespace EMT.DoneNOW.Web.Company
                                 iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.COMPANY_VIEW_ATTACHMENT + "&type=" + (int)QueryType.CompanyViewAttachment + "&con674=" + id;
                                 actType = "附件";
                                 break;
+                            case "project":
+                                iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.PROJECT_SEARCH + "&type=" + (int)QueryType.PROJECT_SEARCH + "&con630=" + crm_account.id;
+                                actType = "项目";
+                                break;
                             default:
-                                iframeSrc = "";  // 默认
+                                iframeSrc = "";  // 默认  project_search
                                 actType = "活动";
                                 break;
                         }

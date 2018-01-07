@@ -396,8 +396,8 @@
                                                         TimeSpan ts1 = new TimeSpan(((DateTime)thisProject.start_date).Ticks);
                                                         TimeSpan ts2 = new TimeSpan(DateTime.Now.Ticks);
                                                         TimeSpan ts = ts1.Subtract(ts2).Duration();
-                                                        days = ts.Days;
-                                                        width = ts.Days * 100 / ((decimal)thisProject.duration);
+                                                        days = ts.Days+1;
+                                                        width = days * 100 / ((decimal)thisProject.duration);
                                                     }
 
                                                 %>

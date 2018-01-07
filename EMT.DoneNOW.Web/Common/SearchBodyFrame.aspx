@@ -234,25 +234,27 @@
                     <li onclick="Add()"><span style="margin: 0 10px;">完成</span></li>
                     <%
     }
-    else if (catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_TEAM) {%>
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_TEAM)
+    {%>
                     <%if (CheckAuth("PRO_PROJECT_VIEW_TEAM_ADD"))
-                        { %>
+    { %>
                     <li onclick="Add()"><span style="margin: 0 10px;">新建</span></li><%} %>
                     <%if (CheckAuth("PRO_PROJECT_VIEW_TEAM_EMAIL_TEAM"))
-                        { %>
+    { %>
                     <li onclick="EmailProjetcTeam()"><span style="margin: 0 10px;">通知项目团队</span></li><%} %>
                     <li onclick=""><span style="margin: 0 10px;">工作量报表</span></li>
                     <li onclick=""><span style="margin: 0 10px;">查找员工</span></li>
                        <%if (CheckAuth("PRO_PROJECT_VIEW_TEAM_RECONLINE"))
-                        { %>
+    { %>
                     <li onclick="ReconcileProject()"><span style="margin: 0 10px;">查核内部团队</span></li><%} %>
                         <%}
-                            else if (catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_COST_EXPENSE) {%>
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_COST_EXPENSE)
+    {%>
                        <li onclick="AddCost()"><span style="margin: 0 10px;">新增成本</span></li>
                        <li onclick="AddExpense()"><span style="margin: 0 10px;">新增费用</span></li>
                             <%}
-                                else if (catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_UDF)
-                                {%>
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_UDF)
+    {%>
             <li class="Button ButtonIcon NormalState f1" id="options" tabindex="0">
                 <span class="Icon" style="width: 0; margin: 0;"></span>
                 <span class="Text">选项</span>
@@ -264,8 +266,14 @@
                 <img src="../Images/dropdown.png" alt="" class="ButtonRightImg1" />
             </li>
                                 <%}
-                                else
-                                {
+                                else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_SEARCH)
+                                {%>
+                    <li onclick="AddProject('<%=(int)EMT.DoneNOW.DTO.DicEnum.PROJECT_TYPE.ACCOUNT_PROJECT %>','')"><span style="margin: 0 10px;">添加项目</span></li>
+                    <li onclick="AddProject('<%=(int)EMT.DoneNOW.DTO.DicEnum.PROJECT_TYPE.ACCOUNT_PROJECT %>','1')"><span style="margin: 0 10px;">从模板添加项目</span></li>
+                    <li onclick="AddProject('<%=(int)EMT.DoneNOW.DTO.DicEnum.PROJECT_TYPE.PROJECT_DAY %>','')"><span style="margin: 0 10px;">添加项目提案</span></li>
+                    <%}
+                    else
+                    {
                     %>
                     <li onclick="Add()"><i style="background-image: url(../Images/new.png);"></i><span><%=this.addBtn %></span></li>
                     <%}
@@ -285,7 +293,7 @@
                     <li onclick="ApprovalReject()"><span style="margin: 0 10px;">拒绝</span></li>
                   <%} %>
                     <li id="PrintLi" class="General"><i style="background-image: url(../Images/print.png);"></i></li>
-                    <li id="SelectLi" class="General" onclick="javascript:window.open('ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
+                    <li id="SelectLi" class="General" onclick="javascript:window.open('../Common/ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
                     <li id="ExportLi" class="General"><i style="background-image: url(../Images/export.png);"></i></li>
                 </ul>
                 <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_UDF) { %>

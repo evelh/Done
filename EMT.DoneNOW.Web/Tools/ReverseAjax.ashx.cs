@@ -33,6 +33,12 @@ namespace EMT.DoneNOW.Web
                 case "UnPostAll":
                     UnPostAll(context, ids);
                     break;
+                case "Labour":
+                    REVOKE_LABOUR(context, ids);
+                    break;
+                case "Expense":
+                    REVOKE_EXPENSE(context, ids);
+                    break;
                 default: break;
             }
         }
@@ -152,6 +158,12 @@ namespace EMT.DoneNOW.Web
                         case (int)ACCOUNT_DEDUCTION_TYPE.INITIAL_COST:
                             // Revoke_Recurring_Services(context, thisIds);
                             break;
+                        case (int)ACCOUNT_DEDUCTION_TYPE.LABOUR:
+                            REVOKE_LABOUR(context, thisIds);
+                            break;
+                        case (int)ACCOUNT_DEDUCTION_TYPE.EXPENSES:
+                            REVOKE_EXPENSE(context, thisIds);
+                            break;
                         default:
                             break;
                     }
@@ -160,6 +172,36 @@ namespace EMT.DoneNOW.Web
 
 
 
+        }
+        /// <summary>
+        /// 撤销审批工时
+        /// </summary>
+        public void REVOKE_LABOUR(HttpContext context, string ids)
+        {
+            string re = string.Empty;
+            var result = rebll.REVOKE_LABOUR(LoginUserId, ids, out re);
+            switch (result)
+            {
+                case DTO.ERROR_CODE.SUCCESS: context.Response.Write("撤销审批成功！"); break;
+                case DTO.ERROR_CODE.EXIST: context.Response.Write(re); break;
+
+                default: context.Response.Write("撤销审批失败！"); break;
+            }
+        }
+        /// <summary>
+        /// 撤销审批费用
+        /// </summary>
+        public void REVOKE_EXPENSE(HttpContext context, string ids)
+        {
+            string re = string.Empty;
+            var result = rebll.REVOKE_EXPENSE(LoginUserId, ids, out re);
+            switch (result)
+            {
+                case DTO.ERROR_CODE.SUCCESS: context.Response.Write("撤销审批成功！"); break;
+                case DTO.ERROR_CODE.EXIST: context.Response.Write(re); break;
+
+                default: context.Response.Write("撤销审批失败！"); break;
+            }
         }
 
     }

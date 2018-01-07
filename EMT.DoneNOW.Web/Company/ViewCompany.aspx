@@ -56,7 +56,7 @@
           <li>工单</li>
           <%}%>
           <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_PROJECT")) { %>
-          <li>项目</li>
+          <li onclick="window.location.href='ViewCompany.aspx?id=<%=account.id %>&type=project'"><a>项目</a></li>
           <%}%>
           <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_CONFIGURATION_ITEM")) { %>
           <li onclick="window.location.href='ViewCompany.aspx?id=<%=account.id %>&type=confirgItem'"><a href="ViewCompany.aspx?id=<%=account.id %>&type=confirgItem">配置项</a></li>

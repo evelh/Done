@@ -415,10 +415,13 @@
     <Content Include="RichText\js\third-party\video-js\font\vjs.ttf" />
     <Content Include="RichText\js\third-party\video-js\font\vjs.woff" />
     <Content Include="Scripts\Search\contract_project.js" />
+    <Content Include="Scripts\Search\project_search.js" />
     <Content Include="Scripts\Search\PurchaseFulfillment.js" />
     <Content Include="Scripts\Search\PurchaseItem.js" />
     <Content Include="Scripts\Search\PurchaseOrder.js" />
     <Content Include="Scripts\Search\PurchaseReceive.js" />
+    <Content Include="Scripts\Search\revoke_expense.js" />
+    <Content Include="Scripts\Search\revoke_labour.js" />
     <Content Include="Scripts\Search\ShipedList.js" />
     <Content Include="Scripts\Search\ShippingList.js" />
     <Content Include="Scripts\Search\purchase_order_history.js" />

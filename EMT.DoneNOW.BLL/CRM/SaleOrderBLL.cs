@@ -156,20 +156,22 @@ namespace EMT.DoneNOW.BLL
                 {
                     thisOrder.status_id = (int)SALES_ORDER_STATUS.PARTIALLY_FULFILLED;
 
-                    var proList = new ctt_contract_cost_product_dal().GetListByCostId(cost_id);
-                    if(proList!=null&& proList.Count > 0)
+                   
+                }
+                var proList = new ctt_contract_cost_product_dal().GetListByCostId(cost_id);
+                if (proList != null && proList.Count > 0)
+                {
+                    if (!proList.Any(_ => _.status_id != (int)CONTRACT_COST_PRODUCT_STATUS.DISTRIBUTION))
                     {
-                        if (!proList.Any(_ => _.status_id != (int)CONTRACT_COST_PRODUCT_STATUS.DISTRIBUTION))
-                        {
-                            isDoneOrder = true;
-                        }
+                        isDoneOrder = true;
                     }
                 }
                 // 如果销售订单下的产品部分已配送，且销售订单状态为“进行中”/“新建”，则将其状态置为“部分发货”
                 if (oldOrderStatus != thisOrder.status_id)
                 {
                     var oldOrder = _dal.FindNoDeleteById(thisOrder.id);
-
+                    thisOrder.update_user_id = user_id;
+                    thisOrder.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                     _dal.Update(thisOrder);
                     OperLogBLL.OperLogUpdate<crm_sales_order>(thisOrder, oldOrder, thisOrder.id, user_id, OPER_LOG_OBJ_CATE.SALE_ORDER, "修改销售订单状态");
 

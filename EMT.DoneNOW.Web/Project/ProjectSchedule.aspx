@@ -271,6 +271,9 @@
         .NoClickNow{   /* 现在不实现的功能，变灰标识。 */
             color:grey;
         }
+        .InstructionItem{
+                font-weight: bold;
+        }
     </style>
     <title></title>
 </head>
@@ -761,8 +764,27 @@
                                     else if (para.name == "里程碑数")
                                     {
                                         var thisArr = rslt["里程碑数"] as byte[];
+                                        var licheng = "";
+                                        if (thisArr != null && thisArr.Count() > 0)
+                                        {
+                                            licheng = System.Text.Encoding.Default.GetString(thisArr);
+                                        }
+                                        
                                 %>
-                                <td><%=thisArr==null?"":thisArr.Count().ToString() %></td>
+                                <td><%=licheng %></td>
+                                <%
+                                    }
+                                    else if (para.name == "预算时间")
+                                    {
+                                        var thisArr = rslt["预算时间"] as byte[];
+                                        var yusuan = "";
+                                        if (thisArr != null && thisArr.Count() > 0)
+                                        {
+                                            yusuan = System.Text.Encoding.Default.GetString(thisArr);
+                                        }
+                                        
+                                %>
+                                <td><%=yusuan %></td>
                                 <%
                                     }
                                     else if (para.name == "标题")
@@ -1843,16 +1865,16 @@
                                     该任务开始日期不能早于开始时间不早于<span id="taskStratThanSpan"></span>。
                                 </div>
                                 <div>
-                                    <input  class="Button" type="button" id="ClearStartThanButton" value="清除开始日期不早于"/>
+                                    <input  class="Button" type="button" id="ClearStartThanButton" value="清除开始日期不早于" style="width: 144px;height: 28px;margin-top: 14px;" />
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div id="dateNotInWeek" style="display:none;margin:15px 0px;" class="ShowAlarm">
                              <div class="Instructions" style="margin-left: 35px;">
-                                <div class="InstructionItem"></div>
+                                <div class="InstructionItem"> 任务的开始或者结束时间不在工作日内</div>
                                 <div>
-                                   任务的开始或者结束时间不在工作日内
+                                  
                                 </div>
                                 <div>
                                     
@@ -2955,6 +2977,19 @@
             $("#AddNoTimeEntryId").click(function () {
                 NewAddWorkEntry('1');
             })
+            <% if (thisProject.contract_id != null)
+    {
+        var thisContract = new EMT.DoneNOW.DAL.ctt_contract_dal().FindNoDeleteById((long)thisProject.contract_id);
+        if (thisContract != null && thisContract.timeentry_need_begin_end == 1)  // 合同中设置需要输入开始结束时间，则必须输入
+        {
+%>
+            $("#AddNoTimeEntryId").removeAttr("onclick");
+            $("#AddNoTimeEntryId").css("color", "grey");
+
+            <%
+        }
+        }%>
+
         }
         else if (noTimeSetValue == '1') {
             $("#AddNoTimeEntryId").removeAttr("onclick");
@@ -3305,7 +3340,7 @@
                  if (data != "" && data.start_no_earlier_than_date != null && data.start_no_earlier_than_date != "")
                  {
                      var thisDate = new Date(data.start_no_earlier_than_date);
-                     $("#taskStratThanSpan").html(thisDate.getFullYear() + "-" + Number(thisDate.getMonth() + 1) + "-" + thisDate.getDat());
+                     $("#taskStratThanSpan").html(thisDate.getFullYear() + "-" + Number(thisDate.getMonth() + 1) + "-" + thisDate.getDate());
                      isShow += 1;
                      $("#clearEarilyThan").show();
                  }

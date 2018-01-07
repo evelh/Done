@@ -139,7 +139,7 @@ namespace EMT.DoneNOW.BLL
                 return result;
 
             // 获取显示结果列信息并按顺序填充
-            var list = new d_query_result_dal().FindListBySql($"SELECT * FROM d_query_result WHERE id IN ({queryUser.query_result_ids}) AND query_type_id={queryUser.query_type_id}");
+            var list = new d_query_result_dal().FindListBySql($"SELECT * FROM d_query_result WHERE id IN ({queryUser.query_result_ids}) AND query_type_id={queryUser.query_type_id} ");
             string[] ids = queryUser.query_result_ids.Split(',');
             for (int i = 0; i < ids.Length; ++i)
             {
@@ -553,7 +553,7 @@ namespace EMT.DoneNOW.BLL
         {
             List<QueryResultParaDto> result = new List<QueryResultParaDto>();
 
-            string sql = $"SELECT * FROM d_query_result WHERE query_type_id={queryTypeId} ORDER BY col_order ASC";
+            string sql = $"SELECT * FROM d_query_result WHERE query_type_id={queryTypeId} and is_visible = 1 ORDER BY col_order ASC";
             var queryResultList = new d_query_result_dal().FindListBySql(sql);
             foreach (var qr in queryResultList)
             {
