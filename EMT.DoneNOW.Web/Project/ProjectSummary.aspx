@@ -6,8 +6,14 @@
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
-    <link rel="stylesheet" href="../Content/reset.css">
-    <link rel="stylesheet" href="../Content/NewWorkType.css">
+    <link rel="stylesheet" href="../Content/reset.css" />
+    <link rel="stylesheet" href="../Content/NewWorkType.css" />
+    <style>
+        a{
+            color: #376597;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div class="ButtonContainer">
@@ -562,29 +568,37 @@
                                             </td>
                                             <td> <%if (CheckAuth("PRO_PROJECT_VIEW_NOTE_SEARCH"))
                                                      { %>
-                                                <a onclick="TranToOther('note')"><%=noteNum %></a>  <%} %>
+                                                <a onclick="TranToOther('note')"><%=noteNum %></a>  <%}
+    else
+    { %>
+                                                <span><%=noteNum %></span>
+                                                <%} %>
                                             </td>
                                         </tr>
                                         <tr height="24px">
                                             <td class="FieldLabels">日历
                                             </td>
                                             <td><%if (CheckAuth("PRO_PROJECT_VIEW_CALENDAR_SEARCH"))
-                                                     { %>
-                                                <a onclick="TranToOther('Calendar')"><%=caleNum %></a><%} %>
+                                                    { %>
+                                                <a onclick="TranToOther('Calendar')"><%=caleNum %></a><%}
+    else
+    { %>
+                                                <span><%=caleNum %></span>
+                                                <%} %>
                                             </td>
                                         </tr>
                                         <tr height="24px">
                                             <td class="FieldLabels">公告
                                             </td>
                                             <td>
-                                                <a><%=annNum %></a>
+                                                <a onclick="ToGongGao()"><%=annNum %></a>
                                             </td>
                                         </tr>
                                         <tr height="24px">
                                             <td class="FieldLabels">配置项
                                             </td>
                                             <td>
-                                                <a><%=ciNum %></a>
+                                                <span><%=ciNum %></span>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -597,7 +611,7 @@
                 <tr>
                     <td colspan="2">
 
-                        <div class="DivSectionWithHeader">
+                        <div class="DivSectionWithHeader" id="GongGaoDiv">
                             <div class="Heading">
                                 <span class="Text">公告</span>
                             </div>
@@ -771,4 +785,8 @@
         // ProjectClosingReport
         location.href ="../Project/ProjectClosingReport.aspx?id=<%=thisProject.id %>";
     } 
+
+    function ToGongGao() {
+        document.getElementById("GongGaoDiv").scrollIntoView();
+    }
 </script>

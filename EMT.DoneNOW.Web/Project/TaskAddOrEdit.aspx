@@ -2584,8 +2584,11 @@
 
 
     }
-
     function RemoveThis(val) {
+      
+
+
+
         $("#" + val + "_temp").remove();
         var tempPreIds = $("#tempPreIds").val();
         if (tempPreIds != "") {  // 

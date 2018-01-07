@@ -1480,6 +1480,17 @@
                 return false;
             }
         }// 
+
+
+        //  保存需要对任务的剩余时间 进行的操作
+
+        //
+        //  当新增时 剩余时间 减少相应的工作时长
+        //  当为修改时 剩余时间 添加 减少相应的变更的值
+        //  当剩余时间为0 时不进行减少操作
+        //  当剩余时间为0 进行删除工时操作时，剩余时间依然会增加
+        var remain_hours = $("#remain_hours").val();
+
         var ineNoteVals = $("#internal_notes").val();
         if (saveType == "Add") {
             entryAddNum--;
@@ -1500,6 +1511,23 @@
                 RemoveThis(TrId);
                 event.stopPropagation();
             })
+
+            if (Number(remain_hours) != 0) {
+                <%if (noTime)
+    { %>
+                var thisRemaTime = Number(remain_hours) - Number(AddNewEntryWorkHour);
+                <%}
+    else
+    {%>
+                var thisRemaTime = Number(remain_hours) - Number(AddNewEntryHoursWorked);
+                <%}%>
+                if (Number(thisRemaTime) <= 0) {
+                    thisRemaTime = 0;
+                }
+                $("#remain_hours").val(toDecimal2(thisRemaTime));
+
+            }
+            
         }
         else {
             $("#summ_" + TrId).val(sumNoteVals);
@@ -1514,6 +1542,21 @@
             $("#entry_work_hour_" + TrId).val(AddNewEntryWorkHour);
             <%}%>
             $("#entryAdd_" + TrId).show();
+
+            var oldEntry = $("#entry_worked_" + TrId).val();
+                    <%if (noTime)
+    { %>
+            var thisRemaTime = Number(remain_hours) - (Number(oldEntry) - Number(AddNewEntryWorkHour));
+                <%}
+    else
+    {%>
+            var thisRemaTime = Number(remain_hours) - (Number(oldEntry) - Number(AddNewEntryHoursWorked));
+                <%}%>
+
+            if (Number(thisRemaTime) <= 0) {
+                thisRemaTime = 0;
+            }
+            $("#remain_hours").val(toDecimal2(thisRemaTime));
         }
         $(".PageAddPage").show();
         $("#PageMangeEntryId").val("");
@@ -1528,6 +1571,27 @@
     }
     // 移除新增的工时
     function RemoveThis(TrId) {
+
+           // 删除工时
+           // 新增剩余时间相关处理
+           // 获取到删除的工作时长
+           // 删除后 剩余时间增加相应时长
+        var thisWorke = "";
+                  <%if (noTime)
+    { %>
+        thisWorke = $("#entry_work_hour_" + TrId).val();
+                  <%}
+    else
+    { %>
+        thisWorke = $("#entry_worked_" + TrId).val();
+        <%}%>
+        var remain_hours = $("#remain_hours").val();
+        if (thisWorke != "") {
+            remain_hours = Number(remain_hours) + Number(thisWorke);
+            $("#remain_hours").val(toDecimal2(remain_hours));
+        }
+
+
         var thisId = $("#PageMangeEntryId").val();
         if (thisId != "") {
             LayerMsg("请先完成当前保存操作");

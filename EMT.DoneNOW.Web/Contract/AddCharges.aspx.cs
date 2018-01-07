@@ -210,6 +210,8 @@ namespace EMT.DoneNOW.Web.Contract
         {
             var param = GetParam();
 
+            bool isDelShipCost = false;  // 是否删除 配送的运费成本  为true 时，代表需要删除的成本已经审批提交，此时提示用户
+
             ERROR_CODE result = ERROR_CODE.SUCCESS;
             if (isAdd)
             {
@@ -217,7 +219,7 @@ namespace EMT.DoneNOW.Web.Contract
             }
             else
             {
-                result = new ContractCostBLL().UpdateCost(param, GetLoginUserId());
+                result = new ContractCostBLL().UpdateCost(param, GetLoginUserId(),out isDelShipCost);
             }
 
             switch (result)
@@ -238,6 +240,11 @@ namespace EMT.DoneNOW.Web.Contract
                         if (thisProject != null)
                         {
                             url += "&project_id=" + thisProject.id;
+                        }
+                        if (isDelShipCost)
+                        {
+                            // 运费成本已审批并提交，无法删除。
+                            ClientScript.RegisterStartupScript(this.GetType(), "运费成本信息提示", "<script>alert('运费成本已审批并提交，无法删除！');</script>");
                         }
                         ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');window.close();window.open('"+url+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);self.opener.location.reload();</script>");
                     }
@@ -262,7 +269,7 @@ namespace EMT.DoneNOW.Web.Contract
         protected void save_Click(object sender, EventArgs e)
         {
             var param = GetParam();
-
+            bool isDelShipCost = false;  // 是否删除 配送的运费成本  为true 时，代表需要删除的成本已经审批提交，此时提示用户
             ERROR_CODE result = ERROR_CODE.SUCCESS;
             if (isAdd)
             {
@@ -270,7 +277,7 @@ namespace EMT.DoneNOW.Web.Contract
             }
             else
             {
-                result = new ContractCostBLL().UpdateCost(param, GetLoginUserId());
+                result = new ContractCostBLL().UpdateCost(param, GetLoginUserId(),out isDelShipCost);
             }
 
             switch (result)
@@ -291,6 +298,11 @@ namespace EMT.DoneNOW.Web.Contract
                         if (thisProject != null)
                         {
                             url += "&project_id=" + thisProject.id;
+                        }
+                        if (isDelShipCost)
+                        {
+                            // 运费成本已审批并提交，无法删除。
+                            ClientScript.RegisterStartupScript(this.GetType(), "运费成本信息提示", "<script>alert('运费成本已审批并提交，无法删除！');</script>");
                         }
                         ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');location.href='AddCharges.aspx?id=" + param.cost.id + "';window.open('"+url+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);self.opener.location.reload();</script>");
                     }
@@ -315,7 +327,7 @@ namespace EMT.DoneNOW.Web.Contract
         protected void save_add_Click(object sender, EventArgs e)
         {
             var param = GetParam();
-
+            bool isDelShipCost = false;  // 是否删除 配送的运费成本  为true 时，代表需要删除的成本已经审批提交，此时提示用户
             ERROR_CODE result = ERROR_CODE.SUCCESS;
             if (isAdd)
             {
@@ -323,7 +335,7 @@ namespace EMT.DoneNOW.Web.Contract
             }
             else
             {
-                result = new ContractCostBLL().UpdateCost(param, GetLoginUserId());
+                result = new ContractCostBLL().UpdateCost(param, GetLoginUserId(),out isDelShipCost);
             }
 
             switch (result)
@@ -345,6 +357,11 @@ namespace EMT.DoneNOW.Web.Contract
                         if (thisProject != null)
                         {
                             url += "&project_id=" + thisProject.id;
+                        }
+                        if (isDelShipCost)
+                        {
+                            // 运费成本已审批并提交，无法删除。
+                            ClientScript.RegisterStartupScript(this.GetType(), "运费成本信息提示", "<script>alert('运费成本已审批并提交，无法删除！');</script>");
                         }
                         ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');location.href='"+ thisURL + "';window.open('"+url+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);self.opener.location.reload();</script>");
                     }

@@ -155,10 +155,10 @@ namespace EMT.DoneNOW.BLL
                 }else if(thisCost.status_id == (int)DicEnum.COST_STATUS.ALREADY_DELIVERED&&(oldOrderStatus == (int)SALES_ORDER_STATUS.OPEN|| oldOrderStatus == (int)SALES_ORDER_STATUS.IN_PROGRESS))
                 {
                     thisOrder.status_id = (int)SALES_ORDER_STATUS.PARTIALLY_FULFILLED;
-
-                   
                 }
-                var proList = new ctt_contract_cost_product_dal().GetListByCostId(cost_id);
+
+                // 获取销售订单下的所有成本，所有成本下的所有成本产品 已配送的时候，进行提示 isDoneOrder = true
+                var proList = new ctt_contract_cost_product_dal().GetListBySale(thisOrder.id);
                 if (proList != null && proList.Count > 0)
                 {
                     if (!proList.Any(_ => _.status_id != (int)CONTRACT_COST_PRODUCT_STATUS.DISTRIBUTION))

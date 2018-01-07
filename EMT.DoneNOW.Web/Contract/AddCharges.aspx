@@ -1438,9 +1438,58 @@
         window.close();
     })
 
+    $("#status_id").change(function () {
+
+        var thisValue = $(this).val();
+
+        if (thisValue == '<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_STATUS.CANCELED %>') {
+            $("#unit_cost").prop("disabled", true);   //billableAmount
+            $("#unit_price").prop("disabled", true);  
+            $("#extendedCost").prop("disabled", true);  
+            $("#billableAmount").prop("disabled", true);  
+            $("#unit_cost").val("0.0000");
+            $("#unit_price").val("0.0000");
+            GetSumCost();
+            GetSumAmount();
+        }
+        else {
+            $("#unit_cost").prop("disabled", false);   //billableAmount
+            $("#unit_price").prop("disabled", false);
+            $("#extendedCost").prop("disabled", false);
+            $("#billableAmount").prop("disabled", false);  
+        }
+
+    })
+
     $("#quantity").blur(function () {
         var quantity = $(this).val();
         if (quantity != "" && (!isNaN(quantity))) {
+
+            // -- 如果有拣货后的产品，则数量必须大于这个数量
+            <%if (!isAdd)
+    { %>
+            var oldQuanti = '<%=conCost!=null&&conCost.quantity!=null?((decimal)conCost.quantity).ToString("#0.0000"):"" %>';
+            var pickedNum = $("#pickedNum").html();
+            if (pickedNum != "" && pickedNum!=null && pickedNum != undefined) {
+                if (Number(quantity) < Number(pickedNum)) {
+                    LayerMsg("数量要超过" + Number(pickedNum) + "(已拣货、已接收、采购中 数量之和)");
+
+                    if (oldQuanti != "") {
+                        $(this).val(oldQuanti);
+                        $("#pricequantity").val(oldQuanti);
+                    } else {
+                        $(this).val(toDecimal4(pickedNum));
+                        $("#pricequantity").val(toDecimal4(pickedNum));
+                    }
+
+                    return false;
+                }
+            }
+            <%}%>
+
+
+
+
             quantity = toDecimal4(quantity);
             $(this).val(quantity);
             GetSumCost();
@@ -2275,8 +2324,8 @@
     function getDate24Hours() {
         var myDate = new Date();
         var years = myDate.getFullYear();
-        var month = myDate.getMonth()+1;
-        var day = myDate.getDay();
+        var month = myDate.getMonth() + 1;
+        var day = myDate.getDate();
         var hours = myDate.getHours();
         var minutes = myDate.getMinutes();
         var seconds = myDate.getSeconds();

@@ -314,9 +314,9 @@ a.Button span.Icon {
                         <span id="ctl00_mainContent_contractSelector" class="dataSelector">
                             <div id="ctl00_mainContent_contractSelector_UpperPanel" class="dataSelectorUpperPanel">
                                 <div id="ctl00_mainContent_contractSelector_TextBoxContainer" class="visible">
-                                    <input name="" type="text" id="excId" class="dataSelectorTextBox dataSelectorAutoCompleteTextBox" /><a  class="Button DataSelector IconOnly NormalState" onclick="ExcConCallBack()"><span style="width: 13px;background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;height: 16px;"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -10px -16px;width: 18px;height: 16px;"></span><span class="Text"></span></span></a>
+                                    <input name="" type="text" id="excId" class="dataSelectorTextBox dataSelectorAutoCompleteTextBox" value="<%=excContract==null?"":excContract.name %>" /><a  class="Button DataSelector IconOnly NormalState" onclick="ExcConCallBack()"><span style="width: 13px;background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;height: 16px;"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -10px -16px;width: 18px;height: 16px;"></span><span class="Text"></span></span></a>
                                 </div>
-                                <input type="hidden" name="" id="excIdHidden" value="" />
+                                <input type="hidden" name="" id="excIdHidden" value="<%=excContract==null?"":excContract.id.ToString() %>" />
 
                             </div>
                         </span>

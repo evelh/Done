@@ -71,7 +71,8 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                         cost = conCost,
                         isAddCongigItem = false
                     };
-                    new ContractCostBLL().UpdateCost(dto, GetLoginUserId());
+                    bool isDelShiCost = false;
+                    new ContractCostBLL().UpdateCost(dto, GetLoginUserId(),out isDelShiCost);
                     ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('配置项向导成功！');window.close();self.opener.location.reload();</script>");
                 }
                 else

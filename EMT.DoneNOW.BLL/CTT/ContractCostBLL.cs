@@ -71,8 +71,9 @@ namespace EMT.DoneNOW.BLL
         /// <param name="param"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public ERROR_CODE UpdateCost(AddChargeDto param, long user_id)
+        public ERROR_CODE UpdateCost(AddChargeDto param, long user_id, out bool isDelShipCost)
         {
+            isDelShipCost = false;
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
                 return ERROR_CODE.USER_NOT_FIND;
@@ -116,6 +117,69 @@ namespace EMT.DoneNOW.BLL
                 remark = "修改合同成本"
             });
             _dal.Update(param.cost);
+
+            var cccpDal = new ctt_contract_cost_product_dal();
+            if (param.cost.status_id == (int)COST_STATUS.CANCELED)
+            {
+                // 转换为取消时
+                // 已配送成本产品 --> 取消配送
+                // 成本相关成本产品 --> 删除
+                // 成本的单位价格和单位成本更改为0
+                var costProList = cccpDal.GetListByCostId(param.cost.id);
+                if (costProList != null && costProList.Count > 0)
+                {
+                    #region 取消配送已经配送的成本产品
+                    var shipItemList = costProList.Where(_ => _.status_id == (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.DISTRIBUTION).ToList();
+                    if (shipItemList != null && shipItemList.Count > 0)
+                    {
+                        int delNum = 0;  // 运费成本已经审批并提交--无法删除
+                        foreach (var shipItem in shipItemList)
+                        {
+                            UnShipItem(shipItem.id, user_id, out isDelShipCost);
+                            if (isDelShipCost)
+                            {
+                                delNum++;
+                            }
+                        }
+                        if (delNum > 0)
+                        {
+                            isDelShipCost = true;
+                        }
+                    }
+                    #endregion
+
+                    #region 删除相关成本产品信息
+                    costProList.ForEach(_ =>
+                    {
+                        DeletCostProSn(_.id, user_id);
+                        cccpDal.SoftDelete(_, user_id);
+                        OperLogBLL.OperLogDelete<ctt_contract_cost_product>(_, _.id, user_id, OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "删除成本关联产品");
+                    });
+                    #endregion
+                }
+                #region 查看成本状态 以及价格信息等
+                var thisCost = _dal.FindNoDeleteById(param.cost.id);
+                if (thisCost != null)
+                {
+
+                    if (thisCost.status_id != (int)COST_STATUS.CANCELED || thisCost.unit_cost != 0 || thisCost.unit_price != 0)
+                    {
+                        var oldThisCost = _dal.FindNoDeleteById(param.cost.id);
+                        thisCost.status_id = (int)COST_STATUS.CANCELED;
+                        thisCost.unit_price = 0;
+                        thisCost.unit_cost = 0;
+                        thisCost.update_user_id = user_id;
+                        thisCost.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        _dal.Update(thisCost);
+                        OperLogBLL.OperLogUpdate<ctt_contract_cost>(thisCost, oldThisCost, thisCost.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_COST, "修改成本信息");
+                    }
+                }
+
+                #endregion
+            }
+
+
+
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -411,7 +475,7 @@ namespace EMT.DoneNOW.BLL
             {
                 var thisCost = _dal.FindNoDeleteById(cost_id);
                 var thisPro = new ivt_product_dal().FindNoDeleteById(product_id);
-                if (thisCost != null&& thisPro!=null)
+                if (thisCost != null && thisPro != null)
                 {
                     var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                     var cccpDal = new ctt_contract_cost_product_dal();
@@ -563,7 +627,7 @@ namespace EMT.DoneNOW.BLL
                     return;
                 }
                 var oldCostStatus = thisCost.status_id;
-                if (proList.Sum(_=>_.quantity) == thisCost.quantity)
+                if (proList.Sum(_ => _.quantity) == thisCost.quantity)
                 {
                     // 只要存在采购中
                     if (proList.Any(_ => _.status_id == (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.ON_ORDER))
@@ -588,22 +652,34 @@ namespace EMT.DoneNOW.BLL
 
                         }
                     }
-                  
+
                 }
                 else
                 {
                     if (thisProduct.does_not_require_procurement == 1)
                     {
-
-                        if (IsAddNum)
-                        {
-                            // 待采购
-                            thisCost.status_id = (int)DicEnum.COST_STATUS.PENDING_PURCHASE;
-                        }
+                        // 待采购
+                        thisCost.status_id = (int)DicEnum.COST_STATUS.PENDING_PURCHASE;
                     }
                     else
                     {
-                        thisCost.status_id = (int)DicEnum.COST_STATUS.PENDING_PURCHASE;
+                        // 有未审批-- 待审批
+                        // 有审批未通过 - 待定
+                        if (IsAddNum)
+                        {
+                            thisCost.status_id = (int)DicEnum.COST_STATUS.PENDING_APPROVAL;
+                        }
+                        else
+                        {
+                            if(oldCostStatus!= (int)DicEnum.COST_STATUS.PENDING_APPROVAL)
+                            {
+                                thisCost.status_id = (int)DicEnum.COST_STATUS.PENDING_PURCHASE;
+                            }
+                        }
+                        //else
+                        //{
+                        //    thisCost.status_id = (int)DicEnum.COST_STATUS.PENDING_PURCHASE;
+                        //}
                     }
                 }
 
@@ -794,7 +870,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 库存转移时改变仓库产品SN相关信息
         /// </summary>
-        public bool UpdateWareProSn(long newWareProId, string snIds, long user_id,long oldWareProId)
+        public bool UpdateWareProSn(long newWareProId, string snIds, long user_id, long oldWareProId)
         {
             var iwpsDal = new ivt_warehouse_product_sn_dal();
             var ccpsDal = new ctt_contract_cost_product_sn_dal();
@@ -1124,7 +1200,10 @@ namespace EMT.DoneNOW.BLL
                 }
                 if (snList != null && snList.Count > 0)
                 {
-                    snList = snList.Take(num).ToList();
+                    if (num != 0)
+                    {
+                        snList = snList.Take(num).ToList();
+                    }
                     snList.ForEach(_ =>
                     {
                         cccpsDal.SoftDelete(_, user_id);
