@@ -44,12 +44,13 @@ namespace EMT.DoneNOW.Web
                     if (result == DTO.ERROR_CODE.SUCCESS)
                     {
                         list.Add(aapbll.charge(id));
+                        this.Radio2.Enabled = false;
+                        this.Label1.ForeColor = System.Drawing.Color.Gray;
                     }
                     else if (result == ERROR_CODE.NOTIFICATION_RULE)
                     {
                         list.Add(aapbll.charge(Convert.ToInt32(id)));
-                        this.Radio2.Enabled = true;
-                        this.Label1.ForeColor = System.Drawing.Color.Gray;
+                   
                     }
                 }
                 else  if(type == (int)QueryType.APPROVE_LABOUR)
@@ -58,12 +59,14 @@ namespace EMT.DoneNOW.Web
                     if (result == DTO.ERROR_CODE.SUCCESS)
                     {
                          list.Add(aapbll.Labour(id));
+                        this.Radio2.Enabled = false;
+                        this.Label1.ForeColor = System.Drawing.Color.Gray;
                     }
                     else if (result == ERROR_CODE.NOTIFICATION_RULE)
                     {
                         list.Add(aapbll.Labour(id));
-                        this.Radio2.Enabled = true;
-                        this.Label1.ForeColor = System.Drawing.Color.Gray;
+                        //this.Radio2.Enabled = true;
+                        //this.Label1.ForeColor = System.Drawing.Color.Gray;
                     }
                 }
         
@@ -82,12 +85,14 @@ namespace EMT.DoneNOW.Web
                         {
                             list.Add(aapbll.charge(Convert.ToInt32(idi)));
                             ids1.Add(idi);
+                            this.Radio2.Enabled = false;
+                            this.Label1.ForeColor = System.Drawing.Color.Gray;
                         }
                         else if (result == ERROR_CODE.NOTIFICATION_RULE)
                         {
                             list.Add(aapbll.charge(Convert.ToInt32(idi)));
-                            this.Radio2.Enabled = true;
-                            this.Label1.ForeColor = System.Drawing.Color.Gray;
+                            //this.Radio2.Enabled = true;
+                            //this.Label1.ForeColor = System.Drawing.Color.Gray;
                         }
                         else
                         {
@@ -101,12 +106,14 @@ namespace EMT.DoneNOW.Web
                         {
                             list.Add(aapbll.Labour(id));
                             ids1.Add(idi);
+                            this.Radio2.Enabled = false;
+                            this.Label1.ForeColor = System.Drawing.Color.Gray;
                         }
                         else if (result == ERROR_CODE.NOTIFICATION_RULE)
                         {
                             list.Add(aapbll.Labour(int.Parse(idi)));
-                            this.Radio2.Enabled = true;
-                            this.Label1.ForeColor = System.Drawing.Color.Gray;
+                            //this.Radio2.Enabled = true;
+                            //this.Label1.ForeColor = System.Drawing.Color.Gray;
                         }
                     }
                       

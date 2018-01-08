@@ -1628,7 +1628,7 @@ namespace EMT.DoneNOW.BLL
                 if (ccc.extended_price != null || ccc.extended_price < extended_price)
                 {
                     //正常处理
-                    var block_hours = ccb_dal.ExecuteDataTable($"SELECT b.id,round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status=1 ORDER BY b.start_date");
+                    var block_hours = ccb_dal.ExecuteDataTable($"SELECT b.id,round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1 ORDER BY b.start_date");
                     foreach (DataRow i in block_hours.Rows)
                     {
                         if (i[1] != null && Convert.ToDecimal(i[1]) > 0)
