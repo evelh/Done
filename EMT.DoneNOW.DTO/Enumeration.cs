@@ -1515,5 +1515,7 @@ namespace EMT.DoneNOW.DTO
         MILEAGE=18,             // 总里程
         // 1161
         CHANGEORDER=36,           // 变更
+        NOTAXDISCOUNT=37,          // 不收税折扣
+        DISCOUNT=43,               // 折扣
     }
 }

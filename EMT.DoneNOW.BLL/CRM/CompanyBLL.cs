@@ -102,15 +102,15 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.PARAMS_ERROR;             // int 必填项校验
             if (_dal.ExistAccountName(param.general.company_name.Trim()))    // 客户名称与客户电话的唯一性校验
                 return ERROR_CODE.CRM_ACCOUNT_NAME_EXIST;   // 返回客户名已存在   
-            if (_dal.ExistAccountPhone(param.general.phone))
-                return ERROR_CODE.PHONE_OCCUPY;              // 返回电话被占用
-            if (!string.IsNullOrEmpty(param.contact.mobile_phone))     // 移动电话不为空时，进行唯一性校验
-            {
-               if( new crm_contact_dal().ExistContactMobilePhone(param.contact.mobile_phone))       // 移动电话唯一校验
-                {
-                    return ERROR_CODE.MOBILE_PHONE_OCCUPY;           // 返回错误
-                }
-            }
+            //if (_dal.ExistAccountPhone(param.general.phone))
+            //    return ERROR_CODE.PHONE_OCCUPY;              // 返回电话被占用
+            //if (!string.IsNullOrEmpty(param.contact.mobile_phone))     // 移动电话不为空时，进行唯一性校验
+            //{
+            //   if( new crm_contact_dal().ExistContactMobilePhone(param.contact.mobile_phone))       // 移动电话唯一校验
+            //    {
+            //        return ERROR_CODE.MOBILE_PHONE_OCCUPY;           // 返回错误
+            //    }
+            //}
 
 
             // TODO  名称相似校验

@@ -37,5 +37,10 @@ namespace EMT.DoneNOW.DTO
         public DateTime effective_date;  // 生效时间
 
         // todo 通知 
+
+        public long notifi_temp;    // 通知模板ID，
+        public bool isNotiCreate;   // 是否通知创建人
+        public string resIds;       // 员工邮箱
+        public string otherMails;   // 其他邮箱地址
     }
 }

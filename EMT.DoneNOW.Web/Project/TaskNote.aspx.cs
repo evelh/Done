@@ -213,6 +213,12 @@ namespace EMT.DoneNOW.Web.Project
                         }
                     }
 
+                    var tempList = new sys_notify_tmpl_dal().GetTempByEvent(DicEnum.NOTIFY_EVENT.NONE);
+                    notify_id.DataTextField = "name";
+                    notify_id.DataValueField = "id";
+                    notify_id.DataSource = tempList;
+                    notify_id.DataBind();
+
                 }
             }
             catch (Exception msg)
@@ -327,12 +333,12 @@ namespace EMT.DoneNOW.Web.Project
             }
             
             
-            param.otherEmail = Request.QueryString["otherEmail"];
-            param.subjects = Request.QueryString["subjects"];
-            param.AdditionalText = Request.QueryString["AdditionalText"];
-            if (!string.IsNullOrEmpty(Request.QueryString["notify_id"]))
+            param.otherEmail = Request.Form["otherEmail"];
+            param.subjects = Request.Form["subjects"];
+            param.AdditionalText = Request.Form["AdditionalText"];
+            if (!string.IsNullOrEmpty(Request.Form["notify_id"]))
             {
-                param.notify_id = int.Parse(Request.QueryString["notify_id"]);
+                param.notify_id = int.Parse(Request.Form["notify_id"]);
             }
             param.account_id = thisAccount.id;
             return param;

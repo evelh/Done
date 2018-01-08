@@ -540,6 +540,7 @@ namespace EMT.DoneNOW.BLL
             }
             else
             {
+                //var test = RetrunMaxTime(6970,DateTime.Parse("2018-01-07"),2);
                 thisTask.estimated_end_date = RetrunMaxTime((long)thisTask.project_id, Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time), (int)thisTask.estimated_duration);
             }
             var user = UserInfoBLL.GetUserInfo(user_id);
@@ -561,7 +562,7 @@ namespace EMT.DoneNOW.BLL
                         if (thisPreTask != null)
                         {
                             var thisSDate = (DateTime)thisPreTask.estimated_end_date;
-                            thisSDate = RetrunMaxTime((long)param.task.project_id, thisSDate, dic.Value);
+                            thisSDate = RetrunMaxTime((long)param.task.project_id, thisSDate, dic.Value+1);
                             if (startDate < thisSDate)
                             {
                                 startDate = thisSDate;
@@ -1422,9 +1423,9 @@ namespace EMT.DoneNOW.BLL
                     // 3.添加最后一周天数
                     // 1.
                     var firstWeek = (int)newDate.DayOfWeek;    //计算开始时间是周几。。 
-                    if (firstWeek > 0 || firstWeek <= 5)
+                    if (firstWeek > 0 && firstWeek <= 5)
                     {
-                        if (days <= 6 - firstWeek)
+                        if (days < 6 - firstWeek)
                         {
                             newDate = newDate.AddDays(days);
                         }
@@ -2561,7 +2562,9 @@ namespace EMT.DoneNOW.BLL
                     var v_task = new v_task_all_dal().FindById(choTask.id);
                     if (v_task != null)
                     {
-                        if (v_task.remain_hours != para.remain_hours || choTask.status_id != para.status_id)
+                        // 预估时间+变更单小时+预估差异 - 实际时间
+                        var isEdit = para.remain_hours == (v_task.estimated_hours ?? 0) + (v_task.change_Order_Hours ?? 0) + (v_task.projected_variance ?? 0) - (v_task.worked_hours??0);
+                        if (isEdit || choTask.status_id != para.status_id)
                         {
                             choTask.status_id = para.status_id;
                             choTask.projected_variance += para.remain_hours - (v_task.remain_hours == null ? 0 : (decimal)v_task.remain_hours);

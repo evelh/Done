@@ -60,6 +60,13 @@ namespace EMT.DoneNOW.Web.Opportunity
                 period_type.DataSource = dic.FirstOrDefault(_ => _.Key == "period_type").Value;
                 period_type.DataBind();
                 period_type.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+
+                // notifi_temp 通知模板
+                var tempList = new sys_notify_tmpl_dal().GetTempByEvent(DicEnum.NOTIFY_EVENT.OPPORTUNITY_CLOSED);
+                notifi_temp.DataTextField = "name";
+                notifi_temp.DataValueField = "id";
+                notifi_temp.DataSource = tempList;
+                notifi_temp.DataBind();
                 #endregion
                 var id = Request.QueryString["id"];
                 var account_id = Request.QueryString["account_id"];
@@ -145,7 +152,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                 }
                 codeSelect.Value = text.ToString();
                 var disSource = "";
-                var disCostCode = costCode.Where(_ => _.id == 37 || _.id == 43).ToList();
+                var disCostCode = costCode.Where(_ => _.id == (int)CostCode.NOTAXDISCOUNT || _.id == (int)CostCode.DISCOUNT).ToList();
                 if (disCostCode != null && disCostCode.Count > 0)
                 {
                     foreach (var item in disCostCode)
@@ -344,7 +351,7 @@ namespace EMT.DoneNOW.Web.Opportunity
             switch (result)
             {
                 case ERROR_CODE.SUCCESS:
-                    ClientScript.RegisterStartupScript(this.GetType(), "跳转页面", "<script>document.getElementsByClassName('Workspace1')[0].style.display = 'none';document.getElementsByClassName('Workspace7')[0].style.display = 'none';document.getElementsByClassName('Workspace8')[0].style.display = '';</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "跳转页面", "<script>document.getElementsByClassName('Workspace1')[0].style.display = 'none';document.getElementsByClassName('Workspace7')[0].style.display = 'none';document.getElementsByClassName('Workspace8')[0].style.display = '';document.getElementById('BackgroundOverLay').style.display = 'none';document.getElementById('LoadingIndicator').style.display = 'none';</script>");
                     if (param.ticketId != null)
                     {
                         ClientScript.RegisterStartupScript(this.GetType(), "显示工单", "<script>document.getElementById('openTicket').style.display = '';document.getElementById('newTicketId').value = '" + param.ticketId + "';</script>");
@@ -504,7 +511,13 @@ namespace EMT.DoneNOW.Web.Opportunity
             }
             param.costCodeList = dic;
 
-
+            param.isNotiCreate = !string.IsNullOrEmpty(Request.Form["isNotiCre"]);
+            if (!string.IsNullOrEmpty(Request.Form["notifi_temp"]))
+            {
+                param.notifi_temp = long.Parse(Request.Form["notifi_temp"]);
+            }
+            param.resIds = Request.Form["resIds"];
+            param.otherMails = Request.Form["otherMails"];
             return param;
         }
     }

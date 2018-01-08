@@ -1767,7 +1767,7 @@
             </div>
         </div>
 
-        <div class="Dialog Large" style="margin-left: 100px; margin-top: 100px; z-index: 100; height: 650px;" id="Nav2">
+        <div class="Dialog Large" style="margin-left: 100px; margin-top: 10px; z-index: 100; height: 650px;" id="Nav2">
             <div>
                 <div class="DialogContentContainer">
                     <div class="CancelDialogButton"></div>
@@ -1779,10 +1779,10 @@
                         <div class="ScrollingContainer" id="z593dad524573453c982e0308d60c09ae" style="overflow-x: auto; overflow-y: auto; position: unset;">
                             <div class="Normal Section">
                                 <div class="Heading">
-                                    <div class="Left"><span class="Text">Define Predecessors for Migrate Email Data</span><span class="SecondaryText"></span></div>
+                                    <div class="Left"><span class="Text">定义前驱任务</span><span class="SecondaryText"></span></div>
                                     <div class="Spacer"></div>
                                 </div>
-                                <div class="DescriptionText">To mark a schedule item as a predecessor, click on the ID column, and enter a Lag. You may specify one or more predecessors.</div>
+                                <div class="DescriptionText">为日程表条目定义前驱方法：点击编号列，输入延迟时间，可以定义多个前驱。</div>
                                 <div class="Content">
                                     <div class="Large Column">
                                         <div class="Grid Small" id="PredecessorItemsGrid">
@@ -1820,7 +1820,7 @@
                                                 </table>
                                             </div>
                                             <div class="ScrollingContentContainer" style="height: 160px;">
-                                                <div class="NoDataMessage">没有条目展示</div>
+                                                <div class="NoDataMessage" id="NoPreTask">没有条目展示</div>
                                                 <div class="RowContainer BodyContainer">
                                                     <table cellpadding="0">
                                                         <colgroup>
@@ -2574,6 +2574,8 @@
                             }
                         })
                     })
+                } else {
+                    $("#NoPreTask").show();
                 }
             },
         });

@@ -31,6 +31,8 @@ namespace EMT.DoneNOW.BLL
             {   // 查询不到用户，用户丢失
                 return ERROR_CODE.USER_NOT_FIND;
             }
+            var cadDal = new crm_account_deduction_dal();
+            var sweDal = new sdk_work_entry_dal();
             crm_account_deduction cad = new crm_account_deduction();
             ctt_contract_block ccb = new ctt_contract_block();
             ctt_contract_cost ccc = new ctt_contract_cost();
@@ -40,99 +42,159 @@ namespace EMT.DoneNOW.BLL
             //该条目已经生成发票（发票ID：发票ID），请先作废该发票
             if (!string.IsNullOrEmpty(ids))
             {
+                var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 var idList = ids.Split(',');
                 foreach (var id in idList)
                 {
                     var oldcad = cad = GetAccountDed(long.Parse(id));
-                    if (cad.invoice_id != null)
+
+                    if (cad != null)
                     {
-                        var ci = new ctt_invoice_dal().FindNoDeleteById((long)cad.invoice_id);
-                        if (ci.is_voided != 1)
+                        if (cad.object_id != null)
                         {
-                            returnvalue.Append(id + "条目已经生成发票（发票ID：" + cad.invoice_id + "），请先作废该发票\n");
-                        }
-                    }
-                    else
-                    {
-                        cad.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                        cad.delete_user_id = user.id;
-                        var add1_log = new sys_oper_log()
-                        {
-                            user_cate = "用户",
-                            user_id = (int)user.id,
-                            name = user.name,
-                            phone = user.mobile == null ? "" : user.mobile,
-                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION,
-                            oper_object_id = cad.id,// 操作对象id
-                            oper_type_id = (int)OPER_LOG_TYPE.DELETE,
-                            oper_description = cad_dal.CompareValue(oldcad, cad),
-                            remark = "删除审批并提交"
-                        };          // 创建日志
-                        new sys_oper_log_dal().Insert(add1_log);       // 插入日志
-                        if (!cad_dal.Update(cad))
-                        {
-                            return ERROR_CODE.ERROR;
-                        }
-                        //合同成本
-                        var oldccc = ccc = ccc_dal.FindSignleBySql<ctt_contract_cost>($"select * from ctt_contract_cost where id={cad.object_id} and delete_time=0");
-                        if (ccc != null)
-                        {
-                            ccc.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                            ccc.update_user_id = user.id;
-                            ccc.bill_status = 0;
-                            ccc.extended_price = ccc.unit_price * ccc.quantity;
-                            var add_log = new sys_oper_log()
+                            var cadList = cadDal.GetListByObjectId((long)cad.object_id);
+                            if (cadList != null && cadList.Count > 0)
                             {
-                                user_cate = "用户",
-                                user_id = (int)user.id,
-                                name = user.name,
-                                phone = user.mobile == null ? "" : user.mobile,
-                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_COST,
-                                oper_object_id = ccc.id,// 操作对象id
-                                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                                oper_description = cad_dal.CompareValue(oldccc, ccc),
-                                remark = "修改合同成本"
-                            };          // 创建日志
-                            new sys_oper_log_dal().Insert(add_log);       // 插入日志
-                            if (!ccc_dal.Update(ccc))
-                            {
-                                return ERROR_CODE.ERROR;
-                            }
-                            if (cad.contract_block_id != null)
-                            {
-                                //合同预付
-                                var oldccb = ccb = ccb_dal.FindSignleBySql<ctt_contract_block>($" select * from ctt_contract_block where id={cad.contract_block_id} and delete_time=0");
-                                if (ccb != null)
+                                foreach (var thisCad in cadList)
                                 {
-                                    ccb.is_billed = 0;
-                                    ccb.status_id = 1;
-                                    ccb.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                                    ccb.update_user_id = user.id;
-                                    var add3_log = new sys_oper_log()
+                                    if (thisCad.invoice_id != null)
                                     {
-                                        user_cate = "用户",
-                                        user_id = (int)user.id,
-                                        name = user.name,
-                                        phone = user.mobile == null ? "" : user.mobile,
-                                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_BLOCK,
-                                        oper_object_id = ccc.id,// 操作对象id
-                                        oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                                        oper_description = cad_dal.CompareValue(oldccb, ccb),
-                                        remark = "修改合同预付"
-                                    };          // 创建日志
-                                    new sys_oper_log_dal().Insert(add3_log);       // 插入日志
-                                    if (!ccb_dal.Update(ccb))
-                                    {
-                                        return ERROR_CODE.ERROR;
+                                        var ci = new ctt_invoice_dal().FindNoDeleteById((long)thisCad.invoice_id);
+                                        if (ci != null && ci.is_voided != 1)
+                                        {
+                                            returnvalue.Append(id + "条目已经生成发票（发票ID：" + thisCad.invoice_id + "），请先作废该发票\n");
+                                        }
                                     }
                                 }
                             }
-                        }
 
+
+                            if (string.IsNullOrEmpty(returnvalue.ToString()))
+                            {
+                                if (cadList != null && cadList.Count > 0)
+                                {
+                                    cadList.ForEach(_ => {
+                                        RecoveryBlock(_.id,user_id);
+                                        cadDal.SoftDelete(_, user_id);
+                                        OperLogBLL.OperLogDelete<crm_account_deduction>(_, _.id, user_id, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "删除审批并提交条目");
+                                    });
+                                    var swe = sweDal.FindNoDeleteById((long)cad.object_id);
+                                    if (swe != null)
+                                    {
+                                        var oldSwe = sweDal.FindNoDeleteById((long)cad.object_id);
+                                        swe.approve_and_post_date = null;
+                                        swe.approve_and_post_user_id = null;
+                                        swe.hours_billed_deduction = null;
+                                        swe.hours_rate_deduction = null;
+                                        swe.update_time = timeNow;
+                                        swe.update_user_id = user_id;
+                                        sweDal.Update(swe);
+                                        OperLogBLL.OperLogUpdate<sdk_work_entry>(swe, oldSwe, swe.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "修改工时");
+                                    }
+                                }
+
+
+                            }
+                            else
+                            {
+                                re = returnvalue.ToString();
+                            }
+                        }
                     }
+
+
+                    #region 原有的撤销成本审批相关逻辑
+                    //if (cad.invoice_id != null)
+                    //{
+                    //    var ci = new ctt_invoice_dal().FindNoDeleteById((long)cad.invoice_id);
+                    //    if (ci.is_voided != 1)
+                    //    {
+                    //        returnvalue.Append(id + "条目已经生成发票（发票ID：" + cad.invoice_id + "），请先作废该发票\n");
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    cad.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    //    cad.delete_user_id = user.id;
+                    //    var add1_log = new sys_oper_log()
+                    //    {
+                    //        user_cate = "用户",
+                    //        user_id = (int)user.id,
+                    //        name = user.name,
+                    //        phone = user.mobile == null ? "" : user.mobile,
+                    //        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    //        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION,
+                    //        oper_object_id = cad.id,// 操作对象id
+                    //        oper_type_id = (int)OPER_LOG_TYPE.DELETE,
+                    //        oper_description = cad_dal.CompareValue(oldcad, cad),
+                    //        remark = "删除审批并提交"
+                    //    };          // 创建日志
+                    //    new sys_oper_log_dal().Insert(add1_log);       // 插入日志
+                    //    if (!cad_dal.Update(cad))
+                    //    {
+                    //        return ERROR_CODE.ERROR;
+                    //    }
+                    //    //合同成本
+                    //    var oldccc = ccc = ccc_dal.FindSignleBySql<ctt_contract_cost>($"select * from ctt_contract_cost where id={cad.object_id} and delete_time=0");
+                    //    if (ccc != null)
+                    //    {
+                    //        ccc.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    //        ccc.update_user_id = user.id;
+                    //        ccc.bill_status = 0;
+                    //        ccc.extended_price = ccc.unit_price * ccc.quantity;
+                    //        var add_log = new sys_oper_log()
+                    //        {
+                    //            user_cate = "用户",
+                    //            user_id = (int)user.id,
+                    //            name = user.name,
+                    //            phone = user.mobile == null ? "" : user.mobile,
+                    //            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    //            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_COST,
+                    //            oper_object_id = ccc.id,// 操作对象id
+                    //            oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                    //            oper_description = cad_dal.CompareValue(oldccc, ccc),
+                    //            remark = "修改合同成本"
+                    //        };          // 创建日志
+                    //        new sys_oper_log_dal().Insert(add_log);       // 插入日志
+                    //        if (!ccc_dal.Update(ccc))
+                    //        {
+                    //            return ERROR_CODE.ERROR;
+                    //        }
+                    //        if (cad.contract_block_id != null)
+                    //        {
+                    //            //合同预付
+                    //            var oldccb = ccb = ccb_dal.FindSignleBySql<ctt_contract_block>($" select * from ctt_contract_block where id={cad.contract_block_id} and delete_time=0");
+                    //            if (ccb != null)
+                    //            {
+                    //                ccb.is_billed = 0;
+                    //                ccb.status_id = 1;
+                    //                ccb.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    //                ccb.update_user_id = user.id;
+                    //                var add3_log = new sys_oper_log()
+                    //                {
+                    //                    user_cate = "用户",
+                    //                    user_id = (int)user.id,
+                    //                    name = user.name,
+                    //                    phone = user.mobile == null ? "" : user.mobile,
+                    //                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                    //                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_BLOCK,
+                    //                    oper_object_id = ccc.id,// 操作对象id
+                    //                    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                    //                    oper_description = cad_dal.CompareValue(oldccb, ccb),
+                    //                    remark = "修改合同预付"
+                    //                };          // 创建日志
+                    //                new sys_oper_log_dal().Insert(add3_log);       // 插入日志
+                    //                if (!ccb_dal.Update(ccb))
+                    //                {
+                    //                    return ERROR_CODE.ERROR;
+                    //                }
+                    //            }
+                    //        }
+                    //    }
+
+                    //}
+                    #endregion
+
                 }
             }
             if (!string.IsNullOrEmpty(returnvalue.ToString()))
@@ -142,6 +204,31 @@ namespace EMT.DoneNOW.BLL
             }
             return ERROR_CODE.SUCCESS;
         }
+        /// <summary>
+        /// 根据条目ID 恢复相关预付费信息
+        /// </summary>
+        public bool RecoveryBlock(long cadId,long userId)
+        {
+            var thisCad = new crm_account_deduction_dal().FindNoDeleteById(cadId);
+            if (thisCad != null && thisCad.contract_block_id != null)
+            {
+                var ccbDal = new ctt_contract_block_dal();
+                var thisBlock  = ccbDal.FindNoDeleteById((long)thisCad.contract_block_id);
+                if (thisBlock != null)
+                {
+                    var oldBlock = ccbDal.FindNoDeleteById((long)thisCad.contract_block_id);
+                    thisBlock.is_billed = 0;
+                    thisBlock.status_id = 1;
+                    thisBlock.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    thisBlock.update_user_id = userId;
+                    ccbDal.Update(thisBlock);
+                    OperLogBLL.OperLogUpdate<ctt_contract_block>(thisBlock, oldBlock, thisBlock.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, "修改合同预付");
+                }
+            }
+            return true;
+        }
+
+
         /// <summary>
         /// 撤销定期服务审批
         /// </summary>
@@ -531,26 +618,32 @@ namespace EMT.DoneNOW.BLL
                                     }
                                 }
                             }
+                            
 
                             if (string.IsNullOrEmpty(returnvalue.ToString()))
                             {
-                                cadList.ForEach(_=>{
-                                    cadDal.SoftDelete(_, user_id);
-                                    OperLogBLL.OperLogDelete<crm_account_deduction>(_, _.id, user_id, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "删除审批并提交条目");
-                                });
-                                var swe = sweDal.FindNoDeleteById((long)thisCad.object_id);
-                                if (swe != null)
+                                if (cadList != null && cadList.Count > 0)
                                 {
-                                    var oldSwe = sweDal.FindNoDeleteById((long)thisCad.object_id);
-                                    swe.approve_and_post_date = null;
-                                    swe.approve_and_post_user_id = null;
-                                    swe.hours_billed_deduction = null;
-                                    swe.hours_rate_deduction = null;
-                                    swe.update_time = timeNow;
-                                    swe.update_user_id = user_id;
-                                    sweDal.Update(swe);
-                                    OperLogBLL.OperLogUpdate<sdk_work_entry>(swe, oldSwe, swe.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "修改工时");
+                                    cadList.ForEach(_ => {
+                                        RecoveryBlock(_.id, user_id);
+                                        cadDal.SoftDelete(_, user_id);
+                                        OperLogBLL.OperLogDelete<crm_account_deduction>(_, _.id, user_id, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "删除审批并提交条目");
+                                    });
+                                    var swe = sweDal.FindNoDeleteById((long)thisCad.object_id);
+                                    if (swe != null)
+                                    {
+                                        var oldSwe = sweDal.FindNoDeleteById((long)thisCad.object_id);
+                                        swe.approve_and_post_date = null;
+                                        swe.approve_and_post_user_id = null;
+                                        swe.hours_billed_deduction = null;
+                                        swe.hours_rate_deduction = null;
+                                        swe.update_time = timeNow;
+                                        swe.update_user_id = user_id;
+                                        sweDal.Update(swe);
+                                        OperLogBLL.OperLogUpdate<sdk_work_entry>(swe, oldSwe, swe.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "修改工时");
+                                    }
                                 }
+                              
 
                             }
                             else
@@ -558,7 +651,7 @@ namespace EMT.DoneNOW.BLL
                                 re = returnvalue.ToString();
                             }
                         }
-                          
+                        #region  原来的撤销审批的相关逻辑（原来只针对单个条目进行删除，现在批量操作）
                         //if (thisCad.invoice_id!=null)
                         //{
                         //    var ci = new ctt_invoice_dal().FindNoDeleteById((long)thisCad.invoice_id);
@@ -612,6 +705,7 @@ namespace EMT.DoneNOW.BLL
                         //    }
                         //    #endregion
                         //}
+                        #endregion
 
                     }
                     else

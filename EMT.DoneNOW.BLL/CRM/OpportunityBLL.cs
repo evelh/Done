@@ -416,9 +416,12 @@ namespace EMT.DoneNOW.BLL
                 return ERROR_CODE.USER_NOT_FIND;
             #region 处理逻辑1. 修改商机相关信息
             param.opportunity.status_id = (int)OPPORTUNITY_STATUS.CLOSED;
+            var opportunity_udfList =  new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.OPPORTUNITY);
+            var opportunity_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.OPPORTUNITY, param.opportunity.id, opportunity_udfList);
             var updateDto = new OpportunityAddOrUpdateDto()
             {
                 general = param.opportunity,
+                udf = opportunity_udfValueList,
             };
             Update(updateDto, user.id);
             #endregion
@@ -604,6 +607,10 @@ namespace EMT.DoneNOW.BLL
                         foreach (var item in serviceItem)
                         {
                             var isService = isServiceOrBag((long)item.object_id);
+                            if (isService == 0)
+                            {
+                                continue;
+                            }
                             ctt_contract_service conService = new ctt_contract_service()
                             {
                                 id = _dal.GetNextIdCom(),
@@ -931,23 +938,34 @@ namespace EMT.DoneNOW.BLL
             #endregion
 
             #region 9.新增通知信息
-            //com_notify_email notity = new com_notify_email() {
-            //    id = _dal.GetNextIdCom(),
-            //    cate_id = (int)NOTIFY_CATE.CRM,
-            //    event_id = (int)NOTIFY_EVENT.OPPORTUNITY_CLOSED,
-            //    create_user_id = user.id,
-            //    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-            //    update_user_id = user.id,
-            //    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-            //    to_email = "",   // 界面输入，包括发送对象、员工、其他地址等四个部分组成
-            //    notify_tmpl_id = 0,  // 根据通知模板
-            //    from_email = notifyTemp.from_other_email,
-            //    from_email_name = notifyTemp.from_other_email_name,
-            //    body_text = opportunityDto.notify.body_text + notifyTemp.body_text,
-            //    body_html = opportunityDto.notify.body_html + notifyTemp.body_html,
-            //    subject = opportunityDto.notify.subject,
-            //    is_html_format = notifyTemp.is_html_format,// 
-            //};
+            if (param.notifi_temp != 0)
+            {
+                var tempEmail = new sys_notify_tmpl_email_dal().GetEmailByTempId(param.notifi_temp);
+                if(tempEmail!=null&& tempEmail.Count > 0)
+                {
+                    com_notify_email notity = new com_notify_email()
+                    {
+                        id = _dal.GetNextIdCom(),
+                        cate_id = (int)NOTIFY_CATE.CRM,
+                        event_id = (int)NOTIFY_EVENT.OPPORTUNITY_CLOSED,
+                        create_user_id = user.id,
+                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        update_user_id = user.id,
+                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        to_email = "",   // 界面输入，包括发送对象、员工、其他地址等四个部分组成
+                        notify_tmpl_id = (int)param.notifi_temp,  // 根据通知模板
+                        from_email = tempEmail[0].from_other_email,
+                        from_email_name = tempEmail[0].from_other_email_name,
+                        body_text = tempEmail[0].body_text,
+                        body_html = tempEmail[0].body_html,
+                        subject = tempEmail[0].subject,
+                        is_html_format = tempEmail[0].is_html_format,// 
+                    };
+                    new com_notify_email_dal().Insert(notity);
+                    OperLogBLL.OperLogAdd<com_notify_email>(notity, notity.id,user_id,OPER_LOG_OBJ_CATE.NOTIFY,"新增通知-关闭商机");
+                }
+            }
+
 
             #endregion
 
@@ -994,10 +1012,33 @@ namespace EMT.DoneNOW.BLL
 
 
             #region 12.新增项目备注/合同备注
-            // todo 只有转为合同/ 项目计费项时，才会生成备注。工单不会生成
+            //  只有转为合同/ 项目计费项时，才会生成备注。工单不会生成
+            long? contractId = null;
             if (param.convertToNewContractt || param.convertToOldContract || param.convertToProject)
             {
+                var cqiDal = new crm_quote_item_dal();
                 bool isProject = param.convertToProject;
+                StringBuilder des = new StringBuilder();
+                if(param.costCodeList!=null&& param.costCodeList.Count > 0)
+                {
+                    foreach (var thisList in param.costCodeList)
+                    {
+                        var thisItem = cqiDal.FindNoDeleteById(thisList.Key);
+                        if (thisItem != null)
+                        {
+                            des.Append($"{thisItem.name}({thisItem.quantity??0}) /r/n");
+                        }
+                    }
+                }
+                string priName = priQuote == null ? "" : priQuote.name.ToString();
+               
+                if (param.convertToNewContractt || param.convertToOldContract)
+                {
+                    if(param.contract != null&& param.contract.id != 0)
+                    {
+                        contractId = param.contract.id;
+                    }
+                }
                 com_activity addActivity = new com_activity()
                 {
                     id = _dal.GetNextIdCom(),
@@ -1009,13 +1050,13 @@ namespace EMT.DoneNOW.BLL
                     account_id = param.opportunity.account_id,
                     contact_id = contact_id,
                     resource_id = param.opportunity.resource_id,
-                    contract_id = null,// todo - 如果转为合同成本，则为“合同ID”；否则为空
+                    contract_id = contractId,//  - 如果转为合同成本，则为“合同ID”；否则为空
                     opportunity_id = param.opportunity.id,
                     name= "项目的产品/运输/成本/一次性折扣被转换为"+(isProject?"项目":"合同")+"成本",
                     ticket_id = null,
                     start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),  // todo 从页面获取时间，去页面时间的12：00：00
                     end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),
-                    description = $"",     // todo 内容描述拼接
+                    description = $"下列报价项通过赢得商机向导被转换为成本，（商机：{param.opportunity.name}；报价：{priName}）：{des.ToString()}",     //  内容描述拼接 
                     status_id = null,
                     complete_description = null,
                     complete_time = null,
@@ -1061,10 +1102,10 @@ namespace EMT.DoneNOW.BLL
                 account_id = param.opportunity.account_id,
                 contact_id = contact_id,
                 resource_id = param.opportunity.resource_id,
-                contract_id = null,// todo - 如果转为合同成本，则为“合同ID”；否则为空
+                contract_id = contractId,//  - 如果转为合同成本，则为“合同ID”；否则为空
                 opportunity_id = param.opportunity.id,
                 ticket_id = null,
-                start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),  // todo 从页面获取时间，去页面时间的12：00：00
+                start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),  //  从页面获取时间，去页面时间的12：00：00
                 end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToShortDateString() + " 12:00:00")),
                 description = $"",     // todo 内容描述拼接
                 status_id = null,

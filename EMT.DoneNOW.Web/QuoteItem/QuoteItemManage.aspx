@@ -67,7 +67,7 @@
                     <ul>
                         <%if (!IssaleOrder)
                             { %>
-                        <li><a href="#"></a>置为主报价</li>
+                        <li><a href="#" onclick="SetPrimaryQuote()">置为主报价</a></li>
                         <li><a href="#"></a>导入报价项</li>
                         <%} %>
                         <li><a href="#"></a>新建配置项</li>

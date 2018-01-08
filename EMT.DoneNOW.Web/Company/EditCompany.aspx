@@ -442,6 +442,7 @@
                         <div class="clear">
                             <label>新浪微博地址<span class="red"></span></label>
                             <asp:TextBox ID="weibo_url" runat="server"></asp:TextBox>
+                            <%--<img src="../Images/open.png" class="Jump" style="width:20px;height:20px;"/>--%>
                             <input type="button" class="Jump" value="跳转" />
                         </div>
                     </td>
@@ -881,7 +882,7 @@
         $(".Jump").click(function () {
             $("a").attr("target", "_blank");
             var url = $(this).prev().val();
-            window.open("http://" + url);
+            window.open("http://" + url,"_blank");
         })
         var conteneClickTimes = 0;       // 定义tab页跳转点击次数，免得一直提醒
         $.each($(".nav-title li"), function (i) {

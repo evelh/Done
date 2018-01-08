@@ -429,6 +429,32 @@
             line-height: 16px;
             font-weight: normal;
         }
+          #BackgroundOverLay {
+            width: 100%;
+            height: 100%;
+            background: black;
+            opacity: 0.6;
+            z-index: 25;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+              #LoadingIndicator {
+    width: 100px;
+    height:100px;
+    background-image: url(../Images/Loading.gif);
+    background-repeat: no-repeat;
+    background-position: center center;
+    z-index: 30;
+    margin:auto;
+    position: absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right: 0;
+    display: none;
+}
     </style>
 </head>
 <body>
@@ -1123,7 +1149,7 @@
         </div>
         <!--第五页-->
         <div class="Workspace Workspace5" style="display: none;">
-            <div class="PageInstructions">Select the person(s) you would like to notify. Use "Other Email(s)" if you have a distribution list. Ex. distribution@yourcompany.com</div>
+            <div class="PageInstructions">请选择你想要通知的相关人员</div>
             <div class="WizardSection">
                 <table width="100%" cellspacing="0" cellpadding="0" border="0">
                     <tbody>
@@ -1135,40 +1161,39 @@
                                             <td width="50%">
                                                 <div>
                                                     <span class="CheckboxLabels">
-                                                        <input type="checkbox">
-                                                        Creator
+                                                        <input type="checkbox" id="ckCreate"/>
+                                                        创建人
                                                     </span>
-                                                    <span><b>Li, Hong</b></span>
+                                                    <% var opCrea = new EMT.DoneNOW.DAL.sys_resource_dal().FindNoDeleteById(opportunity==null?0:opportunity.create_user_id); %>
+                                                    <span><b><%=opCrea==null?"":opCrea.name %></b></span>
                                                 </div>
                                             </td>
                                             <td width="50%">
                                                 <div>
-                                                    <input type="checkbox">
+                                                    <input type="checkbox" />
                                                     <span style="font-weight: 100;">Territory Team</span>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="FieldLabels">Resources
-                                            <span class="FieldLevelInstructions">(<a style="color: #376597; cursor: pointer;">Load</a>)</span>
-                                                <div>
-                                                    <textarea style="width: 646px; height: 135px; border: 1px solid silver;"></textarea>
+                                            <td class="FieldLabels">员工
+                                            <span class="FieldLevelInstructions">(<a style="color: #376597; cursor: pointer;" onclick="LoadRes()">加载</a>)</span>
+                                               <div id="reshtml" style="width: 500px;height: 170px;border: 1px solid #d7d7d7;margin-bottom: 20px;">
+                                                  
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="FieldLabels">Other Email(s)
+                                            <td class="FieldLabels">其他邮箱地址
                                             <div>
-                                                <input type="text" style="width: 646px;">
+                                                <input type="text" style="width: 646px;" name="otherMails" id="otherMails" />
                                             </div>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="FieldLabels">Notification Template
+                                            <td class="FieldLabels">通知模板
                                             <div>
-                                                <select style="width: 660px;">
-                                                    <option value="">safsaf</option>
-                                                </select>
+                                                <asp:DropDownList ID="notifi_temp" runat="server" Width="660px"></asp:DropDownList>
                                             </div>
                                             </td>
                                         </tr>
@@ -1178,6 +1203,9 @@
                         </tr>
                     </tbody>
                 </table>
+                <input type="hidden" name="isNotiCre" id="isNotiCre" />
+                <input type="hidden" name="resIds" id="resIds" />
+                
             </div>
             <div class="ButtonBar WizardButtonBar" style="width: 96%;">
                 <ul>
@@ -1302,7 +1330,7 @@
         </div>
         <!--第八页-->
         <div class="Workspace Workspace8" style="display: none;">
-            <div class="PageInstructions">The Wizard has been finished. Please make a selection from below or close this window.</div>
+            <div class="PageInstructions">向导已经完成。请从下面选择或关闭此窗口。</div>e
             <div class="WizardSection">
                 <table cellspacing="0" cellpadding="0" width="100%">
                     <tbody>
@@ -1364,6 +1392,8 @@
                 </ul>
             </div>
         </div>
+         <div id="LoadingIndicator"></div>
+         <div id="BackgroundOverLay"></div>
     </form>
 </body>
 </html>
@@ -1615,6 +1645,21 @@
             return false;
         }
         times += 1;
+        var resIds = "";
+        $(".checkRes").each(function () {
+            if ($(this).is(":checked")) {
+                resIds += $(this).val() + ',';
+            }
+        }) 
+        if (resIds != "") {
+            resIds = resIds.substring(0, resIds.length - 1);
+            $("#resIds").val(resIds);
+        }
+        if ($("#ckCreate").is(":checked")) {
+            $("#isNotiCre").val("1");
+        }
+        $("#BackgroundOverLay").show();
+        $("#LoadingIndicator").show();
         return true;
     })
     $("#all").on("click", function () {
@@ -1971,6 +2016,27 @@
         if (newSaleOrderId != "") {
             window.open("../SaleOrder/SaleOrderView.aspx?id=" + newSaleOrderId, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.SaleOrderView %>', 'left=200,top=200,width=600,height=800', false);
         }
+    }
+
+    function  LoadRes() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/ResourceAjax.ashx?act=GetActiveRes",
+            success: function (data) {
+                if (data != "") {
+                    var resList = JSON.parse(data);
+                    var resHtml = "";
+                    resHtml += "<div class='grid' style='overflow: auto;height: 170px;'><table width='100%' border='0' cellspacing='0' cellpadding='3'><thead><tr><td width='1%'><input type='checkbox' id='checkAll'/></td><td width='33%'>员工姓名</td ><td width='33%'>邮箱地址</td></tr ></thead ><tbody>";
+                    for (var i = 0; i < resList.length; i++) {
+                        resHtml += "<tr><td><input type='checkbox' value='" + resList[i].id + "' class='checkRes' /></td><td>" + resList[i].name + "</td><td><a href='mailto:" + resList[i].email + "'>" + resList[i].email + "</a></td></tr>";
+                    }
+                    resHtml += "</tbody></table></div>";
+
+                    $("#reshtml").html(resHtml);
+                }
+            },
+        });
     }
 
 </script>

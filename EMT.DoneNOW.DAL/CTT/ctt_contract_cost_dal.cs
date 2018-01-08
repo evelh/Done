@@ -28,7 +28,7 @@ namespace EMT.DoneNOW.DAL
             return FindListBySql<ctt_contract_cost>($"SELECT * FROM ctt_contract_cost where   project_id = {project_id} and delete_time = 0 "+where);
         }
         /// <summary>
-        /// 
+        /// 获取报价项ID 已经生成的成本，不能重复生成，所有只会有一条
         /// </summary>
         public ctt_contract_cost GetSinBuQuoteItem(long quote_item_id)
         {
