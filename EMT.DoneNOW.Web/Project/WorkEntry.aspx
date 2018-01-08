@@ -1207,6 +1207,13 @@
             LayerMsg("请选择角色！");
             return false;
         }
+
+        var thisStatus = $("#status_id").val();
+        if (thisStatus == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW %>') {
+            LayerMsg("任务的状态不能是新建！");
+            return false;
+        }
+
         <% if (!noTime)
     { %>
         //var startTime = $("#startTime").val();
@@ -1730,6 +1737,24 @@
                         $("#yuguTime").val("");
                         $("#bianTime").val("");
                         $("#yuguDiv").html("");
+                    }
+                },
+            });
+
+            // GetSinTask
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ProjectAjax.ashx?act=GetSinTask&task_id=" + thisTaskId,
+                dataType: "json",
+                success: function (data) {
+                    if (data != "") {
+                        if (data.status_id != "" && data.status_id != null && data.status_id != undefined) {
+                            $("#status_id").val(data.status_id);
+                        }
+                    }
+                    else {
+                        
                     }
                 },
             });

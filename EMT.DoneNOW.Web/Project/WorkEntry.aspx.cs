@@ -59,7 +59,7 @@ namespace EMT.DoneNOW.Web.Project
                     resource_id.DataBind();
 
                     var statusList = dic.FirstOrDefault(_ => _.Key == "ticket_status").Value as List<DictionaryEntryDto>;
-                     statusList.Remove(statusList.FirstOrDefault(_=>_.val==((int)DicEnum.TICKET_STATUS.NEW).ToString()));
+                     //statusList.Remove(statusList.FirstOrDefault(_=>_.val==((int)DicEnum.TICKET_STATUS.NEW).ToString()));
                     status_id.DataTextField = "show";
                     status_id.DataValueField = "val";
                     status_id.DataSource = statusList;
@@ -107,11 +107,15 @@ namespace EMT.DoneNOW.Web.Project
                         entryList = new sdk_work_entry_dal().GetBatchList(thisWorkEntry.batch_id);
                         isAdd = false;
                         thisTask = new sdk_task_dal().FindNoDeleteById(thisWorkEntry.task_id);
-
-                        resource_id.SelectedValue = ((long)thisWorkEntry.resource_id).ToString();
-                        cost_code_id.SelectedValue = ((long)thisWorkEntry.cost_code_id).ToString();
-                        // status_id.SelectedValue = ((long)thisWorkEntry.)
-                        // thisTask  = new crm_account_dal().FindNoDeleteById(thisWorkEntry.);
+                        if (!IsPostBack)
+                        {
+                            resource_id.SelectedValue = ((long)thisWorkEntry.resource_id).ToString();
+                            cost_code_id.SelectedValue = ((long)thisWorkEntry.cost_code_id).ToString();
+                            // status_id.SelectedValue = ((long)thisWorkEntry.)
+                            // thisTask  = new crm_account_dal().FindNoDeleteById(thisWorkEntry.);
+                           
+                        }
+                       
                         if (thisWorkEntry.contract_id != null)
                         {
                             thisContract = new ctt_contract_dal().FindNoDeleteById((long)thisWorkEntry.contract_id);
@@ -139,6 +143,10 @@ namespace EMT.DoneNOW.Web.Project
                     if (thisProjetc != null)
                     {
                         thisAccount = new crm_account_dal().FindNoDeleteById(thisProjetc.account_id);
+                        if (!IsPostBack)
+                        {
+                            status_id.SelectedValue = thisTask.status_id.ToString();
+                        }
                     }
                 }
                 // 项目关联合同，并且合同中设置-工时录入需要输入开始结束时间
