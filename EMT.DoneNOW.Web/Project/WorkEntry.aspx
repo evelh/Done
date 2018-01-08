@@ -1263,7 +1263,7 @@
             ids += $(this).data("val") + ',';
         })
         if (ids == "") {
-            <%if (isAdd&&noTime)
+            <%if (isAdd)
     { %>
             LayerMsg("请添加工时日期！");
             return false;
