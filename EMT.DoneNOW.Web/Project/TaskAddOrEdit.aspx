@@ -845,7 +845,7 @@
                                         <div class="Editor DateBox" data-editor-id="EndDate" data-rdp="EndDate">
                                             <div class="InputField">
                                                 <div class="Container">
-                                                    <input id="estimated_end_date" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd") : ((DateTime)thisTask.estimated_end_date).ToString("yyyy-MM-dd") %>" name="estimated_end_date" onclick="WdatePicker()" style="width: 100px;" />
+                                                    <input id="estimated_end_time" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd") : EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_end_time).ToString("yyyy-MM-dd") %>" name="estimated_end_time_" onclick="WdatePicker()" style="width: 100px;" />
                                                 </div>
                                             </div>
                                         </div>
@@ -1345,7 +1345,7 @@
                                         <div class="Editor DateBox" data-editor-id="EndDate" data-rdp="EndDate">
                                             <div class="InputField">
                                                 <div class="Container">
-                                                    <input id="estimated_end_date" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd") : ((DateTime)thisTask.estimated_end_date).ToString("yyyy-MM-dd") %>" name="estimated_end_date" onclick="WdatePicker()" style="width: 100px;" />
+                                                    <input id="estimated_end_time" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd") : EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_end_time).ToString("yyyy-MM-dd") %>" name="estimated_end_time_" onclick="WdatePicker()" style="width: 100px;" />
                                                 </div>
                                             </div>
                                         </div>
@@ -1925,7 +1925,7 @@
                                                             </a></td>
                                                             <td class='PredecessorItemsSelectDialog_Title PredecessorItemsSelectDialog_Text'><%=thisPreTask.title %></td>
                                                             <td class='PredecessorItemsSelectDialog_Date'><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisPreTask.estimated_begin_time).ToString("yyyy-MM-dd") %></td>
-                                                            <td class='PredecessorItemsSelectDialog_Date'><%=((DateTime)thisPreTask.estimated_end_date).ToString("yyyy-MM-dd") %></td>
+                                                            <td class='PredecessorItemsSelectDialog_Date'><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisPreTask.estimated_end_time).ToString("yyyy-MM-dd") %></td>
                                                             <td class='PredecessorItemsSelectDialog_Text'>
                                                                 <input class='LagInput' placeholder='Lag (days)' type='text' id='<%=thisPreTask.id %>_lagDays' name='<%=thisPreTask.id %>_lagDays' value='<%=thisPre.dependant_lag %>'></td>
                                                             <td class='PredecessorItemsSelectDialog_SizingSpacer' width='0'></td>
@@ -2260,7 +2260,7 @@
             })
         }
     })
-    $("#estimated_end_date").blur(function () {
+    $("#estimated_end_time").blur(function () {
 
         var thisValue = $(this).val();
         if (thisValue != "") {
@@ -2558,9 +2558,12 @@
                                             var thidStarDate = new Date();
                                             thidStarDate.setTime(data.estimated_begin_time);
                                             var StartDate = TranDate(thidStarDate);
-                                            var EndDateArr = data.estimated_end_date.split("T");
-                                            var endDa = EndDateArr[0];
-                                            var appHtml = "<tr id='" + data.id + "_temp'><td class='PredecessorItemsSelectDialog_OutlineId PredecessorItemsSelectDialog_Text'>" + thisNo + "</td><td class='PredecessorItemsSelectDialog_Context' style='width: 30px;'><a class='PredecessorItemsSelectDialog_Delete PredecessorItemsSelectDialog_Button' onclick='RemoveThis(" + data.id + ")'><div class='PredecessorItemsSelectDialog_Icon'><span class='Icon' style='background: url(../Images/ButtonBarIcons.png) no-repeat -66px -2px;'>&nbsp;&nbsp;&nbsp;&nbsp;</span></div></a></td><td class='PredecessorItemsSelectDialog_Title PredecessorItemsSelectDialog_Text'>" + data.title + "</td><td class='PredecessorItemsSelectDialog_Date'>" + StartDate + "</td><td class='PredecessorItemsSelectDialog_Date'>" + endDa + "</td><td class='PredecessorItemsSelectDialog_Text'><input class='LagInput' placeholder='Lag (days)' type='text' id='" + data.id + "_lagDays' name='" + data.id + "_lagDays' value='0'></td><td class='PredecessorItemsSelectDialog_SizingSpacer' width='0'></td></tr>";
+                                            var thidEndDate = new Date();
+                                            thidEndDate.setTime(data.estimated_end_time);
+                                            var EndDate = TranDate(thidEndDate);
+                                            //var EndDateArr = data.estimated_end_time.split("T");
+                                            //var endDa = EndDateArr[0];
+                                            var appHtml = "<tr id='" + data.id + "_temp'><td class='PredecessorItemsSelectDialog_OutlineId PredecessorItemsSelectDialog_Text'>" + thisNo + "</td><td class='PredecessorItemsSelectDialog_Context' style='width: 30px;'><a class='PredecessorItemsSelectDialog_Delete PredecessorItemsSelectDialog_Button' onclick='RemoveThis(" + data.id + ")'><div class='PredecessorItemsSelectDialog_Icon'><span class='Icon' style='background: url(../Images/ButtonBarIcons.png) no-repeat -66px -2px;'>&nbsp;&nbsp;&nbsp;&nbsp;</span></div></a></td><td class='PredecessorItemsSelectDialog_Title PredecessorItemsSelectDialog_Text'>" + data.title + "</td><td class='PredecessorItemsSelectDialog_Date'>" + StartDate + "</td><td class='PredecessorItemsSelectDialog_Date'>" + EndDate + "</td><td class='PredecessorItemsSelectDialog_Text'><input class='LagInput' placeholder='Lag (days)' type='text' id='" + data.id + "_lagDays' name='" + data.id + "_lagDays' value='0'></td><td class='PredecessorItemsSelectDialog_SizingSpacer' width='0'></td></tr>";
 
                                             //document.getElementById("PredecessorItemsSelectedTable").innerHTML += appHtml;
                                             $("#PredecessorItemsSelectedTable").append(appHtml);
@@ -3030,8 +3033,8 @@
             LayerMsg("请填写开始时间");
             return false;
         }
-        var estimated_end_date = $("#estimated_end_date").val();
-        if (estimated_end_date == "") {
+        var estimated_end_time = $("#estimated_end_time").val();
+        if (estimated_end_time == "") {
             LayerMsg("请填写结束时间");
             return false;
         }
@@ -3110,7 +3113,7 @@
         }
 
 
-        if (compareTime(estimated_beginTime, estimated_end_date)) {
+        if (compareTime(estimated_beginTime, estimated_end_time)) {
             LayerMsg("结束时间不能早于开始时间");
             return false;
         }
@@ -3153,7 +3156,7 @@
 
                 $.ajax({
                     type: "GET",
-                    url: "../Tools/ResourceAjax.ashx?act=CheckResAvailability&project_id=<%=thisProject.id %>&res_id=" + resource_id + "&startTime=" + estimated_beginTime + "&endTime=" + estimated_end_date + "&days=" + estimated_duration + "&thisTaskRpeHour=" + hours_per_resource,
+                    url: "../Tools/ResourceAjax.ashx?act=CheckResAvailability&project_id=<%=thisProject.id %>&res_id=" + resource_id + "&startTime=" + estimated_beginTime + "&endTime=" + estimated_end_time + "&days=" + estimated_duration + "&thisTaskRpeHour=" + hours_per_resource,
                     async: false,
                     dataType: "json",
                     success: function (data) {

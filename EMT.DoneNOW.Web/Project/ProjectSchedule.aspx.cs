@@ -300,7 +300,8 @@ namespace EMT.DoneNOW.Web.Project
                         }
                         break;
                     case "ExpiredTask":  // 过期的任务和问题
-                        var expTaskList = subList.Where(_ => (DateTime)_.estimated_end_date > DateTime.Now).ToList();
+                        var longTimeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        var expTaskList = subList.Where(_ => (long)_.estimated_end_time >= longTimeNow).ToList();
                         if (expTaskList != null && expTaskList.Count > 0)
                         {
                             result = true;

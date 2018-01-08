@@ -54,7 +54,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? estimated_begin_time { get; set; }
         [DataMember]
-        public DateTime? estimated_end_date { get; set; }
+        public Int64? estimated_end_time { get; set; }
         [DataMember]
         public Int32? estimated_duration { get; set; }
         [DataMember]
@@ -189,6 +189,8 @@ namespace EMT.DoneNOW.Core
         public Int32? cate_id { get; set; }
         [DataMember]
         public Int64? service_id { get; set; }
+        [DataMember]
+        public Int64? tmp { get; set; }
 
 
     }

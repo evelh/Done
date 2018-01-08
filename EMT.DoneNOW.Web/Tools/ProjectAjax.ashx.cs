@@ -344,7 +344,7 @@ namespace EMT.DoneNOW.Web
                     switch (showType)
                     {
                         case "showTime":
-                            taskString.Append($"<td class='Date'>{Tools.Date.DateHelper.ConvertStringToDateTime((long)sub.estimated_begin_time).ToString("yyyy-MM-dd")}</td><td class='Date'>{((DateTime)sub.estimated_end_date).ToString("yyyy-MM-dd")}</td>");
+                            taskString.Append($"<td class='Date'>{Tools.Date.DateHelper.ConvertStringToDateTime((long)sub.estimated_begin_time).ToString("yyyy-MM-dd")}</td><td class='Date'>{Tools.Date.DateHelper.ConvertStringToDateTime((long)sub.estimated_end_time).ToString("yyyy-MM-dd")}</td>");
                             break;
                         case "Precondition":
                             taskString.Append("<td class='Text'></td>");
@@ -1413,11 +1413,11 @@ namespace EMT.DoneNOW.Web
                 DateTime? endDate = null;
                 bool hasIds = false;
                 string ids = "";
-                if (thisTask.estimated_begin_time != null && thisTask.estimated_end_date != null)
+                if (thisTask.estimated_begin_time != null && thisTask.estimated_end_time != null)
                 {
                     var thisStartDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time);
                     stDate = thisStartDate;
-                    var thisEndDate = (DateTime)thisTask.estimated_end_date;
+                    var thisEndDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_end_time);
                     endDate = thisEndDate;
                     // 判断开始结束时间是否在周末
                     if (thisStartDate.DayOfWeek== DayOfWeek.Saturday|| thisStartDate.DayOfWeek== DayOfWeek.Sunday|| thisEndDate.DayOfWeek == DayOfWeek.Saturday || thisEndDate.DayOfWeek == DayOfWeek.Sunday)
@@ -1455,8 +1455,9 @@ namespace EMT.DoneNOW.Web
                         var noDoneTask = thisPreList.Where(_ => _.status_id != (int)DicEnum.TICKET_STATUS.DONE).ToList();
                         if(noDoneTask!=null&& noDoneTask.Count > 0)
                         {
+                            var longTimeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                             // 延期任务 状态不是完成，并且时间
-                            var yanqiTask = noDoneTask.Where(_=>_.estimated_end_date<DateTime.Now).ToList();
+                            var yanqiTask = noDoneTask.Where(_=>_.estimated_end_time < longTimeNow).ToList();
                             if(yanqiTask!=null&& yanqiTask.Count > 0)
                             {
                                 hasIds = true;

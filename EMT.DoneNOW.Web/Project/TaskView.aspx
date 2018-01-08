@@ -252,7 +252,7 @@
                                                     <td>
                                                         <span id="StartValueATLabel" class="task_label_value" style="font-weight: normal;"><%=(EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time)).ToString("yyyy-MM-dd HH:mm:ss") %></span>
                                                         -
-						<span id="DueValueATLabel" class="task_label_value" style="font-weight: normal;"><%=((DateTime)thisTask.estimated_end_date).ToString("yyyy-MM-dd") %>(预估小时:<%=thisTask.estimated_hours.ToString("#0.00") %>) </span>
+						<span id="DueValueATLabel" class="task_label_value" style="font-weight: normal;"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_end_time).ToString("yyyy-MM-dd") %>(预估小时:<%=thisTask.estimated_hours.ToString("#0.00") %>) </span>
                                                     </td>
                                                 </tr>
                                                 <tr>

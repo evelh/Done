@@ -34,11 +34,11 @@ namespace EMT.DoneNOW.BLL
                 thisTask.oid = 0;
                 if (thisTask.estimated_duration == null)
                 {
-                    thisTask.estimated_duration = GetDayByTime((long)thisTask.estimated_begin_time, Tools.Date.DateHelper.ToUniversalTimeStamp((DateTime)thisTask.estimated_end_date), (long)thisTask.project_id);
+                    thisTask.estimated_duration = GetDayByTime((long)thisTask.estimated_begin_time, (long)thisTask.estimated_end_time, (long)thisTask.project_id);
                 }
                 else
                 {
-                    thisTask.estimated_end_date = RetrunMaxTime((long)thisTask.project_id, Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time), (int)thisTask.estimated_duration);
+                    thisTask.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(RetrunMaxTime((long)thisTask.project_id, Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time), (int)thisTask.estimated_duration));
                 }
                 if (thisTask.parent_id != null)
                 {
@@ -76,7 +76,7 @@ namespace EMT.DoneNOW.BLL
                         var thisPreTask = _dal.FindNoDeleteById(dic.Key);
                         if (thisPreTask != null)
                         {
-                            var thisSDate = (DateTime)thisPreTask.estimated_end_date;
+                            var thisSDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)thisPreTask.estimated_end_time);
                             thisSDate = RetrunMaxTime((long)param.task.project_id, thisSDate, dic.Value);
                             if (startDate < thisSDate)
                             {
@@ -108,12 +108,12 @@ namespace EMT.DoneNOW.BLL
                 }
                 #endregion
                 //  根据开始时间和结束时间计算最终时间
-                param.task.estimated_end_date = RetrunMaxTime((long)param.task.project_id, startDate, (int)param.task.estimated_duration);
+                param.task.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(RetrunMaxTime((long)param.task.project_id, startDate, (int)param.task.estimated_duration));
 
                 var oldTask = _dal.FindNoDeleteById(thisTask.id);
-                if(oldTask!=null&&oldTask.estimated_end_date!= param.task.estimated_end_date)
+                if(oldTask!=null&&oldTask.estimated_end_time != param.task.estimated_end_time)
                 {
-                    oldTask.estimated_end_date = param.task.estimated_end_date;
+                    oldTask.estimated_end_time = param.task.estimated_end_time;
                     // 修改task的开始结束时间相关
                     OperLogBLL.OperLogUpdate<sdk_task>(oldTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");    
                     _dal.Update(oldTask);
@@ -122,20 +122,20 @@ namespace EMT.DoneNOW.BLL
 
 
                 // 递归修改父阶段相关数据
-                UpdateParDate(param.task.parent_id, (long)param.task.estimated_begin_time, (DateTime)param.task.estimated_end_date, user.id);
+                UpdateParDate(param.task.parent_id, (long)param.task.estimated_begin_time, Tools.Date.DateHelper.ConvertStringToDateTime((long)param.task.estimated_end_time), user.id);
                 // 修改项目相关
                 var ppDal = new pro_project_dal();
                 var thisProject = ppDal.FindNoDeleteById((long)param.task.project_id);
 
-                if (thisProject.start_date > startDate || thisProject.end_date < param.task.estimated_end_date)
+                if (thisProject.start_date > startDate || thisProject.end_date < Tools.Date.DateHelper.ConvertStringToDateTime((long)param.task.estimated_end_time))
                 {
                     if (thisProject.start_date > startDate)
                     {
                         thisProject.start_date = startDate;
                     }
-                    if (thisProject.end_date < param.task.estimated_end_date)
+                    if (thisProject.end_date < Tools.Date.DateHelper.ConvertStringToDateTime((long)param.task.estimated_end_time))
                     {
-                        thisProject.end_date = param.task.estimated_end_date;
+                        thisProject.end_date = Tools.Date.DateHelper.ConvertStringToDateTime((long)param.task.estimated_end_time);
                     }
                     TimeSpan ts1 = new TimeSpan(((DateTime)thisProject.start_date).Ticks);
                     TimeSpan ts2 = new TimeSpan(((DateTime)thisProject.end_date).Ticks);
@@ -536,12 +536,12 @@ namespace EMT.DoneNOW.BLL
             var thisTask = param.task;
             if (thisTask.estimated_duration == null)
             {
-                thisTask.estimated_duration = GetDayByTime((long)thisTask.estimated_begin_time, Tools.Date.DateHelper.ToUniversalTimeStamp((DateTime)thisTask.estimated_end_date), (long)thisTask.project_id);
+                thisTask.estimated_duration = GetDayByTime((long)thisTask.estimated_begin_time, (long)thisTask.estimated_end_time, (long)thisTask.project_id);
             }
             else
             {
                 //var test = RetrunMaxTime(6970,DateTime.Parse("2018-01-07"),2);
-                thisTask.estimated_end_date = RetrunMaxTime((long)thisTask.project_id, Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time), (int)thisTask.estimated_duration);
+                thisTask.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(RetrunMaxTime((long)thisTask.project_id, Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time), (int)thisTask.estimated_duration));
             }
             var user = UserInfoBLL.GetUserInfo(user_id);
             bool isPhase = thisTask.type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE;
@@ -561,7 +561,7 @@ namespace EMT.DoneNOW.BLL
                         var thisPreTask = _dal.FindNoDeleteById(dic.Key);
                         if (thisPreTask != null)
                         {
-                            var thisSDate = (DateTime)thisPreTask.estimated_end_date;
+                            var thisSDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)thisPreTask.estimated_end_time);
                             thisSDate = RetrunMaxTime((long)param.task.project_id, thisSDate, dic.Value+1);
                             if (startDate < thisSDate)
                             {
@@ -611,7 +611,7 @@ namespace EMT.DoneNOW.BLL
                 }
                 #endregion
                 //  根据开始时间和结束时间计算最终时间
-                param.task.estimated_end_date = RetrunMaxTime((long)param.task.project_id, startDate, (int)param.task.estimated_duration);
+                param.task.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(RetrunMaxTime((long)param.task.project_id, startDate, (int)param.task.estimated_duration));
 
 
                 var udf_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TASK);  // 获取合同的自定义字段信息
@@ -1211,21 +1211,21 @@ namespace EMT.DoneNOW.BLL
                 var parTask = _dal.FindNoDeleteById((long)tid);
                 if (parTask != null)
                 {
-                    if (parTask.estimated_begin_time > startDate || parTask.estimated_end_date < endDate)
+                    if (parTask.estimated_begin_time > startDate || parTask.estimated_end_time < Tools.Date.DateHelper.ToUniversalTimeStamp(endDate))
                     {
                         if (parTask.estimated_begin_time > startDate)
                         {
                             parTask.estimated_begin_time = startDate;
                         }
-                        if (parTask.estimated_end_date < endDate)
+                        if (parTask.estimated_end_time < Tools.Date.DateHelper.ToUniversalTimeStamp(endDate))
                         {
-                            parTask.estimated_end_date = endDate;
+                            parTask.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(endDate);
                         }
                         parTask.update_user_id = user.id;
                         parTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                         OperLogBLL.OperLogUpdate<sdk_task>(parTask, _dal.FindNoDeleteById(parTask.id), parTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
                         _dal.Update(parTask);
-                        UpdateParDate(parTask.parent_id, (long)parTask.estimated_begin_time, (DateTime)parTask.estimated_end_date, user_id);
+                        UpdateParDate(parTask.parent_id, (long)parTask.estimated_begin_time, Tools.Date.DateHelper.ConvertStringToDateTime((long)parTask.estimated_end_time), user_id);
                     }
                 }
             }
@@ -1861,7 +1861,7 @@ namespace EMT.DoneNOW.BLL
                     title = oriTask.title,
                     account_id = oriTask.account_id,
                     estimated_begin_time = oriTask.estimated_begin_time,
-                    estimated_end_date = oriTask.estimated_end_date,
+                    estimated_end_time = oriTask.estimated_end_time,
                     estimated_duration = oriTask.estimated_duration,
                     no = ReturnTaskNo(),
                     create_user_id = user.id,
@@ -2199,7 +2199,7 @@ namespace EMT.DoneNOW.BLL
                         var thisPreTask = _dal.FindNoDeleteById(_.predecessor_task_id);
                         if (thisPreTask != null)
                         {
-                            var thisDate = ((DateTime)thisPreTask.estimated_end_date).AddDays(_.dependant_lag);
+                            var thisDate = Tools.Date.DateHelper.ConvertStringToDateTime(((long)thisPreTask.estimated_end_time)).AddDays(_.dependant_lag);
                             if (thisDate > maxDate)
                             {
                                 maxDate = thisDate;
@@ -2233,14 +2233,14 @@ namespace EMT.DoneNOW.BLL
                             var newStartDate = RetrunMaxTime((long)thisTask.project_id, startDate, days);
                             thisTask.estimated_begin_time = Tools.Date.DateHelper.ToUniversalTimeStamp(newStartDate);
 
-                            var newEndDate = RetrunMaxTime((long)thisTask.project_id, (DateTime)thisTask.estimated_end_date, days);
-                            thisTask.estimated_end_date = newEndDate;
+                            var newEndDate = RetrunMaxTime((long)thisTask.project_id, Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_end_time), days);
+                            thisTask.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(newEndDate);
                             thisTask.update_user_id = user.id;
                             thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                             OperLogBLL.OperLogUpdate<sdk_task>(thisTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
                             _dal.Update(thisTask);
 
-                            UpdateParDate(thisTask.parent_id, (long)thisTask.estimated_begin_time, (DateTime)thisTask.estimated_end_date, user_id);
+                            UpdateParDate(thisTask.parent_id, (long)thisTask.estimated_begin_time, Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_end_time), user_id);
                         }
                     }
                 }
@@ -2402,19 +2402,19 @@ namespace EMT.DoneNOW.BLL
             if (thisTask != null && thisSubTask != null && thisSubTask.Count > 0)
             {
                 var minStartDate = thisSubTask.Min(_ => (long)_.estimated_begin_time);
-                var maxEndDate = thisSubTask.Max(_ => (DateTime)_.estimated_end_date);
+                var maxEndDate = thisSubTask.Max(_ => (long)_.estimated_end_time);
 
-                if (((long)thisTask.estimated_begin_time > minStartDate) || ((DateTime)thisTask.estimated_end_date < maxEndDate))
+                if (((long)thisTask.estimated_begin_time > minStartDate) || ((long)thisTask.estimated_end_time < maxEndDate))
                 {
                     if ((long)thisTask.estimated_begin_time > minStartDate)
                     {
                         thisTask.estimated_begin_time = minStartDate;
                     }
-                    if ((DateTime)thisTask.estimated_end_date < maxEndDate)
+                    if ((long)thisTask.estimated_end_time < maxEndDate)
                     {
-                        thisTask.estimated_end_date = maxEndDate;
+                        thisTask.estimated_end_time = maxEndDate;
                     }
-                    thisTask.estimated_duration = GetDayByTime((long)thisTask.estimated_begin_time,Tools.Date.DateHelper.ToUniversalTimeStamp((DateTime)thisTask.estimated_end_date),(long)thisTask.project_id);
+                    thisTask.estimated_duration = GetDayByTime((long)thisTask.estimated_begin_time,(long)thisTask.estimated_end_time, (long)thisTask.project_id);
                     thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                     thisTask.update_user_id = user_id;
                     OperLogBLL.OperLogUpdate<sdk_task>(thisTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "更改task时间");
@@ -2440,7 +2440,7 @@ namespace EMT.DoneNOW.BLL
                 if(taskList!=null&& taskList.Count > 0)
                 {
                     var minStartDate = taskList.Min(_ => (long)_.estimated_begin_time);
-                    var maxEndDate = taskList.Max(_ => (DateTime)_.estimated_end_date);
+                    var maxEndDate = Tools.Date.DateHelper.ConvertStringToDateTime(taskList.Max(_ => (long)_.estimated_end_time));
 
                     if(thisPro.start_date!=null&& thisPro.end_date != null)
                     {

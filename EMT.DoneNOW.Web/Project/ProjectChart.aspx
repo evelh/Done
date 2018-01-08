@@ -880,7 +880,7 @@
                     // 分为两种线 ,前驱任务在任务之前，前驱任务在任务之后
 
                     // 计算前驱任务的结束时间与相关task的开始时间
-                    var widthDiffDays = (double)GetDateDiffMonth((DateTime)pageTask.estimated_end_date,EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time),"day");
+                    var widthDiffDays = (double)GetDateDiffMonth(EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)pageTask.estimated_end_time),EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time),"day");
                     widthDiffDays = (double)(widthDiffDays + (0.5)* thisTask.estimated_duration);
                     var xianWidth = widthDiffDays * DayWidth;
                     var heightDiff =pageTaskList.IndexOf(pageTaskList.FirstOrDefault(_=>_.id==thisTask.id))- pageTaskList.IndexOf(pageTask);

@@ -101,7 +101,7 @@
                         bool isHasData = false;
                         if (taskList != null && taskList.Count > 0)
                         {
-                            var thisTaskList = taskList.Where(_ => _.estimated_end_date == chooseDate.AddDays(i)).ToList();
+                            var thisTaskList = taskList.Where(_ => EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)_.estimated_end_time).ToString("yyyy-MM-dd") == chooseDate.AddDays(i).ToString("yyyy-MM-dd")).ToList();
                             if (thisTaskList != null && thisTaskList.Count > 0)
                             {
                                 isHasData = true;

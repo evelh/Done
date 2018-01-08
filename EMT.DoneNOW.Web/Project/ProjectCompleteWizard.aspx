@@ -48,7 +48,7 @@
                                                     foreach (var actTask in actTaskList)
                                                     {%>
                                             <tr>
-                                                <td id="txtBlack8" style="vertical-align: middle;" nowrap><%=actTask.estimated_end_date==null?"":((DateTime)actTask.estimated_end_date).ToString("yyyy-MM-dd") %></td>
+                                                <td id="txtBlack8" style="vertical-align: middle;" nowrap><%=actTask.estimated_end_time==null?"":EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)actTask.estimated_end_time).ToString("yyyy-MM-dd") %></td>
                                                 <% string resouName = "";
                                                     if (actTask.owner_resource_id != null)
                                                     {

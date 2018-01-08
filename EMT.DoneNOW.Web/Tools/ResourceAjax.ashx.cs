@@ -254,13 +254,14 @@ namespace EMT.DoneNOW.Web
 
                         if(taskList!=null&& taskList.Count > 0)
                         {
-                            var thisList = taskList.Where(_ => (_.type_id == (int)DTO.DicEnum.TASK_TYPE.PROJECT_ISSUE || _.type_id == (int)DTO.DicEnum.TASK_TYPE.PROJECT_TASK) && (_.estimated_begin_time < Tools.Date.DateHelper.ToUniversalTimeStamp(endDate) && _.estimated_end_date > startDate)).ToList();
+                            var startDateLong = Tools.Date.DateHelper.ToUniversalTimeStamp(startDate);
+                            var thisList = taskList.Where(_ => (_.type_id == (int)DTO.DicEnum.TASK_TYPE.PROJECT_ISSUE || _.type_id == (int)DTO.DicEnum.TASK_TYPE.PROJECT_TASK) && (_.estimated_begin_time < Tools.Date.DateHelper.ToUniversalTimeStamp(endDate) && _.estimated_end_time > startDateLong)).ToList();
                             if(thisList!=null&& thisList.Count > 0)
                             {
                                 // 员工在这些天中已经分配的时长
                                 var taskTotalHours = thisList.Sum(_ => {
 
-                                    var thisDays = (decimal)_.hours_per_resource * GetDiffDays(startDate, endDate, Tools.Date.DateHelper.ConvertStringToDateTime((long)_.estimated_begin_time), (DateTime)_.estimated_end_date, project.id);
+                                    var thisDays = (decimal)_.hours_per_resource * GetDiffDays(startDate, endDate, Tools.Date.DateHelper.ConvertStringToDateTime((long)_.estimated_begin_time), Tools.Date.DateHelper.ConvertStringToDateTime((long)_.estimated_end_time), project.id);
                                     if (thisDays == 0|| _.hours_per_resource == null)
                                     {
                                         return 0;
@@ -269,7 +270,7 @@ namespace EMT.DoneNOW.Web
                                     {
                                         // 计算员工平均工作时长
                                         TimeSpan ts1 = new TimeSpan(Tools.Date.DateHelper.ConvertStringToDateTime((long)_.estimated_begin_time).Ticks);
-                                        TimeSpan ts2 = new TimeSpan(((DateTime)_.estimated_end_date).Ticks);
+                                        TimeSpan ts2 = new TimeSpan(Tools.Date.DateHelper.ConvertStringToDateTime((long)_.estimated_end_time).Ticks);
                                         var allDays = ts1.Subtract(ts2).Duration().Days;
                                         return ((decimal)_.hours_per_resource / allDays) * thisDays;
                                     }
@@ -342,10 +343,10 @@ namespace EMT.DoneNOW.Web
                     timeList.ForEach(_=> {
                         timeInfo += $"{Tools.Date.DateHelper.ConvertStringToDateTime(_.create_time).ToString("yyyy-MM-dd")} ({_.request_hours.ToString("#0.00")} 小时)"+",";
                     });
-                    if (!string.IsNullOrEmpty(timeInfo)&& thisTask.estimated_end_date!=null)
+                    if (!string.IsNullOrEmpty(timeInfo)&& thisTask.estimated_end_time != null)
                     {
                         timeInfo = timeInfo.Substring(0, timeInfo.Length-1);
-                        context.Response.Write(new Tools.Serialize().SerializeJson(new {time=timeInfo,doneTime=((DateTime)thisTask.estimated_end_date).ToString("yyyy-MM-dd")}));
+                        context.Response.Write(new Tools.Serialize().SerializeJson(new {time=timeInfo,doneTime= Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_end_time).ToString("yyyy-MM-dd")}));
 
                     }
                 }

@@ -574,7 +574,7 @@ namespace EMT.DoneNOW.BLL
                             if (oldTask != null)
                             {
                                 task.status_id = (int)TICKET_STATUS.DONE;
-                                task.estimated_end_date = DateTime.Now;
+                                task.date_completed = DateTime.Now;
                                 task.update_user_id = user.id;
                                 task.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                 tDal.Update(task);
@@ -1524,7 +1524,7 @@ namespace EMT.DoneNOW.BLL
                             if (preDate > thisStartDate)
                             {
                                 _.estimated_begin_time = Tools.Date.DateHelper.ToUniversalTimeStamp(preDate); // 更改开始时间
-                                _.estimated_end_date = tBll.RetrunMaxTime(projetc_id, preDate, (int)_.estimated_duration);
+                                _.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(tBll.RetrunMaxTime(projetc_id, preDate, (int)_.estimated_duration));
                                 _.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                 _.update_user_id = user.id;
                                 OperLogBLL.OperLogUpdate<sdk_task>(_, stDal.FindNoDeleteById(_.id), _.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");

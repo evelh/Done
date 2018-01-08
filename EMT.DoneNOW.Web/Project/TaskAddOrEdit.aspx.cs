@@ -445,13 +445,15 @@ namespace EMT.DoneNOW.Web.Project
             }
 
             var startString = Request.Form["estimated_beginTime"];
-            if (!string.IsNullOrEmpty(startString))
+            var estimated_end_time = Request.Form["estimated_end_time_"];
+            if (!string.IsNullOrEmpty(startString)&&!string.IsNullOrEmpty(estimated_end_time))
             {
+                pageTask.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(estimated_end_time));
                 pageTask.estimated_begin_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(startString));
                // if (type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE) // d
                 //{
                     TimeSpan ts1 = new TimeSpan((DateTime.Parse(startString)).Ticks);
-                    TimeSpan ts2 = new TimeSpan(((DateTime)pageTask.estimated_end_date).Ticks);
+                    TimeSpan ts2 = new TimeSpan(Tools.Date.DateHelper.ConvertStringToDateTime((long)pageTask.estimated_end_time).Ticks);
                     TimeSpan ts = ts1.Subtract(ts2).Duration();
 
                 //pageTask.estimated_duration = ts.Days + 1;
@@ -474,7 +476,7 @@ namespace EMT.DoneNOW.Web.Project
                         teaNum = teaNum == 0 ? 1 : teaNum;
                         var workHours = pageTask.estimated_hours;
                         pageTask.estimated_duration = (int)Math.Ceiling(((workHours / teaNum) / dayWorkHours));
-                        pageTask.estimated_end_date = new TaskBLL().RetrunMaxTime(thisProject.id, DateTime.Parse(startString), (int)pageTask.estimated_duration);
+                        pageTask.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(new TaskBLL().RetrunMaxTime(thisProject.id, DateTime.Parse(startString), (int)pageTask.estimated_duration));
 
                     }
                     else
@@ -484,7 +486,7 @@ namespace EMT.DoneNOW.Web.Project
                 }
                 else
                 {
-                    pageTask.estimated_duration =new TaskBLL().GetDayByTime((long)pageTask.estimated_begin_time, Tools.Date.DateHelper.ToUniversalTimeStamp((DateTime)pageTask.estimated_end_date), (long)thisProject.id);
+                    pageTask.estimated_duration =new TaskBLL().GetDayByTime((long)pageTask.estimated_begin_time, (long)pageTask.estimated_end_time, (long)thisProject.id);
                 }
                     
             
@@ -507,20 +509,20 @@ namespace EMT.DoneNOW.Web.Project
                     thisTask.estimated_begin_time = pageTask.estimated_begin_time;
                     thisTask.start_no_earlier_than_date = Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time);
                 }
-                if (thisTask.estimated_end_date!= pageTask.estimated_end_date)
+                if (thisTask.estimated_end_time != pageTask.estimated_end_time)
                 {
-                    thisTask.estimated_end_date = pageTask.estimated_end_date;
-                    thisTask.estimated_duration = new TaskBLL().GetDayByTime((long)thisTask.estimated_begin_time,Tools.Date.DateHelper.ToUniversalTimeStamp((DateTime)pageTask.estimated_end_date),(long)thisTask.project_id);
+                    thisTask.estimated_end_time = pageTask.estimated_end_time;
+                    thisTask.estimated_duration = new TaskBLL().GetDayByTime((long)thisTask.estimated_begin_time,(long)pageTask.estimated_end_time,(long)thisTask.project_id);
                 }
                 else
                 {
                     if (thisTask.estimated_duration != pageTask.estimated_duration)
                     {
-                        thisTask.estimated_end_date = new TaskBLL().RetrunMaxTime(thisProject.id, DateTime.Parse(startString), (int)pageTask.estimated_duration);
+                        thisTask.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(new TaskBLL().RetrunMaxTime(thisProject.id, DateTime.Parse(startString), (int)pageTask.estimated_duration));
                     }
                     else
                     {
-                        thisTask.estimated_end_date = pageTask.estimated_end_date;
+                        thisTask.estimated_end_time = pageTask.estimated_end_time;
                         thisTask.estimated_duration = pageTask.estimated_duration;
                     }
                 }

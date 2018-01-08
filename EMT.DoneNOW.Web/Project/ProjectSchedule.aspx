@@ -3449,7 +3449,7 @@
                 type: "GET",
                 async: false,
                 url: "../Tools/ProjectAjax.ashx?act=ClearStartThan&task_id=" + ShowAlertTaskId,
-                dataType: "json",
+                //dataType: "json",
                 success: function (data) {
 
                     $("#ShowTaslAlarm").hide();
@@ -3457,6 +3457,9 @@
                     $("#ShowAlertTaskId").val("");
                     $("#qianquAlarm").hide();
                     $("#clearEarilyThan").hide();
+                    LayerMsg("清除成功");
+                    setTimeout(function () { history.go();},1500)
+                    
                 },
             });
         }

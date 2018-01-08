@@ -432,7 +432,8 @@
                                 if (activeTask != null && activeTask.Count > 0)
                                 {
                                     openTaskNum = activeTask.Count;
-                                    var overTaskList = activeTask.Where(_ => _.estimated_end_date != null && ((DateTime)_.estimated_end_date < DateTime.Now)).ToList();
+                                    var longTimeNow = EMT.Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now.AddDays(-1));
+                                    var overTaskList = activeTask.Where(_ => _.estimated_end_time != null && ((long)_.estimated_end_time < longTimeNow)).ToList();
                                     if (overTaskList != null && overTaskList.Count > 0)
                                     {
                                         overTaskNum = overTaskList.Count;

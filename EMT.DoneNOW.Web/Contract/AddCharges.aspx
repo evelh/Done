@@ -1371,7 +1371,7 @@
                 url: "../Tools/ProductAjax.ashx?act=costCode&cost_code_id=" + costCodeId,
                 success: function (data) {
                     if (data != "") {
-                        cate_Id = data.cate_Id;
+                        cate_Id = data.cate_id;
                     }
                 },
             });
@@ -1381,6 +1381,11 @@
                 $("#product_id").prop("disabled", true);
                 $("#ChoosethisCostCode").removeAttr("onclick");
                 $("#costId").prop("disabled", true);
+                $("#quantity").prop("disabled", true);
+                $("#unit_cost").prop("disabled", true);
+                $("#extendedCost").prop("disabled", true);
+                $("#unit_price").prop("disabled", true);
+                $("#billableAmount").prop("disabled", true);
             }
         }
 
@@ -1799,6 +1804,7 @@
         //}
 
         <%}%>
+        $("input").prop("disabled",false);
         return true;
     }
     // 根据产品Id 获取仍需数量

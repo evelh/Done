@@ -85,7 +85,7 @@ namespace EMT.DoneNOW.BLL
             // 销售订单自定义
 
             var udf_sales_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.SALES);
-            new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.SALES,  udf_sales_list, sale_order.id, udfValue, user,OPER_LOG_OBJ_CATE.SALE_ORDER);
+            new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.SALES, udf_sales_list, sale_order.id, udfValue, user, OPER_LOG_OBJ_CATE.SALE_ORDER);
 
 
             return ERROR_CODE.SUCCESS;
@@ -95,11 +95,11 @@ namespace EMT.DoneNOW.BLL
         /// 更改销售订单的状态
         /// </summary>
         /// <returns></returns>
-        public bool UpdateSaleOrderStatus(long sid,int status_id,long user_id)
+        public bool UpdateSaleOrderStatus(long sid, int status_id, long user_id)
         {
             var sale = _dal.GetSingleSale(sid);
             var user = UserInfoBLL.GetUserInfo(user_id);
-            if (sale != null&&user!=null)
+            if (sale != null && user != null)
             {
                 sale.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 sale.update_user_id = user.id;
@@ -140,27 +140,31 @@ namespace EMT.DoneNOW.BLL
         /// <param name="cost_id"></param>
         /// <param name="isDoneOrder">是否将销售订单完成</param>
         /// <returns></returns>
-        public bool ChangeSaleOrderStatus(long cost_id,long user_id, out bool isDoneOrder)
+        public bool ChangeSaleOrderStatus(long cost_id, long user_id, out bool isDoneOrder)
         {
             isDoneOrder = false;
             var thisOrder = _dal.GetOrderByCostId(cost_id);
             var thisCost = new ctt_contract_cost_dal().FindNoDeleteById(cost_id);
-            if (thisOrder != null&&thisCost!=null)
+            if (thisOrder != null && thisCost != null)
             {
-                var oldOrderStatus = thisOrder.status_id;
-                if (thisCost.status_id == (int)DicEnum.COST_STATUS.PENDING_DELIVERY&& oldOrderStatus== (int)SALES_ORDER_STATUS.OPEN)
-                {
-                    thisOrder.status_id = (int)SALES_ORDER_STATUS.IN_PROGRESS;
-
-                }else if(thisCost.status_id == (int)DicEnum.COST_STATUS.ALREADY_DELIVERED&&(oldOrderStatus == (int)SALES_ORDER_STATUS.OPEN|| oldOrderStatus == (int)SALES_ORDER_STATUS.IN_PROGRESS))
-                {
-                    thisOrder.status_id = (int)SALES_ORDER_STATUS.PARTIALLY_FULFILLED;
-                }
-
-                // 获取销售订单下的所有成本，所有成本下的所有成本产品 已配送的时候，进行提示 isDoneOrder = true
                 var proList = new ctt_contract_cost_product_dal().GetListBySale(thisOrder.id);
-                if (proList != null && proList.Count > 0)
+                var costList = new ctt_contract_cost_dal().GetListBySaleOrderId(thisOrder.id);
+                var oldOrderStatus = thisOrder.status_id;
+                if (proList != null && proList.Count > 0&& costList!=null&& costList.Count>0)
                 {
+                    if (costList.Any(_ => _.status_id == (int)DicEnum.COST_STATUS.PENDING_DELIVERY) && oldOrderStatus == (int)SALES_ORDER_STATUS.OPEN)
+                    {
+                        thisOrder.status_id = (int)SALES_ORDER_STATUS.IN_PROGRESS;
+
+                    }
+                    else if (costList.Any(_ => _.status_id == (int)DicEnum.COST_STATUS.ALREADY_DELIVERED) && (oldOrderStatus == (int)SALES_ORDER_STATUS.OPEN || oldOrderStatus == (int)SALES_ORDER_STATUS.IN_PROGRESS))
+                    {
+                        thisOrder.status_id = (int)SALES_ORDER_STATUS.PARTIALLY_FULFILLED;
+                    }
+
+                    // 获取销售订单下的所有成本，所有成本下的所有成本产品 已配送的时候，进行提示 isDoneOrder = true
+
+
                     if (!proList.Any(_ => _.status_id != (int)CONTRACT_COST_PRODUCT_STATUS.DISTRIBUTION))
                     {
                         isDoneOrder = true;
@@ -184,7 +188,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 通过成本完成销售订单
         /// </summary>
-        public bool DoneSaleByCost(long costId,long user_id)
+        public bool DoneSaleByCost(long costId, long user_id)
         {
             var thisSale = _dal.GetOrderByCostId(costId);
             if (thisSale == null)

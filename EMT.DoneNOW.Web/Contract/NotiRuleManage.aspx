@@ -354,7 +354,7 @@
                                     <div class="Normal Column">
                                         <div class="EditorLabelContainer">
                                             <div class="Label">
-                                                <label for="z35af765c731b4b67889b99dd6c1a4015">购买<%=conTypeName %>金额</label>
+                                                <label for="z35af765c731b4b67889b99dd6c1a4015">购买<%=thisContract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER?"金额":(thisContract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS?"时间":"事件") %></label>
                                             </div>
                                         </div>
                                         <div class="Editor DecimalBox">

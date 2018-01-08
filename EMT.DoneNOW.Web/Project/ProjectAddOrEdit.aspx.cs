@@ -331,7 +331,7 @@ namespace EMT.DoneNOW.Web.Project
 
                 if (taskList != null && taskList.Count > 0)
                 {
-                    var lastDate = taskList.Max(_ => _.estimated_end_date);
+                    var lastDate = Tools.Date.DateHelper.ConvertStringToDateTime(taskList.Max(_ =>(long) _.estimated_end_time));
                     if(lastDate> param.project.end_date)
                     {
                         param.project.end_date = lastDate;

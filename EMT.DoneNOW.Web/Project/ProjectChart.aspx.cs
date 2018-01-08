@@ -37,7 +37,7 @@ namespace EMT.DoneNOW.Web.Project
                 if (taskList != null && taskList.Count > 0)
                 {
                     start_date = Tools.Date.DateHelper.ConvertStringToDateTime((long)taskList.Min(_ => _.estimated_begin_time));
-                    end_date = (DateTime)taskList.Max(_ => _.estimated_end_date);
+                    end_date = Tools.Date.DateHelper.ConvertStringToDateTime(taskList.Max(_ =>(long) _.estimated_end_time));
                     if (GetDateDiffMonth(start_date, end_date, "month") > 12)
                     {
                         end_date = start_date.AddYears(showYearNum).AddDays(-1);
@@ -318,7 +318,7 @@ namespace EMT.DoneNOW.Web.Project
                     var thisBeginDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)sub.estimated_begin_time);
                     var diffDays = GetDateDiffMonth(start_date, thisBeginDate, "day"); // 开始时间距离最开始时间距离
                     var thisDays = GetDateDiffMonth(start_date, DateTime.Now, "day");
-                    var proDays = GetDateDiffMonth(thisBeginDate, (DateTime)sub.estimated_end_date, "day"); // 项目持续的时间
+                    var proDays = GetDateDiffMonth(thisBeginDate, Tools.Date.DateHelper.ConvertStringToDateTime((long)sub.estimated_end_time), "day"); // 项目持续的时间
                     proDays += 1;
                     // var thisDays = GetDateDiffMonth(start_date, DateTime.Now, "day"); // 开始时间距离今天的距离
                     double noeDaysWidth = 0;
@@ -376,7 +376,7 @@ namespace EMT.DoneNOW.Web.Project
                     
                     var thisStartDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)sub.estimated_begin_time);
                     title += "(" + thisBeginDate.ToString("yyyy-MM-dd");
-                    title += " -- " + ((DateTime)sub.estimated_end_date).ToString("yyyy-MM-dd")+") ";
+                    title += " -- " + Tools.Date.DateHelper.ConvertStringToDateTime((long)sub.estimated_end_time).ToString("yyyy-MM-dd")+") ";
                     if (sub.estimated_duration != null)
                     {
                         title += "- " + sub.estimated_duration+"天";
