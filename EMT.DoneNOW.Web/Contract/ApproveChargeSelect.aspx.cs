@@ -34,7 +34,7 @@ namespace EMT.DoneNOW.Web
             {
                 Response.Write("<script>alert('异常');window.close();self.opener.location.reload();</script>");
             }
-            this.Radio2.Enabled = false;
+            // this.Radio2.Enabled = false;
             //单个id审批
             if (id != 0)
             {

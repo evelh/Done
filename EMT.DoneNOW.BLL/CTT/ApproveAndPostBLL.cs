@@ -568,6 +568,7 @@ namespace EMT.DoneNOW.BLL
                                     ccb1.end_date = cc.end_date;
                                     ccb1.quantity = 1;
                                     ccb1.status_id = 0;
+                                    // ccb1.is_billed = 0;
                                     ccb1.date_purchased = DateTime.Now.Date;//购买日期
                                     ccb1.create_time = ccb1.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                     ccb1.create_user_id = ccb1.update_user_id = user.id;
@@ -623,6 +624,7 @@ namespace EMT.DoneNOW.BLL
                                     ccb2.end_date = cc.end_date;
                                     ccb2.quantity = 1;
                                     ccb2.status_id = 1;
+                                    ccb2.is_billed = 0;
                                     ccb2.date_purchased = DateTime.Now.Date;//购买日期
                                     ccb2.create_time = ccb2.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                     ccb2.create_user_id = ccb2.update_user_id = user.id;
