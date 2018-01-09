@@ -49,6 +49,9 @@ namespace EMT.DoneNOW.Web
                 case "deleteItem":
                     DeletePurchaseItem(context);
                     break;
+                case "getItemSnCnt":
+                    GetPurchaseItemSnCnt(context);
+                    break;
                 default:
                     break;
 
@@ -217,6 +220,39 @@ namespace EMT.DoneNOW.Web
                     context.Response.Write(new Tools.Serialize().SerializeJson(true));
                 }
             }
+        }
+
+        /// <summary>
+        /// 返回采购接收时输入的采购项串号个数
+        /// </summary>
+        /// <param name="context"></param>
+        private void GetPurchaseItemSnCnt(HttpContext context)
+        {
+            var ids = context.Request.QueryString["ids"].Split(',');
+            var sns = context.Session["PurchaseReceiveItemSn"] as Dictionary<long, string>;
+            var usns = context.Session["PurchaseUnReceiveItemSn"] as Dictionary<long, string>;
+            List<long[]> snsCnt = new List<long[]>();
+            foreach (var itemId in ids)
+            {
+                long id = long.Parse(itemId);
+                int cnt;
+                if (usns.ContainsKey(id))
+                {
+                    cnt = sns[id].Split(',').Length;
+                    cnt = 0 - cnt;
+                }
+                else if (sns.ContainsKey(id))
+                {
+                    sns[id] = sns[id].Replace("\r\n", ",");
+                    var idArr = sns[id].Split(',').ToList();
+                    idArr.RemoveAll(_ => string.IsNullOrEmpty(_));
+                    cnt = idArr.Count;
+                }
+                else
+                    cnt = 0;
+                snsCnt.Add(new long[] { id, cnt });
+            }
+            context.Response.Write(new Tools.Serialize().SerializeJson(snsCnt));
         }
     }
 }

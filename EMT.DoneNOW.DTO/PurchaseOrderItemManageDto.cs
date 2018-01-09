@@ -24,9 +24,15 @@ namespace EMT.DoneNOW.DTO
         public long product_id;
         public long warehouse_id;
         public long? costId;
+        public string accountName;
+        public string contractName;
         public string product;
         public string locationName;
-        public int quantity;
+        public int quantity;        // 采购数量
+        public int ivtQuantity = 0; // 库存数
+        public int max = 0;         // 最大数
+        public int min = 0;         // 最小数
+        public string onOrder;      // 采购中
         public decimal? unit_cost;
         public string note = "";
         public int was_auto_filled = 0;

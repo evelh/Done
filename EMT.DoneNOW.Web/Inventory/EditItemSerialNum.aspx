@@ -29,8 +29,8 @@
           <label>序列号：<span id="snCnt">0</span></label>
         </div>
         <textarea style="float:left;" id="sn" name="sn" <%if (itemCnt < 0) { %> readonly="readonly" <%} %>><%=editSn %></textarea>
-        <input type="hidden" id="serailNum" name="selectedSnNum" />
-        <input type="hidden" id="serailNumHidden" name="selectedSn" />
+        <input type="hidden" id="serailNum" name="selectedSnNum" <%if (!string.IsNullOrEmpty(editId)) { %> value="<%=editSn %>" <%} %> />
+        <input type="hidden" id="serailNumHidden" name="selectedSn" <%if (!string.IsNullOrEmpty(editId)) { %> value="<%=editId %>" <%} %> />
         <%if (itemCnt < 0) { %>
         <i onclick="window.open('../Common/SelectCallBack?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SHIPPING_ITEM_SERIAL_NUM %>&field=serailNum&callBack=GetProductSn&muilt=1&con1224=<%=itemId %>','_blank','left=200,top=200,width=900,height=750', false);" style="width: 20px; height: 20px; float: left; margin-left: 2px; margin-top: 6px; background: url(../Images/data-selector.png) no-repeat;" id="purchaseCompanySelect"></i>
         <%} %>
@@ -56,6 +56,7 @@
       }
       $("#sn").text(sntext);
       $("#snCnt").val(pdtCnt);
+      $("#snCnt").text("总数：" + getSNCnt());
     }
     $("#SaveClose").click(function () {
       <% if (itemCnt > 0) { %>
@@ -86,6 +87,9 @@
       return cnt;
     }
     $("#snCnt").text("总数：" + getSNCnt());
+    <%if (!string.IsNullOrEmpty(editId)) { %> 
+    GetProductSn();
+    <%} %>
   </script>
 </body>
 </html>

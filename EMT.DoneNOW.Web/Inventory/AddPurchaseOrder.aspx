@@ -52,8 +52,16 @@
             <td>
               <div class="clear">
                 <label>供应商<span class="red">*</span></label>
-                <input type="text" id="venderName" readonly="readonly" <%if (!isAdd) { %> value="<%=new EMT.DoneNOW.BLL.CompanyBLL().GetCompany(orderEdit.vendor_account_id).name %>" <%} %> />
-                <input type="hidden" id="venderNameHidden" name="vendor_account_id" <%if (!isAdd) { %> value="<%=orderEdit.vendor_account_id %>" <%} %> />
+                <%
+                    string VendorId = "";
+                    if (defaultVendorAccountId != 0)
+                      VendorId = defaultVendorAccountId.ToString();
+                    if (!isAdd)
+                      VendorId = orderEdit.vendor_account_id.ToString();
+
+                    %>
+                <input type="text" id="venderName" readonly="readonly" <%if (VendorId!="") { %> value="<%=new EMT.DoneNOW.BLL.CompanyBLL().GetCompany(long.Parse(VendorId)).name %>" <%} %> />
+                <input type="hidden" id="venderNameHidden" name="vendor_account_id" value="<%=VendorId %>" />
                 <i onclick="window.open('../Common/SelectCallBack?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.VENDOR_CALLBACK %>&field=venderName&callBack=SelectVendor','_blank','left=200,top=200,width=900,height=750', false);" style="width: 20px; height: 20px; float: left; margin-left: 2px; margin-top: 6px; background: url(../Images/data-selector.png) no-repeat;" id="vendorCompanySelect"></i>
               </div>
             </td>
@@ -303,6 +311,10 @@
 
     <div id="showItem" style="width:100%;">
       <iframe id="itemFrame" src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASE_ITEM %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PurchaseItem %>&con1171=<%=orderId %>" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
+    </div>
+    <div id="background" style="left:0px;top:0px;opacity:0.6;z-index:300;width:100%;height:100%;position:fixed;display:none;background-color:rgb(27,27,27);overflow:hidden;"></div>
+    <div id="memo" style="display:none;z-index:301;position:absolute;top:220px;left:260px;">
+      <div style="width:100%;height:46px;"><label>新增或</label></div>
     </div>
   </form>
   <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>

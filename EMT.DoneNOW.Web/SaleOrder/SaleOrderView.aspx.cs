@@ -54,12 +54,12 @@ namespace EMT.DoneNOW.Web.SaleOrder
                         break;
                     case "todo":
                         actType = "待办";
-                        iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.TODOS + "&type=" + (int)QueryType.Todos + "&group=131&con676=" + sale_order.id;
+                        iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.TODOS + "&type=" + (int)QueryType.Todos + "&group=131&con676=" + sale_order.id + "&param1=saleorderId&param2=" + sale_order.id;
                         isShowLeft.Value = "1";
                         break;
                     case "note":
                         actType = "备注";
-                        iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH + "&type=" + (int)QueryType.CRMNote + "&group=129&con675=" + sale_order.id;
+                        iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH + "&type=" + (int)QueryType.CRMNote + "&group=129&con675=" + sale_order.id + "&param1=saleorderId&param2=" + sale_order.id;
                         isShowLeft.Value = "1";
                         break;
                     case "ticket":

@@ -484,6 +484,12 @@ namespace EMT.DoneNOW.BLL
             ivt_order_product item = pdtDal.FindById(itemId);
             if (item == null)
                 return false;
+
+            // 新建和已提交状态的采购项才可以删除
+            ivt_order order = dal.FindById(item.order_id);
+            if (order.status_id != (int)DicEnum.PURCHASE_ORDER_STATUS.NEW && order.status_id != (int)DicEnum.PURCHASE_ORDER_STATUS.SUBMITTED)
+                return false;
+
             item.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
             item.delete_user_id = userId;
             pdtDal.Update(item);
@@ -494,22 +500,33 @@ namespace EMT.DoneNOW.BLL
                 var costDal = new ctt_contract_cost_dal();
                 var costPdtDal = new ctt_contract_cost_product_dal();
                 var cost = costDal.FindById((long)item.contract_cost_id);
-                cost.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
-                cost.delete_user_id = userId;
-                costDal.Update(cost);
-                OperLogBLL.OperLogDelete<ctt_contract_cost>(cost, cost.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_COST, "删除采购项关联成本");
-
-                var pdts = costPdtDal.FindListBySql($"select * from ctt_contract_cost_product where contract_cost_id={cost.id} and delete_time=0");
-                if (pdts != null && pdts.Count > 0)
+                if (cost.status_id == (int)DicEnum.COST_STATUS.IN_PURCHASING)
                 {
-                    foreach (var pdt in pdts)
+                    var costOld = costDal.FindById(cost.id);
+                    cost.status_id = (int)DicEnum.COST_STATUS.PENDING_PURCHASE;
+                    cost.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                    cost.update_user_id = userId;
+                    costDal.Update(cost);
+                    OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_cost>(costOld, cost), cost.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_COST, "删除采购项修改成本状态");
+
+                    var pdts = costPdtDal.FindListBySql($"select * from ctt_contract_cost_product where contract_cost_id={cost.id} and warehouse_id={item.warehouse_id} and order_id={item.order_id} and delete_time=0");
+                    if (pdts != null && pdts.Count > 0)
                     {
-                        pdt.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
-                        pdt.delete_user_id = userId;
-                        costPdtDal.Update(pdt);
-                        OperLogBLL.OperLogDelete<ctt_contract_cost_product>(pdt, pdt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "删除采购项关联成本产品");
+                        foreach (var pdt in pdts)
+                        {
+                            if (pdt.status_id != (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.NEW)
+                            {
+                                var pdtOld = costPdtDal.FindById(pdt.id);
+                                pdt.status_id = (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.NEW;
+                                pdt.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                                pdt.update_user_id = userId;
+                                costPdtDal.Update(pdt);
+                                OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_cost_product>(pdtOld, pdt), pdt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "删除采购项修改成本产品状态");
+                            }
+                        }
                     }
                 }
+                
             }
             return true;
         }
@@ -653,6 +670,24 @@ namespace EMT.DoneNOW.BLL
                             costDal.Update(cost);
                             OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_cost>(costOld, cost), cost.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_COST, "修改成本状态");
                         }
+
+                        // 新增成本产品串号
+                        if (item.sns.Count != 0)
+                        {
+                            foreach (var sn in item.sns)
+                            {
+                                ctt_contract_cost_product_sn pdtsn = new ctt_contract_cost_product_sn();
+                                pdtsn.id = costPdtSnDal.GetNextIdCom();
+                                pdtsn.sn = sn;
+                                pdtsn.contract_cost_product_id = costPdt.id;
+                                pdtsn.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                                pdtsn.create_user_id = userId;
+                                pdtsn.update_time = pdtsn.create_time;
+                                pdtsn.update_user_id = userId;
+                                costPdtSnDal.Insert(pdtsn);
+                                OperLogBLL.OperLogAdd<ctt_contract_cost_product_sn>(pdtsn, pdtsn.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT_SN, "接收采购订单新增成本产品串号");
+                            }
+                        }
                     }
                     else    // 取消接收
                     {
@@ -661,12 +696,24 @@ namespace EMT.DoneNOW.BLL
                         // 待配送成本产品
                         var costPdts = costPdtDal.FindListBySql($"select * from ctt_contract_cost_product where contract_cost_id={orderPdt.contract_cost_id} and order_id={orderId} and warehouse_id={orderPdt.warehouse_id} and status_id={(int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.PENDING_DISTRIBUTION} and delete_time=0 order by create_time asc");
 
-                        int remainder = 0 - item.count;
+                        int remainder = 0 - item.count; // 剩余需要被取消的个数
+
+                        // 接收串号sn的id
+                        string ids = "";
+                        if (item.sns.Count != 0)
+                        {
+                            foreach (var rsnid in item.sns)
+                            {
+                                ids += rsnid + ",";
+                            }
+                            ids = ids.Remove(ids.Length - 1, 1);
+                        }
+
                         foreach (var costPdt in costPdts)
                         {
                             if (remainder == 0)
                                 break;
-                            if (costPdt.quantity > remainder)
+                            if (costPdt.quantity > remainder)   // 当前待配送成本产品个数
                             {
                                 var costPdtOld = costPdtDal.FindById(costPdt.id);
                                 costPdt.quantity = costPdt.quantity - remainder;
@@ -674,6 +721,7 @@ namespace EMT.DoneNOW.BLL
                                 costPdt.update_user_id = userId;
                                 costPdtDal.Update(costPdt);
                                 OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_cost_product>(costPdtOld, costPdt), costPdt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "采购接收取消配送修改成本产品");
+
                                 remainder = 0;
                             }
                             else
@@ -684,6 +732,12 @@ namespace EMT.DoneNOW.BLL
                                 OperLogBLL.OperLogDelete<ctt_contract_cost_product>(costPdt, costPdt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "采购接收取消配送删除成本产品");
                                 remainder = remainder - costPdt.quantity;
                             }
+                            // 删除串号
+                            if (item.sns.Count != 0)
+                            {
+                                costPdtSnDal.ExecuteSQL($"update ctt_contract_cost_product_sn set delete_time='{Tools.Date.DateHelper.ToUniversalTimeStamp()}',delete_user_id={userId} where contract_cost_product_id={costPdt.id} and sn in(select sn from ivt_receive_sn where id in({ids}))");
+                            }
+
                         }
                         if (costPdtPurchasing == null)
                         {
@@ -712,8 +766,7 @@ namespace EMT.DoneNOW.BLL
                         }
                     }
                 }
-
-                // TODO: ctt_contract_cost_product_sn修改
+                
                 // 序列化产品记录序列号
                 if (item.sns.Count != 0)
                 {

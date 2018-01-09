@@ -23,6 +23,8 @@ function Delete() {
     requestData("/Tools/PurchaseOrderAjax.ashx?act=deleteItem&id=" + entityid, null, function (data) {
         if (data == true) {
             window.location.reload();
+        } else {
+            LayerMsg("新建和已提交状态的采购项才可以删除");
         }
     })
 }

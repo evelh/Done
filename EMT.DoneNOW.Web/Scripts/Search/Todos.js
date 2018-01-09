@@ -1,5 +1,9 @@
 ﻿function Add() {
-    window.open("../Activity/Todos.aspx", windowObj.todos + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+    if ($("#param1").val() == "") {
+        window.open("../Activity/Todos.aspx", windowObj.todos + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+    } else {
+        window.open("../Activity/Todos.aspx?" + $("#param1").val() + "=" + $("#param2").val(), windowObj.todos + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+    }
 }
 function Edit() {
     window.open("../Activity/Todos.aspx?id=" + entityid, windowObj.todos + windowType.edit, 'left=0,top=0,location=no,status=no,width=730,height=750', false);

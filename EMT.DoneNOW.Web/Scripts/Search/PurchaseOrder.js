@@ -34,6 +34,6 @@ function Cancle() {
 function Receive() {
     window.open('../Inventory/ReceivePurchaseOrder.aspx?id=' + entityid, windowObj.inventoryOrder + windowType.add, 'left=0,top=0,location=no,status=no,width=1000,height=800', false);
 }
-function View() {
+function ViewPrint() {
     window.open('../Inventory/ViewPurchaseOrder.aspx?id=' + entityid, windowType.blank, 'left=0,top=0,location=no,status=no,width=900,height=800', false);
 }

@@ -45,6 +45,8 @@ namespace EMT.DoneNOW.Web
                 return;
             }
             isCheck = Request.QueryString["isCheck"];
+            param1 = string.IsNullOrEmpty(Request.QueryString["param1"]) ? "" : Request.QueryString["param1"];
+            param2 = string.IsNullOrEmpty(Request.QueryString["param2"]) ? "" : Request.QueryString["param2"];
             // 一个query_type下只有一个group时可以不传参gruop_id
             if (paraGroupId == 0)
             {
@@ -431,6 +433,18 @@ namespace EMT.DoneNOW.Web
                                     oi.Add("成本", item.unit_cost);
                                 else if (rsltClmn.name == "采购数量")
                                     oi.Add("采购数量", item.quantity);
+                                else if (rsltClmn.name == "销售订单（客户）")
+                                    oi.Add("销售订单（客户）", item.accountName);
+                                else if (rsltClmn.name == "工单或项目或合同")
+                                    oi.Add("工单或项目或合同", item.contractName);
+                                else if (rsltClmn.name == "库存数")
+                                    oi.Add("库存数", item.ivtQuantity);
+                                else if (rsltClmn.name == "最大数")
+                                    oi.Add("最大数", item.max);
+                                else if (rsltClmn.name == "最小数")
+                                    oi.Add("最小数", item.min);
+                                else if (rsltClmn.name == "采购中")
+                                    oi.Add("采购中", item.onOrder);
                                 else
                                     oi.Add(rsltClmn.name, "");
                             }
@@ -835,7 +849,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "提交", click_function = "Submit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "接收/取消接收", click_function = "Receive()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "查看/打印", click_function = "View()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看/打印", click_function = "ViewPrint()" });
                     contextMenu.Add(new PageContextMenuDto { text = "发送邮件", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "取消", click_function = "Cancle()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });

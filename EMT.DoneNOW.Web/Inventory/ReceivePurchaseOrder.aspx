@@ -92,7 +92,7 @@
     </div>
     <div style="margin-left:15px;margin-right:15px;">
       <input type="button" value="自动填充“接收数”" style="margin:6px 0 5px 0;" onclick="autoCalcReceive()" />
-      <% string ids = ""; %>
+      <% string ids = "";string snIds = ""; %>
       <table border="" cellspacing="0" cellpadding="0" style="overflow: scroll; width: 100%; height: 100%;border:1px solid #98b4ca;min-width:1070px;">
         <tr>
           <th style="width:152px;">产品名称</th>
@@ -123,15 +123,23 @@
           <td><%=rslt["工单或项目或合同"] %></td>
           <td id="orderCnt<%=rslt["采购项id"] %>"><%=rslt["采购数量"] %></td>
           <td id="receivedCnt<%=rslt["采购项id"] %>"><%=received %></td>
-          <td><input type="text" style="width:60px;" id="receive<%=rslt["采购项id"] %>" name="receive<%=rslt["采购项id"] %>" /></td>
+          <td><input type="text" style="width:60px;" id="receive<%=rslt["采购项id"] %>" value="0" name="receive<%=rslt["采购项id"] %>" /></td>
           <td><input type="text" style="width:60px;" value="<%=rslt["成本"] %>" id="cost<%=rslt["采购项id"] %>" name="cost<%=rslt["采购项id"] %>" /></td>
-          <td><%if (bll.IsProductSerialized(long.Parse(rslt["采购项id"].ToString()))) { %><input type="button" value="新增或编辑" onclick='editSerialNum(<%=rslt["采购项id"] %>)' /><%} %></td>
+          <td>
+            <%if (bll.IsProductSerialized(long.Parse(rslt["采购项id"].ToString()))) {
+                    if (snIds == "")
+                      snIds = rslt["采购项id"].ToString();
+                    else
+                      snIds += "," + rslt["采购项id"].ToString();
+                      %>
+            <input type="button" value="新增或编辑" onclick='editSerialNum(<%=rslt["采购项id"] %>)' /><%} %></td>
           <td id="unreceivedCnt<%=rslt["采购项id"] %>"><%=int.Parse(rslt["采购数量"].ToString()) - received %></td>
           <td><%=rslt["预计到达日期"] %></td>
         </tr>
         <%}} %>
       </table>
       <input type="hidden" id="itemIds" value="<%=ids %>" />
+      <input type="hidden" id="itemSnIds" value="<%=snIds %>" />
     </div>
   </form>
   <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
@@ -139,16 +147,11 @@
   <script>
     function editSerialNum(id) {
       var cnt = parseInt($("#receive" + id).val());
-      if (cnt == 0 || cnt == "" || cnt == NaN) {
+      if (cnt == 0 || cnt == "" || isNaN(cnt)) {
         LayerMsg("请先输入正确的本次接收数");
         return;
       }
-      if (cnt < 0 && (cnt + parseInt($("#receivedCnt" + id).text()) < 0)) {
-        LayerMsg("取消接收数不能大于已接收数");
-        return;
-      }
-      if (cnt > 0 && (cnt > parseInt($("#unreceivedCnt" + id).text()))) {
-        LayerMsg("接收数不能大于尚未接收数");
+      if (!checkReceiveCnt(id)) {
         return;
       }
       window.open('../Inventory/EditItemSerialNum.aspx?id=' + id + '&num=' + cnt, windowObj.inventoryItemSerailNum + windowType.add, 'left=0,top=0,location=no,status=no,width=400,height=500', false);
@@ -164,11 +167,48 @@
       }
     }
     $("#SaveClose").click(function () {
-      $("#form1").submit();
+      var ids = $("#itemIds").val().split(",");
+      var idRm = "";
+      for (i = 0; i < ids.length; i++) {
+        if (!checkReceiveCnt(ids[i])) {
+          return;
+        }
+      }
+      if ($("#itemSnIds").val() != "") {
+        requestData("/Tools/PurchaseOrderAjax.ashx?act=getItemSnCnt&ids=" + $("#itemSnIds").val(), null, function (data) {
+          for (var i = 0; i < data.length; ++i) {
+            if ($("#receive" + data[i][0]).val() != "0") {
+              if (parseInt($("#receive" + data[i][0]).val()) != parseInt(data[i][1])) {
+                LayerMsg("编辑的串号数必须等于输入的接收数");
+                return;
+              }
+            }
+          }
+          $("#form1").submit();
+        })
+      }
     })
     $("#Cancle").click(function () {
       window.close();
     })
+    function checkReceiveCnt(id) {
+      var cnt = parseInt($("#receive" + id).val());
+      if (cnt == 0)
+        return true;
+      if (cnt == "" || isNaN(cnt)) {
+        LayerMsg("请先输入正确的本次接收数");
+        return false;
+      }
+      if (cnt < 0 && (cnt + parseInt($("#receivedCnt" + id).text()) < 0)) {
+        LayerMsg("取消接收数不能大于已接收数");
+        return false;
+      }
+      if (cnt > 0 && (cnt > parseInt($("#unreceivedCnt" + id).text()))) {
+        LayerMsg("接收数不能大于尚未接收数");
+        return false;
+      }
+      return true;
+    }
   </script>
 </body>
 </html>

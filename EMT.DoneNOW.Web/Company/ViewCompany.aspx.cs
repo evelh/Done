@@ -26,11 +26,6 @@ namespace EMT.DoneNOW.Web.Company
                 type = Request.QueryString["type"];
                 if (id != null)
                 {
-                    if (AuthBLL.GetUserCompanyAuth(LoginUserId, LoginUser.security_Level_id, Convert.ToInt64(id)).CanView == false)     // 权限验证
-                    {
-                        Response.End();
-                        return;
-                    }
                     var src = Request.QueryString["src"];
                     if (!string.IsNullOrEmpty(src))
                         crm_account = companyBll.GetCompanyByOtherId(Convert.ToInt64(id), src);
@@ -38,6 +33,11 @@ namespace EMT.DoneNOW.Web.Company
                         crm_account = companyBll.GetCompanyByOtherId(Convert.ToInt64(id));
                     if (crm_account != null)
                     {
+                        if (AuthBLL.GetUserCompanyAuth(LoginUserId, LoginUser.security_Level_id, crm_account.id).CanView == false)     // 权限验证
+                        {
+                            Response.End();
+                            return;
+                        }
                        
                         dic = new CompanyBLL().GetField();    // 获取字典
                         if (string.IsNullOrEmpty(type))
@@ -60,11 +60,11 @@ namespace EMT.DoneNOW.Web.Company
                                 actType = "活动";
                                 break;
                             case "todo":            // 待办
-                                iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.TODOS + "&type=" + (int)QueryType.Todos + "&group=112&con658=" + crm_account.id;
+                                iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.TODOS + "&type=" + (int)QueryType.Todos + "&group=112&con658=" + crm_account.id + "&param1=accountId&param2=" + crm_account.id;
                                 actType = "待办";
                                 break;
                             case "note":            // 备注
-                                iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH + "&type=" + (int)QueryType.CRMNote + "&group=110&con645=" + crm_account.id;
+                                iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH + "&type=" + (int)QueryType.CRMNote + "&group=110&con645=" + crm_account.id + "&param1=accountId&param2=" + crm_account.id;
                                 actType = "备注";
                                 break;
                             case "opportunity":

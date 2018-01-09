@@ -56,11 +56,11 @@ namespace EMT.DoneNOW.Web
                         actType = "活动";
                         break;
                     case "todo":
-                        iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.TODOS + "&type=" + (int)QueryType.Todos + "&group=112&con659=" + contact_id;  // 待办
+                        iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.TODOS + "&type=" + (int)QueryType.Todos + "&group=112&con659=" + contact_id + "&param1=contactId&param2=" + contact_id;  // 待办
                         actType = "待办";
                         break;
                     case "note":
-                        iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH + "&type=" + (int)QueryType.CRMNote + "&group=110&con646=" + contact_id;  // 备注
+                        iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH + "&type=" + (int)QueryType.CRMNote + "&group=110&con646=" + contact_id + "&param1=contactId&param2=" + contact_id;  // 备注
                         actType = "备注";
                         break;
                     case "opportunity":

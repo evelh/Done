@@ -402,8 +402,9 @@ w.name as location_name
         /// </summary>
         /// <param name="pdtIds"></param>
         /// <returns></returns>
-        public PurchaseOrderItemManageDto InitPurchaseOrderItems(string pdtIds)
+        public PurchaseOrderItemManageDto InitPurchaseOrderItems(string pdtIds, out long vendorId)
         {
+            vendorId = 0;
             PurchaseOrderItemManageDto dto = new PurchaseOrderItemManageDto();
             string sql = $"select product_id,warehouse_id,(select name from ivt_product where id=product_id) as product,(select unit_cost from ivt_product where id=product_id) as unit_cost,(select name from ivt_warehouse where id=warehouse_id) as locationName,(quantity_maximum-quantity) as quantity from ivt_warehouse_product where id in({pdtIds})";
             dto.items = dal.FindListBySql<PurchaseItemDto>(sql);
@@ -436,9 +437,36 @@ w.name as location_name
                     if (find == null)
                         continue;
                     dto.items[i].quantity = (int)(string.IsNullOrEmpty(find["采购数量"].ToString()) ? 0 : decimal.Parse(find["采购数量"].ToString()));
+                    dto.items[i].accountName = find["销售订单"].ToString() + "(" + find["客户"].ToString() + ")";
+                    dto.items[i].contractName = find["工单或项目或合同"].ToString();
                     dto.items[i].id = dto.index++;
                 }
             }
+
+            string productIds = "";
+            for (var i = 0; i < dto.items.Count; ++i)
+            {
+                productIds += dto.items[i].product_id + ",";
+                long lctPdtId = dal.FindSignleBySql<long>($"select id from ivt_warehouse_product where product_id={dto.items[i].product_id} and warehouse_id={dto.items[i].warehouse_id}");
+                var lctPdt = GetIvtProductEdit(lctPdtId);
+                if (lctPdt != null)
+                {
+                    dto.items[i].ivtQuantity = lctPdt.quantity;
+                    dto.items[i].onOrder = lctPdt.on_order;
+                    dto.items[i].max = lctPdt.quantity_maximum;
+                    dto.items[i].min = lctPdt.quantity_minimum;
+                }
+            }
+
+            // 获取采购项产品的默认供应商，如果只有一个默认供应商，则返回
+            if (productIds != "")
+            {
+                productIds = productIds.Substring(0, productIds.Length - 1);
+                var ids = dal.FindListBySql<long>($"select vendor_account_id from ivt_product_vendor where product_id in({productIds})");
+                if (ids != null && ids.Count == 1)
+                    vendorId = ids[0];
+            }
+
             return dto;
         }
 
@@ -476,6 +504,7 @@ w.name as location_name
                     itm.warehouse_id = (long)lctPdt.warehouse_id;
                     itm.quantity = lctPdt.quantity_maximum - lctPdt.quantity;
                     itm.unit_cost = list[i].unit_cost;
+                    itm.was_auto_filled = 1;
                     itemList.Add(itm);
                 }
             }

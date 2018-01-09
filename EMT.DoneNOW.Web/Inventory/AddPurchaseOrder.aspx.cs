@@ -19,6 +19,7 @@ namespace EMT.DoneNOW.Web.Inventory
         protected long orderId = 0;     // 采购订单id
         protected bool isAdd;
         protected long thisCompanyId = new CompanyBLL().GetThisCompany().id;
+        protected long defaultVendorAccountId = 0;          // 新增订单默认供应商id
         protected ivt_order orderEdit;
         private InventoryOrderBLL bll = new InventoryOrderBLL();
         protected void Page_Load(object sender, EventArgs e)
@@ -45,7 +46,7 @@ namespace EMT.DoneNOW.Web.Inventory
                 // 库存产品列表中创建采购订单
                 if (isAdd && (!string.IsNullOrEmpty(Request.QueryString["ids"])))
                 {
-                    Session["PurchaseOrderItem"] = new InventoryProductBLL().InitPurchaseOrderItems(Request.QueryString["ids"]);
+                    Session["PurchaseOrderItem"] = new InventoryProductBLL().InitPurchaseOrderItems(Request.QueryString["ids"], out defaultVendorAccountId);
                 }
             }
             else

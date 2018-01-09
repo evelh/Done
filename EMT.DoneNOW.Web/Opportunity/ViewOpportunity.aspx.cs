@@ -55,11 +55,11 @@ namespace EMT.DoneNOW.Web.Opportunity
                     {
 
                         case "todo":
-                            iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.TODOS + "&type=" + (int)QueryType.Todos + "&group=112&con659=" + opportunity.id;                              // 待办
+                            iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.TODOS + "&type=" + (int)QueryType.Todos + "&group=112&con659=" + opportunity.id + "&param1=opportunityId&param2=" + opportunity.id;                              // 待办
                             actType = "待办";
                             break;                                                        
                         case "note":
-                            iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH + "&type=" + (int)QueryType.CRMNote + "&group=110&con647=" +opportunity.id;                              // 备注
+                            iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH + "&type=" + (int)QueryType.CRMNote + "&group=110&con647=" +opportunity.id + "&param1=opportunityId&param2=" + opportunity.id;                              // 备注
                             actType = "备注";
                             break;                                                        
                         case "activity":

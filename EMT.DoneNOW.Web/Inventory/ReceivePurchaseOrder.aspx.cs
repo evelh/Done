@@ -21,8 +21,8 @@ namespace EMT.DoneNOW.Web.Inventory
             if(!string.IsNullOrEmpty(Request.QueryString["id"]))
                 orderId = long.Parse(Request.QueryString["id"]);
             string itemIds = Request.QueryString["ids"];
-            List<ivt_order_product> items = null;
             
+            List<ivt_order_product> items = null;       // 指定接收的采购项
             if (!string.IsNullOrEmpty(itemIds))
             {
                 items = bll.GetPurchaseItems(itemIds);
@@ -41,7 +41,7 @@ namespace EMT.DoneNOW.Web.Inventory
                     }
                 }
                 orderId = ordId;
-                Session["PurchaseReceiveItem"] = items;
+                //Session["PurchaseReceiveItem"] = items;
             }
             else if (orderId == 0)
             {
@@ -64,7 +64,7 @@ namespace EMT.DoneNOW.Web.Inventory
             queryPara.page = 1;
             queryPara.page_size = 500;
             queryResult = queryBll.GetResult(0, queryPara);
-            if(!string.IsNullOrEmpty(itemIds))
+            if(!string.IsNullOrEmpty(itemIds))  // 指定了采购项，只显示指定的采购项，其他不显示
             {
                 for (int idx = queryResult.result.Count - 1; idx >= 0; --idx)
                 {
@@ -78,7 +78,8 @@ namespace EMT.DoneNOW.Web.Inventory
 
             if (!IsPostBack)
             {
-                Session["PurchaseReceiveItemSn"] = new Dictionary<long, string>();
+                Session["PurchaseReceiveItemSn"] = new Dictionary<long, string>();      // 接收的采购项串号，或者取消接收的串号id
+                Session["PurchaseUnReceiveItemSn"] = new Dictionary<long, string>();    // 取消接收的采购项串号
             }
             else
             {

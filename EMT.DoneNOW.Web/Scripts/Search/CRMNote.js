@@ -1,5 +1,9 @@
 ﻿function Add() {
-    window.open("../Activity/Notes.aspx", windowObj.notes + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+    if ($("#param1").val() == "") {
+        window.open("../Activity/Notes.aspx", windowObj.notes + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+    } else {
+        window.open("../Activity/Notes.aspx?" + $("#param1").val() + "=" + $("#param2").val(), windowObj.notes + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+    }
 }
 
 function Edit() {
