@@ -157,7 +157,7 @@ namespace EMT.DoneNOW.BLL
                         thisOrder.status_id = (int)SALES_ORDER_STATUS.IN_PROGRESS;
 
                     }
-                    else if (costList.Any(_ => _.status_id == (int)DicEnum.COST_STATUS.ALREADY_DELIVERED) && (oldOrderStatus == (int)SALES_ORDER_STATUS.OPEN || oldOrderStatus == (int)SALES_ORDER_STATUS.IN_PROGRESS))
+                    if (costList.Any(_ => _.status_id == (int)DicEnum.COST_STATUS.ALREADY_DELIVERED) && (oldOrderStatus == (int)SALES_ORDER_STATUS.OPEN || oldOrderStatus == (int)SALES_ORDER_STATUS.IN_PROGRESS))
                     {
                         thisOrder.status_id = (int)SALES_ORDER_STATUS.PARTIALLY_FULFILLED;
                     }
