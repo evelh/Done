@@ -186,6 +186,8 @@
           }
           $("#form1").submit();
         })
+      } else {
+        $("#form1").submit();
       }
     })
     $("#Cancle").click(function () {

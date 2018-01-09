@@ -188,7 +188,7 @@ w.name as location_name
                 trsf.update_time = trsf.create_time;
                 trsf.update_user_id = userId;
                 trsf.quantity = product.quantity - productOld.quantity;
-                trsf.type_id = (int)DicEnum.INVENTORY_TRANSFER_TYPE.INVENTORY;
+                trsf.type_id = (int)DicEnum.INVENTORY_TRANSFER_TYPE.MANUAL;
                 trsf.product_id = product.product_id;
                 trsf.from_warehouse_id = (long)product.warehouse_id;
                 trsf.notes = "";

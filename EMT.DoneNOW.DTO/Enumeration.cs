@@ -1027,9 +1027,11 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum INVENTORY_TRANSFER_TYPE
         {
-            INVENTORY = 1481,       // 库存
-            PROJECT = 1482,         // 项目
-            TICKETS = 1483,         // 工单
+            INVENTORY = 1481,       // 仓库间转移
+            PROJECT = 1482,         // 转移给客户
+            TICKETS = 1483,         // 配置项交换
+            CANCLE_RECEIVE = 1484,  // 取消接收
+            MANUAL = 1485,          // 手工修改库存
         }
 
         /// <summary>

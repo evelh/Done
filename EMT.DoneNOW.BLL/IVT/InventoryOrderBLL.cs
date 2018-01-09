@@ -349,8 +349,39 @@ namespace EMT.DoneNOW.BLL
             dal.Update(order);
             OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ivt_order>(orderOld, order), order.id, userId, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ORDER, "采购订单取消");
 
-            // TODO:成本状态
+            // 修改成本状态
+            ctt_contract_cost_dal costDal = new ctt_contract_cost_dal();
+            ctt_contract_cost_product_dal costPdtDal = new ctt_contract_cost_product_dal();
+            var orderPdts = GetPurchaseItemsByOrderId(order.id);
+            foreach (var orderPdt in orderPdts)
+            {
+                if (orderPdt.contract_cost_id == null)
+                    continue;
 
+                var cost = costDal.FindById((long)orderPdt.contract_cost_id);
+                if (cost.status_id == (int)DicEnum.COST_STATUS.IN_PURCHASING)
+                {
+                    var costOld = costDal.FindById(cost.id);
+                    cost.status_id = (int)DicEnum.COST_STATUS.PENDING_PURCHASE;
+                    cost.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                    cost.update_user_id = userId;
+                    costDal.Update(cost);
+                    OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_cost>(costOld, cost), cost.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_COST, "取消采购订单修改成本状态");
+                }
+                var costPdts = costPdtDal.FindListBySql($"select * from ctt_contract_cost_product where contract_cost_id={cost.id} and order_id={order.id} and delete_time=0");
+                foreach (var pdt in costPdts)
+                {
+                    if (pdt.status_id != (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.NEW)
+                    {
+                        var pdtOld = costPdtDal.FindById(pdt.id);
+                        pdt.status_id = (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.NEW;
+                        pdt.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                        pdt.update_user_id = userId;
+                        costPdtDal.Update(pdt);
+                        OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_cost_product>(pdtOld, pdt), pdt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "取消采购订单修改成本产品状态");
+                    }
+                }
+            }
 
             return true;
         }
@@ -374,8 +405,40 @@ namespace EMT.DoneNOW.BLL
             dal.Update(order);
             OperLogBLL.OperLogDelete<ivt_order>(order, order.id, userId, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ORDER, "删除采购订单");
 
-            // TODO:成本状态
+            
+            // 删除采购项，修改成本状态
+            ctt_contract_cost_dal costDal = new ctt_contract_cost_dal();
+            ctt_contract_cost_product_dal costPdtDal = new ctt_contract_cost_product_dal();
+            var orderPdts = GetPurchaseItemsByOrderId(order.id);
+            foreach (var orderPdt in orderPdts)
+            {
+                orderPdt.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                orderPdt.delete_user_id = userId;
+                pdtDal.Update(orderPdt);
+                OperLogBLL.OperLogDelete<ivt_order_product>(orderPdt, orderPdt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ITEM, "删除采购订单删除采购项");
 
+                if (orderPdt.contract_cost_id == null)
+                    continue;
+
+                var cost = costDal.FindById((long)orderPdt.contract_cost_id);
+                if (cost.status_id == (int)DicEnum.COST_STATUS.IN_PURCHASING)
+                {
+                    var costOld = costDal.FindById(cost.id);
+                    cost.status_id = (int)DicEnum.COST_STATUS.PENDING_PURCHASE;
+                    cost.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                    cost.update_user_id = userId;
+                    costDal.Update(cost);
+                    OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_cost>(costOld, cost), cost.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_COST, "删除采购订单修改成本状态");
+                }
+                var costPdts = costPdtDal.FindListBySql($"select * from ctt_contract_cost_product where contract_cost_id={cost.id} and order_id={order.id} and delete_time=0");
+                foreach (var pdt in costPdts)
+                {
+                    pdt.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                    pdt.delete_user_id = userId;
+                    costPdtDal.Update(pdt);
+                    OperLogBLL.OperLogDelete<ctt_contract_cost_product>(pdt, pdt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "删除采购订单删除成本产品");
+                }
+            }
 
             return true;
         }
