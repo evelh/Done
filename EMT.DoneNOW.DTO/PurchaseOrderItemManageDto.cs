@@ -34,7 +34,8 @@ namespace EMT.DoneNOW.DTO
         public int min = 0;         // 最小数
         public string onOrder = "0";// 采购中
         public decimal? unit_cost;
-        public string note = "";
+        public string note = "";    // 备注
+        public string arrivalDate = ""; // 预期到达时间
         public int was_auto_filled = 0;
     }
 }

@@ -17,7 +17,7 @@ function EditCost() {
 
 }
 function EditNote() {
-
+    window.parent.editMemo(entityid);
 }
 function Delete() {
     requestData("/Tools/PurchaseOrderAjax.ashx?act=deleteItem&id=" + entityid, null, function (data) {

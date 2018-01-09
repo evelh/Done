@@ -313,8 +313,24 @@
       <iframe id="itemFrame" src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASE_ITEM %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PurchaseItem %>&con1171=<%=orderId %>" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
     </div>
     <div id="background" style="left:0px;top:0px;opacity:0.6;z-index:300;width:100%;height:100%;position:fixed;display:none;background-color:rgb(27,27,27);overflow:hidden;"></div>
-    <div id="memo" style="display:none;z-index:301;position:absolute;top:220px;left:260px;">
-      <div style="width:100%;height:46px;"><label>新增或</label></div>
+    <div id="memo" style="display:none;z-index:301;position:absolute;top:220px;left:260px;width:430px;height:450px;background-color:white;">
+      <div class="header" style="height:32px;">新增或编辑备注</div>
+      <div id="CancleMemo" style="position:absolute;height:32px;width:32px;top:0px;right:0px;background: url(../Images/cancel1.png);"></div>
+      <div class="header-title">
+        <ul>
+          <li id="SaveMemo">
+            <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
+            <input type="button" value="保存并关闭" />
+          </li>
+        </ul>
+      </div>
+      <div style="padding:0 10px 0 10px;">
+        <label style="font-weight:normal;">请输入或编辑采购项的备注</label><br />
+        <label style="margin-top:6px;">备注</label><br />
+        <textarea style="width:260px;height:100px;" id="itemMemo"></textarea><br />
+        <label style="margin-top:6px;">预计到达日期</label><br />
+        <input type="text" class="Wdate" onclick="WdatePicker()" id="itemArrDate" />
+      </div>
     </div>
   </form>
   <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
@@ -478,6 +494,26 @@
       })
       $("#autoFillOrder1").attr("disabled", true);
       $("#autoFillOrder2").attr("disabled", true);
+    })
+    var itemId = 0;
+    function editMemo(id) {
+      itemId = id;
+      requestData("/Tools/PurchaseOrderAjax.ashx?act=getItemMemo&id=" + id, null, function (data) {
+        $("#itemMemo").val(data[0]);
+        $("#itemArrDate").val(data[1]);
+        $("#background").show();
+        $("#memo").show();
+      })
+    }
+    $("#SaveMemo").click(function () {
+      $("#background").hide();
+      $("#memo").hide();
+      requestData("/Tools/PurchaseOrderAjax.ashx?act=setItemMemo&id=" + itemId + "&memo=" + $("#itemMemo").val() + "&date=" + $("#itemArrDate").val(), null, function (data) {
+      })
+    })
+    $("#CancleMemo").click(function () {
+      $("#background").hide();
+      $("#memo").hide();
     })
 </script>
 </body>

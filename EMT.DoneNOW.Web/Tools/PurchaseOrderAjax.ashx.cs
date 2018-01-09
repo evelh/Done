@@ -52,6 +52,12 @@ namespace EMT.DoneNOW.Web
                 case "getItemSnCnt":
                     GetPurchaseItemSnCnt(context);
                     break;
+                case "getItemMemo":
+                    GetPurchaseItemMemo(context);
+                    break;
+                case "setItemMemo":
+                    SetPurchaseItemMemo(context);
+                    break;
                 default:
                     break;
 
@@ -253,6 +259,59 @@ namespace EMT.DoneNOW.Web
                 snsCnt.Add(new long[] { id, cnt });
             }
             context.Response.Write(new Tools.Serialize().SerializeJson(snsCnt));
+        }
+
+        /// <summary>
+        /// 获取采购项的备注和预期到达时间
+        /// </summary>
+        /// <param name="context"></param>
+        private void GetPurchaseItemMemo(HttpContext context)
+        {
+            var items = context.Session["PurchaseOrderItem"] as PurchaseOrderItemManageDto;
+            long id = long.Parse(context.Request.QueryString["id"]);
+            var item = items.items.Find(_ => _.id == id);
+            if (item != null)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(new string[] { item.note, item.arrivalDate }));
+            }
+            else
+            {
+                var pdt = new InventoryOrderBLL().GetOrderProduct(id);
+                context.Response.Write(new Tools.Serialize().SerializeJson(new string[] { pdt.note, pdt.estimated_arrival_date == null ? "" : ((DateTime)pdt.estimated_arrival_date).ToString("yyyy-MM-dd") }));
+            }
+        }
+
+        /// <summary>
+        /// 设置采购项备注
+        /// </summary>
+        /// <param name="context"></param>
+        private void SetPurchaseItemMemo(HttpContext context)
+        {
+            var items = context.Session["PurchaseOrderItem"] as PurchaseOrderItemManageDto;
+            long id = long.Parse(context.Request.QueryString["id"]);
+            string memo = context.Request.QueryString["memo"];
+            string date = context.Request.QueryString["date"];
+            var item = items.items.Find(_ => _.id == id);
+            if (item != null)
+            {
+                item.note = memo;
+                item.arrivalDate = date;
+                //foreach (var itm in items.items)
+                //{
+                //    if (itm.id == id)
+                //    {
+                //        itm.note = memo;
+                //        itm.arrivalDate = date;
+                //    }
+                //}
+                context.Session["PurchaseOrderItem"] = items;
+                context.Response.Write(new Tools.Serialize().SerializeJson(true));
+            }
+            else
+            {
+                var pdt = new InventoryOrderBLL().GetOrderProduct(id);
+                context.Response.Write(new Tools.Serialize().SerializeJson(true));
+            }
         }
     }
 }
