@@ -3062,10 +3062,11 @@
         var oldTime = $("#olfEsTime").val();
         var thisStatus = $("#status_id").val();
         var shengyuTime = $("#shengyuTime").val();
+        
         <%if (thisTask != null && thisTask.projected_variance != 0)
     { %>
         if (status_id != '<%=EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>' && estimated_hours != oldTime && shengyuTime != "" && Number(shengyuTime) > 0) {
-            LayerConfirm("您正在修改预估时间，任务剩余时间为" + shengyuTime + "小时，将其保留，还是置为0", "保留", "置为0", function () { isShowAlert = "1"; if (SubmitCheck()) { return true; } else { return false; } }, function () { isShowAlert = "1"; $("#IsEditEsTime").val("0"); if (SubmitCheck()) { return true; } else { return false; } });
+            LayerConfirm("您正在修改预估时间，任务剩余时间为" + shengyuTime + "小时，将其保留，还是置为0", "保留", "置为0", function () { isShowAlert = "1"; $("#IsEditEsTime").val("1");if (SubmitCheck()) { return true; } else { return false; } }, function () { isShowAlert = "1"; $("#IsEditEsTime").val("0"); if (SubmitCheck()) { return true; } else { return false; } });
             if (isShowAlert != "1") {
                 return false;
             }

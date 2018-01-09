@@ -1290,8 +1290,8 @@ namespace EMT.DoneNOW.BLL
                     {
                         var ccnr = new ctt_contract_notify_rule_dal().FindSignleBySql<ctt_contract_notify_rule>($"select * from ctt_contract_notify_rule where contract_id={ccc.contract_id} and delete_time=0");
                         //费率为空的判断
-                        if (!(ccnr != null && ccnr.rate != null && ccnr.rate > 0))
-                        {
+                        //if ((ccnr != null && ccnr.rate != null && ccnr.rate > 0))
+                        //{
                             //强制生成
                             var block_hours = ccb_dal.ExecuteDataTable($"SELECT b.id,round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1 ORDER BY b.start_date");
                             foreach (DataRow i in block_hours.Rows)
@@ -1380,7 +1380,7 @@ namespace EMT.DoneNOW.BLL
                                 };          // 创建日志
                                 new sys_oper_log_dal().Insert(add3_log);       // 插入日志
                             }
-                        }
+                        //}
                     }
                 }
             }

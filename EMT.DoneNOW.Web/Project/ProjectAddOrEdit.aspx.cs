@@ -445,6 +445,10 @@ namespace EMT.DoneNOW.Web.Project
         protected void save_Click(object sender, EventArgs e)
         {
             var result = Save();
+            if (string.IsNullOrEmpty(callBaclFunction))
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "刷新主页面", "<script>debugger;self.opener.location.reload();</script>");
+            }
             if (result)
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存项目成功！');window.close();</script>");
@@ -454,10 +458,7 @@ namespace EMT.DoneNOW.Web.Project
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存项目失败！');window.close();</script>");
             }
-            if (string.IsNullOrEmpty(callBaclFunction))
-            {
-                ClientScript.RegisterStartupScript(this.GetType(), "刷新主页面", "<script>self.opener.location.reload();</script>");
-            }
+            
         }
     }
 }

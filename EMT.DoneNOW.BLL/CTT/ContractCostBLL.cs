@@ -174,12 +174,12 @@ namespace EMT.DoneNOW.BLL
                         OperLogBLL.OperLogUpdate<ctt_contract_cost>(thisCost, oldThisCost, thisCost.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_COST, "修改成本信息");
                     }
                 }
-
                 #endregion
             }
-
-
-
+            else
+            {
+                ChangCostStatus(param.cost.id, user_id);
+            }
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>

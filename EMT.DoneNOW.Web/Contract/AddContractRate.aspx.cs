@@ -75,7 +75,7 @@ namespace EMT.DoneNOW.Web.Contract
             // CreateOrUpdateRate
             var param = GetParam();
             new ContractRateBLL().CreateOrUpdateRate(param,GetLoginUserId());
-            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');</script>");
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');self.opener.location.reload();</script>");
             ClientScript.RegisterStartupScript(this.GetType(), "关闭窗口", "<script>window.close(); </script>");
         }
 
@@ -83,7 +83,7 @@ namespace EMT.DoneNOW.Web.Contract
         {
             var param = GetParam();
             new ContractRateBLL().CreateOrUpdateRate(param, GetLoginUserId());
-            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');</script>");
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');self.opener.location.reload();</script>");
             Response.Redirect("AddContractRate?contract_id="+contract.id);
         }
 

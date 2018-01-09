@@ -519,6 +519,7 @@ namespace EMT.DoneNOW.Web.Project
                     if (thisTask.estimated_duration != pageTask.estimated_duration)
                     {
                         thisTask.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(new TaskBLL().RetrunMaxTime(thisProject.id, DateTime.Parse(startString), (int)pageTask.estimated_duration));
+                        thisTask.estimated_duration = pageTask.estimated_duration;
                     }
                     else
                     {
@@ -555,12 +556,19 @@ namespace EMT.DoneNOW.Web.Project
                     var thisVt = new v_task_all_dal().FindById(thisTask.id);
                     if (!string.IsNullOrEmpty(IsEditEsTime))
                     {
-                        thisTask.projected_variance = (thisVt.worked_hours == null ? 0 : (decimal)thisVt.worked_hours) - (thisTask.estimated_hours+(thisVt.change_Order_Hours==null?0:(decimal)thisVt.change_Order_Hours))+(thisVt.remain_hours==null?0:(decimal)thisVt.remain_hours);
+                        if (IsEditEsTime == "1")
+                        {
+                            thisTask.projected_variance = (thisVt.worked_hours == null ? 0 : (decimal)thisVt.worked_hours) - (thisTask.estimated_hours + (thisVt.change_Order_Hours == null ? 0 : (decimal)thisVt.change_Order_Hours)) + (thisVt.remain_hours == null ? 0 : (decimal)thisVt.remain_hours);
+                        }else if (IsEditEsTime == "0")
+                        {
+
+                            thisTask.projected_variance = (thisVt.worked_hours == null ? 0 : (decimal)thisVt.worked_hours) - (thisTask.estimated_hours + (thisVt.change_Order_Hours == null ? 0 : (decimal)thisVt.change_Order_Hours));
+                        }
+                        
 
                     }
                     else
                     {
-                        thisTask.projected_variance = (thisVt.worked_hours == null ? 0 : (decimal)thisVt.worked_hours) - (thisTask.estimated_hours + (thisVt.change_Order_Hours == null ? 0 : (decimal)thisVt.change_Order_Hours));
                     }
 
                 }

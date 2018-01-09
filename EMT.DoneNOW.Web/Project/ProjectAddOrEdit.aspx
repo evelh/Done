@@ -446,7 +446,7 @@
                                                     <td class="FieldLabel" width="50%">总时间<span style="color: red;">*</span>
                                                         <div>
                                                             <span style="display: inline-block;">
-                                                                <input type="text" style="width: 250px;" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" id="resource_daily_hours" name="resource_daily_hours" value="<%=isAdd?"":((decimal)thisProject.resource_daily_hours).ToString("#0.00") %>" />
+                                                                <input type="text" style="width: 250px;" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" id="resource_daily_hours" name="resource_daily_hours" value="<%=isAdd?"8.00":((decimal)thisProject.resource_daily_hours).ToString("#0.00") %>" />
                                                             </span>
                                                         </div>
                                                     </td>
