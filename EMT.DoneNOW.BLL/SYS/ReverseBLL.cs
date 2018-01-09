@@ -78,18 +78,16 @@ namespace EMT.DoneNOW.BLL
                                         cadDal.SoftDelete(_, user_id);
                                         OperLogBLL.OperLogDelete<crm_account_deduction>(_, _.id, user_id, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "删除审批并提交条目");
                                     });
-                                    var swe = sweDal.FindNoDeleteById((long)cad.object_id);
-                                    if (swe != null)
+                                    var oldccc = ccc = ccc_dal.FindNoDeleteById((long)cad.object_id);
+                                    if (ccc != null)
                                     {
-                                        var oldSwe = sweDal.FindNoDeleteById((long)cad.object_id);
-                                        swe.approve_and_post_date = null;
-                                        swe.approve_and_post_user_id = null;
-                                        swe.hours_billed_deduction = null;
-                                        swe.hours_rate_deduction = null;
-                                        swe.update_time = timeNow;
-                                        swe.update_user_id = user_id;
-                                        sweDal.Update(swe);
-                                        OperLogBLL.OperLogUpdate<sdk_work_entry>(swe, oldSwe, swe.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "修改工时");
+                                        // var oldSwe = sweDal.FindNoDeleteById((long)cad.object_id);
+                                        ccc.update_time = timeNow;
+                                        ccc.update_user_id = user.id;
+                                        ccc.bill_status = 0;
+                                        ccc.extended_price = ccc.unit_price * ccc.quantity;
+                                        ccc_dal.Update(ccc);
+                                        OperLogBLL.OperLogUpdate<ctt_contract_cost>(ccc, oldccc, ccc.id, user_id, OPER_LOG_OBJ_CATE.CONTRACT_COST, "修改合同成本");
                                     }
                                 }
 
