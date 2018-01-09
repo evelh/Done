@@ -1359,6 +1359,19 @@
         $("#product_id").prop("disabled", true);
         <%}%>
 
+        <%if ((!isAdd) && (conCost.status_id == (int)EMT.DoneNOW.DTO.DicEnum.COST_STATUS.CANCELED))
+    { %>
+        $("#quantity").prop("disabled", true); 
+        $("#unit_cost").prop("disabled", true);   //quantity
+        $("#unit_price").prop("disabled", true);
+        $("#extendedCost").prop("disabled", true);
+        $("#billableAmount").prop("disabled", true);
+        //$("#unit_cost").val("0.0000");
+        //$("#unit_price").val("0.0000");
+        GetSumCost();
+        GetSumAmount();
+        <%}%>
+
         <%if (!isAdd)
     { %>
         var costCodeId = <%=conCost.cost_code_id %>;  // 根据数据类型禁用页面上的部分控件
@@ -1448,6 +1461,7 @@
         var thisValue = $(this).val();
 
         if (thisValue == '<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_STATUS.CANCELED %>') {
+            $("#quantity").prop("disabled", true); 
             $("#unit_cost").prop("disabled", true);   //billableAmount
             $("#unit_price").prop("disabled", true);  
             $("#extendedCost").prop("disabled", true);  

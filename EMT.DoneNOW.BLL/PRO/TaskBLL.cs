@@ -700,14 +700,16 @@ namespace EMT.DoneNOW.BLL
 
 
             #region 修改结束时间后，相关后续任务的时间需要调整
-            var thisHoujiTaskList = new sdk_task_predecessor_dal().GetTaskByPreId(thisTask.id);
-            if(thisHoujiTaskList!=null&& thisHoujiTaskList.Count > 0)
+            if (thisTask.start_no_earlier_than_date == null)
             {
-                thisHoujiTaskList.ForEach(_ => {
-                    UpdateTaskDate(_.id,user_id);
-                });
+                var thisHoujiTaskList = new sdk_task_predecessor_dal().GetTaskByPreId(thisTask.id);
+                if (thisHoujiTaskList != null && thisHoujiTaskList.Count > 0)
+                {
+                    thisHoujiTaskList.ForEach(_ => {
+                        UpdateTaskDate(_.id, user_id);
+                    });
+                }
             }
-
             #endregion
 
 
@@ -1183,7 +1185,7 @@ namespace EMT.DoneNOW.BLL
                         var preTask = _dal.FindNoDeleteById(_.predecessor_task_id);
                         if (preTask != null && preTask.estimated_end_time != null)
                         {
-                            var thisPreDate = RetrunMaxTime((long)thisTask.project_id,Tools.Date.DateHelper.ConvertStringToDateTime((long)preTask.estimated_end_time),_.dependant_lag+1);
+                            var thisPreDate = RetrunMaxTime((long)thisTask.project_id,Tools.Date.DateHelper.ConvertStringToDateTime((long)preTask.estimated_end_time),_.dependant_lag+2);
                             thisDate = Tools.Date.DateHelper.ToUniversalTimeStamp(thisPreDate);
                         }
                         return thisDate;

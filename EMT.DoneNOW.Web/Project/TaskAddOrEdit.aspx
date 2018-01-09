@@ -1980,7 +1980,7 @@
                     </div>
                     <div class="ScrollingContentContainer">
                         <div class="ScrollingContainer" id="za40a15b2846a4b8a8cab26c764754801" style="position: unset;">
-                            <form action="/Mvc/Projects/Task.mvc/CompletionReasonDialog" id="CompletionReasonForm" method="post">
+                           
                                 <div class="Medium NoHeading Section">
                                     <div class="Content">
                                         <div class="Normal Column">
@@ -1997,7 +1997,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                          
                         </div>
                     </div>
                 </div>
@@ -2025,7 +2025,7 @@
             </ul>
         </div>
 
-        <input type="hidden" id="IsEditEsTime" name="IsEditEsTime" value="" /><!--ti   -->
+        <input type="hidden" id="IsEditEsTime" name="IsEditEsTime" value="" runat="server" /><!--ti   -->
         <% EMT.DoneNOW.Core.v_task_all thisVTask = null;
             if (!isAdd)
             {
@@ -3018,9 +3018,38 @@
             $("Bcc_Email").html(thisEmailText);
         }
     }
+    var isShowAlert = "";  // 修改预估时间
+
+    $("#estimated_hours").blur(function () {
+        <%if (!isAdd && type_id != (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_PHASE)
+    { %>
+        var estimated_hours = $("#estimated_hours").val();
+        var oldTime = $("#olfEsTime").val();
+        var thisStatus = $("#status_id").val();
+        var shengyuTime = $("#shengyuTime").val();
+
+        <%if (thisTask != null && thisTask.projected_variance != 0)
+    { %>
+        var status_id = $("#status_id").val();
+        if (status_id != '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>' && estimated_hours != oldTime && shengyuTime != "" && Number(shengyuTime) > 0 && isShowAlert == "") {
+            LayerConfirm("您正在修改预估时间，任务剩余时间为" + shengyuTime + "小时，将其保留，还是置为0", "保留", "置为0", function () {
+                debugger; isShowAlert = "1"; $("#IsEditEsTime").val("1");
+                //if (SubmitCheck()) { return true; } else { return false; }
+            }, function () {
+                isShowAlert = "1"; $("#IsEditEsTime").val("0");
+                //if (SubmitCheck()) { return true; } else { return false; }
+            });
+            if (isShowAlert != "1") {
+                //return false;
+            }
+        }
+
+        <%}%>
+        <%}%>
+    })
     var isStar = "";
     var isEnd = "";
-    var isShowAlert = "";  // 修改预估时间
+   
     function SubmitCheck() {
         debugger;
         var title = $("#title").val();
@@ -3065,12 +3094,13 @@
         
         <%if (thisTask != null && thisTask.projected_variance != 0)
     { %>
-        if (status_id != '<%=EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>' && estimated_hours != oldTime && shengyuTime != "" && Number(shengyuTime) > 0) {
-            LayerConfirm("您正在修改预估时间，任务剩余时间为" + shengyuTime + "小时，将其保留，还是置为0", "保留", "置为0", function () { isShowAlert = "1"; $("#IsEditEsTime").val("1");if (SubmitCheck()) { return true; } else { return false; } }, function () { isShowAlert = "1"; $("#IsEditEsTime").val("0"); if (SubmitCheck()) { return true; } else { return false; } });
+       <%-- var status_id = $("#status_id").val();
+        if (status_id != '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>' && estimated_hours != oldTime && shengyuTime != "" && Number(shengyuTime) > 0 && isShowAlert == "") {
+            LayerConfirm("您正在修改预估时间，任务剩余时间为" + shengyuTime + "小时，将其保留，还是置为0", "保留", "置为0", function () { debugger; isShowAlert = "1"; $("#IsEditEsTime").val("1"); if (SubmitCheck()) { return true; } else { return false; } }, function () { isShowAlert = "1"; $("#IsEditEsTime").val("0"); if (SubmitCheck()) { return true; } else { return false; } });
             if (isShowAlert != "1") {
                 return false;
             }
-        }
+        }--%>
 
         <%}%>
         <%}%>

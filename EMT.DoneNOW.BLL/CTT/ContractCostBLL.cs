@@ -25,7 +25,7 @@ namespace EMT.DoneNOW.BLL
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
                 return ERROR_CODE.USER_NOT_FIND;
-            if (param.cost.cost_code_id == 0 || param.cost.status_id == 0 || param.cost.quantity == null || param.cost.quantity == 0 || param.cost.unit_cost == null || param.cost.unit_cost == 0 || param.cost.unit_price == null || param.cost.unit_price == 0 || string.IsNullOrEmpty(param.cost.name))
+            if (param.cost.cost_code_id == 0 || param.cost.status_id == 0 || param.cost.quantity == null || param.cost.quantity == 0 || param.cost.unit_cost == null ||  param.cost.unit_price == null ||  string.IsNullOrEmpty(param.cost.name))
             {
                 return ERROR_CODE.PARAMS_ERROR;
             }
@@ -77,7 +77,7 @@ namespace EMT.DoneNOW.BLL
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
                 return ERROR_CODE.USER_NOT_FIND;
-            if (param.cost.cost_code_id == 0 || param.cost.status_id == 0 || param.cost.quantity == null || param.cost.quantity == 0 || param.cost.unit_cost == null || param.cost.unit_cost == 0 || param.cost.unit_price == null || param.cost.unit_price == 0 || string.IsNullOrEmpty(param.cost.name))
+            if (param.cost.cost_code_id == 0 || param.cost.status_id == 0 || param.cost.quantity == null || param.cost.quantity == 0 || param.cost.unit_cost == null  || param.cost.unit_price == null ||  string.IsNullOrEmpty(param.cost.name))
             {
                 return ERROR_CODE.PARAMS_ERROR;
             }

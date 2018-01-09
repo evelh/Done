@@ -552,7 +552,7 @@ namespace EMT.DoneNOW.Web.Project
                     thisTask.cost_code_id = pageTask.cost_code_id;
                     thisTask.owner_resource_id = pageTask.owner_resource_id;
                     thisTask.template_id = pageTask.template_id;
-                    var IsEditEsTime = Request.Form["IsEditEsTime"];
+                    var IsEditEsTime = this.IsEditEsTime.Value; //Request.Form["IsEditEsTime"];
                     var thisVt = new v_task_all_dal().FindById(thisTask.id);
                     if (!string.IsNullOrEmpty(IsEditEsTime))
                     {
