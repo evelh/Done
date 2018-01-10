@@ -2848,7 +2848,7 @@ namespace EMT.DoneNOW.BLL
                     var thisRate = cad_dal.GetSingle($"select f_get_labor_rate({cc.id},{thisEntry.cost_code_id.ToString()},{thisEntry.role_id.ToString()})");
                     if (cc.type_id == (int)CONTRACT_TYPE.RETAINER)
                     {
-                        string endDate = thisEntry.start_time == null ? Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEntry.start_time).ToString("yyyy-MM-dd") : Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEntry.end_time).ToString("yyyy-MM-dd");
+                        string endDate =  Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEntry.start_time).ToString("yyyy-MM-dd");
                         //统计预付表中的预付剩余
                         var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={cc.id} and b.status_id=1 and b.start_date <='{Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEntry.start_time).ToString("yyyy-MM-dd")}' and b.end_date >='{endDate}'");
                         decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
@@ -2879,7 +2879,7 @@ namespace EMT.DoneNOW.BLL
                     }
                     else if (cc.type_id == (int)CONTRACT_TYPE.BLOCK_HOURS)
                     {
-                        string endDate = thisEntry.start_time == null ? Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEntry.start_time).ToString("yyyy-MM-dd") : Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEntry.end_time).ToString("yyyy-MM-dd");
+                        string endDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEntry.start_time).ToString("yyyy-MM-dd") ;
                         var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={cc.id} and b.status_id=1 and b.start_date <='{Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEntry.start_time).ToString("yyyy-MM-dd")}' and b.end_date >='{endDate}'");
                         decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
                         if (thisEntry.hours_billed == null || (thisEntry.hours_billed * (thisRate == null ? 0 : (decimal)thisRate)) < extended_price)
@@ -3020,6 +3020,10 @@ namespace EMT.DoneNOW.BLL
                             }
                         }
                     }
+                    if (thisObject != null)
+                    {
+                        block_hour_multiplier = (decimal)thisObject;
+                    }
                     #endregion
                     decimal? rate = new ContractRateBLL().GetRateByCodeAndRole((long)oldEntry.cost_code_id, (long)oldEntry.role_id);
                     Dictionary<int, decimal> block = new Dictionary<int, decimal>();//存储预付id，和总价
@@ -3027,7 +3031,7 @@ namespace EMT.DoneNOW.BLL
                     var thisEntryEndDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)(oldEntry.end_time ?? oldEntry.start_time));
                     if (thisContract != null&&thisContract.start_date<= thisEntryDate&& thisContract.end_date>= thisEntryEndDate)
                     {
-                        string endDate = oldEntry.start_time == null ? Tools.Date.DateHelper.ConvertStringToDateTime((long)oldEntry.start_time).ToString("yyyy-MM-dd") : Tools.Date.DateHelper.ConvertStringToDateTime((long)oldEntry.end_time).ToString("yyyy-MM-dd");
+                        string endDate =  Tools.Date.DateHelper.ConvertStringToDateTime((long)oldEntry.start_time).ToString("yyyy-MM-dd");
                         if (thisContract.type_id == (int)CONTRACT_TYPE.RETAINER)
                         {
                            
@@ -3035,7 +3039,7 @@ namespace EMT.DoneNOW.BLL
                             decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
 
                             var thisEntryRate = new ContractRateBLL().GetRateByCodeAndRole((long)oldEntry.cost_code_id, (long)oldEntry.role_id);
-                            var totalMoney = oldEntry.hours_billed * thisEntryRate;  // 这个工时的总额
+                            var totalMoney = oldEntry.hours_billed * (block_hour_multiplier ?? 1);  // 这个工时的总额
                             var block_hours = sweDal.ExecuteDataTable($"SELECT b.id,round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={thisContract.id} and b.status_id=1 and b.start_date <='{Tools.Date.DateHelper.ConvertStringToDateTime((long)oldEntry.start_time).ToString("yyyy-MM-dd")}' and b.end_date >='{endDate}' ORDER BY b.start_date");
                             foreach (DataRow i in block_hours.Rows)
                             {
@@ -3399,7 +3403,7 @@ namespace EMT.DoneNOW.BLL
                             var re = sweDal.ExecuteDataTable($"SELECT sum(round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={thisContract.id} and b.status_id=1 and b.start_date <='{Tools.Date.DateHelper.ConvertStringToDateTime((long)oldEntry.start_time).ToString("yyyy-MM-dd")}' and b.end_date >='{endDate}'");
                             decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
                             var thisEntryRate = new ContractRateBLL().GetRateByCodeAndRole((long)oldEntry.cost_code_id, (long)oldEntry.role_id);
-                            var totalMoney = oldEntry.hours_billed * thisEntryRate*(block_hour_multiplier ?? 1);  // 这个工时的总额
+                            var totalMoney = oldEntry.hours_billed *(block_hour_multiplier ?? 1);  // 这个工时的总额
                             var block_hours = sweDal.ExecuteDataTable($"SELECT b.id,round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={thisContract.id} and b.status_id=1 and b.start_date <='{Tools.Date.DateHelper.ConvertStringToDateTime((long)oldEntry.start_time).ToString("yyyy-MM-dd")}' and b.end_date >='{endDate}' ORDER BY b.start_date");
                             foreach (DataRow i in block_hours.Rows)
                             {
