@@ -1461,7 +1461,7 @@ namespace EMT.DoneNOW.BLL
                     message.CC.Add(ccEmail);
                 }
 
-                message.To.Add("zhufei_dsjt@shdsjt.cn");
+                // message.To.Add("zhufei_dsjt@shdsjt.cn");
 
                 // 密送地址
                 var bccEmailList = email.bcc_email.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
@@ -1479,12 +1479,12 @@ namespace EMT.DoneNOW.BLL
 
                 SmtpClient client = new SmtpClient();
                 #region 需要授权码或者密码进行发送邮件(测试通过--)
-                //client.Host = "smtp.163.com";
-                ////设置发送人的邮箱账号和密码 --是否使用授权码登陆发送
-                //client.UseDefaultCredentials = true;
-                //client.Credentials = new NetworkCredential("15738813663@163.com", "tt123456");
-                ////启用ssl,也就是安全发送
-                //client.EnableSsl = true;
+                client.Host = "smtp.163.com";
+                //设置发送人的邮箱账号和密码 --是否使用授权码登陆发送
+                client.UseDefaultCredentials = true;
+                client.Credentials = new NetworkCredential("DoneNow@126.com", "DoneNow123456"); // 密码：donenow123456
+                //启用ssl,也就是安全发送
+                client.EnableSsl = true;
                 #endregion
 
                 client.Host = "localhost";

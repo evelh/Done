@@ -604,8 +604,15 @@
                                                                     { %><img src="../Images/time.png" />
                                                                 <%} %>
                                                             </td>
-                                                            <td>
-                                                                <%=thisTvbValue.time.ToString("yyyy-MM-dd HH:mm:ss") %>
+                                                            <td><%if (thisTvbValue.type == "entry")
+                                                                    { %>
+                                                                 <%=thisTvbValue.time.ToString("yyyy-MM-dd") %>
+                                                                <%}
+                                                                 else
+                                                                 { %>
+                                                                 <%=thisTvbValue.time.ToString("yyyy-MM-dd HH:mm:ss") %>
+                                                                <%} %>
+                                                               
                                                             </td>
                                                             <td>
                                                                 <%=thisTvbValue.resouName %>
@@ -1181,10 +1188,10 @@
                 type: "GET",
                 url: "../Tools/ProjectAjax.ashx?act=DeleteEntry&entry_id=" + entityid,
                 async: false,
-                dataType: json,
+                dataType: 'json',
                 success: function (data) {
                     if (data != "") {
-                        if (data.result == "True") {
+                        if (data.result) {
                             LayerMsg("删除成功");
                         } else {
                             LayerMsg("删除失败。" + data.reason);

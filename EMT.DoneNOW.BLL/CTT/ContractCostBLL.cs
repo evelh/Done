@@ -71,9 +71,10 @@ namespace EMT.DoneNOW.BLL
         /// <param name="param"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public ERROR_CODE UpdateCost(AddChargeDto param, long user_id, out bool isDelShipCost)
+        public ERROR_CODE UpdateCost(AddChargeDto param, long user_id, out bool isDelShipCost,out string isHasPurchaseOrder)
         {
             isDelShipCost = false;
+            isHasPurchaseOrder = "";
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
                 return ERROR_CODE.USER_NOT_FIND;
@@ -149,12 +150,17 @@ namespace EMT.DoneNOW.BLL
                     #endregion
 
                     #region 删除相关成本产品信息
-                    costProList.ForEach(_ =>
+                    foreach (var _ in costProList)
                     {
                         DeletCostProSn(_.id, user_id);
+                        if (_.order_id != null)
+                        {
+                            isHasPurchaseOrder += _.order_id;
+                        }
                         cccpDal.SoftDelete(_, user_id);
                         OperLogBLL.OperLogDelete<ctt_contract_cost_product>(_, _.id, user_id, OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "删除成本关联产品");
-                    });
+                    }
+                   
                     #endregion
                 }
                 #region 查看成本状态 以及价格信息等
@@ -178,7 +184,15 @@ namespace EMT.DoneNOW.BLL
             }
             else
             {
-                ChangCostStatus(param.cost.id, user_id);
+                var oldQuantity = oldCost.quantity;
+                var newQuantity = param.cost.quantity;
+                bool isAdd = false;
+                if (newQuantity > oldQuantity)
+                {
+                    isAdd = true;
+                }
+
+                ChangCostStatus(param.cost.id, user_id, isAdd);
             }
             return ERROR_CODE.SUCCESS;
         }

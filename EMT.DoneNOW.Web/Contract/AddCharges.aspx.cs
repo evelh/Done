@@ -196,11 +196,13 @@ namespace EMT.DoneNOW.Web.Contract
                 }
                 //thisConCost.change_order_hours = thisConCost.change_order_hours;
                 thisConCost.sub_cate_id = (int)DicEnum.BILLING_ENTITY_SUB_TYPE.TICKET_COST;
+                thisConCost.contract_id = null;
             }
             if (thisProject != null)
             {
                 thisConCost.project_id = thisProject.id;
                 thisConCost.sub_cate_id = (int)DicEnum.BILLING_ENTITY_SUB_TYPE.PROJECT_COST;
+                thisConCost.contract_id = null;
             }
             param.cost = thisConCost;
             return param;
@@ -211,6 +213,7 @@ namespace EMT.DoneNOW.Web.Contract
             var param = GetParam();
 
             bool isDelShipCost = false;  // 是否删除 配送的运费成本  为true 时，代表需要删除的成本已经审批提交，此时提示用户
+            var  isHasPurchaseOrder = "";  // 是否有采购单需要更改
 
             ERROR_CODE result = ERROR_CODE.SUCCESS;
             if (isAdd)
@@ -219,7 +222,7 @@ namespace EMT.DoneNOW.Web.Contract
             }
             else
             {
-                result = new ContractCostBLL().UpdateCost(param, GetLoginUserId(),out isDelShipCost);
+                result = new ContractCostBLL().UpdateCost(param, GetLoginUserId(),out isDelShipCost,out isHasPurchaseOrder);
             }
 
             switch (result)
@@ -246,6 +249,11 @@ namespace EMT.DoneNOW.Web.Contract
                             // 运费成本已审批并提交，无法删除。
                             ClientScript.RegisterStartupScript(this.GetType(), "运费成本信息提示", "<script>alert('运费成本已审批并提交，无法删除！');</script>");
                         }
+                        if (!string.IsNullOrEmpty(isHasPurchaseOrder))
+                        {
+                            isHasPurchaseOrder = isHasPurchaseOrder.Substring(0, isHasPurchaseOrder.Length-1);
+                            ClientScript.RegisterStartupScript(this.GetType(), "采购单信息提示", "<script>alert('成本有对应的采购订单："+ isHasPurchaseOrder + "，请手工处理。！');</script>");
+                        }
                         ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');window.close();window.open('"+url+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);self.opener.location.reload();</script>");
                     }
                     else
@@ -270,6 +278,7 @@ namespace EMT.DoneNOW.Web.Contract
         {
             var param = GetParam();
             bool isDelShipCost = false;  // 是否删除 配送的运费成本  为true 时，代表需要删除的成本已经审批提交，此时提示用户
+            var isHasPurchaseOrder = "";  // 是否有采购单需要更改
             ERROR_CODE result = ERROR_CODE.SUCCESS;
             if (isAdd)
             {
@@ -277,7 +286,7 @@ namespace EMT.DoneNOW.Web.Contract
             }
             else
             {
-                result = new ContractCostBLL().UpdateCost(param, GetLoginUserId(),out isDelShipCost);
+                result = new ContractCostBLL().UpdateCost(param, GetLoginUserId(),out isDelShipCost,out isHasPurchaseOrder);
             }
 
             switch (result)
@@ -304,6 +313,11 @@ namespace EMT.DoneNOW.Web.Contract
                             // 运费成本已审批并提交，无法删除。
                             ClientScript.RegisterStartupScript(this.GetType(), "运费成本信息提示", "<script>alert('运费成本已审批并提交，无法删除！');</script>");
                         }
+                        if (!string.IsNullOrEmpty(isHasPurchaseOrder))
+                        {
+                            isHasPurchaseOrder = isHasPurchaseOrder.Substring(0, isHasPurchaseOrder.Length - 1);
+                            ClientScript.RegisterStartupScript(this.GetType(), "采购单信息提示", "<script>alert('成本有对应的采购订单：" + isHasPurchaseOrder + "，请手工处理。！');</script>");
+                        }
                         ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');location.href='AddCharges.aspx?id=" + param.cost.id + "';window.open('"+url+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);self.opener.location.reload();</script>");
                     }
                     else
@@ -328,6 +342,7 @@ namespace EMT.DoneNOW.Web.Contract
         {
             var param = GetParam();
             bool isDelShipCost = false;  // 是否删除 配送的运费成本  为true 时，代表需要删除的成本已经审批提交，此时提示用户
+            var isHasPurchaseOrder = "";  // 是否有采购单需要更改
             ERROR_CODE result = ERROR_CODE.SUCCESS;
             if (isAdd)
             {
@@ -335,7 +350,7 @@ namespace EMT.DoneNOW.Web.Contract
             }
             else
             {
-                result = new ContractCostBLL().UpdateCost(param, GetLoginUserId(),out isDelShipCost);
+                result = new ContractCostBLL().UpdateCost(param, GetLoginUserId(),out isDelShipCost,out isHasPurchaseOrder);
             }
 
             switch (result)
@@ -362,6 +377,11 @@ namespace EMT.DoneNOW.Web.Contract
                         {
                             // 运费成本已审批并提交，无法删除。
                             ClientScript.RegisterStartupScript(this.GetType(), "运费成本信息提示", "<script>alert('运费成本已审批并提交，无法删除！');</script>");
+                        }
+                        if (!string.IsNullOrEmpty(isHasPurchaseOrder))
+                        {
+                            isHasPurchaseOrder = isHasPurchaseOrder.Substring(0, isHasPurchaseOrder.Length - 1);
+                            ClientScript.RegisterStartupScript(this.GetType(), "采购单信息提示", "<script>alert('成本有对应的采购订单：" + isHasPurchaseOrder + "，请手工处理。！');</script>");
                         }
                         ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');location.href='"+ thisURL + "';window.open('"+url+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);self.opener.location.reload();</script>");
                     }

@@ -67,3 +67,37 @@
   </form>
 </body>
 </html>
+<script src="../Scripts/jquery-3.1.0.min.js"></script>
+<script src="../Scripts/common.js"></script>
+<script>
+    $(function () {
+        GetDataByRole();
+    })
+
+    $("#role_id").change(function () {
+        GetDataByRole();
+    });
+
+    function GetDataByRole() {
+        var role_id = $("#role_id").val();
+        if (role_id != "") {
+            $.ajax({
+                type: "GET",
+                async: false,
+                dataType: "json",
+                url: "../Tools/RoleAjax.ashx?act=role&role_id=" + role_id,
+                success: function (data) {
+                    if (data != "") {
+                        // hourly_rate
+                        if (data.hourly_rate != undefined && data.hourly_rate != undefined != "") {
+                            $("#role_rate").val(toDecimal2(data.hourly_rate));
+                        }
+                        else {
+                            $("#role_rate").val("0.00");
+                        }
+                    }
+                },
+            });
+        }
+    }
+</script>

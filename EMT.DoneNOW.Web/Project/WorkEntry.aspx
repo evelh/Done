@@ -411,7 +411,7 @@
                                                                             <%
                                                                                 if (v_task != null)
                                                                                 {
-                                                                                    var esHours = v_task.remain_hours == null ? 0 : (decimal)v_task.remain_hours + v_task.worked_hours == null ? 0 : (decimal)v_task.worked_hours - v_task.change_Order_Hours == null ? 0 : (decimal)v_task.change_Order_Hours - v_task.estimated_hours == null ? 0 : (decimal)v_task.estimated_hours;
+                                                                                    var esHours = (v_task.remain_hours ??0) + (v_task.worked_hours ??0) - (v_task.change_Order_Hours ?? 0) - (v_task.estimated_hours ?? 0);
                                                                             %><%=esHours.ToString("#0.00") %>                                                                                                                                                                                                                                           <%} %>
                                                                         </div>
                                                                     </td>
@@ -760,6 +760,7 @@
 
         $("#project_id").val(<%=thisProjetc.id %>);
         GetTaskByProject();
+        ChooseContractByProject();
           <%if (thisTask != null)
     {%>
         var isHasTas = $("#task_id option[value='<%=thisTask.id %>']").val();
@@ -1729,7 +1730,13 @@
                         } else {
                             $("#bianTime").val("0");
                         }
-                        $("#yuguDiv").html("");
+                        var yugu = Number($("#remain_hours").val()) + Number($("#shijiTime").val()) + Number($("#yuguTime").val()) - Number($("#bianTime").val());
+                        if (yugu != "" && yugu != null && yugu != undefined) {
+                            $("#yuguDiv").html(toDecimal2(yugu));
+                        } else {
+                            $("#yuguDiv").html("");
+                        }
+                        
                     }
                     else {
                         $("#remain_hours").val("");

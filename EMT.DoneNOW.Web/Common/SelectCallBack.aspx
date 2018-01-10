@@ -50,7 +50,7 @@
                         { %>
 						<input type="text" name="con<%=condition[i].id %>" <%if (!string.IsNullOrEmpty(condition[i].defaultValue)){ %> value="<%=condition[i].defaultValue %>" <%} %> class="sl_cdt" />
                     <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DROPDOWN) { %>
-                        <select name="<%=condition[i].id %>" class="sl_cdt">
+                        <select name="con<%=condition[i].id %>" class="sl_cdt">
                                 <option value=""></option>
                                 <%foreach (var item in condition[i].values) {
                                       if (!string.IsNullOrEmpty(condition[i].defaultValue) && condition[i].defaultValue.Equals(item.val)) { %>
@@ -248,6 +248,7 @@
             </li>
 		</ul>
 	</div>
+        <script src="../Scripts/jquery-3.1.0.min.js"></script>
     <script type="text/javascript">
         var entityid;
         var entityname;
@@ -351,6 +352,8 @@
         }
         <%} %>
     </script>
+
+    <script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript">
         function ChangePageSize(num) {
             $("#page_size").val(num);

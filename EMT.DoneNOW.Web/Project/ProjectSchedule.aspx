@@ -2247,7 +2247,7 @@
         // 获取页面选中
         var parent_id = GetLastChoosePhaseTask();
 
-        window.open("TaskAddOrEdit.aspx?project_id=<%=thisProject.id %>&par_task_id=" + parent_id + "&type_id=" + type_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASKADD %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("TaskAddOrEdit.aspx?project_id=<%=thisProject.id %>&par_task_id=" + parent_id + "&type_id=" + type_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASKADD %>', 'left=200,top=200,width=1080,height=800', false);
     }
     // 全部展开
     function ExpandAll() {

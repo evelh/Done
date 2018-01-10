@@ -442,7 +442,7 @@ namespace EMT.DoneNOW.BLL
             if (ca.tax_region_id != null)
                 tax_region_name = gbll.GetGeneralName((int)ca.tax_region_id);
             if (dcc.tax_category_id != null && ca.tax_region_id != null)
-                tax_rate = new d_tax_region_cate_dal().FindSignleBySql<d_tax_region_cate>($"select * from d_tax_region_cate where tax_region_id='ca.tax_region_id' and tax_cate_id='dcc.tax_category_id' ").total_effective_tax_rate;
+                tax_rate = new d_tax_region_cate_dal().FindSignleBySql<d_tax_region_cate>($"select * from d_tax_region_cate where tax_region_id={ca.tax_region_id} and tax_cate_id={dcc.tax_category_id} ").total_effective_tax_rate;
             cad.object_id = id;//成本表id
             cad.type_id = (int)ACCOUNT_DEDUCTION_TYPE.CHARGE;
             cad.posted_date = DateTime.ParseExact(date.ToString(), "yyyyMMdd", null).Date;//转换时间格式
@@ -459,22 +459,33 @@ namespace EMT.DoneNOW.BLL
             if (ccc.task_id != null)
             {
                 ca = new crm_account_dal().FindSignleBySql<crm_account>($"select a.* from crm_account a,sdk_task b,ctt_contract_cost c where c.ticket_id=b.id and a.id=b.account_id and a.delete_time=0 and b.delete_time=0 and c.delete_time=0 and c.id={id}");//客户
+                var thisTask = new sdk_task_dal().FindNoDeleteById((long)ccc.task_id);
+                if (thisTask!=null&&thisTask.contract_id != null)
+                {
+                    cc = new ctt_contract_dal().FindNoDeleteById((long)thisTask.contract_id);
+                }
+                
             }//项目(待整理) pro_project
             else if (ccc.project_id != null)
             {
                 ca = new crm_account_dal().FindSignleBySql<crm_account>($"select a.* from crm_account a,pro_project b,ctt_contract_cost c where c.ticket_id=b.id and a.id=b.account_id and a.delete_time=0 and b.delete_time=0 and c.delete_time=0 and c.id={id}");//客户
+                var thisProject = new pro_project_dal().FindNoDeleteById((long)ccc.project_id);
+                if (thisProject != null && thisProject.contract_id != null)
+                {
+                    cc = new ctt_contract_dal().FindNoDeleteById((long)thisProject.contract_id);
+                }
             }
-            else
+            else if (ccc.contract_id != null)
             {
                 ca = new crm_account_dal().FindSignleBySql<crm_account>($"select a.* from crm_account a,ctt_contract_cost b,ctt_contract c where a.id=c.account_id and b.contract_id=c.id and a.delete_time=0 and b.delete_time=0 and c.delete_time=0 and b.id={id}");//客户
                 cc = new ctt_contract_dal().FindNoDeleteById((long)ccc.contract_id);
             }
             cad.account_id = ca.id;//客户id
             //关联预付费合同
-            if (cc != null && cc.type_id == (int)CONTRACT_TYPE.RETAINER)
+            if (cc != null&&cc.start_date<=ccc.date_purchased&&cc.end_date>=ccc.date_purchased && cc.type_id == (int)CONTRACT_TYPE.RETAINER)
             {
                 //统计预付表中的预付剩余
-                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id and and b.status_id=1 AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1");
+                var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id and b.status_id=1 AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1");
                 decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
                 //如果成本表总额为null,或是小于预付表总计的总价，则正常处理
                 if (ccc.extended_price == null || ccc.extended_price < extended_price)
@@ -677,7 +688,7 @@ namespace EMT.DoneNOW.BLL
                 }
             }
             //预付时间合同
-            else if (cc != null && cc.type_id == (int)CONTRACT_TYPE.BLOCK_HOURS)
+            else if (cc != null && cc.start_date <= ccc.date_purchased && cc.end_date >= ccc.date_purchased && cc.type_id == (int)CONTRACT_TYPE.BLOCK_HOURS)
             {
                 //统计预付表中的预付事件剩余
                 var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id and b.status_id=1 AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1");
@@ -887,7 +898,7 @@ namespace EMT.DoneNOW.BLL
 
             }
             //预付事件合同(暂时不处理)
-            else if (cc != null && cc.type_id == (int)CONTRACT_TYPE.PER_TICKET)
+            else if (cc != null && cc.start_date <= ccc.date_purchased && cc.end_date >= ccc.date_purchased && cc.type_id == (int)CONTRACT_TYPE.PER_TICKET)
             {
                 if (dcc.cate_id == (int)COST_CODE_CATE.RETAINER_PURCHASE)
                 {
@@ -1263,19 +1274,29 @@ namespace EMT.DoneNOW.BLL
             if (ccc.task_id != null)
             {
                 ca = new crm_account_dal().FindSignleBySql<crm_account>($"select a.* from crm_account a,sdk_task b,ctt_contract_cost c where c.ticket_id=b.id and a.id=b.account_id and a.delete_time=0 and b.delete_time=0 and c.delete_time=0 and c.id={id}");//客户
+                var thisTask = new sdk_task_dal().FindNoDeleteById((long)ccc.task_id);
+                if (thisTask != null && thisTask.contract_id != null)
+                {
+                    cc = new ctt_contract_dal().FindNoDeleteById((long)thisTask.contract_id);
+                }
             }//项目(待整理) pro_project
             else if (ccc.project_id != null)
             {
                 ca = new crm_account_dal().FindSignleBySql<crm_account>($"select a.* from crm_account a,pro_project b,ctt_contract_cost c where c.ticket_id=b.id and a.id=b.account_id and a.delete_time=0 and b.delete_time=0 and c.delete_time=0 and c.id={id}");//客户
+                var thisProject = new pro_project_dal().FindNoDeleteById((long)ccc.project_id);
+                if (thisProject != null && thisProject.contract_id != null)
+                {
+                    cc = new ctt_contract_dal().FindNoDeleteById((long)thisProject.contract_id);
+                }
             }
-            else
+            else if (ccc.contract_id != null)
             {
                 ca = new crm_account_dal().FindSignleBySql<crm_account>($"select a.* from crm_account a,ctt_contract_cost b,ctt_contract c where a.id=c.account_id and b.contract_id=c.id and a.delete_time=0 and b.delete_time=0 and c.delete_time=0 and b.id={id}");//客户
                 cc = new ctt_contract_dal().FindNoDeleteById((long)ccc.contract_id);
             }
             cad.account_id = ca.id;//客户id
             //关联预付费合同
-            if (cc != null && cc.type_id == (int)CONTRACT_TYPE.RETAINER)
+            if (cc != null && cc.start_date <= ccc.date_purchased && cc.end_date >= ccc.date_purchased && cc.type_id == (int)CONTRACT_TYPE.RETAINER)
             {
                 //统计预付表中的预付剩余
                 var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1 ");
@@ -1388,7 +1409,7 @@ namespace EMT.DoneNOW.BLL
                 }
             }
             //预付时间合同
-            else if (cc != null && cc.type_id == (int)CONTRACT_TYPE.BLOCK_HOURS)
+            else if (cc != null && cc.start_date <= ccc.date_purchased && cc.end_date >= ccc.date_purchased && cc.type_id == (int)CONTRACT_TYPE.BLOCK_HOURS)
             {
                 //统计预付表中的预付事件剩余
                 var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2)) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1 ");
@@ -1501,7 +1522,7 @@ namespace EMT.DoneNOW.BLL
                 }
             }
             //预付事件合同(暂时不处理)
-            else if (cc != null && cc.type_id == (int)CONTRACT_TYPE.PER_TICKET)
+            else if (cc != null && cc.start_date <= ccc.date_purchased && cc.end_date >= ccc.date_purchased && cc.type_id == (int)CONTRACT_TYPE.PER_TICKET)
             {
                 if (dcc.cate_id == (int)COST_CODE_CATE.RETAINER_PURCHASE)
                 {
@@ -1587,12 +1608,22 @@ namespace EMT.DoneNOW.BLL
             if (ccc.task_id != null)
             {
                 ca = new crm_account_dal().FindSignleBySql<crm_account>($"select a.* from crm_account a,sdk_task b,ctt_contract_cost c where c.ticket_id=b.id and a.id=b.account_id and a.delete_time=0 and b.delete_time=0 and c.delete_time=0 and c.id={id}");//客户
+                var thisTask = new sdk_task_dal().FindNoDeleteById((long)ccc.task_id);
+                if (thisTask != null && thisTask.contract_id != null)
+                {
+                    cc = new ctt_contract_dal().FindNoDeleteById((long)thisTask.contract_id);
+                }
             }//项目(待整理) pro_project
             else if (ccc.project_id != null)
             {
                 ca = new crm_account_dal().FindSignleBySql<crm_account>($"select a.* from crm_account a,pro_project b,ctt_contract_cost c where c.ticket_id=b.id and a.id=b.account_id and a.delete_time=0 and b.delete_time=0 and c.delete_time=0 and c.id={id}");//客户
+                var thisProject = new pro_project_dal().FindNoDeleteById((long)ccc.project_id);
+                if (thisProject != null && thisProject.contract_id != null)
+                {
+                    cc = new ctt_contract_dal().FindNoDeleteById((long)thisProject.contract_id);
+                }
             }
-            else
+            else if (ccc.contract_id != null)
             {
                 ca = new crm_account_dal().FindSignleBySql<crm_account>($"select a.* from crm_account a,ctt_contract_cost b,ctt_contract c where a.id=c.account_id and b.contract_id=c.id and a.delete_time=0 and b.delete_time=0 and c.delete_time=0 and b.id={id}");//客户
                 cc = new ctt_contract_dal().FindNoDeleteById((long)ccc.contract_id);
@@ -1622,7 +1653,7 @@ namespace EMT.DoneNOW.BLL
 
             Dictionary<int, decimal> block = new Dictionary<int, decimal>();//存储预付id，和总价
             //关联预付费合同
-            if (cc != null && cc.type_id == (int)CONTRACT_TYPE.RETAINER)
+            if (cc != null && cc.start_date <= ccc.date_purchased && cc.end_date >= ccc.date_purchased && cc.type_id == (int)CONTRACT_TYPE.RETAINER)
             {
                 //统计预付表中的预付剩余
                 var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0 ),0),2)) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1");
@@ -1750,7 +1781,7 @@ namespace EMT.DoneNOW.BLL
 
             }
             //预付时间合同
-            else if (cc != null && cc.type_id == (int)CONTRACT_TYPE.BLOCK_HOURS)
+            else if (cc != null && cc.start_date <= ccc.date_purchased && cc.end_date >= ccc.date_purchased && cc.type_id == (int)CONTRACT_TYPE.BLOCK_HOURS)
             {
                 //统计预付表中的预付事件剩余
                 var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={ccc.contract_id} and b.status_id=1");
@@ -1876,7 +1907,7 @@ namespace EMT.DoneNOW.BLL
                 }
             }
             //预付事件合同(暂时不处理)
-            else if (cc != null && cc.type_id == (int)CONTRACT_TYPE.PER_TICKET)
+            else if (cc != null && cc.start_date <= ccc.date_purchased && cc.end_date >= ccc.date_purchased && cc.type_id == (int)CONTRACT_TYPE.PER_TICKET)
             {
                 if (dcc.cate_id == (int)COST_CODE_CATE.RETAINER_PURCHASE)
                 {
@@ -2814,14 +2845,16 @@ namespace EMT.DoneNOW.BLL
                 if (cc != null)
                 {
                     var thisEntryRate = new ContractRateBLL().GetRateByCodeAndRole((long)thisEntry.cost_code_id, (long)thisEntry.role_id);
+                    var thisRate = cad_dal.GetSingle($"select f_get_labor_rate({cc.id},{thisEntry.cost_code_id.ToString()},{thisEntry.role_id.ToString()})");
                     if (cc.type_id == (int)CONTRACT_TYPE.RETAINER)
                     {
                         string endDate = thisEntry.start_time == null ? Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEntry.start_time).ToString("yyyy-MM-dd") : Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEntry.end_time).ToString("yyyy-MM-dd");
                         //统计预付表中的预付剩余
                         var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={cc.id} and b.status_id=1 and b.start_date <='{Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEntry.start_time).ToString("yyyy-MM-dd")}' and b.end_date >='{endDate}'");
                         decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
+                        
 
-                        if (thisEntry.hours_billed == null || (thisEntry.hours_billed * (thisEntryRate == null ? 0 : (decimal)thisEntryRate)) < extended_price)
+                        if (thisEntry.hours_billed == null || (thisEntry.hours_billed * (thisRate == null ? 0 : (decimal)thisRate)) < extended_price)
                         {
                             return ERROR_CODE.ERROR;
                         }
@@ -2849,7 +2882,7 @@ namespace EMT.DoneNOW.BLL
                         string endDate = thisEntry.start_time == null ? Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEntry.start_time).ToString("yyyy-MM-dd") : Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEntry.end_time).ToString("yyyy-MM-dd");
                         var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={cc.id} and b.status_id=1 and b.start_date <='{Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEntry.start_time).ToString("yyyy-MM-dd")}' and b.end_date >='{endDate}'");
                         decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
-                        if (thisEntry.hours_billed == null || (thisEntry.hours_billed * (thisEntryRate == null ? 0 : (decimal)thisEntryRate)) < extended_price)
+                        if (thisEntry.hours_billed == null || (thisEntry.hours_billed * (thisRate == null ? 0 : (decimal)thisRate)) < extended_price)
                         {
                             return ERROR_CODE.ERROR;
                         }
@@ -2887,13 +2920,14 @@ namespace EMT.DoneNOW.BLL
             var kk = new ApprovePostDto.ChargesSelectList();
             if (thisEntry != null && thisEntry.contract_id != null)
             {
+                var thisRate = cad_dal.GetSingle($"select f_get_labor_rate({thisEntry.contract_id},{thisEntry.cost_code_id.ToString()},{thisEntry.role_id.ToString()})");
                 var cc = new ctt_contract_dal().FindNoDeleteById((long)thisEntry.contract_id);
                 var ca = new crm_account_dal().FindNoDeleteById(cc.account_id);
-                var thisEntryRate = new ContractRateBLL().GetRateByCodeAndRole((long)thisEntry.cost_code_id, (long)thisEntry.role_id);
-                var total = (thisEntry.hours_billed * (thisEntryRate == null ? 0 : (decimal)thisEntryRate));
+                // var thisEntryRate = new ContractRateBLL().GetRateByCodeAndRole((long)thisEntry.cost_code_id, (long)thisEntry.role_id);
+                var total = (thisEntry.hours_billed * (thisRate == null ? 0 : (decimal)thisRate));
                 kk.accountname = ca.name;
                 kk.description = thisEntry.summary_notes;
-                kk.extendprice = total.ToString();
+                kk.extendprice = total==null?"":((decimal)total).ToString("#0.00");
                 kk.type = "工时";
             }
             return kk;
@@ -2941,6 +2975,10 @@ namespace EMT.DoneNOW.BLL
                         if (thisProject != null)
                         {
                             thisAccount = new CompanyBLL().GetCompany(thisProject.account_id);
+                            //if (thisProject.contract_id != null)
+                            //{
+                            //    thisContract = new ctt_contract_dal().FindNoDeleteById((long)thisProject.contract_id);
+                            //}
                         }
                     }
                     var thisContractId = thisContract == null ? "null" : thisContract.id.ToString();
@@ -2985,7 +3023,9 @@ namespace EMT.DoneNOW.BLL
                     #endregion
                     decimal? rate = new ContractRateBLL().GetRateByCodeAndRole((long)oldEntry.cost_code_id, (long)oldEntry.role_id);
                     Dictionary<int, decimal> block = new Dictionary<int, decimal>();//存储预付id，和总价
-                    if (thisContract != null)
+                    var thisEntryDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)oldEntry.start_time);
+                    var thisEntryEndDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)(oldEntry.end_time ?? oldEntry.start_time));
+                    if (thisContract != null&&thisContract.start_date<= thisEntryDate&& thisContract.end_date>= thisEntryEndDate)
                     {
                         string endDate = oldEntry.start_time == null ? Tools.Date.DateHelper.ConvertStringToDateTime((long)oldEntry.start_time).ToString("yyyy-MM-dd") : Tools.Date.DateHelper.ConvertStringToDateTime((long)oldEntry.end_time).ToString("yyyy-MM-dd");
                         if (thisContract.type_id == (int)CONTRACT_TYPE.RETAINER)
@@ -3723,7 +3763,7 @@ namespace EMT.DoneNOW.BLL
                         }
                     }
 
-                    if (thisContract == null || thisContract.type_id != (int)CONTRACT_TYPE.RETAINER || thisContract.type_id != (int)CONTRACT_TYPE.BLOCK_HOURS)
+                    if (thisContract == null || thisContract.type_id != (int)CONTRACT_TYPE.RETAINER || thisContract.type_id != (int)CONTRACT_TYPE.BLOCK_HOURS|| thisContract.start_date > thisEntryDate || thisContract.end_date < thisEntryEndDate)
                     {
                         var thisDed = new crm_account_deduction()
                         {

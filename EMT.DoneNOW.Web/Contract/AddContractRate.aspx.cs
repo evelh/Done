@@ -74,6 +74,12 @@ namespace EMT.DoneNOW.Web.Contract
         {
             // CreateOrUpdateRate
             var param = GetParam();
+            var isExRole = new ContractRateBLL().IsExistRole(param.contract_id, param.role_id);
+            if (isExRole)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('角色已存在');</script>");
+                return;
+            }
             new ContractRateBLL().CreateOrUpdateRate(param,GetLoginUserId());
             ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');self.opener.location.reload();</script>");
             ClientScript.RegisterStartupScript(this.GetType(), "关闭窗口", "<script>window.close(); </script>");
@@ -82,6 +88,12 @@ namespace EMT.DoneNOW.Web.Contract
         protected void save_new_Click(object sender, EventArgs e)
         {
             var param = GetParam();
+            var isExRole = new ContractRateBLL().IsExistRole(param.contract_id, param.role_id);
+            if (isExRole)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('角色已存在');</script>");
+                return;
+            }
             new ContractRateBLL().CreateOrUpdateRate(param, GetLoginUserId());
             ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功！');self.opener.location.reload();</script>");
             Response.Redirect("AddContractRate?contract_id="+contract.id);

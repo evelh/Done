@@ -189,8 +189,6 @@ namespace EMT.DoneNOW.Core
         public Int32? cate_id { get; set; }
         [DataMember]
         public Int64? service_id { get; set; }
-        [DataMember]
-        public Int64? tmp { get; set; }
 
 
     }

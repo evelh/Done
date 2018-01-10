@@ -700,15 +700,12 @@ namespace EMT.DoneNOW.BLL
 
 
             #region 修改结束时间后，相关后续任务的时间需要调整
-            if (thisTask.start_no_earlier_than_date == null)
+            var thisHoujiTaskList = new sdk_task_predecessor_dal().GetTaskByPreId(thisTask.id);
+            if (thisHoujiTaskList != null && thisHoujiTaskList.Count > 0)
             {
-                var thisHoujiTaskList = new sdk_task_predecessor_dal().GetTaskByPreId(thisTask.id);
-                if (thisHoujiTaskList != null && thisHoujiTaskList.Count > 0)
-                {
-                    thisHoujiTaskList.ForEach(_ => {
-                        UpdateTaskDate(_.id, user_id);
-                    });
-                }
+                thisHoujiTaskList.ForEach(_ => {
+                    UpdateTaskDate(_.id, user_id);
+                });
             }
             #endregion
 
@@ -1173,7 +1170,7 @@ namespace EMT.DoneNOW.BLL
         {
             var thisTask = _dal.FindNoDeleteById(task_id);
             var oldTask = _dal.FindNoDeleteById(task_id);
-            if (thisTask != null&&thisTask.project_id!=null&& thisTask.estimated_end_time!=null&&thisTask.estimated_begin_time!=null)
+            if (thisTask != null&&thisTask.project_id!=null&& thisTask.estimated_end_time!=null&&thisTask.estimated_begin_time!=null&& thisTask.start_no_earlier_than_date == null)
             {
                 var stpDal = new sdk_task_predecessor_dal();
                 var thisPreList = stpDal.GetRelList(task_id);  // 获取前驱任务的相关集合
@@ -1190,27 +1187,23 @@ namespace EMT.DoneNOW.BLL
                         }
                         return thisDate;
                     });
-
-                    // 与现在的时间比较，是否需要改变
-                    if (MaxDate > (long)thisTask.estimated_begin_time)
-                    {
-                        thisTask.estimated_begin_time = MaxDate;
-                        thisTask.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(RetrunMaxTime((long)thisTask.project_id, Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time),(int)thisTask.estimated_duration));
-                        _dal.Update(thisTask);
-                        OperLogBLL.OperLogUpdate<sdk_task>(thisTask, oldTask, thisTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
-
-
-                        //  需要改变则更改相关父阶段，项目的开始结束时间
-                        if (thisTask.parent_id != null)
+                  
+                        // 与现在的时间比较，是否需要改变
+                        if (MaxDate > (long)thisTask.estimated_begin_time)
                         {
-                            AdjustmentDate((long)thisTask.parent_id, user_id);
+                            thisTask.estimated_begin_time = MaxDate;
+                            thisTask.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(RetrunMaxTime((long)thisTask.project_id, Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time), (int)thisTask.estimated_duration));
+                            _dal.Update(thisTask);
+                            OperLogBLL.OperLogUpdate<sdk_task>(thisTask, oldTask, thisTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
+
+
+                            //  需要改变则更改相关父阶段，项目的开始结束时间
+                            if (thisTask.parent_id != null)
+                            {
+                                AdjustmentDate((long)thisTask.parent_id, user_id);
+                            }
+                            AdjustProDate((long)thisTask.project_id, user_id);
                         }
-                        AdjustProDate((long)thisTask.project_id, user_id);
-                    }
-
-
-
-
                 }
             }
         }
@@ -2629,7 +2622,7 @@ namespace EMT.DoneNOW.BLL
                     if (v_task != null)
                     {
                         // 预估时间+变更单小时+预估差异 - 实际时间
-                        var isEdit = para.remain_hours == (v_task.estimated_hours ?? 0) + (v_task.change_Order_Hours ?? 0) + (v_task.projected_variance ?? 0) - (v_task.worked_hours??0);
+                        var isEdit = para.remain_hours != (v_task.estimated_hours ?? 0) + (v_task.change_Order_Hours ?? 0) + (v_task.projected_variance ?? 0) - (v_task.worked_hours??0);
                         if (isEdit || choTask.status_id != para.status_id)
                         {
                             choTask.status_id = para.status_id;
@@ -2887,7 +2880,8 @@ namespace EMT.DoneNOW.BLL
                     var v_task = new v_task_all_dal().FindById(choTask.id);
                     if (v_task != null)
                     {
-                        if (v_task.remain_hours != para.remain_hours || choTask.status_id != para.status_id)
+                        var isEdit = para.remain_hours != (v_task.estimated_hours ?? 0) + (v_task.change_Order_Hours ?? 0) + (v_task.projected_variance ?? 0) - (v_task.worked_hours ?? 0);
+                        if (isEdit || choTask.status_id != para.status_id)
                         {
                             choTask.status_id = para.status_id;
                             choTask.projected_variance += para.remain_hours - (v_task.remain_hours == null ? 0 : (decimal)v_task.remain_hours);

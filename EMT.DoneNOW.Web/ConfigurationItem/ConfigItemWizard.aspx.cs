@@ -72,12 +72,13 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                         isAddCongigItem = false
                     };
                     bool isDelShiCost = false;
-                    new ContractCostBLL().UpdateCost(dto, GetLoginUserId(),out isDelShiCost);
+                    var isHasPurchaseOrder = "";
+                    new ContractCostBLL().UpdateCost(dto, GetLoginUserId(),out isDelShiCost,out isHasPurchaseOrder);
                     ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('配置项向导成功！');window.close();self.opener.location.reload();</script>");
                 }
                 else
                 {
-
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('配置项向导失败！');window.close();self.opener.location.reload();</script>");
                 }
             }
             else

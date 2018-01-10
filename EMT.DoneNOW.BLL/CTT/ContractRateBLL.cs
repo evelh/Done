@@ -135,5 +135,20 @@ namespace EMT.DoneNOW.BLL
             }
             return rate;
         } 
+        /// <summary>
+        /// 判断角色是否已经在合同费率中出现
+        /// </summary>
+        public bool IsExistRole(long contract_id,long role_id)
+        {
+            var thisRate = dal.GetSinRate(contract_id,role_id);
+            if (thisRate != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

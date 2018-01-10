@@ -445,11 +445,12 @@ namespace EMT.DoneNOW.Web.Project
             }
 
             var startString = Request.Form["estimated_beginTime"];
+            var estimated_start = Request.Form["estimated_start"];
             var estimated_end_time = Request.Form["estimated_end_time_"];
-            if (!string.IsNullOrEmpty(startString)&&!string.IsNullOrEmpty(estimated_end_time))
+            if (!string.IsNullOrEmpty(startString)&&!string.IsNullOrEmpty(estimated_end_time)&&!string.IsNullOrEmpty(estimated_start))
             {
                 pageTask.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(estimated_end_time));
-                pageTask.estimated_begin_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(startString));
+                pageTask.estimated_begin_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(startString+" "+ estimated_start));
                // if (type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE) // d
                 //{
                     TimeSpan ts1 = new TimeSpan((DateTime.Parse(startString)).Ticks);

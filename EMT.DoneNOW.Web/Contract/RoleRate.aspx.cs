@@ -90,6 +90,13 @@ namespace EMT.DoneNOW.Web.Contract
                 ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('费率格式错误，请重新填写');</script>");
                 return false;
             }
+            var isExRole = new ContractRateBLL().IsExistRole(contractId, roleRate.role_id);
+            if (isExRole)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('角色已存在');</script>");
+                return false;
+            }
+
             roleRate.rate = rateNum;
             new ContractRateBLL().CreateOrUpdateRate(roleRate, GetLoginUserId());
 

@@ -449,7 +449,7 @@
                         {
                             if (isPhase)
                             {%>
-                    <a class="Button ButtonIcon New NormalState" id="AddNoteButton" tabindex="0" onclick="AddNote()"><span class="Icon"></span><span class="Text">新增备注</span></a>
+                    <a class="Button ButtonIcon New NormalState" id="AddNoteButton" tabindex="0" onclick="AddNote()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0px;"></span><span class="Text">新增备注</span></a>
                     <%}
                         else
                         {%>
@@ -566,7 +566,7 @@
                                                     </td>
                                                     <td>
                                                         <div>
-                                                            <a class="ProjectInfo_Button" href="#" onclick="projectInfo.getProjectInfo(); return false;"><%=thisProject.name %></a>
+                                                            <a class="ProjectInfo_Button" onclick="window.open('../Project/ProjectView.aspx?id=<%=thisProject.id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.PROJECT_VIEW %>','left=200,top=200,width=900,height=750', false);"><%=thisProject.name %></a>
                                                         </div>
                                                         <div class="ProjectInfo_Text"><%=((DateTime)thisProject.start_date).ToString("yyyy-MM-dd") %> - <%=((DateTime)thisProject.end_date).ToString("yyyy-MM-dd") %></div>
                                                     </td>
@@ -821,7 +821,7 @@
                                                 <label for="StartDateTime">开始时间</label><span class="Required">*</span>
                                             </div>
                                         </div>
-                                        <div class="Editor DateBox" data-editor-id="StartDateTime" data-rdp="StartDateTime">
+                                        <div class="Editor DateBox" data-editor-id="StartDateTime" data-rdp="StartDateTime" style="width:190px;">
                                             <div class="InputField">
                                                 <div class="Container">
                                                     <% var startDate = (DateTime)thisProject.start_date;
@@ -830,13 +830,14 @@
                                                             startDate = EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)parTask.estimated_begin_time);
                                                         }
                                                     %>
-                                                    <input id="estimated_beginTime" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd HH:mm:ss") : EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time).ToString("yyyy-MM-dd HH:mm:ss") %>" name="estimated_beginTime" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 150px" />
+                                                    <input id="estimated_beginTime" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd") : EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time).ToString("yyyy-MM-dd") %>" name="estimated_beginTime" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" style="width: 75px" />
+                                                    <input id="estimated_start"  type="text" name="estimated_start" value="<%=isAdd ? startDate.ToString("HH:mm:ss") : EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time).ToString("HH:mm:ss") %>" onclick="WdatePicker({ dateFmt: 'HH:mm:ss' })" style="width: 52px;margin-left:10px;"/>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="Small Column" style="margin-left: 50px;">
+                                    <div class="Small Column" style="margin-left: 100px;">
                                         <div class="EditorLabelContainer">
                                             <div class="Label">
                                                 <label for="EndDate">结束时间</label><span class="Required">*</span>
@@ -1322,7 +1323,7 @@
                                                 <label for="StartDate">开始时间</label><span class="Required">*</span>
                                             </div>
                                         </div>
-                                        <div class="Editor DateBox" data-editor-id="StartDate" data-rdp="StartDate">
+                                        <div class="Editor DateBox" data-editor-id="StartDate" data-rdp="StartDate" style="width:190px;">
                                             <div class="InputField">
                                                 <div class="Container">
                                                     <% var startDate = (DateTime)thisProject.start_date;
@@ -1331,12 +1332,13 @@
                                                             startDate = EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)parTask.estimated_begin_time);
                                                         }
                                                     %>
-                                                    <input id="estimated_beginTime" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd HH:mm:ss") : EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time).ToString("yyyy-MM-dd HH:mm:ss") %>" name="estimated_beginTime" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm:ss' })" style="width: 150px" />
+                                                    <input id="estimated_beginTime" type="text" value="<%=isAdd ? startDate.ToString("yyyy-MM-dd") : EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time).ToString("yyyy-MM-dd") %>" name="estimated_beginTime" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd' })" style="width: 75px" />
+                                                      <input id="estimated_start" type="text" name="estimated_start" value="<%=isAdd ? startDate.ToString("HH:mm:ss") : EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time).ToString("HH:mm:ss") %>" onclick="WdatePicker({ dateFmt: 'HH:mm:ss' })" style="width: 52px;margin-left:10px;"/>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="Small Column" style="margin-left: 50px;">
+                                    <div class="Small Column" style="margin-left: 100px;">
                                         <div class="EditorLabelContainer">
                                             <div class="Label">
                                                 <label for="EndDate">结束时间</label><span class="Required">*</span>
@@ -1369,7 +1371,7 @@
                                         </div>
                                         <div class="Editor TextBox LabeledValue" data-editor-id="Duration">
                                             <div class="InputField">
-                                                <span class="Value"><%=thisTask!=null&&thisTask.estimated_duration!=null?thisTask.estimated_duration.ToString():""  %></span><span class="CustomHtml"><div class="StandardText">days</div>
+                                                <span class="Value"><%=thisTask!=null&&thisTask.estimated_duration!=null?thisTask.estimated_duration.ToString():"1"  %></span><span class="CustomHtml"><div class="StandardText">&nbsp;天</div>
                                                 </span>
                                             </div>
                                         </div>
@@ -2232,6 +2234,7 @@
             }
         }
     })
+    var oldBegain = "";
     $("#estimated_beginTime").blur(function () {
         debugger;
         // isStar = "";
@@ -2243,40 +2246,64 @@
             if (compareTime(thanDateVal, startDateVal)) {
                 LayerMsg("不早于开始时间要早于开始时间");
                 $(this).val("");
+                startDateVal = "";
             }
         }
+        var isAlert = "";
         if (startDateVal != "") {
-            $.ajax({
-                type: "GET",
-                url: "../Tools/ProjectAjax.ashx?act=CheckDate&project_id=<%=thisProject.id %>&date=" + startDateVal,
-                async: false,
-                success: function (data) {
-                    if (data == "True") {
-                        LayerConfirm("开始时间在周末或者节假日内，是否继续", "是", "否", function () { }, function () { $("#estimated_beginTime").val(""); });
-                    } else {
-                        // $("#estimated_beginTime").val("");
+            
+                // var startDateVal = $("#estimated_beginTime").val();
+            if (oldBegain != startDateVal) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ProjectAjax.ashx?act=CheckDate&project_id=<%=thisProject.id %>&date=" + startDateVal,
+                    async: false,
+                    success: function (data) {
+                        if (data == "True") {
+                            if (isAlert == "") {
+                                isAlert = "1";
+                                LayerConfirm("开始时间在周末或者节假日内，是否继续", "是", "否", function () { oldBegain = startDateVal;  }, function () { $("#estimated_beginTime").val(""); });
+                            }
+
+                        } else {
+                            // $("#estimated_beginTime").val("");
+                        }
                     }
-                }
-            })
+                });
+            }
+                
+            
+
+           
+          
         }
     })
+    var oldEnd = "";
     $("#estimated_end_time").blur(function () {
 
         var thisValue = $(this).val();
+        var isAlert = "";
         if (thisValue != "") {
-            $.ajax({
-                type: "GET",
-                url: "../Tools/ProjectAjax.ashx?act=CheckDate&project_id=<%=thisProject.id %>&date=" + thisValue,
-                async: false,
-                success: function (data) {
-                    if (data == "True") {
-                        LayerConfirm("结束时间在周末或者节假日内，是否继续", "是", "否", function () { }, function () { $(this).val(""); });
+            if (oldEnd != thisValue) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/ProjectAjax.ashx?act=CheckDate&project_id=<%=thisProject.id %>&date=" + thisValue,
+                    async: false,
+                    success: function (data) {
+                        if (data == "True") {
+                            if (isAlert == "") {
+                                isAlert = "1";
+                                LayerConfirm("结束时间在周末或者节假日内，是否继续", "是", "否", function () { oldEnd = thisValue; }, function () { $(this).val(""); });
+                            }
+                       
                     }
                     else {
-                       //  $(this).val("");
+                        //  $(this).val("");
                     }
                 }
-            })
+                 })
+            }
+           
         }
 
     })
@@ -3060,6 +3087,11 @@
         var estimated_beginTime = $("#estimated_beginTime").val();
         if (estimated_beginTime == "") {
             LayerMsg("请填写开始时间");
+            return false;
+        }
+        var estimated_start = $("#estimated_start").val();
+        if (estimated_start == "") {
+            LayerMsg("请填写具体开始时间");
             return false;
         }
         var estimated_end_time = $("#estimated_end_time").val();

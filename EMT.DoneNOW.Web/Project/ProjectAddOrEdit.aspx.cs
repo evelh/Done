@@ -434,6 +434,10 @@ namespace EMT.DoneNOW.Web.Project
                 {
                     Response.Write("<script>window.opener." + callBaclFunction + "('" + param.project_id + "');</script>");
                 }
+                else
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "跳转项目查看", $"<script>debugger;window.open('../Project/ProjectView.aspx?id={param.project.id}','_blank', 'left=200,top=200,width=1080,height=800', false);</script>");
+                }
             }
             else
             {

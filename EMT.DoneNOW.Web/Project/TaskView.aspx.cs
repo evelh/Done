@@ -89,7 +89,7 @@ namespace EMT.DoneNOW.Web.Project
                         var newList = (from a in tasEntryList
                                       join  b in roleList on a.role_id equals b.id
                                       join c in sysList on a.resource_id equals long.Parse(c.val)
-                                      select new TaskViewDto {id=a.id,type="entry",time=Tools.Date.DateHelper.ConvertStringToDateTime((long)a.end_time),resouName = c.show+"("+b.name+")", workHours=a.hours_worked,notTiltle = a.summary_notes, billabled = a.is_billable==1?"✓":"",billed = a.approve_and_post_date==null?"": "✓", startDate= Tools.Date.DateHelper.ConvertStringToDateTime((long)a.start_time), workTypeId = a.cost_code_id, contractId = a.contract_id , showOnInv  = a.show_on_invoice==1,serviceId=a.service_id }).ToList();
+                                      select new TaskViewDto {id=a.id,type="entry",time=Tools.Date.DateHelper.ConvertStringToDateTime((long)(a.end_time?? a.start_time)),resouName = c.show+"("+b.name+")", workHours=a.hours_worked,notTiltle = a.summary_notes, billabled = a.is_billable==1?"✓":"",billed = a.approve_and_post_date==null?"": "✓", startDate= Tools.Date.DateHelper.ConvertStringToDateTime((long)a.start_time), workTypeId = a.cost_code_id, contractId = a.contract_id , showOnInv  = a.show_on_invoice==1,serviceId=a.service_id }).ToList();
 
                         tvdList.AddRange(newList);
                     }
