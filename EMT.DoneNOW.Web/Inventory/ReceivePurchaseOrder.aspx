@@ -19,7 +19,7 @@
   </style>
 </head>
 <body>
-  <div class="header">新增采购订单</div>
+  <div class="header">接收/取消接收采购订单</div>
   <div class="header-title" style="min-width: 400px;">
     <ul>
       <li id="SaveClose">
@@ -132,7 +132,9 @@
                     else
                       snIds += "," + rslt["采购项id"].ToString();
                       %>
-            <input type="button" value="新增或编辑" onclick='editSerialNum(<%=rslt["采购项id"] %>)' /><%} %></td>
+            <input type="button" value="新增或编辑" onclick='editSerialNum(<%=rslt["采购项id"] %>)' /><%} %>
+            <input type="hidden" id="avaCnt<%=rslt["采购项id"] %>" value="<%=rslt["可用数"] %>" />
+          </td>
           <td id="unreceivedCnt<%=rslt["采购项id"] %>"><%=int.Parse(rslt["采购数量"].ToString()) - received %></td>
           <td><%=rslt["预计到达日期"] %></td>
         </tr>
@@ -203,6 +205,10 @@
       }
       if (cnt < 0 && (cnt + parseInt($("#receivedCnt" + id).text()) < 0)) {
         LayerMsg("取消接收数不能大于已接收数");
+        return false;
+      }
+      if (cnt < 0 && (cnt + parseInt($("#avaCnt" + id).text()) < 0)) {
+        LayerMsg("取消接收数不能大于可用数");
         return false;
       }
       if (cnt > 0 && (cnt > parseInt($("#unreceivedCnt" + id).text()))) {

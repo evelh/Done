@@ -296,21 +296,13 @@ namespace EMT.DoneNOW.Web
             {
                 item.note = memo;
                 item.arrivalDate = date;
-                //foreach (var itm in items.items)
-                //{
-                //    if (itm.id == id)
-                //    {
-                //        itm.note = memo;
-                //        itm.arrivalDate = date;
-                //    }
-                //}
                 context.Session["PurchaseOrderItem"] = items;
                 context.Response.Write(new Tools.Serialize().SerializeJson(true));
             }
             else
             {
-                var pdt = new InventoryOrderBLL().GetOrderProduct(id);
-                context.Response.Write(new Tools.Serialize().SerializeJson(true));
+                var rtn = new InventoryOrderBLL().SaveOrderProductMemo(id, memo, date, LoginUserId);
+                context.Response.Write(new Tools.Serialize().SerializeJson(rtn));
             }
         }
     }

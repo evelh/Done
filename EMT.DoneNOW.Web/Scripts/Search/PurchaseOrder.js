@@ -5,13 +5,15 @@ function Edit() {
     window.open('../Inventory/AddPurchaseOrder.aspx?act=edit&id=' + entityid, windowObj.inventoryOrder + windowType.manage, 'left=0,top=0,location=no,status=no,width=900,height=1020', false);
 }
 function Delete() {
-    requestData("/Tools/PurchaseOrderAjax.ashx?act=DeleteOrder&id=" + entityid, null, function (data) {
-        if (data == true) {
-            window.location.reload();
-        } else {
-            LayerMsg("新建、已提交和已取消状态的采购订单才可以删除");
-        }
-    })
+    LayerConfirm("删除不可恢复，请确认", "确定", "取消", function () {
+        requestData("/Tools/PurchaseOrderAjax.ashx?act=DeleteOrder&id=" + entityid, null, function (data) {
+            if (data == true) {
+                window.location.reload();
+            } else {
+                LayerMsg("新建、已提交和已取消状态的采购订单才可以删除");
+            }
+        })
+    }, function () { })
 }
 function Submit() {
     requestData("/Tools/PurchaseOrderAjax.ashx?act=SubmitOrder&id=" + entityid, null, function (data) {

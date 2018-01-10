@@ -509,6 +509,7 @@
       $("#background").hide();
       $("#memo").hide();
       requestData("/Tools/PurchaseOrderAjax.ashx?act=setItemMemo&id=" + itemId + "&memo=" + $("#itemMemo").val() + "&date=" + $("#itemArrDate").val(), null, function (data) {
+        $("#itemFrame").attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASE_ITEM %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PurchaseItem %>&con1171=<%=orderId %>");
       })
     })
     $("#CancleMemo").click(function () {

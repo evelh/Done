@@ -20,11 +20,13 @@ function EditNote() {
     window.parent.editMemo(entityid);
 }
 function Delete() {
-    requestData("/Tools/PurchaseOrderAjax.ashx?act=deleteItem&id=" + entityid, null, function (data) {
-        if (data == true) {
-            window.location.reload();
-        } else {
-            LayerMsg("新建和已提交状态的采购项才可以删除");
-        }
-    })
+    LayerConfirm("删除不可恢复，请确认", "确定", "取消", function () {
+        requestData("/Tools/PurchaseOrderAjax.ashx?act=deleteItem&id=" + entityid, null, function (data) {
+            if (data == true) {
+                window.location.reload();
+            } else {
+                LayerMsg("新建和已提交状态的采购项才可以删除");
+            }
+        })
+    }, function () { })
 }

@@ -359,7 +359,7 @@ namespace EMT.DoneNOW.Web
 
             if (queryResult == null)  // 不使用缓存或缓存过期
             {
-                var para = bll.GetConditionParaVisiable(GetLoginUserId(), paraGroupId);   // 查询条件信息
+                var para = bll.GetConditionParaAll(GetLoginUserId(), paraGroupId);   // 查询条件信息
                 QueryParaDto queryPara = new QueryParaDto();
                 queryPara.query_params = new List<Para>();
                 foreach (var p in para)
@@ -445,6 +445,14 @@ namespace EMT.DoneNOW.Web
                                     oi.Add("最小数", item.min);
                                 else if (rsltClmn.name == "采购中")
                                     oi.Add("采购中", item.onOrder);
+                                else if (rsltClmn.name == "尚未接收")
+                                    oi.Add("尚未接收", item.back_order);
+                                else if (rsltClmn.name == "预留和拣货")
+                                    oi.Add("预留和拣货", item.reserved_picked);
+                                else if (rsltClmn.name == "可用数")
+                                    oi.Add("可用数", item.avaCnt);
+                                else if (rsltClmn.name == "自动添加")
+                                    oi.Add("自动添加", item.was_auto_filled == 1 ? "√" : "");
                                 else
                                     oi.Add(rsltClmn.name, "");
                             }
