@@ -60,7 +60,7 @@
             <span class="Text">总结</span>
         </a>
         <a class="Button ButtonIcon" id="tab2">
-            <span class="Text">用户定义的</span>
+            <span class="Text">用户自定义</span>
         </a>
         <a class="Button ButtonIcon" id="tab3">
             <span class="Text">库存</span>
@@ -263,68 +263,57 @@
         </div>
     </div>
     <div class="TabContainer" style="display: none;">
-         <div>
-                <div>
-                    <ul>
-                        <% if (product_udfList != null && product_udfList.Count > 0)
+         <div style="margin:10px 0 0 15px;">
+            <ul>
+                <% if (product_udfList != null && product_udfList.Count > 0)
+                    {
+                        foreach (var udf in product_udfList)
+                        {%>
+                <li style="margin-bottom:5px;">
+                    <label style="width:120px;margin-right:10px;font-size:14px;display:inline-block;"><%=udf.name %></label>
+              <%
+                            if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
+                            {%>
+                    <input type="text" name="<%=udf.id %>" class="sl_cdt" style="width:180px;" />
+                <%}
+                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
+                    {%>
+                    <textarea name="<%=udf.id %>" rows="2" cols="20" style="width:180px;height:60px;"></textarea>
+                <%}
+                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
+                    {%>
+                        <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" style="width:180px;" />
+                <%}
+                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
+                    {%>
+                    <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" style="width:180px;" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                <%}
+                    else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
+                    {%>
+                    <select name="<%=udf.id %>" style="width:194px;">
+                        <%
+                            if (udf.value_list != null)
                             {
-                                foreach (var udf in product_udfList)
+                                foreach (var v in udf.value_list)
                                 {
-                                    if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
-                                    {%>
-                        <li>
-                            <label><%=udf.name %></label>
-                            <input type="text" name="<%=udf.id %>" class="sl_cdt" />
-                        </li>
-                        <%}
-                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
-                            {%>
-                        <li>
-                            <label><%=udf.name %></label>
-                            <textarea name="<%=udf.id %>" rows="2" cols="20"></textarea>
-                        </li>
-                        <%}
-                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
-                            {%><li>
-                                <label><%=udf.name %></label>
-                                <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" />
-                            </li>
-                        <%}
-                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)         /*数字*/
-                            {%>
-                        <li>
-                            <label><%=udf.name %></label>
-                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
-                        </li>
-                        <%}
-                            else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
-                            {%>
-                        <li>
-                            <label><%=udf.name %></label>
-                            <select name="<%=udf.id %>">
-                                <%
-                                    if (udf.value_list != null)
-                                    {
-                                        foreach (var v in udf.value_list)
-                                        {
-                                %>
-                                <option value="<%=v.val %>"><%=v.show %></option>
-                                <%
-                                        } // foreach
-                                    } // if
-                                %>
-                            </select>
-                        </li>
-                        <%}
-                                }
-                            } %>
-                    </ul>
-                </div>
+                        %>
+                        <option value="<%=v.val %>"><%=v.show %></option>
+                        <%
+                                } // foreach
+                            } // if
+                        %>
+                    </select>
+                <%}%>
+                </li>
+              <%
+                        }
+                    } %>
+            </ul>
             </div>
     </div>
     <div class="TabContainer" style="display: none;">
             <div class="cont" style="margin-top:15px;">
-                <iframe id="PageFrame22" name="PageFrame22" style="width:100%;height:auto" src="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCTINVENTORY %>&id=<%=product.id %>&type=50"></iframe>
+                <iframe id="PageFrame22" name="PageFrame22" style="width:100%;height:auto" src="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVENTORY_ITEM %>&con1235=<%=product.id %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.InventoryItem %>"></iframe>
             </div>
     </div>
         </div>

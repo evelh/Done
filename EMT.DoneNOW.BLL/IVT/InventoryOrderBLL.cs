@@ -93,6 +93,8 @@ namespace EMT.DoneNOW.BLL
                 pdt.unit_cost = item.unit_cost;
                 pdt.has_been_exported = 0;
                 pdt.contract_cost_id = item.costId;
+                if (!string.IsNullOrEmpty(item.arrivalDate))
+                    pdt.estimated_arrival_date = DateTime.Parse(item.arrivalDate);
 
                 pdtDal.Insert(pdt);
                 OperLogBLL.OperLogAdd<ivt_order_product>(pdt, pdt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.PURCHASE_ORDER_ITEM, "新增采购订单增加采购项");
@@ -480,7 +482,39 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public ivt_order_product GetOrderProduct(long productId)
         {
-            return new ivt_order_product_dal().FindById(productId);
+            return pdtDal.FindById(productId);
+        }
+
+        /// <summary>
+        /// 修改采购订单产品的备注和预期到达日期
+        /// </summary>
+        /// <param name="id">采购订单产品id</param>
+        /// <param name="memo">备注</param>
+        /// <param name="arvDate">预期到达日期</param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool SaveOrderProductMemo(long id, string memo, string arvDate, long userId)
+        {
+            var pdt = pdtDal.FindById(id);
+            if (pdt == null)
+                return false;
+
+            var pdtOld = pdtDal.FindById(id);
+            if (!string.IsNullOrEmpty(arvDate))
+                pdt.estimated_arrival_date = DateTime.Parse(arvDate);
+            else
+                pdt.estimated_arrival_date = null;
+            pdt.note = memo;
+            pdt.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            pdt.update_user_id = userId;
+
+            string desc = OperLogBLL.CompareValue<ivt_order_product>(pdtOld, pdt);
+            if (string.IsNullOrEmpty(desc))
+                return true;
+
+            pdtDal.Update(pdt);
+            OperLogBLL.OperLogUpdate(desc, pdt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ITEM, "修改采购项备注和预期到达时间");
+            return true;
         }
 
         /// <summary>

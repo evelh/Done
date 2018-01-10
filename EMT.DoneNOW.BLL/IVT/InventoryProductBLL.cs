@@ -117,6 +117,111 @@ w.name as location_name
         }
 
         /// <summary>
+        /// 获取采购项对应的库存产品可用数
+        /// </summary>
+        /// <param name="orderProductId">采购项id</param>
+        /// <returns></returns>
+        public int GetIvtProductAvaCnt(long orderProductId)
+        {
+            var orderPdt = new ivt_order_product_dal().FindById(orderProductId);
+            if (orderPdt == null)
+                return 0;
+
+            string sql = @"
+SELECT t.*,ifnull(
+				(
+					SELECT
+						sum(y.quantity)
+					FROM
+						ivt_order x,
+						ivt_order_product y
+					WHERE
+						y.delete_time = 0
+					AND x.id = y.order_id
+					AND x.status_id IN (2148, 2149)
+					AND y.product_id = t.id
+					AND y.warehouse_id = t.warehouse_id
+				),
+				0
+			) as on_order,
+ifnull(
+				(
+					SELECT
+						ifnull(sum(y.quantity), 0) - ifnull(sum(z.quantity_received), 0)
+					FROM
+						ivt_order x,
+						ivt_order_product y,
+						ivt_receive z
+					WHERE
+						y.delete_time = 0
+					AND z.delete_time = 0
+					AND x.status_id IN (2149)
+					AND x.id = y.order_id
+					AND y.id = z.order_product_id
+					AND y.product_id = t.id
+					AND y.warehouse_id = t.warehouse_id
+				),
+				0
+			) as back_order,
+ifnull(
+	(
+		SELECT
+			sum(x.quantity)
+		FROM
+			ivt_reserve x,
+			crm_quote_item y
+		WHERE
+			x.delete_time = 0
+		AND x.quote_item_id = y.id
+		AND y.object_id = t.id
+		AND x.warehouse_id = w.id
+	),
+	0
+) + ifnull(
+	(
+		SELECT
+			sum(x.quantity)
+		FROM
+			ctt_contract_cost_product x,
+			ctt_contract_cost y
+		WHERE
+			x.delete_time = 0
+		AND x.status_id = 2157
+		AND x.contract_cost_id = y.id
+		AND y.product_id = t.id
+		AND x.warehouse_id = w.id
+	),
+	0
+) as reserved_picked,
+ifnull(
+	(
+		SELECT
+			sum(x.quantity)
+		FROM
+			ctt_contract_cost_product x,
+			ctt_contract_cost y
+		WHERE
+			x.delete_time = 0
+		AND x.status_id = 2157
+		AND x.contract_cost_id = y.id
+		AND y.product_id = t.id
+		AND x.warehouse_id = w.id
+	),
+	0
+) as picked,
+p.name as product_name,
+w.name as location_name 
+ from ivt_warehouse_product as t,ivt_product as p,ivt_warehouse as w WHERE t.product_id=" + orderPdt.product_id + " and t.warehouse_id=" + orderPdt.warehouse_id + " and p.id=t.product_id and w.id=t.warehouse_id";
+            var dto = dal.FindSignleBySql<InventoryItemEditDto>(sql);
+            if (dto == null)
+                return 0;
+            if (string.IsNullOrEmpty(dto.reserved_picked))
+                return dto.quantity;
+            else
+                return dto.quantity - int.Parse(dto.reserved_picked);
+        }
+
+        /// <summary>
         /// 获取库存产品的序列号列表
         /// </summary>
         /// <param name="productId">库存产品id</param>
@@ -455,6 +560,12 @@ w.name as location_name
                     dto.items[i].onOrder = lctPdt.on_order;
                     dto.items[i].max = lctPdt.quantity_maximum;
                     dto.items[i].min = lctPdt.quantity_minimum;
+                    dto.items[i].reserved_picked = lctPdt.reserved_picked;
+                    dto.items[i].back_order = lctPdt.back_order;
+                    if (string.IsNullOrEmpty(lctPdt.reserved_picked))
+                        dto.items[i].avaCnt = "";
+                    else
+                        dto.items[i].avaCnt = (lctPdt.quantity - int.Parse(lctPdt.reserved_picked)).ToString();
                 }
             }
 
@@ -508,6 +619,26 @@ w.name as location_name
                     itemList.Add(itm);
                 }
             }
+            
+            for (var i = 0; i < itemList.Count; ++i)
+            {
+                long lctPdtId = dal.FindSignleBySql<long>($"select id from ivt_warehouse_product where product_id={itemList[i].product_id} and warehouse_id={itemList[i].warehouse_id}");
+                var lctPdt = GetIvtProductEdit(lctPdtId);
+                if (lctPdt != null)
+                {
+                    itemList[i].ivtQuantity = lctPdt.quantity;
+                    itemList[i].onOrder = lctPdt.on_order;
+                    itemList[i].max = lctPdt.quantity_maximum;
+                    itemList[i].min = lctPdt.quantity_minimum;
+                    itemList[i].reserved_picked = lctPdt.reserved_picked;
+                    itemList[i].back_order = lctPdt.back_order;
+                    if (string.IsNullOrEmpty(lctPdt.reserved_picked))
+                        itemList[i].avaCnt = "";
+                    else
+                        itemList[i].avaCnt = (lctPdt.quantity - int.Parse(lctPdt.reserved_picked)).ToString();
+                }
+            }
+
             return itemList;
         }
 

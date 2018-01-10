@@ -33,7 +33,10 @@ namespace EMT.DoneNOW.DTO
         public int max = 0;         // 最大数
         public int min = 0;         // 最小数
         public string onOrder = "0";// 采购中
-        public decimal? unit_cost;
+        public string back_order = "0"; // 尚未接收
+        public string reserved_picked = "0";    // 预留和拣货
+        public string avaCnt = "0"; // 可用数
+        public decimal? unit_cost;  // 成本
         public string note = "";    // 备注
         public string arrivalDate = ""; // 预期到达时间
         public int was_auto_filled = 0;

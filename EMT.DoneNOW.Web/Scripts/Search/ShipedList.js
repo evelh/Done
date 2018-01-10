@@ -22,14 +22,16 @@ function Ship() {
         }
     });
     if (ids != "") {
-        ids = ids.substring(0, ids.length - 1);
-        requestData("/Tools/PurchaseOrderAjax.ashx?act=purchaseUnShip&ids=" + ids, null, function (data) {
-            if (data == "") {
-                window.location.reload();
-            } else {
-                LayerMsg(data);
-            }
-        })
+        LayerConfirm("确认取消配送吗？", "确定", "取消", function () {
+            ids = ids.substring(0, ids.length - 1);
+            requestData("/Tools/PurchaseOrderAjax.ashx?act=purchaseUnShip&ids=" + ids, null, function (data) {
+                if (data == "") {
+                    window.location.reload();
+                } else {
+                    LayerMsg(data);
+                }
+            })
+        }, function () { })
     } else {
         LayerMsg("请选择待取消配送产品！");
     }
