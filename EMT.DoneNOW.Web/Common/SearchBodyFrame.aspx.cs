@@ -703,6 +703,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "审批并提交", click_function = "Post()" });
                     contextMenu.Add(new PageContextMenuDto { text = "合同详情", click_function = "ContractDetail()" });
                     contextMenu.Add(new PageContextMenuDto { text = "工单详情", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "项目详情", click_function = "ProjectDetail()" });
                     contextMenu.Add(new PageContextMenuDto { text = "调整总价", click_function = "AdjustExtend()" });
                     contextMenu.Add(new PageContextMenuDto { text = "设置为可计费", click_function = "Billing()" });
                     contextMenu.Add(new PageContextMenuDto { text = "设置为不可计费", click_function = "NoBilling()" });

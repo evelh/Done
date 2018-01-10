@@ -228,7 +228,11 @@ namespace EMT.DoneNOW.Web.Contract
             switch (result)
             {
                 case ERROR_CODE.SUCCESS:
-                  
+                    if (!string.IsNullOrEmpty(isHasPurchaseOrder))
+                    {
+                        isHasPurchaseOrder = isHasPurchaseOrder.Substring(0, isHasPurchaseOrder.Length - 1);
+                        ClientScript.RegisterStartupScript(this.GetType(), "采购单信息提示", "<script>alert('成本有对应的采购订单：" + isHasPurchaseOrder + "，请手工处理。！');</script>");
+                    }
                     if (param.isAddCongigItem)
                     {
                         var url = "../ConfigurationItem/ConfigItemWizard.aspx?&cost_id=" + param.cost.id;
@@ -249,11 +253,7 @@ namespace EMT.DoneNOW.Web.Contract
                             // 运费成本已审批并提交，无法删除。
                             ClientScript.RegisterStartupScript(this.GetType(), "运费成本信息提示", "<script>alert('运费成本已审批并提交，无法删除！');</script>");
                         }
-                        if (!string.IsNullOrEmpty(isHasPurchaseOrder))
-                        {
-                            isHasPurchaseOrder = isHasPurchaseOrder.Substring(0, isHasPurchaseOrder.Length-1);
-                            ClientScript.RegisterStartupScript(this.GetType(), "采购单信息提示", "<script>alert('成本有对应的采购订单："+ isHasPurchaseOrder + "，请手工处理。！');</script>");
-                        }
+                       
                         ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');window.close();window.open('"+url+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);self.opener.location.reload();</script>");
                     }
                     else
@@ -292,7 +292,11 @@ namespace EMT.DoneNOW.Web.Contract
             switch (result)
             {
                 case ERROR_CODE.SUCCESS:
-                   
+                    if (!string.IsNullOrEmpty(isHasPurchaseOrder))
+                    {
+                        isHasPurchaseOrder = isHasPurchaseOrder.Substring(0, isHasPurchaseOrder.Length - 1);
+                        ClientScript.RegisterStartupScript(this.GetType(), "采购单信息提示", "<script>alert('成本有对应的采购订单：" + isHasPurchaseOrder + "，请手工处理。！');</script>");
+                    }
                     if (param.isAddCongigItem)
                     {
                         var url = "../ConfigurationItem/ConfigItemWizard.aspx?&cost_id=" + param.cost.id;
@@ -313,11 +317,7 @@ namespace EMT.DoneNOW.Web.Contract
                             // 运费成本已审批并提交，无法删除。
                             ClientScript.RegisterStartupScript(this.GetType(), "运费成本信息提示", "<script>alert('运费成本已审批并提交，无法删除！');</script>");
                         }
-                        if (!string.IsNullOrEmpty(isHasPurchaseOrder))
-                        {
-                            isHasPurchaseOrder = isHasPurchaseOrder.Substring(0, isHasPurchaseOrder.Length - 1);
-                            ClientScript.RegisterStartupScript(this.GetType(), "采购单信息提示", "<script>alert('成本有对应的采购订单：" + isHasPurchaseOrder + "，请手工处理。！');</script>");
-                        }
+                       
                         ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');location.href='AddCharges.aspx?id=" + param.cost.id + "';window.open('"+url+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);self.opener.location.reload();</script>");
                     }
                     else
@@ -356,6 +356,11 @@ namespace EMT.DoneNOW.Web.Contract
             switch (result)
             {
                 case ERROR_CODE.SUCCESS:
+                    if (!string.IsNullOrEmpty(isHasPurchaseOrder))
+                    {
+                        isHasPurchaseOrder = isHasPurchaseOrder.Substring(0, isHasPurchaseOrder.Length - 1);
+                        ClientScript.RegisterStartupScript(this.GetType(), "采购单信息提示", "<script>alert('成本有对应的采购订单：" + isHasPurchaseOrder + "，请手工处理。！');</script>");
+                    }
                     var thisURL = Request.Url;
                     if (param.isAddCongigItem)
                     {
@@ -378,11 +383,7 @@ namespace EMT.DoneNOW.Web.Contract
                             // 运费成本已审批并提交，无法删除。
                             ClientScript.RegisterStartupScript(this.GetType(), "运费成本信息提示", "<script>alert('运费成本已审批并提交，无法删除！');</script>");
                         }
-                        if (!string.IsNullOrEmpty(isHasPurchaseOrder))
-                        {
-                            isHasPurchaseOrder = isHasPurchaseOrder.Substring(0, isHasPurchaseOrder.Length - 1);
-                            ClientScript.RegisterStartupScript(this.GetType(), "采购单信息提示", "<script>alert('成本有对应的采购订单：" + isHasPurchaseOrder + "，请手工处理。！');</script>");
-                        }
+                        
                         ClientScript.RegisterStartupScript(this.GetType(), "打开新窗口", "<script>alert('保存成功！');location.href='"+ thisURL + "';window.open('"+url+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid + "','left= 200, top = 200, width = 960, height = 750', false);self.opener.location.reload();</script>");
                     }
                     else

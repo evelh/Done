@@ -155,7 +155,7 @@ namespace EMT.DoneNOW.BLL
                         DeletCostProSn(_.id, user_id);
                         if (_.order_id != null)
                         {
-                            isHasPurchaseOrder += _.order_id;
+                            isHasPurchaseOrder += _.order_id+",";
                         }
                         cccpDal.SoftDelete(_, user_id);
                         OperLogBLL.OperLogDelete<ctt_contract_cost_product>(_, _.id, user_id, OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "删除成本关联产品");

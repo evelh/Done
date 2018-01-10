@@ -44,7 +44,7 @@ namespace EMT.DoneNOW.Web.Project
                         }
                         if(!new TaskBLL().CanEditExpense(thisExpense.id))
                         {
-                            Response.Write("<script>alert('相关报表状态已经更改，不可以进行编辑！')window.close();</script>");
+                            Response.Write("<script>alert('相关报表状态已经更改，不可以进行编辑！');window.close();</script>");
                             Response.End();
                         }
 

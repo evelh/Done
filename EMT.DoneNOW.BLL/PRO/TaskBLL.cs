@@ -47,7 +47,7 @@ namespace EMT.DoneNOW.BLL
                 else
                 {
                     thisTask.sort_order = GetMinUserNoParSortNo((long)thisTask.project_id);
-                } 
+                }
 
                 thisTask.update_user_id = user.id;
                 thisTask.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -77,7 +77,7 @@ namespace EMT.DoneNOW.BLL
                         if (thisPreTask != null)
                         {
                             var thisSDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)thisPreTask.estimated_end_time);
-                            thisSDate = RetrunMaxTime((long)param.task.project_id, thisSDate, dic.Value);
+                            thisSDate = RetrunMaxTime((long)param.task.project_id, thisSDate, dic.Value+2);
                             if (startDate < thisSDate)
                             {
                                 startDate = thisSDate;
@@ -111,14 +111,25 @@ namespace EMT.DoneNOW.BLL
                 param.task.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(RetrunMaxTime((long)param.task.project_id, startDate, (int)param.task.estimated_duration));
 
                 var oldTask = _dal.FindNoDeleteById(thisTask.id);
-                if(oldTask!=null&&oldTask.estimated_end_time != param.task.estimated_end_time)
+                if (oldTask != null && oldTask.estimated_end_time != param.task.estimated_end_time)
                 {
                     oldTask.estimated_end_time = param.task.estimated_end_time;
+                    oldTask.estimated_begin_time = param.task.estimated_begin_time;
                     // 修改task的开始结束时间相关
-                    OperLogBLL.OperLogUpdate<sdk_task>(oldTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");    
+                    OperLogBLL.OperLogUpdate<sdk_task>(oldTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
                     _dal.Update(oldTask);
                 }
-              
+
+                #region 时间发生变化，修改后面的任务
+                //var thisHoujiTaskList = new sdk_task_predecessor_dal().GetTaskByPreId(thisTask.id);
+                //if (thisHoujiTaskList != null && thisHoujiTaskList.Count > 0)
+                //{
+                //    thisHoujiTaskList.ForEach(_ =>
+                //    {
+                //        UpdateTaskDate(_.id, user_id);
+                //    });
+                //}
+                #endregion
 
 
                 // 递归修改父阶段相关数据
@@ -534,6 +545,7 @@ namespace EMT.DoneNOW.BLL
             {
                 return false;
             }
+            var oldTaskEndTime = oldTask.estimated_end_time;
             var thisTask = param.task;
             if (thisTask.estimated_duration == null)
             {
@@ -563,7 +575,7 @@ namespace EMT.DoneNOW.BLL
                         if (thisPreTask != null)
                         {
                             var thisSDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)thisPreTask.estimated_end_time);
-                            thisSDate = RetrunMaxTime((long)param.task.project_id, thisSDate, dic.Value+1);
+                            thisSDate = RetrunMaxTime((long)param.task.project_id, thisSDate, dic.Value + 1);
                             if (startDate < thisSDate)
                             {
                                 startDate = thisSDate;
@@ -680,7 +692,7 @@ namespace EMT.DoneNOW.BLL
             if (thisTask.status_id == (int)DicEnum.TICKET_STATUS.DONE)
             {
                 var thisVt = new v_task_all_dal().FindById(thisTask.id);
-                if (thisVt != null&&!isPhase)
+                if (thisVt != null && !isPhase)
                 {
                     // 预估偏差将会变更为：实际时间 - （预估时间+变更单时间）+剩余时间
                     thisTask.projected_variance = (thisVt.worked_hours == null ? 0 : (decimal)thisVt.worked_hours) - (thisTask.estimated_hours + (thisVt.change_Order_Hours == null ? 0 : (decimal)thisVt.change_Order_Hours));
@@ -700,13 +712,21 @@ namespace EMT.DoneNOW.BLL
 
 
             #region 修改结束时间后，相关后续任务的时间需要调整
-            var thisHoujiTaskList = new sdk_task_predecessor_dal().GetTaskByPreId(thisTask.id);
-            if (thisHoujiTaskList != null && thisHoujiTaskList.Count > 0)
+            if (oldTaskEndTime != thisTask.estimated_end_time && oldTaskEndTime != null)
             {
-                thisHoujiTaskList.ForEach(_ => {
-                    UpdateTaskDate(_.id, user_id);
-                });
+                var diffDay = GetDayByTime((long)oldTaskEndTime, (long)thisTask.estimated_end_time, (long)thisTask.project_id);
+
+
+                var thisHoujiTaskList = new sdk_task_predecessor_dal().GetTaskByPreId(thisTask.id);
+                if (thisHoujiTaskList != null && thisHoujiTaskList.Count > 0)
+                {
+                    thisHoujiTaskList.ForEach(_ =>
+                    {
+                        UpdateTaskDate(_.id, user_id);
+                    });
+                }
             }
+
             #endregion
 
 
@@ -936,7 +956,7 @@ namespace EMT.DoneNOW.BLL
                     }
                 }
 
-               
+
             }
             #endregion
 
@@ -1166,44 +1186,57 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 修改任务的开始结束时间（根据前驱任务的时间）
         /// </summary>
-        public void UpdateTaskDate(long task_id,long user_id)
+        public void UpdateTaskDate(long task_id, long user_id)
         {
             var thisTask = _dal.FindNoDeleteById(task_id);
             var oldTask = _dal.FindNoDeleteById(task_id);
-            if (thisTask != null&&thisTask.project_id!=null&& thisTask.estimated_end_time!=null&&thisTask.estimated_begin_time!=null&& thisTask.start_no_earlier_than_date == null)
+            if (thisTask != null && thisTask.project_id != null && thisTask.estimated_end_time != null && thisTask.estimated_begin_time != null && thisTask.start_no_earlier_than_date == null)
             {
                 var stpDal = new sdk_task_predecessor_dal();
                 var thisPreList = stpDal.GetRelList(task_id);  // 获取前驱任务的相关集合
-                if(thisPreList!=null&& thisPreList.Count > 0)
+                if (thisPreList != null && thisPreList.Count > 0)
                 {
                     // 获取到前驱任务的最晚时间
-                    var MaxDate = thisPreList.Max(_ => {
+                    var MaxDate = thisPreList.Max(_ =>
+                    {
                         long thisDate = 0;
                         var preTask = _dal.FindNoDeleteById(_.predecessor_task_id);
                         if (preTask != null && preTask.estimated_end_time != null)
                         {
-                            var thisPreDate = RetrunMaxTime((long)thisTask.project_id,Tools.Date.DateHelper.ConvertStringToDateTime((long)preTask.estimated_end_time),_.dependant_lag+2);
+                            var thisPreDate = RetrunMaxTime((long)thisTask.project_id, Tools.Date.DateHelper.ConvertStringToDateTime((long)preTask.estimated_end_time), _.dependant_lag + 2);
                             thisDate = Tools.Date.DateHelper.ToUniversalTimeStamp(thisPreDate);
                         }
                         return thisDate;
                     });
-                  
-                        // 与现在的时间比较，是否需要改变
-                        if (MaxDate > (long)thisTask.estimated_begin_time)
+
+                    var thisMaxDate = Tools.Date.DateHelper.ConvertStringToDateTime(MaxDate);
+                    var thisTaskStart = Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time);
+
+                    // 与现在的时间比较，是否需要改变
+                    if (thisMaxDate.ToString("yyyy-MM-dd") != thisTaskStart.ToString("yyyy-MM-dd"))
+                    {
+                        thisTask.estimated_begin_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(thisMaxDate.ToString("yyyy-MM-dd")+" "+ thisTaskStart.ToString("HH:mm:ss")));
+                        thisTask.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(RetrunMaxTime((long)thisTask.project_id, Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time), (int)thisTask.estimated_duration));
+                        _dal.Update(thisTask);
+                        OperLogBLL.OperLogUpdate<sdk_task>(thisTask, oldTask, thisTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
+                        #region 时间发生变化，修改后面的任务
+                        var thisHoujiTaskList = new sdk_task_predecessor_dal().GetTaskByPreId(thisTask.id);
+                        if (thisHoujiTaskList != null && thisHoujiTaskList.Count > 0)
                         {
-                            thisTask.estimated_begin_time = MaxDate;
-                            thisTask.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(RetrunMaxTime((long)thisTask.project_id, Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time), (int)thisTask.estimated_duration));
-                            _dal.Update(thisTask);
-                            OperLogBLL.OperLogUpdate<sdk_task>(thisTask, oldTask, thisTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
-
-
-                            //  需要改变则更改相关父阶段，项目的开始结束时间
-                            if (thisTask.parent_id != null)
+                            thisHoujiTaskList.ForEach(_ =>
                             {
-                                AdjustmentDate((long)thisTask.parent_id, user_id);
-                            }
-                            AdjustProDate((long)thisTask.project_id, user_id);
+                                UpdateTaskDate(_.id, user_id);
+                            });
                         }
+                        #endregion
+
+                        //  需要改变则更改相关父阶段，项目的开始结束时间
+                        if (thisTask.parent_id != null)
+                        {
+                            AdjustmentDate((long)thisTask.parent_id, user_id);
+                        }
+                        AdjustProDate((long)thisTask.project_id, user_id);
+                    }
                 }
             }
         }
@@ -1300,7 +1333,7 @@ namespace EMT.DoneNOW.BLL
             // 得出实际相差天数，筛选除去设置后，真是相差天数
             TimeSpan ts1 = new TimeSpan(startDate.Ticks);
             TimeSpan ts2 = new TimeSpan(endDate.Ticks);
-            var diffDays = ts1.Subtract(ts2).Duration().Days+1;   // 天数需要+1  //
+            var diffDays = ts1.Subtract(ts2).Duration().Days + 1;   // 天数需要+1  //
             var realDays = 0;
             if (thisProject.exclude_weekend == 1)
             {
@@ -1466,7 +1499,7 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         public DateTime ReturnDateWtihWeek(DateTime thisDate, int days, bool isCloWeekday)
         {
-           
+
             var newDate = thisDate;
             if (days >= 0)
             {
@@ -1891,7 +1924,7 @@ namespace EMT.DoneNOW.BLL
                                 noChange = shooChaTask.sort_order.Substring(2);
                             }
                             // var thisNoChaNo = shooChaTask.sort_order.Substring(0, lastshooChaTaskNo.Length );  // 获取到不会改变的部分 todo 临界值测试
-                            var newNo =  (int.Parse(lastshooChaTaskNo) + num).ToString("#00")+ noChange;
+                            var newNo = (int.Parse(lastshooChaTaskNo) + num).ToString("#00") + noChange;
                             ChangeTaskSortNo(newNo, shooChaTask.id, user_id);
                         }
                     }
@@ -2473,7 +2506,7 @@ namespace EMT.DoneNOW.BLL
                     {
                         thisTask.estimated_end_time = maxEndDate;
                     }
-                    thisTask.estimated_duration = GetDayByTime((long)thisTask.estimated_begin_time,(long)thisTask.estimated_end_time, (long)thisTask.project_id);
+                    thisTask.estimated_duration = GetDayByTime((long)thisTask.estimated_begin_time, (long)thisTask.estimated_end_time, (long)thisTask.project_id);
                     thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                     thisTask.update_user_id = user_id;
                     OperLogBLL.OperLogUpdate<sdk_task>(thisTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "更改task时间");
@@ -2496,22 +2529,22 @@ namespace EMT.DoneNOW.BLL
             if (thisPro != null)
             {
                 var taskList = stDal.GetAllProTask(project_id);
-                if(taskList!=null&& taskList.Count > 0)
+                if (taskList != null && taskList.Count > 0)
                 {
                     var minStartDate = taskList.Min(_ => (long)_.estimated_begin_time);
                     var maxEndDate = Tools.Date.DateHelper.ConvertStringToDateTime(taskList.Max(_ => (long)_.estimated_end_time));
 
-                    if(thisPro.start_date!=null&& thisPro.end_date != null)
+                    if (thisPro.start_date != null && thisPro.end_date != null)
                     {
                         var proStartDate = Tools.Date.DateHelper.ToUniversalTimeStamp((DateTime)thisPro.start_date);
                         var proEndDate = (DateTime)thisPro.end_date;
                         if (((DateTime)thisPro.start_date > Tools.Date.DateHelper.ConvertStringToDateTime(minStartDate)) || ((DateTime)thisPro.end_date < maxEndDate))
                         {
-                            if(((DateTime)thisPro.start_date > Tools.Date.DateHelper.ConvertStringToDateTime(minStartDate)))
+                            if (((DateTime)thisPro.start_date > Tools.Date.DateHelper.ConvertStringToDateTime(minStartDate)))
                             {
                                 thisPro.start_date = Tools.Date.DateHelper.ConvertStringToDateTime(minStartDate);
                             }
-                            if((DateTime)thisPro.end_date < maxEndDate)
+                            if ((DateTime)thisPro.end_date < maxEndDate)
                             {
                                 thisPro.end_date = maxEndDate;
                             }
@@ -2539,7 +2572,7 @@ namespace EMT.DoneNOW.BLL
                         ppDal.Update(thisPro);
                         OperLogBLL.OperLogUpdate<pro_project>(thisPro, oldPro, thisPro.id, user_id, OPER_LOG_OBJ_CATE.PROJECT, "修改项目");
                     }
-                   
+
                 }
             }
         }
@@ -2600,10 +2633,10 @@ namespace EMT.DoneNOW.BLL
                         newEntry.summary_notes = thisEnt.sumNote;
                         newEntry.internal_notes = thisEnt.ineNote;
                         newEntry.batch_id = thisBatchId;
-                        newEntry.start_time = thisEnt.startDate??Tools.Date.DateHelper.ToUniversalTimeStamp(thisEnt.time);
+                        newEntry.start_time = thisEnt.startDate ?? Tools.Date.DateHelper.ToUniversalTimeStamp(thisEnt.time);
                         newEntry.offset_hours = thisEnt.offset;
                         newEntry.end_time = thisEnt.endDate;
-                        newEntry.hours_billed = thisEnt.billHours?? (thisEnt.workHours+ thisEnt.offset);
+                        newEntry.hours_billed = thisEnt.billHours ?? (thisEnt.workHours + thisEnt.offset);
                         new sdk_work_entry_dal().Insert(newEntry);
                         OperLogBLL.OperLogAdd<sdk_work_entry>(newEntry, newEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "新增工时");
                         if (thisContract != null && thisContract.bill_post_type_id == (int)DicEnum.BILL_POST_TYPE.BILL_NOW)
@@ -2622,7 +2655,7 @@ namespace EMT.DoneNOW.BLL
                     if (v_task != null)
                     {
                         // 预估时间+变更单小时+预估差异 - 实际时间
-                        var isEdit = para.remain_hours != (v_task.estimated_hours ?? 0) + (v_task.change_Order_Hours ?? 0) + (v_task.projected_variance ?? 0) - (v_task.worked_hours??0);
+                        var isEdit = para.remain_hours != (v_task.estimated_hours ?? 0) + (v_task.change_Order_Hours ?? 0) + (v_task.projected_variance ?? 0) - (v_task.worked_hours ?? 0);
                         if (isEdit || choTask.status_id != para.status_id)
                         {
                             choTask.status_id = para.status_id;
@@ -2796,7 +2829,7 @@ namespace EMT.DoneNOW.BLL
                     {
                         var editList = para.pagEntDtoList.Where(_ => _.id > 0).ToList();
                         var addList = para.pagEntDtoList.Where(_ => _.id < 0).ToList();
-                        if(editList!=null&& editList.Count > 0)
+                        if (editList != null && editList.Count > 0)
                         {
                             foreach (var thisEnt in editList)
                             {
@@ -2825,14 +2858,14 @@ namespace EMT.DoneNOW.BLL
                                     sweDal.Update(newEntry);
                                     OperLogBLL.OperLogUpdate<sdk_work_entry>(newEntry, thisEntry, thisEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "工时修改");
 
-                                    if (thisContract != null && thisContract.bill_post_type_id == (int)DicEnum.BILL_POST_TYPE.BILL_NOW && newEntry.approve_and_post_date==null&& newEntry.approve_and_post_user_id==null)
+                                    if (thisContract != null && thisContract.bill_post_type_id == (int)DicEnum.BILL_POST_TYPE.BILL_NOW && newEntry.approve_and_post_date == null && newEntry.approve_and_post_user_id == null)
                                     {
                                         new ApproveAndPostBLL().PostWorkEntry(newEntry.id, Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd")), user_id, "A");
                                     }
                                 }
                             }
                         }
-                      
+
 
 
                         if (addList != null && addList.Count > 0)
@@ -2850,7 +2883,7 @@ namespace EMT.DoneNOW.BLL
                                 newEntry.hours_billed = thisEnt.workHours;
                                 new sdk_work_entry_dal().Insert(newEntry);
                                 OperLogBLL.OperLogAdd<sdk_work_entry>(newEntry, newEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "新增工时");
-                                if (thisContract != null && thisContract.bill_post_type_id != null )
+                                if (thisContract != null && thisContract.bill_post_type_id != null)
                                 {
                                     new ApproveAndPostBLL().PostWorkEntry(newEntry.id, Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd")), user_id, "A");
                                 }
@@ -3141,7 +3174,7 @@ namespace EMT.DoneNOW.BLL
                     var temp = new sys_notify_tmpl_dal().FindNoDeleteById((long)param.notify_id);
                     if (temp != null)
                     {
-                       
+
                         var temp_email_List = new sys_notify_tmpl_email_dal().GetEmailByTempId(temp.id);
                         if (temp_email_List != null && temp_email_List.Count > 0)
                         {
@@ -3149,7 +3182,7 @@ namespace EMT.DoneNOW.BLL
                         }
                     }
                 }
-                if (param.notify_id == 0&&notiContract == null)
+                if (param.notify_id == 0 && notiContract == null)
                     return true;
 
                 string toEmialString = "";
@@ -3352,7 +3385,7 @@ namespace EMT.DoneNOW.BLL
                     var temp = new sys_notify_tmpl_dal().FindNoDeleteById((long)param.notify_id);
                     if (temp != null)
                     {
-                       
+
                         var temp_email_List = new sys_notify_tmpl_email_dal().GetEmailByTempId(temp.id);
                         if (temp_email_List != null && temp_email_List.Count > 0)
                         {
@@ -3609,16 +3642,16 @@ namespace EMT.DoneNOW.BLL
             var thisExp = seDal.FindNoDeleteById(eid);
             if (thisExp != null)
             {
-                if(thisExp.approve_and_post_date==null&& thisExp.approve_and_post_user_id == null)
+                if (thisExp.approve_and_post_date == null && thisExp.approve_and_post_user_id == null)
                 {
                     var thisReport = serDal.FindNoDeleteById(thisExp.expense_report_id);
-                    if (thisReport != null&& (thisReport.status_id==(int)DicEnum.EXPENSE_REPORT_STATUS.HAVE_IN_HAND|| thisReport.status_id == (int)DicEnum.EXPENSE_REPORT_STATUS.REJECTED))
+                    if (thisReport != null && (thisReport.status_id == (int)DicEnum.EXPENSE_REPORT_STATUS.HAVE_IN_HAND || thisReport.status_id == (int)DicEnum.EXPENSE_REPORT_STATUS.REJECTED))
                     {
                         return true;
                     }
                 }
             }
-             return false;
+            return false;
         }
         /// <summary>
         /// 删除费用
@@ -3651,7 +3684,7 @@ namespace EMT.DoneNOW.BLL
                         failReason = "费用已经审批或者相关报表状态不可以删除";
                         return false;
                     }
-                   
+
                 }
                 else
                 {
@@ -4049,5 +4082,5 @@ namespace EMT.DoneNOW.BLL
             }
             return returnRule;
         }
-    } 
+    }
 }
