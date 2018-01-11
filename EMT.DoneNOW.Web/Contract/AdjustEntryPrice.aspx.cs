@@ -15,6 +15,7 @@ namespace EMT.DoneNOW.Web.Contract
     {
         protected sdk_work_entry thisEntry = null;
         protected sdk_task thisTask = null;
+        protected decimal? searchRate = null;  // 该员工的实际的费率
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -27,11 +28,24 @@ namespace EMT.DoneNOW.Web.Contract
                     {
                         thisTask = new sdk_task_dal().FindNoDeleteById(thisEntry.task_id);
                     }
+                  
+                    
                 }
 
                 if (thisEntry == null|| thisTask==null)
                 {
                     Response.Write("<script>alert('未找到该工时信息！');window.close();self.opener.location.reload();</script>");
+                }
+                else
+                {
+                    if (thisEntry.contract_id != null)
+                    {
+                        var thisObject = new sdk_work_entry_dal().GetSingle($"select f_get_labor_rate({(long)thisEntry.contract_id},{thisEntry.cost_code_id.ToString()},{thisEntry.role_id.ToString()})");
+                        if (thisObject != null)
+                        {
+                            searchRate = (decimal)thisObject;
+                        }
+                    }
                 }
 
             }

@@ -150,12 +150,18 @@ namespace EMT.DoneNOW.BLL
                     #endregion
 
                     #region 删除相关成本产品信息
+                    var ivDal = new ivt_order_dal();
                     foreach (var _ in costProList)
                     {
                         DeletCostProSn(_.id, user_id);
                         if (_.order_id != null)
                         {
-                            isHasPurchaseOrder += _.order_id+",";
+                            var thisOrder = ivDal.FindNoDeleteById((long)_.order_id);
+                            if (thisOrder != null)
+                            {
+                                isHasPurchaseOrder += thisOrder.purchase_order_no + ",";
+                            }
+                            
                         }
                         cccpDal.SoftDelete(_, user_id);
                         OperLogBLL.OperLogDelete<ctt_contract_cost_product>(_, _.id, user_id, OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "删除成本关联产品");

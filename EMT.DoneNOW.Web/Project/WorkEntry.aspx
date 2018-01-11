@@ -486,7 +486,7 @@
                                                                     <%if (noTime)
                                                                         { %>
                                                                     <td style="min-width: 50px;">
-                                                                        <input type="text" id="AddNewEntryWorkHour" value="" maxlength="5" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /></td>
+                                                                        <input type="text" id="AddNewEntryWorkHour" value="" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" class="decimal2" /></td>
                                                                     <%}
                                                                     else
                                                                     {%>

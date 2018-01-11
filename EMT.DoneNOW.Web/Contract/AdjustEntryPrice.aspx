@@ -48,7 +48,7 @@
                     <td width="30%" class="FieldLabels">
                        计费时长
                         <div>
-                            <input type="text" id="hours_billed_deduction" name="hours_billed_deduction" style="width:220px;"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=thisEntry.hours_billed_deduction==null?"":((decimal)thisEntry.hours_billed_deduction).ToString("#0.00") %>" class="ToDec2" />
+                            <input type="text" id="hours_billed_deduction" name="hours_billed_deduction" style="width:220px;"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=((decimal)(thisEntry.hours_billed_deduction??thisEntry.hours_billed)).ToString("#0.00") %>" class="ToDec2" />
                         </div>
                     </td>
                 </tr>
@@ -56,7 +56,7 @@
                     <td width="30%" class="FieldLabels">
                         计费费率
                         <div>
-                            <input type="text" id="hours_rate_deduction" name="hours_rate_deduction" style="width:220px;"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=thisEntry.hours_rate_deduction==null?"":((decimal)thisEntry.hours_rate_deduction).ToString("#0.00") %>" class="ToDec2" />
+                            <input type="text" id="hours_rate_deduction" name="hours_rate_deduction" style="width:220px;"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" value="<%=thisEntry.hours_rate_deduction==null?(searchRate==null?"":((decimal)searchRate).ToString("#0.00")):((decimal)thisEntry.hours_rate_deduction).ToString("#0.00") %>" class="ToDec2" />
                         </div>
                     </td>
                 </tr>

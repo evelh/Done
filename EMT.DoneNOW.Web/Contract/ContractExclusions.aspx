@@ -41,7 +41,7 @@
             }
 
         .DivScrollingContainer.General {
-            top: 82px;
+            top: 41px;
         }
 
         .DivScrollingContainer {

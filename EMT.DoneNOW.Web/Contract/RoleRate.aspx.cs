@@ -50,10 +50,14 @@ namespace EMT.DoneNOW.Web.Contract
         // 修改选择角色
         protected void role_id_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var roleList = new ContractRateBLL().GetAvailableRoles(contractId);
-            long roleId = long.Parse(role_id.SelectedValue);
-            role_rate.Text = roleList.Find(r => r.id == roleId).hourly_rate.ToString();
-            rate.Text = role_rate.Text;
+            if (!IsPostBack)
+            {
+                var roleList = new ContractRateBLL().GetAvailableRoles(contractId);
+                long roleId = long.Parse(role_id.SelectedValue);
+                role_rate.Text = roleList.Find(r => r.id == roleId).hourly_rate.ToString();
+                rate.Text = role_rate.Text;
+            }
+           
         }
 
         // 保存并关闭
@@ -90,12 +94,16 @@ namespace EMT.DoneNOW.Web.Contract
                 ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('费率格式错误，请重新填写');</script>");
                 return false;
             }
-            var isExRole = new ContractRateBLL().IsExistRole(contractId, roleRate.role_id);
-            if (isExRole)
-            {
-                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('角色已存在');</script>");
-                return false;
-            }
+            //if (rateId == 0)
+            //{
+                var isExRole = new ContractRateBLL().IsExistRole(contractId, roleRate.role_id, rateId);
+                if (isExRole)
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('角色已存在');</script>");
+                    return false;
+                }
+            //}
+            
 
             roleRate.rate = rateNum;
             new ContractRateBLL().CreateOrUpdateRate(roleRate, GetLoginUserId());
