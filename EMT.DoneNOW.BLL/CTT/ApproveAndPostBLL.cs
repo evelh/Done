@@ -565,10 +565,11 @@ namespace EMT.DoneNOW.BLL
                             }
                             if (extend - ccc.extended_price < 0)//缺少的部分
                             {
+                                var oldExtend = extend;
                                 extend = (decimal)ccc.extended_price - extend;
                                 extend = decimal.Divide(extend, (decimal)ccnr.rate);
                                 int n = decimal.ToInt32(extend);
-                                decimal m = extend - n;
+                                decimal m = (decimal)ccc.extended_price - ((n * (decimal)ccnr.rate) + oldExtend);
                                 for (int i = 0; i < n; i++)
                                 {
                                     ctt_contract_block ccb1 = new ctt_contract_block();
@@ -836,10 +837,11 @@ namespace EMT.DoneNOW.BLL
                             }
                             if (extend - ccc.extended_price < 0)//缺少的部分
                             {
+                                var oldExtend = extend;
                                 extend = (decimal)ccc.extended_price - extend;
                                 extend = decimal.Divide(extend, (decimal)ccnr.rate);
                                 int n = decimal.ToInt32(extend);
-                                decimal m = extend - n;
+                                decimal m = (decimal)ccc.extended_price - ((n * (decimal)ccnr.rate) + oldExtend);
                                 for (int i = 0; i < n; i++)
                                 {
                                     ctt_contract_block ccb1 = new ctt_contract_block();
@@ -2904,31 +2906,49 @@ namespace EMT.DoneNOW.BLL
             var kk = new ApprovePostDto.ChargesSelectList();
             var ccc = ccc_dal.FindNoDeleteById(id);
             var cc = new ctt_contract();
+            var ca = new crm_account();
             if (ccc.contract_id != null)
             {
                 cc = new ctt_contract_dal().FindNoDeleteById((long)ccc.contract_id);
+                if (cc != null)
+                {
+                    ca = new crm_account_dal().FindNoDeleteById(cc.account_id);
+                }
+                
             }
             else if (ccc.task_id != null)
             {
                 var thisTask = new sdk_task_dal().FindNoDeleteById((long)ccc.task_id);
-                if (thisTask != null && thisTask.contact_id != null)
+                if (thisTask != null)
                 {
-                    cc = new ctt_contract_dal().FindNoDeleteById((long)thisTask.contract_id);
+                    if (thisTask.contact_id != null)
+                    {
+                        cc = new ctt_contract_dal().FindNoDeleteById((long)thisTask.contract_id);
+                    }
+                    ca = new crm_account_dal().FindNoDeleteById(thisTask.account_id);
+
                 }
             }
             else if (ccc.project_id != null)
             {
                 var thisPro = new pro_project_dal().FindNoDeleteById((long)ccc.project_id);
-                if (thisPro != null && thisPro.contract_id != null)
+                if (thisPro != null)
                 {
-                    cc = new ctt_contract_dal().FindNoDeleteById((long)thisPro.contract_id);
+                    if(thisPro.contract_id != null)
+                    {
+                        cc = new ctt_contract_dal().FindNoDeleteById((long)thisPro.contract_id);
+                    }
+                    ca = new crm_account_dal().FindNoDeleteById(thisPro.account_id);
                 }
             }
             // var cc = new ctt_contract_dal().FindNoDeleteById((long)ccc.contract_id);
             if (cc != null)
             {
-                var ca = new crm_account_dal().FindNoDeleteById(cc.account_id);
-                kk.accountname = ca.name;
+                // var ca = new crm_account_dal().FindNoDeleteById(cc.account_id);
+                if (ca != null)
+                {
+                    kk.accountname = ca.name;
+                }
                 kk.costname = ccc.name;
                 kk.extendprice = ccc.extended_price==null?"":ccc.extended_price.ToString();
             }
