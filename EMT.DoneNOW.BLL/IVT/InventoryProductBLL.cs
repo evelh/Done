@@ -573,7 +573,7 @@ w.name as location_name
             if (productIds != "")
             {
                 productIds = productIds.Substring(0, productIds.Length - 1);
-                var ids = dal.FindListBySql<long>($"select vendor_account_id from ivt_product_vendor where product_id in({productIds})");
+                var ids = dal.FindListBySql<long>($"select vendor_account_id from ivt_product_vendor where is_default=1 and product_id in({productIds})");
                 if (ids != null && ids.Count == 1)
                     vendorId = ids[0];
             }
