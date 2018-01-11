@@ -68,6 +68,7 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="product">产品</param>
         /// <param name="vendordata">供应商集合</param>
+        /// <param name="udf">自定义字段值</param>
         /// <param name="user_id">操作用户</param>
         /// <returns></returns>
         public ERROR_CODE InsertProductAndVendor(ivt_product product, VendorData vendordata, List<UserDefinedFieldValue> udf, long user_id) {
@@ -153,9 +154,10 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="product">产品</param>
         /// <param name="vendordata">供应商集合</param>
+        /// <param name="udf">自定义字段值</param>
         /// <param name="user_id">操作用户</param>
         /// <returns></returns>
-        public ERROR_CODE UpdateProductAndVendor(ivt_product product, VendorData vendordata, long user_id)
+        public ERROR_CODE UpdateProductAndVendor(ivt_product product, VendorData vendordata, List<UserDefinedFieldValue> udf, long user_id)
         {
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
@@ -281,7 +283,12 @@ namespace EMT.DoneNOW.BLL
                 }
 
             }
-                return ERROR_CODE.SUCCESS;
+
+            var udfBll = new UserDefinedFieldsBLL();
+            var udf_contact_list = udfBll.GetUdf(DicEnum.UDF_CATE.PRODUCTS); // 产品的自定义字段
+            udfBll.UpdateUdfValue(UDF_CATE.PRODUCTS, udf_contact_list, product.id, udf, new UserInfoDto { id = user.id, name = user.name }, OPER_LOG_OBJ_CATE.PRODUCT);
+
+            return ERROR_CODE.SUCCESS;
         }
         /// <summary>
         /// 不存在该产品的仓库名称和id

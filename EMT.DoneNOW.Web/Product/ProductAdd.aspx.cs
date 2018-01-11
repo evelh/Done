@@ -32,8 +32,8 @@ namespace EMT.DoneNOW.Web
         {
             id = Convert.ToInt32(Request.QueryString["id"]);//获取id          
             GetMenus();
+            product_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.PRODUCTS);//自定义
             if (!IsPostBack) {
-                product_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.PRODUCTS);//自定义
                 var dic = pbll.GetField();
                 this.Item_Type.DataTextField = "show";
                 this.Item_Type.DataValueField = "val";
@@ -45,13 +45,16 @@ namespace EMT.DoneNOW.Web
                 this.Period_Type.DataSource = dic.FirstOrDefault(_ => _.Key == "Period_Type").Value;
                 this.Period_Type.DataBind();
                 this.Period_Type.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
-                if (id > 0) {
+                if (id > 0)
+                {
                     product = pbll.GetProduct(id);
+                    udfv_list = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.PRODUCTS, id, product_udfList);
                     if (product == null)
                     {
                         Response.Write("<script>alert('获取相关信息失败，无法修改！');window.close();self.opener.location.reload();</script>");
                     }
-                    else {
+                    else
+                    {
                         bind();
                         vendorlist = pbll.GetVendorList(product.id);
                         foreach (var ve in vendorlist) {
@@ -210,7 +213,7 @@ namespace EMT.DoneNOW.Web
 
             //更新
             if (id > 0) {
-                var result=pbll.UpdateProductAndVendor(product, tt, GetLoginUserId());
+                var result=pbll.UpdateProductAndVendor(product, tt, udfv_list, GetLoginUserId());
                 switch (result) {
                     case ERROR_CODE.EXIST: Response.Write("<script>alert(\"已经存在该名称的产品，请修改后保存！\");</script>"); break; //存在相同名称产品
                     case ERROR_CODE.ERROR: Response.Write("<script>alert(\"保存失败！\");</script>"); break; //操作失败
@@ -244,6 +247,7 @@ namespace EMT.DoneNOW.Web
         {
             if (save_deal()) {
                 Response.Write("<script>window.close();self.opener.location.reload();</script>");
+                Response.End();
             }            
         }
 
@@ -257,7 +261,8 @@ namespace EMT.DoneNOW.Web
 
         protected void Cancel_Click(object sender, EventArgs e)
         {
-            Response.Write("<script>window.close();self.opener.location.reload();</script>");
+            Response.Write("<script>window.close();</script>");
+            Response.End();
         }
         private void GetMenus()
         {
