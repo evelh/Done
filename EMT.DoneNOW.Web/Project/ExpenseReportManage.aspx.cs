@@ -35,5 +35,47 @@ namespace EMT.DoneNOW.Web.Project
             }
 
         }
+
+        protected void Save_Close_Click(object sender, EventArgs e)
+        {
+            if (isAdd)
+            {
+                thisReport = new sdk_expense_report();
+            }
+            else
+            {
+                thisReport = new sdk_expense_report_dal().FindNoDeleteById(thisReport.id);
+            }
+            thisReport.title = Request.Form["title"];
+            var endDate = DateTime.Now;
+            if (DateTime.TryParse(Request.Form["endDate"], out endDate))
+            {
+                thisReport.end_date = endDate;
+                var cash_advance_amount = Request.Form["cash_advance_amount"];
+                if (!string.IsNullOrEmpty(cash_advance_amount))
+                {
+                    thisReport.cash_advance_amount = decimal.Parse(cash_advance_amount);
+                }
+                else
+                {
+                    thisReport.cash_advance_amount = null;
+                }
+                var result = new ExpenseBLL().ReportManage(thisReport,LoginUserId); ;
+
+                if (result)
+                {
+
+                }
+                else
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存失败！');</script>");
+                }
+
+            }
+            else
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('周期结束日期格式不正确！');</script>");
+            }
+        }
     }
 }

@@ -282,58 +282,58 @@ namespace EMT.DoneNOW.BLL
                 {
                     if (conCost.create_ci == 1)
                     {
-                        reason = "已生成配置项不能删除,状态已经更改为取消状态";
+                        reason = "成本已生成配置项不能删除,可以将成本状态手动更改取消状态！";
 
                         #region 取消操作
-                        conCost.status_id = (int)DicEnum.COST_STATUS.CANCELED;
-                        OperLogBLL.OperLogUpdate<ctt_contract_cost>(conCost, _dal.FindNoDeleteById(conCost.id), conCost.id, user_id, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_COST, "修改成本状态");
-                        _dal.Update(conCost);
-                        var cccpDal = new ctt_contract_cost_product_dal();
-                        var costProList = cccpDal.GetListByCostId(conCost.id);
-                        if (costProList != null && costProList.Count > 0)
-                        {
-                            #region 取消配送已经配送的成本产品
-                            string isHasPurchaseOrder = "";
-                            var shipItemList = costProList.Where(_ => _.status_id == (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.DISTRIBUTION).ToList();
-                            if (shipItemList != null && shipItemList.Count > 0)
-                            {
-                                bool isDelShipCost = false;
-                                int delNum = 0;  // 运费成本已经审批并提交--无法删除
-                                foreach (var shipItem in shipItemList)
-                                {
-                                    UnShipItem(shipItem.id, user_id, out isDelShipCost);
-                                    if (isDelShipCost)
-                                    {
-                                        delNum++;
-                                    }
-                                }
-                                if (delNum > 0)
-                                {
-                                    isDelShipCost = true;
-                                }
-                            }
-                            #endregion
+                        //conCost.status_id = (int)DicEnum.COST_STATUS.CANCELED;
+                        //OperLogBLL.OperLogUpdate<ctt_contract_cost>(conCost, _dal.FindNoDeleteById(conCost.id), conCost.id, user_id, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_COST, "修改成本状态");
+                        //_dal.Update(conCost);
+                        //var cccpDal = new ctt_contract_cost_product_dal();
+                        //var costProList = cccpDal.GetListByCostId(conCost.id);
+                        //if (costProList != null && costProList.Count > 0)
+                        //{
+                        //    #region 取消配送已经配送的成本产品
+                        //    string isHasPurchaseOrder = "";
+                        //    var shipItemList = costProList.Where(_ => _.status_id == (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.DISTRIBUTION).ToList();
+                        //    if (shipItemList != null && shipItemList.Count > 0)
+                        //    {
+                        //        bool isDelShipCost = false;
+                        //        int delNum = 0;  // 运费成本已经审批并提交--无法删除
+                        //        foreach (var shipItem in shipItemList)
+                        //        {
+                        //            UnShipItem(shipItem.id, user_id, out isDelShipCost);
+                        //            if (isDelShipCost)
+                        //            {
+                        //                delNum++;
+                        //            }
+                        //        }
+                        //        if (delNum > 0)
+                        //        {
+                        //            isDelShipCost = true;
+                        //        }
+                        //    }
+                        //    #endregion
 
-                            #region 删除相关成本产品信息
-                            var ivDal = new ivt_order_dal();
-                            foreach (var _ in costProList)
-                            {
-                                DeletCostProSn(_.id, user_id);
-                                if (_.order_id != null)
-                                {
-                                    var thisOrder = ivDal.FindNoDeleteById((long)_.order_id);
-                                    if (thisOrder != null)
-                                    {
-                                        isHasPurchaseOrder += thisOrder.purchase_order_no + ",";
-                                    }
+                        //    #region 删除相关成本产品信息
+                        //    var ivDal = new ivt_order_dal();
+                        //    foreach (var _ in costProList)
+                        //    {
+                        //        DeletCostProSn(_.id, user_id);
+                        //        if (_.order_id != null)
+                        //        {
+                        //            var thisOrder = ivDal.FindNoDeleteById((long)_.order_id);
+                        //            if (thisOrder != null)
+                        //            {
+                        //                isHasPurchaseOrder += thisOrder.purchase_order_no + ",";
+                        //            }
 
-                                }
-                                cccpDal.SoftDelete(_, user_id);
-                                OperLogBLL.OperLogDelete<ctt_contract_cost_product>(_, _.id, user_id, OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "删除成本关联产品");
-                            }
+                        //        }
+                        //        cccpDal.SoftDelete(_, user_id);
+                        //        OperLogBLL.OperLogDelete<ctt_contract_cost_product>(_, _.id, user_id, OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "删除成本关联产品");
+                        //    }
 
-                            #endregion
-                        }
+                        //    #endregion
+                        //}
                         #endregion
                         return false;
                     }
@@ -407,6 +407,10 @@ namespace EMT.DoneNOW.BLL
 
                     return true;
                 }
+            }
+            else
+            {
+                
             }
             return false;
         }
