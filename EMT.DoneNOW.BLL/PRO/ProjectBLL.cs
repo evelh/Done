@@ -574,7 +574,7 @@ namespace EMT.DoneNOW.BLL
                             if (oldTask != null)
                             {
                                 task.status_id = (int)TICKET_STATUS.DONE;
-                                task.date_completed = DateTime.Now;
+                                task.date_completed = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                 task.update_user_id = user.id;
                                 task.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                                 tDal.Update(task);
@@ -1236,7 +1236,7 @@ namespace EMT.DoneNOW.BLL
                             decimal workHours = RetTaskActHours(thisTask.id);
                             thisTask.status_id = (int)DicEnum.TICKET_STATUS.DONE;
                             thisTask.reason = reason;
-                            thisTask.date_completed = DateTime.Now;
+                            thisTask.date_completed = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                             thisTask.projected_variance -= (thisTask.estimated_hours - workHours);
                             thisTask.update_user_id = user.id;
                             thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);

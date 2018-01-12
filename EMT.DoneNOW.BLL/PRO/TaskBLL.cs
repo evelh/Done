@@ -2359,7 +2359,7 @@ namespace EMT.DoneNOW.BLL
             {
                 thisTask.status_id = (int)TICKET_STATUS.DONE;
                 thisTask.reason = reason;
-                thisTask.date_completed = DateTime.Now;
+                thisTask.date_completed = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 thisTask.projected_variance -= (thisTask.estimated_hours - (v_task.worked_hours != null ? (decimal)v_task.worked_hours : 0));
                 thisTask.update_user_id = user.id;
                 thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
