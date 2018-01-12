@@ -73,11 +73,15 @@ function Delete() {
         type: "GET",
         url: "../Tools/ContractAjax.ashx?act=deleteCost&cost_id=" + entityid,
         async: false,
+        dataType:"json",
         success: function (data) {
-            if (data == "True") {
-                alert('删除成功');
-            } else if (data == "False") {
-                alert('删除失败');
+            if (data != "") {
+                if (data.result) {
+                    alert('删除成功');
+                } else  {
+                    alert('删除失败' + data.reason);
+                }
+               
             }
             history.go(0);
         }

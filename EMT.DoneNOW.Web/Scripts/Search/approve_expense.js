@@ -71,6 +71,22 @@ function ProjectDetail() {
         }
     });
 }
+// 工单详情
+function TicketDetail() {
+    $.ajax({
+        type: "GET",
+        url: "../Tools/ApproveAndPostAjax.ashx?act=GetExpInfo&id=" + entityid,
+        dataType: "json",
+        success: function (data) {
+            debugger;
+            if (data != "") {
+                if (data.task_id != null && data.task_id != "" && data.task_id != undefined)
+                    OpenWindow("../Project/TaskView.aspx?id=" + data.task_id, windowObj.task + windowType.blank);
+            }
+
+        }
+    });
+}
 function MakeBill() {
     var typeId = $("#type").val();
     $.ajax({

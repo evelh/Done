@@ -1965,7 +1965,8 @@ namespace EMT.DoneNOW.BLL
                     var thisLongID = long.Parse(thisId);
                     if (IsCost(thisLongID))
                     {
-                        ccBLL.DeleteContractCost(thisLongID,user_id);
+                        var reason = "";
+                        ccBLL.DeleteContractCost(thisLongID,user_id,out reason);
                     }
                     else
                     {

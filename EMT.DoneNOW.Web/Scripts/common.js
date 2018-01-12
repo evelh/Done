@@ -243,6 +243,7 @@ var windowObj = {
     projectUdf: 'projectUdf',
     expense: "expense",
     workEntry: "workEntry",
+    task:"task",
 }
 var windowType = {
     blank: '_blank',

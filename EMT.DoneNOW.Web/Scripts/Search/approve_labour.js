@@ -90,6 +90,19 @@ function ContractDetail() {
         }
     });
 }
+function ProjectDetail() {
+    var typeId = $("#type").val();
+    $.ajax({
+        type: "GET",
+        url: "../Tools/ApproveAndPostAjax.ashx?act=GetProjectId&id=" + entityid + "&type=" + typeId,
+        success: function (data) {
+            if (data != "") {
+                window.open('../Project/ProjectView.aspx?&id=' + data, windowObj.project + windowType.blank, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            }
+
+        }
+    });
+}
 // 工单详情
 function TicketDetail() {
 

@@ -3028,6 +3028,45 @@ namespace EMT.DoneNOW.BLL
             return -1;
         }
         /// <summary>
+        /// 获取项目ID
+        /// </summary>
+        public long GetProjectId(long id, long type)
+        {
+            long projectId = 0;
+            if (type == (long)EMT.DoneNOW.DTO.QueryType.APPROVE_CHARGES)
+            {
+                var thisCost =  new ctt_contract_cost_dal().FindNoDeleteById(id);
+                if (thisCost != null && thisCost.project_id != null)
+                {
+                    return (long)thisCost.project_id;
+                }
+            }
+            // 工时
+            else if (type == (long)QueryType.APPROVE_LABOUR)
+            {
+                var thisEntry = new sdk_work_entry_dal().FindNoDeleteById(id);
+                if (thisEntry != null )
+                {
+                    var thisTask = new sdk_task_dal().FindNoDeleteById(thisEntry.task_id);
+                    if (thisTask != null&&thisTask.project_id!=null)
+                    {
+                        return (long)thisTask.project_id;
+                    }
+                 
+                }
+            }
+            else if(type == (long)QueryType.APPROVE_EXPENSE)
+            {
+                var thisExp = new sdk_expense_dal().FindNoDeleteById(id);
+                if (thisExp != null&& thisExp.project_id != null)
+                {
+                   return (long)thisExp.project_id;
+                     
+                }
+            }
+            return projectId;
+        }
+        /// <summary>
         /// 判断工时预付费是否足够
         /// </summary>
         public ERROR_CODE LabourBlock(long id)

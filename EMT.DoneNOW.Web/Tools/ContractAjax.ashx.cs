@@ -360,9 +360,9 @@ namespace EMT.DoneNOW.Web
         public void DeleteCost(HttpContext context, long cid)
         {
 
-
-            var result = new ContractCostBLL().DeleteContractCost(cid, LoginUserId);
-            context.Response.Write(result);
+            string reason = "";
+            var result = new ContractCostBLL().DeleteContractCost(cid, LoginUserId,out reason);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new { result = result,reason = reason }));
 
         }
         /// <summary>

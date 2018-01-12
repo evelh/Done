@@ -338,6 +338,7 @@
     <Content Include="Project\EntryDetail.aspx" />
     <Content Include="Project\ExpenseDetail.aspx" />
     <Content Include="Project\ExpenseManage.aspx" />
+    <Content Include="Project\ExpenseReportManage.aspx" />
     <Content Include="Project\ProjectAddOrEdit.aspx" />
     <Content Include="Product\ProductAdd.aspx" />
     <Content Include="Product\ProductStock.aspx" />
@@ -1590,6 +1591,13 @@
     </Compile>
     <Compile Include="Project\ExpenseManage.aspx.designer.cs">
       <DependentUpon>ExpenseManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\ExpenseReportManage.aspx.cs">
+      <DependentUpon>ExpenseReportManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\ExpenseReportManage.aspx.designer.cs">
+      <DependentUpon>ExpenseReportManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Project\ProjectAddOrEdit.aspx.cs">
       <DependentUpon>ProjectAddOrEdit.aspx</DependentUpon>

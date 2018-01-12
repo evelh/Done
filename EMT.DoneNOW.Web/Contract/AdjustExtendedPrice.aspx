@@ -72,6 +72,7 @@
     </div>
         </div>
         <script src="../Scripts/jquery-3.1.0.min.js"></script>
+        <script src="../Scripts/common.js"></script>
         <script>
             function save_deal() {
                 var k = $("#Extended_Price").val();
@@ -83,21 +84,30 @@
                     }
                 }
             }
-            $("#Extended_Price").change(function () {
-                if ((/^\d{1,15}\.?\d{0,2}$/.test(this.value)) == false)
-                { alert('只能输入两位小数'); this.value = ''; this.focus(); return false; }
-                var f = Math.round(this.value * 100) / 100;
-                var s = f.toString();
-                var rs = s.indexOf('.');
-                if (rs < 0) {
-                    rs = s.length;
-                    s += '.';
+            //$("#Extended_Price").change(function () {
+            //    if ((/^\d{1,15}\.?\d{0,2}$/.test(this.value)) == false)
+            //    { alert('只能输入两位小数'); this.value = ''; this.focus(); return false; }
+            //    var f = Math.round(this.value * 100) / 100;
+            //    var s = f.toString();
+            //    var rs = s.indexOf('.');
+            //    if (rs < 0) {
+            //        rs = s.length;
+            //        s += '.';
+            //    }
+            //    while (s.length <= rs + 2) {
+            //        s += '0';
+            //    }
+            //    $("#Extended_Price").val(s);
+            //});
+            $("#Extended_Price").blur(function () {
+                var thisValue = $(this).val();
+                if (thisValue != "" && !isNaN(thisValue)) {
+                    $(this).val(toDecimal2(thisValue));
                 }
-                while (s.length <= rs + 2) {
-                    s += '0';
+                else {
+                    $(this).val("");
                 }
-                $("#Extended_Price").val(s);
-            });
+            })
         </script>
     </form>
 </body>

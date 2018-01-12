@@ -80,6 +80,7 @@
     <Compile Include="IVT\ProductBLL.cs" />
     <Compile Include="IVT\ServiceBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PRO\ExpenseBLL.cs" />
     <Compile Include="PRO\ProjectBLL.cs" />
     <Compile Include="PRO\TaskBLL.cs" />
     <Compile Include="SYS\AccountClassBLL.cs" />

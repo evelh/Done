@@ -28,6 +28,7 @@ namespace EMT.DoneNOW.Web
                 case "post": Post(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
                 //查看合同详情
                 case "ContractDetails": ContractDetails(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
+                case "GetProjectId": GetProjectId(context, Convert.ToInt32(id), Convert.ToInt32(type)); break;
                 //处理合同成本审批
                 case "auto_block": auto_block(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
                 case "force": force(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
@@ -107,6 +108,21 @@ namespace EMT.DoneNOW.Web
             }
 
         }
+        /// <summary>
+        /// 返回项目ID
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="id"></param>
+        /// <param name="type"></param>
+        public void GetProjectId(HttpContext context, int id, int type)
+        {
+            var result = new ApproveAndPostBLL().GetProjectId(Convert.ToInt64(id),  type);
+            if (result > 0)
+            {
+                context.Response.Write(result);
+            }
+        }
+
         /// <summary>
         /// 恢复初始值
         /// </summary>

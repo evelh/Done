@@ -266,9 +266,9 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 删除合同成本
         /// </summary>
-        public bool DeleteContractCost(long cid, long user_id)
+        public bool DeleteContractCost(long cid, long user_id,out string reason)
         {
-
+            reason = "";
             var conCost = _dal.FindNoDeleteById(cid);
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (conCost != null && user != null && conCost.bill_status != 1)
@@ -282,10 +282,60 @@ namespace EMT.DoneNOW.BLL
                 {
                     if (conCost.create_ci == 1)
                     {
+                        reason = "已生成配置项不能删除,状态已经更改为取消状态";
+
+                        #region 取消操作
                         conCost.status_id = (int)DicEnum.COST_STATUS.CANCELED;
                         OperLogBLL.OperLogUpdate<ctt_contract_cost>(conCost, _dal.FindNoDeleteById(conCost.id), conCost.id, user_id, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_COST, "修改成本状态");
                         _dal.Update(conCost);
+                        var cccpDal = new ctt_contract_cost_product_dal();
+                        var costProList = cccpDal.GetListByCostId(conCost.id);
+                        if (costProList != null && costProList.Count > 0)
+                        {
+                            #region 取消配送已经配送的成本产品
+                            string isHasPurchaseOrder = "";
+                            var shipItemList = costProList.Where(_ => _.status_id == (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.DISTRIBUTION).ToList();
+                            if (shipItemList != null && shipItemList.Count > 0)
+                            {
+                                bool isDelShipCost = false;
+                                int delNum = 0;  // 运费成本已经审批并提交--无法删除
+                                foreach (var shipItem in shipItemList)
+                                {
+                                    UnShipItem(shipItem.id, user_id, out isDelShipCost);
+                                    if (isDelShipCost)
+                                    {
+                                        delNum++;
+                                    }
+                                }
+                                if (delNum > 0)
+                                {
+                                    isDelShipCost = true;
+                                }
+                            }
+                            #endregion
 
+                            #region 删除相关成本产品信息
+                            var ivDal = new ivt_order_dal();
+                            foreach (var _ in costProList)
+                            {
+                                DeletCostProSn(_.id, user_id);
+                                if (_.order_id != null)
+                                {
+                                    var thisOrder = ivDal.FindNoDeleteById((long)_.order_id);
+                                    if (thisOrder != null)
+                                    {
+                                        isHasPurchaseOrder += thisOrder.purchase_order_no + ",";
+                                    }
+
+                                }
+                                cccpDal.SoftDelete(_, user_id);
+                                OperLogBLL.OperLogDelete<ctt_contract_cost_product>(_, _.id, user_id, OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "删除成本关联产品");
+                            }
+
+                            #endregion
+                        }
+                        #endregion
+                        return false;
                     }
                     else
                     {
@@ -305,6 +355,54 @@ namespace EMT.DoneNOW.BLL
                             oper_description = _dal.AddValue(conCost),
                             remark = "删除合同成本"
                         });
+
+                        var cccpDal = new ctt_contract_cost_product_dal();
+                        var costProList = cccpDal.GetListByCostId(conCost.id);
+                        if (costProList != null && costProList.Count > 0)
+                        {
+                            #region 取消配送已经配送的成本产品
+                            string isHasPurchaseOrder = "";
+                            var shipItemList = costProList.Where(_ => _.status_id == (int)DicEnum.CONTRACT_COST_PRODUCT_STATUS.DISTRIBUTION).ToList();
+                            if (shipItemList != null && shipItemList.Count > 0)
+                            {
+                                bool isDelShipCost = false;
+                                int delNum = 0;  // 运费成本已经审批并提交--无法删除
+                                foreach (var shipItem in shipItemList)
+                                {
+                                    UnShipItem(shipItem.id, user_id, out isDelShipCost);
+                                    if (isDelShipCost)
+                                    {
+                                        delNum++;
+                                    }
+                                }
+                                if (delNum > 0)
+                                {
+                                    isDelShipCost = true;
+                                }
+                            }
+                            #endregion
+
+                            #region 删除相关成本产品信息
+                            var ivDal = new ivt_order_dal();
+                            foreach (var _ in costProList)
+                            {
+                                DeletCostProSn(_.id, user_id);
+                                if (_.order_id != null)
+                                {
+                                    var thisOrder = ivDal.FindNoDeleteById((long)_.order_id);
+                                    if (thisOrder != null)
+                                    {
+                                        isHasPurchaseOrder += thisOrder.purchase_order_no + ",";
+                                    }
+
+                                }
+                                cccpDal.SoftDelete(_, user_id);
+                                OperLogBLL.OperLogDelete<ctt_contract_cost_product>(_, _.id, user_id, OPER_LOG_OBJ_CATE.CTT_CONTRACT_COST_PRODUCT, "删除成本关联产品");
+                            }
+
+                            #endregion
+                        }
+
                     }
 
                     return true;
@@ -321,9 +419,10 @@ namespace EMT.DoneNOW.BLL
             if (!string.IsNullOrEmpty(ids) && user != null)
             {
                 var idList = ids.Split(',');
+                var reason = "";
                 foreach (var id in idList)
                 {
-                    DeleteContractCost(long.Parse(id), user_id);
+                    DeleteContractCost(long.Parse(id), user_id,out reason);
                 }
                 return true;
             }

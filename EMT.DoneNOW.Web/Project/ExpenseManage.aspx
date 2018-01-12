@@ -357,7 +357,7 @@
                                 <div class="Medium Column">
                                     <div class="EditorLabelContainer">
                                         <div class="Label">
-                                            <label for="z97cae0d10d61467888854993e6ed993b">收据总额</label>
+                                            <label for="z97cae0d10d61467888854993e6ed993b">收据总额</label><span class="Required">*</span>
                                         </div>
                                     </div>
                                     <div class="Editor TextBox" data-editor-id="z97cae0d10d61467888854993e6ed993b" data-rdp="z97cae0d10d61467888854993e6ed993b">

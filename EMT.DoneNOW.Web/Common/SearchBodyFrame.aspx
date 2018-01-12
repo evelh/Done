@@ -1506,6 +1506,20 @@
                 }
             });    
         }
+
+        // 查看项目详情
+        function ProjectDetail() {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ApproveAndPostAjax.ashx?act=GetProjectId&id=" + entityid + "&type=" + <%=queryTypeId%>,
+                success: function (data) {
+                    if (data != "") {
+                        window.open('../Project/ProjectView.aspx?&id=' + data, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.PROJECT_VIEW%>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+                    }
+                    
+                }
+            });  
+        }
         //查看工单详情
         function TicketDetail() {
 
