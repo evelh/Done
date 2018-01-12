@@ -40,9 +40,9 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public SByte? scheduled { get; set; }
         [DataMember]
-        public DateTime? scheduleddate { get; set; }
+        public Int64? scheduled_oper_time { get; set; }
         [DataMember]
-        public String scheduledtime { get; set; }
+        public String scheduled_time { get; set; }
         [DataMember]
         public Int64? owner_resource_id { get; set; }
         [DataMember]
@@ -68,11 +68,11 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? parent_id { get; set; }
         [DataMember]
-        public UInt64? billable { get; set; }
+        public Boolean? billable { get; set; }
         [DataMember]
         public Int64? contract_id { get; set; }
         [DataMember]
-        public DateTime? date_completed { get; set; }
+        public Int64? date_completed { get; set; }
         [DataMember]
         public Int64? role_id { get; set; }
         [DataMember]
@@ -82,37 +82,37 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? product_id { get; set; }
         [DataMember]
-        public String externalid { get; set; }
+        public String external_id { get; set; }
         [DataMember]
         public SByte? is_cancelled { get; set; }
         [DataMember]
-        public Int32? cobillable { get; set; }
+        public SByte? co_billable { get; set; }
         [DataMember]
         public Int32? priority { get; set; }
         [DataMember]
-        public DateTime? last_activity_date { get; set; }
+        public Int64? last_activity_time { get; set; }
         [DataMember]
         public Int64? contact_id { get; set; }
         [DataMember]
         public Int64? recurring_ticket_id { get; set; }
         [DataMember]
-        public DateTime? first_activity_date { get; set; }
+        public Int64? first_activity_time { get; set; }
         [DataMember]
         public Int64? sla_id { get; set; }
         [DataMember]
-        public UInt64? has_met_service_level_agreement { get; set; }
+        public Boolean? has_met_service_level_agreement { get; set; }
         [DataMember]
-        public DateTime? first_response_target_time { get; set; }
+        public Int64? first_response_target_time { get; set; }
         [DataMember]
-        public DateTime? resolution_plan_target_time { get; set; }
+        public Int64? resolution_plan_target_time { get; set; }
         [DataMember]
-        public DateTime? resolution_plan_actual_time { get; set; }
+        public Int64? resolution_plan_actual_time { get; set; }
         [DataMember]
-        public DateTime? resolution_target_time { get; set; }
+        public Int64? resolution_target_time { get; set; }
         [DataMember]
-        public DateTime? resolution_actual_time { get; set; }
+        public Int64? resolution_actual_time { get; set; }
         [DataMember]
-        public DateTime? sla_start_time { get; set; }
+        public Int64? sla_start_time { get; set; }
         [DataMember]
         public String resolution { get; set; }
         [DataMember]
@@ -130,7 +130,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? edit_event_id { get; set; }
         [DataMember]
-        public DateTime? last_workflow_activity_time { get; set; }
+        public Int64? last_workflow_activity_time { get; set; }
         [DataMember]
         public Int32? reopened_count { get; set; }
         [DataMember]
