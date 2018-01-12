@@ -207,8 +207,8 @@
         LayerMsg("取消接收数不能大于已接收数");
         return false;
       }
-      if (cnt < 0 && (cnt + parseInt($("#avaCnt" + id).text()) < 0)) {
-        LayerMsg("取消接收数不能大于可用数");
+      if (cnt < 0 && (cnt + parseInt($("#avaCnt" + id).val()) < 0)) {
+        LayerMsg("取消接收数不能大于库存可用数");
         return false;
       }
       if (cnt > 0 && (cnt > parseInt($("#unreceivedCnt" + id).text()))) {

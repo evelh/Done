@@ -317,7 +317,7 @@
     </div>
     <div class="TabContainer" style="display: none;">
             <div class="cont" style="margin-top:15px;">
-                <iframe id="PageFrame22" name="PageFrame22" style="width:100%;height:auto" src="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVENTORY_ITEM %>&con1235=<%=product.id %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.InventoryItem %>"></iframe>
+                <iframe id="PageFrame22" name="PageFrame22" style="width:100%;height:auto" src="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVENTORY_ITEM %>&con1235=<%=product.id %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.InventoryItem %>&param1=<%=product.id %>"></iframe>
             </div>
     </div>
         </div>

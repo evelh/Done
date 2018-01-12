@@ -478,11 +478,11 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 获取采购订单产品
         /// </summary>
-        /// <param name="productId"></param>
+        /// <param name="orderProductId"></param>
         /// <returns></returns>
-        public ivt_order_product GetOrderProduct(long productId)
+        public ivt_order_product GetOrderProduct(long orderProductId)
         {
-            return pdtDal.FindById(productId);
+            return pdtDal.FindById(orderProductId);
         }
 
         /// <summary>

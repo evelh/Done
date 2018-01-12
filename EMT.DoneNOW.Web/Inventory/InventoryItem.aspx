@@ -41,9 +41,22 @@
               <td >
                 <span class="FieldLabels" style="font-weight: bold;">产品名称<span class="errorSmall">*</span></span>
                   <div>
-                    <input type="hidden" id="ProIdHidden" name="product_id" <%if (product != null) { %> value="<%=product.product_id %>" <%} %> />
-                    <input type="text" disabled="disabled" id="ProId" style="width: 248px;padding:0;" <%if (product != null) { %> value="<%=product.product_name %>" <%} %> />
-                    <img src="../Images/data-selector.png" <%if (product == null) { %> onclick="window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CALLBACK %>&field=ProId&callBack=GetProduct', '<%=EMT.DoneNOW.DTO.OpenWindow.ServiceSelect %>', 'left=200,top=200,width=600,height=800', false)" style="vertical-align: middle; cursor: pointer;" <%} else { %> onclick="javascript:LayerMsg('不能修改产品！');" <%} %> />
+                    <%  long pdtId = 0;
+                        string pdtName = "";
+                        if (product != null)
+                        {
+                          pdtId = product.id;
+                          pdtName = product.product_name;
+                        }
+                        else if (productId != 0)
+                        {
+                          pdtId = productId;
+                          pdtName = productName;
+                        }
+                        %>
+                    <input type="hidden" id="ProIdHidden" name="product_id" <%if (pdtId != 0) { %> value="<%=pdtId %>" <%} %> />
+                    <input type="text" disabled="disabled" id="ProId" style="width: 248px;padding:0;" <%if (pdtId != 0) { %> value="<%=pdtName %>" <%} %> />
+                    <img src="../Images/data-selector.png" <%if (pdtId == 0) { %> onclick="window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CALLBACK %>&field=ProId&callBack=GetProduct', '<%=EMT.DoneNOW.DTO.OpenWindow.ServiceSelect %>', 'left=200,top=200,width=600,height=800', false)" style="vertical-align: middle; cursor: pointer;" <%} else { %> onclick="javascript:LayerMsg('不能修改产品！');" <%} %> />
                   </div>
               </td>
             </tr>

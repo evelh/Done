@@ -143,18 +143,18 @@ namespace EMT.DoneNOW.Web.Project
                         || p.data_type == (int)DicEnum.QUERY_PARA_TYPE.DATETIME
                         || p.data_type == (int)DicEnum.QUERY_PARA_TYPE.TIMESPAN)    // 数值和日期类型是范围值
                     {
-                        string ql = keys[p.id.ToString() + "_l"];
-                        string qh = keys[p.id.ToString() + "_h"];
+                        string ql = keys["con" + p.id.ToString() + "_l"];
+                        string qh = keys["con" + p.id.ToString() + "_h"];
                         if (string.IsNullOrEmpty(ql) && string.IsNullOrEmpty(qh))   // 空值，跳过
                             continue;
                         if (!string.IsNullOrEmpty(ql))
                         {
-                            queryParaValue.Add(new DictionaryEntryDto(p.id.ToString() + "_l", ql));     // 记录查询条件和条件值
+                            queryParaValue.Add(new DictionaryEntryDto("con" + p.id.ToString() + "_l", ql));     // 记录查询条件和条件值
                             pa.value = ql;
                         }
                         if (!string.IsNullOrEmpty(qh))
                         {
-                            queryParaValue.Add(new DictionaryEntryDto(p.id.ToString() + "_h", qh));     // 记录查询条件和条件值
+                            queryParaValue.Add(new DictionaryEntryDto("con" + p.id.ToString() + "_h", qh));     // 记录查询条件和条件值
                             pa.value2 = qh;
                         }
                         pa.id = p.id;
@@ -163,12 +163,12 @@ namespace EMT.DoneNOW.Web.Project
                     }
                     else    // 其他类型一个值
                     {
-                        string val = keys[p.id.ToString()];
+                        string val = keys["con" + p.id.ToString()];
                         if (string.IsNullOrEmpty(val))
                             continue;
                         pa.id = p.id;
                         pa.value = val;
-                        queryParaValue.Add(new DictionaryEntryDto(p.id.ToString(), val));     // 记录查询条件和条件值
+                        queryParaValue.Add(new DictionaryEntryDto("con" + p.id.ToString(), val));     // 记录查询条件和条件值
 
                         queryPara.query_params.Add(pa);
                     }

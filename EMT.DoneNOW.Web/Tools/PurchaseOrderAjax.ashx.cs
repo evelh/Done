@@ -58,6 +58,9 @@ namespace EMT.DoneNOW.Web
                 case "setItemMemo":
                     SetPurchaseItemMemo(context);
                     break;
+                case "getItemCostId":
+                    GetPurchaseItemCostId(context);
+                    break;
                 default:
                     break;
 
@@ -304,6 +307,20 @@ namespace EMT.DoneNOW.Web
                 var rtn = new InventoryOrderBLL().SaveOrderProductMemo(id, memo, date, LoginUserId);
                 context.Response.Write(new Tools.Serialize().SerializeJson(rtn));
             }
+        }
+
+        /// <summary>
+        /// 获取采购项的成本id
+        /// </summary>
+        /// <param name="context"></param>
+        private void GetPurchaseItemCostId(HttpContext context)
+        {
+            long id = long.Parse(context.Request.QueryString["itemId"]);
+            var item = new InventoryOrderBLL().GetOrderProduct(id);
+            if (item.contract_cost_id == null)
+                context.Response.Write(new Tools.Serialize().SerializeJson(0));
+            else
+                context.Response.Write(new Tools.Serialize().SerializeJson((long)item.contract_cost_id));
         }
     }
 }

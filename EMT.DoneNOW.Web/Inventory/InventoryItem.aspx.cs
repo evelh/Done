@@ -16,6 +16,8 @@ namespace EMT.DoneNOW.Web.Inventory
         protected string sn = null;             // 产品序列号
         protected bool isSerialized = false;    // 是否序列化产品
         protected int snCnt = 0;
+        protected long productId = 0;   // 初始化的产品id
+        protected string productName;   // 初始化的产品名称
         protected List<ivt_warehouse> locationList;
         private InventoryProductBLL bll = new InventoryProductBLL();
         protected void Page_Load(object sender, EventArgs e)
@@ -23,7 +25,7 @@ namespace EMT.DoneNOW.Web.Inventory
             string id = Request.QueryString["id"];
             if (!IsPostBack)
             {
-                if (!string.IsNullOrEmpty(id))
+                if (!string.IsNullOrEmpty(id))  // 编辑
                 {
                     long pdId = Convert.ToInt64(id);
                     product = bll.GetIvtProductEdit(pdId);
@@ -37,8 +39,17 @@ namespace EMT.DoneNOW.Web.Inventory
                     }
                     locationList = new InventoryLocationBLL().GetLocationList();
                 }
-                else
+                else    // 新增
+                {
+                    if (!string.IsNullOrEmpty(Request.QueryString["pdtId"]))
+                    {
+                        productId = long.Parse(Request.QueryString["pdtId"]);
+                        var pdt = new ProductBLL().GetProduct(productId);
+                        productName = pdt.name;
+                        isSerialized = pdt.is_serialized == 1;
+                    }
                     locationList = new InventoryLocationBLL().GetLocationListUnResource();
+                }
             }
             else
             {

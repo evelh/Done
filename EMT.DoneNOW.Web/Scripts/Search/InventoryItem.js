@@ -1,5 +1,9 @@
 ﻿function Add() {
-    window.open('../Inventory/InventoryItem.aspx', windowObj.inventoryItem + windowType.add, 'left=0,top=0,location=no,status=no,width=450,height=600', false);
+    if ($("#param1").val() == "") {
+        window.open('../Inventory/InventoryItem.aspx', windowObj.inventoryItem + windowType.add, 'left=0,top=0,location=no,status=no,width=450,height=600', false);
+    } else {
+        window.open('../Inventory/InventoryItem.aspx?pdtId=' + $("#param1").val(), windowObj.inventoryItem + windowType.add, 'left=0,top=0,location=no,status=no,width=450,height=600', false);
+    }
 }
 function Edit() {
     window.open('../Inventory/InventoryItem.aspx?id=' + entityid, windowObj.inventoryItem + windowType.add, 'left=0,top=0,location=no,status=no,width=450,height=600', false);
