@@ -16,7 +16,7 @@ function Edit() {
 function EditCost() {
     requestData("/Tools/PurchaseOrderAjax.ashx?act=getItemCostId&itemId=" + entityid, null, function (data) {
         if (data != 0) {
-            window.open("../Contract/ChargeDetails.aspx?id=" + data, windowObj.contractCost + windowType.view, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            window.open("../Contract/AddCharges.aspx?id=" + data, windowObj.contractCost + windowType.view, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
         } else {
             LayerMsg("采购项未关联成本");
         }
