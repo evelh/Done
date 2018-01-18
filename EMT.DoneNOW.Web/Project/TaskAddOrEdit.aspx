@@ -927,8 +927,17 @@
                                     </div>
                                     <div class="Editor DataSelector" data-editor-id="PrimaryResource" data-rdp="PrimaryResource">
                                         <div class="InputField">
-                                            <input id="owner_resource_id" type="text" value="" autocomplete="off" style="width: 250px;" />
-                                            <input type="hidden" name="owner_resource_id" id="owner_resource_idHidden" />
+                                                                                        <% EMT.DoneNOW.Core.sys_resource oweRes = null;
+                                                if (!isAdd && thisTask != null && thisTask.owner_resource_id != null){
+                                                                                                                                           oweRes = new EMT.DoneNOW.DAL.sys_resource_dal().FindNoDeleteById((long)thisTask.owner_resource_id);
+     
+                                                                                            }                                                %>
+
+
+                                                                                       <input id="owner_resource_id" type="text" value="<%=oweRes==null?"":oweRes.name %>" autocomplete="off" style="width: 250px;" />
+
+                                                                                     <input type="hidden" name="owner_resource_id" id="owner_resource_idHidden" value="<%=oweRes==null?"":oweRes.id.ToString() %>" />
+
                                             <a class="NormalState Button ButtonIcon IconOnly DataSelector" id="PrimaryResource_Button" tabindex="0" onclick="ChoosePriRes()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a>
                                             <div class="ContextOverlayContainer" id="PrimaryResource_ContextOverlay">
                                                 <div class="AutoComplete ContextOverlay">
@@ -2660,7 +2669,7 @@
     }
     // 查找带回主负责人  // 可能会根据部门和员工进行过滤
     function ChoosePriRes() {
-        var url = "../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RES_ROLE_DEP_CALLBACK %>&field=owner_resource_id";
+        var url = "../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RES_ROLE_DEP_CALLBACK %>&field=owner_resource_id&callBack=GetResByCallBack";
         var department_id = $("#department_id").val();
         if (department_id != undefined && department_id != "" && department_id !== "0") {  // 根据部门过滤
             url += "&con961=" + department_id;
@@ -2670,6 +2679,26 @@
         }
 
         window.open(url, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+    function GetResByCallBack() {
+        var owner_resource_id = $("#owner_resource_idHidden").val();
+        if (owner_resource_id != "") {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ResourceAjax.ashx?act=GetResByDepRes&resDepId=" + owner_resource_id,
+                success: function (data) {
+                    if (data != "") {
+                        $("#owner_resource_idHidden").val(data);
+                    } else {
+                        $("#owner_resource_idHidden").val("");
+                        $("#owner_resource_id").val("");
+                    }
+                },
+            });
+        } else {
+            $("#owner_resource_id").val("");
+        }
     }
 
     function ChooseResDep() {

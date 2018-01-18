@@ -1277,6 +1277,7 @@ namespace EMT.DoneNOW.BLL
                             var oneItem = qiList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME && _.optional == 0 && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();
 
                             var taxMoney = qiBLL.GetOneTimeMoneyTax(oneItem, quote_item);
+                            var noTaxMoney = qiBLL.GetOneTimeMoney(oneItem, quote_item);
                             BILLING_ENTITY_SUB_TYPE sub_cate = BILLING_ENTITY_SUB_TYPE.CONTRACT_COST;
                             if (project_id != null)
                             {
@@ -1286,87 +1287,95 @@ namespace EMT.DoneNOW.BLL
                             {
                                 sub_cate = BILLING_ENTITY_SUB_TYPE.TICKET_COST;
                             }
-                            ctt_contract_cost taxCost = new ctt_contract_cost()
+                            if (taxMoney != 0)
                             {
-                                id = _dal.GetNextIdCom(),
-                                opportunity_id = (int)opportunity.id,
-                                quote_item_id = (int)item.Key,
-                                cost_code_id = long.Parse(item.Value),
-                                product_id = product_id,
-                                name = quote_item.name + "(包含税)",
-                                description = quote_item.description,
-                                date_purchased = DateTime.Now,
-                                is_billable = 1,
-                                cost_type_id = (int)COST_TYPE.OPERATIONA,
-                                status_id = status_id,
-                                quantity = quote_item.quantity,
-                                unit_price = taxMoney,
-                                unit_cost = quote_item.unit_cost,
-                                create_user_id = user.id,
-                                update_user_id = user.id,
-                                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                project_id = project_id,
-                                contract_id = contract_id,
-                                sub_cate_id = (int)subCateid,
-                            };
-                            cccDal.Insert(taxCost);
-                            ids += taxCost.id.ToString() + ",";
-                            new sys_oper_log_dal().Insert(new sys_oper_log()
-                            {
-                                user_cate = "用户",
-                                user_id = (int)user.id,
-                                name = user.name,
-                                phone = user.mobile == null ? "" : user.mobile,
-                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_COST,
-                                oper_object_id = taxCost.id,// 操作对象id
-                                oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                                oper_description = _dal.AddValue(taxCost),
-                                remark = "赢得商机时将报价项转换为计费项"
+                                ctt_contract_cost taxCost = new ctt_contract_cost()
+                                {
+                                    id = _dal.GetNextIdCom(),
+                                    opportunity_id = (int)opportunity.id,
+                                    quote_item_id = (int)item.Key,
+                                    cost_code_id = long.Parse(item.Value),
+                                    product_id = product_id,
+                                    name = quote_item.name + "(包含税)",
+                                    description = quote_item.description,
+                                    date_purchased = DateTime.Now,
+                                    is_billable = 1,
+                                    cost_type_id = (int)COST_TYPE.OPERATIONA,
+                                    status_id = status_id,
+                                    quantity = quote_item.quantity,
+                                    unit_price = taxMoney,
+                                    unit_cost = quote_item.unit_cost,
+                                    create_user_id = user.id,
+                                    update_user_id = user.id,
+                                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    project_id = project_id,
+                                    contract_id = contract_id,
+                                    sub_cate_id = (int)subCateid,
+                                };
+                                cccDal.Insert(taxCost);
+                                ids += taxCost.id.ToString() + ",";
+                                new sys_oper_log_dal().Insert(new sys_oper_log()
+                                {
+                                    user_cate = "用户",
+                                    user_id = (int)user.id,
+                                    name = user.name,
+                                    phone = user.mobile == null ? "" : user.mobile,
+                                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_COST,
+                                    oper_object_id = taxCost.id,// 操作对象id
+                                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                                    oper_description = _dal.AddValue(taxCost),
+                                    remark = "赢得商机时将报价项转换为计费项"
 
-                            });
+                                });
+                            }
 
-                            ctt_contract_cost noTaxCost = new ctt_contract_cost()
+                            if (noTaxMoney != 0)
                             {
-                                id = _dal.GetNextIdCom(),
-                                opportunity_id = (int)opportunity.id,
-                                quote_item_id = (int)item.Key,
-                                cost_code_id = long.Parse(item.Value),
-                                product_id = product_id,
-                                name = quote_item.name + "(不包含税)",
-                                description = quote_item.description,
-                                date_purchased = DateTime.Now,
-                                is_billable = 1,
-                                cost_type_id = (int)COST_TYPE.OPERATIONA,
-                                status_id = status_id,
-                                quantity = quote_item.quantity,
-                                unit_price = taxMoney,
-                                unit_cost = quote_item.unit_cost,
-                                create_user_id = user.id,
-                                update_user_id = user.id,
-                                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                project_id = project_id,
-                                contract_id = contract_id,
-                                sub_cate_id = subCateid,
-                            };
-                            cccDal.Insert(noTaxCost);
-                            ids += noTaxCost.id.ToString() + ",";
-                            new sys_oper_log_dal().Insert(new sys_oper_log()
-                            {
-                                user_cate = "用户",
-                                user_id = (int)user.id,
-                                name = user.name,
-                                phone = user.mobile == null ? "" : user.mobile,
-                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_COST,
-                                oper_object_id = noTaxCost.id,// 操作对象id
-                                oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                                oper_description = _dal.AddValue(noTaxCost),
-                                remark = "赢得商机时将报价项转换为计费项"
+                                ctt_contract_cost noTaxCost = new ctt_contract_cost()
+                                {
+                                    id = _dal.GetNextIdCom(),
+                                    opportunity_id = (int)opportunity.id,
+                                    quote_item_id = (int)item.Key,
+                                    cost_code_id = long.Parse(item.Value),
+                                    product_id = product_id,
+                                    name = quote_item.name + "(不包含税)",
+                                    description = quote_item.description,
+                                    date_purchased = DateTime.Now,
+                                    is_billable = 1,
+                                    cost_type_id = (int)COST_TYPE.OPERATIONA,
+                                    status_id = status_id,
+                                    quantity = quote_item.quantity,
+                                    unit_price = noTaxMoney,
+                                    unit_cost = quote_item.unit_cost,
+                                    create_user_id = user.id,
+                                    update_user_id = user.id,
+                                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    project_id = project_id,
+                                    contract_id = contract_id,
+                                    sub_cate_id = subCateid,
+                                };
+                                cccDal.Insert(noTaxCost);
+                                ids += noTaxCost.id.ToString() + ",";
+                                new sys_oper_log_dal().Insert(new sys_oper_log()
+                                {
+                                    user_cate = "用户",
+                                    user_id = (int)user.id,
+                                    name = user.name,
+                                    phone = user.mobile == null ? "" : user.mobile,
+                                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_COST,
+                                    oper_object_id = noTaxCost.id,// 操作对象id
+                                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                                    oper_description = _dal.AddValue(noTaxCost),
+                                    remark = "赢得商机时将报价项转换为计费项"
 
-                            });
+                                });
+                            }
+
+                        
                         }
                     }
 

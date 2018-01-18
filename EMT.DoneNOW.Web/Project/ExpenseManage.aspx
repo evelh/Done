@@ -518,7 +518,7 @@
                                     </div>
                                     <div class="Editor DataSelector field-validation-error AssProTask">
                                         <div class="InputField">
-                                            <input id="project_id" type="text" value="" name="" /><a class="Button ButtonIcon IconOnly DataSelector NormalState" id="z3bf30fe543f4458188fa59026dfa9adb_Button" tabindex="0"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><input id="project_idHidden" name="project_id" type="hidden" value="" />
+                                            <input id="project_id" type="text" value="" name="" /><a class="Button ButtonIcon IconOnly DataSelector NormalState" id="z3bf30fe543f4458188fa59026dfa9adb_Button" tabindex="0" onclick="CallBackPro()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><input id="project_idHidden" name="project_id" type="hidden" value="" />
                                             <div class="ContextOverlayContainer" id="z3bf30fe543f4458188fa59026dfa9adb_ContextOverlay">
                                                 <div class="AutoComplete ContextOverlay">
                                                     <div class="Active LoadingIndicator"></div>

@@ -106,6 +106,7 @@
                   <%if (CheckAuth("PRO_PROJECT_UDF"))
                     { %>
                      <li class="MenuLink"><a href="ProjectView.aspx?id=<%=thisProject.id %>&type=UDF">自定义字段</a></li><%} %>
+                  <li class="MenuLink"><a>工单(暂未实现)</a></li>
             </ul>
         </div>
         <div class="Right">

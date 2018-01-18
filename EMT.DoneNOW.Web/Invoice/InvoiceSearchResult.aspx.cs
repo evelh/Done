@@ -159,12 +159,12 @@ namespace EMT.DoneNOW.Web.Invoice
                     }
                     else    // 其他类型一个值
                     {
-                        string val = keys[p.id.ToString()];
+                        string val = keys["con" + p.id.ToString()];
                         if (string.IsNullOrEmpty(val))
                             continue;
                         pa.id = p.id;
                         pa.value = val;
-                        queryParaValue.Add(new DictionaryEntryDto(p.id.ToString(), val));     // 记录查询条件和条件值
+                        queryParaValue.Add(new DictionaryEntryDto("con" + p.id.ToString(), val));     // 记录查询条件和条件值
 
                         queryPara.query_params.Add(pa);
                     }
