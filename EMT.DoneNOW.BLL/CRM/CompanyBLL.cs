@@ -1295,13 +1295,7 @@ namespace EMT.DoneNOW.BLL
             var thisAcc = _dal.FindSignleBySql<crm_account>("SELECT * from crm_account where oid = 0 and delete_time = 0");
             return thisAcc;
         }
-
-        public crm_account GetDefaultAccount()
-        {
-            var thisAcc = _dal.FindSignleBySql<crm_account>("SELECT * from crm_account where oid = 0 and delete_time = 0");
-            return thisAcc;
-        }
-
+        
 
     }
 }
