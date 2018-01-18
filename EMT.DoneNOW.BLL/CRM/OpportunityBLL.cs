@@ -1330,6 +1330,7 @@ namespace EMT.DoneNOW.BLL
 
                                 });
                             }
+
                             if (noTaxMoney != 0)
                             {
                                 ctt_contract_cost noTaxCost = new ctt_contract_cost()
@@ -1374,7 +1375,7 @@ namespace EMT.DoneNOW.BLL
                                 });
                             }
 
-                           
+                        
                         }
                     }
 

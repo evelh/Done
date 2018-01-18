@@ -4296,8 +4296,8 @@ namespace EMT.DoneNOW.BLL
                         {
                             contract_id = thisTask.contract_id;
                         }
-                    }
 
+                    }
                     var thisDed = new crm_account_deduction()
                     {
                         id = cad_dal.GetNextIdCom(),

@@ -13,6 +13,7 @@ namespace EMT.DoneNOW.DAL
         public object GetFirstByPro(long product_id)
         {
             return GetSingle($"SELECT  ir.unit_cost from ivt_order_product iop INNER JOIN ivt_receive ir on ir.order_product_id = iop.id where iop.product_id = {product_id}  and iop.delete_time = 0 and  ir.delete_time = 0 ORDER BY ir.create_time LIMIT 0, 1");
+
         }
         /// <summary>
         /// 获取该产品的最近的采购

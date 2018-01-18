@@ -545,7 +545,7 @@ namespace EMT.DoneNOW.BLL
                     thisCost = (decimal)thisPro.unit_cost;
                 }
                 var onHandNum = _dal.GetProOnHand(thisPro.id);
-                if(onHandNum!=null&& (Convert.ToInt32(onHandNum)) > 0)  // 可用数要大于0
+                if (onHandNum != null && (Convert.ToInt32(onHandNum)) > 0)  // 可用数要大于0
                 {
                     var thisSysSet = new SysSettingBLL().GetSetById(DTO.SysSettingEnum.INVENTORY_ACCOUNTING_METHOD);
                     if (thisSysSet != null)
@@ -564,7 +564,7 @@ namespace EMT.DoneNOW.BLL
                             var firCosr = iopDal.GetFirstByPro(thisPro.id);
                             if (firCosr != null)
                             {
-                               thisCost = (decimal)firCosr;
+                                thisCost = (decimal)firCosr;
                             }
                         }
                         else if (thisSysSet.setting_value == ((int)INVENTORY_ACCOUNTING_METHOD.LIFO).ToString())
@@ -582,10 +582,10 @@ namespace EMT.DoneNOW.BLL
                     return thisCost;
                 }
 
-               
-                
+
+
             }
-            
+
             return thisCost;
         }
     }
