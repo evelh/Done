@@ -29,6 +29,7 @@ namespace EMT.DoneNOW.Web
                 //Session["dn_session_user_info"] = null;
                 //EMT.Tools.Common.WriteCookie("UserName", "DoneNOW", -14400);
                 //EMT.Tools.Common.WriteCookie("UserPwd", "DoneNOW", -14400);
+                Response.Redirect("Login.aspx");
             }
         }
 

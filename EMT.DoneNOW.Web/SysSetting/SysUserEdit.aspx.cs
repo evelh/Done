@@ -79,7 +79,7 @@ namespace EMT.DoneNOW.Web
                     if (resourcedata.email2_type_id != null && !string.IsNullOrEmpty(resourcedata.email2_type_id.ToString()))
                         this.EmailType2.SelectedValue = resourcedata.email2_type_id.ToString();
 
-                    this.name.Text = userdata.name.ToString();//用户名
+                    this.name.Text = string.IsNullOrEmpty(userdata.name) ? "" : userdata.name.ToString();//用户名
                     if (resourcedata.is_active > 0)//是否激活
                         this.ACTIVE.Checked = true;
                     if (resourcedata.security_level_id != null && !string.IsNullOrEmpty(resourcedata.security_level_id.ToString()))//权限级别
