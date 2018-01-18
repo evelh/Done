@@ -251,6 +251,8 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (int)DicEnum.QUERY_CATE.PURCHASE_ORDER:
                 case (int)DicEnum.QUERY_CATE.PURCHASE_ITEM:
+                case (int)DicEnum.QUERY_CATE.HOLIDAY_SET:
+                case (int)DicEnum.QUERY_CATE.HOLIDAYS:
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_NOTIFY_RULE:
@@ -906,6 +908,14 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.PROJECT_SEARCH:
                     contextMenu.Add(new PageContextMenuDto { text = "查看项目", click_function = "ViewProject()" });
                
+                    break;
+                case (long)QueryType.HolidaySet:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.Holidays:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 default:
                     break;

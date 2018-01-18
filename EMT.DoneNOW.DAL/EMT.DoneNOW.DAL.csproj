@@ -179,7 +179,15 @@
     <Compile Include="SYS\sys_udf_list_dal.cs" />
     <Compile Include="SYS\sys_workgroup_dal.cs" />
     <Compile Include="sys_resource_dal.cs" />
+    <Compile Include="TST\tst_timeoff_activity_dal.cs" />
+    <Compile Include="TST\tst_timeoff_balance_dal.cs" />
+    <Compile Include="TST\tst_timeoff_policy_dal.cs" />
+    <Compile Include="TST\tst_timeoff_policy_item_dal.cs" />
+    <Compile Include="TST\tst_timeoff_policy_item_tier_dal.cs" />
+    <Compile Include="TST\tst_timeoff_policy_resource_dal.cs" />
     <Compile Include="TST\tst_timeoff_request_dal.cs" />
+    <Compile Include="TST\tst_timeoff_request_log_dal.cs" />
+    <Compile Include="TST\tst_work_entry_report_log_dal.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

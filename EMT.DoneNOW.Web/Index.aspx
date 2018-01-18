@@ -704,7 +704,8 @@
     </div>
     <!--背景布-->
     <div id="WorkspaceContainer">
-        <div id="yibiaopan">
+        <div id="yibiaopan" >
+          <img src="Images/background.jpg" style="width:100%;height:100%;" />
             <div id="DashboardContainer" style="display:none;">
                 <div class="DashboardTitleBar ThemePrimaryColor">
                     <div class="DashboardButtonContainer">

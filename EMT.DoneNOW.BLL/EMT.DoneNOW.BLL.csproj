@@ -100,6 +100,7 @@
     <Compile Include="SYS\UserDefinedFieldsBLL.cs" />
     <Compile Include="SYS\UserInfoBLL.cs" />
     <Compile Include="SYS\UserResourceBLL.cs" />
+    <Compile Include="TST\TimeOffPolicyBLL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EMT.DoneNOW.Core\EMT.DoneNOW.Core.csproj">

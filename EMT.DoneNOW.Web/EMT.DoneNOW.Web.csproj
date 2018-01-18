@@ -211,6 +211,7 @@
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
     <Content Include="Contract\NotiRuleManage.aspx" />
     <Content Include="Images\attachment.png" />
+    <Content Include="Images\background.jpg" />
     <Content Include="Images\calendar.png" />
     <Content Include="Images\cancel1.png" />
     <Content Include="Images\coin_gold.png" />
@@ -416,6 +417,8 @@
     <Content Include="RichText\js\third-party\video-js\font\vjs.ttf" />
     <Content Include="RichText\js\third-party\video-js\font\vjs.woff" />
     <Content Include="Scripts\Search\contract_project.js" />
+    <Content Include="Scripts\Search\Holidays.js" />
+    <Content Include="Scripts\Search\HolidaySet.js" />
     <Content Include="Scripts\Search\project_search.js" />
     <Content Include="Scripts\Search\PurchaseFulfillment.js" />
     <Content Include="Scripts\Search\PurchaseItem.js" />
@@ -426,6 +429,7 @@
     <Content Include="Scripts\Search\ShipedList.js" />
     <Content Include="Scripts\Search\ShippingList.js" />
     <Content Include="Scripts\Search\purchase_order_history.js" />
+    <Content Include="SysSetting\AddTimeOffPolicy.aspx" />
     <Content Include="Tools\PurchaseOrderAjax.ashx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\alert.png" />
@@ -1830,6 +1834,13 @@
     </Compile>
     <Compile Include="Refresh.aspx.designer.cs">
       <DependentUpon>Refresh.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\AddTimeOffPolicy.aspx.cs">
+      <DependentUpon>AddTimeOffPolicy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\AddTimeOffPolicy.aspx.designer.cs">
+      <DependentUpon>AddTimeOffPolicy.aspx</DependentUpon>
     </Compile>
     <Compile Include="Tools\PurchaseOrderAjax.ashx.cs">
       <DependentUpon>PurchaseOrderAjax.ashx</DependentUpon>

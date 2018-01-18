@@ -585,6 +585,8 @@ namespace EMT.DoneNOW.DTO
             SHIPPING_ITEM_SERIAL_NUM = 1575,        // 库存管理-产品序列号查找带回（取消接收用）
             EXC_CONTRACT_CALLBACK = 1576,           // 合同管理-合同详情-例外因素-合同查找带回
             CONTRACT_PRODUCT_SN_CALLBACK = 1577,    // 成本-成本产品序列号查找带回（取消拣货用）
+            HOLIDAY_SET = 1579,                     // 系统设置-节假日设置
+            HOLIDAYS = 1580,                        // 系统设置-节假日查询
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -1058,6 +1060,10 @@ namespace EMT.DoneNOW.DTO
             CLIENT_TASK = 1813,                // 客户任务
             PERSONAL_TIME = 1814,              // 私人时间
             VACATION_TIME = 1815,              // 假期
+            SICK_TIME = 1816,                  // 病假
+            PAID_TIME_OFF = 1817,              // 带薪休假
+            RECURRING_TICKET_MASTER = 1818,    // 定期主工单
+            TASKFIRE_TICKET = 1819,            // 内部 Client Portal 工单
         }
         /// <summary>
         /// 工单状态 - 135
@@ -1314,6 +1320,8 @@ namespace EMT.DoneNOW.DTO
         ShipedList = 152,               // 库存管理-配送管理-已配送列表查询
         PURCHASE_ORDER_HISTORY=153,     // 库存管理-采购订单历史-查询
         ShippingItemSerailNum = 154,    // 库存管理-产品序列号查找带回（取消接收用）
+        HolidaySet = 158,               // 系统设置-节假日设置
+        Holidays = 159,                 // 系统设置-节假日查询
 
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
