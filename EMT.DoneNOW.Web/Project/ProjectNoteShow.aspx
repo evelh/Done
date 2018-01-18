@@ -70,7 +70,7 @@
                             <td align="right" valign="middle" width="10%" rowspan="2">
                                 <div class="contentButton">
                                     <a class="OnlyImageButton" id="HREF_btnPrint" name="HREF_btnPrint" href="javascript:btnPrint.punch(true);">
-                                        <img title="Print" onmouseout="btnPrint.normal();" name="IMG_btnPrint" src="https://ww6.autotask.net/graphics/icons/buttonbar/print.png?v=41661" border="0"></a>
+                                        </a>
                                 </div>
                             </td>
                         </tr>

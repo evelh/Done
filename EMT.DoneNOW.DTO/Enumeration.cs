@@ -257,17 +257,18 @@ namespace EMT.DoneNOW.DTO
             TASK_TIME_ENTRY_CREATED_EDITED=128,                   // 任务工时记录-创建或编辑
             TASK_NOTE_CREATED_EDITED =129,                        // 任务记录-创建或编辑
             ISSUE_CREATED_EDITED =130,                            // 问题 - 创建或编辑
-            //TICKET - CREATED OR EDITED,                         // 
-            //TICKET - FORWARDED,                                 // 
-            //TICKET ATTACHMENT - ADDED,                          // 
-            TICKET_TIME_ENTRY_CREATED_EDITED=134,              // 工单工时记录-创建或编辑
-            //TICKET NOTE - CREATED OR EDITED,                    // 
-            //RECURRENCE MASTER - CREATED OR EDITED,              // 
+            TICKET_CREATED_EDITED=131,                         // 工单-创建或编辑
+            TICKET_FORWARDED=132,                                 // 工单-转发
+            TICKET_ATTACHMENT_ADDED=133,                          // 工单附件-创建
+            TICKET_TIME_ENTRY_CREATED_EDITED = 134,              // 工单工时记录-创建或编辑
+            TICKET_NOTE_CREATED_EDITED=135,                    // 工单记录-创建或编辑
+            RECURRENCE_MASTER_CREATED_EDITED=136,              // 定期主工单-创建或编辑
             //QUICK CALL - CREATED,                               // 
             //SERVICE CALL - CREATED OR EDITED,                   // 
-            BLOCK_CONTRACT_RULE,                                  // 预付时间合同通知规则
-            PER_CONTRACT_RULE,                                    // 事件合同通知规则    
-            RETAINER_CONTRACT_RULE,                               // 预付费合同通知规则
+            BLOCK_CONTRACT_RULE=139,                                  // 预付时间合同通知规则
+            PER_CONTRACT_RULE=140,                                    // 事件合同通知规则    
+            RETAINER_CONTRACT_RULE=141,                               // 预付费合同通知规则
+            EXPENSE_REPORT_ATTACHMENT_ADDED=142,                      // 报表附件新增
             NONE =1972,                                       // 无
         }
 
@@ -298,6 +299,23 @@ namespace EMT.DoneNOW.DTO
             PARTIALLY_FULFILLED = 467, // 部分实施
             FULFILLED = 468,           // 完成
             CANCELED = 469,            // 取消
+        }
+        /// <summary>
+        /// 付款类型 30 
+        /// </summary>
+        public enum payment_type
+        {
+            American_Express=478,    // 全款
+            Cash = 479,              // 现金
+            Check=480,               // 支票
+            Company_Check=481,       // 公司支票
+            Company_Credit_Card=482, // 公司信用卡
+            Discover=483,            // 
+            Master_Card=484,         // 万事达卡
+            Other=485,               // 其他
+            PayPal=486,              // 贝宝
+            Personal=487,            // 
+            Visa=488,                // 维萨信用卡 
         }
 
         /// <summary>
@@ -445,6 +463,7 @@ namespace EMT.DoneNOW.DTO
             TASK = 714,             // 任务
             ATTACHMENT = 715,       // 附件
             COMPANY = 716,          // 客户
+            EXPENSE_REPORT = 717,   // 费用报表
         }
 
         /// <summary>
@@ -579,13 +598,16 @@ namespace EMT.DoneNOW.DTO
             SERNUM_CALLBACK = 1569,                 // 库存管理-产品序列号查找带回
             CONTRACT_PROJECT=1570,                  // 合同查看 - 项目
             PURCHASE_RECEIVE = 1571,                // 采购接收查询
-            SHIPPING_LIST = 1572,                   // 库存管理-配送管理-配送列表查询
+            SHIPPING_LIST = 1572,                   // 库存管理-配送管理-配送列表查询que
             SHIPED_LIST = 1573,                     // 库存管理-配送管理-已配送列表查询
             PURCHASE_ORDER_HISTORY=1574,            // 库存管理-采购订单历史-查询
             SHIPPING_ITEM_SERIAL_NUM = 1575,        // 库存管理-产品序列号查找带回（取消接收用）
             EXC_CONTRACT_CALLBACK = 1576,           // 合同管理-合同详情-例外因素-合同查找带回
             CONTRACT_PRODUCT_SN_CALLBACK = 1577,    // 成本-成本产品序列号查找带回（取消拣货用）
-            //RESOURCE_CALLBACK,                      // 
+            EXPENSE_REPORT = 1578,                  // 工时表-我的费用报表-查询
+            MYAPPROVE_EXPENSE_REPORT=1581,          // 工时表-等待我审批的费用报表-查询
+            APPROVED_REPORT=1582,                   // 工时表-已审批的费用报表-查询
+            //RESOURCE_CALLBACK,                      //  
             //以下是还没有配查询语句的枚举（系统管理）
 
             General,                       //general表的通用处理
@@ -1195,6 +1217,19 @@ namespace EMT.DoneNOW.DTO
             APPROVAL=2196,      // 已审批
             REFUSE=2197,        // 已拒绝
         }
+        /// <summary>
+        /// 费用报表操作
+        /// </summary>
+        public enum EXPENSE_RECORD_OPER
+        {
+            SUBMIT = 2230,           // 提交
+            CANCEL_SUBMIT = 2231,    // 取消提交
+            APPROVAL_PASS = 2232,    // 审批通过
+            APPROVAL_REFUSE = 2233,  // 审批拒绝
+            PAYMENT = 2234,          // 支付
+            RETURN_APPROVAL = 2235,  // 支付改回审批通过
+        }
+
     }
 
     /// <summary>
@@ -1314,7 +1349,9 @@ namespace EMT.DoneNOW.DTO
         ShipedList = 152,               // 库存管理-配送管理-已配送列表查询
         PURCHASE_ORDER_HISTORY=153,     // 库存管理-采购订单历史-查询
         ShippingItemSerailNum = 154,    // 库存管理-产品序列号查找带回（取消接收用）
-
+        EXPENSE_REPORT=157,             // 工时表-我的费用报表-查询
+        MYAPPROVE_EXPENSE_REPORT = 160, // 工时表-等待我审批的费用报表-查询
+        APPROVED_REPORT = 161,          // 工时表-已审批的费用报表-查询  
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
         Line_Of_Business,              //系统管理：组织：业务条线
@@ -1505,6 +1542,10 @@ namespace EMT.DoneNOW.DTO
         SERNUM_CALLBACK,       // 产品序列号查找带回
 
         EXC_CONTRACT_CALLBACK,
+        EXPENSE_REPORT_DETAIL, // 费用报表详情界面
+        COMPANY_POLICY,        // 客户策略
+        EXPENSE_REPORT_REFUSE, // 费用报表拒绝原因
+        EXPENSE_REPORT_VIEW,   // 费用报表查看
 
     }
     /// <summary>

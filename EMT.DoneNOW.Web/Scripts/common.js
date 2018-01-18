@@ -242,6 +242,7 @@ var windowObj = {
     projectAttach: 'projectAttach',
     projectUdf: 'projectUdf',
     expense: "expense",
+    expenseReport:"expenseReport",
     workEntry: "workEntry",
     task:"task",
 }

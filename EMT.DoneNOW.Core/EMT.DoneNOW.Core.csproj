@@ -165,6 +165,7 @@
     <Compile Include="SYS\sys_udf_list.cs" />
     <Compile Include="SYS\sys_workgroup.cs" />
     <Compile Include="sys_resource.cs" />
+    <Compile Include="TST\tst_expense_report_log.cs" />
     <Compile Include="TST\tst_timeoff_request.cs" />
   </ItemGroup>
   <ItemGroup />

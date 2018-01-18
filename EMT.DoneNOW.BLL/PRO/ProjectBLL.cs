@@ -1455,20 +1455,28 @@ namespace EMT.DoneNOW.BLL
 
 
                 // 设置抄送人
-                var ccEmailList = email.cc_email.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var ccEmail in ccEmailList)
+                if (!string.IsNullOrEmpty(email.cc_email))
                 {
-                    message.CC.Add(ccEmail);
+                    var ccEmailList = email.cc_email.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var ccEmail in ccEmailList)
+                    {
+                        message.CC.Add(ccEmail);
+                    }
+
                 }
 
                 // message.To.Add("zhufei_dsjt@shdsjt.cn");
 
                 // 密送地址
-                var bccEmailList = email.bcc_email.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var bccEmail in bccEmailList)
+                if (!string.IsNullOrEmpty(email.bcc_email))
                 {
-                    message.Bcc.Add(bccEmail);
+                    var bccEmailList = email.bcc_email.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var bccEmail in bccEmailList)
+                    {
+                        message.Bcc.Add(bccEmail);
+                    }
                 }
+              
 
 
                 // 设置邮件标题
@@ -1478,7 +1486,7 @@ namespace EMT.DoneNOW.BLL
                 message.BodyEncoding = Encoding.GetEncoding("gb2312");
 
                 SmtpClient client = new SmtpClient();
-                #region 需要授权码或者密码进行发送邮件(测试通过--)
+                #region 需要授权码或者密码进行发送邮件
                 client.Host = "smtp.163.com";
                 //设置发送人的邮箱账号和密码 --是否使用授权码登陆发送
                 client.UseDefaultCredentials = true;
@@ -1487,7 +1495,7 @@ namespace EMT.DoneNOW.BLL
                 client.EnableSsl = true;
                 #endregion
 
-                client.Host = "localhost";
+                // client.Host = "localhost";
                 // client.Send(message);
 
                 //发送邮件

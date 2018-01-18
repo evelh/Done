@@ -24,7 +24,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int32? status_id { get; set; }
         [DataMember]
-        public DateTime? submit_date { get; set; }
+        public Int64? submit_time { get; set; }
         [DataMember]
         public Int64? submit_user_id { get; set; }
         [DataMember]
@@ -43,6 +43,8 @@ namespace EMT.DoneNOW.Core
         public String quickbooks_reference_number { get; set; }
         [DataMember]
         public Int32? creatorstatus { get; set; }
+        [DataMember]
+        public String rejection_expense_id_list { get; set; }
 
 
     }

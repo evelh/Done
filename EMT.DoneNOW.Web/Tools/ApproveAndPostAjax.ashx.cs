@@ -26,7 +26,7 @@ namespace EMT.DoneNOW.Web
                 case "nobilling": NoBilling(context, Convert.ToInt32(id), Convert.ToInt32(type)); break;
                 case "billing": Billing(context, Convert.ToInt32(id), Convert.ToInt32(type)); break;
                 case "post": Post(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
-                //查看合同详情
+                //查看合同详情 
                 case "ContractDetails": ContractDetails(context, Convert.ToInt32(id), Convert.ToInt32(type), Convert.ToInt32(date)); ; break;
                 case "GetProjectId": GetProjectId(context, Convert.ToInt32(id), Convert.ToInt32(type)); break;
                 //处理合同成本审批

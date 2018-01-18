@@ -265,6 +265,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.PROJECT_SEARCH:
                     addBtn = "添加项目";
                     break;
+                case (int)DicEnum.QUERY_CATE.EXPENSE_REPORT:
+                    addBtn = "添加费用报表";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -399,6 +402,10 @@ namespace EMT.DoneNOW.Web
 
                         queryPara.query_params.Add(pa);
                     }
+                }
+                if (queryTypeId == (int)QueryType.EXPENSE_REPORT)
+                {
+                    queryPara.query_params.Add(new Para() { id=1236,value=LoginUserId.ToString()});
                 }
 
                 queryPara.query_type_id = queryTypeId;
@@ -906,6 +913,26 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.PROJECT_SEARCH:
                     contextMenu.Add(new PageContextMenuDto { text = "查看项目", click_function = "ViewProject()" });
                
+                    break;
+                case (long)QueryType.EXPENSE_REPORT:
+                    contextMenu.Add(new PageContextMenuDto { text = "查看", click_function = "ViewReport()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "EditReport()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "CopyReport()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "DeleteReport()" });
+                    break;
+                case (long)QueryType.MYAPPROVE_EXPENSE_REPORT:
+                    contextMenu.Add(new PageContextMenuDto { text = "查看", click_function = "ShowDetail()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.APPROVED_REPORT:
+                    contextMenu.Add(new PageContextMenuDto { text = "查看", click_function = "ShowDetail()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "标记为已支付", click_function = "PaidThis()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "全部标记为已支付", click_function = "PaidAll()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "标记为已审批", click_function = "Approval()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "全部标记为已审批", click_function = "ApprovalAll()" });
                     break;
                 default:
                     break;

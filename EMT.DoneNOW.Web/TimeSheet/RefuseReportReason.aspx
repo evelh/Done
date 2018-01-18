@@ -1,21 +1,22 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ExpenseReportManage.aspx.cs" Inherits="EMT.DoneNOW.Web.Project.ExpenseReportManage" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RefuseReportReason.aspx.cs" Inherits="EMT.DoneNOW.Web.TimeSheet.RefuseReportReason" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title><%=isAdd?"新增":"修改" %>费用报表</title>
-     <style>
-         body{
-                 font-size: 12px;
-    overflow: auto;
-    background: white;
-    left: 0;
-    top: 0;
-    position: relative;
-    margin: 0;
-         }
+    <title><%=thisReport.title %>-拒绝详情</title>
+    <style>
+        body {
+            font-size: 12px;
+            overflow: auto;
+            background: white;
+            left: 0;
+            top: 0;
+            position: relative;
+            margin: 0;
+        }
+
         .HeaderRow {
             background-color: #346a95;
             z-index: 100;
@@ -113,18 +114,22 @@
             color: #4F4F4F;
             vertical-align: top;
         }
-        #Save_Close{
-            background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
-                font-size: 12px;
-    font-weight: bold;
-    line-height: 24px;
-    padding: 0 1px 0 3px;
-    color: #4F4F4F;
-    vertical-align: top;
+
+        .DivScrollingContainer {
+            left: 0;
+            overflow-x: auto;
+            overflow-y: auto;
+            position: fixed;
+            right: 0;
+            bottom: 0;
         }
-        span#errorSmall {
-    color: red;
-}
+
+        .FieldLabels, .workspace .FieldLabels {
+            font-size: 12px;
+            color: #4F4F4F;
+            font-weight: bold;
+            line-height: 15px;
+        }
     </style>
 </head>
 <body>
@@ -133,7 +138,7 @@
             <table>
                 <tbody>
                     <tr>
-                        <td><span><%=isAdd?"新增":"修改" %>费用报表</span></td>
+                        <td><span>费用报表=拒绝详情</span></td>
                         <td align="right" class="helpLink"><a class="HelperLinkIcon" title=""></a></td>
                     </tr>
                 </tbody>
@@ -141,79 +146,61 @@
         </div>
         <div class="ButtonBar">
             <ul>
-               <li><a class="ImgLink" id="Save" name="HREF_btnCancel">
-                    <span class="icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0; width: 16px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
-                    <span class="Text">
-                        <asp:Button ID="Save_Close" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="Save_Close_Click" /></span></a></li>
-               <li style="margin-left: 14px;"><a class="ImgLink" id="HREF_btnCancel" name="HREF_btnCancel">
+
+                <li style="margin-left: 14px;"><a class="ImgLink" id="" name="" onclick="ClosePage()">
                     <span class="icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0; width: 16px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
-                    <span class="Text" style="line-height: 24px;">取消</span></a></li>
+                    <span class="Text" style="line-height: 24px;">关闭</span></a></li>
+
+
             </ul>
         </div>
-        <div style="padding-left: 10px;">
-            <table border="0" cellpadding="0" cellspacing="0" width="350px">
+        <div style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px; top: 82px; color: #333333;" class="DivScrollingContainer">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tbody>
                     <tr>
-                        <td class="FieldLabels" colspan="2">费用报表名称<span id="errorSmall">*</span></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div style="padding-bottom: 11px">
-                                <input type="text" id="title" value="<%=thisReport!=null?thisReport.title:"" %>" name="title" style="width: 280px" maxlength="100" /></div>
+                        <td valign="bottom">
+                            <div class="FieldLabels">拒绝原因</div>
                         </td>
                     </tr>
                     <tr>
-                        <td class="FieldLabels">周期结束日期<span id="errorSmall">*</span></td>
-                        <td class="FieldLabels">预付现金总额</td>
-                    </tr>
-                    <tr>
-                        <td width="160px">
-                            <input type="text" name="end_date" id="end_date" size="12" value="<%=thisReport!=null&&thisReport.end_date!=null?((DateTime)thisReport.end_date).ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd")%>" style="width: 80px; margin-right: 4px;" onclick="WdatePicker()" />
-                           
+                        <td valign="top">
+                            <div style="padding-bottom: 21px;"><%=thisReport.rejection_reason %></div>
                         </td>
-                        <td>
-                            <input type="text" name="cash_advance_amount" id="cash_advance_amount" size="12" maxlength="12"  value="<%=thisReport!=null&&thisReport.cash_advance_amount!=null?((decimal)thisReport.cash_advance_amount).ToString("#0.00"):"" %>" style="width: 120px;" /></td>
                     </tr>
                 </tbody>
             </table>
+            <% if (expList != null && expList.Count > 0)
+                { %>
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td valign="bottom" colspan="2">
+                            <div class="FieldLabels">拒绝费用</div>
+                        </td>
+                    </tr>
+                    <% foreach (var thisExp in expList)
+                        {%>
+                    <tr>
+                        <td width="50%" align="left">
+                            <div>
+                                <%=thisExp.description %>
+                            </div>
+                        </td>
+                        <td width="50%" align="left" style="white-space: nowrap;"><%=thisExp.amount.ToString("#0.00") %></td>
+                    </tr>
+                        <%} %>
+                   
+                </tbody>
+            </table>
+            <%} %>
+
         </div>
     </form>
 </body>
 </html>
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
-<script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
-<script src="../Scripts/common.js"></script>
 <script>
-    $("#Save_Close").click(function () {
-        if (!SubmtCheck()) {
-            return false;
-        }
-        return true;
-    })
-    function SubmtCheck() {
-        var title = $("#title").val();
-        if (title == "") {
-            LayerMsg("请填写费用报表名称！");
-            return false;
-        }
-        var end_date = $("#end_date").val();
-        if (end_date == "") {
-            LayerMsg("请填写周期结束日期！");
-            return false;
-        }
-        return true;
-        
-    }
-    $("#cash_advance_amount").blur(function () {
-        var thisValue = $(this).val();
-        if (thisValue != "" && !isNaN(thisValue)) {
-            $(this).val(toDecimal2(thisValue));
-        }
-        else {
-            $(this).val("");
-        }
-    })
-    $("#HREF_btnCancel").click(function () {
+    function ClosePage() {
         window.close();
-    })
+    }
 </script>

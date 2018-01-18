@@ -4289,6 +4289,14 @@ namespace EMT.DoneNOW.BLL
                         }
 
                     }
+                    if (oldExp.task_id != null)
+                    {
+                        var thisTask = new sdk_task_dal().FindNoDeleteById((long)oldExp.task_id);
+                        if (thisTask != null && thisTask.contract_id != null)
+                        {
+                            contract_id = thisTask.contract_id;
+                        }
+                    }
 
                     var thisDed = new crm_account_deduction()
                     {
