@@ -3578,6 +3578,8 @@ namespace EMT.DoneNOW.BLL
                     thisExpRep.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                     thisExpRep.create_user_id = user_id;
                     thisExpRep.update_user_id = user_id;
+                    thisExpRep.submit_time = thisExpRep.create_time;
+                    thisExpRep.submit_user_id = user_id;
                     serDal.Insert(thisExpRep);
                     OperLogBLL.OperLogAdd<sdk_expense_report>(thisExpRep, thisExpRep.id, user_id, OPER_LOG_OBJ_CATE.SDK_EXPENSE_REPORT, "新增费用报表");
                 }

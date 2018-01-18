@@ -35,7 +35,9 @@ body, input[type="text"], select, textarea {
 
 input {
     color: #333;
-    margin: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
 }
 
     input[type="file"] {

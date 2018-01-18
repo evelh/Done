@@ -198,6 +198,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.PURCHASE_ORDER_HISTORY:
                     currentQuery.page_name = "采购订单历史";
                     break;
+                case (int)DicEnum.QUERY_CATE.APPROVED_REPORT:
+                    currentQuery.page_name = "已审批费用报表";
+                    break;
                 default:
                     currentQuery.page_name = "";
                     break;

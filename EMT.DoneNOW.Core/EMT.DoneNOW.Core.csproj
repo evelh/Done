@@ -171,6 +171,7 @@
     <Compile Include="TST\tst_timeoff_policy_item.cs" />
     <Compile Include="TST\tst_timeoff_policy_item_tier.cs" />
     <Compile Include="TST\tst_timeoff_policy_resource.cs" />
+    <Compile Include="TST\tst_expense_report_log.cs" />
     <Compile Include="TST\tst_timeoff_request.cs" />
     <Compile Include="TST\tst_timeoff_request_log.cs" />
     <Compile Include="TST\tst_work_entry_report_log.cs" />

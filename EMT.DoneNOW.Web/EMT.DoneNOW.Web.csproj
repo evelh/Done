@@ -52,7 +52,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MsgPack, Version=0.9.0.0, Culture=neutral, PublicKeyToken=a2625990d5dc0167, processorArchitecture=MSIL">
-      <HintPath>..\packages\MsgPack.Cli.0.9.0\lib\net46\MsgPack.dll</HintPath>
+      <HintPath>..\packages\MsgPack.Cli.0.9.2\lib\net46\MsgPack.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -181,6 +181,7 @@
     <Content Include="Content\SysUserSecurityLevel.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\sysset_user.css" />
+    <Content Include="Content\Ticket.css" />
     <Content Include="Content\WorkType.css" />
     <Content Include="Contract\AddCharges.aspx" />
     <Content Include="Contract\AddContractRate.aspx" />
@@ -416,9 +417,12 @@
     <Content Include="RichText\js\third-party\video-js\font\vjs.eot" />
     <Content Include="RichText\js\third-party\video-js\font\vjs.ttf" />
     <Content Include="RichText\js\third-party\video-js\font\vjs.woff" />
+    <Content Include="Scripts\Search\approved_report.js" />
     <Content Include="Scripts\Search\contract_project.js" />
     <Content Include="Scripts\Search\Holidays.js" />
     <Content Include="Scripts\Search\HolidaySet.js" />
+    <Content Include="Scripts\Search\expense_report.js" />
+    <Content Include="Scripts\Search\myapprove_expense_report.js" />
     <Content Include="Scripts\Search\project_search.js" />
     <Content Include="Scripts\Search\PurchaseFulfillment.js" />
     <Content Include="Scripts\Search\PurchaseItem.js" />
@@ -430,6 +434,11 @@
     <Content Include="Scripts\Search\ShippingList.js" />
     <Content Include="Scripts\Search\purchase_order_history.js" />
     <Content Include="SysSetting\AddTimeOffPolicy.aspx" />
+    <Content Include="ServiceDesk\TicketManage.aspx" />
+    <Content Include="TimeSheet\ExpenseReportDetail.aspx" />
+    <Content Include="TimeSheet\RefuseReportReason.aspx" />
+    <Content Include="TimeSheet\ReportOperation.aspx" />
+    <Content Include="TimeSheet\ReportView.aspx" />
     <Content Include="Tools\PurchaseOrderAjax.ashx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\alert.png" />
@@ -1841,6 +1850,44 @@
     </Compile>
     <Compile Include="SysSetting\AddTimeOffPolicy.aspx.designer.cs">
       <DependentUpon>AddTimeOffPolicy.aspx</DependentUpon>
+	</Compile>
+    <Compile Include="ServiceDesk\TicketManage.aspx.cs">
+      <DependentUpon>TicketManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\TicketManage.aspx.designer.cs">
+      <DependentUpon>TicketManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TimeSheet\ExpenseReportDetail.aspx.cs">
+      <DependentUpon>ExpenseReportDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TimeSheet\ExpenseReportDetail.aspx.designer.cs">
+      <DependentUpon>ExpenseReportDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TimeSheet\RefuseReportReason.aspx.cs">
+      <DependentUpon>RefuseReportReason.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TimeSheet\RefuseReportReason.aspx.designer.cs">
+      <DependentUpon>RefuseReportReason.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TimeSheet\ReportOperation.aspx.cs">
+      <DependentUpon>ReportOperation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TimeSheet\ReportOperation.aspx.designer.cs">
+      <DependentUpon>ReportOperation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TimeSheet\ReportView.aspx.cs">
+      <DependentUpon>ReportView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TimeSheet\ReportView.aspx.designer.cs">
+      <DependentUpon>ReportView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\ExpenseAjax.ashx.cs">
+      <DependentUpon>ExpenseAjax.ashx</DependentUpon>
     </Compile>
     <Compile Include="Tools\PurchaseOrderAjax.ashx.cs">
       <DependentUpon>PurchaseOrderAjax.ashx</DependentUpon>
@@ -2320,6 +2367,7 @@
     <Content Include="Tools\AttachmentAjax.ashx" />
     <Content Include="Tools\BaseAjax.ashx" />
     <Content Include="Tools\InventoryLocationAjax.ashx" />
+    <Content Include="Tools\ExpenseAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

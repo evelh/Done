@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="../Content/searchList.css" />
      <link href="../Content/ClassificationIcons.css" rel="stylesheet" />
     <title></title>
-    <style>APPROVE_CHARGES
+    <style>
         .searchcontent {
             width: 100%;
             height: 100%;
@@ -288,13 +288,29 @@
                   <li onclick="ApplyDiscount()"><span>应用全部折扣</span></li>
                   <%} %>
                   <%}%>
-                  <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASE_APPROVAL) { %>
+                  <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASE_APPROVAL)
+                      { %>
                     <li onclick="Approval()"><span style="margin: 0 10px;">通过</span></li>
                     <li onclick="ApprovalReject()"><span style="margin: 0 10px;">拒绝</span></li>
-                  <%} %>
+                  <%}else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MYAPPROVE_EXPENSE_REPORT){ %>
+                    <li  id="appSel"><span style="margin: 0 10px;">审批选中</span></li>
+                     <li  id="rejSel"><span style="margin: 0 10px;">拒绝选中</span></li>
+                    <%} %>
                     <li id="PrintLi" class="General"><i style="background-image: url(../Images/print.png);"></i></li>
                     <li id="SelectLi" class="General" onclick="javascript:window.open('../Common/ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
                     <li id="ExportLi" class="General"><i style="background-image: url(../Images/export.png);"></i></li>
+                    <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.EXPENSE_REPORT)
+                        { %>
+                    <li class="right" style="float: right;line-height: 28px;border: 0px solid #bcbcbc;margin-right: 25px;">
+	 <select name="IsPay" id="IsPay"  style="width:100px;height: 24px;">
+         <option value="0" selected="">全部</option>
+		<option value="1">已支付</option>
+		<option value="2">未支付</option>
+	 </select>
+	</li>
+                    <%} else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVED_REPORT) { %>
+                    <li><%--<input type="checkbox" id="ckPaid"/>--%><span></span></li>
+                    <%} %>
                 </ul>
                 <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_UDF) { %>
                 <div class="DropDownMenu" id="D1" style=" background-color: #FFF;padding: 5px;border: 1px solid #BCBCBC;cursor: pointer;box-shadow: 1px 3px 4px rgba(0,0,0,0.33);position: fixed;top: 35px;border-top:white;display:none;">
@@ -547,6 +563,44 @@
                 </a>
             </div>
         </div>
+    </div>
+    <!-- 拒绝费用审批理由填写 -->
+    <div class="Dialog" style="margin-left: -370px; margin-top: -229px; z-index: 100; display: none;max-width:500px;height:320px;" id="RefuseExpenseReport">
+         <div>
+                <div class="DialogContentContainer">
+                    <div class="Active ThemePrimaryColor TitleBar">
+                        <div class="Title">
+                            <span class="text" style="margin-left: -18px;color:white;">拒绝原因</span>
+                        </div>
+                    </div>
+                    <div class="DialogHeadingContainer">
+                     
+                        <div class="ButtonContainer" style="float:left;"><a class="Button ButtonIcon Save NormalState" id="rejectButton" tabindex="0"><span class="Text">拒绝</span></a></div>
+                         <div class="ButtonContainer" ><a class="Button ButtonIcon Save NormalState" id="CloseButton" tabindex="0"><span class="Text">取消</span></a></div>
+                    </div>
+                    <div class="ScrollingContentContainer" style="position: unset;margin-top: 10px;">
+                        <div class="ScrollingContainer" id="" style="top: 80px;">
+                            <div class="Medium NoHeading Section">
+                                <div class="Content">
+                                    <div class="Normal Column">
+                                        <div class="EditorLabelContainer">
+                                            <div class="Label">
+                                                <label for="ajax303a00d30ad844dcb3e55c4b5a88de3c_0_Reason">拒绝原因</label><span class="Required" style="color:red;">*</span>
+                                            </div>
+                                        </div>
+                                        <div class="Editor TextArea" data-editor-id="" data-rdp="" style="top: 80px;">
+                                            <div class="InputField">
+                                                <textarea class="Medium" id="rejectReason" name="" placeholder="" style="border: solid 1px #D7D7D7; padding: 0px 0 5px 0;max-width:330px;min-height:175px;width:300px;"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
         <%--加载--%>
 <div id="BackgroundOverLay"></div>

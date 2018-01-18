@@ -1287,6 +1287,14 @@ namespace EMT.DoneNOW.BLL
 
             return result;
         }
+        /// <summary>
+        /// 获取到默认的客户（oid为0）
+        /// </summary>
+        public crm_account GetDefaultAccount()
+        {
+            var thisAcc = _dal.FindSignleBySql<crm_account>("SELECT * from crm_account where oid = 0 and delete_time = 0");
+            return thisAcc;
+        }
 
 
 

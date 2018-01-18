@@ -1,0 +1,338 @@
+﻿body {
+    font-size: 12px;
+    overflow: auto;
+    background: white;
+    left: 0;
+    top: 0;
+    position: relative;
+    margin: 0;
+}
+.PageHeadingContainer {
+    background-color: #fff;
+    box-shadow: 0 1px 3px 0 rgba(155,158,170,0.5);
+    left: 0;
+    margin: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+}
+.HeaderRow {
+    background-color: #346a95;
+    z-index: 100;
+    height: 36px;
+    padding-left: 10px;
+    margin-bottom: 10px;
+}
+
+    .HeaderRow table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .HeaderRow span {
+        color: #FFF;
+        top: 10px;
+        display: block;
+        width: 85%;
+        position: absolute;
+        text-transform: uppercase;
+        font-size: 15px;
+        font-weight: bold;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+.ButtonBar {
+    font-size: 12px;
+    padding: 0 10px 10px 10px;
+    width: auto;
+    background-color: #FFF;
+}
+
+    .ButtonBar ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        height: 26px;
+        width: 100%;
+    }
+
+        .ButtonBar ul li {
+            display: block;
+            float: left;
+        }
+
+            .ButtonBar ul li a, .ButtonBar ul li a:visited, .contentButton a, .contentButton a:link, .contentButton a:visited, a.buttons, input.button, .ButtonBar ul li a:visited {
+                background: #d7d7d7;
+                background: -moz-linear-gradient(top,#fff 0,#d7d7d7 100%);
+                background: -webkit-linear-gradient(top,#fff 0,#d7d7d7 100%);
+                background: -ms-linear-gradient(top,#fff 0,#d7d7d7 100%);
+                background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+                border: 1px solid #bcbcbc;
+                display: inline-block;
+                color: #4F4F4F;
+                cursor: pointer;
+                padding: 0 5px 0 3px;
+                position: relative;
+                text-decoration: none;
+                vertical-align: middle;
+                height: 24px;
+            }
+
+.ExpenseDetail {
+    padding: 10px;
+    width: 100%;
+}
+
+    .ExpenseDetail table {
+        width: 100%;
+    }
+
+        .ExpenseDetail table .LeftTd {
+            width: 150px;
+            white-space: nowrap;
+        }
+
+.FieldLabels {
+    font-size: 12px;
+    color: #4F4F4F;
+    font-weight: bold;
+    line-height: 15px;
+}
+
+    .FieldLabels .label {
+        font-weight: normal;
+    }
+
+.ButtonBar ul li a span.Text, .contentButton a span.Text, a.buttons span.Text, input.button span.Text {
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 26px;
+    padding: 0 1px 0 3px;
+    color: #4F4F4F;
+    vertical-align: top;
+}
+.QuickLaunchBar {
+    background-color: #455571;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    top: 86px;
+    width: 45px;
+}
+.QuickLaunchBar > .QuickLaunchButton.DisabledState {
+    cursor: default;
+}
+.QuickLaunchBar > .QuickLaunchButton {
+    cursor: pointer;
+    height: 49px;
+    position: relative;
+    width: 45px;
+    padding-left:10px;
+    padding-top:10px;
+}
+.QuickLaunchBar > .QuickLaunchButton > .Text {
+    background-color: #455571;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.5);
+    color: #fff;
+    padding: 0 15px 0 47px;
+    display: none;
+    font-size: 14px;
+    font-weight: 600;
+    left: 0;
+    line-height: 49px;
+    position: absolute;
+    top: 0;
+    white-space: nowrap;
+}
+.QuickLaunchBar > .QuickLaunchButton > .Text > .KeyCode {
+    margin-left: 5px;
+}
+    .QuickLaunchBar > .QuickLaunchButton >.Icon {
+        width: 17px;
+        height: 17px;
+        
+    }
+    
+    .MainContainer {
+        display: flex;
+        max-width: 1875px;
+        position: relative;
+    }
+    .MainContainer > .SecondaryContainer {
+        background-color: #f8f9fb;
+        flex: 1 1 235px;
+        min-width: 235px;
+        max-width: 360px;
+    }
+        .MainContainer > .SecondaryContainer > .TabButtonContainer{
+            display:none;
+        }
+.SecondaryContainer > .TabButtonContainer {
+    background: #fff;
+    border-bottom: 1px solid #dee0e7;
+    border-top: 1px solid transparent;
+}
+    .SecondaryContainer > .TabButtonContainer > div {
+        flex: 1 0 auto;
+        text-align: center;
+        width: 50%;
+    }
+        .SecondaryContainer > .TabButtonContainer > div > .TabButton.Active {
+            border-bottom-color: #115aa2;
+            cursor: default;
+        }
+        .SecondaryContainer > .TabButtonContainer > div > .TabButton {
+            align-items: center;
+            border-bottom: 2px solid transparent;
+            border-top: 2px solid transparent;
+            cursor: pointer;
+            display: inline-flex;
+            height: 44px;
+            padding: 0 2px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+            .SecondaryContainer > .TabButtonContainer > div > .TabButton > .Icon {
+                background-repeat: no-repeat;
+                flex: 1 1 auto;
+                height: 20px;
+                width: 20px;
+            }
+.EntityPageTabIcon.Details.Active .Icon {
+    background-position: 0 0;
+}
+.SecondaryContainer > .TabButtonContainer > div > .TabButton.Active > .Text {
+    color: #115aa2;
+}
+.SecondaryContainer > .TabButtonContainer > div > .TabButton > .Text {
+    color: #6b7b98;
+    flex: 1 1 auto;
+    font-size: 14px;
+    line-height: 20px;
+    padding-left: 8px;
+}
+.DetailsSection > .Content {
+    padding: 12px;
+}
+    .DetailsSection > .Content > .EditorLabelContainer {
+        padding-top: 5px;
+    }
+.EditorLabelContainer {
+    display: block;
+}
+    .EditorLabelContainer > .Label {
+        color: #4f4f4f;
+        font-weight: 700;
+        height: 14px;
+        line-height: 13px;
+        overflow: hidden;
+        padding-bottom: 1px;
+        padding-right: 5px;
+        vertical-align: bottom;
+        white-space: nowrap;
+    }
+.Required {
+    color: #e51937;
+    padding-left: 2px;
+}
+.DetailsSection > .Content > .BundleContainer {
+    display: flex;
+}
+    .DetailsSection > .Content > .BundleContainer > .EditorContainer {
+        flex: 1 1 auto;
+    }
+        .DetailsSection > .Content > .Editor, .DetailsSection > .Content > .BundleContainer > .EditorContainer > .Editor {
+            display: block;
+        }
+            .DetailsSection > .Content > .Editor.DataSelector > .InputField > input[type="text"], .DetailsSection > .Content > .BundleContainer > .EditorContainer > .Editor.DataSelector > .InputField > input[type="text"] {
+                width: calc(100% - 38px);
+            }
+input[type="text"] {
+    height: 22px;
+    padding: 0 6px;
+    resize: none;
+}
+input[type="text"], select, textarea {
+    border: 1px solid #d7d7d7;
+    font-size: 12px;
+    resize: vertical;
+}
+body, input[type="text"], select, textarea {
+    font-family: Arial,Helvetica,Tahoma,sans-serif;
+}
+input {
+    color: #333;
+    margin: 0;
+}
+.Editor > .InputField > a.Button.IconOnly, .Editor > .InputField > a.Button.IconOnly span, .Editor.DataSelector > .InputField a.Button.IconOnly span, .Editor.DualMultipleSelect > .InputField a.Button.IconOnly, .Editor.DualMultipleSelect > .InputField a.Button.IconOnly span, .Editor .CustomHtml a.Button.IconOnly, .Editor .CustomHtml a.Button.IconOnly span {
+    height: 20px;
+}
+.Editor > .InputField > a.Button.IconOnly, .Editor.DualMultipleSelect > .InputField a.Button.IconOnly, .Editor .CustomHtml a.Button.IconOnly {
+    background: transparent;
+    border: none;
+    padding: 0;
+    vertical-align: top;
+}
+.Editor > .InputField > a.Button.IconOnly {
+    margin-left: 4px;
+}
+a.Button.IconOnly {
+    font-size: 0;
+    line-height: 0;
+    padding: 0 1px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.DetailsSection > .Content > .BundleContainer > .IconButtonContainer {
+    flex: 0 0 auto;
+    margin-left: 2px;
+}
+    .DetailsSection > .Content > .BundleContainer > .IconButtonContainer > .Button {
+        background: transparent;
+        border: none;
+        height: 20px;
+        padding: 0;
+        top: 2px;
+    }
+.DetailsSection > .Title {
+    background-color: #eaedf4;
+    border-top: 1px solid #dee0e7;
+    cursor: pointer;
+    display: flex;
+}
+    .DetailsSection > .Title > .Text {
+        color: #6b7b98;
+        flex: 1 1 auto;
+        font-size: 15px;
+        line-height: 22px;
+        overflow: hidden;
+        padding: 10px 0 10px 12px;
+        text-transform: uppercase;
+        word-wrap: break-word;
+    }
+    .DetailsSection > .Title > .Toggle {
+        flex: 0 1 auto;
+        padding: 15px 12px;
+        width: 12px;
+    }
+        .DetailsSection > .Title > .Toggle > .InlineIcon, .InsightShell > .Title > .Toggle > .InlineIcon {
+            transition: all .6s ease;
+        }
+.InlineIcon.ArrowUp {
+    background-position: -51px 0;
+}
+.InlineIcon {
+    background-image: url(../../FrameworkContent/Images/Icons/InlineIcons.svg?v=4);
+    background-repeat: no-repeat;
+    height: 12px;
+    width: 12px;
+}
+.DetailsSection.Collapsed > .Title > .Toggle > .InlineIcon, .InsightShell.Collapsed > .Title > .Toggle > .InlineIcon {
+    transform: rotate(180deg);
+}

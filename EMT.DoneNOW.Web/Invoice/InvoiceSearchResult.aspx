@@ -489,7 +489,7 @@
             purchaseNo = $("input[name = '594']").eq(0).val();
         }
         if (account_ids != "") {
-            window.open("InvoicePreview.aspx?account_ids=" + account_ids + "&stareDate=" + stareDate + "&endDate=" + endDate + "&item_type=" + item_type + "&contract_type=" + contract_type + "&contract_cate=" + contract_cate + "&itemDeal=" + itemDeal + "&purchaseNo=" + purchaseNo, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PREVIEW %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+            window.open("InvoicePreview.aspx?account_ids=" + account_ids + "&stareDate=" + stareDate + "&endDate=" + endDate + "&item_type=" + item_type + "&contract_type=" + contract_type + "&contract_cate=" + contract_cate + "&itemDeal=" + itemDeal + "&purchaseNo=" + purchaseNo, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PREVIEW %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false );
         }
     }
     function Process() {

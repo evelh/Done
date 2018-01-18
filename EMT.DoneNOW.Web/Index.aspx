@@ -316,8 +316,51 @@
                                 </div>
                                 <!--第七个-->
                                 <div class="Module">
+                                    
+                                      <div class="Normal ContextOverlayColumn">
+                                        <div>
+                                            <div class="Group">
+                                                <div class="Heading">
+                                                    <div class="Text">我的</div>
+                                                </div>
+                                              
+                                                <%if (CheckAuth("MENU_INVENTORY_PRODUCT")) { %>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.EXPENSE_REPORT %>" target="PageFrame">
+                                                        <span class="Text">费用报表</span>
+                                                    </a>
+                                                </div>
+                                                <%} %>
+                                            </div>
+                                            <div class="Group">
+                                                  <div class="Heading">
+                                                    <div class="Text">等待我审批的</div>
+                                                </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MYAPPROVE_EXPENSE_REPORT %>&isCheck=1" target="PageFrame">
+                                                        <span class="Text">费用报表</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="Group">
+                                                  <div class="Heading">
+                                                    <div class="Text">历史</div>
+                                                </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVED_REPORT %>" target="PageFrame">
+                                                        <span class="Text">已审批费用报表</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="Group">
+                                                <div class="Heading">
+                                                    <div class="Text">工具</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <!--第八个-->
+                                <!--第八个--> 
                                 <%if (CheckAuth("MENU_INVENTORY")) { %>
                                 <div class="Module">
                                     <div class="Normal ContextOverlayColumn">

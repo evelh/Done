@@ -100,6 +100,12 @@ namespace EMT.DoneNOW.BLL
                 var project = new pro_project_dal().FindNoDeleteById(att.object_id);
                 att.account_id = project.account_id;
             }
+            else if(att.object_type_id == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.EXPENSE_REPORT)
+            {
+                // 从报表添加附件 - 默认使用声联（oid=0） 的客户
+                var defaultAccount = new CompanyBLL().GetDefaultAccount();
+                att.account_id = defaultAccount.id;
+            }
             else
                 return false;
 

@@ -24,7 +24,7 @@
     <%} else { %>
 <frameset id="SearchFrameSet" name="SearchFrameSet" rows="0,*" cols="100%" framespacing="0" border="0">
     <frame src="" id="SearchCondition"></frame>
-    <frame src="SearchBodyFrame.aspx?cat=<%=this.catId %>&type=<%=this.queryTypeId %>&group=<%=paraGroupId %>" id="SearchBody" style="overflow-x: hidden; overflow-y: auto; "></frame>
+    <frame src="SearchBodyFrame.aspx?cat=<%=this.catId %>&type=<%=this.queryTypeId %>&group=<%=paraGroupId %>&isCheck=<%=isCheck %>" id="SearchBody" style="overflow-x: hidden; overflow-y: auto; "></frame>
 </frameset>
     <%} %>
 </html>

@@ -57,6 +57,9 @@ namespace EMT.DoneNOW.Web
                         var crtTaskId = context.Request.QueryString["task_id"];
                         CheckResTimeOff(context,long.Parse(crtTaskId));
                         break;
+                    case "GetResByDepRes":
+                        GetResByDepRes(context);
+                        break;
                     default:
                         break;
                 }
@@ -352,6 +355,19 @@ namespace EMT.DoneNOW.Web
                 }
             }
             
+        }
+
+        private void GetResByDepRes(HttpContext context)
+        {
+            var depResId = context.Request.QueryString["resDepId"];
+            if (!string.IsNullOrEmpty(depResId))
+            {
+                var thisResDep = new sys_resource_department_dal().FindById(long.Parse(depResId));
+                if (thisResDep != null)
+                {
+                    context.Response.Write(thisResDep.resource_id);
+                }
+            }
         }
     }
    

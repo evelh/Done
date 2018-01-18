@@ -544,43 +544,45 @@ namespace EMT.DoneNOW.BLL
                 {
                     thisCost = (decimal)thisPro.unit_cost;
                 }
-
-                var thisSysSet  = new SysSettingBLL().GetSetById(DTO.SysSettingEnum.INVENTORY_ACCOUNTING_METHOD);
-                if (thisSysSet != null)
+                var onHandNum = _dal.GetProOnHand(thisPro.id);
+                if(onHandNum!=null&& (Convert.ToInt32(onHandNum)) > 0)  // 可用数要大于0
                 {
-                    var iopDal = new ivt_order_product_dal();
-                    if (thisSysSet.setting_value == ((int)INVENTORY_ACCOUNTING_METHOD.AVERAGE_COST).ToString())
+                    var thisSysSet = new SysSettingBLL().GetSetById(DTO.SysSettingEnum.INVENTORY_ACCOUNTING_METHOD);
+                    if (thisSysSet != null)
                     {
-                        var avgCosr = iopDal.GetAvgByPro(thisPro.id);
-                        if (avgCosr != null)
+                        var iopDal = new ivt_order_product_dal();
+                        if (thisSysSet.setting_value == ((int)INVENTORY_ACCOUNTING_METHOD.AVERAGE_COST).ToString())
                         {
-                            thisCost = (decimal)avgCosr;
-                        }
-                    }
-                    else if (thisSysSet.setting_value == ((int)INVENTORY_ACCOUNTING_METHOD.FIFO).ToString())
-                    {
-                        var firCosr = iopDal.GetFirstByPro(thisPro.id);
-                        if (firCosr != null)
-                        {
-                            if (firCosr.unit_cost != null)
+                            var avgCosr = iopDal.GetAvgByPro(thisPro.id);
+                            if (avgCosr != null)
                             {
-                                thisCost = (decimal)firCosr.unit_cost;
+                                thisCost = (decimal)avgCosr;
                             }
                         }
-                    }
-                    else if (thisSysSet.setting_value == ((int)INVENTORY_ACCOUNTING_METHOD.LIFO).ToString())
-                    {
-                        var lasCosr = iopDal.GetFirstByPro(thisPro.id);
-                        if (lasCosr != null)
+                        else if (thisSysSet.setting_value == ((int)INVENTORY_ACCOUNTING_METHOD.FIFO).ToString())
                         {
-
-                            if (lasCosr.unit_cost != null)
+                            var firCosr = iopDal.GetFirstByPro(thisPro.id);
+                            if (firCosr != null)
                             {
-                                thisCost = (decimal)lasCosr.unit_cost;
+                               thisCost = (decimal)firCosr;
+                            }
+                        }
+                        else if (thisSysSet.setting_value == ((int)INVENTORY_ACCOUNTING_METHOD.LIFO).ToString())
+                        {
+                            var lasCosr = iopDal.GetLastByPro(thisPro.id);
+                            if (lasCosr != null)
+                            {
+                                thisCost = (decimal)lasCosr;
                             }
                         }
                     }
                 }
+                else
+                {
+                    return thisCost;
+                }
+
+               
                 
             }
             

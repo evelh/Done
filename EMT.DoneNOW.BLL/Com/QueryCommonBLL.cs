@@ -103,9 +103,15 @@ namespace EMT.DoneNOW.BLL
                 if (col.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.DROPDOWN
                     || col.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN)
                 {
+                    if (col.id == 1244)  // 费用报表
+                    {
+                        col.ref_sql = col.ref_sql.Replace("##col1242##", $"{userId}");
+
+                    }
                     var dt = new d_query_para_dal().ExecuteDataTable(col.ref_sql);
                     if (dt != null)
                     {
+                        
                         para.values = new List<DictionaryEntryDto>();
                         foreach (System.Data.DataRow row in dt.Rows)
                         {

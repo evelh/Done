@@ -20,6 +20,7 @@ namespace EMT.DoneNOW.Web.Project
         protected sdk_expense_report thisExpRep = null;
         protected crm_account thisAccount = null;
         protected bool isShowWorkType = true;
+        protected bool isFromReport = false;  // 是否从报表页面进行新增操作
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -106,6 +107,18 @@ namespace EMT.DoneNOW.Web.Project
                         thisAccount = new crm_account_dal().FindNoDeleteById(thisProject.account_id);
                     }
                 }
+
+                var report_id = Request.QueryString["report_id"];
+                if (!string.IsNullOrEmpty(report_id))
+                {
+                    thisExpRep = new sdk_expense_report_dal().FindNoDeleteById(long.Parse(report_id));
+                    if (thisExpRep != null)
+                    {
+                        isFromReport = true;
+                        thisAccount = new CompanyBLL().GetDefaultAccount();
+                    }
+                }
+
             }
             catch (Exception msg)
             {
@@ -170,7 +183,7 @@ namespace EMT.DoneNOW.Web.Project
                     };
                     if (!string.IsNullOrEmpty(reprAmount))
                     {
-                        expRep.amount = decimal.Parse(reprAmount);
+                        expRep.cash_advance_amount = decimal.Parse(reprAmount);
                     }
                     param.thisExpReport = expRep;
                 }
@@ -336,7 +349,7 @@ namespace EMT.DoneNOW.Web.Project
                         url += "&task_id="+ param.thisExpense.task_id;
                     }
                 }
-                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存费用成功！');self.opener.location.reload();location.href='" + url+"';</script>");
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存费用成功！');self.opener.location.reload();location.href='" + thisurl + "';</script>");
             }
             else
             {
