@@ -211,6 +211,7 @@
     <Content Include="Contract\InteralCostAddOrEdit.aspx" />
     <Content Include="Contract\NotiRuleManage.aspx" />
     <Content Include="Images\attachment.png" />
+    <Content Include="Images\background.jpg" />
     <Content Include="Images\calendar.png" />
     <Content Include="Images\cancel1.png" />
     <Content Include="Images\coin_gold.png" />

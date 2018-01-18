@@ -52,7 +52,7 @@
                  <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                     <asp:Button ID="Cancel" runat="server" Text="取消" BorderStyle="None" class="Text" OnClick="Cancel_Click" />
                 </li>
-                <span class="FieldLevelInstruction">包含所需字段<span style="color: red;">*</span>选项卡</span>
+                <%--<span class="FieldLevelInstruction">包含所需字段<span style="color: red;">*</span>选项卡</span>--%>
             </ul>
         </div>
         <!--选择框-->
@@ -373,7 +373,7 @@
                                                 <div class="Content">
                                                     <table cellpadding="0" cellspacing="0" style="margin-top: 8px;">
                                                         <tbody>
-                                                            <tr>
+                                                            <tr style="display:none;">
                                                                 <td colspan="2">
                                                                     <span class="lblNormalClass">用户名<span style="color: red;">*</span></span>
                                                                     <div>
@@ -626,11 +626,11 @@
                     alert("请选择数值类型！");
                     return false;
                 }
-                if ($("#name").val() == null || $("#name").val() == '')
-                {
-                    alert("请在常规选项卡输入用户名");
-                    return false;
-                }
+                //if ($("#name").val() == null || $("#name").val() == '')
+                //{
+                //    alert("请在常规选项卡输入用户名");
+                //    return false;
+                //}
                 //if ($("#pass_word").val() == null || $("#pass_word").val() == '') {
                 //    alert("请在常规选项卡输入密码");
                 //    return false;
@@ -639,10 +639,10 @@
                 //    alert("请在常规选项卡再次输入密码");
                 //    return false;
                 //}
-                //if ($("#Security_Level").val() == 0) {  数据配置不齐全可空
-                //    alert("请输入权限等级");
-                //    return false;
-                //}
+                if ($("#Security_Level").val() == 0) {  //数据配置不齐全可空
+                    alert("请输入权限等级");
+                    return false;
+                }
             }
             $("#pass_word2").change(function () {
                 var ps1 = $("#pass_word").val();

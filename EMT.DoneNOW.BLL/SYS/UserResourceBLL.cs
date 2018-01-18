@@ -77,15 +77,17 @@ namespace EMT.DoneNOW.BLL
         /// <param name="user_id"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ERROR_CODE Insert(SysUserAddDto data, long user_id,out long id) {
-            id = data.sys_res.id = (int)(_dal.GetNextIdCom());
-            if (_dal.FindSignleBySql<sys_resource>($"select * from sys_resource where `name`='{data.sys_res.name}'") != null) {
+        public ERROR_CODE Insert(SysUserAddDto data, long user_id,out long id)
+        {
+            id = data.sys_res.id = _dal.GetNextIdCom();
+            sys_resource findRes;
+            if (string.IsNullOrEmpty(data.sys_res.mobile_phone))
+                findRes = _dal.FindSignleBySql<sys_resource>($"select * from sys_resource where email='{data.sys_res.email}' and delete_time=0");
+            else
+                findRes = _dal.FindSignleBySql<sys_resource>($"select * from sys_resource where (email='{data.sys_res.email}' or mobile_phone='{data.sys_res.mobile_phone}') and delete_time=0");
+            if (findRes != null)
                 return ERROR_CODE.SYS_NAME_EXIST;
-            }
-            if (new sys_user_dal().FindSignleBySql<sys_user>($"select * from sys_user where `name`='{data.sys_user.name}'") != null)
-            {
-                return ERROR_CODE.EXIST;
-            }
+            
             data.sys_res.create_user_id = data.sys_res.update_user_id = user_id;
             data.sys_res.create_time = data.sys_res.update_time= Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             _dal.Insert(data.sys_res);
@@ -110,7 +112,7 @@ namespace EMT.DoneNOW.BLL
 
             data.sys_user.id = id;
             //MD5加密
-           data.sys_user.password = new Tools.Cryptographys().MD5Encrypt(data.sys_user.password,false);
+           data.sys_user.password = new Tools.Cryptographys().SHA1Encrypt(data.sys_user.password);
             new sys_user_dal().Insert(data.sys_user);
 
           add_account_log = new sys_oper_log()
@@ -143,16 +145,17 @@ namespace EMT.DoneNOW.BLL
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
                 return ERROR_CODE.USER_NOT_FIND;
-            var nameex = _dal.FindSignleBySql<sys_resource>($"select * from sys_resource where `name`='{data.sys_res.name}'");
-            if (nameex != null&& nameex.id!=id)
+
+            sys_resource findRes;
+            if (string.IsNullOrEmpty(data.sys_res.mobile_phone))
+                findRes = _dal.FindSignleBySql<sys_resource>($"select * from sys_resource where email='{data.sys_res.email}' and id<>{data.sys_res.id} and delete_time=0");
+            else
+                findRes = _dal.FindSignleBySql<sys_resource>($"select * from sys_resource where (email='{data.sys_res.email}' or mobile_phone='{data.sys_res.mobile_phone}') and id<>{data.sys_res.id} and delete_time=0");
+            if (findRes != null)
             {
                 return ERROR_CODE.SYS_NAME_EXIST;
             }
-            var username = new sys_user_dal().FindSignleBySql<sys_user>($"select * from sys_user where `name`='{data.sys_res.name}'");
-            if (username != null && username.id != id)
-            {
-                return ERROR_CODE.EXIST;
-            }
+            
             var old = GetSysResourceSingle(id);
             data.sys_res.id = id;
             data.sys_res.update_user_id = user_id;
@@ -177,7 +180,7 @@ namespace EMT.DoneNOW.BLL
             var userdata = GetSysUserSingle(id);
             data.sys_user.id = id;
             if (userdata.password!=data.sys_user.password)
-                data.sys_user.password = new Tools.Cryptographys().MD5Encrypt(data.sys_user.password, false);
+                data.sys_user.password = new Tools.Cryptographys().SHA1Encrypt(data.sys_user.password);
             new sys_user_dal().Update(data.sys_user);
             add_account_log = new sys_oper_log()
             {
