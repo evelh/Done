@@ -54,8 +54,12 @@ namespace EMT.DoneNOW.BLL
                 thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
 
                 #region 1.保存Task信息
-                _dal.Insert(thisTask);
-                OperLogBLL.OperLogAdd<sdk_task>(thisTask, thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "新增task");
+                 _dal.Insert(thisTask);
+                thisTask = _dal.FindNoDeleteById(thisTask.id);
+                if (thisTask != null)
+                {
+                    OperLogBLL.OperLogAdd<sdk_task>(thisTask, thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "新增task");
+                }
                 #endregion
 
                 #region task 相关扩展字段
