@@ -386,7 +386,7 @@
                                                                 </td>
                                                             </tr>
                                                                    <tr class="ButtonCollectionBase btn1"><td> <span class="ButtonCollectionBase btn1" style="height:27px;">
-                                                                       <asp:Button runat="server" type="button" id="btn1" Text="修改密码" style="font-size:12px;"/>             
+                                                                       <input type="button" value="修改密码" id="btn1" />           
                                                               </span></td></tr>
                                                             <tr class="xiugai">
                                                                 <td colspan="2" class="xiugai">
