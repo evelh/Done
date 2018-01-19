@@ -180,32 +180,30 @@ namespace EMT.DoneNOW.Web
                             var yearList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR).ToList();
                             if (oneTimeList != null && oneTimeList.Count > 0)
                             {
-                                oneTimeRevenue = (decimal)oneTimeList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (_.unit_price * _.quantity) : 0);
+                                oneTimeRevenue = (decimal)oneTimeList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price??0)-(_.unit_discount??0)) * _.quantity) : 0);
                                 oneTimeCost = (decimal)oneTimeList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
                             }
                             if (monthList != null && monthList.Count > 0)
                             {
-                                monthRevenue = (decimal)monthList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (_.unit_price * _.quantity) : 0);
+                                monthRevenue = (decimal)monthList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
                                 monthCost = (decimal)monthList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
                             }
                             if (quarterList != null && quarterList.Count > 0)
                             {
-                                quarterRevenue = (decimal)quarterList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (_.unit_price * _.quantity) : 0);
+                                quarterRevenue = (decimal)quarterList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
                                 quarterCost = (decimal)quarterList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
                             }
                             if (halfList != null && halfList.Count > 0)
                             {
-                                halfRevenue = (decimal)halfList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (_.unit_price * _.quantity) : 0);
+                                halfRevenue = (decimal)halfList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
                                 halfCost = (decimal)halfList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
                             }
                             if (yearList != null && yearList.Count > 0)
                             {
-                                yearRevenue = (decimal)yearList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (_.unit_price * _.quantity) : 0);
+                                yearRevenue = (decimal)yearList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
                                 yearCost = (decimal)yearList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
                             }
                         }
-
-
                     }
                     context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { oneTimeRevenue = oneTimeRevenue, oneTimeCost = oneTimeCost, monthRevenue = monthRevenue, monthCost = monthCost, quarterRevenue = quarterRevenue, quarterCost = quarterCost, halfRevenue = halfRevenue, halfCost = halfCost, yearRevenue = yearRevenue, yearCost = yearCost, shipRevenue = shipRevenue, shipCost = shipCost, discount = discount }));
                 }
