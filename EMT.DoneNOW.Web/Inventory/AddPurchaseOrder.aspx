@@ -384,20 +384,30 @@
       return true;
     }
       var Height = $(window).height() - 693 + "px";
-      if (Height < 150)
-          Height = 150;
+      if (parseInt($(window).height() - 693) < 150)
+          Height = 150 + "px";
     $("#showItem").css("height", Height);
 
     $(window).resize(function () {
         var Height = $(window).height() - 693 + "px";
-        if (Height < 150)
-            Height = 150;
+        if (parseInt($(window).height() - 693) < 150)
+            Height = 150 + "px";
       $("#showItem").css("height", Height);
       })
+      var isOpen = 1;
       $("#generalInfo").click(function () {
-          var Height = $(window).height() - 693 + "px";
-          if (Height < 150)
-              Height = 150;
+          var Height;
+          if (isOpen == 0) {
+              Height = $(window).height() - 693 + "px";
+              if (parseInt($(window).height() - 693) < 150)
+                  Height = 150 + "px";
+              isOpen = 1;
+          } else {
+              Height = $(window).height() - 141 + "px";
+              if (parseInt($(window).height() - 141) < 150)
+                  Height = 150 + "px";
+              isOpen = 0;
+          }
           $("#showItem").css("height", Height);
       })
     var haveVendor = 0;
