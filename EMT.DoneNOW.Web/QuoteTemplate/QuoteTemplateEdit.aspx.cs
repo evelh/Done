@@ -19,20 +19,20 @@ namespace EMT.DoneNOW.Web
             id = Convert.ToInt32(Request.QueryString["id"]);
             if (!IsPostBack)
             {
-                if(Session["cancel"]!=null&&(int)Session["cancel"]!=1)
+                if (Session["cancel"] != null && (int)Session["cancel"] != 1)
                 {
                     Cancel1();
                 }
                 Session["cancel"] = 0;
                 QuoteTemplateBLL qtb = new QuoteTemplateBLL();
-                if (Request.QueryString["op"] == null||string.IsNullOrEmpty(Request.QueryString["op"].ToString()))
-                {                    
+                if (Request.QueryString["op"] == null || string.IsNullOrEmpty(Request.QueryString["op"].ToString()))
+                {
                     if (qtb.is_quote(id) == DTO.ERROR_CODE.ERROR)//判断报价模板是否被引用
                     {
                         Response.Write("<script>if(confirm('模板被报价引用，如果修改会影响到这些报价。你如果你不想影响这些报价，可以复制一个新的模板，然后对新模板进行修改。是否继续?')==true){}else{window.close();}</script>");
                     }
-                }                           
-                    //填充数据
+                }
+                //填充数据
                 var data = qtb.GetQuoteTemplate(id);
                 if (data == null)
                 {
@@ -54,7 +54,14 @@ namespace EMT.DoneNOW.Web
                         }
                         else
                         {
-                            Session["page_head"] = this.head.Text = HttpUtility.HtmlDecode(data.page_header_html).Replace("\"", "'");
+                            if (!string.IsNullOrEmpty(Request.QueryString["op"]))
+                            {
+
+                            }
+                            else
+                            {
+                                Session["page_head"] = this.head.Text = HttpUtility.HtmlDecode(data.page_header_html).Replace("\"", "'");
+                            }
                         }
                     }
                     //头部
@@ -71,7 +78,15 @@ namespace EMT.DoneNOW.Web
                         }
                         else
                         {
-                            Session["quote_head"] = this.top.Text = HttpUtility.HtmlDecode(data.quote_header_html).Replace("\"", "'");
+                            if (!string.IsNullOrEmpty(Request.QueryString["op"]))
+                            {
+
+                            }
+                            else
+                            {
+                                Session["quote_head"] = this.top.Text = HttpUtility.HtmlDecode(data.quote_header_html).Replace("\"", "'");
+                            }
+
                         }
 
                     }
@@ -79,7 +94,7 @@ namespace EMT.DoneNOW.Web
 
                     //正在进行中
                     string body_json = string.Empty;
-                    if (Session["quote_body"] == null|| string.IsNullOrEmpty(Session["quote_body"].ToString()))
+                    if (Session["quote_body"] == null || string.IsNullOrEmpty(Session["quote_body"].ToString()))
                     {
                         if (string.IsNullOrEmpty(data.body_html))
                         {
@@ -161,7 +176,15 @@ namespace EMT.DoneNOW.Web
                         }
                         else
                         {
-                            Session["quote_foot"] = this.bottom.Text = HttpUtility.HtmlDecode(data.quote_footer_html).Replace("\"", "'");
+                            if (!string.IsNullOrEmpty(Request.QueryString["op"]))
+                            {
+
+                            }
+                            else
+                            {
+                                Session["quote_foot"] = this.bottom.Text = HttpUtility.HtmlDecode(data.quote_footer_html).Replace("\"", "'");
+                            }
+
                         }
 
                     }
@@ -178,7 +201,15 @@ namespace EMT.DoneNOW.Web
                         }
                         else
                         {
-                            Session["page_foot"] = this.foot.Text = HttpUtility.HtmlDecode(data.page_footer_html).Replace("\"", "'");
+                            if (!string.IsNullOrEmpty(Request.QueryString["op"]))
+                            {
+
+                            }
+                            else
+                            {
+                                Session["page_foot"] = this.foot.Text = HttpUtility.HtmlDecode(data.page_footer_html).Replace("\"", "'");
+                            }
+
                         }
                     }
 
@@ -191,11 +222,20 @@ namespace EMT.DoneNOW.Web
                         }
                         else
                         {
-                            Session["page_appendix"] = HttpUtility.HtmlDecode(data.quote_footer_notes).Replace("\"", "'");
+                            if (!string.IsNullOrEmpty(Request.QueryString["op"]))
+                            {
+
+                            }
+                            else
+                            {
+                                Session["page_appendix"] = HttpUtility.HtmlDecode(data.quote_footer_notes).Replace("\"", "'");
+
+                            }
+
                         }
                     }
                 }
-            }         
+            }
 
         }
         /// <summary>
@@ -248,7 +288,8 @@ namespace EMT.DoneNOW.Web
             Response.Write("<script>window.close();self.opener.location.reload();</script>");
             //Response.Redirect("");//返回报价模板管理界面
         }
-        private void Cancel1() {
+        private void Cancel1()
+        {
             if (Session["page_head"] != null)
             {
                 Session.Remove("page_head");
@@ -284,7 +325,8 @@ namespace EMT.DoneNOW.Web
             save();
         }
 
-        private void save() {
+        private void save()
+        {
             QuoteTemplateBLL qtbll = new QuoteTemplateBLL();
             var sqt = qtbll.GetQuoteTemplate(id);
             if (sqt == null)
@@ -306,7 +348,7 @@ namespace EMT.DoneNOW.Web
             }
             if (Session["quote_foot"] != null)
             {
-                sqt.quote_footer_html= Session["quote_foot"].ToString();
+                sqt.quote_footer_html = Session["quote_foot"].ToString();
             }
             if (Session["page_foot"] != null)
             {
@@ -314,7 +356,7 @@ namespace EMT.DoneNOW.Web
             }
             if (Session["page_appendix"] != null)
             {
-                sqt.quote_footer_notes= Session["page_appendix"].ToString();
+                sqt.quote_footer_notes = Session["page_appendix"].ToString();
             }
 
             //if (Session["copy"] != null)
@@ -340,17 +382,17 @@ namespace EMT.DoneNOW.Web
             //}
             //else
             //{
-                //更新保存
-                var result = qtbll.update(sqt, GetLoginUserId());
-                if (result == ERROR_CODE.SUCCESS)                    // 更新用户成功，刷新前一个页面
-                {
-                    Response.Write("<script>alert('报价模板修改成功！');</script>");  //  关闭添加页面的同时，刷新父页面
-                }
-                else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
-                {
-                    Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
-                    Response.Redirect("Login.aspx");
-                }
+            //更新保存
+            var result = qtbll.update(sqt, GetLoginUserId());
+            if (result == ERROR_CODE.SUCCESS)                    // 更新用户成功，刷新前一个页面
+            {
+                Response.Write("<script>alert('报价模板修改成功！');</script>");  //  关闭添加页面的同时，刷新父页面
+            }
+            else if (result == ERROR_CODE.USER_NOT_FIND)               // 用户丢失
+            {
+                Response.Write("<script>alert('查询不到用户，请重新登陆');</script>");
+                Response.Redirect("Login.aspx");
+            }
             //}
 
         }
@@ -389,7 +431,7 @@ namespace EMT.DoneNOW.Web
                             Response.BinaryWrite(file);
                         }
                         catch (Exception ee)
-                        { 
+                        {
                             throw new Exception(ee.ToString());
                         }
                     }
