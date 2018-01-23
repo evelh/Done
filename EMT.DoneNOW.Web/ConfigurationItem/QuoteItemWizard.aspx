@@ -199,9 +199,10 @@
 
                                                                 <%} %>
 
-                                                                <% if (productItemList != null && productItemList.Count > 0)
+                                                                <% int num = 0;
+                                                                    if (productItemList != null && productItemList.Count > 0)
                                                                     {
-                                                                        int num = 0;
+
                                                                         foreach (var item in productItemList)
                                                                         {
                                                                             num++;
@@ -430,11 +431,11 @@
 
                                                                 <% if (productItemList != null && productItemList.Count > 0)
                                                                     {
-                                                                        int num = 0;
+
                                                                         foreach (var item in productItemList)
                                                                         {
                                                                             num++;
-                                                                           EMT.DoneNOW.Core.d_cost_code costCode = new EMT.DoneNOW.DAL.d_cost_code_dal().FindNoDeleteById((long)item.object_id);
+                                                                            EMT.DoneNOW.Core.d_cost_code costCode = new EMT.DoneNOW.DAL.d_cost_code_dal().FindNoDeleteById((long)item.object_id);
                                                                 %>
                                                                 <tr>
                                                                     <td align="center">
@@ -710,7 +711,19 @@
             }
         }
         $(".Workspace1").hide();
+        <% if (isShowProduct)
+    {%>
         $(".Workspace2").show();
+        <%}
+        else
+        {%>
+         <%if (isShowCharge)
+        { %>
+        $(".Workspace4").show();
+        <%}else{%>
+        $(".Workspace5").show();
+        <%}%>
+        <%}%>
     })
 
     $("#b2").on("click", function () {
@@ -835,8 +848,6 @@
     });
 
     $("#b4").on("click", function () {
-
-        
         var chooseChargeIds = "";
         $(".ckCharge").each(function () {
             if ($(this).is(":checked")) {
@@ -857,6 +868,26 @@
         $(".Workspace5").show();
 
     });
+    $("#a4").on("click", function () {
+       
+        $(".Workspace4").hide();
+        <%if (isShowProduct)
+    { %>
+        var subIds = $("#ChooseSubIds").val();
+        if (subIds != "") {
+            $(".Workspace3").show();
+        } else {
+            $(".Workspace2").show();
+        }
+        <%}
+    else
+    {%>
+        $(".Workspace1").show();
+        <%}%>
+        
+
+    });
+
 
     $("#a5").click(function () {
         $(".Workspace5").hide();

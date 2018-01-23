@@ -369,7 +369,29 @@ namespace EMT.DoneNOW.Web.Contract
                         isHasPurchaseOrder = isHasPurchaseOrder.Substring(0, isHasPurchaseOrder.Length - 1);
                         ClientScript.RegisterStartupScript(this.GetType(), "采购单信息提示", "<script>alert('成本有对应的采购订单：" + isHasPurchaseOrder + "，请手工处理。！');</script>");
                     }
-                    var thisURL = Request.Url;
+                    var thisURL = "";
+                    if (isAdd)
+                    {
+                        thisURL = Request.Url.ToString();
+                    }
+                    else
+                    {
+                        thisURL = "AddCharges.aspx?";
+                        if (contract != null)
+                        {
+                            thisURL += "&contract_id=" + contract.id;
+                        }
+                        if (thisTask != null)
+                        {
+                            thisURL += "&task_id=" + thisTask.id;
+                        }
+                        if (thisProject != null)
+                        {
+                            thisURL += "&project_id=" + thisProject.id;
+                        }
+                    }
+                    
+                    
                     if (param.isAddCongigItem)
                     {
                         

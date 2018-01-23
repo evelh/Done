@@ -895,6 +895,15 @@
         }
     })
 
+    $("#quantity").blur(function () {
+        var value = $(this).val();
+        if (!isNaN(value) && value != "") {
+            $(this).val(toDecimal2(Math.round(value)));
+        } else {
+            $(this).val("");
+        }
+    })
+
     // 计算单价的含税价 设置税区和税种之后进行计算 
     function GetTaxUnitPrice() {
         var unit_price = $("#unit_price").val();   // 单价

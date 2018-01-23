@@ -78,7 +78,7 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                 var chargeList = cqiDal.GetItemByType(quote.id, (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DEGRESSION);
                 if (chargeList != null && chargeList.Count > 0)
                 {
-                    isShowProduct = true;
+                    isShowCharge = true;
 
                     foreach (var item in chargeList)
                     {
@@ -220,6 +220,7 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
             if (string.IsNullOrEmpty(proItemIds) && string.IsNullOrEmpty(chooseChargeIds))
             {
                 // 代表没有选择生成配置项 - 关闭页面
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>window.close();self.opener.location.reload();</script>");
             }
             else
             {

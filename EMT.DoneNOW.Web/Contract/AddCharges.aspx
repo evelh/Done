@@ -1509,7 +1509,7 @@
 
 
 
-            quantity = toDecimal4(quantity);
+            quantity = toDecimal4(Math.round(quantity));
             $(this).val(quantity);
             GetSumCost();
             $("#pricequantity").val(quantity);
