@@ -70,7 +70,7 @@
                         <li><a href="#" onclick="SetPrimaryQuote()">置为主报价</a></li>
                         <li><a href="#"></a>导入报价项</li>
                         <%} %>
-                        <li><a href="#"></a>新建配置项</li>
+                        <li><a onclick="CreateInsPro()">新建配置项</a></li>
                         <li><a href="#"></a>新建定期服务合同</li>
                          <%if (!IssaleOrder)
                             { %>
@@ -1908,8 +1908,12 @@
 
         })
     }
-
+    // 跳转相关成本
     function OpenCost(cost_id) {
         window.open('../Contract/AddCharges.aspx?id='+cost_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConChargeEdit %>', 'left=200,top=200,width=960,height=750', false);
+    }
+    // 打开新建配置项向导
+    function CreateInsPro() {
+        window.open('../ConfigurationItem/QuoteItemWizard.aspx?quote_id=<%=quote==null?"":quote.id.ToString() %>', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid %>', 'left=200,top=200,width=960,height=750', false);
     }
 </script>

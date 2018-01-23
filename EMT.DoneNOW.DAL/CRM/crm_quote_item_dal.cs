@@ -54,7 +54,30 @@ namespace EMT.DoneNOW.DAL
             return FindListBySql<crm_quote_item>(sql);
         }
 
+        /// <summary>
+        /// 获取到生成配置项的报价项(根据类型)  isExist 为not 代表未关联的配置项的报价项  为“” 代表关联配置项的报价项
+        /// </summary>
+        public List<crm_quote_item> GetConfigItem(long quote_id,long type_id,string isExist="")
+        {
+            return FindListBySql<crm_quote_item>($"SELECT cqi.* FROM crm_quote_item  cqi where {isExist}  EXISTS(SELECT 1 from crm_installed_product cip where cip.quote_item_id = cqi.id and cip.delete_time = 0) and  cqi.quote_id = {quote_id} and cqi.type_id = {type_id} and cqi.delete_time = 0");
+        }
 
+        /// <summary>
+        /// 根据类型获取相应的报价项
+        /// </summary>
+        public List<crm_quote_item> GetItemByType(long quote_id,long type_id)
+        {
+            return FindListBySql<crm_quote_item>($"SELECT * from crm_quote_item where delete_time = 0 and quote_id = {quote_id} and type_id = {type_id}");
+        }
+        /// <summary>
+        /// 获取多次 同一个报价项
+        /// </summary>
+        public List<crm_quote_item> GetItemByNum(long quote_item_id, long num)
+        {
+            return FindListBySql<crm_quote_item>($"select * from crm_quote_item a,(select 1 from d_general limit {num})b where id={quote_item_id} and delete_time = 0");
+        }
+
+        
 
     }
 }

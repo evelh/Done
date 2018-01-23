@@ -61,6 +61,9 @@ namespace EMT.DoneNOW.Web
                         var objId = context.Request.QueryString["objId"];
                         CanCloseQuote(context,long.Parse(objId));
                         break;
+                    case "GetTax":
+                        GetTax(context);
+                        break;
                     default:
                         break;
                 }
@@ -228,6 +231,26 @@ namespace EMT.DoneNOW.Web
             var reason = "";
             var result = new QuoteBLL().CanCloseQuote(quote_id,out reason);
             context.Response.Write(result);
+        }
+        /// <summary>
+        /// 根据报价税区 和税种 返回税率
+        /// </summary>
+        public void GetTax(HttpContext context)
+        {
+            var quote_id = context.Request.QueryString["quote_id"];
+            var tax_cate_id = context.Request.QueryString["tax_cate_id"];
+            if (!string.IsNullOrEmpty(quote_id) && !string.IsNullOrEmpty(tax_cate_id))
+            {
+                var thisQuote = new crm_quote_dal().FindNoDeleteById(long.Parse(quote_id));
+                if (thisQuote != null && thisQuote.tax_region_id != null)
+                {
+                    var taxCate = new d_tax_region_cate_dal().GetSingleTax((long)thisQuote.tax_region_id,long.Parse(tax_cate_id));
+                    if (taxCate != null)
+                    {
+                        context.Response.Write(taxCate.total_effective_tax_rate);
+                    }
+                }
+            }
         }
 
     }

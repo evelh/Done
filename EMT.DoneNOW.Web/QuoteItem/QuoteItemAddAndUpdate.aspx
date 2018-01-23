@@ -360,6 +360,14 @@
                                                                     </div>
                                                                 </td>
                                                             </tr>
+                                                            <tr id="taxPriceTr" style="display:none;">
+                                                                <td class="FieldLabels" style="padding-top: 6px;">单价（包含税）</td>
+                                                                <td class="FieldLabels">
+                                                                    <div style="width: 100px; margin: 0; padding: 0; padding-bottom: 21px;">
+                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" class="Calculation" name="" id="tax_unit_price" value="" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
                                                             <tr id="gross_profit_marginTR">
                                                                 <td class="FieldLabels" style="padding-top: 6px;">毛利率</td>
                                                                 <td class="FieldLabels">
@@ -476,22 +484,22 @@
                     </tbody>
                 </table>
                     <div style="display:none;" id="productListTable">
-                                        <table class="table table-bordered">
-                                            <tr style="background-color:#cbd9e4">
-                                                <th>库存位置</th>
-                                                <th>库存数</th>
-                                                <th>采购中</th>
-                                                <th>尚未接收</th>
-                                                <th>预留和拣货</th>
-                                                <th>可用数</th>
-                                                <th>为此报价预留</th>
-                                            </tr>
-                                            <tbody id="wareTbody">
+                        <table class="table table-bordered">
+                            <tr style="background-color:#cbd9e4">
+                                <th>库存位置</th>
+                                <th>库存数</th>
+                                <th>采购中</th>
+                                <th>尚未接收</th>
+                                <th>预留和拣货</th>
+                                <th>可用数</th>
+                                <th>为此报价预留</th>
+                            </tr>
+                            <tbody id="wareTbody">
 
-                                            </tbody>
-                                            
-                                        </table>
-                                    </div>
+                            </tbody>
+                            
+                        </table>
+                    </div>
             </div>
         </div>
         <input type="hidden" id="wareIds" name="wareIds" value=""/>
@@ -592,6 +600,7 @@
         $("#name").val("");
         $("#nameHidden").val("");
         $("#object_id").val("");
+        //$("#taxPriceTr").hide();
     });
 
     $("#service").click(function () {
@@ -609,6 +618,7 @@
         $("#DiscountR2").prop("disabled", false);
         //$("#Discount").prop("disabled", false);
         //$("#quantity").prop("disabled", false);
+        //$("#taxPriceTr").show();
     });
 
     $(function () {
@@ -676,6 +686,7 @@
             $("#period_type_id").attr("disabled", "disabled");
             $("#ByProjectTr").css("display","");
             $("#callBackChooseRole").css("display", "");
+            //$("#taxPriceTr").show();
         }
         else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.PRODUCT %>) // 产品的处理
         {
@@ -688,6 +699,7 @@
             $("#callBackChooseRole").css("display", "none");
             $("#callBackChooseProduct").css("display", "");// callBackChooseProduct
             $("#AddProduct").css("display", "");
+            $("#taxPriceTr").show();
 
             var product_id = $("#nameHidden").val();
             if (product_id != "") {
@@ -749,6 +761,7 @@
             $("#unit_cost").prop("disabled", true);
             $("#periodTypeTr").css("display", "none");
             $("#period_type_id").val("0");
+            //$("#taxPriceTr").show();
             // 判断是否可以新增初始费用
             debugger;
             var quote_id = '<%=Request.QueryString["quote_id"] %>';
@@ -770,15 +783,29 @@
                 });
             }
         }
+        else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.START_COST %>)
+        {
+            <%if (!isAdd)
+             { %>
+            $("#name").attr("disabled", "disabled");
+            $(".serviceTr").css("display", "");
+            $("#unit_cost").prop("disabled", true);
+            $("#periodTypeTr").css("display", "none");
+            $("#period_type_id").val("0");
+            $("#startCost").attr("checked", true);
+            <%}%>
+        }
         else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DEGRESSION %>) // 成本
         {
             $("#period_type_id").attr("disabled", "disabled");
-            $("#callbackCost").css("display","");
+            $("#callbackCost").css("display", "");
+            //$("#taxPriceTr").show();
         }
         else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.COST %>)  // 费用
         {
             $("#period_type_id").attr("disabled", "disabled");
             $("#callBackCharge").css("display", "");
+            //$("#taxPriceTr").show();
         }
         else if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT %>) // 折扣
         {
@@ -826,7 +853,93 @@
         
 
     })
-    
+
+
+    $("#tax_cate_id").change(function () {
+        var tax_cate_id = $(this).val();
+        var quote_id = '<%=quote_id %>';
+        var typeValue = $("#ItemTypeId").val();
+        if (tax_cate_id != "0") {
+            GetTaxUnitPrice();
+        }
+        
+    })
+
+    // 显示相关包含税的单价
+    $("#unit_price").blur(function () {
+        GetTaxUnitPrice();
+    })
+    // 根据包含税的单价显示相关单价
+    $("#tax_unit_price").blur(function () {
+        var unit_price = $("#unit_price").val();   // 单价
+        var quote_id = '<%=quote_id %>';            // 报价
+        var tax_cate_id = $("#tax_cate_id").val();  // 税种
+        var tax_unit_price = $("#tax_unit_price").val();  // 税后价
+        var taxCate = "";
+        $.ajax({
+            type: "GET",
+            async: false,
+            //dataType: "json",
+            url: "../Tools/QuoteAjax.ashx?act=GetTax&quote_id=" + quote_id + "&tax_cate_id=" + tax_cate_id,
+            success: function (data) {
+                if (data != "") {
+                    taxCate = data;
+                }
+            },
+        });
+        if (taxCate != "") {
+            if (tax_unit_price != null && tax_unit_price != "" && tax_unit_price != undefined) {
+                unit_price = Number(tax_unit_price) * (1 / (1 + Number(taxCate)));
+                $("#unit_price").val(toDecimal2(unit_price));
+            }
+        }
+    })
+
+    // 计算单价的含税价 设置税区和税种之后进行计算 
+    function GetTaxUnitPrice() {
+        var unit_price = $("#unit_price").val();   // 单价
+        var quote_id = '<%=quote_id %>';            // 报价
+        var tax_cate_id = $("#tax_cate_id").val();  // 税种
+        var tax_unit_price = $("#tax_unit_price").val();  // 税后价
+        // 获取到相应的税区，获取不到提醒用户
+        // 获取相应的税种，获取不到提醒用户
+        // 获取相应单价，和含税价，根据价钱进行处理
+        var taxCate = "";
+        $.ajax({
+            type: "GET",
+            async: false,
+            //dataType: "json",
+            url: "../Tools/QuoteAjax.ashx?act=GetTax&quote_id=" + quote_id + "&tax_cate_id=" + tax_cate_id,
+            success: function (data) {
+                if (data != "") {
+                    taxCate = data;
+                }
+            },
+        });
+        if (taxCate != "")
+        {
+            if (unit_price != "" && unit_price != null && unit_price != undefined)
+            {
+                var taxMoney = Number(unit_price) + Number(unit_price) * Number(taxCate);
+                $("#tax_unit_price").val(toDecimal2(taxMoney));
+            }
+            else
+            {
+                if (tax_unit_price != null && tax_unit_price != "" && tax_unit_price != undefined)
+                {
+                    unit_price = Number(tax_unit_price) * (1 / (1 + Number(taxCate)));
+                    $("#unit_price").val(toDecimal2(unit_price));
+                }
+            }
+        }
+        else
+        {
+            $("#tax_unit_price").val("");
+        }
+    }
+
+
+
     // 计算页面上的利，总价等
     function Markup() {
         var unit_price = $("#unit_price").val();    // 单价
@@ -912,7 +1025,13 @@
 
         var unit_price = $("#unit_price").val();
         if (unit_price == "") {
-            alert("请填写单价");
+            if (typeValue ==<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.PRODUCT %>){
+                alert("请输入单价；您也可以输入含税单价、税种，并设置客户税区，以自动计算出单价");
+            }
+            else {
+                alert("请填写单价");
+            }
+            
             return false;
         }
         var unit_cost = $("#unit_cost").val();

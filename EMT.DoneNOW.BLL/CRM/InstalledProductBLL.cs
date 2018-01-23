@@ -107,7 +107,7 @@ namespace EMT.DoneNOW.BLL
                 name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONFIGURAITEM,
                 oper_object_id = installed_product.id,
                 oper_type_id = (int)OPER_LOG_TYPE.ADD,
                 oper_description = installed_product_dal.AddValue(installed_product),
@@ -809,10 +809,10 @@ namespace EMT.DoneNOW.BLL
         /// <param name="ipID"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public bool RelieveInsProduct(long contract_id,long ipID,long user_id)
+        public bool RelieveInsProduct(long contract_id,long ip_id,long user_id)
         {
             var user = BLL.UserInfoBLL.GetUserInfo(user_id);
-            var insPro = _dal.FindNoDeleteById(ipID);
+            var insPro = _dal.FindNoDeleteById(ip_id);
             if (user != null && insPro != null)
             {
                 insPro.contract_id = null;
@@ -845,10 +845,10 @@ namespace EMT.DoneNOW.BLL
         /// <param name="ipID"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public bool RelationInsProduct(long contract_id, long ipID, long user_id,long? service_id = null)
+        public bool RelationInsProduct(long contract_id, long ip_id, long user_id,long? service_id = null)
         {
             var user = BLL.UserInfoBLL.GetUserInfo(user_id);
-            var insPro = _dal.FindNoDeleteById(ipID);
+            var insPro = _dal.FindNoDeleteById(ip_id);
             if (user != null && insPro != null)
             {
                 // isServiceOrBag
@@ -885,6 +885,163 @@ namespace EMT.DoneNOW.BLL
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// 通过报价生成配置项
+        /// </summary>
+        public bool AddInsProByQuote(QuoteConfigItemDto param,long user_id)
+        {
+            var cipDal = new crm_installed_product_dal();
+            var cqiDal = new crm_quote_item_dal();
+            var ipDal = new ivt_product_dal();
+            var ipvDal = new ivt_product_vendor_dal();
+            var csDal = new crm_subscription_dal();
+            var quote = new crm_quote_dal().FindNoDeleteById(param.quote_id);
+            if (quote == null)
+            {
+                return false;
+            }
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (param.insProList!=null&& param.insProList.Count > 0)
+            {
+                foreach (var insPro in param.insProList)
+                {
+                    #region  产品转配置项相关
+                    var thisItem = cqiDal.FindNoDeleteById(insPro.itemId);
+                    if (thisItem == null)
+                    {
+                        continue;
+                    }
+                    var thisProduct = ipDal.FindNoDeleteById((long)thisItem.object_id);
+                    if (thisProduct == null)
+                    {
+                        continue;
+                    }
+                    var defaultVendor = ipvDal.GetDefault(thisProduct.id);
+
+
+                    crm_installed_product installed_product = new crm_installed_product()
+                    {
+                        id = cipDal.GetNextIdCom(),
+                        product_id = (long)thisItem.object_id,
+                        cate_id = thisProduct.installed_product_cate_id,
+                        account_id = quote.account_id,
+                        start_date = insPro.insDate,
+                        through_date = insPro.expDate,
+                        number_of_users = null,
+                        serial_number = insPro.serNumber,
+                        reference_number = insPro.refNumber,
+                        reference_name = insPro.refName,
+                        contract_id = null,
+                        location = null,
+                        contact_id = null,
+                        vendor_account_id = defaultVendor==null?null: defaultVendor.vendor_account_id,
+                        is_active = 1,
+                        installed_resource_id = user_id,
+                        remark = "从报价项中生成",
+                        quote_item_id = insPro.itemId,
+                        // installed_contact_id = param.contact_id, // todo -- 安装人与联系人
+
+                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        create_user_id = user_id,
+                        update_user_id = user_id,
+
+                     
+                    };   // 创建配置项对象
+                    cipDal.Insert(installed_product);                            // 插入配置项
+
+                    OperLogBLL.OperLogAdd<crm_installed_product>(installed_product, installed_product.id,user_id,OPER_LOG_OBJ_CATE.CONFIGURAITEM,"新增配置项");
+                 
+                    var udf_configuration_items_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONFIGURATION_ITEMS);   // 查询自定义信息
+                    new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONFIGURATION_ITEMS, user_id, installed_product.id, udf_configuration_items_list, null, OPER_LOG_OBJ_CATE.CONFIGURAITEM);  // 保存自定义扩展信息
+                        #endregion
+
+                    if(param.insProSubList!=null&& param.insProSubList.Count > 0)
+                    {
+                        var thisSub = param.insProSubList.FirstOrDefault(_=>_.insProId==insPro.pageProId);
+                        if (thisSub != null)
+                        {
+                            var sub = new crm_subscription() {
+                                id = csDal.GetNextIdCom(),
+                                name = thisSub.subName,
+                                description = thisSub.subDes,
+                                period_type_id = thisSub.perType,
+                                effective_date = thisSub.effDate,
+                                expiration_date = thisSub.expDate,
+                                period_price = thisSub.sunPerPrice,
+                                cost_code_id = thisProduct.cost_code_id,
+                                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                create_user_id = user_id,
+                                update_user_id = user_id,
+                                installed_product_id = installed_product.id,
+                                status_id = 1,
+                            };
+                            csDal.Insert(sub);
+                            OperLogBLL.OperLogAdd<crm_subscription>(sub, sub.id, user_id, OPER_LOG_OBJ_CATE.SUBSCRIPTION, "新增订阅");
+                            InsertSubPeriod(sub.effective_date,sub.expiration_date,sub,user);
+                        }
+                    }
+                }
+            }
+            if (param.insChargeList != null && param.insChargeList.Count > 0)
+            {
+                foreach (var insPro in param.insChargeList)
+                {
+                    var thisItem = cqiDal.FindNoDeleteById(insPro.itemId);
+                    if (thisItem == null)
+                    {
+                        continue;
+                    }
+                    ivt_product thisProduct = null;
+                    ivt_product_vendor defaultVendor = null;
+                    if (insPro.productId != null)
+                    {
+                        thisProduct = ipDal.FindNoDeleteById((long)insPro.productId);
+                        if (thisProduct == null)
+                        {
+                            continue;
+                        }
+                        defaultVendor = ipvDal.GetDefault(thisProduct.id);
+                    }
+                    crm_installed_product installed_product = new crm_installed_product()
+                    {
+                        id = cipDal.GetNextIdCom(),
+                        product_id = (long)thisItem.object_id,
+                        cate_id = thisProduct.installed_product_cate_id,
+                        account_id = quote.account_id,
+                        start_date = insPro.insDate,
+                        through_date = insPro.warExpDate,
+                        number_of_users = null,
+                        serial_number = insPro.serNumber,
+                        reference_number = insPro.refNumber,
+                        reference_name = insPro.refName,
+                        contract_id = null,
+                        location = null,
+                        contact_id = null,
+                        vendor_account_id = defaultVendor == null ? null : defaultVendor.vendor_account_id,
+                        is_active = 1,
+                        installed_resource_id = user_id,
+                        remark = "从报价项中生成",
+                        quote_item_id = insPro.itemId,
+                        // installed_contact_id = param.contact_id, // todo -- 安装人与联系人
+
+                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        create_user_id = user_id,
+                        update_user_id = user_id,
+
+
+                    };   // 创建配置项对象
+                    cipDal.Insert(installed_product);                            // 插入配置项
+
+                    OperLogBLL.OperLogAdd<crm_installed_product>(installed_product, installed_product.id, user_id, OPER_LOG_OBJ_CATE.CONFIGURAITEM, "新增配置项");
+                }
+            }
+
+             return true;
         }
 
     }
