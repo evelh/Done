@@ -641,7 +641,7 @@
                                                         <input type="hidden" id="disCodeSelct" runat="server" />
 
                                                         <input type="hidden" id="jqueryCode" runat="server" />
-                                                        <!-- -->
+                                                        <!-- 合同服务重复时，用户的选择 -->
                                                         <input type="hidden" name="isAddService" id="isAddService" />
                                                         <input type="hidden" name="isUpdatePrice" id="isUpdatePrice" />
                                                         <input type="hidden" name="isUpdateCost" id="isUpdateCost" />
@@ -1970,15 +1970,17 @@
             $("#ConvertContractId").val(contractName);
             $("#ConvertContractIdHidden").val(contract_idHidden);
             // 2.检查报价中包含初始费用且合同中也有，此时会提示“报价中初始费用不会替换已有初始费用
-            var quote_id = <%=primaryQuote==null?"":primaryQuote.id.ToString() %>
+            var quote_id = '<%=primaryQuote==null?"":primaryQuote.id.ToString() %>';
+
                 $.ajax({
                     type: "GET",
                     async: false,
-                    dataType: "json",
-                    url: "../Tools/QuoteAjax.ashx?act=compareSetupFee&quote_id=" + quote_id + "&contract_id" + contract_idHidden,
+                    //dataType: "json",
+                    url: "../Tools/QuoteAjax.ashx?act=compareSetupFee&quote_id=" + quote_id + "&contract_id=" + contract_idHidden,
                     // data: { CompanyName: companyName },
                     success: function (data) {
-                        if (data != "True") {
+                        debugger;
+                        if (data == "True") {
                             alert("报价中初始费用不会替换已有初始费用");
                         }
                     },
@@ -1988,15 +1990,19 @@
             $.ajax({
                 type: "GET",
                 async: false,
-                dataType: "json",
-                url: "../Tools/QuoteAjax.ashx?act=compareService&quote_id=" + quote_id + "&contract_id" + contract_idHidden,
+                //dataType: "json",
+                url: "../Tools/QuoteAjax.ashx?act=compareService&quote_id=" + quote_id + "&contract_id=" + contract_idHidden,
                 // data: { CompanyName: companyName },
                 success: function (data) {
-                    if (data != "True") {
+                    debugger;
+                    if (data == "True") {
                         // todo -- 弹出新窗口，确认是否累加服务包
+                        window.open("../Opportunity/ContractExistService.aspx?quote_id=" + quote_id + "&contract_id=" + contract_idHidden, '_blank', 'left=200,top=200,width=600,height=800', false);
                     }
                     else {
-
+                        $("#isAddService").val("");
+                        $("#isUpdatePrice").val("");
+                        $("#isUpdateCost").val("");
                     }
                 },
             });
