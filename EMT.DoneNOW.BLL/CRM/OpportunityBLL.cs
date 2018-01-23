@@ -410,6 +410,11 @@ namespace EMT.DoneNOW.BLL
             }
             // todo 根据页面的勾选情况进行不同的必填项验证
 
+            bool isFirstClost = true;  // 代表是不是第一次关闭商机
+            if (param.opportunity.status_id == (int)OPPORTUNITY_STATUS.CLOSED)
+            {
+                isFirstClost = false;
+            }
 
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
@@ -820,88 +825,93 @@ namespace EMT.DoneNOW.BLL
                 }
 
                 // （二） 报价项中的服务/包，合同中不存在，插入服务包
-                var ccsDal = new ctt_contract_service_dal();
-                var conServiceList = new ctt_contract_service_dal().GetConSerList(param.contract.id);
-                if (quoteItemList != null && quoteItemList.Count > 0)
+                // 已关闭商机再次关闭时，选择已存在定期服务合同不会转为合同服务
+                if (isFirstClost)
                 {
-                    var serviceItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.SERVICE).ToList();
-                    if (serviceItem != null && serviceItem.Count > 0)
+                    var ccsDal = new ctt_contract_service_dal();
+                    var conServiceList = new ctt_contract_service_dal().GetConSerList(param.contract.id);
+                    if (quoteItemList != null && quoteItemList.Count > 0)
                     {
-                        serviceItem.ForEach(_ =>
+                        var serviceItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.SERVICE).ToList();
+                        if (serviceItem != null && serviceItem.Count > 0)
                         {
-                            // 如果报价的服务/包在合同中不存在，则插入服务/包信息
-                            if (conServiceList.Any(csl => csl.object_id != _.object_id))
+                            serviceItem.ForEach(_ =>
                             {
-                                // 新增
-                                var service = new ctt_contract_service()
+                                // 如果报价的服务/包在合同中不存在，则插入服务/包信息
+                                if (conServiceList.Any(csl => csl.object_id != _.object_id))
                                 {
-                                    id = _dal.GetNextIdCom(),
-                                    effective_date = param.effective_date,
-                                    object_id = (long)_.object_id,
-                                    object_type = (sbyte)isServiceOrBag((int)_.object_id),
-                                    unit_price = _.unit_price,
-                                    unit_cost = _.unit_cost,
-                                    quantity = _.quantity == null ? 0 : (int)_.quantity,
-                                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                    create_user_id = user.id,
-                                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                    update_user_id = user.id,
-                                };
-                                ccsDal.Insert(service);
-                                new sys_oper_log_dal().Insert(new sys_oper_log()
-                                {
-                                    user_cate = "用户",
-                                    user_id = (int)user.id,
-                                    name = user.name,
-                                    phone = user.mobile == null ? "" : user.mobile,
-                                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE,
-                                    oper_object_id = service.id,// 操作对象id
-                                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                                    oper_description = _dal.AddValue(service),
-                                    remark = "新增合同服务项"
-
-                                });
-                            }
-                            else // 如果报价的服务/包在合同中存在，且用户选择了更新操作，则更新服务/包信息
-                            {
-                                if (param.isAddService)
-                                {
-                                    var conSer = conServiceList.FirstOrDefault(cs => cs.object_id == _.object_id);
-                                    if (conSer != null)
+                                    // 新增
+                                    var service = new ctt_contract_service()
                                     {
-                                        conSer.effective_date = param.effective_date;
-                                        if (param.isUpdatePrice)
-                                        {
-                                            conSer.unit_price = _.unit_price;
-                                        }
-                                        if (param.isUpdateCost)
-                                        {
-                                            conSer.unit_cost = _.unit_cost;
-                                        }
-                                        conSer.quantity += (int)_.quantity;
-                                        new sys_oper_log_dal().Insert(new sys_oper_log()
-                                        {
-                                            user_cate = "用户",
-                                            user_id = (int)user.id,
-                                            name = user.name,
-                                            phone = user.mobile == null ? "" : user.mobile,
-                                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE,
-                                            oper_object_id = conSer.id,// 操作对象id
-                                            oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                                            oper_description = _dal.CompareValue(ccsDal.GetSinConSer(conSer.id), conSer),
-                                            remark = "修改合同服务项"
+                                        id = _dal.GetNextIdCom(),
+                                        effective_date = param.effective_date,
+                                        object_id = (long)_.object_id,
+                                        object_type = (sbyte)isServiceOrBag((int)_.object_id),
+                                        unit_price = _.unit_price,
+                                        unit_cost = _.unit_cost,
+                                        quantity = _.quantity == null ? 0 : (int)_.quantity,
+                                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        create_user_id = user.id,
+                                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        update_user_id = user.id,
+                                    };
+                                    ccsDal.Insert(service);
+                                    new sys_oper_log_dal().Insert(new sys_oper_log()
+                                    {
+                                        user_cate = "用户",
+                                        user_id = (int)user.id,
+                                        name = user.name,
+                                        phone = user.mobile == null ? "" : user.mobile,
+                                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE,
+                                        oper_object_id = service.id,// 操作对象id
+                                        oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                                        oper_description = _dal.AddValue(service),
+                                        remark = "新增合同服务项"
 
-                                        });
-                                        ccsDal.Update(conSer);
+                                    });
+                                }
+                                else // 如果报价的服务/包在合同中存在，且用户选择了更新操作，则更新服务/包信息
+                                {
+                                    if (param.isAddService)
+                                    {
+                                        var conSer = conServiceList.FirstOrDefault(cs => cs.object_id == _.object_id);
+                                        if (conSer != null)
+                                        {
+                                            conSer.effective_date = param.effective_date;
+                                            if (param.isUpdatePrice)
+                                            {
+                                                conSer.unit_price = _.unit_price;
+                                            }
+                                            if (param.isUpdateCost)
+                                            {
+                                                conSer.unit_cost = _.unit_cost;
+                                            }
+                                            conSer.quantity += (int)_.quantity;
+                                            new sys_oper_log_dal().Insert(new sys_oper_log()
+                                            {
+                                                user_cate = "用户",
+                                                user_id = (int)user.id,
+                                                name = user.name,
+                                                phone = user.mobile == null ? "" : user.mobile,
+                                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE,
+                                                oper_object_id = conSer.id,// 操作对象id
+                                                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                                                oper_description = _dal.CompareValue(ccsDal.GetSinConSer(conSer.id), conSer),
+                                                remark = "修改合同服务项"
+
+                                            });
+                                            ccsDal.Update(conSer);
+                                        }
                                     }
                                 }
-                            }
 
-                        });
+                            });
+                        }
                     }
                 }
+              
 
             }
 
