@@ -540,8 +540,10 @@
         InitArea(s3);  // 地址下拉框
         //change(0, s3);
         //change(1, s3);
+        <% if (isAdd)
+    {%>
         GetDataBySelectCompany();  // 用于修改的时候赋值
-       
+       <%}%>
         var opportunity_idHidden = $("#opportunity_idHidden").val();
         if (opportunity_idHidden != "") {
 
