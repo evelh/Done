@@ -449,9 +449,10 @@
                                                                     <td>
                                                                         
                                                                         <span style="display: inline-block; width: 79%; vertical-align: top; font-size: 12px;">
-                                                                            <input type="text" style="padding-left: 0px; border: 0px; font: bold; background-color: transparent; text-align: left"  value="<%=defaultPro==null?"":defaultPro.name %>" />
-                                                                            <input type="hidden" name="<%=item.id+"_"+num %>_product_id"/>
+                                                                            <input type="text" style="padding-left: 0px; border: 0px; font: bold; background-color: transparent; text-align: left" id="<%=item.id+"_"+num %>_product_id"  value="<%=defaultPro==null?"":defaultPro.name %>" />
+                                                                            <input type="hidden" name="<%=item.id+"_"+num %>_product_id" id="<%=item.id+"_"+num %>_product_idHidden"/>
                                                                             </span>
+                                                                        <img src="../Images/data-selector.png" style="vertical-align: middle;" onclick="CallBackPro('<%=item.id+"_"+num %>')" />
                                                                     </td>
                                                                     <td align="center">
                                                                         <input type="text" style="width: 80px;" onclick="WdatePicker()" class="Wdate start_date" name="<%=item.id+"_"+num %>_charge_start_date" id="<%=item.id+"_"+num %>_charge_start_date" value="" />
@@ -975,5 +976,8 @@
             }
         }
         $("#SubHtml").html(SubHtml);
+    }
+    function CallBackPro(pageProId) {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CALLBACK %>&field=" + pageProId + "_product_id", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProductSelect %>', 'left=200,top=200,width=600,height=800', false);
     }
 </script>

@@ -151,6 +151,13 @@ namespace EMT.DoneNOW.Web.Contract
             thisConCost.bill_status = 0;
             AddChargeDto param = new AddChargeDto();
             param.isAddCongigItem = AddConfigItem.Checked;
+            if (!isAdd)
+            {
+                if (conCost.create_ci == 1)
+                {
+                    param.isAddCongigItem = false;
+                }
+            }
             thisConCost.is_billable = (sbyte)(isbillable.Checked?1:0);
             //thisConCost.create_ci = (sbyte)(AddConfigItem.Checked ? 1 : 0);
             if (!isAdd)
@@ -169,6 +176,7 @@ namespace EMT.DoneNOW.Web.Contract
                 thisConCost.sub_cate_id = conCost.sub_cate_id;
                 thisConCost.create_time = conCost.create_time;
                 thisConCost.create_user_id = conCost.create_user_id;
+                thisConCost.create_ci = conCost.create_ci;
             }
             if (contract != null)
             {
