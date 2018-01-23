@@ -41,7 +41,15 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<ctt_contract_cost>($"SELECT ccc.* from ctt_contract_cost ccc inner join crm_sales_order cso on ccc.opportunity_id = cso.opportunity_id where ccc.delete_time = 0 and cso.delete_time = 0 and cso.id = {sale_order_id}");
         }
-// 
+        /// <summary>
+        /// 获取多次 同一个成本
+        /// </summary>
+        public List<ctt_contract_cost> GetItemByNum(long quote_item_id, long num)
+        {
+            return FindListBySql<ctt_contract_cost>($"select * from ctt_contract_cost a,(select 1 from d_general limit {num})b where id={quote_item_id} and delete_time = 0");
+        }
+        // 
+
 
 
     }
