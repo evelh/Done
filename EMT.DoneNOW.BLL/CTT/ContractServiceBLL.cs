@@ -121,11 +121,11 @@ namespace EMT.DoneNOW.BLL
             tmp1 = contract.start_date;
             if (dtStart != contract.start_date)     // 生效时间不是合同开始时间
             {
-                tmp2 = GetNextPeriodStart(contract.start_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
+                tmp2 = GetNextPeriodStart(contract.start_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);   // 下一周期开始时间
                 int periodDaysCnt = (tmp2 - tmp1).Days;
-                while (true)
+                while (true)    // 寻找服务生效的首周期开始结束时间
                 {
-                    if (dtStart >= tmp2.AddDays(-1))
+                    if (dtStart <= tmp2.AddDays(-1))
                         break;
                     if (tmp2 >= contract.end_date)
                         break;
@@ -160,7 +160,7 @@ namespace EMT.DoneNOW.BLL
                     if (sa.end_date > contract.end_date)
                         sa.end_date = contract.end_date;
                     sa.prorated_cost_change = (decimal)service.adjusted_price;
-                    sa.adjust_prorated_price_change = service.quantity * (decimal)service.adjusted_price * adjustDaysCnt / periodDaysCnt;
+                    sa.adjust_prorated_price_change = service.quantity * (decimal)service.unit_price * adjustDaysCnt / periodDaysCnt;
                     sa.prorated_price_change = sa.adjust_prorated_price_change;
 
                     saDal.Insert(sa);
@@ -257,11 +257,11 @@ namespace EMT.DoneNOW.BLL
             tmp1 = contract.start_date;
             if (dtStart != contract.start_date)     // 生效时间不是合同开始时间
             {
-                tmp2 = GetNextPeriodStart(contract.start_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
+                tmp2 = GetNextPeriodStart(contract.start_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);   // 下一周期开始时间
                 int periodDaysCnt = (tmp2 - tmp1).Days;
-                while (true)
+                while (true)    // 寻找服务生效的首周期开始结束时间
                 {
-                    if (dtStart >= tmp2.AddDays(-1))
+                    if (dtStart <= tmp2.AddDays(-1))
                         break;
                     if (tmp2 >= contract.end_date)
                         break;
@@ -296,7 +296,7 @@ namespace EMT.DoneNOW.BLL
                     if (sa.end_date > contract.end_date)
                         sa.end_date = contract.end_date;
                     sa.prorated_cost_change = (decimal)service.adjusted_price;
-                    sa.adjust_prorated_price_change = service.quantity * (decimal)service.adjusted_price * adjustDaysCnt / periodDaysCnt;
+                    sa.adjust_prorated_price_change = service.quantity * (decimal)service.unit_price * adjustDaysCnt / periodDaysCnt;
                     sa.prorated_price_change = sa.adjust_prorated_price_change;
 
                     saDal.Insert(sa);
@@ -373,36 +373,165 @@ namespace EMT.DoneNOW.BLL
         public bool AdjustService(ctt_contract_service ser, long userId)
         {
             ctt_contract_service_dal dal = new ctt_contract_service_dal();
+            ctt_contract_service_adjust_dal adjDal = new ctt_contract_service_adjust_dal();
+            ctt_contract_service_period_dal prdDal = new ctt_contract_service_period_dal();
             var contract = new ContractBLL().GetContract(ser.contract_id);
-
+            
             var service = dal.FindById(ser.id);
+            if (service.quantity == ser.quantity && service.unit_price == ser.unit_price && service.unit_cost == ser.unit_cost)
+                return true;
             var serviceOld = dal.FindById(ser.id);
+
+            var periodList = GetServicePeriodList(ser.id);      // 服务周期列表
+            if (periodList == null || periodList.Count == 0)
+                return false;
+            // 寻找调整日期所在的周期
+            int index = 0;
+            if (periodList[0].period_begin_date > ser.effective_date)
+            {
+                var adj = dal.FindSignleBySql<ctt_contract_service_adjust>($"select * from ctt_contract_service_adjust where contract_service_id={service.id} and end_date='{periodList[0].period_begin_date.AddDays(-1).ToString("yyyy-MM-dd")}' and delete_time=0");
+                if (adj == null)
+                    return false;
+                if (adj.effective_date > ser.effective_date)
+                    return false;
+                index = 0;
+
+                if (adj.approve_and_post_user_id == null)   // 未审批提交才能调整
+                {
+                    if (ser.effective_date.Date.Equals(adj.effective_date.Date))    // 调整的生效时间等于开始时间
+                    {
+                        var adjOld = adjDal.FindById(adj.id);
+                        var nextDate = GetNextPeriodStart(adj.effective_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
+                        if (ser.unit_cost == null || ser.unit_cost == 0)
+                            adj.prorated_cost_change = 0;
+                        else
+                            adj.prorated_cost_change = (decimal)ser.unit_cost * ((adj.end_date - adj.effective_date).Days / (decimal)(nextDate - ser.effective_date).Days);
+                        if (ser.unit_price == null || ser.unit_price == 0)
+                            adj.prorated_price_change = 0;
+                        else
+                            adj.prorated_price_change = (decimal)ser.unit_price * ((adj.end_date - adj.effective_date).Days / (decimal)(nextDate - ser.effective_date).Days);
+                        adj.adjust_prorated_price_change = adj.prorated_price_change;
+                        adj.quantity_change = adj.quantity_change + (ser.quantity - service.quantity);
+                        adj.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                        adj.update_user_id = userId;
+                        adjDal.Update(adj);
+                        OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_service_adjust>(adjOld, adj), adj.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_ADJUST, "合同服务调整修改");
+                    }
+                    else if (ser.effective_date > adj.effective_date)   // 调整的生效时间不等于开始时间
+                    {
+                        if (service.quantity != ser.quantity)   // 调整数量才进行修改，否则从下一周期修改
+                        {
+                            var nextDate = GetNextPeriodStart(adj.effective_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
+                            var adjNew = new ctt_contract_service_adjust();
+                            adjNew.id = adjDal.GetNextIdCom();
+                            adjNew.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                            adjNew.create_user_id = userId;
+                            adjNew.update_time = adjNew.create_time;
+                            adjNew.update_user_id = userId;
+                            adjNew.contract_id = adj.contract_id;
+                            adjNew.object_id = adj.object_id;
+                            adjNew.object_type = adj.object_type;
+                            adjNew.quantity_change = ser.quantity - service.quantity;
+                            if (ser.unit_cost == null || ser.unit_cost == 0)
+                                adjNew.prorated_cost_change = 0;
+                            else
+                                adjNew.prorated_cost_change = (decimal)ser.unit_cost * (((adj.end_date - adj.effective_date).Days + 1) / (decimal)(nextDate - ser.effective_date).Days);
+                            if (ser.unit_price == null || ser.unit_price == 0)
+                                adjNew.prorated_price_change = 0;
+                            else
+                                adjNew.prorated_price_change = (decimal)ser.unit_price * (((adj.end_date - adj.effective_date).Days + 1) / (decimal)(nextDate - ser.effective_date).Days);
+                            adjNew.effective_date = ser.effective_date;
+                            adjNew.end_date = adj.end_date;
+                            adjNew.vendor_account_id = adj.vendor_account_id;
+                            adjNew.contract_service_id = adj.contract_service_id;
+                            adjNew.adjust_prorated_price_change = adjNew.prorated_price_change;
+
+                            adjDal.Insert(adjNew);
+                            OperLogBLL.OperLogAdd<ctt_contract_service_adjust>(adjNew, adjNew.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_ADJUST, "合同服务调整新增");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (index = 0; index < periodList.Count; ++index)
+                {
+                    if (periodList[index].period_end_date >= ser.effective_date)
+                        break;
+                }
+                if (index >= periodList.Count)
+                    return false;
+            }
 
             service.unit_price = ser.unit_price;
             service.quantity = ser.quantity;
             service.adjusted_price = service.unit_price * service.quantity;
             service.unit_cost = ser.unit_cost;
-            service.effective_date = contract.start_date;
+            //service.effective_date = contract.start_date;
             service.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             service.update_user_id = userId;
 
             dal.Update(service);
             OperLogBLL.OperLogUpdate<ctt_contract_service>(service, serviceOld, service.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE, "调整合同服务");
 
-            var periodList = GetServicePeriodList(ser.id);
-            if (periodList == null || periodList.Count == 0)
-                return false;
-            int periodDaysCnt = (GetNextPeriodStart(periodList[0].period_begin_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type) - periodList[0].period_begin_date).Days; // 每周期天数
-            if (periodList[0].period_begin_date.AddDays(periodDaysCnt) != periodList[0].period_end_date)    // 首周期不是完整周期
+            for (int i = index; i < periodList.Count; ++i)
             {
+                if (periodList[i].approve_and_post_user_id != null)
+                    continue;
 
+                if (ser.effective_date > periodList[i].period_begin_date)   // 调整开始生效所在的周期
+                {
+                    if (ser.quantity != service.quantity)   // 调整数量需要记录调整表
+                    {
+                        var adjNew = new ctt_contract_service_adjust();
+                        adjNew.id = adjDal.GetNextIdCom();
+                        adjNew.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                        adjNew.create_user_id = userId;
+                        adjNew.update_time = adjNew.create_time;
+                        adjNew.update_user_id = userId;
+                        adjNew.contract_id = contract.id;
+                        adjNew.object_id = service.id;
+                        adjNew.object_type = 1;
+                        adjNew.quantity_change = ser.quantity - service.quantity;
+
+                        if (periodList[i].period_cost == null || periodList[i].period_cost == 0)
+                            adjNew.prorated_cost_change = 0;
+                        else
+                            adjNew.prorated_cost_change = (decimal)ser.unit_cost * (((periodList[i].period_end_date - ser.effective_date).Days + 1) / (decimal)((periodList[i].period_end_date - periodList[i].period_begin_date).Days + 1));
+                        if (ser.unit_price == null || ser.unit_price == 0)
+                            adjNew.prorated_price_change = 0;
+                        else
+                            adjNew.prorated_price_change = (decimal)ser.unit_price * (((periodList[i].period_end_date - ser.effective_date).Days + 1) / (decimal)((periodList[i].period_end_date - periodList[i].period_begin_date).Days + 1));
+                        adjNew.effective_date = ser.effective_date;
+                        adjNew.end_date = periodList[i].period_end_date;
+                        adjNew.vendor_account_id = periodList[i].vendor_account_id;
+                        adjNew.contract_service_id = periodList[i].contract_service_id;
+                        adjNew.adjust_prorated_price_change = adjNew.prorated_price_change;
+
+                        adjDal.Insert(adjNew);
+                        OperLogBLL.OperLogAdd<ctt_contract_service_adjust>(adjNew, adjNew.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_ADJUST, "合同服务调整新增");
+                    }
+                }
+                else    // 生效日期后的周期
+                {
+                    var perdOld = prdDal.FindById(periodList[i].id);
+                    var perd = periodList[i];
+
+                    perd.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                    perd.update_user_id = userId;
+                    perd.period_price = ser.unit_price * ser.quantity;
+                    perd.period_cost = ser.unit_cost * ser.quantity;
+                    perd.quantity = ser.quantity;
+                    var desc = OperLogBLL.CompareValue<ctt_contract_service_period>(perdOld, perd);
+                    if (!string.IsNullOrEmpty(desc))
+                    {
+                        prdDal.Update(perd);
+                        OperLogBLL.OperLogUpdate(desc, perd.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_PERIOD, "合同服务调整修改服务周期");
+                    }
+                }
             }
 
-            if (service.quantity != serviceOld.quantity || periodList[0].period_begin_date.AddDays(periodDaysCnt) != periodList[0].period_end_date)    // 数量调整或者生效日期不是完整周期的开始时间
-            {
-            }
-
-            return false;
+            return true;
         }
 
         /// <summary>
@@ -413,7 +542,166 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public bool AdjustServiceBundle(ctt_contract_service ser, long userId)
         {
-            return false;
+            ctt_contract_service_dal dal = new ctt_contract_service_dal();
+            ctt_contract_service_adjust_dal adjDal = new ctt_contract_service_adjust_dal();
+            ctt_contract_service_period_dal prdDal = new ctt_contract_service_period_dal();
+            var contract = new ContractBLL().GetContract(ser.contract_id);
+
+            var service = dal.FindById(ser.id);
+            if (service.quantity == ser.quantity && service.unit_price == ser.unit_price && service.unit_cost == ser.unit_cost)
+                return true;
+            var serviceOld = dal.FindById(ser.id);
+
+            var periodList = GetServicePeriodList(ser.id);      // 服务周期列表
+            if (periodList == null || periodList.Count == 0)
+                return false;
+            // 寻找调整日期所在的周期
+            int index = 0;
+            if (periodList[0].period_begin_date > ser.effective_date)
+            {
+                var adj = dal.FindSignleBySql<ctt_contract_service_adjust>($"select * from ctt_contract_service_adjust where contract_service_id={service.id} and end_date='{periodList[0].period_begin_date.AddDays(-1).ToString("yyyy-MM-dd")}' and delete_time=0");
+                if (adj == null)
+                    return false;
+                if (adj.effective_date > ser.effective_date)
+                    return false;
+                index = 0;
+
+                if (adj.approve_and_post_user_id == null)   // 未审批提交才能调整
+                {
+                    if (ser.effective_date.Date.Equals(adj.effective_date.Date))    // 调整的生效时间等于开始时间
+                    {
+                        var adjOld = adjDal.FindById(adj.id);
+                        var nextDate = GetNextPeriodStart(adj.effective_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
+                        if (ser.unit_cost == null || ser.unit_cost == 0)
+                            adj.prorated_cost_change = 0;
+                        else
+                            adj.prorated_cost_change = (decimal)ser.unit_cost * ((adj.end_date - adj.effective_date).Days / (decimal)(nextDate - ser.effective_date).Days);
+                        if (ser.unit_price == null || ser.unit_price == 0)
+                            adj.prorated_price_change = 0;
+                        else
+                            adj.prorated_price_change = (decimal)ser.unit_price * ((adj.end_date - adj.effective_date).Days / (decimal)(nextDate - ser.effective_date).Days);
+                        adj.adjust_prorated_price_change = adj.prorated_price_change;
+                        adj.quantity_change = adj.quantity_change + (ser.quantity - service.quantity);
+                        adj.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                        adj.update_user_id = userId;
+                        adjDal.Update(adj);
+                        OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_service_adjust>(adjOld, adj), adj.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_ADJUST, "合同服务调整修改");
+                    }
+                    else if (ser.effective_date > adj.effective_date)   // 调整的生效时间不等于开始时间
+                    {
+                        if (service.quantity != ser.quantity)   // 调整数量才进行修改，否则从下一周期修改
+                        {
+                            var nextDate = GetNextPeriodStart(adj.effective_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
+                            var adjNew = new ctt_contract_service_adjust();
+                            adjNew.id = adjDal.GetNextIdCom();
+                            adjNew.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                            adjNew.create_user_id = userId;
+                            adjNew.update_time = adjNew.create_time;
+                            adjNew.update_user_id = userId;
+                            adjNew.contract_id = adj.contract_id;
+                            adjNew.object_id = adj.object_id;
+                            adjNew.object_type = adj.object_type;
+                            adjNew.quantity_change = ser.quantity - service.quantity;
+                            if (ser.unit_cost == null || ser.unit_cost == 0)
+                                adjNew.prorated_cost_change = 0;
+                            else
+                                adjNew.prorated_cost_change = (decimal)ser.unit_cost * (((adj.end_date - adj.effective_date).Days + 1) / (decimal)(nextDate - ser.effective_date).Days);
+                            if (ser.unit_price == null || ser.unit_price == 0)
+                                adjNew.prorated_price_change = 0;
+                            else
+                                adjNew.prorated_price_change = (decimal)ser.unit_price * (((adj.end_date - adj.effective_date).Days + 1) / (decimal)(nextDate - ser.effective_date).Days);
+                            adjNew.effective_date = ser.effective_date;
+                            adjNew.end_date = adj.end_date;
+                            adjNew.vendor_account_id = adj.vendor_account_id;
+                            adjNew.contract_service_id = adj.contract_service_id;
+                            adjNew.adjust_prorated_price_change = adjNew.prorated_price_change;
+
+                            adjDal.Insert(adjNew);
+                            OperLogBLL.OperLogAdd<ctt_contract_service_adjust>(adjNew, adjNew.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_ADJUST, "合同服务调整新增");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (index = 0; index < periodList.Count; ++index)
+                {
+                    if (periodList[index].period_end_date >= ser.effective_date)
+                        break;
+                }
+                if (index >= periodList.Count)
+                    return false;
+            }
+
+            service.unit_price = ser.unit_price;
+            service.quantity = ser.quantity;
+            service.adjusted_price = service.unit_price * service.quantity;
+            service.unit_cost = ser.unit_cost;
+            //service.effective_date = contract.start_date;
+            service.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            service.update_user_id = userId;
+
+            dal.Update(service);
+            OperLogBLL.OperLogUpdate<ctt_contract_service>(service, serviceOld, service.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE, "调整合同服务");
+
+            for (int i = index; i < periodList.Count; ++i)
+            {
+                if (periodList[i].approve_and_post_user_id != null)
+                    continue;
+
+                if (ser.effective_date > periodList[i].period_begin_date)   // 调整开始生效所在的周期
+                {
+                    if (ser.quantity != service.quantity)   // 调整数量需要记录调整表
+                    {
+                        var adjNew = new ctt_contract_service_adjust();
+                        adjNew.id = adjDal.GetNextIdCom();
+                        adjNew.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                        adjNew.create_user_id = userId;
+                        adjNew.update_time = adjNew.create_time;
+                        adjNew.update_user_id = userId;
+                        adjNew.contract_id = contract.id;
+                        adjNew.object_id = service.id;
+                        adjNew.object_type = 2;
+                        adjNew.quantity_change = ser.quantity - service.quantity;
+
+                        if (periodList[i].period_cost == null || periodList[i].period_cost == 0)
+                            adjNew.prorated_cost_change = 0;
+                        else
+                            adjNew.prorated_cost_change = (decimal)ser.unit_cost * (((periodList[i].period_end_date - ser.effective_date).Days + 1) / (decimal)((periodList[i].period_end_date - periodList[i].period_begin_date).Days + 1));
+                        if (ser.unit_price == null || ser.unit_price == 0)
+                            adjNew.prorated_price_change = 0;
+                        else
+                            adjNew.prorated_price_change = (decimal)ser.unit_price * (((periodList[i].period_end_date - ser.effective_date).Days + 1) / (decimal)((periodList[i].period_end_date - periodList[i].period_begin_date).Days + 1));
+                        adjNew.effective_date = ser.effective_date;
+                        adjNew.end_date = periodList[i].period_end_date;
+                        adjNew.vendor_account_id = periodList[i].vendor_account_id;
+                        adjNew.contract_service_id = periodList[i].contract_service_id;
+                        adjNew.adjust_prorated_price_change = adjNew.prorated_price_change;
+
+                        adjDal.Insert(adjNew);
+                        OperLogBLL.OperLogAdd<ctt_contract_service_adjust>(adjNew, adjNew.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_ADJUST, "合同服务调整新增");
+                    }
+                }
+                else    // 生效日期后的周期
+                {
+                    var perdOld = prdDal.FindById(periodList[i].id);
+                    var perd = periodList[i];
+
+                    perd.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                    perd.update_user_id = userId;
+                    perd.period_price = ser.unit_price * ser.quantity;
+                    perd.period_cost = ser.unit_cost * ser.quantity;
+                    perd.quantity = ser.quantity;
+                    var desc = OperLogBLL.CompareValue<ctt_contract_service_period>(perdOld, perd);
+                    if (!string.IsNullOrEmpty(desc))
+                    {
+                        prdDal.Update(perd);
+                        OperLogBLL.OperLogUpdate(desc, perd.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_PERIOD, "合同服务调整修改服务周期");
+                    }
+                }
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -462,7 +750,9 @@ namespace EMT.DoneNOW.BLL
             }
             if (effDate == startDate)
                 return 0;
-            return decimal.Round(((decimal)((endDate - effDate).Days) / periodDaysCnt), 4);
+            if (endDate > contract.end_date)
+                endDate = contract.end_date;
+            return decimal.Round(((decimal)((endDate - effDate).Days) / periodDaysCnt), 8);
         }
 
         /// <summary>

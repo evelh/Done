@@ -2411,51 +2411,7 @@
          function View(id) {
              window.open('../SysSetting/ContractType.aspx?id=' + id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractType %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
          }
-         <%} else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.ContractService) { %>
-         function AddService() {
-           window.open('../Contract/AddService.aspx?type=1&contractId=' + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceAdd %>', 'left=0,top=0,location=no,status=no,width=710,height=524', false);
-           }
-         function AddServiceBundle() {
-           window.open('../Contract/AddService.aspx?type=2&contractId=' + $("#id").val(), '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceAdd %>', 'left=0,top=0,location=no,status=no,width=710,height=524', false);
-           }
-         function ApplyDiscount() {
-         }
-         function EditDescription() {
-           window.open('../Contract/EditServiceInvoiceDesc.aspx?id=' + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConServiceEditInvoiceDesc %>', 'left=0,top=0,location=no,status=no,width=710,height=524', false);
-         }
-         function editTime() {
-           $("#form1").submit();
-         }
-         function Delete() {
-            $.ajax({
-            type: "GET",
-            url: "../Tools/ContractAjax.ashx?act=IsApprove&id=" + entityid,
-            async: false,
-            success: function (data) {
-              if (data == "True") {
-                alert('该服务/服务包不能删除，因为已经计费');
-                return;
-              } else {
-                if (confirm("所有的合同服务周期和交易历史将会被删除，是否继续?")) {
-                  $.ajax({
-                    type: "GET",
-                    url: "../Tools/ContractAjax.ashx?act=DeleteService&id=" + entityid,
-                    async: false,
-                    success: function (data) {
-                      if (data == "True") {
-                        alert('删除成功');
-                        window.location.reload();
-                      } else {
-                        alert('该服务/服务包不能删除，因为已经计费');
-                      }
-                    }
-                  })
-                }
-              }
-            }
-          })
-        }
-        <%}
+         <%} 
         else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.SUFFIXES)
         { %>//姓名后缀
          function Edit() {

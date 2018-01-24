@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="../Content/LostOpp.css"/>
 </head>
 <body style="overflow:auto;">
+    <%="" %>
   <form id="form1" onsubmit="CheckForm()" runat="server">
     <!--顶部-->
     <div class="TitleBar">
