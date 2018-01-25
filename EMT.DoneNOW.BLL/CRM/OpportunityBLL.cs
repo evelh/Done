@@ -1230,7 +1230,7 @@ namespace EMT.DoneNOW.BLL
                             cost_type_id = (int)COST_TYPE.OPERATIONA,
                             status_id = status_id,
                             quantity = quote_item.quantity,
-                            unit_price = quote_item.unit_price,
+                            unit_price = quote_item.unit_price??0- quote_item.unit_discount??0,
                             unit_cost = quote_item.unit_cost,
                             extended_price = quote_item.unit_price * quote_item.quantity,
                             create_user_id = user.id,

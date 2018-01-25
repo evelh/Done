@@ -699,7 +699,7 @@
             $("#callBackChooseRole").css("display", "none");
             $("#callBackChooseProduct").css("display", "");// callBackChooseProduct
             $("#AddProduct").css("display", "");
-            $("#taxPriceTr").show();
+            //$("#taxPriceTr").show();
 
             var product_id = $("#nameHidden").val();
             if (product_id != "") {
