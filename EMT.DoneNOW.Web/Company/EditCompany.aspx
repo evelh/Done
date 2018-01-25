@@ -251,7 +251,7 @@
                 <tr>
                     <td>
                         <div class="clear">
-                            <label>分类类别<span class="red"></span></label>
+                            <label>客户类型<span class="red"></span></label>
 
                             <asp:DropDownList ID="classification" runat="server" AutoPostBack="False">
                             </asp:DropDownList>
@@ -274,13 +274,13 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
+               <%-- <tr>
                     <td>
                         <div class="clear">
                             <label>客户小组</label>
                         </div>
                     </td>
-                </tr>
+                </tr>--%>
                 <tr>
                     <td>
                         <div class="clear">
