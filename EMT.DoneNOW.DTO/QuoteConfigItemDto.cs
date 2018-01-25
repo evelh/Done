@@ -35,7 +35,7 @@ namespace EMT.DoneNOW.DTO
         /// <summary>
         /// 质保到期日
         /// </summary>
-        public DateTime expDate;
+        public DateTime? expDate;
         /// <summary>
         /// 序列号
         /// </summary>
@@ -103,7 +103,7 @@ namespace EMT.DoneNOW.DTO
         /// <summary>
         /// 质保到期日期
         /// </summary>
-        public DateTime warExpDate;
+        public DateTime? warExpDate;
         /// <summary>
         /// 序列号
         /// </summary>

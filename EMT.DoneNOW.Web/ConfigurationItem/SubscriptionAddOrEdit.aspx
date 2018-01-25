@@ -463,7 +463,7 @@
 
         %>
         $("#period_type_id").attr("disabled", "disabled");
-        Subscription();
+        EditShow();
         <%
     if (subPeriodList != null && subPeriodList.Count > 0)
     {
@@ -638,6 +638,63 @@
 
         return true;
     }
+    // 编辑时，初次加载使用，为价格，周期 赋值
+    function EditShow() {
+        var periods = 1;       // 订阅期数
+        //var diffDay = 0;
+        var firstDate = $("#effective_date").val();
+        var lastDate = $("#expiration_date").val();
+        var period_type_id = $("#period_type_id").val();
+        var months = 1;
+        if (firstDate != "" && lastDate != "") {
+            //diffDay = DateDiff(firstDate, lastDate);
+            if (period_type_id == '<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME %>') {
+
+            }
+            else if (period_type_id =='<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH %>') {
+
+                months = MonthDiff(firstDate, lastDate);
+            }
+            else if (period_type_id =='<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER %>') {
+
+                months = Number(MonthDiff(firstDate, lastDate)) / 3;
+            }
+            else if (period_type_id =='<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR %>') {
+
+                months = Number(MonthDiff(firstDate, lastDate)) / 6;
+            }
+            else if (period_type_id == '<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR %>') {
+
+                months = Number(MonthDiff(firstDate, lastDate)) / 12;
+            }
+
+            $("#subscription_period").val(months);
+            $("#firstTime").val(firstDate);
+            $("#NextTime").val(firstDate);
+            var date = new Date().toLocaleDateString();
+            if (firstDate < date) {
+                $("#NextTime").css("color", "red");
+            }
+            else {
+                $("#NextTime").css("color", "");
+            }
+            $("#LastTime").val(lastDate);
+            var period_price = $("#period_price").val();  // 周期价格
+            
+            var period_cost = $("#period_cost").val();    // 周期成本
+            
+            if (period_price == "") {
+                period_price = 0;
+            }
+            if (period_cost == "") {
+                period_cost = 0;
+            }
+            $("#total_price").val(Number(period_price * periods).toFixed(2));
+            $("#total_cost").val(Number(period_cost * periods).toFixed(2));
+            
+        }
+    }
+
     // 计算订阅期数还有
     function Subscription() {
         var periods = 1;       // 订阅期数

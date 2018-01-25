@@ -849,6 +849,7 @@ namespace EMT.DoneNOW.BLL
                                         object_type = (sbyte)isServiceOrBag((int)_.object_id),
                                         unit_price = _.unit_price,
                                         unit_cost = _.unit_cost,
+                                        contract_id = param.contract.id,
                                         quantity = _.quantity == null ? 0 : (int)_.quantity,
                                         create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                         create_user_id = user.id,

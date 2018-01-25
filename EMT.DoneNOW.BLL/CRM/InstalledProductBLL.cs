@@ -1006,10 +1006,14 @@ namespace EMT.DoneNOW.BLL
                         }
                         defaultVendor = ipvDal.GetDefault(thisProduct.id);
                     }
+                    if (thisProduct == null)
+                    {
+                        continue;
+                    }
                     crm_installed_product installed_product = new crm_installed_product()
                     {
                         id = cipDal.GetNextIdCom(),
-                        product_id = (long)thisItem.object_id,
+                        product_id = thisProduct.id,
                         cate_id = thisProduct.installed_product_cate_id,
                         account_id = quote.account_id,
                         start_date = insPro.insDate,

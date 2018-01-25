@@ -392,9 +392,9 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <% if (ExistProductItemList != null && ExistProductItemList.Count > 0)
+                                                                <% if (ExistChargeItemList != null && ExistChargeItemList.Count > 0)
                                                                     {
-                                                                        foreach (var item in ExistProductItemList)
+                                                                        foreach (var item in ExistChargeItemList)
                                                                         {
                                                                             EMT.DoneNOW.Core.d_cost_code costCode = new EMT.DoneNOW.DAL.d_cost_code_dal().FindNoDeleteById((long)item.object_id);
                                                                 %>
@@ -429,10 +429,10 @@
 
                                                                 <%} %>
 
-                                                                <% if (productItemList != null && productItemList.Count > 0)
+                                                                <% if (chargeItemList != null && chargeItemList.Count > 0)
                                                                     {
 
-                                                                        foreach (var item in productItemList)
+                                                                        foreach (var item in chargeItemList)
                                                                         {
                                                                             num++;
                                                                             EMT.DoneNOW.Core.d_cost_code costCode = new EMT.DoneNOW.DAL.d_cost_code_dal().FindNoDeleteById((long)item.object_id);
@@ -451,7 +451,7 @@
                                                                         
                                                                         <span style="display: inline-block; width: 79%; vertical-align: top; font-size: 12px;">
                                                                             <input type="text" style="padding-left: 0px; border: 0px; font: bold; background-color: transparent; text-align: left" id="<%=item.id+"_"+num %>_product_id"  value="<%=defaultPro==null?"":defaultPro.name %>" />
-                                                                            <input type="hidden" name="<%=item.id+"_"+num %>_product_id" id="<%=item.id+"_"+num %>_product_idHidden"/>
+                                                                            <input type="hidden" name="<%=item.id+"_"+num %>_product_id" id="<%=item.id+"_"+num %>_product_idHidden" value="<%=defaultPro==null?"":defaultPro.id.ToString() %>"/>
                                                                             </span>
                                                                         <img src="../Images/data-selector.png" style="vertical-align: middle;" onclick="CallBackPro('<%=item.id+"_"+num %>')" />
                                                                     </td>
@@ -984,7 +984,13 @@
                 success: function (data) {
                     if (data != "") {
                         for (var i = 0; i < data.length; i++) {
-                            periodHtml += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            if (data[i].id == '<%=(int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH %>') {
+                                periodHtml += "<option value='" + data[i].id + "' selected>" + data[i].name + "</option>";
+                            }
+                            else {
+                                periodHtml += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            }
+                            
                         }
                     }
                 },

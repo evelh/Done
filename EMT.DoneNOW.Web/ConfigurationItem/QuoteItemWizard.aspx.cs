@@ -208,7 +208,7 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                     {
                         ChaItemDto.warExpDate = DateTime.Parse(through_date);
                     }
-                    ChaItemDto.serNumber = Request.Form[thisChaItemArr[0] + '_' + thisChaItemArr[1] + "_charge_serial_number"];
+                     ChaItemDto.serNumber = Request.Form[thisChaItemArr[0] + '_' + thisChaItemArr[1] + "_charge_serial_number"];
                     ChaItemDto.refNumber = Request.Form[thisChaItemArr[0] + '_' + thisChaItemArr[1] + "_charge_reference_number"];
                     ChaItemDto.refName = Request.Form[thisChaItemArr[0] + '_' + thisChaItemArr[1] + "_charge_reference_name"];
 

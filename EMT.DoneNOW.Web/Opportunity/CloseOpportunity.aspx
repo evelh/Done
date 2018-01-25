@@ -722,7 +722,7 @@
                                                                         </td>
                                                                         <td class="FieldLabels">生效日期<span class="errorSmall">*</span>
                                                                             <div style="margin: 0; padding: 0;">
-                                                                                <input type="text" style="width: 95px;" name="effective_date " id="effective_date" onclick="WdatePicker()" class="Wdate" value="<%=DateTime.Now.ToString("yyyy-MM-dd") %>" />
+                                                                                <input type="text" style="width: 95px;" name="effective_date" id="effective_date" onclick="WdatePicker()" class="Wdate" value="<%=DateTime.Now.ToString("yyyy-MM-dd") %>" />
                                                                             </div>
                                                                         </td>
                                                                     </tr>
@@ -1330,7 +1330,7 @@
         </div>
         <!--第八页-->
         <div class="Workspace Workspace8" style="display: none;">
-            <div class="PageInstructions">向导已经完成。请从下面选择或关闭此窗口。</div>e
+            <div class="PageInstructions">向导已经完成。请从下面选择或关闭此窗口。</div>
             <div class="WizardSection">
                 <table cellspacing="0" cellpadding="0" width="100%">
                     <tbody>

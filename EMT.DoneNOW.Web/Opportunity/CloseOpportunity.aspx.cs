@@ -440,7 +440,7 @@ namespace EMT.DoneNOW.Web.Opportunity
             {
                 ctt_contract contract = new ctt_contract()
                 {
-                    id = string.IsNullOrEmpty(Request.Form["contract_idHidden"]) ? 0 : long.Parse(Request.Form["contract_idHidden"]),
+                    id = string.IsNullOrEmpty(Request.Form["contract_id"]) ? 0 : long.Parse(Request.Form["contract_id"]),
                 };
                 param.contract = contract;
                 param.effective_date = Convert.ToDateTime(Request.Form["effective_date"]);
