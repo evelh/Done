@@ -30,7 +30,8 @@ namespace EMT.DoneNOW.DAL
                 //if (entry.is_default == 1)
                 //    list.Add(new DictionaryEntryDto(entry.country_name_display, entry.country_name_display, 1));
                 //else
-                
+                if (entry.status_id == 1)
+                    continue;
                 list.Add(new DictionaryEntryDto(entry.id.ToString(), entry.name));
             }
 

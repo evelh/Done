@@ -161,7 +161,7 @@
                         <tr>
                             <td>
                                 <div class="clear">
-                                    <label>客户类型<span class="red"></span></label>
+                                    <label>客户类别<span class="red"></span></label>
 
                                     <asp:DropDownList ID="classification" runat="server" AutoPostBack="False">
                                     </asp:DropDownList>
@@ -171,7 +171,7 @@
                         <tr>
                             <td>
                                 <div class="clear">
-                                    <label>地域名称<span class="red"></span></label>
+                                    <label>地域<span class="red"></span></label>
                                     <asp:DropDownList ID="territory_name" runat="server"></asp:DropDownList>
                                 </div>
                             </td>
@@ -279,7 +279,7 @@
                         <tr>
                             <td>
                                 <div class="clear">
-                                    <label>公司类型<span class="red">*</span></label>
+                                    <label>客户类型<span class="red">*</span></label>
                                     <asp:DropDownList ID="company_type" runat="server"></asp:DropDownList>
                                 </div>
                             </td>
@@ -775,7 +775,7 @@
             }
             var company_type = $("#company_type").val();
             if (company_type == "" || company_type == "0") {
-                alert("请选择公司类型！");
+                alert("请选择客户类型！");
                 return false;
             }
 

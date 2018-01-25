@@ -59,7 +59,7 @@
                 <li id="Location">地址信息</li>
                 <li id="Additional">附加信息</li>
                 <li id="UserDefined">用户自定义</li>
-                <li id="Subsidiaries">子公司</li>
+                <li id="Subsidiaries">子客户</li>
                 <li id="SiteConfiguration">站点配置</li>
                 <li id="Alerts">提醒</li>
             </ul>
@@ -243,7 +243,7 @@
                 <tr>
                     <td>
                         <div class="clear">
-                            <label>公司类型<span class="red">*</span></label>
+                            <label>客户类型<span class="red">*</span></label>
                             <asp:DropDownList ID="CompanyType" runat="server"></asp:DropDownList>
                         </div>
                     </td>
@@ -251,7 +251,7 @@
                 <tr>
                     <td>
                         <div class="clear">
-                            <label>客户类型<span class="red"></span></label>
+                            <label>客户类别<span class="red"></span></label>
 
                             <asp:DropDownList ID="classification" runat="server" AutoPostBack="False">
                             </asp:DropDownList>
@@ -284,7 +284,7 @@
                 <tr>
                     <td>
                         <div class="clear">
-                            <label>销售区域<span class="red"></span></label>
+                            <label>地域<span class="red"></span></label>
                             <asp:DropDownList ID="TerritoryName" runat="server"></asp:DropDownList>
                         </div>
                     </td>

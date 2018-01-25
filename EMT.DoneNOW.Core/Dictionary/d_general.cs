@@ -4,6 +4,7 @@ using System.Text;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
+using System.ComponentModel;
 
 namespace EMT.DoneNOW.Core
 {
@@ -39,8 +40,14 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public SByte is_system { get; set; }
         [DataMember]
-        public SByte is_active { get; set; }
-
+        public SByte is_active {
+            get { return defaultActive; }
+            set { defaultActive = value; }
+        }
+        /// <summary>
+        /// 字典表定义默认为 1
+        /// </summary>
+        private SByte defaultActive = 1;
 
     }
 }
