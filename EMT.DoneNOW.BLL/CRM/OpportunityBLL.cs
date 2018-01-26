@@ -568,7 +568,7 @@ namespace EMT.DoneNOW.BLL
                     sla_id = lastAddContract == null ? null : lastAddContract.sla_id,
                     setup_fee = setup_fee,
                     timeentry_need_begin_end = lastAddContract == null ? (sbyte)1 : lastAddContract.timeentry_need_begin_end,
-                    occurrences = thisProced,
+                    occurrences = null,
                     // 通知接收人？？todo 
                     create_user_id = user.id,
                     update_user_id = user.id,
