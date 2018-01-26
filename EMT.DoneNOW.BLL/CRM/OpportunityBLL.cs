@@ -838,7 +838,7 @@ namespace EMT.DoneNOW.BLL
                             serviceItem.ForEach(_ =>
                             {
                                 // 如果报价的服务/包在合同中不存在，则插入服务/包信息
-                                if (conServiceList.Any(csl => csl.object_id != _.object_id))
+                                if (!conServiceList.Any(csl => csl.object_id == _.object_id))
                                 {
                                     // 新增
                                     var service = new ctt_contract_service()

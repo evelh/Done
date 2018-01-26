@@ -244,11 +244,12 @@ namespace EMT.DoneNOW.BLL
                 {
                     int status_id = 0;
                     long cost_code_id = (long)quote_item.object_id;
+                    long? product_id = null;
                     if (quote_item.type_id == (int)QUOTE_ITEM_TYPE.PRODUCT)
                     {
-
+                        product_id = quote_item.object_id;
                         status_id = (int)COST_STATUS.PENDING_PURCHASE;
-                        var thisProduct = new ivt_product_dal().FindNoDeleteById(cost_code_id);
+                        var thisProduct = new ivt_product_dal().FindNoDeleteById((long)quote_item.object_id);
                         if (thisProduct != null) 
                         {
                             cost_code_id = thisProduct.cost_code_id;
@@ -276,7 +277,7 @@ namespace EMT.DoneNOW.BLL
                         opportunity_id = costList[0].opportunity_id,
                         quote_item_id = quote_item.id,
                         cost_code_id = cost_code_id,
-                        product_id = quote_item.object_id,
+                        product_id = product_id,
                         name = quote_item.name,
                         description = quote_item.description,
                         date_purchased = DateTime.Now,
@@ -284,8 +285,8 @@ namespace EMT.DoneNOW.BLL
                         bill_status = 0,
                         cost_type_id = (int)COST_TYPE.OPERATIONA,
                         status_id = status_id,
-                        quantity = quote_item.quantity,
-                        unit_price = quote_item.unit_price,
+                        quantity = quote_item.quantity??0-quote_item.unit_discount??0,
+                        unit_price = (quote_item.unit_price??0)-(quote_item.unit_discount??0),
                         unit_cost = quote_item.unit_cost,
                         extended_price = quote_item.unit_price * quote_item.quantity,
                         create_user_id = user.id,
@@ -638,7 +639,7 @@ namespace EMT.DoneNOW.BLL
                     thisCost.cost_code_id = cost_code_id;
                     thisCost.name = quote_item.name;
                     thisCost.description = quote_item.description;
-                    thisCost.unit_price = quote_item.unit_price;
+                    thisCost.unit_price = (quote_item.unit_price ?? 0) - (quote_item.unit_discount ?? 0);
                     thisCost.unit_cost = quote_item.unit_cost;
                     thisCost.quantity = quote_item.quantity;
                     thisCost.status_id = status_id;
