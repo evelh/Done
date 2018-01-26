@@ -714,7 +714,7 @@ namespace EMT.DoneNOW.BLL
                                                 id = _dal.GetNextIdCom(),
                                                 contract_service_period_id = thisSerPri.id,
                                                 service_id = serID.service_id,
-                                                vendor_account_id = ivtSer.vendor_id,
+                                                vendor_account_id = ivtSer.vendor_account_id,
                                                 period_cost = ivtSer.unit_cost == null ? 0 : (decimal)ivtSer.unit_cost,
                                             };
                                             ccspbsDal.Insert(ccspbs);

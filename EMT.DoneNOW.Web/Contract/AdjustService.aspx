@@ -179,15 +179,15 @@
 
     $("#SaveAndCloneButton").click(function () {
       var num = $("#num2").val();
-      if (!checkNumInt(num) || parseInt(num) <= 0) {
+      if (parseInt(num) <= 0) {
         alert("请输入单位数");
         return;
       }
-      if ((/^\d{1,15}\.?\d{0,2}$/.test($("#num3").val())) == false) {
+      if ((/^\d{1,15}\.?\d{0,4}$/.test($("#num3").val())) == false) {
         alert('单价输入格式错误');
         return;
       }
-      if ((/^\d{1,15}\.?\d{0,2}$/.test($("#num6").val())) == false) {
+      if ((/^\d{1,15}\.?\d{0,4}$/.test($("#num6").val())) == false) {
         alert('单位成本输入格式错误');
         return;
       }
@@ -202,10 +202,6 @@
     })
 
     $("#num1").change(function () {
-      if (!checkNumInt($("#num1").val())) {
-        alert("请输入整数");
-        return;
-      }
       var change = parseInt($("#num1").val());
       change = change + parseInt($("#units").val());
       $("#num2").val(change);
@@ -220,8 +216,8 @@
 
     $("#num3").change(function () {
       var k2 = $("#num3").val();
-      if ((/^\d{1,15}\.?\d{0,2}$/.test(k2)) == false) {
-        alert('只能输入两位小数');
+      if ((/^\d{1,15}\.?\d{0,4}$/.test(k2)) == false) {
+        alert('只能输入四位小数');
       }
       var change = parseFloat($("#num3").val());
       var discount = parseInt((parseFloat($("#price").val()) - change) / parseFloat($("#price").val()) * 10000) / 100;
@@ -246,8 +242,8 @@
 
     $("#num5").change(function () {
       var k2 = $("#num5").val();
-      if ((/^\d{1,15}\.?\d{0,2}$/.test(k2)) == false) {
-        alert('只能输入两位小数');
+      if ((/^\d{1,15}\.?\d{0,4}$/.test(k2)) == false) {
+        alert('只能输入四位小数');
       }
       var change = parseFloat($("#num5").val());
       var price = change / parseInt($("#num2").val());
@@ -260,8 +256,8 @@
 
     $("#num6").change(function () {
       var k2 = $("#num6").val();
-      if ((/^\d{1,15}\.?\d{0,2}$/.test(k2)) == false) {
-        alert('只能输入两位小数');
+      if ((/^\d{1,15}\.?\d{0,4}$/.test(k2)) == false) {
+        alert('只能输入四位小数');
       }
       var change = parseFloat($("#num6").val());
       var price = change * $("#num2").val();
@@ -272,8 +268,8 @@
 
     $("#num7").change(function () {
       var k2 = $("#num7").val();
-      if ((/^\d{1,15}\.?\d{0,2}$/.test(k2)) == false) {
-        alert('只能输入两位小数');
+      if ((/^\d{1,15}\.?\d{0,4}$/.test(k2)) == false) {
+        alert('只能输入四位小数');
       }
       var change = parseFloat($("#num7").val());
       var price = parseInt(change / $("#num2").val() * 100) / 100;
@@ -281,11 +277,7 @@
         $("#num6").val(price);
       }
     })
-
-    function checkNumInt(num) {
-      var r = "^-?//d+$";
-      return r.test(num);
-    }
+      
   </script>
 </body>
 </html>
