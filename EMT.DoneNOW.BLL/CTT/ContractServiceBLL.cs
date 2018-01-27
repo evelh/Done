@@ -414,16 +414,18 @@ namespace EMT.DoneNOW.BLL
                     {
                         var adjOld = adjDal.FindById(adj.id);
                         var nextDate = GetNextPeriodStart(adj.effective_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
+                        adj.quantity_change = adj.quantity_change + (ser.quantity - service.quantity);
                         if (ser.unit_cost == null || ser.unit_cost == 0)
                             adj.prorated_cost_change = 0;
                         else
-                            adj.prorated_cost_change = (decimal)ser.unit_cost * ((adj.end_date - adj.effective_date).Days / (decimal)(nextDate - ser.effective_date).Days);
+                            adj.prorated_cost_change = (decimal)ser.unit_cost * ((adj.end_date - adj.effective_date).Days + 1) / (nextDate - ser.effective_date).Days;
                         if (ser.unit_price == null || ser.unit_price == 0)
                             adj.prorated_price_change = 0;
                         else
-                            adj.prorated_price_change = (decimal)ser.unit_price * ((adj.end_date - adj.effective_date).Days / (decimal)(nextDate - ser.effective_date).Days);
+                            adj.prorated_price_change = (decimal)ser.unit_price * ((adj.end_date - adj.effective_date).Days + 1) / (decimal)(nextDate - ser.effective_date).Days;
+                        adj.prorated_cost_change = decimal.Round(adj.prorated_cost_change, 4) * adj.quantity_change;
+                        adj.prorated_price_change = decimal.Round(adj.prorated_price_change, 4) * adj.quantity_change;
                         adj.adjust_prorated_price_change = adj.prorated_price_change;
-                        adj.quantity_change = adj.quantity_change + (ser.quantity - service.quantity);
                         adj.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
                         adj.update_user_id = userId;
                         adjDal.Update(adj);
@@ -452,8 +454,8 @@ namespace EMT.DoneNOW.BLL
                                 adjNew.prorated_price_change = 0;
                             else
                                 adjNew.prorated_price_change = (decimal)ser.unit_price * (((adj.end_date - adj.effective_date).Days + 1) / (decimal)(nextDate - ser.effective_date).Days);
-                            adjNew.prorated_cost_change = decimal.Round(adjNew.prorated_cost_change, 4);
-                            adjNew.prorated_price_change = decimal.Round(adjNew.prorated_price_change, 4);
+                            adjNew.prorated_cost_change = decimal.Round(adjNew.prorated_cost_change, 4) * adjNew.quantity_change;
+                            adjNew.prorated_price_change = decimal.Round(adjNew.prorated_price_change, 4) * adjNew.quantity_change;
                             adjNew.effective_date = ser.effective_date;
                             adjNew.end_date = adj.end_date;
                             adjNew.vendor_account_id = adj.vendor_account_id;
@@ -516,8 +518,8 @@ namespace EMT.DoneNOW.BLL
                             adjNew.prorated_price_change = 0;
                         else
                             adjNew.prorated_price_change = (decimal)ser.unit_price * (((periodList[i].period_end_date - ser.effective_date).Days + 1) / (decimal)((periodList[i].period_end_date - periodList[i].period_begin_date).Days + 1));
-                        adjNew.prorated_cost_change = decimal.Round(adjNew.prorated_cost_change, 4);
-                        adjNew.prorated_price_change = decimal.Round(adjNew.prorated_price_change, 4);
+                        adjNew.prorated_cost_change = decimal.Round(adjNew.prorated_cost_change, 4) * adjNew.quantity_change;
+                        adjNew.prorated_price_change = decimal.Round(adjNew.prorated_price_change, 4) * adjNew.quantity_change;
                         adjNew.effective_date = ser.effective_date;
                         adjNew.end_date = periodList[i].period_end_date;
                         adjNew.vendor_account_id = periodList[i].vendor_account_id;
@@ -588,16 +590,18 @@ namespace EMT.DoneNOW.BLL
                     {
                         var adjOld = adjDal.FindById(adj.id);
                         var nextDate = GetNextPeriodStart(adj.effective_date, (DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type);
+                        adj.quantity_change = adj.quantity_change + (ser.quantity - service.quantity);
                         if (ser.unit_cost == null || ser.unit_cost == 0)
                             adj.prorated_cost_change = 0;
                         else
-                            adj.prorated_cost_change = (decimal)ser.unit_cost * ((adj.end_date - adj.effective_date).Days / (decimal)(nextDate - ser.effective_date).Days);
+                            adj.prorated_cost_change = (decimal)ser.unit_cost * ((adj.end_date - adj.effective_date).Days + 1) / (nextDate - ser.effective_date).Days;
                         if (ser.unit_price == null || ser.unit_price == 0)
                             adj.prorated_price_change = 0;
                         else
-                            adj.prorated_price_change = (decimal)ser.unit_price * ((adj.end_date - adj.effective_date).Days / (decimal)(nextDate - ser.effective_date).Days);
+                            adj.prorated_price_change = (decimal)ser.unit_price * ((adj.end_date - adj.effective_date).Days + 1) / (decimal)(nextDate - ser.effective_date).Days;
+                        adj.prorated_cost_change = decimal.Round(adj.prorated_cost_change, 4) * adj.quantity_change;
+                        adj.prorated_price_change = decimal.Round(adj.prorated_price_change, 4) * adj.quantity_change;
                         adj.adjust_prorated_price_change = adj.prorated_price_change;
-                        adj.quantity_change = adj.quantity_change + (ser.quantity - service.quantity);
                         adj.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
                         adj.update_user_id = userId;
                         adjDal.Update(adj);
@@ -626,8 +630,8 @@ namespace EMT.DoneNOW.BLL
                                 adjNew.prorated_price_change = 0;
                             else
                                 adjNew.prorated_price_change = (decimal)ser.unit_price * (((adj.end_date - adj.effective_date).Days + 1) / (decimal)(nextDate - ser.effective_date).Days);
-                            adjNew.prorated_cost_change = decimal.Round(adjNew.prorated_cost_change, 4);
-                            adjNew.prorated_price_change = decimal.Round(adjNew.prorated_price_change, 4);
+                            adjNew.prorated_cost_change = decimal.Round(adjNew.prorated_cost_change, 4) * adjNew.quantity_change;
+                            adjNew.prorated_price_change = decimal.Round(adjNew.prorated_price_change, 4) * adjNew.quantity_change;
                             adjNew.effective_date = ser.effective_date;
                             adjNew.end_date = adj.end_date;
                             adjNew.vendor_account_id = adj.vendor_account_id;
@@ -690,8 +694,8 @@ namespace EMT.DoneNOW.BLL
                             adjNew.prorated_price_change = 0;
                         else
                             adjNew.prorated_price_change = (decimal)ser.unit_price * (((periodList[i].period_end_date - ser.effective_date).Days + 1) / (decimal)((periodList[i].period_end_date - periodList[i].period_begin_date).Days + 1));
-                        adjNew.prorated_cost_change = decimal.Round(adjNew.prorated_cost_change, 4);
-                        adjNew.prorated_price_change = decimal.Round(adjNew.prorated_price_change, 4);
+                        adjNew.prorated_cost_change = decimal.Round(adjNew.prorated_cost_change, 4) * adjNew.quantity_change;
+                        adjNew.prorated_price_change = decimal.Round(adjNew.prorated_price_change, 4) * adjNew.quantity_change;
                         adjNew.effective_date = ser.effective_date;
                         adjNew.end_date = periodList[i].period_end_date;
                         adjNew.vendor_account_id = periodList[i].vendor_account_id;
