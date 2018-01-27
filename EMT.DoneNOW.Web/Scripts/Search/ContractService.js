@@ -7,7 +7,7 @@ function AddServiceBundle() {
 function ApplyDiscount() {
 }
 function AdjustService() {
-    window.open('../Contract/AdjustService.aspx?id=' + entityid, windowObj.contractService + windowType.edit, 'left=0,top=0,location=no,status=no,width=710,height=524', false);
+    window.open('../Contract/AdjustService.aspx?id=' + entityid, windowObj.contractService + windowType.edit, 'left=0,top=0,location=no,status=no,width=710,height=600', false);
 }
 function EditDescription() {
     window.open('../Contract/EditServiceInvoiceDesc.aspx?id=' + entityid, windowObj.contractService + windowType.manage, 'left=0,top=0,location=no,status=no,width=710,height=524', false);

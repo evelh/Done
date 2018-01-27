@@ -634,6 +634,7 @@ namespace EMT.DoneNOW.BLL
                                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                             };
+
                             conSerBll.AddServiceServiceBundle(conService,user_id);
 
                             #region 原来的关闭商机新增服务相关逻辑
@@ -781,6 +782,7 @@ namespace EMT.DoneNOW.BLL
                             //    }
                             //}
                             #endregion
+
                         }
                     }
                 }

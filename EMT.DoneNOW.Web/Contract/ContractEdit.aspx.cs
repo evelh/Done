@@ -20,6 +20,7 @@ namespace EMT.DoneNOW.Web.Contract
         protected string contractTypeName;      // 合同类型名称
         protected List<UserDefinedFieldDto> udfList;        // 自定义字段信息
         protected List<UserDefinedFieldValue> udfValues;    // 自定义字段值
+        protected string endTimeCheck = "";         // 用于验证结束时间修改
         private ContractBLL bll = new ContractBLL();
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -68,6 +69,26 @@ namespace EMT.DoneNOW.Web.Contract
                 // 绑定通知联系人列表
                 if (contract.contract.type_id == (int)DicEnum.CONTRACT_TYPE.SERVICE)
                 {
+                    // 获取可以修改的最小合同结束日期
+                    var serBll = new ContractServiceBLL();
+                    DateTime dtEnd = DateTime.MinValue;
+                    var serList = serBll.GetServiceList(contract.contract.id);
+                    foreach (var ser in serList)
+                    {
+                        var prdList = serBll.GetServicePeriodList(ser.id);
+                        foreach (var prd in prdList)
+                        {
+                            if (prd.approve_and_post_date == null)
+                                continue;
+                            if (prd.period_end_date > dtEnd)
+                                dtEnd = prd.period_end_date;
+                        }
+                    }
+                    if (dtEnd == DateTime.MinValue)
+                        endTimeCheck = "";
+                    else
+                        endTimeCheck = dtEnd.ToString("yyyy-MM-dd");
+
                     if (contract.contract.bill_to_account_id == null)
                     {
                         bill_to_contact_id.Enabled = false;
@@ -111,9 +132,13 @@ namespace EMT.DoneNOW.Web.Contract
                     }
                 }
             }
+            else
+            {
+                SaveClose_Click();
+            }
         }
 
-        protected void SaveClose_Click(object sender, EventArgs e)
+        protected void SaveClose_Click()
         {
             ctt_contract contractEdit = AssembleModel<ctt_contract>();
             if (!string.IsNullOrEmpty(Request.Form["MastInput"]) && Request.Form["MastInput"].Equals("on"))
