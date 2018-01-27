@@ -44,3 +44,11 @@ function Delete() {
         }
     })
 }
+window.onload = function () {
+    var formbody = window.parent.frames["second"].contentWindow;
+    if (formbody == undefined)
+        formbody = window.parent.frames["second"].document;
+    else
+        formbody = formbody.document;
+    formbody.location.reload();
+}

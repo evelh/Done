@@ -418,6 +418,7 @@
     <Content Include="RichText\js\third-party\video-js\font\vjs.ttf" />
     <Content Include="RichText\js\third-party\video-js\font\vjs.woff" />
     <Content Include="Scripts\Search\ContractService.js" />
+    <Content Include="Scripts\Search\ContractServiceTransHistory.js" />
     <Content Include="Scripts\Search\contract_project.js" />
     <Content Include="Scripts\Search\project_search.js" />
     <Content Include="Scripts\Search\PurchaseFulfillment.js" />

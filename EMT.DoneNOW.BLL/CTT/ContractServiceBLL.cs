@@ -106,7 +106,7 @@ namespace EMT.DoneNOW.BLL
             cs.quantity = service.quantity;
             cs.unit_price = service.unit_price;
             cs.unit_cost = service.unit_cost;
-            cs.effective_date = contract.start_date;
+            cs.effective_date = service.effective_date;
             cs.adjusted_price = service.quantity * service.unit_price;
 
             dal.Insert(cs);
@@ -235,7 +235,7 @@ namespace EMT.DoneNOW.BLL
             cs.quantity = service.quantity;
             cs.unit_price = service.unit_price;
             cs.unit_cost = service.unit_cost;
-            cs.effective_date = contract.start_date;
+            cs.effective_date = service.effective_date;
             cs.adjusted_price = service.quantity * service.unit_price;
 
             dal.Insert(cs);
