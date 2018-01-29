@@ -390,7 +390,7 @@ namespace EMT.DoneNOW.BLL
             
             var service = dal.FindById(ser.id);
             var contract = new ContractBLL().GetContract(service.contract_id);
-            if (service.quantity == ser.quantity && service.unit_price == ser.unit_price && service.unit_cost == ser.unit_cost)
+            if (service.quantity == ser.quantity && service.unit_price == ser.unit_price && service.unit_cost == ser.unit_cost && service.effective_date == ser.effective_date)
                 return true;
             var serviceOld = dal.FindById(ser.id);
 
@@ -566,7 +566,7 @@ namespace EMT.DoneNOW.BLL
 
             var service = dal.FindById(ser.id);
             var contract = new ContractBLL().GetContract(service.contract_id);
-            if (service.quantity == ser.quantity && service.unit_price == ser.unit_price && service.unit_cost == ser.unit_cost)
+            if (service.quantity == ser.quantity && service.unit_price == ser.unit_price && service.unit_cost == ser.unit_cost && service.effective_date == ser.effective_date)
                 return true;
             var serviceOld = dal.FindById(ser.id);
 
