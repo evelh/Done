@@ -856,7 +856,7 @@ namespace EMT.DoneNOW.BLL
                                         effective_date = param.effective_date,
                                         object_id = (long)_.object_id,
                                         object_type = (sbyte)isServiceOrBag((int)_.object_id),
-                                        unit_price = _.unit_price,
+                                        unit_price = (_.unit_price ?? 0) - (_.unit_discount ?? 0),
                                         unit_cost = _.unit_cost,
                                         contract_id = param.contract.id,
                                         adjusted_price=((_.unit_price??0)-(_.unit_discount??0)) *(_.quantity??0),
@@ -897,7 +897,7 @@ namespace EMT.DoneNOW.BLL
                                             conSer.effective_date = param.effective_date;
                                             if (param.isUpdatePrice)
                                             {
-                                                conSer.unit_price = _.unit_price;
+                                                conSer.unit_price = (_.unit_price ?? 0) - (_.unit_discount ?? 0);
                                             }
                                             if (param.isUpdateCost)
                                             {
@@ -905,7 +905,18 @@ namespace EMT.DoneNOW.BLL
                                             }
                                             conSer.quantity += (int)_.quantity;
 
-                                            conSerBll.AdjustServiceBundle(conSer,user_id);
+                                            if(isServiceOrBag((int)_.object_id) == 1)
+                                            {
+                                                conSerBll.AdjustService(conSer, user_id);
+                                            }
+                                            else if (isServiceOrBag((int)_.object_id) == 2)
+                                            {
+                                                //var oldconSer = ccsDal.FindNoDeleteById(conSer.id);
+                                                //ccsDal.Update(conSer);
+                                                //OperLogBLL.OperLogUpdate<ctt_contract_service>(conSer, oldconSer, conSer.id,user_id,OPER_LOG_OBJ_CATE.CONTRACT_SERVICE, "修改合同服务项");
+                                                conSerBll.AdjustServiceBundle(conSer, user_id);
+                                            }
+                                           
                                             //new sys_oper_log_dal().Insert(new sys_oper_log()
                                             //{
                                             //    user_cate = "用户",
@@ -1248,7 +1259,7 @@ namespace EMT.DoneNOW.BLL
                             cost_type_id = (int)COST_TYPE.OPERATIONA,
                             status_id = status_id,
                             quantity = quote_item.quantity,
-                            unit_price = quote_item.unit_price??0- quote_item.unit_discount??0,
+                            unit_price = (quote_item.unit_price??0)- (quote_item.unit_discount??0),
                             unit_cost = quote_item.unit_cost,
                             extended_price = quote_item.unit_price * quote_item.quantity,
                             create_user_id = user.id,
