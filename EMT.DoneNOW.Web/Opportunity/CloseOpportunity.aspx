@@ -1676,7 +1676,7 @@
             $("#trAddContractServicesInfo").hide();
             $("#addContractServices").prop('checked', false);
             if (isChooseItem()) {
-                // rbContractCost
+                
                 $("#rbContractCost").prop('disabled', false);
                 $("#rbContractCost").prop('checked', true);
                 $("#rbContractCostText").css("color", "");
@@ -1698,13 +1698,17 @@
             if (isChooseItem()) {
                 // rbContractCost
                 $("#rbContractCost").prop('disabled', false);
-                $("#rbContractCost").prop('checked', true);
+                // $("#rbContractCost").prop('checked', true);
+                $("#RadioCCEx").prop('checked', true);
+                $("#ccexDiv").show();
                 $("#rbContractCostText").css("color", "");
             }
         } else {
             $("#trAddContractServicesInfo").hide();
             $("#rbContractCost").prop('disabled', true);
-            $("#rbContractCost").prop('checked', false);
+            // $("#rbContractCost").prop('checked', false);
+            $("#RadioCCEx").prop('checked', false);
+            $("#ccexDiv").hide();
             $("#rbContractCostText").css("color", "rgb(176, 176, 176)");
             NoDisabledText();
         }

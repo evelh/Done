@@ -30,7 +30,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                             {
                                 if (serviceList.Count > 0)
                                 {
-                                    if (serviceList.Any(ser => ser.Key != conser.object_id)) // 
+                                    if (!serviceList.Any(ser => ser.Key == conser.object_id)) // 
                                     {
                                         serviceList.Add(conser.object_id, isServiceOrBag(conser.object_id));
                                     }
