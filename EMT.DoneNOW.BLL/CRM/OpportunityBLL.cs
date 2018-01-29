@@ -1676,15 +1676,58 @@ namespace EMT.DoneNOW.BLL
             total += (decimal)((opportunity.yearly_revenue == null ? 0 : (opportunity.yearly_revenue / 12)) * month);
             if (opportunity.use_quote == 1)
             {
+                total = 0;
+                decimal? oneTimeRevenue = 0;
+                decimal? monthRevenue = 0;
+                decimal? quarterRevenue = 0;
+                decimal? halfRevenue = 0;
+                decimal? yearRevenue = 0;
+
                 var priQuote = new crm_quote_dal().GetPriQuote(oId);
                 if (priQuote != null)
                 {
                     var itemList = new crm_quote_item_dal().GetAllQuoteItem(priQuote.id);
                     if (itemList != null && itemList.Count > 0)
                     {
-                       var shipList = itemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional == 0).ToList(); // 配送类型的报价项
-                        var oneTimeList = itemList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME && _.optional == 0 && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();
+                        var thisItem = itemList.Where(_ => _.type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional != 1 && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT).ToList();
+
+                        var shipList = itemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional == 0).ToList(); // 配送类型的报价项
+                        var thisOneTimeList = itemList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME && _.optional == 0 && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();
                         var discountQIList = itemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.optional == 0).ToList();
+
+                        if (thisItem != null && thisItem.Count > 0)
+                        {
+                            var oneTimeList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME).ToList();
+                            var monthList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH).ToList();
+                            var quarterList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER).ToList();
+                            var halfList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR).ToList();
+                            var yearList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR).ToList();
+                            if (oneTimeList != null && oneTimeList.Count > 0)
+                            {
+                                oneTimeRevenue = (decimal)oneTimeList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                               //  oneTimeCost = (decimal)oneTimeList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (monthList != null && monthList.Count > 0)
+                            {
+                                monthRevenue = (decimal)monthList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                // monthCost = (decimal)monthList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (quarterList != null && quarterList.Count > 0)
+                            {
+                                quarterRevenue = (decimal)quarterList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                // quarterCost = (decimal)quarterList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (halfList != null && halfList.Count > 0)
+                            {
+                                halfRevenue = (decimal)halfList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                // halfCost = (decimal)halfList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (yearList != null && yearList.Count > 0)
+                            {
+                                yearRevenue = (decimal)yearList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                // yearCost = (decimal)yearList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                        }
 
                         // 加上配送的金额
                         if (shipList != null && shipList.Count > 0)
@@ -1695,12 +1738,22 @@ namespace EMT.DoneNOW.BLL
                         // 减去折扣的金额
                         if (discountQIList != null && discountQIList.Count > 0)
                         {
-                            var totalPrice = (discountQIList.Where(_ => _.discount_percent == null).ToList().Sum(_ => (_.unit_discount != null && _.quantity != null) ? _.unit_discount * _.quantity : 0) + (oneTimeList != null && oneTimeList.Count > 0 ? discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_ => oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0) * _.discount_percent * 100 / 100) : 0));
+                            var totalPrice = (discountQIList.Where(_ => _.discount_percent == null).ToList().Sum(_ => (_.unit_discount != null && _.quantity != null) ? _.unit_discount * _.quantity : 0) + (thisOneTimeList != null && thisOneTimeList.Count > 0 ? discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_ => thisOneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0) * _.discount_percent * 100 / 100) : 0));
                             total -= (decimal)totalPrice;
                         }
 
                     }
                 }
+
+                total += (decimal)(oneTimeRevenue??0);
+                total += (decimal)((monthRevenue??0) * month);
+                total += (decimal)(((quarterRevenue??0)/3) * month);
+                total += (decimal)(((quarterRevenue ?? 0)/6) * month);
+                total += (decimal)(((quarterRevenue ?? 0)/12) * month);
+            }
+            else
+            {
+
             }
             return total;
         }
@@ -1723,20 +1776,75 @@ namespace EMT.DoneNOW.BLL
             total += (decimal)((opportunity.yearly_cost == null ? 0 : (opportunity.yearly_cost / 12)) * month);
             if (opportunity.use_quote == 1)
             {
+                total = 0;
+                decimal? oneTimeCost = 0;
+                decimal? monthCost = 0;
+                decimal? quarterCost = 0;
+                decimal? halfCost = 0;
+                decimal? yearCost = 0;
+
                 var priQuote = new crm_quote_dal().GetPriQuote(oId);
                 if (priQuote != null)
                 {
                     var itemList = new crm_quote_item_dal().GetAllQuoteItem(priQuote.id);
                     if (itemList != null && itemList.Count > 0)
                     {
+                        var thisItem = itemList.Where(_ => _.type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional != 1 && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT).ToList();
+
                         var shipList = itemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional == 0).ToList(); // 配送类型的报价项
+                        var thisOneTimeList = itemList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME && _.optional == 0 && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();
+                        var discountQIList = itemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.optional == 0).ToList();
+
+                        if (thisItem != null && thisItem.Count > 0)
+                        {
+                            var oneTimeList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME).ToList();
+                            var monthList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH).ToList();
+                            var quarterList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER).ToList();
+                            var halfList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR).ToList();
+                            var yearList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR).ToList();
+                            if (oneTimeList != null && oneTimeList.Count > 0)
+                            {
+                                // oneTimeRevenue = (decimal)oneTimeList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                oneTimeCost = (decimal)oneTimeList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (monthList != null && monthList.Count > 0)
+                            {
+                                // monthRevenue = (decimal)monthList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                monthCost = (decimal)monthList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (quarterList != null && quarterList.Count > 0)
+                            {
+                                // quarterRevenue = (decimal)quarterList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                quarterCost = (decimal)quarterList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (halfList != null && halfList.Count > 0)
+                            {
+                                // halfRevenue = (decimal)halfList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                halfCost = (decimal)halfList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (yearList != null && yearList.Count > 0)
+                            {
+                                // yearRevenue = (decimal)yearList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                yearCost = (decimal)yearList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                        }
+
+                        // 加上配送的金额
                         if (shipList != null && shipList.Count > 0)
                         {
-                            var totalPrice = shipList.Sum(_ => ( _.unit_cost != null && _.quantity != null) ? _.unit_cost * _.quantity : 0);
+                            var totalPrice = shipList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_cost) * _.quantity : 0);
                             total += (decimal)totalPrice;
                         }
+                        
+
                     }
                 }
+
+                total += (decimal)(oneTimeCost ?? 0);
+                total += (decimal)((monthCost ?? 0) * month);
+                total += (decimal)(((quarterCost ?? 0) / 3) * month);
+                total += (decimal)(((halfCost ?? 0) / 6) * month);
+                total += (decimal)(((yearCost ?? 0) / 12) * month);
             }
             return total;
         }

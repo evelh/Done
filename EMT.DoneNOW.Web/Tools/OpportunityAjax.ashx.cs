@@ -135,16 +135,16 @@ namespace EMT.DoneNOW.Web
                 var priQuote = new crm_quote_dal().GetPriQuote(oid);
                 if (priQuote != null)
                 {
-                    decimal oneTimeRevenue = oppo.one_time_revenue??0;
-                    decimal oneTimeCost = oppo.one_time_cost ?? 0;
-                    decimal monthRevenue = oppo.monthly_revenue ?? 0;
-                    decimal monthCost = oppo.monthly_cost ?? 0;
-                    decimal quarterRevenue = oppo.quarterly_revenue ?? 0;
-                    decimal quarterCost = oppo.quarterly_cost ?? 0;
-                    decimal halfRevenue = oppo.semi_annual_revenue ?? 0;
-                    decimal halfCost = oppo.semi_annual_cost ?? 0;
-                    decimal yearRevenue = oppo.yearly_revenue ?? 0;
-                    decimal yearCost = oppo.yearly_cost ?? 0;
+                    decimal oneTimeRevenue = 0;
+                    decimal oneTimeCost =  0;
+                    decimal monthRevenue = 0;
+                    decimal monthCost =  0;
+                    decimal quarterRevenue =  0;
+                    decimal quarterCost =  0;
+                    decimal halfRevenue =  0;
+                    decimal halfCost =  0;
+                    decimal yearRevenue =  0;
+                    decimal yearCost =  0;
                     decimal shipRevenue = 0;
                     decimal shipCost = 0;
                     decimal discount = 0;
@@ -171,39 +171,39 @@ namespace EMT.DoneNOW.Web
                         }
 
 
-                        //if (thisItem != null && thisItem.Count > 0)
-                        //{
-                        //    var oneTimeList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME).ToList();
-                        //    var monthList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH).ToList();
-                        //    var quarterList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER).ToList();
-                        //    var halfList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR).ToList();
-                        //    var yearList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR).ToList();
-                        //    if (oneTimeList != null && oneTimeList.Count > 0)
-                        //    {
-                        //        oneTimeRevenue = (decimal)oneTimeList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price??0)-(_.unit_discount??0)) * _.quantity) : 0);
-                        //        oneTimeCost = (decimal)oneTimeList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
-                        //    }
-                        //    if (monthList != null && monthList.Count > 0)
-                        //    {
-                        //        monthRevenue = (decimal)monthList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
-                        //        monthCost = (decimal)monthList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
-                        //    }
-                        //    if (quarterList != null && quarterList.Count > 0)
-                        //    {
-                        //        quarterRevenue = (decimal)quarterList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
-                        //        quarterCost = (decimal)quarterList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
-                        //    }
-                        //    if (halfList != null && halfList.Count > 0)
-                        //    {
-                        //        halfRevenue = (decimal)halfList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
-                        //        halfCost = (decimal)halfList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
-                        //    }
-                        //    if (yearList != null && yearList.Count > 0)
-                        //    {
-                        //        yearRevenue = (decimal)yearList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
-                        //        yearCost = (decimal)yearList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
-                        //    }
-                        //}
+                        if (thisItem != null && thisItem.Count > 0)
+                        {
+                            var oneTimeList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME).ToList();
+                            var monthList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH).ToList();
+                            var quarterList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER).ToList();
+                            var halfList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR).ToList();
+                            var yearList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR).ToList();
+                            if (oneTimeList != null && oneTimeList.Count > 0)
+                            {
+                                oneTimeRevenue = (decimal)oneTimeList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                oneTimeCost = (decimal)oneTimeList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (monthList != null && monthList.Count > 0)
+                            {
+                                monthRevenue = (decimal)monthList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                monthCost = (decimal)monthList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (quarterList != null && quarterList.Count > 0)
+                            {
+                                quarterRevenue = (decimal)quarterList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                quarterCost = (decimal)quarterList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (halfList != null && halfList.Count > 0)
+                            {
+                                halfRevenue = (decimal)halfList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                halfCost = (decimal)halfList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (yearList != null && yearList.Count > 0)
+                            {
+                                yearRevenue = (decimal)yearList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                yearCost = (decimal)yearList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                        }
                     }
                     context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { oneTimeRevenue = oneTimeRevenue, oneTimeCost = oneTimeCost, monthRevenue = monthRevenue, monthCost = monthCost, quarterRevenue = quarterRevenue, quarterCost = quarterCost, halfRevenue = halfRevenue, halfCost = halfCost, yearRevenue = yearRevenue, yearCost = yearCost, shipRevenue = shipRevenue, shipCost = shipCost, discount = discount }));
                 }

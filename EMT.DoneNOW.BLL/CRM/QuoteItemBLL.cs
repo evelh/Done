@@ -92,7 +92,7 @@ namespace EMT.DoneNOW.BLL
             {
                 if (quote_item.optional != 1 && quote_item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && quote_item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES)
                 {
-                    decimal? changeRevenue = quote_item.quantity * quote_item.unit_price;
+                    decimal? changeRevenue = quote_item.quantity * ((quote_item.unit_price??0)-(quote_item.unit_discount??0));
                     decimal? changeCost = quote_item.quantity * quote_item.unit_cost;
 
                     switch (quote_item.period_type_id)
@@ -360,6 +360,7 @@ namespace EMT.DoneNOW.BLL
             if (user == null)
                 return ERROR_CODE.USER_NOT_FIND;
             var old_quote_item = _dal.GetQuoteItem(quote_item.id);
+            int? oldPeriod = old_quote_item.period_type_id;
             quote_item.oid = old_quote_item.oid;
             quote_item.update_user_id = user_id;
             quote_item.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -385,10 +386,36 @@ namespace EMT.DoneNOW.BLL
             {
                 if (quote_item.optional != 1 && quote_item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && quote_item.type_id != (int)DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES)
                 {
-                    decimal? changeRevenue = quote_item.quantity * quote_item.unit_price - old_quote_item.quantity * old_quote_item.unit_price;
-                    decimal? changeCost = quote_item.quantity * quote_item.unit_cost - old_quote_item.quantity * old_quote_item.unit_cost;
+                    decimal? changeRevenue = quote_item.quantity * quote_item.unit_price ;
+                    decimal? changeCost = quote_item.quantity * quote_item.unit_cost;
 
-
+                    decimal? oldChangeRevenue = old_quote_item.quantity * ((old_quote_item.unit_price??0)-(old_quote_item.unit_discount??0));
+                    decimal? oldChangeCost = old_quote_item.quantity * old_quote_item.unit_cost;
+                    switch (oldPeriod)
+                    {
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME:
+                            oppo.one_time_revenue = (oppo.one_time_revenue??0)-oldChangeRevenue;
+                            oppo.one_time_cost = (oppo.one_time_cost ?? 0) - oldChangeCost;
+                            break;
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH:
+                            oppo.one_time_revenue = (oppo.one_time_revenue ?? 0) - oldChangeRevenue;
+                            oppo.one_time_cost = (oppo.one_time_cost ?? 0) - oldChangeCost;
+                            break;
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER:
+                            oppo.one_time_revenue = (oppo.one_time_revenue ?? 0) - oldChangeRevenue;
+                            oppo.one_time_cost = (oppo.one_time_cost ?? 0) - oldChangeCost;
+                            break;
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
+                            oppo.one_time_revenue = (oppo.one_time_revenue ?? 0) - oldChangeRevenue;
+                            oppo.one_time_cost = (oppo.one_time_cost ?? 0) - oldChangeCost;
+                            break;
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR:
+                            oppo.one_time_revenue = (oppo.one_time_revenue ?? 0) - oldChangeRevenue;
+                            oppo.one_time_cost = (oppo.one_time_cost ?? 0) - oldChangeCost;
+                            break;
+                        default:
+                            break;
+                    }
 
                     switch (quote_item.period_type_id)
                     {

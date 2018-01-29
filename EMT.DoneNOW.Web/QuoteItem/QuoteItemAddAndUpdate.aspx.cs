@@ -349,7 +349,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
                                 quote_item.period_type_id = service.period_type_id;
                             }
                         }
-                        else if (opBLL.isServiceOrBag((long)quote_item.object_id) == 1)
+                        else if (opBLL.isServiceOrBag((long)quote_item.object_id) == 2)
                         {
                             var serviceBundle = new ivt_service_bundle_dal().GetSinSerBun((long)quote_item.object_id);
                             if (serviceBundle != null)
