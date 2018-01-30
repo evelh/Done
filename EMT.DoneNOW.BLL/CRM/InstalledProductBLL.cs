@@ -325,6 +325,7 @@ namespace EMT.DoneNOW.BLL
             var months = (lastTime.Year - firstTime.Year) * 12 + (lastTime.Month - firstTime.Month) + (lastTime.Day >= firstTime.Day ? 1 : 0);
             decimal periodMonths = 1;
             decimal period = 1;
+            decimal dayMoney = subscription.period_price;  // 
             switch (subscription.period_type_id)
             {
                 case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
@@ -358,6 +359,31 @@ namespace EMT.DoneNOW.BLL
                     period_price = subscription.period_price,
 
                 };
+                if (i == period - 1)
+                {
+                    var diffDays = GetDiffDay(firstTime, subscription.expiration_date);
+                    switch (subscription.period_type_id)
+                    {
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
+                            var halfYearDay = GetDiffDay(firstTime, firstTime.AddMonths(6));
+                            sub_period.period_price = (sub_period.period_price / halfYearDay) * diffDays;
+                            break;
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH:
+                            var monthDay = GetDiffDay(firstTime, firstTime.AddMonths(1));
+                            sub_period.period_price = (sub_period.period_price / monthDay) * diffDays;
+                            break;
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER:
+                            var quarterDay = GetDiffDay(firstTime, firstTime.AddMonths(3));
+                            sub_period.period_price = (sub_period.period_price / quarterDay) * diffDays;
+                            break;
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR:
+                            var yearDay = GetDiffDay(firstTime, firstTime.AddYears(1));
+                            sub_period.period_price = (sub_period.period_price / yearDay) * diffDays;
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 sub_period_dal.Insert(sub_period);
                 new sys_oper_log_dal().Insert(new sys_oper_log()
                 {
@@ -372,11 +398,20 @@ namespace EMT.DoneNOW.BLL
                     oper_description = _dal.AddValue(sub_period),
                     remark = "新增分期订阅",
                 });
-
                 firstTime = firstTime.AddMonths((int)periodMonths);
 
             }
 
+        }
+        /// <summary>
+        /// 获取两个时间相差天数
+        /// </summary>
+        public int GetDiffDay(DateTime startDate,DateTime endDate)
+        {
+            TimeSpan ts1 = new TimeSpan(startDate.Ticks);
+            TimeSpan ts2 = new TimeSpan(endDate.Ticks);
+            var diffDays = ts1.Subtract(ts2).Duration().Days + 1;
+            return diffDays;
         }
 
         /// <summary>
@@ -978,7 +1013,42 @@ namespace EMT.DoneNOW.BLL
                                 update_user_id = user_id,
                                 installed_product_id = installed_product.id,
                                 status_id = 1,
+                                period_cost = thisProduct.unit_cost,
                             };
+
+                            var periods = 1;   // 定义初始的期数为1 
+                           var firstTime = sub.effective_date; // 生效日期
+                           var lastTime = sub.expiration_date; // 结束日期
+                            var period_type = sub.period_type_id;
+                            var days = Math.Ceiling((lastTime - firstTime).TotalDays); // 获取到相差几天
+
+                            var months = (lastTime.Year - firstTime.Year) * 12 + (lastTime.Month - firstTime.Month) + (lastTime.Day >= firstTime.Day ? 1 : 0);
+                            decimal periodMonths = 1;
+                            decimal period = 1;
+                            switch (sub.period_type_id)
+                            {
+                                case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
+                                    periods = Convert.ToInt32(Math.Ceiling(days / 180));
+                                    periodMonths = 6;
+                                    break;
+                                case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH:
+                                    periods = Convert.ToInt32(Math.Ceiling(days / 30));
+                                    periodMonths = 1;
+                                    break;
+                                case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER:
+                                    periods = Convert.ToInt32(Math.Ceiling(days / 90));
+                                    periodMonths = 3;
+                                    break;
+                                case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR:
+                                    periods = Convert.ToInt32(Math.Ceiling(days / 365));
+                                    periodMonths = 12;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            period = Math.Ceiling(months / periodMonths);
+                            sub.total_price = sub.period_price * period;
+                            sub.total_cost = sub.period_cost * period;
                             csDal.Insert(sub);
                             OperLogBLL.OperLogAdd<crm_subscription>(sub, sub.id, user_id, OPER_LOG_OBJ_CATE.SUBSCRIPTION, "新增订阅");
                             InsertSubPeriod(sub.effective_date,sub.expiration_date,sub,user);

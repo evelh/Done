@@ -464,6 +464,8 @@
         %>
         $("#period_type_id").attr("disabled", "disabled");
         EditShow();
+        $("#period_price").trigger("blur");
+        $("#period_cost").trigger("blur");
         <%
     if (subPeriodList != null && subPeriodList.Count > 0)
     {
@@ -668,7 +670,7 @@
                 months = Number(MonthDiff(firstDate, lastDate)) / 12;
             }
 
-            $("#subscription_period").val(months);
+            $("#subscription_period").val(Math.ceil(months));
             $("#firstTime").val(firstDate);
             $("#NextTime").val(firstDate);
             var date = new Date().toLocaleDateString();
@@ -725,7 +727,7 @@
                 months = Number(MonthDiff(firstDate, lastDate)) / 12;
             }
 
-            $("#subscription_period").val(months);
+            $("#subscription_period").val(Math.ceil(months));
             $("#firstTime").val(firstDate);
             $("#NextTime").val(firstDate);
             var date = new Date().toLocaleDateString();
