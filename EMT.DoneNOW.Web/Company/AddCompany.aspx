@@ -161,7 +161,7 @@
                         <tr>
                             <td>
                                 <div class="clear">
-                                    <label>分类类别<span class="red"></span></label>
+                                    <label>客户类型<span class="red"></span></label>
 
                                     <asp:DropDownList ID="classification" runat="server" AutoPostBack="False">
                                     </asp:DropDownList>
@@ -171,7 +171,7 @@
                         <tr>
                             <td>
                                 <div class="clear">
-                                    <label>销售区域<span class="red"></span></label>
+                                    <label>地域名称<span class="red"></span></label>
                                     <asp:DropDownList ID="territory_name" runat="server"></asp:DropDownList>
                                 </div>
                             </td>
@@ -279,7 +279,7 @@
                         <tr>
                             <td>
                                 <div class="clear">
-                                    <label>公司类型<span class="red">*</span></label>
+                                    <label>客户类型<span class="red">*</span></label>
                                     <asp:DropDownList ID="company_type" runat="server"></asp:DropDownList>
                                 </div>
                             </td>
@@ -764,7 +764,7 @@
             debugger;
             var companyName = $("#company_name").val();          //  公司名称--必填项校验
             if (companyName == null || companyName == '') {
-                alert("请输入公司名称");
+                alert("请输入客户名称");
                 // alert(companyName);
                 return false;
             }
@@ -775,7 +775,7 @@
             }
             var company_type = $("#company_type").val();
             if (company_type == "" || company_type == "0") {
-                alert("请选择公司类型！");
+                alert("请选择客户类型！");
                 return false;
             }
 
@@ -890,7 +890,7 @@
         function tranCheck() {
             var companyName = $("#company_name").val();          //  公司名称--必填项校验
             if (companyName == null || companyName == '') {
-                alert("请输入公司名称");
+                alert("请输入客户名称");
                 // alert(companyName);
                 return false;
             }

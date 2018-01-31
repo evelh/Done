@@ -28,7 +28,7 @@ namespace EMT.DoneNOW.DAL
 
         public List<DictionaryEntryDto> GetDictionaryByCode(d_general_table tableInfo)
         {
-            string where = $"SELECT * FROM d_general WHERE general_table_id='{tableInfo.id}'";
+            string where = $"SELECT * FROM d_general WHERE general_table_id='{tableInfo.id}' and delete_time = 0";
             List<d_general> all = FindListBySql(QueryStringDeleteFlag(where));
             List<DictionaryEntryDto> list = new List<DictionaryEntryDto>();
             if (all == null)
@@ -45,13 +45,24 @@ namespace EMT.DoneNOW.DAL
         }
         public d_general GetGeneralById(long id)
         {
-            return FindSignleBySql<d_general>($"select * from d_general where id = {id}");
+            return FindSignleBySql<d_general>($"select * from d_general where id = {id} and delete_time = 0");
         }
-
+        /// <summary>
+        /// 根据字典表ID 获取相应字典项
+        /// </summary>
         public List<d_general> GetGeneralByTableId(long table_id)
         {
-            return FindListBySql<d_general>($"select * from d_general where general_table_id = {table_id}");
+            return FindListBySql<d_general>($"select * from d_general where general_table_id = {table_id} and delete_time = 0");
         }
+
+        /// <summary>
+        /// 根据父ID 获取相应字典项
+        /// </summary>
+        public List<d_general> GetGeneralByParentId(long parent_id)
+        {
+            return FindListBySql<d_general>($"select * from d_general where  parent_id = {parent_id} and delete_time = 0");
+        }
+
 
 
 

@@ -19,6 +19,7 @@ namespace EMT.DoneNOW.Web.Project
         protected sdk_expense thisExpense = null;
         protected sdk_expense_report thisExpRep = null;
         protected crm_account thisAccount = null;
+        protected sdk_task thisTicket = null;   // 从工单进行新增费用操作
         protected bool isShowWorkType = true;
         protected bool isFromReport = false;  // 是否从报表页面进行新增操作
         protected void Page_Load(object sender, EventArgs e)
@@ -77,9 +78,13 @@ namespace EMT.DoneNOW.Web.Project
                         {
                             thisProject = new pro_project_dal().FindNoDeleteById((long)thisExpense.project_id);
                         }
-                        if (thisExpense.task_id != null)
+                        if (thisExpense.project_id != null&&thisExpense.task_id != null)
                         {
                             thisTask = new sdk_task_dal().FindNoDeleteById((long)thisExpense.task_id);
+                        }
+                        if(thisExpense.project_id==null&& thisExpense.task_id != null)
+                        {
+                            thisTicket = new sdk_task_dal().FindNoDeleteById((long)thisExpense.task_id);
                         }
                         thisAccount = new crm_account_dal().FindNoDeleteById(thisExpense.account_id);
                         thisExpRep = new sdk_expense_report_dal().FindNoDeleteById(thisExpense.expense_report_id);
@@ -116,6 +121,16 @@ namespace EMT.DoneNOW.Web.Project
                     {
                         isFromReport = true;
                         thisAccount = new CompanyBLL().GetDefaultAccount();
+                    }
+                }
+
+                var ticket_id = Request.QueryString["ticket_id"];
+                if (!string.IsNullOrEmpty(ticket_id))
+                {
+                    thisTicket = new sdk_task_dal().FindNoDeleteById(long.Parse(ticket_id));
+                    if (thisTicket != null)
+                    {
+                        thisAccount = new CompanyBLL().GetCompany(thisTicket.account_id);
                     }
                 }
 

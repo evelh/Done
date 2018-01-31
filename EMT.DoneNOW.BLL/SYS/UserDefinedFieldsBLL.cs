@@ -320,6 +320,7 @@ namespace EMT.DoneNOW.BLL
                     table = "pro_project_ext";
                     break;
                 case DicEnum.UDF_CATE.TASK:
+                case DicEnum.UDF_CATE.TICKETS:
                     table = "sdk_task_ext";
                     break;
                 // TODO: 其他类别

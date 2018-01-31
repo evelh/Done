@@ -122,5 +122,22 @@ namespace EMT.DoneNOW.DAL
                 return "";
             }
         }
+
+        // 
+        /// <summary>
+        /// 获取该客户下的所有工单
+        /// </summary>
+        public List<sdk_task> GetTicketByAccount(long account_id,int type=(int)DTO.DicEnum.TASK_TYPE.SERVICE_DESK_TICKET)
+        {
+            return FindListBySql<sdk_task>($"SELECT * from sdk_task where delete_time=0 and account_id = {account_id} and type_id = {type}");
+        }
+        /// <summary>
+        /// 获取该联系人下的所有工单
+        /// </summary>
+        public List<sdk_task> GetTicketByContact(long contact_id, int type = (int)DTO.DicEnum.TASK_TYPE.SERVICE_DESK_TICKET)
+        {
+            return FindListBySql<sdk_task>($"SELECT * from sdk_task where delete_time=0 and contact_id = {contact_id} and type_id = {type}");
+        }
+        
     }
 }

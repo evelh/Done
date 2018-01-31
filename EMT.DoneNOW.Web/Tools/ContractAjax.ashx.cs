@@ -197,6 +197,12 @@ namespace EMT.DoneNOW.Web
                     case "SaveExclu":   // 保存合同例外因素信息
                         SaveExclu(context);
                         break;
+                    case "CheckContractDate":
+                        CheckContractDate(context);
+                        break;
+                    case "GetContractService":
+                        GetContractService(context);
+                        break;
                     default:
                         break;
                 }
@@ -609,7 +615,11 @@ namespace EMT.DoneNOW.Web
 
             context.Response.Write(result);
         }
-
+        /// <summary>
+        /// 发票处理
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="param"></param>
         private void ProcessAll(HttpContext context, InvoiceDealDto param)
         {
 
@@ -790,6 +800,62 @@ namespace EMT.DoneNOW.Web
                     var result = new ContractBLL().ContractExcManage(thisCon.id, excContractId, roleIds, workTypeIds,LoginUserId);
 
                     context.Response.Write(result);
+                }
+            }
+        }
+        /// <summary>
+        /// 检查合同的有效期
+        /// </summary>
+        private void CheckContractDate(HttpContext context)
+        {
+            bool isExp = false;   // 是否过期
+            var contractId = context.Request.QueryString["contract_id"];
+            if (!string.IsNullOrEmpty(contractId))
+            {
+                var thisContract = new ctt_contract_dal().FindNoDeleteById(long.Parse(contractId));
+                if (thisContract != null)
+                {
+                    if (thisContract.start_date > DateTime.Now || thisContract.end_date < DateTime.Now)
+                    {
+                        isExp = true;
+                    }
+                }
+            }
+            context.Response.Write(isExp);
+            // new EMT.Tools.Serialize().SerializeJson()
+        }
+        /// <summary>
+        /// 获取到合同服务并返回
+        /// </summary>
+        private void GetContractService(HttpContext context)
+        {
+            var contractId = context.Request.QueryString["contract_id"];
+            if (!string.IsNullOrEmpty(contractId))
+            {
+                var serList = new ctt_contract_service_dal().GetConSerList(long.Parse(contractId));
+                if (serList!=null&& serList.Count > 0)
+                {
+                    var oppBLL = new OpportunityBLL();
+                    StringBuilder resDepString = new StringBuilder();
+                    var serviceList = serList.Where(_ => _.object_type == 1).ToList();
+                    var serBagList = serList.Where(_ => _.object_type == 2).ToList();
+                    if(serviceList!=null&& serviceList.Count > 0)
+                    {
+                        resDepString.Append("<option>--服务---</option>");
+                        serviceList.ForEach(_ => {
+                            var name = oppBLL.ReturnServiceName(_.object_id);
+                            resDepString.Append($"<option value='{_.object_id}'>{name}</option>");
+                        });
+                    }
+                    if (serBagList != null && serBagList.Count > 0)
+                    {
+                        resDepString.Append("<option>--服务包---</option>");
+                        serBagList.ForEach(_ => {
+                            var name = oppBLL.ReturnServiceName(_.object_id);
+                            resDepString.Append($"<option value='{_.object_id}'>{name}</option>");
+                        });
+                    }
+                    context.Response.Write(resDepString.ToString());
                 }
             }
         }

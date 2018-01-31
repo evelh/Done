@@ -935,6 +935,7 @@
                                                 %>
                                             <input id="owner_resource_id" type="text" value="<%=oweRes==null?"":oweRes.name %>" autocomplete="off" style="width: 250px;" />
                                             <input type="hidden" name="owner_resource_id" id="owner_resource_idHidden" value="<%=oweRes==null?"":oweRes.id.ToString() %>" />
+                                            <input id="role_id" name="role_id" type="hidden"/>
                                             <a class="NormalState Button ButtonIcon IconOnly DataSelector" id="PrimaryResource_Button" tabindex="0" onclick="ChoosePriRes()"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a>
                                             <div class="ContextOverlayContainer" id="PrimaryResource_ContextOverlay">
                                                 <div class="AutoComplete ContextOverlay">
@@ -2685,17 +2686,21 @@
                 type: "GET",
                 async: false,
                 url: "../Tools/ResourceAjax.ashx?act=GetResByDepRes&resDepId=" + owner_resource_id,
+                dataType:"json",
                 success: function (data) {
                     if (data != "") {
-                        $("#owner_resource_idHidden").val(data);
+                        $("#owner_resource_idHidden").val(data.resId);
+                        $("#role_id").val(data.roleId);
                     } else {
                         $("#owner_resource_idHidden").val("");
                         $("#owner_resource_id").val("");
+                        $("#role_id").val("");
                     }
                 },
             });
         } else {
             $("#owner_resource_id").val("");
+            $("#role_id").val("");
         }
     }
 

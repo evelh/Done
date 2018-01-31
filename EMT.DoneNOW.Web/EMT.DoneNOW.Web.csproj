@@ -182,6 +182,7 @@
     <Content Include="Content\style.css" />
     <Content Include="Content\sysset_user.css" />
     <Content Include="Content\Ticket.css" />
+    <Content Include="Images\TicketAlertIcons.png" />
     <Content Include="Content\WorkType.css" />
     <Content Include="Contract\AddCharges.aspx" />
     <Content Include="Contract\AddContractRate.aspx" />
@@ -215,6 +216,7 @@
     <Content Include="Images\background.jpg" />
     <Content Include="Images\calendar.png" />
     <Content Include="Images\cancel1.png" />
+    <Content Include="Images\CheckListIcons.png" />
     <Content Include="Images\coin_gold.png" />
     <Content Include="Images\ContentAttachment.png" />
     <Content Include="Images\contract.png" />
@@ -235,6 +237,7 @@
     <Content Include="Images\note.png" />
     <Content Include="Images\open.png" />
     <Content Include="Images\phase.png" />
+    <Content Include="Images\play.png" />
     <Content Include="Images\project.png" />
     <Content Include="Images\Recentindex.png" />
     <Content Include="Images\right2.png" />
@@ -243,7 +246,9 @@
     <Content Include="Images\ServiceSelector.png" />
     <Content Include="Images\Loading.gif" />
     <Content Include="Images\shenglian.gif" />
+    <Content Include="Images\smallIcon.png" />
     <Content Include="Images\task.png" />
+    <Content Include="Images\TicketNoteIcon.png" />
     <Content Include="Images\time.png" />
     <Content Include="Images\todayBarIndicator.png" />
     <Content Include="Images\url.png" />
@@ -433,6 +438,11 @@
     <Content Include="Scripts\Search\ShipedList.js" />
     <Content Include="Scripts\Search\ShippingList.js" />
     <Content Include="Scripts\Search\purchase_order_history.js" />
+    <Content Include="ServiceDesk\TicketActivity.aspx" />
+    <Content Include="ServiceDesk\TicketHistory.aspx" />
+    <Content Include="ServiceDesk\TicketLabour.aspx" />
+    <Content Include="ServiceDesk\TicketNote.aspx" />
+    <Content Include="ServiceDesk\TicketView.aspx" />
     <Content Include="SysSetting\AddTimeOffPolicy.aspx" />
     <Content Include="ServiceDesk\TicketManage.aspx" />
     <Content Include="TimeSheet\ExpenseReportDetail.aspx" />
@@ -1844,13 +1854,48 @@
     <Compile Include="Refresh.aspx.designer.cs">
       <DependentUpon>Refresh.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ServiceDesk\TicketActivity.aspx.cs">
+      <DependentUpon>TicketActivity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\TicketActivity.aspx.designer.cs">
+      <DependentUpon>TicketActivity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\TicketHistory.aspx.cs">
+      <DependentUpon>TicketHistory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\TicketHistory.aspx.designer.cs">
+      <DependentUpon>TicketHistory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\TicketLabour.aspx.cs">
+      <DependentUpon>TicketLabour.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\TicketLabour.aspx.designer.cs">
+      <DependentUpon>TicketLabour.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\TicketNote.aspx.cs">
+      <DependentUpon>TicketNote.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\TicketNote.aspx.designer.cs">
+      <DependentUpon>TicketNote.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\TicketView.aspx.cs">
+      <DependentUpon>TicketView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\TicketView.aspx.designer.cs">
+      <DependentUpon>TicketView.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SysSetting\AddTimeOffPolicy.aspx.cs">
       <DependentUpon>AddTimeOffPolicy.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="SysSetting\AddTimeOffPolicy.aspx.designer.cs">
       <DependentUpon>AddTimeOffPolicy.aspx</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="ServiceDesk\TicketManage.aspx.cs">
       <DependentUpon>TicketManage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2321,6 +2366,9 @@
     <Compile Include="Tools\TerritoryAjax.ashx.cs">
       <DependentUpon>TerritoryAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\TicketAjax.ashx.cs">
+      <DependentUpon>TicketAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2368,6 +2416,7 @@
     <Content Include="Tools\BaseAjax.ashx" />
     <Content Include="Tools\InventoryLocationAjax.ashx" />
     <Content Include="Tools\ExpenseAjax.ashx" />
+    <Content Include="Tools\TicketAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
