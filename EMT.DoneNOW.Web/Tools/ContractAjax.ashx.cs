@@ -701,8 +701,9 @@ namespace EMT.DoneNOW.Web
         private void CalcServiceAdjustPercent(HttpContext context)
         {
             long contractId = long.Parse(context.Request.QueryString["contractId"]);
+            long serviceId = long.Parse(context.Request.QueryString["serviceId"]);
             DateTime date = DateTime.Parse(context.Request.QueryString["date"]);
-            var result = new Tools.Serialize().SerializeJson(new ContractServiceBLL().CalcServiceAdjustDatePercent(contractId, date));
+            var result = new Tools.Serialize().SerializeJson(new ContractServiceBLL().CalcServiceAdjustDatePercent(contractId, serviceId, date));
             context.Response.Write(result);
         }
 

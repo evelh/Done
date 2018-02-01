@@ -593,14 +593,18 @@
               return;
           }
           <%if (contract.contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE) {
-          if (!string.IsNullOrEmpty(endTimeCheck)) { %>
-          if ($("#endDate").val() != "" && compareTime('<%=contract.contract.end_date.ToString("yyyy-MM-dd") %>', $("#endDate").val())) {
+          var endTime = new EMT.DoneNOW.BLL.ContractServiceBLL().GetContractMaxApproveTime(contract.contract.id);
+          if (endTime != null) {
+           %>
+          if ($("#endDate").val() != "" && compareTime('<%=((DateTime)endTime).ToString("yyyy-MM-dd") %>', $("#endDate").val())) {
               alert("结束时间不能早于已审批并提交的服务结束时间");
               return;
           }
       <%}
       }%>
-          <%if (contract.contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE) { %>
+          <%if (contract.contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS
+          ||contract.contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET
+          ||contract.contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER) { %>
           if (compareTime('<%=contract.contract.end_date.ToString("yyyy-MM-dd") %>', $("#endDate").val())) {
               alert("结束时间不能向前修改");
               return;

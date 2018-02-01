@@ -141,7 +141,7 @@
         $("#total_price").val(data.unit_price * $("#quantity").val());
         $("#unit_cost").val(data.unit_cost);
         $("#total_cost").val(data.unit_cost * $("#quantity").val());
-        requestData("../Tools/ContractAjax.ashx?act=CalcServiceAdjustPercent&contractId=" + $("#contractId").val() + "&date=" + $("#effDate").val(), null, function (data) {
+        requestData("../Tools/ContractAjax.ashx?act=CalcServiceAdjustPercent&contractId=" + $("#contractId").val() + "&date=" + $("#effDate").val() + "&serviceId=" + $("#ServiceIdHidden").val(), null, function (data) {
           percent = data;
           calcAdjust();
         })
@@ -206,13 +206,16 @@
       if ($("#effDate").val() == "") {
         return;
       }
+      if ($("#ServiceIdHidden").val() == "") {
+        return;
+      }
       if (compareTime($("#conBgDate").val(), $("#effDate").val())) {
         return;
       }
       if (compareTime($("#effDate").val(), $("#conEndDate").val())) {
         return;
       }
-      requestData("../Tools/ContractAjax.ashx?act=CalcServiceAdjustPercent&contractId=" + $("#contractId").val() + "&date=" + $("#effDate").val(), null, function (data) {
+      requestData("../Tools/ContractAjax.ashx?act=CalcServiceAdjustPercent&contractId=" + $("#contractId").val() + "&date=" + $("#effDate").val() + "&serviceId=" + $("#ServiceIdHidden").val(), null, function (data) {
         percent = data;
         calcAdjust();
       })

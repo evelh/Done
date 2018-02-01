@@ -157,6 +157,7 @@ $("#d0").on("click",function(){
     window.close();
 });
 $("#c0").on("click", function () {
+    LayerLoad();
     $("#form1").submit();
 });
 $(".ImgLink").on("mousemove",function(){
