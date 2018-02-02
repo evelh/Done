@@ -151,7 +151,7 @@
                                             <td class="FieldLabels">
                                                 合同周期类型
                                                 <div>
-                                                    <select name="period_type" class="step2LeftSelectWidth" style="width:134px;">
+                                                    <select name="period_type" id="period_type" onchange="ChangePeriod()" class="step2LeftSelectWidth" style="width:134px;">
                                                         <%foreach (var period in periodType) {
                                                                 %>
                                                         <option value="<%=period.val %>" <%if (period.val.Equals(((int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH).ToString())){%> selected="selected"<% } %>><%=period.show %></option>
@@ -530,7 +530,7 @@
                         <tr height="10px;"></tr>
                         <tr width="100%">
                             <td width="90%;" colspan="8" align="right">
-                                <span class="FieldLabels">平均月度计费价格</span>
+                                <span class="FieldLabels" id="servicePeriodType">平均月度计费价格</span>
                             </td>
                             <td class="FieldLabels" width="10%" style="padding-right:15px;">
                                 <div style="width:130px;height: 24px; padding:0 0 0 10px;">

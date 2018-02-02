@@ -179,7 +179,7 @@
 
     $("#SaveAndCloneButton").click(function () {
       var num = $("#num2").val();
-      if (parseInt(num) <= 0) {
+      if (parseInt(num) < 0) {
         alert("请输入单位数");
         return;
       }

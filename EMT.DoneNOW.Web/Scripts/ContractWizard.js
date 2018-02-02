@@ -253,6 +253,23 @@ window.onload=function () {
     }
 }
 
+var periodMonth = 1;
+function ChangePeriod() {
+    if ($("#period_type").val() == 611) {
+        periodMonth = 3;
+        $("#servicePeriodType").text("平均季度计费价格");
+    } else if ($("#period_type").val() == 612) {
+        periodMonth = 6;
+        $("#servicePeriodType").text("平均半年计费价格");
+    } else if ($("#period_type").val() == 613) {
+        periodMonth = 12;
+        $("#servicePeriodType").text("平均年度计费价格");
+    } else {
+        periodMonth = 1;
+        $("#servicePeriodType").text("平均月度计费价格");
+    }
+    CalcService();
+}
 function AddService() {
     requestData("../Tools/ContractAjax.ashx?act=AddService&id=" + $("#ServiceNameHidden").val(), "", function (data) {
         var ids = $("#AddServiceIds").val().split(",");
@@ -271,7 +288,6 @@ function AddService() {
         CalcService();
     })
 }
-
 function AddServiceBundle() {
     requestData("../Tools/ContractAjax.ashx?act=AddServiceBundle&id=" + $("#ServiceNameHidden").val(), "", function (data) {
         var ids = $("#AddSerBunIds").val().split(",");
@@ -290,7 +306,6 @@ function AddServiceBundle() {
         CalcService();
     })
 }
-
 function CalcService() {
     var ids = $("#AddServiceIds").val().split(",");
     var total = 0;
@@ -298,8 +313,10 @@ function CalcService() {
         for (i = 0; i < ids.length; i++) {
             var price = $("#price" + ids[i]).val() * $("#num" + ids[i]).val();
             price = Math.floor(price * 10000) / 10000;
-            total += price;
             $("#pricenum" + ids[i]).val(price);
+            price = price * periodMonth / parseInt($("#period" + ids[i]).val());
+            price = Math.floor(price * 10000) / 10000;
+            total += price;
         }
     }
 
@@ -308,8 +325,10 @@ function CalcService() {
         for (i = 0; i < ids.length; i++) {
             var price = $("#price" + ids[i]).val() * $("#num" + ids[i]).val();
             price = Math.floor(price * 10000) / 10000;
-            total += price;
             $("#pricenum" + ids[i]).val(price);
+            price = price * periodMonth / parseInt($("#period" + ids[i]).val());
+            price = Math.floor(price * 10000) / 10000;
+            total += price;
         }
     }
     $("#ServicePrice").val(total);

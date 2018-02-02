@@ -395,24 +395,34 @@ namespace EMT.DoneNOW.BLL
                     {
                         if (ser.effective_date.Date.Equals(adj.effective_date.Date))    // 调整的生效时间等于开始时间
                         {
-                            var adjOld = adjDal.FindById(adj.id);
-                            var periodEndDate = GetNextPeriodStart(start, maxPeriod).AddDays(-1);       // 完整周期的周期结束日期
-                            adj.quantity_change = adj.quantity_change + (ser.quantity - service.quantity);
-                            if (ser.unit_cost == null || ser.unit_cost == 0)
-                                adj.prorated_cost_change = 0;
+                            if (adj.quantity_change + (ser.quantity - service.quantity) == 0)   // 调整后单位数为0，删除
+                            {
+                                adj.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                                adj.delete_user_id = userId;
+                                adjDal.Update(adj);
+                                OperLogBLL.OperLogDelete<ctt_contract_service_adjust>(adj, adj.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_ADJUST, "合同服务调整删除");
+                            }
                             else
-                                adj.prorated_cost_change = (decimal)ser.unit_cost * GetPeriodDays(service.effective_date, end) / GetPeriodDays(start, periodEndDate) * adj.quantity_change;
-                            if (ser.unit_price == null || ser.unit_price == 0)
-                                adj.prorated_price_change = 0;
-                            else
-                                adj.prorated_price_change = (decimal)ser.unit_price * GetPeriodDays(service.effective_date, end) / GetPeriodDays(start, periodEndDate) * adj.quantity_change;
-                            adj.prorated_cost_change = decimal.Round(adj.prorated_cost_change, 4);
-                            adj.prorated_price_change = decimal.Round(adj.prorated_price_change, 4);
-                            adj.adjust_prorated_price_change = adj.prorated_price_change;
-                            adj.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
-                            adj.update_user_id = userId;
-                            adjDal.Update(adj);
-                            OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_service_adjust>(adjOld, adj), adj.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_ADJUST, "合同服务调整修改");
+                            {
+                                var adjOld = adjDal.FindById(adj.id);
+                                var periodEndDate = GetNextPeriodStart(start, maxPeriod).AddDays(-1);       // 完整周期的周期结束日期
+                                adj.quantity_change = adj.quantity_change + (ser.quantity - service.quantity);
+                                if (ser.unit_cost == null || ser.unit_cost == 0)
+                                    adj.prorated_cost_change = 0;
+                                else
+                                    adj.prorated_cost_change = (decimal)ser.unit_cost * GetPeriodDays(service.effective_date, end) / GetPeriodDays(start, periodEndDate) * adj.quantity_change;
+                                if (ser.unit_price == null || ser.unit_price == 0)
+                                    adj.prorated_price_change = 0;
+                                else
+                                    adj.prorated_price_change = (decimal)ser.unit_price * GetPeriodDays(service.effective_date, end) / GetPeriodDays(start, periodEndDate) * adj.quantity_change;
+                                adj.prorated_cost_change = decimal.Round(adj.prorated_cost_change, 4);
+                                adj.prorated_price_change = decimal.Round(adj.prorated_price_change, 4);
+                                adj.adjust_prorated_price_change = adj.prorated_price_change;
+                                adj.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                                adj.update_user_id = userId;
+                                adjDal.Update(adj);
+                                OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_service_adjust>(adjOld, adj), adj.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_ADJUST, "合同服务调整修改");
+                            }
                         }
                         else if (ser.effective_date > adj.effective_date)   // 调整的生效时间不等于开始时间
                         {
@@ -547,25 +557,36 @@ namespace EMT.DoneNOW.BLL
                     if (periodList[i].approve_and_post_user_id != null)
                         continue;
 
-                    var perdOld = prdDal.FindById(periodList[i].id);
-                    var perd = periodList[i];
-                    var periodEndDate = GetNextPeriodStart(periodList[i].period_begin_date, maxPeriod).AddDays(-1);       // 完整周期的周期结束日期
-                    decimal prdRate = 1;
-                    if (periodEndDate != perd.period_end_date)  // 该周期不是完整周期
+                    if (ser.quantity == 0)  // 调整后单位数为0，删除周期
                     {
-                        prdRate = ((decimal)GetPeriodDays(perd.period_begin_date, perd.period_end_date)) / GetPeriodDays(perd.period_begin_date, periodEndDate);
-                    }
-                    perd.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
-                    perd.update_user_id = userId;
-                    perd.period_price = ser.unit_price * ser.quantity * prdRate;
-                    perd.period_cost = ser.unit_cost * ser.quantity * prdRate;
-                    perd.period_adjusted_price = perd.period_price;
-                    perd.quantity = ser.quantity;
-                    var desc = OperLogBLL.CompareValue<ctt_contract_service_period>(perdOld, perd);
-                    if (!string.IsNullOrEmpty(desc))
-                    {
+                        var perd = periodList[i];
+                        perd.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                        perd.delete_user_id = userId;
                         prdDal.Update(perd);
-                        OperLogBLL.OperLogUpdate(desc, perd.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_PERIOD, "合同服务调整修改服务周期");
+                        OperLogBLL.OperLogDelete<ctt_contract_service_period>(perd, perd.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_PERIOD, "合同服务调整删除服务周期");
+                    }
+                    else
+                    {
+                        var perdOld = prdDal.FindById(periodList[i].id);
+                        var perd = periodList[i];
+                        var periodEndDate = GetNextPeriodStart(periodList[i].period_begin_date, maxPeriod).AddDays(-1);       // 完整周期的周期结束日期
+                        decimal prdRate = 1;
+                        if (periodEndDate != perd.period_end_date)  // 该周期不是完整周期
+                        {
+                            prdRate = ((decimal)GetPeriodDays(perd.period_begin_date, perd.period_end_date)) / GetPeriodDays(perd.period_begin_date, periodEndDate);
+                        }
+                        perd.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                        perd.update_user_id = userId;
+                        perd.period_price = ser.unit_price * ser.quantity * prdRate;
+                        perd.period_cost = ser.unit_cost * ser.quantity * prdRate;
+                        perd.period_adjusted_price = perd.period_price;
+                        perd.quantity = ser.quantity;
+                        var desc = OperLogBLL.CompareValue<ctt_contract_service_period>(perdOld, perd);
+                        if (!string.IsNullOrEmpty(desc))
+                        {
+                            prdDal.Update(perd);
+                            OperLogBLL.OperLogUpdate(desc, perd.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_PERIOD, "合同服务调整修改服务周期");
+                        }
                     }
                 }
             }
@@ -654,24 +675,34 @@ namespace EMT.DoneNOW.BLL
                     {
                         if (ser.effective_date.Date.Equals(adj.effective_date.Date))    // 调整的生效时间等于开始时间
                         {
-                            var adjOld = adjDal.FindById(adj.id);
-                            var periodEndDate = GetNextPeriodStart(start, maxPeriod).AddDays(-1);       // 完整周期的周期结束日期
-                            adj.quantity_change = adj.quantity_change + (ser.quantity - service.quantity);
-                            if (ser.unit_cost == null || ser.unit_cost == 0)
-                                adj.prorated_cost_change = 0;
+                            if (adj.quantity_change + (ser.quantity - service.quantity) == 0)   // 调整后单位数为0，删除
+                            {
+                                adj.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                                adj.delete_user_id = userId;
+                                adjDal.Update(adj);
+                                OperLogBLL.OperLogDelete<ctt_contract_service_adjust>(adj, adj.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_ADJUST, "合同服务调整删除");
+                            }
                             else
-                                adj.prorated_cost_change = (decimal)ser.unit_cost * GetPeriodDays(service.effective_date, end) / GetPeriodDays(start, periodEndDate) * adj.quantity_change;
-                            if (ser.unit_price == null || ser.unit_price == 0)
-                                adj.prorated_price_change = 0;
-                            else
-                                adj.prorated_price_change = (decimal)ser.unit_price * GetPeriodDays(service.effective_date, end) / GetPeriodDays(start, periodEndDate) * adj.quantity_change;
-                            adj.prorated_cost_change = decimal.Round(adj.prorated_cost_change, 4);
-                            adj.prorated_price_change = decimal.Round(adj.prorated_price_change, 4);
-                            adj.adjust_prorated_price_change = adj.prorated_price_change;
-                            adj.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
-                            adj.update_user_id = userId;
-                            adjDal.Update(adj);
-                            OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_service_adjust>(adjOld, adj), adj.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_ADJUST, "合同服务调整修改");
+                            {
+                                var adjOld = adjDal.FindById(adj.id);
+                                var periodEndDate = GetNextPeriodStart(start, maxPeriod).AddDays(-1);       // 完整周期的周期结束日期
+                                adj.quantity_change = adj.quantity_change + (ser.quantity - service.quantity);
+                                if (ser.unit_cost == null || ser.unit_cost == 0)
+                                    adj.prorated_cost_change = 0;
+                                else
+                                    adj.prorated_cost_change = (decimal)ser.unit_cost * GetPeriodDays(service.effective_date, end) / GetPeriodDays(start, periodEndDate) * adj.quantity_change;
+                                if (ser.unit_price == null || ser.unit_price == 0)
+                                    adj.prorated_price_change = 0;
+                                else
+                                    adj.prorated_price_change = (decimal)ser.unit_price * GetPeriodDays(service.effective_date, end) / GetPeriodDays(start, periodEndDate) * adj.quantity_change;
+                                adj.prorated_cost_change = decimal.Round(adj.prorated_cost_change, 4);
+                                adj.prorated_price_change = decimal.Round(adj.prorated_price_change, 4);
+                                adj.adjust_prorated_price_change = adj.prorated_price_change;
+                                adj.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                                adj.update_user_id = userId;
+                                adjDal.Update(adj);
+                                OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<ctt_contract_service_adjust>(adjOld, adj), adj.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_ADJUST, "合同服务调整修改");
+                            }  
                         }
                         else if (ser.effective_date > adj.effective_date)   // 调整的生效时间不等于开始时间
                         {
@@ -806,25 +837,36 @@ namespace EMT.DoneNOW.BLL
                     if (periodList[i].approve_and_post_user_id != null)
                         continue;
 
-                    var perdOld = prdDal.FindById(periodList[i].id);
-                    var perd = periodList[i];
-                    var periodEndDate = GetNextPeriodStart(periodList[i].period_begin_date, maxPeriod).AddDays(-1);       // 完整周期的周期结束日期
-                    decimal prdRate = 1;
-                    if (periodEndDate != perd.period_end_date)  // 该周期不是完整周期
+                    if (ser.quantity == 0)  // 调整后单位数为0，删除周期
                     {
-                        prdRate = ((decimal)GetPeriodDays(perd.period_begin_date, perd.period_end_date)) / GetPeriodDays(perd.period_begin_date, periodEndDate);
-                    }
-                    perd.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
-                    perd.update_user_id = userId;
-                    perd.period_price = ser.unit_price * ser.quantity * prdRate;
-                    perd.period_cost = ser.unit_cost * ser.quantity * prdRate;
-                    perd.period_adjusted_price = perd.period_price;
-                    perd.quantity = ser.quantity;
-                    var desc = OperLogBLL.CompareValue<ctt_contract_service_period>(perdOld, perd);
-                    if (!string.IsNullOrEmpty(desc))
-                    {
+                        var perd = periodList[i];
+                        perd.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                        perd.delete_user_id = userId;
                         prdDal.Update(perd);
-                        OperLogBLL.OperLogUpdate(desc, perd.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_PERIOD, "合同服务调整修改服务周期");
+                        OperLogBLL.OperLogDelete<ctt_contract_service_period>(perd, perd.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_PERIOD, "合同服务调整删除服务周期");
+                    }
+                    else
+                    {
+                        var perdOld = prdDal.FindById(periodList[i].id);
+                        var perd = periodList[i];
+                        var periodEndDate = GetNextPeriodStart(periodList[i].period_begin_date, maxPeriod).AddDays(-1);       // 完整周期的周期结束日期
+                        decimal prdRate = 1;
+                        if (periodEndDate != perd.period_end_date)  // 该周期不是完整周期
+                        {
+                            prdRate = ((decimal)GetPeriodDays(perd.period_begin_date, perd.period_end_date)) / GetPeriodDays(perd.period_begin_date, periodEndDate);
+                        }
+                        perd.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                        perd.update_user_id = userId;
+                        perd.period_price = ser.unit_price * ser.quantity * prdRate;
+                        perd.period_cost = ser.unit_cost * ser.quantity * prdRate;
+                        perd.period_adjusted_price = perd.period_price;
+                        perd.quantity = ser.quantity;
+                        var desc = OperLogBLL.CompareValue<ctt_contract_service_period>(perdOld, perd);
+                        if (!string.IsNullOrEmpty(desc))
+                        {
+                            prdDal.Update(perd);
+                            OperLogBLL.OperLogUpdate(desc, perd.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_PERIOD, "合同服务调整修改服务周期");
+                        }
                     }
                 }
             }
