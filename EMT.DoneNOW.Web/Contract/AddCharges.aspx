@@ -570,6 +570,32 @@
             color: #376597;
             cursor: pointer;
         }
+         .AddItemToTicketTopSection {
+            color: #4F4F4F;
+            padding: 10px;
+            background-repeat: no-repeat;
+            background-position: left;
+            padding-left: 40px;
+            border: none;
+        }
+
+        .AddNoteTitleImage {
+            background-image: url(../Images/TicketNoteIcon.png);
+        }
+
+        .Popup_TitleCell {
+            height: 30px;
+        }
+
+        .AddItemToTicketTopSection td[class="Popup_TitleCell"] span {
+            font-size: 16px;
+            font-weight: Bold;
+        }
+
+        .Popup_Title {
+            font-size: 19px;
+            color: #4F4F4F;
+        }
     </style>
 </head>
 <body>
@@ -607,7 +633,21 @@
         <!--内容-->
         <div class="DivScrollingContainer General">
             <div class="DivSectionWithHeader">
-                <div class="Content">
+                <%if (thisTicket != null){ %>
+                 <div class="DivSection AddItemToTicketTopSection AddNoteTitleImage" style="margin-left: 10px; float: left;">
+                    <table cellspacing="0" cellpadding="0" border="0" style="height: 44px; border-collapse: collapse;">
+                        <tbody>
+                            <tr>
+                                <td class="Popup_TitleCell" style="text-align: left;"><span class="Popup_Title" style="width: 750px;margin-left: 36px;"><%=thisTicket == null ? "" : thisTicket.no + " - " + thisTicket.title %></span></td>
+                            </tr>
+                            <tr>
+                                <td class="Popup_SubtitleCell" style="text-align: left;"><span title="<%=thisAccount == null ? "" : thisAccount.name %>" class="Popup_Subtitle" style="width: 765px;margin-left: 36px;"><%=thisAccount == null ? "" : thisAccount.name %></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <%} %>
+                <div class="Content" style="clear:both;">
                     <table style="width: 825px; border-collapse: collapse;" cellspacing="0" cellpadding="0" border="0">
                         <tbody>
                             <tr>

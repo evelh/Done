@@ -74,6 +74,33 @@
             float: left;
             margin-top: 5px;
         }
+
+        .AddItemToTicketTopSection {
+            color: #4F4F4F;
+            padding: 10px;
+            background-repeat: no-repeat;
+            background-position: left;
+            padding-left: 40px;
+            border: none;
+        }
+
+        .AddNoteTitleImage {
+            background-image: url(../Images/TicketNoteIcon.png);
+        }
+
+        .Popup_TitleCell {
+            height: 30px;
+        }
+
+        .AddItemToTicketTopSection td[class="Popup_TitleCell"] span {
+            font-size: 16px;
+            font-weight: Bold;
+        }
+
+        .Popup_Title {
+            font-size: 19px;
+            color: #4F4F4F;
+        }
     </style>
 </head>
 <body>
@@ -85,6 +112,17 @@
                     <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                     <asp:Button ID="save_close" runat="server" Text="保存并关闭" OnClick="save_close_Click" />
                 </li>
+                <%if (isTicket)
+                    { %>
+                <li id="SaveNew">
+                    <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
+                    <asp:Button ID="save_new" runat="server" Text="保存并新增" OnClick="save_new_Click"  />
+                </li>
+                <li id="SaveModify">
+                    <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
+                    <asp:Button ID="save_modify" runat="server" Text="保存并修改" OnClick="save_modify_Click" />
+                </li>
+                <%} %>
                 <li id="Close">
                     <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                     <input type="button" id="CloseButton" value="关闭" />
@@ -100,12 +138,40 @@
         </div>
         <div style="left: 0; overflow-x: auto; overflow-y: auto; position: fixed; right: 0; bottom: 0; top: 132px;">
             <div class="content clear">
-                <div class="information clear">
+                <%if (isTicket)
+                    { %>
+                <div class="DivSection AddItemToTicketTopSection AddNoteTitleImage" style="margin-left: 10px; float: left;">
+                    <table cellspacing="0" cellpadding="0" border="0" style="height: 44px; border-collapse: collapse;">
+                        <tbody>
+                            <tr>
+                                <td class="Popup_TitleCell" style="text-align: left;"><span title="T20170812.0001 - ticket title01" class="Popup_Title" style="width: 750px;"><%=thisTicket==null?"":thisTicket.no+" - "+thisTicket.title %></span></td>
+                            </tr>
+                            <tr>
+                                <td class="Popup_SubtitleCell" style="text-align: left;"><span title="<%=thisAccount==null?"":thisAccount.name %>" class="Popup_Subtitle" style="width: 765px;"><%=thisAccount==null?"":thisAccount.name %></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <%} %>
+                <div class="information clear" style="clear: both;">
                     <p class="informationTitle"><i></i>常规信息</p>
                     <div>
                         <table border="none" cellspacing="" cellpadding="" style="width: 690px;">
-                            <%if (!isProject&&!isContract)
-                                    { %>
+                            <%if (isAdd&&isTicket&&thisTicket!=null&&thisTicket.ticket_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.PROBLEM&&isHasIncident)
+                                { %>
+                            <tr>
+                                <td colspan="2">
+                                    <div>
+                                        <span><span class="txtBlack8Class">
+                                            <input  type="checkbox" name="CkAddAll" id="CkAddAll" style="vertical-align: middle;" />
+                                            <label style="vertical-align: middle;">附件相关备注，状态，附件 到相关事故</label></span></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <%} %>
+
+                            <%if (!isProject && !isContract && !isTicket)
+                                { %>
                             <tr>
                                 <td>
                                     <div class="clear">
@@ -138,7 +204,7 @@
                             </tr>
                             <%if (isProject)
                                 { %>
-                                <tr>
+                            <tr>
                                 <td>
                                     <div class="clear" style="padding-left: 72px;">
                                         <label>是否是公告<span class="red">*</span><asp:CheckBox ID="isAnnounce" runat="server" /></label>
@@ -147,10 +213,10 @@
                                 <td></td>
                             </tr>
                             <%}
-                            else
-                            { %>
+                                else
+                                { %>
 
-                            <%if (!isPhase&&!isContract)
+                            <%if (!isPhase && !isContract)
                                 { %>
                             <tr>
                                 <td>
@@ -161,7 +227,7 @@
                                 <td></td>
                             </tr>
                             <%} %>
-                           <%} %>
+                            <%} %>
                             <tr>
                                 <td colspan="2">
                                     <label>标题<span class="red">*</span></label>
@@ -174,6 +240,21 @@
                                     <textarea name="description" style="margin-left: 135px; width: 520px;" id="description"><%=thisNote!=null?thisNote.description:"" %></textarea>
                                 </td>
                             </tr>
+                            <% if (isTicket)
+                                { %>
+                             <tr>
+                            <td colspan="2">
+                                <input type="checkbox" id="AppResol" name="AppResol" style="margin-left: 109px;" />
+                                <label style="margin-left: -9px; width: 105px;">追加到解决方案</label>
+
+                                <% if (isAdd && isTicket && thisTicket != null && isHasIncident)
+                                    {%>
+                                <input type="checkbox" id="AppAllResol" name="AppAllResol" style="margin-left: 109px;" />
+                                <label style="margin-left: -9px; width: 105px;">追加到所有相关事故的解决方案</label>
+                                <%} %>
+                            </td>
+                        </tr>
+                            <%} %>
                         </table>
 
                     </div>
@@ -220,9 +301,25 @@
                                                                                                 <asp:CheckBox ID="Cksys" runat="server" />
                                                                                                 &nbsp;<span style="cursor: default;" class="CkTitle">使用<%=sys_email!=null?sys_email.remark:"" %> 发送</span>
                                                                                             </div>
-
-
-
+                                                                                            <% if (isTicket)
+                                                                                                { %>
+                                                                                            <div class="checkbox" style="padding-bottom: 0px;">
+                                                                                                <asp:CheckBox ID="CkAccTeam" runat="server" />
+                                                                                                &nbsp;<span style="cursor: default;" class="CkTitle">客户团队</span>
+                                                                                            </div>
+                                                                                            <div class="checkbox" style="padding-bottom: 0px;">
+                                                                                                <asp:CheckBox ID="CkPriRes" runat="server" />
+                                                                                                &nbsp;<span style="cursor: default;" class="CkTitle">主负责人</span>
+                                                                                            </div>
+                                                                                            <div class="checkbox" style="padding-bottom: 0px;">
+                                                                                                <asp:CheckBox ID="CkOtherRes" runat="server" />
+                                                                                                &nbsp;<span style="cursor: default;" class="CkTitle">其他负责人</span>
+                                                                                            </div>
+                                                                                             <div class="checkbox" style="padding-bottom: 0px;">
+                                                                                           <input type="checkbox" id="CkContact" name="CkContact"/>
+                                                                                                &nbsp;<span style="cursor: default;" class="CkTitle">联系人<%=thisContact==null?"":$"({thisContact.name})" %></span>
+                                                                                            </div>
+                                                                                            <%} %>
                                                                                         </div>
                                                                                     </td>
 
@@ -380,7 +477,7 @@
                                                                     <td width="29%">文件</td>
                                                                     <%if (isContract)
                                                                         { %>
-                                                                     <td width="30%" align="center">日期</td>
+                                                                    <td width="30%" align="center">日期</td>
                                                                     <td width="10%" align="right">大小</td>
                                                                     <%} %>
                                                                 </tr>
@@ -437,10 +534,31 @@
 <script>
     $(function () {
         GetConByAccount();
-        <% if (isContract){%>
+        <% if (isContract)
+    {%>
 
         $("#publish_type_id").prop("disabled", true);
         <%}%>
+
+        <%
+    var notifiType = Request.QueryString["notifi_type"];
+    if (notifiType.Contains("priRes"))
+    {%>
+        $("#CkPriRes").prop("checked", true);
+    <%}
+    if (notifiType.Contains("ckContact"))
+    {%>
+        $("#CkContact").prop("checked", true);
+   <% }
+
+    if (notifiType.Contains("otherRes"))
+    {%>
+        $("#CkOtherRes").prop("checked", true);
+    <%}
+
+    // 
+
+    %>
     })
 
     function AddAttch() {
@@ -519,11 +637,11 @@
             type: "GET",
             async: false,
             url: "../Tools/ContactAjax.ashx?act=GetContacts&account_id=<%=thisAccount.id %>",
-                success: function (data) {
-                    if (data != "") {
-                        $("#conhtml").html(data);
-                    }
-                },
+            success: function (data) {
+                if (data != "") {
+                    $("#conhtml").html(data);
+                }
+            },
         });
 
     }
@@ -559,7 +677,8 @@
             LayerMsg("请选择发布类型！");
             return false;
         }
-        <%if((!isProject)&&(!isPhase)&&(!isContract)){ %>
+        <%if ((!isProject) && (!isPhase) && (!isContract))
+    { %>
         var status_id = $("#status_id").val();
         if (status_id == "" || status_id == "0" || status_id == null) {
             LayerMsg("请选择任务类型！");

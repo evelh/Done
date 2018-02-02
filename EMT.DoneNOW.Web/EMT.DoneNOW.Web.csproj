@@ -182,6 +182,7 @@
     <Content Include="Content\style.css" />
     <Content Include="Content\sysset_user.css" />
     <Content Include="Content\Ticket.css" />
+    <Content Include="Images\ico_charge.png" />
     <Content Include="Images\TicketAlertIcons.png" />
     <Content Include="Content\WorkType.css" />
     <Content Include="Contract\AddCharges.aspx" />
@@ -248,7 +249,10 @@
     <Content Include="Images\shenglian.gif" />
     <Content Include="Images\smallIcon.png" />
     <Content Include="Images\task.png" />
+    <Content Include="Images\TicketIcon.png" />
     <Content Include="Images\TicketNoteIcon.png" />
+    <Content Include="Images\TicketTimeLine.png" />
+    <Content Include="Images\TicketTrans.png" />
     <Content Include="Images\time.png" />
     <Content Include="Images\todayBarIndicator.png" />
     <Content Include="Images\url.png" />
@@ -438,6 +442,7 @@
     <Content Include="Scripts\Search\ShipedList.js" />
     <Content Include="Scripts\Search\ShippingList.js" />
     <Content Include="Scripts\Search\purchase_order_history.js" />
+    <Content Include="Scripts\Ticket.js" />
     <Content Include="ServiceDesk\TicketActivity.aspx" />
     <Content Include="ServiceDesk\TicketHistory.aspx" />
     <Content Include="ServiceDesk\TicketLabour.aspx" />

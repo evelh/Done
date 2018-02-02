@@ -78,6 +78,13 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<sys_resource>($"SELECT id,name from sys_resource where id not in(SELECT person_id from ctt_contract_notify_rule_recipient where contract_notify_rule_id = {rule_id} and delete_time = 0) and delete_time = 0");
         }
+        /// <summary>
+        /// 获取任务（工单）相关员工
+        /// </summary>
+        public List<sys_resource> GetTaskRes(long task_id)
+        {
+            return FindListBySql<sys_resource>($"SELECT sr.* from sys_resource sr INNER JOIN sdk_task_resource  str on sr.id = str.resource_id where str.task_id = {task_id} and sr.delete_time = 0 and str.delete_time = 0 ");
+        }
 
     }
 }

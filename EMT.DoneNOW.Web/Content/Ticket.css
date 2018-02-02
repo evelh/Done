@@ -42,6 +42,18 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+.TitleBarIcon {
+    background-image: url(../Images/TicketTrans.png);
+    background-repeat: no-repeat;
+    height: 16px;
+    width: 16px;
+}
+    .TitleBarIcon.NavigateLeft {
+        background-position: -20px -6px;
+    }
+    .TitleBarIcon.NavigateRight {
+        background-position: -93px -6px;
+    }
 
 .ButtonBar {
     font-size: 12px;
@@ -134,33 +146,44 @@
     padding-left:10px;
     padding-top:10px;
 }
-.QuickLaunchBar > .QuickLaunchButton > .Text {
-    background-color: #455571;
-    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.5);
-    color: #fff;
-    padding: 0 15px 0 47px;
-    display: none;
-    font-size: 14px;
-    font-weight: 600;
-    left: 0;
-    line-height: 49px;
-    position: absolute;
-    top: 0;
-    white-space: nowrap;
-}
-.QuickLaunchBar > .QuickLaunchButton > .Text > .KeyCode {
-    margin-left: 5px;
-}
+    .QuickLaunchBar > .QuickLaunchButton > .Text {
+        background-color: #455571;
+        box-shadow: 0 1px 4px 0 rgba(0,0,0,0.5);
+        color: #fff;
+        padding: 0 15px 0 47px;
+        display: none;
+        font-size: 14px;
+        font-weight: 600;
+        left: 0;
+        line-height: 49px;
+        position: absolute;
+        top: 0;
+        white-space: nowrap;
+        height: 59px;
+    }
+    .QuickLaunchBar > .QuickLaunchButton > .Icon {
+        
+        background-repeat: no-repeat;
+        height: 19px;
+        left: 13px;
+        opacity: .8;
+        position: absolute;
+        top: 15px;
+        width: 19px;
+    }
+    .QuickLaunchBar > .QuickLaunchButton > .Text > .KeyCode {
+        margin-left: 5px;
+    }
     .QuickLaunchBar > .QuickLaunchButton >.Icon {
-        width: 17px;
-        height: 17px;
+        width: 19px;
+        height: 19px;
         
     }
     
     .MainContainer {
         display: flex;
         max-width: 1875px;
-        position: relative;
+        /*position: relative;*/
     }
     .MainContainer > .SecondaryContainer {
         background-color: #f8f9fb;
@@ -1222,7 +1245,7 @@ body.AutotaskBlueTheme .ThemePrimaryColor {
     line-height: 18px;
     overflow: hidden;
     padding: 5px 0 0 0;
-    position: relative;
+    /*position: relative;*/
     white-space: normal;
 }
 .DetailsSection > .Content > .ReadOnlyData > .Value {
@@ -1484,7 +1507,7 @@ body.AutotaskBlueTheme .ThemePrimaryColor {
 }
 .TimelineIcon {
     background-color: transparent;
-    /*background-image: url(../../FrameworkContent/Images/Icons/TimelineIcons.svg?v=4);*/
+    background-image: url(../Images/TicketTimeLine.png);
     background-repeat: no-repeat;
 }
 .TimelineContextOverlay > .Content > .Label > .Text.Achieved {
@@ -1512,6 +1535,13 @@ body.AutotaskBlueTheme .ThemePrimaryColor {
 }
 .Timeline > .Bar.Top > .SlaBarIndicator {
     background-color: #dee0e7;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+.Timeline > .Bar.Bottom > .TargetProgress {
+    background-color: #eaedf4;
     bottom: 0;
     left: 0;
     position: absolute;

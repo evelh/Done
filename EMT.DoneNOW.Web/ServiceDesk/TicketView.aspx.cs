@@ -38,6 +38,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected List<UserDefinedFieldDto> tickUdfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TICKETS);
         protected List<UserDefinedFieldValue> ticketUdfValueList = null;
         protected List<sdk_task_checklist> ticketCheckList = null;   // 工单的检查单集合
+        protected List<sdk_task> pageTicketList = null;    // 页面上获取的工单集合。用于在页面上进行上下切换
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -114,6 +115,17 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                         }
                         createRes = new sys_resource_dal().FindNoDeleteById(thisTicket.create_user_id);
                     }
+                }
+                var ticketIds = Request.QueryString["ids"];
+                if (!string.IsNullOrEmpty(ticketIds))
+                {
+                    pageTicketList = new sdk_task_dal().GetTicketByIds(ticketIds);
+                }
+                
+
+                if (thisTicket == null)
+                {
+                    Response.Write("<script>alert('未查询到该工单信息！');window.close();</script>");
                 }
             }
             catch (Exception msg)

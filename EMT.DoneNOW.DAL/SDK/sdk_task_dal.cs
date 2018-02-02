@@ -10,6 +10,7 @@ namespace EMT.DoneNOW.DAL
 {
     public class sdk_task_dal : BaseDAL<sdk_task>
     {
+        #region 项目 任务相关
         /// <summary>
         /// 获取所有的task
         /// </summary>
@@ -122,8 +123,9 @@ namespace EMT.DoneNOW.DAL
                 return "";
             }
         }
+        #endregion
 
-        // 
+        #region 工单相关
         /// <summary>
         /// 获取该客户下的所有工单
         /// </summary>
@@ -138,6 +140,25 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<sdk_task>($"SELECT * from sdk_task where delete_time=0 and contact_id = {contact_id} and type_id = {type}");
         }
+
         
+
+        /// <summary>
+        /// 获取到该工单下的相关类型的工单
+        /// </summary>
+        public List<sdk_task> GetSubTaskByType(long parent_id,DicEnum.TICKET_TYPE type)
+        {
+            return FindListBySql<sdk_task>($"SELECT * from sdk_task where  ticket_type_id = {(int)type} and delete_time = 0 and parent_id ={parent_id}");
+        }
+        /// <summary>
+        /// 根据Ids 获取相应的工单ID
+        /// </summary>
+        public List<sdk_task> GetTicketByIds(string ids)
+        {
+            return FindListBySql<sdk_task>($"SELECT * from sdk_task where delete_time = 0 and id in({ids})");
+        }
+
+        #endregion
+
     }
 }

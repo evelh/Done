@@ -133,6 +133,7 @@
     <Compile Include="SDK\sdk_task_other_person.cs" />
     <Compile Include="SDK\sdk_task_predecessor.cs" />
     <Compile Include="SDK\sdk_task_resource.cs" />
+    <Compile Include="SDK\sdk_task_sla_event.cs" />
     <Compile Include="SDK\sdk_work_entry.cs" />
     <Compile Include="SDK\sdk_work_record.cs" />
     <Compile Include="SDK\v_task_all.cs" />

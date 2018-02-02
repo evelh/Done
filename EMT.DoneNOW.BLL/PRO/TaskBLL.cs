@@ -3112,11 +3112,17 @@ namespace EMT.DoneNOW.BLL
                 if (param.thisTask != null)
                 {
                     thisAddNote.task_id = param.thisTask.id;
+                    thisAddNote.resource_id = param.thisTask.owner_resource_id;
                 }
 
                 if (contact != null)
                 {
                     thisAddNote.contact_id = contact.id;
+                }
+                if (param.thisTicket != null)
+                {
+                    thisAddNote.ticket_id = param.thisTicket.id;
+                    thisAddNote.resource_id = param.thisTicket.owner_resource_id;
                 }
                 //thisAddNote.resource_id = project.owner_resource_id;
                 //thisAddNote.contract_id = project.contract_id;
@@ -3144,7 +3150,51 @@ namespace EMT.DoneNOW.BLL
                         }
                     }
                 }
-                // InsActTaskDone
+                #endregion
+
+             
+
+                #region 修改工单相关信息
+                if (param.thisTicket != null)
+                {
+                    var ticBll = new TicketBLL();
+                    if (param.isAddSol && param.thisTicket != null)
+                    {
+                        param.thisTicket.resolution += $"\r\n{thisAddNote.name}\r\n{thisAddNote.description}";
+                    }
+                    if (param.status_id != 0 && param.thisTicket.status_id != param.status_id)
+                    {
+                        param.thisTicket.status_id = param.status_id;
+                        //   修改工单状态为完成时，暂不处理
+                        if (param.status_id == (int)DicEnum.TICKET_STATUS.DONE)
+                        {
+                        }
+                    }
+                    ticBll.EditTicket(param.thisTicket, user_id);
+
+                    var solList = _dal.GetSubTaskByType(param.thisTicket.id, TICKET_TYPE.INCIDENT);
+                    if (param.isAddAllSol)
+                    {
+                        // 获取到相关 事故，追加到解决方案
+                        if(solList!=null&& solList.Count > 0)
+                        {
+                            solList.ForEach(_=>{
+                                _.resolution += $"\r\n{thisAddNote.name}\r\n{thisAddNote.description}";
+                                ticBll.EditTicket(_, user_id);
+                            });
+                        }
+                    }
+                    if (param.isAddAllNote)
+                    {
+                        if (solList != null && solList.Count > 0)
+                        {
+                            solList.ForEach(_=> {
+                                ticBll.AddTicketNote(param,_.id,user_id);
+                            });
+                        }
+                    }
+
+                }
                 #endregion
 
                 #region 备注附件相关
@@ -3254,7 +3304,28 @@ namespace EMT.DoneNOW.BLL
                 {
                     toEmialString += param.otherEmail + ";";
                 }
+                if (param.toPriRes && param.thisTicket != null&&param.thisTicket.owner_resource_id!=null)
+                {
+                    var priRes = srDal.FindNoDeleteById((long)param.thisTicket.owner_resource_id);
+                    if (priRes != null&&!string.IsNullOrEmpty(priRes.email))
+                    {
+                        toEmialString += priRes.email+";";
+                    }
+                }
 
+                if (param.toOtherRes && param.thisTicket != null)
+                {
+                    var otherResList = srDal.GetTaskRes(param.thisTicket.id);
+                    if(otherResList!=null&& otherResList.Count > 0)
+                    {
+                        otherResList.ForEach(_=> {
+                            if (!string.IsNullOrEmpty(_.email))
+                            {
+                                toEmialString += _.email+";";
+                            }
+                        });
+                    }
+                }
                 #endregion
 
                 #region 抄送邮件人列表
@@ -3339,6 +3410,31 @@ namespace EMT.DoneNOW.BLL
                 OperLogBLL.OperLogUpdate<com_activity>(param.taskNote, cacDal.FindNoDeleteById(param.taskNote.id), param.taskNote.id, user_id, OPER_LOG_OBJ_CATE.ACTIVITY, "更改任务备注");
                 cacDal.Update(param.taskNote);
                 #endregion
+
+
+                #region 修改工单相关信息
+                if (param.thisTicket != null)
+                {
+                    var ticBll = new TicketBLL();
+                    if (param.isAddSol && param.thisTicket != null)
+                    {
+                        param.thisTicket.resolution += $"\r\n{thisAddNote.name}\r\n{thisAddNote.description}";
+                    }
+                    if (param.status_id != 0 && param.thisTicket.status_id != param.status_id)
+                    {
+                        param.thisTicket.status_id = param.status_id;
+                        //   修改工单状态为完成时，暂不处理
+                        if (param.status_id == (int)DicEnum.TICKET_STATUS.DONE)
+                        {
+                        }
+                    }
+                    ticBll.EditTicket(param.thisTicket, user_id);
+                   
+                    
+
+                }
+                #endregion
+
                 var caDal = new com_attachment_dal();
                 #region 修改原附件
                 var oldAttList = new com_attachment_dal().GetAttListByOid(thisAddNote.id);

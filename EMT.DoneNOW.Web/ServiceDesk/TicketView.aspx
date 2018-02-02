@@ -30,6 +30,9 @@
         .ImgLink {
             background: linear-gradient(to bottom,#fff 0,#fdfdfd 100%);
         }
+        .TitleBarIcon{
+
+        }
     </style>
 </head>
 <body>
@@ -40,8 +43,26 @@
                 <tbody>
                     <tr>
                         <td><span>工单-<%=thisTicket.no %> - <%=thisTicket.title %><%=$"({thisAccount.name})" %></span></td>
+
+                        <%if (pageTicketList != null && pageTicketList.Count > 0)
+                            {
+                                var pageTicket = pageTicketList.FirstOrDefault(_ => _.id == thisTicket.id);
+                                var thisIndex = pageTicketList.IndexOf(pageTicket);
+                                %>
+                        <td>
+                            <div class="TitleBarItem TitleBarToolbar" style="float:right;">
+                                <div class="TitleBarButton NavigateLeft NormalState" style="margin-top: 9px;margin-left: -19px;" onclick="ViewTicket('<%=thisIndex!=0?pageTicketList[thisIndex-1].id:pageTicketList[pageTicketList.Count-1].id %>')">
+                                    <div class="TitleBarIcon NavigateLeft"></div>
+                                </div>
+                                <span class="Text" style="width: 53px;max-width: 66px;"><%=thisIndex+1 %> of <%=pageTicketList.Count %></span>
+                                <div class="TitleBarButton NavigateRight NormalState" style="margin-top: -16px;margin-left: 53px;" onclick="ViewTicket('<%=thisIndex!=(pageTicketList.Count-1)?pageTicketList[thisIndex+1].id:pageTicketList[0].id %>')">
+                                    <div class="TitleBarIcon NavigateRight"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <%} %>
                         <td align="right" class="helpLink"><a class="HelperLinkIcon" title=""></a></td>
-                        <!--上一工单，下一工单的显示 跳转 --->
+                        <!--todo 上一工单，下一工单的显示 跳转 --->
                     </tr>
                 </tbody>
             </table>
@@ -56,28 +77,28 @@
                 </li>
 
                 <li>
-                    <a class="ImgLink" onclick=""  style="background: linear-gradient(to bottom,#fff 0,#fdfdfd 100%);">
+                    <a class="ImgLink" onclick="" style="background: linear-gradient(to bottom,#fff 0,#fdfdfd 100%);">
                         <span class="icon" style="background: url(../Images/Icons.png) no-repeat -86px -144px; width: 16px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
                         <span class="Text" style="line-height: 24px;">接受</span>
                     </a>
                 </li>
 
                 <li>
-                    <a class="ImgLink" onclick=""  style="background: linear-gradient(to bottom,#fff 0,#fdfdfd 100%);">
+                    <a class="ImgLink" onclick="" style="background: linear-gradient(to bottom,#fff 0,#fdfdfd 100%);">
                         <span class="icon" style="background: url(../Images/Icons.png) no-repeat -277px 0px; width: 16px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
                         <span class="Text" style="line-height: 24px;">转发</span>
                     </a>
                 </li>
 
                 <li id="ToolLi">
-                    <a class="ImgLink" onclick=""  style="background: linear-gradient(to bottom,#fff 0,#fdfdfd 100%);">
+                    <a class="ImgLink" onclick="" style="background: linear-gradient(to bottom,#fff 0,#fdfdfd 100%);">
                         <span class="icon" style="background: url(../Images/Icons.png) no-repeat -198px -144px; width: 16px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
                         <span class="Text" style="line-height: 24px;">工具</span>
 
                         <span class="icon" style="background: url(../Images/Icons.png) no-repeat -182px -48px; width: 16px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
                     </a>
                 </li>
-                <li class="DropDownButton" style="top: 72px; left: 214px;display:none;" id="Down2">
+                <li class="DropDownButton" style="top: 72px; left: 214px; display: none;" id="Down2">
                     <div class="DropDownButtonDiv">
                         <div class="Group">
                             <div class="Content">
@@ -126,13 +147,13 @@
                                 </div>
                             </div>
                         </div>
-                       
-                        
+
+
                     </div>
                 </li>
 
                 <li>
-                    <a class="ImgLink" onclick="CompleteEntry()"  style="background: linear-gradient(to bottom,#fff 0,#fdfdfd 100%);">
+                    <a class="ImgLink" onclick="CompleteEntry()" style="background: linear-gradient(to bottom,#fff 0,#fdfdfd 100%);">
                         <span class="icon" style="background: url(../Images/Icons.png) no-repeat -6px -64px; width: 16px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
                         <span class="Text" style="line-height: 24px;">完成</span>
                     </a>
@@ -145,31 +166,31 @@
     <div class="QuickLaunchBar" style="top: 82px;">
         <div class="QuickLaunchButton TimeEntry DisabledState" id="" onclick="AddTimeEntry()">
             <div class="Text">工时<span class="KeyCode"></span></div>
-            <div class="Icon" style="background: url(../Images/time.png) no-repeat;"></div>
+            <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -15px;"></div>
         </div>
         <div class="QuickLaunchButton Note DisabledState" onclick="AddTicketNote('')">
             <div class="Text">备注<span class="KeyCode"></span></div>
-            <div class="Icon" style="background: url(../Images/imgGridEdit.png) no-repeat;"></div>
+            <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -64px;"></div>
         </div>
         <div class="QuickLaunchButton Attachment DisabledState" onclick="AddTicketAttachment()">
             <div class="Text">附件<span class="KeyCode"></span></div>
-            <div class="Icon" style="background: url(../Images/attachment.png) no-repeat;"></div>
+            <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -113px;"></div>
         </div>
         <div class="QuickLaunchButton Charge DisabledState" onclick="AddTicketCharge()">
             <div class="Text">成本<span class="KeyCode"></span></div>
-            <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></div>
+            <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -163px;"></div>
         </div>
         <div class="QuickLaunchButton Expense DisabledState" onclick="AddTicketExpense()">
             <div class="Text">费用<span class="KeyCode"></span></div>
-            <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></div>
+            <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -212px;"></div>
         </div>
-        <div class="QuickLaunchButton ServiceCall DisabledState" id="z82b4699d4b024e3280de758dad30d4d7">
+        <div class="QuickLaunchButton ServiceCall DisabledState">
             <div class="Text">服务<span class="KeyCode"></span></div>
-            <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></div>
+            <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -260px;"></div>
         </div>
-        <div class="QuickLaunchButton ToDo DisabledState" id="z409ac334b1fb4a02b6ad33da1873766f">
+        <div class="QuickLaunchButton ToDo DisabledState">
             <div class="Text">待办<span class="KeyCode"></span></div>
-            <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></div>
+            <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -309px;"></div>
         </div>
     </div>
 
@@ -362,7 +383,7 @@
                                             {
                                 %>
                                 <div class="SecondaryResource">
-                                    <a class="Button ButtonIcon Link NormalState" style="float: left;" tabindex="0"><%=thisRes.name %></a><span class="RoleName" style="float: left;"><%=$"({thisRole.name})" %></span><div class="InlineIconButton InlineIcon Note NormalState AddNoteIcon" onclick="AddTicketNote('')"></div>
+                                    <a class="Button ButtonIcon Link NormalState" style="float: left;" tabindex="0"><%=thisRes.name %></a><span class="RoleName" style="float: left;"><%=$"({thisRole.name})" %></span><div class="InlineIconButton InlineIcon Note NormalState AddNoteIcon" onclick="AddTicketNote('otherRes')"></div>
                                 </div>
                                 <br />
                                 <%}
@@ -568,36 +589,39 @@
                         <div class="Content">
                             <div class="Timeline">
                                 <div class="Bar Top VerticalSize3">
+                                    <%if (thisTicket.first_activity_time != null)
+                                        { %>
                                     <div class="Dot" style="left: calc(0% - 6px);">
                                         <div class="Pole VerticalSize3">
                                             <div class="Flag TargetAchieved Normal" id="z79439d23ded94c029599a3d7dd28627f">
                                                 <div class="Banner">
                                                     <div class="Triangle"></div>
                                                 </div>
-                                                <div class="Text">First Response</div>
+                                                <div class="Text">初次响应</div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="ContextOverlayContainer" id="z2f40dca2531745f9a9393bf1c13a3285">
+                                    <div class="ContextOverlayContainer">
                                         <div class="TimelineContextOverlay ContextOverlay">
-                                            <div class="Outline Arrow"></div>
-                                            <div class="Arrow"></div>
                                             <div class="Content">
                                                 <div class="Label">
-                                                    <div class="TimelineIcon OverlayEventMet"></div>
-                                                    <div class="Text Achieved">First Response</div>
+                                                    <div class="TimelineIcon OverlayEventMet" style="background-position: -101px -1px;"></div>
+                                                    <div class="Text Achieved">初次响应</div>
                                                 </div>
-                                                <div class="DateTime">29/01/2018 01:57 PM</div>
+                                                <div class="DateTime"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTicket.first_activity_time).ToString("yyyy-MM-dd HH:mm:ss") %></div>
                                             </div>
                                         </div>
                                     </div>
+                                    <%} %>
+                                    <%if (thisTicket.resolution_plan_actual_time != null)
+                                        { %>
                                     <div class="Dot" style="left: calc(79% - 6px);">
                                         <div class="Pole VerticalSize2">
                                             <div class="Flag TargetAchieved Reverse" id="z084300357f8a4995a1d13e2ae0a6220b">
                                                 <div class="Banner">
                                                     <div class="Triangle"></div>
                                                 </div>
-                                                <div class="Text">Resolution Plan</div>
+                                                <div class="Text">解决方案提供时间</div>
                                             </div>
                                         </div>
                                     </div>
@@ -608,19 +632,22 @@
                                             <div class="Content">
                                                 <div class="Label">
                                                     <div class="TimelineIcon OverlayEventMet"></div>
-                                                    <div class="Text Achieved">Resolution Plan</div>
+                                                    <div class="Text Achieved">解决方案提供时间</div>
                                                 </div>
-                                                <div class="DateTime">30/01/2018 09:06 AM</div>
+                                                <div class="DateTime"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTicket.resolution_plan_actual_time).ToString("yyyy-MM-dd HH:mm:ss") %></div>
                                             </div>
                                         </div>
                                     </div>
+                                    <%} %>
+                                    <%if (thisTicket.resolution_actual_time != null)
+                                        { %>
                                     <div class="Dot" style="left: calc(79% - 6px);">
                                         <div class="Pole VerticalSize1">
                                             <div class="Flag TargetAchieved Reverse" id="z5bc5fff464e34e689cdacf4990114637">
                                                 <div class="Banner">
                                                     <div class="Triangle"></div>
                                                 </div>
-                                                <div class="Text">Resolution</div>
+                                                <div class="Text">解决时间</div>
                                             </div>
                                         </div>
                                     </div>
@@ -631,35 +658,41 @@
                                             <div class="Content">
                                                 <div class="Label">
                                                     <div class="TimelineIcon OverlayEventMet"></div>
-                                                    <div class="Text Achieved">Resolution</div>
+                                                    <div class="Text Achieved">解决时间</div>
                                                 </div>
-                                                <div class="DateTime">30/01/2018 09:06 AM</div>
+                                                <div class="DateTime"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTicket.resolution_actual_time).ToString("yyyy-MM-dd HH:mm:ss") %></div>
                                             </div>
                                         </div>
                                     </div>
+                                    <%} %>
+
+                                    <%if (thisTicket.date_completed != null)
+                                        { %>
                                     <div class="Dot" style="left: calc(79% - 6px);">
                                         <div class="Pole VerticalSize0">
                                             <div class="Flag TargetAchieved Reverse" id="z3af3911af8374cd8a93aa6d8c31ef64f">
                                                 <div class="Banner">
                                                     <div class="Triangle"></div>
                                                 </div>
-                                                <div class="Text">Complete</div>
+                                                <div class="Text">完成时间</div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="ContextOverlayContainer" id="z99dd976fc2a44f6b800d37cd6ad488f9">
+                                    <div class="ContextOverlayContainer">
                                         <div class="TimelineContextOverlay ContextOverlay">
                                             <div class="Outline Arrow"></div>
                                             <div class="Arrow"></div>
                                             <div class="Content">
                                                 <div class="Label">
                                                     <div class="TimelineIcon OverlayEventMet"></div>
-                                                    <div class="Text Achieved">Complete</div>
+                                                    <div class="Text Achieved">完成时间</div>
                                                 </div>
-                                                <div class="DateTime">30/01/2018 09:06 AM</div>
+                                                <div class="DateTime"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTicket.date_completed).ToString("yyyy-MM-dd HH:mm:ss") %></div>
                                             </div>
                                         </div>
                                     </div>
+                                    <%} %>
+
                                     <div class="OccurrenceProgress" style="width: 79%;"></div>
                                     <div class="SlaBarIndicator" style="width: 0%;"></div>
                                 </div>
@@ -731,23 +764,26 @@
                                     </div>
                                     <div class="TargetProgress" style="width: 100%;"></div>
                                 </div>
-                                <div class="TicketSlaTimelineStart" id="zb096bdd4b355488ba8133fe9b0d2a513">
-                                    <div class="TimelineIcon SlaStartLabel"></div>
+                                <div class="TicketSlaTimelineStart">
+                                    <div class="TimelineIcon SlaStartLabel" style="background-position: -166px -1px; height: 15px; width: 15px;"></div>
                                 </div>
-                                <div class="ContextOverlayContainer" id="z480de0c322b14266a4d9366a92622169">
+                                <div class="ContextOverlayContainer">
                                     <div class="TimelineContextOverlay ContextOverlay">
                                         <div class="Outline Arrow"></div>
                                         <div class="Arrow"></div>
                                         <div class="Content">
                                             <div class="Label">
-                                                <div class="TimelineIcon OverlayTicketStart"></div>
-                                                <div class="Text Normal">Ticket Created</div>
+                                                <div class="TimelineIcon OverlayTicketStart" style=""></div>
+                                                <div class="Text Normal">工单创建</div>
                                             </div>
+                                            <% if (thisTicket.sla_start_time != null && thisTicket.sla_start_time == thisTicket.create_time)
+                                                { %>
                                             <div class="Label">
                                                 <div class="TimelineIcon OverlaySla"></div>
                                                 <div class="Text OverlaySla">SLA Start</div>
                                             </div>
-                                            <div class="DateTime">29/01/2018 01:57 PM</div>
+                                            <%} %>
+                                            <div class="DateTime"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisTicket.create_time).ToString("yyyy-MM-dd HH:mm:ss") %></div>
                                         </div>
                                     </div>
                                 </div>
@@ -803,17 +839,18 @@
                             <div class="Right"></div>
                         </div>
                         <div class="Content">
-                            <div class="EntityBodyEnhancedText"><span class="Content"><%=thisTicket.resolution %></span></div>
+                            <% var showResolu = thisTicket.resolution.Replace("\r\n","<br />").Replace("\n","<br />"); %>
+                            <div class="EntityBodyEnhancedText"><span class="Content"><%=showResolu %></span></div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="AccessoryTabButtonBar">
                 <div class="Button TicketButton SelectedState" id="z8479140f8ede469db9b4c2aa9717bea5">
-                    <div class="Text">Activity</div>
+                    <div class="Text">活动</div>
                 </div>
                 <div class="Button TicketButton NormalState" id="z7b45f31108934400a8a2fedbb46de972">
-                    <div class="Text">Charges &amp; Expenses (0)</div>
+                    <div class="Text">成本和费用</div>
                 </div>
                 <div class="Button TicketButton NormalState" id="ze57643eeffa34687a4c5a43efabbdc18">
                     <div class="Text">Service Calls &amp; To-Dos (0)</div>
@@ -1086,9 +1123,9 @@
                 <div class="InsightShell Collapsed" id="za732b4150b1147c19e730b3785638172">
                     <div class="Title Title5">
                         <div class="Text">客户/联系人 </div>
-                        <div class="Toggle">
+                        <%--<div class="Toggle">
                             <div class="InlineIcon ArrowUpSmall"></div>
-                        </div>
+                        </div>--%>
                     </div>
                     <div class="ContentContainer">
                         <div class="LoadingIndicator"></div>
@@ -1139,9 +1176,9 @@
                 <div class="InsightShell Collapsed">
                     <div class="Title Title6">
                         <div class="Text">工时汇总</div>
-                        <div class="Toggle">
+                        <%-- <div class="Toggle">
                             <div class="InlineIcon ArrowUpSmall"></div>
-                        </div>
+                        </div>--%>
                     </div>
                     <div class="ContentContainer">
                         <div class="LoadingIndicator"></div>
@@ -1183,9 +1220,9 @@
                 <div class="InsightShell Collapsed" id="z48d3540e2e584765910e8058b1be991f">
                     <div class="Title Title7">
                         <div class="Text">配置项</div>
-                        <div class="Toggle">
+                        <%-- <div class="Toggle">
                             <div class="InlineIcon ArrowUpSmall"></div>
-                        </div>
+                        </div>--%>
                     </div>
                     <div class="ContentContainer">
                         <div class="LoadingIndicator"></div>
@@ -1228,9 +1265,9 @@
                 <div class="InsightShell Invisible" id="za4e05a3de99042b09d62b550b4b766bf" style="display: none;">
                     <div class="Title">
                         <div class="Text">商机</div>
-                        <div class="Toggle">
+                        <%-- <div class="Toggle">
                             <div class="InlineIcon ArrowUpSmall"></div>
-                        </div>
+                        </div>--%>
                     </div>
                     <div class="ContentContainer">
                         <div class="LoadingIndicator"></div>
@@ -1290,7 +1327,6 @@
                                 <div class="CustomLayoutContainer">
                                     <div class="TicketDeletionDialog_Container">
                                         <ul class="TicketDeletionDialog_UnorderedList" id="DeletTicketReasonUl">
-                                           
                                         </ul>
                                     </div>
                                 </div>
@@ -1305,329 +1341,9 @@
 </html>
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
 <script src="../Scripts/common.js"></script>
+<script src="../Scripts/Ticket.js"></script>
 <!--页面常规信息js操作 -->
 <script>
-    var backImg = ["up.png", "down.png"];
-    var index1 = 0; var index2 = 0; var index3 = 0; var index4 = 0; var index5 = 0; var index6 = 0; var index7 = 0;
-    $(".Title1").on("click", function () {
-        $(this).next().toggle();
-        $(this).children().find($('.Toggle')).children().find($('.InlineIcon ')).css("background-image", "url(../Images/" + backImg[index1 % 2] + ")");
-        index1++;
-    });
-    $(".Title2").on("click", function () {
-        $(this).next().toggle();
-        $(this).children().find($('.Toggle')).children().find($('.InlineIcon ')).css("background-image", "url(../Images/" + backImg[index2 % 2] + ")");
-        index2++;
-    });
-    $(".Title3").on("click", function () {
-        $(this).next().toggle();
-        $(this).children().find($('.Toggle')).children().find($('.InlineIcon ')).css("background-image", "url(../Images/" + backImg[index3 % 2] + ")");
-        index3++;
-    });
-    $(".Title4").on("click", function () {
-        $(this).next().toggle();
-        $(this).children().find($('.Toggle')).children().find($('.InlineIcon ')).css("background-image", "url(../Images/" + backImg[index4 % 2] + ")");
-        index4++;
-    });
-    $(".Title5").on("click", function () {
-        $(this).next().toggle();
-        $(this).children().find($('.Toggle')).children().find($('.InlineIcon ')).css("background-image", "url(../Images/" + backImg[index5 % 2] + ")");
-        index5++;
-    });
-    $(".Title6").on("click", function () {
-        $(this).next().toggle();
-        $(this).children().find($('.Toggle')).children().find($('.InlineIcon ')).css("background-image", "url(../Images/" + backImg[index6 % 2] + ")");
-        index6++;
-    });
-    $(".Title7").on("click", function () {
-        $(this).next().toggle();
-        $(this).children().find($('.Toggle')).children().find($('.InlineIcon ')).css("background-image", "url(../Images/" + backImg[index7 % 2] + ")");
-        index7++;
-    });
-
-    var colors = ["#white", "white"];
-    var color1 = 0; var color2 = 0; var color3 = 0;
-    $(".Toggle1").on("click", function () {
-        $(this).parent().parent().find($(".Vertical")).toggle();
-        $(this).parent().parent().find($('.Content')).toggle();
-        $(this).parent().parent().css("background", colors[color1 % 2]);
-        color1++;
-    });
-    $(".Toggle2").on("click", function () {
-        $(this).parent().parent().find($(".Vertical")).toggle();
-        $(this).parent().parent().find($('.Content')).toggle();
-        $(this).parent().parent().css("background", colors[color2 % 2]);
-        color2++;
-    });
-    $(".Toggle3").on("click", function () {
-        $(this).parent().parent().find($(".Vertical")).toggle();
-        $(this).parent().parent().find($('.Content')).toggle();
-        $(this).parent().parent().css("background", colors[color3 % 2]);
-        color3++;
-    });
-    // ToolLi
-    // Down2
-    $("#ToolLi").on("mousemove", function () {
-        $("#Down2").show();
-        $(this).css("border-bottom", "1px solid white").css("background", "white");
-    }).on("mouseout", function () {
-        $("#Down2").hide();
-        $(this).css("border-bottom", "1px solid #d7d7d7").css("background", "linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%)");
-    });
-    $("#Down2").on("mousemove", function () {
-        $(this).show();
-        $("#ToolLi").css("border-bottom", "1px solid white").css("background", "white");
-    }).on("mouseout", function () {
-        $(this).hide();
-        $("#ToolLi").css("border-bottom", "1px solid #d7d7d7").css("background", "linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%)");
-    });
-
-
-
-    var hour, minute, second;//时 分 秒
-    hour = minute = second = 0;//初始化
-    //var millisecond = 0;//毫秒
-    var int;
-    function Reset()//重置
-    {
-        window.clearInterval(int);
-        hour = minute = second = 0;
-        //document.getElementById('timetext').value = '00时00分00秒000毫秒';
-        $("#ShowWatchTime").html("00:00:00");
-        $("#PlayTimeDiv").removeClass("noplay");
-        $("#PlayTimeDiv").addClass("Play");
-        stop();
-    }
-
-    function start()//开始
-    {
-        int = setInterval(timer, 1000);
-    }
-
-    function timer()//计时
-    {
-
-        second = second + 1;
-
-        if (second >= 60) {
-            second = 0;
-            minute = minute + 1;
-        }
-
-        if (minute >= 60) {
-            minute = 0;
-            hour = hour + 1;
-        }
-        if (hour >= 24) {
-            hour = 0;
-        }
-        $("#ShowWatchTime").html(Return2(hour) + ":" + Return2(minute) + ":" + Return2(second));
-    }
-
-    function stop()//暂停
-    {
-        window.clearInterval(int);
-    }
-
-    function Return2(num) {
-        if (Number(num) < 10) {
-            return "0" + num;
-        }
-        else {
-            return num;
-        }
-    }
-
-    $("#PlayTimeDiv").click(function () {
-        if ($(this).hasClass("Play")) {
-            $(this).removeClass("Play");
-            $(this).addClass("noplay");
-            start();
-        }
-        else {
-            $(this).removeClass("noplay");
-            $(this).addClass("Play");
-            stop();
-        }
-    })
-
-    var toId = "";
-    var type = "in";
-
-    function drag() {
-
-        // var obj = $('#Drap .HighImportance');
-        var obj = $('#Drap .Interaction');
-        obj.bind('mousedown', DragStart);
-        function DragStart(e) {
-            var ol = obj.parent().offset().left;
-            var ot = obj.parent().offset().top;
-            deltaX = e.pageX - ol;
-            deltaY = e.pageY - ot;
-            $(this).trigger("click");
-            $(document).bind({
-                'mousemove': move,
-                'mouseup': DragStop
-            });
-            return false;
-        }
-        function move(e) {
-
-
-            $.each(obj.parent().siblings(), function (i) {
-                var mX = obj.parent().siblings().eq(i).offset().left;
-                var mY = obj.parent().siblings().eq(i).offset().top;
-                if (e.pageX > mX && e.pageX < mX + obj.parent().siblings().eq(i).width() && e.pageY > mY && e.pageY < mY + obj.parent().siblings().eq(i).height()) {
-                    obj.parent().css('cursor', 'move')
-                    obj.css('cursor', 'move')
-                    $('.border_left').show()
-                    $('.border_right').show()
-                    type = "in";
-                    $('.border-line').hide()
-                    $('.border_left').css({
-                        "left": 0,
-                        "top": obj.parent().siblings().eq(i).children('.Interaction').offset().top - $('.RowContainer').offset().top + obj.parent().siblings().eq(i).height() / 2 - 8,
-                    })
-                    $('.border_right').css({
-                        "right": 0,
-                        "top": obj.parent().siblings().eq(i).children('.Interaction').offset().top - $('.RowContainer').offset().top + obj.parent().siblings().eq(i).height() / 2 - 8,
-                    })
-                    $('.cover').show()
-                    $('.cover').css({
-                        "left": (e.pageX + $('.cover').width() + 10) - $('.RowContainer').offset().left,
-                        "top": (e.pageY - $('.RowContainer').offset().top),
-                        "display": 'block'
-                    })
-
-                    $('.cover').html(obj.parent().siblings().eq(i).find('.Num').html());
-                    toId = obj.parent().siblings().eq(i).data("val");  // 代表将要放的位置的id
-
-                } else {
-                    obj.parent().css('cursor', 'none')
-                }
-                if (e.pageY > mY - 5 && e.pageY < mY + 5) {
-                    type = "above";
-                    $('.border-line').show()
-                    $('.border-line').css({
-                        'top': mY - $('.RowContainer').offset().top
-                    })
-                    $('.border_left').css({
-                        "left": 0,
-                        "top": mY - $('.RowContainer').offset().top - 6
-                    })
-                    $('.border_right').css({
-                        "right": 0,
-                        "top": mY - $('.RowContainer').offset().top - 6
-                    })
-                    //obj.css('border-top','1px solid #346a95')
-                    if (e.pageY < mY) {
-                        $('.cover').html(obj.parent().siblings().eq(i).find('.Num').html());
-                        // toId = obj.data("val");
-                    }
-                }
-            })
-
-            // obj.css({
-            //     "left": (e.pageX - deltaX),
-            //     "top": (e.pageY - deltaY),
-            //     "cursor":'move'
-            // });
-
-
-            return false;
-        }
-        function DragStop() {
-
-            $('.cover').hide()
-            $('.border_right').hide()
-            $('.border_left').hide()
-            $('.border-line').hide()
-            obj.parent().css('cursor', '')
-            obj.parent().find('.Interaction').css('cursor', '')
-            $(document).unbind({
-                'mousemove': move,
-                'mouseup': DragStop,
-                "cursor": 'pointer'
-            });
-            //DragTask();
-        }
-    }
-    drag();
-    $(".IconContainer").on('click', function () {
-        if ($(this).hasClass("Selected")) {
-            $(this).removeClass('Selected');
-
-        }
-        else {
-            $(this).addClass('Selected');
-        }
-        $(this).find('.Vertical').toggle();
-        var _this = $(this).parent().parent().parent();
-        var str = _this.find('.DataDepth').attr('data-depth');
-
-    });
-
-    $(".CopyTextButton").click(function () {
-        $(this).children().first().next().focus();
-        $(this).children().first().next().select();
-        if (document.execCommand('copy', false, null)) {
-
-        }
-    })
-
-    $(".Dot").mouseover(function (event) {
-
-        var Left = $(document).scrollLeft() + event.clientX;
-        var Top = $(document).scrollTop() + event.clientY;
-
-        var menuWidth = $(this).next().children().first().width();
-        var menuHeight = $(this).next().children().first().height();
-        var scrLeft = $(document).scrollLeft();
-        var scrTop = $(document).scrollTop();
-
-
-        $(this).next().children().first().css("left", menuWidth + scrLeft + 265 + "px");
-        $(this).next().children().first().css("margin-top", Top - 145 + "px");
-        $(this).next().children().first().show();
-
-    })
-    $(".Dot").mouseleave(function () {
-        $(this).next().children().first().hide();
-    })
-
-    $(".Dot").mouseout(function () {
-        $(this).next().children().first().hide();
-    })
-    // 隐藏完成的检查单
-    function HideItem() {
-        $(".Completed").hide();
-        $("#CheckMange").text("显示完成条目");
-        $("#CheckMange").removeAttr("onclick");
-        $("#CheckMange").click(function () {
-            ShowItem();
-        })
-    }
-    // 显示完成的检查单
-    function ShowItem() {
-        $(".Completed").show();
-        $("#CheckMange").text("隐藏完成条目");
-        $("#CheckMange").removeAttr("onclick");
-        $("#CheckMange").click(function () {
-            HideItem();
-        })
-    }
-
-    $(".TicketButton").click(function () {
-        var obj = $(this);
-        $(".TicketButton").each(function () {
-            $(this).removeClass("SelectedState");
-            if (!$(this).hasClass("NormalState")) {
-                $(this).addClass("NormalState");
-            }
-        })
-        obj.addClass("SelectedState");
-    })
-
     function GetAccountInfo() {
         var account_id = '<%=thisAccount==null?"":thisAccount.id.ToString() %>';
         if (account_id != "") {
@@ -1759,7 +1475,7 @@
                         $("#InsProInstallUser").val(data.insUser);
                         $("#InsProWarnTime").val(data.insWarnTime);
                         // InsProVendor
-                        $("#InsProVendor").text(data.name);
+                        $("#InsProVendor").text(data.vendorName);
                         $("#InsProVendor").click(function () {
                             OpenAccount(data.vendorId);
                         })
@@ -1854,7 +1570,7 @@
     // 添加工单的备注
     // 
     function AddTicketNote(type) {
-        window.open("../ServiceDesk/TicketNote.aspx?ticket_id=<%=thisTicket.id %>&type=" + type, "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_NOTE %>", 'left=200,top=200,width=600,height=800', false);
+        window.open("../Project/TaskNote.aspx?ticket_id=<%=thisTicket.id %>&notifi_type=" + type, "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_NOTE %>", 'left=200,top=200,width=1080,height=800', false);
     }
     // 跳转到修改工单相关功能
     function EditTicket() {
@@ -1882,8 +1598,6 @@
     {%>
         window.open("../ServiceDesk/TicketLabour.aspx?ticket_id=<%=thisTicket.id %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_LABOUR %>", 'left=200,top=200,width=600,height=800', false);
         <%}%>
-
-
     }
     // 完成工单--添加工时，默认工单状态为完成
     function CompleteEntry() {
@@ -1892,7 +1606,7 @@
 
     // 新增工单附件
     function AddTicketAttachment() {
-        window.open("../Activity/AddAttachment.aspx?objId=<%=thisTicket.id %>&objType=<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_OBJECT_TYPE.TASK %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_NOTE %>", 'left=200,top=200,width=600,height=800', false);
+        window.open("../Activity/AddAttachment.aspx?objId=<%=thisTicket.id %>&objType=<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_OBJECT_TYPE.TASK %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_NOTE %>", 'left=200,top=200,width=800,height=800', false);
     }
     // 新增工单费用
     function AddTicketExpense() {
@@ -1900,11 +1614,8 @@
     }
     // 添加工单成本
     function AddTicketCharge() {
-
+        window.open("../Contract/AddCharges.aspx?ticket_id=<%=thisTicket.id %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConChargeAdd %>", 'left=200,top=200,width=800,height=800', false);
     }
-
-
-
 
     // 跳转到编辑配置项相关页面
     function EditInsPro(id) {
@@ -1918,69 +1629,7 @@
             window.open("../Contract/ContractView.aspx?id=" + contract_id, "_blank", 'left=200,top=200,width=600,height=800', false);
         }
     }
-    // 点击进行检查单完成取消操作
-    $(".ChecklistIcon").click(function () {
-        var ckId = $(this).parent().data("val")
-        var isCom = "1";
-        if ($(this).hasClass("Checked")) {
-            isCom = "0";
-        }
-        var obj = $(this);
-        $.ajax({
-            type: "GET",
-            url: "../Tools/TicketAjax.ashx?act=ChangeCheckComplete&check_id=" + ckId + "&is_com=" + isCom,
-            async: false,
-            success: function (data) {
-                if (data != "") {
-
-                }
-            }
-        })
-        var count = $("#CompletedCount").text();
-        var isCom = obj.parent().hasClass("Completed");
-        var creaInfo = obj.next().children().first().next().next().text();
-        $.ajax({
-            type: "GET",
-            url: "../Tools/TicketAjax.ashx?act=GetCheckInfo&check_id=" + ckId,
-            async: false,
-            dataType: "json",
-            success: function (data) {
-                if (data != "") {
-                    isCom = data.isCom;
-                    creaInfo = data.creTime + data.creRes;
-                }
-            }
-        })
-        if (isCom) {
-            if (!obj.parent().hasClass("Completed")) {
-                obj.parent().addClass("Completed");
-            }
-            if (!obj.hasClass("Checked")) {
-                obj.addClass("Checked");
-                obj.removeClass("Empty");
-            }
-            obj.next().children().first().next().next().text(creaInfo);
-            count = Number(count) + 1;
-
-            if ($("#CheckMange").text() == "显示完成条目") {
-                $(".Completed").hide();
-            }
-        }
-        else {
-            if (obj.parent().hasClass("Completed")) {
-                obj.parent().removeClass("Completed");
-            }
-
-            if (obj.hasClass("Checked")) {
-                obj.addClass("Empty");
-                obj.removeClass("Checked");
-            }
-            obj.next().children().first().next().next().text("");
-            count = Number(count) - 1;
-        }
-        $("#CompletedCount").text(count);
-
-    })
+  
     // 删除工单
     function DeleteTicket() {
         LayerConfirm("确认删除该工单吗？", "是", "否", function () {
@@ -2003,10 +1652,9 @@
                             if (data.reason != "") {
                                 var failHtml = "";
                                 var failArr = data.reason.split(';');
-                                for (var i = 0; i < failArr.length; i++)
-                                {
+                                for (var i = 0; i < failArr.length; i++) {
                                     if (failArr[i] != "") {
-                                        failHtml += "<li>" + failArr[i]+"</li>";
+                                        failHtml += "<li>" + failArr[i] + "</li>";
                                     }
                                 }
                                 $("#DeletTicketReasonUl").html(failHtml);
@@ -2033,5 +1681,9 @@
     // 打开工单历史页面
     function ShowTicketHistory() {
         window.open("../ServiceDesk/TicketHistory.aspx?ticket_id=<%=thisTicket.id %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_LABOUR %>", 'left=200,top=200,width=600,height=800', false);
+    }
+    // 跳转到查看工单
+    function ViewTicket(ticket_id) {
+        location.href = "../ServiceDesk/TicketView?ids=<%=Request.QueryString["ids"] %>&id=" + ticket_id;
     }
 </script>

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TicketManage.aspx.cs" Inherits="EMT.DoneNOW.Web.ServiceDesk.TicketManage" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TicketManage.aspx.cs" Inherits="EMT.DoneNOW.Web.ServiceDesk.TicketManage" ValidateRequest="false"  %>
 
 <!DOCTYPE html>
 
@@ -48,33 +48,33 @@
 
         <!-- 下左 快捷添加相应操作（编辑 查看会触发相应事件） -->
         <div class="QuickLaunchBar" style="top: 82px;">
-            <div class="QuickLaunchButton TimeEntry DisabledState" id="z9fe7df7c73554370bb803272554c4b6e">
+            <div class="QuickLaunchButton TimeEntry DisabledState" id="" onclick="AddTimeEntry()">
                 <div class="Text">工时<span class="KeyCode"></span></div>
-                <div class="Icon" style="background: url(../Images/time.png) no-repeat;"></div>
+                <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -15px;"></div>
             </div>
-            <div class="QuickLaunchButton Note DisabledState" id="z7dac027c9b0d48db9b267642c7993955">
+            <div class="QuickLaunchButton Note DisabledState" onclick="AddTicketNote('')">
                 <div class="Text">备注<span class="KeyCode"></span></div>
-                <div class="Icon" style="background: url(../Images/imgGridEdit.png) no-repeat;"></div>
+                <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -64px;"></div>
             </div>
-            <div class="QuickLaunchButton Attachment DisabledState" id="z5fd3fd672b594b8ba1787cb9a60b8bf2">
+            <div class="QuickLaunchButton Attachment DisabledState" onclick="AddTicketAttachment()">
                 <div class="Text">附件<span class="KeyCode"></span></div>
-                <div class="Icon" style="background: url(../Images/attachment.png) no-repeat;"></div>
+                <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -113px;"></div>
             </div>
-            <div class="QuickLaunchButton Charge DisabledState" id="zf61d47be0a39484785114a5e4e4dbf7f">
+            <div class="QuickLaunchButton Charge DisabledState" onclick="AddTicketCharge()">
                 <div class="Text">成本<span class="KeyCode"></span></div>
-                <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></div>
+                <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -163px;"></div>
             </div>
-            <div class="QuickLaunchButton Expense DisabledState" id="z6b3cf81bad8b45558474a3813c0f3ea3">
+            <div class="QuickLaunchButton Expense DisabledState" onclick="AddTicketExpense()">
                 <div class="Text">费用<span class="KeyCode"></span></div>
-                <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></div>
+                <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -212px;"></div>
             </div>
-            <div class="QuickLaunchButton ServiceCall DisabledState" id="z82b4699d4b024e3280de758dad30d4d7">
+            <div class="QuickLaunchButton ServiceCall DisabledState">
                 <div class="Text">服务<span class="KeyCode"></span></div>
-                <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></div>
+                <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -260px;"></div>
             </div>
-            <div class="QuickLaunchButton ToDo DisabledState" id="z409ac334b1fb4a02b6ad33da1873766f">
+            <div class="QuickLaunchButton ToDo DisabledState">
                 <div class="Text">待办<span class="KeyCode"></span></div>
-                <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></div>
+                <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -309px;"></div>
             </div>
         </div>
 
@@ -95,7 +95,7 @@
                 </div>
             </div>
         </div>
-        <div class="MainContainer InsightsEnabled" style="margin-left: 45px; margin-top: 85px; z-index: 0;">
+        <div class="MainContainer InsightsEnabled" style="margin-left: 45px; z-index: 0;">
             <div class="SecondaryContainer Left Active" id="z91f4b4ab746e4bd4be9d1c4412a64c27">
                 <div class="TabButtonContainer">
                     <div>
@@ -150,7 +150,7 @@
                             <div class="EditorContainer">
                                 <div class="Editor SingleDataSelector">
                                     <div class="InputField">
-                                        <input type="text" id="contact_id" style="width: 77%;" value="<%=thisContact==null?"":thisContact.name %>" />
+                                        <input type="text" id="contact_id" style="width: 73%;" value="<%=thisContact==null?"":thisContact.name %>" />
                                         <input type="hidden" id="contact_idHidden" name="contact_id" value="<%=thisContact==null?"":thisContact.id.ToString() %>" />
                                         <a class="Button ButtonIcon IconOnly DataSelector NormalState" id="SelectContact" tabindex="0" style="display: inline-grid; width: 17px;"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -191px -44px;"></span><span class="Text"></span></a>
                                         <a class="Button ButtonIcon IconOnly New NormalState" id="AddContact" tabindex="0" style="display: inline-grid; width: 17px;"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></span><span class="Text"></span></a>
@@ -236,7 +236,7 @@
                         </div>
                         <div class="Editor DecimalBox">
                             <div class="InputField">
-                                <input id="estimated_hours" type="text" value="<%=thisTicket!=null?thisTicket.estimated_hours.ToString("#0.00"):"" %>" name="estimated_hours" maxlength="11" style="width: 90%;"  maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                <input id="estimated_hours" type="text" value="<%=thisTicket!=null?thisTicket.estimated_hours.ToString("#0.00"):"" %>" name="estimated_hours" maxlength="11" style="width: 90%;" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                             </div>
                         </div>
                         <div class="EditorLabelContainer">
@@ -525,7 +525,7 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class=" Boolean" style="text-align:center;">
+                                                    <td class=" Boolean" style="text-align: center;">
                                                         <div class="Standard">
                                                             <div class="Heading">完成</div>
                                                         </div>
@@ -535,7 +535,7 @@
                                                             <div class="Heading">条目</div>
                                                         </div>
                                                     </td>
-                                                    <td class=" Boolean"  style="text-align:center;">
+                                                    <td class=" Boolean" style="text-align: center;">
                                                         <div class="Standard">
                                                             <div class="Heading">重要</div>
                                                         </div>
@@ -556,19 +556,19 @@
                                                         foreach (var item in ticketCheckList)
                                                         {
                                                             num++;
-                                                 %>
+                                                %>
                                                 <tr data-val="<%=item.id %>" id="<%=item.id %>" class="HighImportance D" draggable="true">
                                                     <td class="Interaction">
                                                         <div>
                                                             <div class="Decoration Icon DragHandle">
                                                             </div>
                                                             <div class="Num"><%=item.sort_order==null?"":((decimal)item.sort_order).ToString("#0") %></div>
-                                                            <input type="hidden" id="<%=item.id %>_sort_order" name="<%=item.id %>_sort_order" value="<%=item.sort_order==null?"":((decimal)item.sort_order).ToString("#0") %>"/>
+                                                            <input type="hidden" id="<%=item.id %>_sort_order" name="<%=item.id %>_sort_order" value="<%=item.sort_order==null?"":((decimal)item.sort_order).ToString("#0") %>" />
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <a class="ButtonIcon Button ContextMenu NormalState ">
-                                                            <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -193px -97px; width: 15px;height:15px;">
+                                                            <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -193px -97px; width: 15px; height: 15px;">
                                                             </div>
                                                         </a>
                                                     </td>
@@ -576,53 +576,58 @@
                                                     <td>
                                                         <%if (item.is_competed == 1)
                                                             { %>
-                                                           <input type="checkbox" id="<%=item.id %>_is_complete" name="<%=item.id %>_is_complete" checked="checked"/>
+                                                        <input type="checkbox" id="<%=item.id %>_is_complete" name="<%=item.id %>_is_complete" checked="checked" />
                                                         <%}
-    else
-    { %>
-                                                           <input type="checkbox" id="<%=item.id %>_is_complete" name="<%=item.id %>_is_complete"/>
+                                                        else
+                                                        { %>
+                                                        <input type="checkbox" id="<%=item.id %>_is_complete" name="<%=item.id %>_is_complete" />
                                                         <%} %>
                                                      
 
                                                     </td>
-                                                    <td><input type="text" id="<%=item.id %>_item_name" name="<%=item.id %>_item_name" value="<%=item.item_name %>"/></td>
                                                     <td>
-                                                        <%if (item.is_important==1)
+                                                        <input type="text" id="<%=item.id %>_item_name" name="<%=item.id %>_item_name" value="<%=item.item_name %>" /></td>
+                                                    <td>
+                                                        <%if (item.is_important == 1)
                                                             { %>
-                                                          <input type="checkbox" id="<%=item.id %>_is_import" name="<%=item.id %>_is_import" checked="checked"/>
+                                                        <input type="checkbox" id="<%=item.id %>_is_import" name="<%=item.id %>_is_import" checked="checked" />
                                                         <%}
-    else
-    { %>
-                                                          <input type="checkbox" id="<%=item.id %>_is_import" name="<%=item.id %>_is_import"/>
+                                                        else
+                                                        { %>
+                                                        <input type="checkbox" id="<%=item.id %>_is_import" name="<%=item.id %>_is_import" />
                                                         <%} %>
                                                     </td>
                                                 </tr>
                                                 <%
-                                                        }}
-                                                 else
-                                                 { %>
+                                                        }
+                                                    }
+                                                    else
+                                                    { %>
                                                 <tr data-val="-1" id="-1" class="HighImportance D" draggable="true">
                                                     <td class="Interaction">
                                                         <div>
                                                             <div class="Decoration Icon DragHandle">
                                                             </div>
                                                             <div class="Num">1</div>
-                                                            <input type="hidden" id="-1_sort_order" name="-1_sort_order" value="1"/>
+                                                            <input type="hidden" id="-1_sort_order" name="-1_sort_order" value="1" />
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <a class="ButtonIcon Button ContextMenu NormalState ">
-                                                            <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -193px -97px; width: 15px;height:15px;">
+                                                            <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -193px -97px; width: 15px; height: 15px;">
                                                             </div>
                                                         </a>
                                                     </td>
                                                     <td></td>
-                                                    <td><input type="checkbox" id="-1_is_complete" name="-1_is_complete"/></td>
-                                                    <td><input type="text" id="-1_item_name" name="-1_item_name"/></td>
-                                                    <td><input type="checkbox" id="-1_is_import" name="-1_is_import"/></td>
-                                                 
+                                                    <td>
+                                                        <input type="checkbox" id="-1_is_complete" name="-1_is_complete" /></td>
+                                                    <td>
+                                                        <input type="text" id="-1_item_name" name="-1_item_name" /></td>
+                                                    <td>
+                                                        <input type="checkbox" id="-1_is_import" name="-1_is_import" /></td>
+
                                                 </tr>
-                                             <%} %>
+                                                <%} %>
                                             </tbody>
                                         </table>
                                     </div>
@@ -641,13 +646,230 @@
                                                 <tbody>
                                                 </tbody>
                                             </table>
-                             <input type="hidden" id="CheckListIds" name="CheckListIds"/>
+                                            <input type="hidden" id="CheckListIds" name="CheckListIds" />
                                         </div>
                                     </div>
                                     <div class="FooterContainer"></div>
                                 </div>
                             </div>
                         </div>
+                        <%if (!isAdd && thisTicket != null){ %>
+                        <div class="Normal Section Timeline">
+                            <div class="Heading" data-toggle-enabled="true">
+                                <div class="Toggle Collapse Toggle2">
+                                    <div class="Vertical"></div>
+                                    <div class="Horizontal"></div>
+                                </div>
+                                <div class="Left"><span class="Text">时间轴</span></div>
+                                <div class="Middle"></div>
+                                <div class="Spacer"></div>
+                                <div class="Right"></div>
+                            </div>
+                            <div class="Content">
+                                <div class="Timeline">
+                                    <div class="Bar Top VerticalSize3">
+                                        <%if (thisTicket.first_activity_time != null)
+                                { %>
+                                        <div class="Dot" style="left: calc(0% - 6px);">
+                                            <div class="Pole VerticalSize3">
+                                                <div class="Flag TargetAchieved Normal" id="z79439d23ded94c029599a3d7dd28627f">
+                                                    <div class="Banner">
+                                                        <div class="Triangle"></div>
+                                                    </div>
+                                                    <div class="Text">初次响应</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="ContextOverlayContainer">
+                                            <div class="TimelineContextOverlay ContextOverlay">
+                                                <div class="Content">
+                                                    <div class="Label">
+                                                        <div class="TimelineIcon OverlayEventMet" style="background-position: -101px -1px;"></div>
+                                                        <div class="Text Achieved">初次响应</div>
+                                                    </div>
+                                                    <div class="DateTime"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTicket.first_activity_time).ToString("yyyy-MM-dd HH:mm:ss") %></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <%} %>
+                                        <%if (thisTicket.resolution_plan_actual_time != null)
+                                { %>
+                                        <div class="Dot" style="left: calc(79% - 6px);">
+                                            <div class="Pole VerticalSize2">
+                                                <div class="Flag TargetAchieved Reverse" id="z084300357f8a4995a1d13e2ae0a6220b">
+                                                    <div class="Banner">
+                                                        <div class="Triangle"></div>
+                                                    </div>
+                                                    <div class="Text">解决方案提供时间</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="ContextOverlayContainer" id="z7efe3f18ca5b4d3c83ca253200492b48">
+                                            <div class="TimelineContextOverlay ContextOverlay">
+                                                <div class="Outline Arrow"></div>
+                                                <div class="Arrow"></div>
+                                                <div class="Content">
+                                                    <div class="Label">
+                                                        <div class="TimelineIcon OverlayEventMet"></div>
+                                                        <div class="Text Achieved">解决方案提供时间</div>
+                                                    </div>
+                                                    <div class="DateTime"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTicket.resolution_plan_actual_time).ToString("yyyy-MM-dd HH:mm:ss") %></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <%} %>
+                                        <%if (thisTicket.resolution_actual_time != null)
+                                { %>
+                                        <div class="Dot" style="left: calc(79% - 6px);">
+                                            <div class="Pole VerticalSize1">
+                                                <div class="Flag TargetAchieved Reverse" id="z5bc5fff464e34e689cdacf4990114637">
+                                                    <div class="Banner">
+                                                        <div class="Triangle"></div>
+                                                    </div>
+                                                    <div class="Text">解决时间</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="ContextOverlayContainer" id="z4f42c44b95244db284b0a5dd5f8709e9">
+                                            <div class="TimelineContextOverlay ContextOverlay">
+                                                <div class="Outline Arrow"></div>
+                                                <div class="Arrow"></div>
+                                                <div class="Content">
+                                                    <div class="Label">
+                                                        <div class="TimelineIcon OverlayEventMet"></div>
+                                                        <div class="Text Achieved">解决时间</div>
+                                                    </div>
+                                                    <div class="DateTime"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTicket.resolution_actual_time).ToString("yyyy-MM-dd HH:mm:ss") %></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <%} %>
+
+                                        <%if (thisTicket.date_completed != null)
+                                { %>
+                                        <div class="Dot" style="left: calc(79% - 6px);">
+                                            <div class="Pole VerticalSize0">
+                                                <div class="Flag TargetAchieved Reverse" id="z3af3911af8374cd8a93aa6d8c31ef64f">
+                                                    <div class="Banner">
+                                                        <div class="Triangle"></div>
+                                                    </div>
+                                                    <div class="Text">完成时间</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="ContextOverlayContainer">
+                                            <div class="TimelineContextOverlay ContextOverlay">
+                                                <div class="Outline Arrow"></div>
+                                                <div class="Arrow"></div>
+                                                <div class="Content">
+                                                    <div class="Label">
+                                                        <div class="TimelineIcon OverlayEventMet"></div>
+                                                        <div class="Text Achieved">完成时间</div>
+                                                    </div>
+                                                    <div class="DateTime"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTicket.date_completed).ToString("yyyy-MM-dd HH:mm:ss") %></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <%} %>
+
+                                        <div class="OccurrenceProgress" style="width: 79%;"></div>
+                                        <div class="SlaBarIndicator" style="width: 0%;"></div>
+                                    </div>
+                                    <div class="Divider"></div>
+                                    <div class="Bar Bottom">
+                                        <div class="TimelineIcon TargetPointer" style="left: calc(81% - 3px);">
+                                            <div class="TimelineIcon Target" id="z85414a86487245f1b11077ad0e2efce0"></div>
+                                        </div>
+                                        <div class="ContextOverlayContainer" id="zf27d5431cf07427691d3372edca92c29">
+                                            <div class="TimelineContextOverlay ContextOverlay">
+                                                <div class="Outline Arrow"></div>
+                                                <div class="Arrow"></div>
+                                                <div class="Content">
+                                                    <div class="Label">
+                                                        <div class="TimelineIcon OverlayTargetMet"></div>
+                                                        <div class="Text Achieved">First Response</div>
+                                                    </div>
+                                                    <div class="DateTime">30/01/2018 09:27 AM</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="TimelineIcon TargetPointer" style="left: calc(89% - 3px);">
+                                            <div class="TimelineIcon Target" id="z554f2ecf460e4b6797ee7b5b38bebf80"></div>
+                                        </div>
+                                        <div class="ContextOverlayContainer" id="z18fc40437a9e4a3cad5bc80e461c37f8">
+                                            <div class="TimelineContextOverlay ContextOverlay">
+                                                <div class="Outline Arrow"></div>
+                                                <div class="Arrow"></div>
+                                                <div class="Content">
+                                                    <div class="Label">
+                                                        <div class="TimelineIcon OverlayTargetMet"></div>
+                                                        <div class="Text Achieved">Resolution Plan</div>
+                                                    </div>
+                                                    <div class="DateTime">30/01/2018 11:27 AM</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="TimelineIcon TargetPointer" style="left: calc(98% - 3px);">
+                                            <div class="TimelineIcon Target" id="z1c4c3ca136d0466c8582986c7eb839a5"></div>
+                                        </div>
+                                        <div class="ContextOverlayContainer" id="z22fcaf4e90e24ddab5975b2bee67ea0f">
+                                            <div class="TimelineContextOverlay ContextOverlay">
+                                                <div class="Outline Arrow"></div>
+                                                <div class="Arrow"></div>
+                                                <div class="Content">
+                                                    <div class="Label">
+                                                        <div class="TimelineIcon OverlayTargetMet"></div>
+                                                        <div class="Text Achieved">Resolution</div>
+                                                    </div>
+                                                    <div class="DateTime">30/01/2018 01:27 PM</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="TimelineIcon TargetPointer" style="left: calc(100% - 3px);">
+                                            <div class="TimelineIcon Target" id="z4b018c06499842449f9c2f0a5cdbb24b"></div>
+                                        </div>
+                                        <div class="ContextOverlayContainer" id="zf8d2cfcad1fd4700817f7fd7fedebb41">
+                                            <div class="TimelineContextOverlay ContextOverlay">
+                                                <div class="Outline Arrow"></div>
+                                                <div class="Arrow"></div>
+                                                <div class="Content">
+                                                    <div class="Label">
+                                                        <div class="TimelineIcon OverlayTargetMet"></div>
+                                                        <div class="Text Achieved">Complete</div>
+                                                    </div>
+                                                    <div class="DateTime">30/01/2018 01:54 PM</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="TargetProgress" style="width: 100%;"></div>
+                                    </div>
+                                    <div class="TicketSlaTimelineStart">
+                                        <div class="TimelineIcon SlaStartLabel" style="background-position: -166px -1px; height: 15px; width: 15px;"></div>
+                                    </div>
+                                    <div class="ContextOverlayContainer">
+                                        <div class="TimelineContextOverlay ContextOverlay">
+                                            <div class="Outline Arrow"></div>
+                                            <div class="Arrow"></div>
+                                            <div class="Content">
+                                                <div class="Label">
+                                                    <div class="TimelineIcon OverlayTicketStart" style=""></div>
+                                                    <div class="Text Normal">工单创建</div>
+                                                </div>
+                                                <% if (thisTicket.sla_start_time != null && thisTicket.sla_start_time == thisTicket.create_time)
+                                { %>
+                                                <div class="Label">
+                                                    <div class="TimelineIcon OverlaySla"></div>
+                                                    <div class="Text OverlaySla">SLA Start</div>
+                                                </div>
+                                                <%} %>
+                                                <div class="DateTime"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisTicket.create_time).ToString("yyyy-MM-dd HH:mm:ss") %></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <%} %>
                         <div class="Normal Section" id="z873ff391d2dd4c20b0943a02e97c4832">
                             <div class="Heading" data-toggle-enabled="true">
                                 <div class="Toggle Collapse Toggle3">
@@ -823,117 +1045,119 @@
 
 
         <!--工单状态更改为完成 -->
-        <div class="Dialog Large" style="margin-left: 400px; margin-top: -1100px; z-index: 100; height: 350px;width:350px; display: none;" id="CompletionReasonDialog">
-                  <div>
-                      <div class="CancelDialogButton" id="CloseStatusReson"></div>
-                    <div class="Active ThemePrimaryColor TitleBar">
-                        <div class="Title"><span class="Text">完成工单</span><span class="SecondaryText"></span></div>
-                    </div>
-                      <div class="DialogHeadingContainer">
-                        <div class="ValidationSummary" id="z3ce7f40373d04055865c00c8e1805891">
-                            <div class="CustomValidation Valid"></div>
-                            <div class="FormValidation Valid">
-                                <div class="ErrorContent">
-                                    <div class="TransitionContainer">
-                                        <div class="IconContainer">
-                                            <div class="Icon"></div>
-                                        </div>
-                                        <div class="TextContainer"><span class="Count"></span><span class="Count Spacer"></span><span class="Message"></span></div>
+        <div class="Dialog Large" style="margin-left: 400px; margin-top: -1100px; z-index: 100; height: 350px; width: 350px; display: none;" id="CompletionReasonDialog">
+            <div>
+                <div class="CancelDialogButton" id="CloseStatusReson"></div>
+                <div class="Active ThemePrimaryColor TitleBar">
+                    <div class="Title"><span class="Text">完成工单</span><span class="SecondaryText"></span></div>
+                </div>
+                <div class="DialogHeadingContainer">
+                    <div class="ValidationSummary" id="z3ce7f40373d04055865c00c8e1805891">
+                        <div class="CustomValidation Valid"></div>
+                        <div class="FormValidation Valid">
+                            <div class="ErrorContent">
+                                <div class="TransitionContainer">
+                                    <div class="IconContainer">
+                                        <div class="Icon"></div>
                                     </div>
+                                    <div class="TextContainer"><span class="Count"></span><span class="Count Spacer"></span><span class="Message"></span></div>
                                 </div>
-                                <div class="ChevronContainer">
-                                    <div class="Up"></div>
-                                    <div class="Down"></div>
+                            </div>
+                            <div class="ChevronContainer">
+                                <div class="Up"></div>
+                                <div class="Down"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ButtonContainer">
+                        <a class="Button ButtonIcon Save NormalState" id="SaveAndCloseCompleteButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">
+                            <asp:Button ID="btnComplete" runat="server" Text="保存" OnClick="btnComplete_Click" /></span></a>
+                    </div>
+                </div>
+
+                <div class="ScrollingContentContainer">
+                    <div class="ScrollingContainer" id="za40a15b2846a4b8a8cab26c764754801" style="position: unset;">
+                        <div class="Medium NoHeading Section" style="margin-left: 10px; width: 250px;">
+                            <div class="Content" style="padding-left: 16px;">
+                                <div class="Normal Column">
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label>原因</label><span class="Required">*</span>
+                                        </div>
+                                    </div>
+                                    <div class="Editor TextArea">
+                                        <div class="InputField">
+                                            <textarea class="Medium" id="reason" name="reason" placeholder="" style="width: 200px; height: 100px;"></textarea>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="AddSoule" name="AddSoule" /><span>追加到解决方案</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="ButtonContainer">
-                            <a class="Button ButtonIcon Save NormalState" id="SaveAndCloseCompleteButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text"><asp:Button ID="btnComplete" runat="server" Text="保存" OnClick="btnComplete_Click" /></span></a>
-                        </div>
-                    </div>
-
-                      <div class="ScrollingContentContainer">
-                        <div class="ScrollingContainer" id="za40a15b2846a4b8a8cab26c764754801" style="position: unset;">
-                                <div class="Medium NoHeading Section" style="margin-left: 10px;width:250px;">
-                                    <div class="Content" style="padding-left:16px;">
-                                        <div class="Normal Column">
-                                            <div class="EditorLabelContainer">
-                                                <div class="Label">
-                                                    <label>原因</label><span class="Required">*</span>
-                                                </div>
-                                            </div>
-                                            <div class="Editor TextArea" >
-                                                <div class="InputField">
-                                                    <textarea class="Medium" id="reason" name="reason" placeholder="" style="width: 200px;height: 100px;"></textarea>
-                                                </div>
-                                                <div>
-                                                <input type="checkbox" id="AddSoule" name="AddSoule" /><span>追加到解决方案</span>
-                                                    </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
                     </div>
                 </div>
+            </div>
         </div>
         <input type="hidden" id="SaveType" name="SaveType" value="" />
         <!--工单状态更改为重新打开 -->
-        <div class="Dialog Large" style="margin-left: 400px; margin-top: -1100px; z-index: 100; height: 350px;width:350px; display: none;" id="ReopenDialog">
+        <div class="Dialog Large" style="margin-left: 400px; margin-top: -1100px; z-index: 100; height: 350px; width: 350px; display: none;" id="ReopenDialog">
             <div>
-                      <div class="CancelDialogButton" id="CloseRepeatReson"></div>
-                    <div class="Active ThemePrimaryColor TitleBar">
-                        <div class="Title"><span class="Text">重新打开工单</span><span class="SecondaryText"></span></div>
-                    </div>
-                      <div class="DialogHeadingContainer">
-                        <div class="ValidationSummary" id="">
-                            <div class="CustomValidation Valid"></div>
-                            <div class="FormValidation Valid">
-                                <div class="ErrorContent">
-                                    <div class="TransitionContainer">
-                                        <div class="IconContainer">
-                                            <div class="Icon"></div>
-                                        </div>
-                                        <div class="TextContainer"><span class="Count"></span><span class="Count Spacer"></span><span class="Message"></span></div>
+                <div class="CancelDialogButton" id="CloseRepeatReson"></div>
+                <div class="Active ThemePrimaryColor TitleBar">
+                    <div class="Title"><span class="Text">重新打开工单</span><span class="SecondaryText"></span></div>
+                </div>
+                <div class="DialogHeadingContainer">
+                    <div class="ValidationSummary" id="">
+                        <div class="CustomValidation Valid"></div>
+                        <div class="FormValidation Valid">
+                            <div class="ErrorContent">
+                                <div class="TransitionContainer">
+                                    <div class="IconContainer">
+                                        <div class="Icon"></div>
                                     </div>
+                                    <div class="TextContainer"><span class="Count"></span><span class="Count Spacer"></span><span class="Message"></span></div>
                                 </div>
-                                <div class="ChevronContainer">
-                                    <div class="Up"></div>
-                                    <div class="Down"></div>
+                            </div>
+                            <div class="ChevronContainer">
+                                <div class="Up"></div>
+                                <div class="Down"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ButtonContainer">
+                        <a class="Button ButtonIcon Save NormalState" id="SaveAndCloseRepeatButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text">
+                            <asp:Button ID="btnRepeat" runat="server" Text="保存" OnClick="btnRepeat_Click" /></span></a>
+                    </div>
+                </div>
+
+                <div class="ScrollingContentContainer">
+                    <div class="ScrollingContainer" id="" style="position: unset;">
+                        <div class="Medium NoHeading Section" style="margin-left: 10px; width: 250px;">
+                            <div class="Content" style="padding-left: 16px;">
+                                <div class="Normal Column">
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label>原因</label><span class="Required">*</span>
+                                        </div>
+                                    </div>
+                                    <div class="Editor TextArea">
+                                        <div class="InputField">
+                                            <textarea class="Medium" id="RepeatReason" name="RepeatReason" placeholder="" style="width: 200px; height: 100px;"></textarea>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="ButtonContainer">
-                            <a class="Button ButtonIcon Save NormalState" id="SaveAndCloseRepeatButton" tabindex="0"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></span><span class="Text"><asp:Button ID="btnRepeat" runat="server" Text="保存" OnClick="btnRepeat_Click" /></span></a>
-                        </div>
-                    </div>
-
-                      <div class="ScrollingContentContainer">
-                        <div class="ScrollingContainer" id="" style="position: unset;">
-                                <div class="Medium NoHeading Section" style="margin-left: 10px;width:250px;">
-                                    <div class="Content" style="padding-left:16px;">
-                                        <div class="Normal Column">
-                                            <div class="EditorLabelContainer">
-                                                <div class="Label">
-                                                    <label>原因</label><span class="Required">*</span>
-                                                </div>
-                                            </div>
-                                            <div class="Editor TextArea" >
-                                                <div class="InputField">
-                                                    <textarea class="Medium" id="RepeatReason" name="RepeatReason" placeholder="" style="width: 200px;height: 100px;"></textarea>
-                                                </div>
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
                     </div>
                 </div>
+            </div>
         </div>
 
-         <div id="BackgroundOverLay"></div>
-         <div class="menu" id="menu" style="background-color: #f8f8f8;">  
+        <div id="BackgroundOverLay"></div>
+        <div class="menu" id="menu" style="background-color: #f8f8f8;">
             <%--菜单--%>
             <ul style="width: 220px;" id="menuUl">
                 <li id="AddToAbove" onclick="AddAbove()">添加到条目上面</li>
@@ -1009,6 +1233,20 @@
         $(this).parent().parent().css("background", colors[color3 % 2]);
         color3++;
     });
+    $(".Dot").mouseleave(function () {
+        $(this).next().children().first().hide();
+    })
+
+    $(".Dot").mouseout(function () {
+        $(this).next().children().first().hide();
+    })
+
+    $(".QuickLaunchButton").mouseover(function () {
+        $(this).children().first().show();
+    })
+    $(".QuickLaunchButton").mouseleave(function () {
+        $(this).children().first().hide();
+    })
 
 
 
@@ -1224,7 +1462,7 @@
         GetDataByInsPro();
         GetDataByAccount();
         GetDataByContact();
-       
+
     })
 
     function ClosePage() {
@@ -1637,8 +1875,7 @@
 
     $("#estimated_hours").blur(function () {
         var thisValue = $(this).val();
-        if (thisValue != "" && !isNaN(thisValue))
-        {
+        if (thisValue != "" && !isNaN(thisValue)) {
             $(this).val(toDecimal2(thisValue));
         }
         else {
@@ -1796,17 +2033,16 @@
 
     // 通过合同获取相关采购订单信息
     function GetPurChaseOrderByContract() {
-         //  新增时：带回的合同有采购订单号，则替换工单的采购订单号
+        //  新增时：带回的合同有采购订单号，则替换工单的采购订单号
         //  编辑时：带回的合同有采购订单号，则提醒用户是否更新采购订单号，并显示未审批提交的成本数量
         var purchase_order_no = $("#purchase_order_no").val();
         var contractHidden = $("#contract_idHidden").val();
         <%if (isAdd)
     { %>
-        if ($.trim(purchase_order_no) != "" && contractHidden!="")
-        {
+        if ($.trim(purchase_order_no) != "" && contractHidden != "") {
             $.ajax({
                 type: "GET",
-                url: "../Tools/ContractAjax.ashx?act=property&contract_id=" + contractHidden +"&property=purchase_order_no",
+                url: "../Tools/ContractAjax.ashx?act=property&contract_id=" + contractHidden + "&property=purchase_order_no",
                 async: false,
                 //dataType: "json",
                 success: function (data) {
@@ -1819,8 +2055,7 @@
         <%}
     else
     { %>
-        if ($.trim(purchase_order_no) != "")
-        {
+        if ($.trim(purchase_order_no) != "") {
             $.ajax({
                 type: "GET",
                 url: "../Tools/TicketAjax.ashx?act=CheckContractPurchaseOrder&contract_id=" + contractHidden + "&purchase_order=" + purchase_order_no +"&ticket_id=<%=thisTicket==null?"":thisTicket.id.ToString() %>",
@@ -1830,14 +2065,13 @@
                     if (data != "") {
                         if (data.isUpdateOrder) {
                             if (contractHidden == "") {
-                                LayerConfirm("本工单工单的采购订单号与合同相同，且本工单有" + data.count+"个为审批并提交的成本其采购订单号与合同相同，是否清空", "是", "否", function () {
+                                LayerConfirm("本工单工单的采购订单号与合同相同，且本工单有" + data.count + "个为审批并提交的成本其采购订单号与合同相同，是否清空", "是", "否", function () {
                                     $("#contract_id").val("");
                                     $("#contract_idHidden").val("");
                                     GetServiceByContract();
                                 }, function () {
                                     // oldContractId
-                                    if (oldContractId != 0 && oldContractId != '0')
-                                    {
+                                    if (oldContractId != 0 && oldContractId != '0') {
                                         $.ajax({
                                             type: "GET",
                                             url: "../Tools/ContractAjax.ashx?act=property&contract_id=" + oldContractId + "&property=name",
@@ -1855,22 +2089,22 @@
                                             }
                                         })
                                     }
-                                   
+
                                 });
                             }
                             else {
                                 LayerConfirm("是否将该合同有采购订单号更新为工单采购订单号；且本工单有" + data.count + "个未审批并提交的成本，是否更新其采购订单号", "是", "否", function () {
-                                        $.ajax({
-                                            type: "GET",
-                                            url: "../Tools/ContractAjax.ashx?act=property&contract_id=" + contractHidden + "&property=purchase_order_no",
-                                            async: false,
-                                            //dataType: "json",
-                                            success: function (data) {
-                                                if (data != "") {
-                                                    $("#purchase_order_no").val(data);
-                                                }
+                                    $.ajax({
+                                        type: "GET",
+                                        url: "../Tools/ContractAjax.ashx?act=property&contract_id=" + contractHidden + "&property=purchase_order_no",
+                                        async: false,
+                                        //dataType: "json",
+                                        success: function (data) {
+                                            if (data != "") {
+                                                $("#purchase_order_no").val(data);
                                             }
-                                        })
+                                        }
+                                    })
                                 }, function () { });
                             }
                         }
@@ -1909,15 +2143,14 @@
     // 3 部分状态关联问题时不能进行更改
     $("#ticket_type_id").change(function () {
         <%if (!isAdd)
-        { %>
+    { %>
         return CanEditType();
         <%}%>
     })
     // 是否可以更改工单状态的
-    function CanEditType()
-    {
+    function CanEditType() {
         // 这个工单关联的问题或者事故的工单Id
-        var thisProTicId = '<%=thisTicket!=null&&thisTicket.problem_ticket_id!=null?thisTicket.problem_ticket_id.ToString():"" %>'; 
+        var thisProTicId = '<%=thisTicket!=null&&thisTicket.problem_ticket_id!=null?thisTicket.problem_ticket_id.ToString():"" %>';
         var oldTicketType = '<%=thisTicket!=null&&thisTicket.ticket_type_id!=null?thisTicket.ticket_type_id.ToString():"" %>';
         var newTicketType = $("#ticket_type_id").val();
         var thisProTicType = "";
@@ -1934,41 +2167,34 @@
                 }
             })
         }
-        
 
-        if (oldTicketType == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.SERVICE_REQUEST %>' || oldTicketType == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.ALARM %>')
-        {
+
+        if (oldTicketType == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.SERVICE_REQUEST %>' || oldTicketType == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.ALARM %>') {
             return true;
         }
         else if (oldTicketType == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.CHANGE_REQUEST %>') // 变更申请
         {
-            if (thisProTicId != "")
-            {
+            if (thisProTicId != "") {
                 LayerMsg("工单关联事故/问题不能修改！");
                 return false;
             }
-            else
-            {
+            else {
                 if (newTicketType != '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.CHANGE_REQUEST %>') {
                     LayerConfirm("您即将更改变更申请的工单类型。 变更信息和批准人信息将保留在工单上，但除非将工单类型更改回来，否则不能查看。 你确定你要继续吗？", "是", "否", function () { }, function () { $("#ticket_type_id").val(oldTicketType); });
                     return true;
                 }
             }
-            
+
         }
-        else if (oldTicketType == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.INCIDENT %>' )
-        {
-            if (thisProTicId != "" && thisProTicType =='<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.PROBLEM %>')
-            {
+        else if (oldTicketType == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.INCIDENT %>') {
+            if (thisProTicId != "" && thisProTicType =='<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.PROBLEM %>') {
                 LayerMsg("工单关联问题不能修改！");
                 return false;
             }
-           
+
         }
-        else if (oldTicketType == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.PROBLEM %>')
-        {
-            if (thisProTicId != "" && thisProTicType == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.INCIDENT %>')
-            {
+        else if (oldTicketType == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.PROBLEM %>') {
+            if (thisProTicId != "" && thisProTicType == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.INCIDENT %>') {
                 LayerMsg("工单关联事故不能修改！");
                 return false;
             }
@@ -2000,14 +2226,14 @@
 
     $("#btnRepeat").click(function () {
         var RepeatReason = $("#RepeatReason").val();
-         <%var  RepeatSet = new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_TICKET_COMPLETE_REASON);
+         <%var RepeatSet = new EMT.DoneNOW.BLL.SysSettingBLL().GetSetById(EMT.DoneNOW.DTO.SysSettingEnum.SDK_TICKET_COMPLETE_REASON);
     if (RepeatSet != null && RepeatSet.setting_value == "1")
     {
         %>
         if ($.trim(RepeatReason) == '') {
-              LayerMsg("请填写重新打开原因");
-              return false;
-          }
+            LayerMsg("请填写重新打开原因");
+            return false;
+        }
     <%}
     %>
     })
@@ -2082,31 +2308,30 @@
 
 
         GetCheckIds();
-    
+
         var oldStatus = '<%=thisTicket!=null?thisTicket.status_id.ToString():"" %>';
         if (status_id == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>') {
             <%if (!isAdd)
-            { %>
+    { %>
             $("#BackgroundOverLay").show();
             $("#CompletionReasonDialog").show();
             return false;
             <%}%>
         }
         // 状态是重新打开的时候需要输入原因 todo 重新打开类型
-        else if (status_id != '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>' && oldStatus == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>')
-        {
+        else if (status_id != '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>' && oldStatus == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>') {
              <%if (!isAdd)
-            { %>
+    { %>
             // 状态从完成改为其他状态--打开重新打开，填写原因
             $("#BackgroundOverLay").show();
             $("#ReopenDialog").show();
             return false;
             <%}%>
         }
-        
 
 
-     
+
+
         return true;
     }
     $("#CloseStatusReson").click(function () {
@@ -2125,7 +2350,7 @@
     function AddCheckList(copyNum, upOrDown, upOrDownId) {
         // copyNum 复制的Id 没有代表新增不复制--（复制不考虑其他，名称复制后名称加入‘复制’）
         pageCheckId--;
-        var newCheckHtml = "<tr data-val='" + pageCheckId + "' id='" + pageCheckId + "'  class='HighImportance D' draggable='true'><td class='Interaction' ><div><div class='Decoration Icon DragHandle'></div><div class='Num'></div> <input type='hidden' id='" + pageCheckId + "_sort_order' name='" + pageCheckId +"_sort_order' value=''/></div></td ><td><a class='ButtonIcon Button ContextMenu NormalState'><div class='Icon' style='background: url(../Images/ButtonBarIcons.png) no-repeat -193px -97px; width: 15px;height:15px;'></div></a></td><td></td><td><input type='checkbox' id='" + pageCheckId + "_is_complete' name='" + pageCheckId + "_is_complete' /></td><td><input type='text' id='" + pageCheckId + "_item_name' name='" + pageCheckId + "_item_name' /></td><td><input type='checkbox' id='" + pageCheckId + "_is_import' name='" + pageCheckId +"_is_import' /></td></tr>";
+        var newCheckHtml = "<tr data-val='" + pageCheckId + "' id='" + pageCheckId + "'  class='HighImportance D' draggable='true'><td class='Interaction' ><div><div class='Decoration Icon DragHandle'></div><div class='Num'></div> <input type='hidden' id='" + pageCheckId + "_sort_order' name='" + pageCheckId + "_sort_order' value=''/></div></td ><td><a class='ButtonIcon Button ContextMenu NormalState'><div class='Icon' style='background: url(../Images/ButtonBarIcons.png) no-repeat -193px -97px; width: 15px;height:15px;'></div></a></td><td></td><td><input type='checkbox' id='" + pageCheckId + "_is_complete' name='" + pageCheckId + "_is_complete' /></td><td><input type='text' id='" + pageCheckId + "_item_name' name='" + pageCheckId + "_item_name' /></td><td><input type='checkbox' id='" + pageCheckId + "_is_import' name='" + pageCheckId + "_is_import' /></td></tr>";
 
 
 
@@ -2139,7 +2364,7 @@
         } else {
             $("#Drap").append(newCheckHtml);
         }
-      
+
         SortNum();
         if (copyNum != "")  // 复制的  相关赋值  todo 关联的知识库的赋值
         {
@@ -2149,10 +2374,10 @@
             if ($("#" + copyNum + "_is_import").is(":checked")) {
                 $("#" + pageCheckId + "_is_import").prop("checked", true);
             }
-            $("#" + pageCheckId + "_item_name").val($("#" + copyNum + "_item_name").val()+"(复制)");
+            $("#" + pageCheckId + "_item_name").val($("#" + copyNum + "_item_name").val() + "(复制)");
         }
         BindMenu();
-        
+
     }
     // 为页面的检查单数字排序
     function SortNum() {
@@ -2165,7 +2390,7 @@
     }
 
     $("#AddCheckListButton").click(function () {
-        AddCheckList("","","");
+        AddCheckList("", "", "");
     })
     var entityid = "";
     var Times = 0;
@@ -2205,14 +2430,14 @@
             if (winWidth < clientWidth && rightWidth < menuWidth) {
                 menu.style.left = winWidth - menuWidth - 18 + 103 + scrLeft + "px";
             } else {
-                menu.style.left = Left+13 + "px";
+                menu.style.left = Left + 13 + "px";
             }
 
-           
+
             if (winHeight < clientHeight && bottomHeight < menuHeight) {
-                menu.style.top = winHeight - menuHeight - 55  + scrTop + "px";
+                menu.style.top = winHeight - menuHeight - 55 + scrTop + "px";
             } else {
-                menu.style.top = Top-85 + "px";
+                menu.style.top = Top - 85 + "px";
             }
             document.onclick = function () {
                 menu.style.display = "none";
@@ -2225,7 +2450,7 @@
 
     // 添加到上面
     function AddAbove() {
-       
+
         if (entityid != "") {
             AddCheckList("", "Up", entityid);
         }
@@ -2239,7 +2464,7 @@
     // 复制操作
     function CopyThisItem() {
         if (entityid != "") {
-            AddCheckList(entityid,"","");
+            AddCheckList(entityid, "", "");
         }
     }
     // 删除任务单
@@ -2259,7 +2484,7 @@
             }
         })
         if (ckIds != "") {
-            ckIds = ckIds.substring(0, ckIds.length-1);
+            ckIds = ckIds.substring(0, ckIds.length - 1);
         }
         $("#CheckListIds").val(ckIds);
     }

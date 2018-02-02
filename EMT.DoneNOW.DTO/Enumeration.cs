@@ -79,6 +79,7 @@ namespace EMT.DoneNOW.DTO
         INVOICE_TEMPLATE_BODY_ITEMIZE =142,      //发票模板主体-逐项列出
         INVOICE_TEMPLATE_BODY_ORDER_BY =143,     //发票模板主体-排序条件
         NOTE_PUBLISH_TYPE = 146,                 // 合同/项目等备注发布类型
+        ATTACHMENT_PUBLISH_TYPE = 147,           // 附件发布类型
         TASK_LIBRARY_CATE  = 149,                 // 任务库种类
         ITEM_DESC_DISPLAY_TYPE = 155,               // 采购项描述信息显示内容类型
         TICKET_CATE = 167,                       // 工单种类

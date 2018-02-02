@@ -111,6 +111,9 @@ namespace EMT.DoneNOW.BLL
                 }
 
                 var statusGeneral = new d_general_dal().FindNoDeleteById(updateTicket.status_id);
+
+                var oldStatusGeneral = new d_general_dal().FindNoDeleteById(oldTicket.status_id);
+
                 if (statusGeneral != null && !string.IsNullOrEmpty(statusGeneral.ext1))
                 {
                     // 根据状态事件，执行相应的操作
@@ -124,6 +127,29 @@ namespace EMT.DoneNOW.BLL
                             break;
                         default:
                             break;
+                    }
+                    if (updateTicket.sla_id != null)
+                    {
+                        // sdk_task_sla_event
+                        var stseDal = new sdk_task_sla_event_dal();
+                        var thisTaskSla = stseDal.GetTaskSla(updateTicket.id);
+                        if (thisTaskSla != null)
+                        {
+                            thisTaskSla = new sdk_task_sla_event() {
+                                id= stseDal.GetNextIdCom(),
+                                create_time = timeNow,
+                                update_time = timeNow,
+                                create_user_id = userId,
+                                update_user_id = userId,
+                                task_id = updateTicket.id,
+                            };
+                        }
+
+                        if(updateTicket.sla_start_time!=null&&statusGeneral.ext1== ((int)SLA_EVENT_TYPE.FIRSTRESPONSE).ToString())
+                        {
+                            thisTaskSla.first_response_resource_id = userId;
+                            thisTaskSla.first_response_elapsed_hours += 0; 
+                        }
                     }
                 }
                 EditTicket(updateTicket,userId);
@@ -166,6 +192,10 @@ namespace EMT.DoneNOW.BLL
         public bool InsertTicket(sdk_task ticket, long user_id)
         {
             var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            if (ticket.sla_id != null)
+            {
+                ticket.sla_start_time = timeNow;
+            }
             ticket.id = _dal.GetNextIdCom();
             ticket.create_time = timeNow;
             ticket.create_user_id = user_id;
@@ -451,9 +481,50 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 新增工单备注
         /// </summary>
-        public bool AddTicketNote()
+        public bool AddTicketNote(TaskNoteDto param,long ticket_id, long user_id)
         {
-            return false;
+            try
+            {
+                var thisTicket = _dal.FindNoDeleteById(ticket_id);
+                if (thisTicket == null)
+                    return false;
+                if (thisTicket.status_id != (int)DicEnum.TICKET_STATUS.DONE && thisTicket.status_id != param.status_id)
+                {
+                    thisTicket.status_id = param.status_id;
+                    EditTicket(thisTicket,user_id);
+                }
+
+                var caDal = new com_activity_dal();
+                var thisActivity = param.taskNote;
+                thisActivity.ticket_id = ticket_id;
+                thisActivity.id = caDal.GetNextIdCom();
+                thisActivity.oid = 0;
+                thisActivity.object_id = thisTicket.id;
+                thisActivity.account_id = thisTicket.account_id;
+                caDal.Insert(thisActivity);
+                OperLogBLL.OperLogAdd<com_activity>(thisActivity, thisActivity.id, user_id, OPER_LOG_OBJ_CATE.ACTIVITY, "新增备注");
+
+                if (param.filtList != null && param.filtList.Count > 0)
+                {
+                    var attBll = new AttachmentBLL();
+                    foreach (var thisFile in param.filtList)
+                    {
+                        if (thisFile.type_id == ((int)DicEnum.ATTACHMENT_TYPE.ATTACHMENT).ToString())
+                        {
+                            attBll.AddAttachment((int)ATTACHMENT_OBJECT_TYPE.NOTES, thisActivity.id, (int)DicEnum.ATTACHMENT_TYPE.ATTACHMENT, thisFile.new_filename, "", thisFile.old_filename, thisFile.fileSaveName, thisFile.conType, thisFile.Size, user_id);
+                        }
+                        else
+                        {
+                            attBll.AddAttachment((int)ATTACHMENT_OBJECT_TYPE.NOTES, thisActivity.id, int.Parse(thisFile.type_id), thisFile.new_filename, thisFile.old_filename, null, null, null, 0, user_id);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>

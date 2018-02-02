@@ -31,6 +31,24 @@ namespace EMT.DoneNOW.Web.Project {
         protected global::System.Web.UI.WebControls.Button save_close;
         
         /// <summary>
+        /// save_new 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button save_new;
+        
+        /// <summary>
+        /// save_modify 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button save_modify;
+        
+        /// <summary>
         /// action_type_id 控件。
         /// </summary>
         /// <remarks>
@@ -101,6 +119,33 @@ namespace EMT.DoneNOW.Web.Project {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox Cksys;
+        
+        /// <summary>
+        /// CkAccTeam 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CkAccTeam;
+        
+        /// <summary>
+        /// CkPriRes 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CkPriRes;
+        
+        /// <summary>
+        /// CkOtherRes 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CkOtherRes;
         
         /// <summary>
         /// CCMe 控件。
