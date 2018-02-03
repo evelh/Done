@@ -47,6 +47,7 @@ namespace EMT.DoneNOW.DTO
         SEX = 49,
         EMAILTYPE = 50,
         OUTSOURCE_SECURITY = 51,                  //外包权限
+        TIME_OFF_PERIOD_TYPE = 56,              // 休假策略：累计增长周期类型
         ATTACHMENT_TYPE = 62,                   // 附件类型
         DEPARTMENT_CATE = 64,                     //部门：类型
         LIMIT_TYPE = 76,                         //系统权限：类型 取值 有无、全部部分 等
@@ -734,6 +735,8 @@ namespace EMT.DoneNOW.DTO
             PURCHASE_RECEIVE = 1402,                    // 采购接收
             PURCHASE_RECEIVE_SN = 1403,                 // 采购接收串号
             PROJECT_TASK_INFORMATION = 1418,            // 任务的扩展信息（自定义信息）
+            IVT_SERVICE = 1423,                         // 服务
+            IVT_SERVICE_BUNDLE = 1424,                  // 服务包
         }
 
         /// <summary>

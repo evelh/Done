@@ -418,6 +418,8 @@
     <Content Include="RichText\js\third-party\video-js\font\vjs.ttf" />
     <Content Include="RichText\js\third-party\video-js\font\vjs.woff" />
     <Content Include="Scripts\Search\approved_report.js" />
+    <Content Include="Scripts\Search\ContractService.js" />
+    <Content Include="Scripts\Search\ContractServiceTransHistory.js" />
     <Content Include="Scripts\Search\contract_project.js" />
     <Content Include="Scripts\Search\Holidays.js" />
     <Content Include="Scripts\Search\HolidaySet.js" />
@@ -435,6 +437,7 @@
     <Content Include="Scripts\Search\purchase_order_history.js" />
     <Content Include="SysSetting\AddTimeOffPolicy.aspx" />
     <Content Include="ServiceDesk\TicketManage.aspx" />
+    <Content Include="SysSetting\Service.aspx" />
     <Content Include="TimeSheet\ExpenseReportDetail.aspx" />
     <Content Include="TimeSheet\RefuseReportReason.aspx" />
     <Content Include="TimeSheet\ReportOperation.aspx" />
@@ -1850,13 +1853,20 @@
     </Compile>
     <Compile Include="SysSetting\AddTimeOffPolicy.aspx.designer.cs">
       <DependentUpon>AddTimeOffPolicy.aspx</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="ServiceDesk\TicketManage.aspx.cs">
       <DependentUpon>TicketManage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ServiceDesk\TicketManage.aspx.designer.cs">
       <DependentUpon>TicketManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\Service.aspx.cs">
+      <DependentUpon>Service.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\Service.aspx.designer.cs">
+      <DependentUpon>Service.aspx</DependentUpon>
     </Compile>
     <Compile Include="TimeSheet\ExpenseReportDetail.aspx.cs">
       <DependentUpon>ExpenseReportDetail.aspx</DependentUpon>

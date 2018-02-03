@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using EMT.DoneNOW.BLL;
 using EMT.DoneNOW.Core;
+using EMT.DoneNOW.DTO;
 
 namespace EMT.DoneNOW.Web.SysSetting
 {
@@ -13,12 +14,15 @@ namespace EMT.DoneNOW.Web.SysSetting
     {
         protected bool isAdd;
         protected List<tst_timeoff_policy_item> policyItems;
+        protected List<DictionaryEntryDto> periodList;
         private TimeOffPolicyBLL bll = new TimeOffPolicyBLL();
         protected void Page_Load(object sender, EventArgs e)
         {
             string id = Request.QueryString["id"];
             if (!IsPostBack)
             {
+                periodList = new GeneralBLL().GetDicValues(GeneralTableEnum.TIME_OFF_PERIOD_TYPE);
+
                 if (string.IsNullOrEmpty(id))
                 {
                     policyItems = bll.GetPolicyItemByPolicyId(0);

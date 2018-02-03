@@ -108,51 +108,52 @@
                     </div>
                     <div>
                         <table border="none" cellspacing="" cellpadding="">
+                            <tr>
+                                <th>员工</th>
+                                <th>生效开始日期</th>
+                                <th>生效结束日期</th>
+                            </tr>
                         </table>
                     </div>
                 </div>
 
             </div>
             <%foreach (var item in policyItems) { %>
-            <div class="content clear" style="width: 100%;">
+            <div class="content clear" style="width: 100%;display:none;">
                 <div class="text">设置此休假类别的级别。累计分配的时间将在每个累计增长周期的最后一天获得（累计增长量=年小时数/当年的总累计增长周期数）：统一分配的时间在1月1日获得。如果员工关联的新休假方案在1月1日之后，也不会丢失累计增长或统一分配的时间。</div>
 
                 <div class="information clear">
                     <p class="informationTitle">常规信息</p>
                     <div>
                         <div class="text">如果时间为累计分配，请为此休假方案选择累计增长周期。一旦此假期方案关联了一个或多个员工，关联词休假类别的类型、累计增长周期和级别都不能修改。</div>
+                        <table border="none" cellspacing="" cellpadding="" style="width:400px;">
+                            <tr>
+                                <td>
+                                    <div class="clear">
+                                        <label style="font-weight:normal;">分配类型</label>
+                                        <input type="radio" value="11" checked="checked" name="periodType<%=item.cate_id %>" style="width:16px;height:16px;" />统一分配
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="clear">
+                                        <label></label>
+                                        <input type="radio" value="2" name="periodType<%=item.cate_id %>" style="width:16px;height:16px;" />累计分配
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                         <table border="none" cellspacing="" cellpadding="">
                             <tr>
                                 <td>
                                     <div class="clear">
-                                        <label>名称</label>
-                                        <input type="text" name="vendor_invoice_no" <%if (!isAdd)
-                                            { %> value="" <%} %> />
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="clear">
-                                        <label>描述</label>
-                                        <input type="text" name="vendor_invoice_no" <%if (!isAdd)
-                                            { %> value="" <%} %> />
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="clear">
-                                        <label>激活</label>
-                                        <input type="checkbox" />
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="clear">
-                                        <label>默认（针对新员工）</label>
-                                        <input type="checkbox" />
+                                        <label style="font-weight:normal;">增长周期</label>
+                                        <select id="period<%=item.cate_id %>" name="period<%=item.cate_id %>" disabled="disabled">
+                                            <%foreach (var period in periodList) { %>
+                                            <option value="<%=period.val %>" <%if (period.show.Equals("半月")) { %> selected="selected" <%} %> ><%=period.show %></option>
+                                            <%} %>
+                                        </select>
                                     </div>
                                 </td>
                             </tr>
@@ -163,10 +164,20 @@
                     <p class="informationTitle">关联员工</p>
                     <div class="text">请调整员工的生效开始日期，编辑关联。不能编辑生效截止日期。</div>
                     <div class="text">
-                        <input type="button" value="关联员工" id="assRes" />
+                        <input type="button" value="新增"  />
                     </div>
                     <div>
                         <table border="none" cellspacing="" cellpadding="">
+                            <tr>
+                                <th>工作年限（月）</th>
+                                <th>每年假期时间（小时）</th>
+                                <th>滚存限额（统一分配用）</th>
+                            </tr>
+                            <tr>
+                                <td>满0个月</td>
+                                <td>0.0000</td>
+                                <td>0.0000</td>
+                            </tr>
                         </table>
                     </div>
                 </div>
