@@ -54,7 +54,14 @@ namespace EMT.DoneNOW.Web
                         }
                         else
                         {
-                            Session["page_head"] = this.head.Text = HttpUtility.HtmlDecode(data.page_header_html).Replace("\"", "'");
+                            if (!string.IsNullOrEmpty(Request.QueryString["op"]))
+                            {
+
+                            }
+                            else
+                            {
+                                Session["page_head"] = this.head.Text = HttpUtility.HtmlDecode(data.page_header_html).Replace("\"", "'");
+                            }
                         }
                     }
                     //头部
@@ -71,7 +78,15 @@ namespace EMT.DoneNOW.Web
                         }
                         else
                         {
-                            Session["quote_head"] = this.top.Text = HttpUtility.HtmlDecode(data.quote_header_html).Replace("\"", "'");
+                            if (!string.IsNullOrEmpty(Request.QueryString["op"]))
+                            {
+
+                            }
+                            else
+                            {
+                                Session["quote_head"] = this.top.Text = HttpUtility.HtmlDecode(data.quote_header_html).Replace("\"", "'");
+                            }
+                            
                         }
 
                     }
@@ -161,7 +176,15 @@ namespace EMT.DoneNOW.Web
                         }
                         else
                         {
-                            Session["quote_foot"] = this.bottom.Text = HttpUtility.HtmlDecode(data.quote_footer_html).Replace("\"", "'");
+                            if (!string.IsNullOrEmpty(Request.QueryString["op"]))
+                            {
+
+                            }
+                            else
+                            {
+                                Session["quote_foot"] = this.bottom.Text = HttpUtility.HtmlDecode(data.quote_footer_html).Replace("\"", "'");
+                            }
+                         
                         }
 
                     }
@@ -178,7 +201,15 @@ namespace EMT.DoneNOW.Web
                         }
                         else
                         {
-                            Session["page_foot"] = this.foot.Text = HttpUtility.HtmlDecode(data.page_footer_html).Replace("\"", "'");
+                            if (!string.IsNullOrEmpty(Request.QueryString["op"]))
+                            {
+
+                            }
+                            else
+                            {
+                                Session["page_foot"] = this.foot.Text = HttpUtility.HtmlDecode(data.page_footer_html).Replace("\"", "'");
+                            }
+                          
                         }
                     }
 
@@ -191,7 +222,16 @@ namespace EMT.DoneNOW.Web
                         }
                         else
                         {
-                            Session["page_appendix"] = HttpUtility.HtmlDecode(data.quote_footer_notes).Replace("\"", "'");
+                            if (!string.IsNullOrEmpty(Request.QueryString["op"]))
+                            {
+
+                            }
+                            else
+                            {
+                                Session["page_appendix"] = HttpUtility.HtmlDecode(data.quote_footer_notes).Replace("\"", "'");
+
+                            }
+                               
                         }
                     }
                 }

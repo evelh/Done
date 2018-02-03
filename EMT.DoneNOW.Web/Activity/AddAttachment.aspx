@@ -77,6 +77,19 @@
                               <input type='file' id='att' name='attFile' style='width:260px;' />
                             </div>
                           </td>
+                            <%if (objType == (int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_OBJECT_TYPE.TASK){ %>
+                          <td class="FieldLabel" width="50%">发布类型
+                            <div>
+                              <span style="display: inline-block;">
+                                <select id="pubType" name="pubType" class="txtBlack8Class" style="width: 264px;">
+                                  <%if (pubTypeList != null && pubTypeList.Count > 0){
+                                          foreach (var type in pubTypeList){ %>
+                                  <option value="<%=type.id %>"><%=type.name %></option>
+                                  <%}}%>
+                                </select>
+                              </span>
+                            </div>
+                          </td><%} %>
                         </tr>
                       </tbody>
                     </table>

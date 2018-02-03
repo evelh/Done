@@ -15,11 +15,13 @@ namespace EMT.DoneNOW.Web.Contract
     {
         protected bool isAdd = true;
         protected ctt_contract_cost conCost = null;
-        protected ctt_contract contract = null;
-        protected pro_project thisProject = null;
-        protected sdk_task thisTask = null;
+        protected ctt_contract contract = null;      // 相关合同
+        protected pro_project thisProject = null;    // 相关项目
+        protected sdk_task thisTask = null;          // 相关任务
+        protected sdk_task thisTicket = null;        // 相关工单
         protected Dictionary<string, object> dic = new ContractBLL().GetField();
         protected d_cost_code costCode = null;
+        protected crm_account thisAccount = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -28,7 +30,7 @@ namespace EMT.DoneNOW.Web.Contract
                 var contract_id = Request.QueryString["contract_id"];
                 var project_id = Request.QueryString["project_id"];
                 var task_id = Request.QueryString["task_id"];
-
+                var ticket_id = Request.QueryString["ticket_id"];
                 var costCodeId = Request.QueryString["cost_code_id"];
                 if (!string.IsNullOrEmpty(costCodeId))
                 {
@@ -86,6 +88,12 @@ namespace EMT.DoneNOW.Web.Contract
                         if (conCost.task_id != null)
                         {
                             thisTask = new sdk_task_dal().FindNoDeleteById((long)conCost.task_id);
+                            if (thisTask.type_id == (int)DicEnum.TASK_TYPE.SERVICE_DESK_TICKET)
+                            {
+                                thisTask = null;
+                                thisTicket = new sdk_task_dal().FindNoDeleteById((long)conCost.task_id);
+                                
+                            }
                         }
 
                         if (!IsPostBack)
@@ -120,6 +128,14 @@ namespace EMT.DoneNOW.Web.Contract
                     {
                         thisProject = new pro_project_dal().FindNoDeleteById((long)thisTask.project_id);
                     }
+                }
+                if (!string.IsNullOrEmpty(ticket_id))
+                {
+                    thisTicket = new sdk_task_dal().FindNoDeleteById(long.Parse(ticket_id));
+                }
+                if (thisTicket != null)
+                {
+                    thisAccount = new CompanyBLL().GetCompany(thisTicket.account_id);
                 }
 
                 status_id.DataSource = statuList;
@@ -195,6 +211,12 @@ namespace EMT.DoneNOW.Web.Contract
                     thisConCost.change_order_hours = 0;
                 }
                 //thisConCost.change_order_hours = thisConCost.change_order_hours;
+                thisConCost.sub_cate_id = (int)DicEnum.BILLING_ENTITY_SUB_TYPE.TICKET_COST;
+                thisConCost.contract_id = null;
+            }
+            if (thisTicket != null)
+            {
+                thisConCost.task_id = thisTicket.id;
                 thisConCost.sub_cate_id = (int)DicEnum.BILLING_ENTITY_SUB_TYPE.TICKET_COST;
                 thisConCost.contract_id = null;
             }

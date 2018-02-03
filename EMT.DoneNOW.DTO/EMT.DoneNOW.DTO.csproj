@@ -89,6 +89,7 @@
     <Compile Include="SdkWorkEntryDto.cs" />
     <Compile Include="TaskNoteDto.cs" />
     <Compile Include="TaskSaveDto.cs" />
+    <Compile Include="TicketManageDto.cs" />
     <Compile Include="VendorDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryConditionParaDto.cs" />

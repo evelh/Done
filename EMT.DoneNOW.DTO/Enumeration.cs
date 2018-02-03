@@ -50,6 +50,7 @@ namespace EMT.DoneNOW.DTO
         TIME_OFF_PERIOD_TYPE = 56,              // 休假策略：累计增长周期类型
         ATTACHMENT_TYPE = 62,                   // 附件类型
         DEPARTMENT_CATE = 64,                     //部门：类型
+        ACCOUNT_SUFFIX = 75,                     // 客户名称后缀
         LIMIT_TYPE = 76,                         //系统权限：类型 取值 有无、全部部分 等
         LIMIT_TYPE_VALUE = 77,                    //系统权限：类型详情 取值 有无（有、无）、全部部分（全部、我的、无）等
         MATERIAL_CODE_TO_USE = 80,              // 系统管理：系统配置：配送报价项转为账单时使用的物料代码
@@ -68,15 +69,21 @@ namespace EMT.DoneNOW.DTO
         ACCOUNT_DEDUCTION_TYPE=121,              //审批并提交操作类型
         PROJECT_TYPE = 123,                       // 项目类型
         PROJECT_STATUS =124,                       // 项目：项目状态
-        PROJECT_LINE_OF_BUSINESS=125,             // 项目业务范围
+        PROJECT_LINE_OF_BUSINESS=125,              // 项目业务范围
+        TICKET_TYPE = 129,                         // 工单类型
         TASK_TYPE =130,                            //任务类型
-        TICKET_STATUS=135,                          // 工单状态
+        TASK_ISSUE_TYPE = 132,                     // 工单问题类型
+        TASK_PRIORITY_TYPE = 134,                  // 工单优先级
+        TICKET_STATUS =135,                        // 工单状态
+        TASK_SOURCE_TYPES = 137,                   // 任务来源
         INVOICE_TEMPLATE_BODY_GROUP_BY =141,      //发票模板主体-分组条件
         INVOICE_TEMPLATE_BODY_ITEMIZE =142,      //发票模板主体-逐项列出
         INVOICE_TEMPLATE_BODY_ORDER_BY =143,     //发票模板主体-排序条件
         NOTE_PUBLISH_TYPE = 146,                 // 合同/项目等备注发布类型
+        ATTACHMENT_PUBLISH_TYPE = 147,           // 附件发布类型
         TASK_LIBRARY_CATE  = 149,                 // 任务库种类
         ITEM_DESC_DISPLAY_TYPE = 155,               // 采购项描述信息显示内容类型
+        TICKET_CATE = 167,                       // 工单种类
     }
 
     /// <summary>
@@ -113,6 +120,7 @@ namespace EMT.DoneNOW.DTO
             IN_CHARGE = 27,                 // 计费中
             SALES = 28,                     // 销售
             CANCELLATION = 29,              // 注销
+            TASK_INFO = 1490,               // 任务详情
             TASK_NOTE = 1491,               // 任务备注
             CONTRACT_NOTE = 1492,           // 合同备注
             PROJECT_EMAIL = 1493,           // 项目Email
@@ -131,7 +139,7 @@ namespace EMT.DoneNOW.DTO
             PROJECT_NOTE = 1497,                  // 项目备注
             CONTRACT_NOTE = 1498,                 // 合同备注
             TASK_NOTE = 1499,                       // 任务备注
-            
+            TICKET_NOTE = 1500,                   // 工单备注
         }
 
 
@@ -140,9 +148,9 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum ACCOUNT_ALERT_TYPE
         {
-            COMPANY_DETAIL_ALERT = 36,
-            NEW_TICKET_ALERT = 37,
-            TICKET_DETAIL_ALERT = 38,
+            COMPANY_DETAIL_ALERT = 36,  // 客户提醒
+            NEW_TICKET_ALERT = 37,      // 新建工单提醒
+            TICKET_DETAIL_ALERT = 38,   // 工单进度提醒
         }
 
         /// <summary>
@@ -324,8 +332,8 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum UDF_CATE
         {
-            TASK = 511,
-            TICKETS = 512,
+            TASK = 511,            // 任务
+            TICKETS = 512,         // 工单
             SITE = 513,             // 站点
             CONFIGURATION = 514,
             PRODUCTS = 515,         //产品
@@ -426,6 +434,14 @@ namespace EMT.DoneNOW.DTO
             NORMAL = 616,     // 正常
             FREEZE = 617,     // 冻结
             EXPIRED = 618,    // 过期
+        }
+        /// <summary>
+        /// 自定义字段分组
+        /// </summary>
+        public enum UDF_FILED_GROUP
+        {
+            TASK = 627,      // 任务
+            TICKET = 628,    // 工单
         }
 
         /// <summary>
@@ -572,6 +588,7 @@ namespace EMT.DoneNOW.DTO
             PROJECT_TASK = 1539,                    // 项目详情，task列表
             OPPORTUNITY_VIEW_ATTACHMENT = 1540,     // 商机详情-附件查询
             SALES_ORDER_VIEW_ATTACHMENT = 1541,     // 销售订单详情-附件查询
+            INSPRODUCT_CALLBACK=1542,               // 配置项的查找带回
             PRO_EXPENSE_REPORT_CALLBACK = 1543,            // 费用报表查找带回 
             PROJECT_CALLBACK = 1544,                // 项目查找带回
             APPROVE_EXPENSE = 1545,                 // 费用审批
@@ -735,6 +752,8 @@ namespace EMT.DoneNOW.DTO
             PURCHASE_RECEIVE = 1402,                    // 采购接收
             PURCHASE_RECEIVE_SN = 1403,                 // 采购接收串号
             PROJECT_TASK_INFORMATION = 1418,            // 任务的扩展信息（自定义信息）
+            TICKET_CHECK_LIST = 1420,                   // 工单的检查单
+            TICKET_SERVICE_REQUEST = 1421,              // 服务请求审批人信息
             IVT_SERVICE = 1423,                         // 服务
             IVT_SERVICE_BUNDLE = 1424,                  // 服务包
         }
@@ -1073,6 +1092,17 @@ namespace EMT.DoneNOW.DTO
             USE_INSERT =1489,                   // 手工输入地址
         }
         /// <summary>
+        /// 工单类型 - 129
+        /// </summary>
+        public enum TICKET_TYPE
+        {
+            ALARM,                       // 告警
+            CHANGE_REQUEST,              // 变更请求
+            INCIDENT,                    // 事故
+            PROBLEM,                     // 问题
+            SERVICE_REQUEST,             // 服务请求
+        }
+        /// <summary>
         ///  任务类型 - 130
         /// </summary>
         public enum TASK_TYPE
@@ -1091,6 +1121,28 @@ namespace EMT.DoneNOW.DTO
             RECURRING_TICKET_MASTER = 1818,    // 定期主工单
             TASKFIRE_TICKET = 1819,            // 内部 Client Portal 工单
         }
+        /// <summary>
+        /// 工单问题类型 - 132
+        /// </summary>
+        public enum TASK_ISSUE_TYPE
+        {
+            UPGRADE = 1837,           // 升级
+            SERVICE = 1838,           // 服务
+            THE_SERVER = 1839,        // 服务器
+            COMPUTER = 1840,          // 计算机
+            NETWORK = 1841,           // 网络
+        }
+        /// <summary>
+        /// 工单优先级 - 134
+        /// </summary>
+        public enum TASK_PRIORITY_TYPE
+        {
+            serious = 1883,               // 严重
+            high = 1884,                  // 高
+            medium = 1885,                // 中
+            low = 1886,                   // 低
+        }
+
         /// <summary>
         /// 工单状态 - 135
         /// </summary>
@@ -1112,6 +1164,30 @@ namespace EMT.DoneNOW.DTO
             FIXWORK = 1901,                     // 固定工作
             FIXDURATION = 1902,                 // 固定时间
         }
+        /// <summary>
+        /// 任务来源 - 137
+        /// </summary>
+        public enum TASK_SOURCE_TYPES
+        {
+            CLIENT_PORTAL=1906,      // 
+            PHONE=1907,              // 电话
+            OTHER=1908,              // 其他
+            ONLINE=1909,             // 口述/在线
+            EMAIL=1910,              // 邮件
+            MONITORING_HINTS=1911,   // 监视提示
+            NETWORK_PORT=1912,       // 网路端口
+        }
+        /// <summary>
+        /// SLA事件类型 - 139
+        /// </summary>
+        public enum SLA_EVENT_TYPE
+        {
+            FIRSTRESPONSE=1919,    // 初次响应
+            RESOLUTION=1920,       // 已解决
+            RESOLUTIONPLAN=1921,   // 解决方案计划
+            WAITINGCUSTOMER=1922,  // 等待客户
+        }
+
         /// <summary>
         /// 费用报表状态 - 144
         /// </summary>
@@ -1228,7 +1304,7 @@ namespace EMT.DoneNOW.DTO
             REFUSE=2197,        // 已拒绝
         }
         /// <summary>
-        /// 费用报表操作
+        /// 费用报表操作 - 163
         /// </summary>
         public enum EXPENSE_RECORD_OPER
         {
@@ -1238,6 +1314,14 @@ namespace EMT.DoneNOW.DTO
             APPROVAL_REFUSE = 2233,  // 审批拒绝
             PAYMENT = 2234,          // 支付
             RETURN_APPROVAL = 2235,  // 支付改回审批通过
+        }
+        /// <summary>
+        /// 工单种类 - 167
+        /// </summary>
+        public enum TICKET_CATE
+        {
+            STANDARD = 2273,     // 标准
+            AEM_WARN = 2274,     // AEM告警
         }
 
     }
@@ -1559,6 +1643,11 @@ namespace EMT.DoneNOW.DTO
         COMPANY_POLICY,        // 客户策略
         EXPENSE_REPORT_REFUSE, // 费用报表拒绝原因
         EXPENSE_REPORT_VIEW,   // 费用报表查看
+        ADD_TICKET_LABOUR,     // 新增工单工时
+        ADD_TICKET_NOTE,       // 新增工单备注
+        ADD_TICKET_ATTACH,     // 新增工单附件
+        ADD_TICKET_EXPENSE,    // 新增工单费用
+        SHOW_TICKET_HISTORY,   // 工单历史查看
 
     }
     /// <summary>

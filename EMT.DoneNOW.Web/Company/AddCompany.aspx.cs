@@ -17,14 +17,14 @@ namespace EMT.DoneNOW.Web
         protected List<UserDefinedFieldDto> contact_udfList = null;      // 联系人自定义
         protected List<UserDefinedFieldDto> site_udfList = null; // 站点自定义
         protected crm_account parent_account = null;
-
         protected List<crm_account> searchCompany = null;     // 查询出的所有没有父客户的客户
+        protected string CallBack = "";
  
         protected void Page_Load(object sender, EventArgs e)
         {
 
             #region 下拉框赋值
-
+            CallBack = Request.QueryString["CallBack"];
             var dic = new CompanyBLL().GetField();
 
             // 分类类别
@@ -213,7 +213,15 @@ namespace EMT.DoneNOW.Web
             }
             else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
             {
-                Response.Write("<script>alert('添加客户成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+                if (!string.IsNullOrEmpty(CallBack))
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "执行事件", "<script>alert('添加客户成功！');window.opener."+CallBack+"('"+ id + "');</script>");
+                }
+                else
+                {
+                    Response.Write("<script>alert('添加客户成功！');window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+                }
+                
             }
         }
         /// <summary>
@@ -302,9 +310,15 @@ namespace EMT.DoneNOW.Web
             }
             else if (result == ERROR_CODE.SUCCESS)                    // 插入用户成功，刷新前一个页面
             {
-                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加客户成功！');window.location.reload;self.opener.location.reload(); </script>");
-                //Response.Write("<script></script>");
-                //Response.Redirect("AddCompany.aspx");
+                if (!string.IsNullOrEmpty(CallBack))
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "执行事件", "<script>alert('添加客户成功！');window.opener." + CallBack + "('" + id + "');</script>");
+                }
+                else
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('添加客户成功！');window.location.reload;self.opener.location.reload(); </script>");
+                }
+ 
             }
         }
         /// <summary>
@@ -393,10 +407,17 @@ namespace EMT.DoneNOW.Web
             }
             else if (result == ERROR_CODE.SUCCESS)
             {
-                Response.Write("<script>alert('添加客户成功！');self.opener.location.reload();window.close();window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_account_id=" + id+"','"+ (int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd +"','left= 200, top = 200, width = 960, height = 750', false);</script>");  //  
-                //Response.Redirect("../Opportunity/OpportunityAddAndEdit.aspx?oppo_account_id="+id); // 跳转到新建商机
+                if (!string.IsNullOrEmpty(CallBack))
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "执行事件", "<script>alert('添加客户成功！');window.opener." + CallBack + "('" + id + "');</script>");
+                }
+                else
+                {
+                    Response.Write("<script>alert('添加客户成功！');self.opener.location.reload();window.close();window.open('../Opportunity/OpportunityAddAndEdit.aspx?oppo_account_id=" + id + "','" + (int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd + "','left= 200, top = 200, width = 960, height = 750', false);</script>");  //  
+                }
 
-                //window.open('EditCompany.aspx?id=<%=account.id %>','<%=EMT.DoneNOW.DTO.OpenWindow.CompanyEdit %>','left= 200, top = 200, width = 960, height = 750', false);
+
+
             }
 
 

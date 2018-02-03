@@ -44,6 +44,12 @@ namespace EMT.DoneNOW.Web
                         var saId = context.Request.QueryString["account_id"];
                         GetParAndAccSelect(context,long.Parse(saId));
                         break;
+                    case "GetContactInfo":
+                        GetContactInfo(context);
+                        break;
+                    case "GetContactDetail":
+                        GetContactDetail(context);
+                        break;
                     default:
                         break;
                 }
@@ -170,6 +176,39 @@ namespace EMT.DoneNOW.Web
                 }
             }
             context.Response.Write(conHtml.ToString());
+        }
+
+        private void GetContactInfo(HttpContext context)
+        {
+            var contatc_id = context.Request.QueryString["contact_id"];
+            if (!string.IsNullOrEmpty(contatc_id))
+            {
+                var thisContact = new crm_contact_dal().FindNoDeleteById(long.Parse(contatc_id));
+                if (thisContact != null)
+                {
+                    context.Response.Write(new Tools.Serialize().SerializeJson(thisContact));
+                }
+            }
+        }
+
+        private void GetContactDetail(HttpContext context)
+        {
+            var contatc_id = context.Request.QueryString["contact_id"];
+            if (!string.IsNullOrEmpty(contatc_id))
+            {
+                var thisContact = new crm_contact_dal().FindNoDeleteById(long.Parse(contatc_id));
+                if (thisContact != null)
+                {
+                    int ticketNum = 0;  // 所有打开的工单的数量
+                    int monthNum = 0;  // 近三十天工单的数量
+                    var ticketList = new sdk_task_dal().GetTicketByContact(thisContact.id);
+                    if (ticketList != null && ticketList.Count > 0)
+                    {
+                        ticketNum = ticketList.Count;
+                    }
+                    context.Response.Write(new Tools.Serialize().SerializeJson(new { id = thisContact.id, name = thisContact.name, phone = thisContact.phone,  ticketNum = ticketNum, monthNum = monthNum, }));
+                }
+            }
         }
     }
 }

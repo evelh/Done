@@ -16,8 +16,10 @@ namespace EMT.DoneNOW.Web.Project
     {
         protected crm_account thisAccount = null;
         protected sdk_task thisTask = null;
+        protected sdk_task thisTicket = null;
         protected ctt_contract thisContract = null;
         protected com_activity thisNote = null;
+        protected crm_contact thisContact = null;
         protected bool isAdd = true;
         protected List<com_attachment> thisNoteAtt = null;   // 这个备注的附件
         protected Dictionary<string, object> dic = new ProjectBLL().GetField();
@@ -25,10 +27,12 @@ namespace EMT.DoneNOW.Web.Project
         protected sys_resource thisAccManger;    // 客户经理
         protected d_general sys_email = new d_general_dal().FindNoDeleteById((int)DicEnum.SUPPORT_EMAIL.SYS_EMAIL);
         protected sys_resource task_creator = null;
-        protected long object_id;      // 传进来的对象ID （项目或者任务）
+        protected long object_id;      // 传进来的对象ID （项目,任务,阶段，合同，工单）
         protected bool isProject = false;   // 是否是项目
         protected bool isPhase = false;     // 是否是阶段
         protected bool isContract = false;  // 是否是合同
+        protected bool isTicket = false;    // 是否是工单
+        protected bool isHasIncident = false;  // 工单使用 ，工单是否关联事故 
         protected pro_project thisProject = null;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -55,6 +59,12 @@ namespace EMT.DoneNOW.Web.Project
                         if (thisTask != null)
                         {
                             object_id = thisTask.id;
+                            if (thisTask.type_id == (int)DicEnum.TASK_TYPE.SERVICE_DESK_TICKET)
+                            {
+                                isTicket = true;
+                                thisTask = null;
+                                thisTicket = stDal.FindNoDeleteById(thisNote.object_id);
+                            }
                         }
                         else
                         {
@@ -82,6 +92,7 @@ namespace EMT.DoneNOW.Web.Project
                 var taskId = Request.QueryString["task_id"];
                 var project_id = Request.QueryString["project_id"];
                 var contract_id = Request.QueryString["contract_id"];
+                var ticket_id = Request.QueryString["ticket_id"];
                 if (!string.IsNullOrEmpty(taskId))
                 {
                     thisTask = stDal.FindNoDeleteById(long.Parse(taskId));
@@ -105,6 +116,10 @@ namespace EMT.DoneNOW.Web.Project
                         thisAccount = accDal.FindNoDeleteById(thisContract.account_id);
                         isContract = true;
                     }
+                }
+                else if (!string.IsNullOrEmpty(ticket_id))
+                {
+                    thisTicket = stDal.FindNoDeleteById(long.Parse(ticket_id));
                 }
 
 
@@ -130,6 +145,22 @@ namespace EMT.DoneNOW.Web.Project
                             thisAccount = accDal.FindNoDeleteById(thisProject.account_id);
                         }
                     }
+                }
+                if (thisTicket != null)
+                {
+                    isTicket = true;
+                    object_id = thisTicket.id;
+                    task_creator = new sys_resource_dal().FindNoDeleteById(thisTicket.create_user_id);
+                    if (!IsPostBack)
+                    {
+                        status_id.SelectedValue = thisTicket.status_id.ToString();
+                    }
+                    thisAccount = accDal.FindNoDeleteById(thisTicket.account_id);
+                    if (thisTicket.contact_id != null)
+                    {
+                        thisContact = new crm_contact_dal().FindNoDeleteById((long)thisTicket.contact_id);
+                    }
+                     
                 }
                 if (thisAccount == null)
                 {
@@ -158,6 +189,10 @@ namespace EMT.DoneNOW.Web.Project
                         {
                             pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.CONTRACT_NOTE).ToString()).ToList();
                         }
+                        else if (isTicket)
+                        {
+                            pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TICKET_NOTE).ToString()).ToList();
+                        }
                         else
                         {
                             pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
@@ -184,6 +219,10 @@ namespace EMT.DoneNOW.Web.Project
                         else if (isContract)
                         {
                             actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.CONTRACT_NOTE).ToString()).ToList();
+                        }
+                        else if (isTicket)
+                        {
+                            actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TICKET_NOTE).ToString()).ToList();
                         }
                         else
                         {
@@ -305,8 +344,37 @@ namespace EMT.DoneNOW.Web.Project
             param.fromSys = Cksys.Checked;
             param.thisTask = thisTask;
             param.thisProjetc = thisProject;
+            param.thisTicket = thisTicket;
             param.object_id = object_id;
             param.filtList = GetSessAttList(object_id);
+            if (!string.IsNullOrEmpty(Request.Form["CkAccTeam"]))
+            {
+                param.toAccTeam = true;
+            }
+            if (!string.IsNullOrEmpty(Request.Form["CkPriRes"]))
+            {
+                param.toPriRes = true;
+            }
+            if (!string.IsNullOrEmpty(Request.Form["CkOtherRes"]))
+            {
+                param.toOtherRes = true;
+            }
+            if (!string.IsNullOrEmpty(Request.Form["AppResol"]))
+            {
+                param.isAddSol = true;
+            }
+            if (isAdd)
+            {
+                if (!string.IsNullOrEmpty(Request.QueryString["CkAddAll"]))
+                {
+                    param.isAddAllNote = true;
+                }
+                if (!string.IsNullOrEmpty(Request.QueryString["AppAllResol"]))
+                {
+                    param.isAddAllSol = true;
+                }
+            }
+           
             if (thisTask != null)
             {
                 pageTaskNote.cate_id = (int)DicEnum.ACTIVITY_CATE.TASK_NOTE;
@@ -322,6 +390,12 @@ namespace EMT.DoneNOW.Web.Project
                 pageTaskNote.cate_id = (int)DicEnum.ACTIVITY_CATE.CONTRACT_NOTE;
                 pageTaskNote.object_type_id = (int)DicEnum.OBJECT_TYPE.CONTRACT;
             }
+            else if (thisTicket != null)
+            {
+                pageTaskNote.cate_id = (int)DicEnum.ACTIVITY_CATE.TICKET_NOTE;
+                pageTaskNote.object_type_id = (int)DicEnum.OBJECT_TYPE.TICKETS;
+            }
+
             if (isAdd)
             {
                 param.taskNote = pageTaskNote;
@@ -394,6 +468,53 @@ namespace EMT.DoneNOW.Web.Project
             //fs.Close();
             saveFileName = virpath;
             return "";
+        }
+
+        protected void save_new_Click(object sender, EventArgs e)
+        {
+            var param = GetParam();
+            var result = false;
+            if (isAdd)
+            {
+                result = new TaskBLL().AddTaskNote(param, GetLoginUserId());
+            }
+            else
+            {
+                result = new TaskBLL().EditTaskNote(param, GetLoginUserId());
+            }
+            Session.Remove(object_id + "_Att");
+            if (thisTicket != null)
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "页面跳转", $"<script>location.href='../Project/TaskNote?ticket_id={thisTicket.id.ToString()}';self.opener.location.reload();</script>");
+            }
+            else
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>window.close();self.opener.location.reload();</script>");
+            }
+        }
+
+        protected void save_modify_Click(object sender, EventArgs e)
+        {
+            var param = GetParam();
+            var result = false;
+            if (isAdd)
+            {
+                result = new TaskBLL().AddTaskNote(param, GetLoginUserId());
+            }
+            else
+            {
+                result = new TaskBLL().EditTaskNote(param, GetLoginUserId());
+            }
+            Session.Remove(object_id + "_Att");
+            if (thisTicket != null)
+            {
+                // todo 跳转到 前进/修改页面
+                ClientScript.RegisterStartupScript(this.GetType(), "页面跳转", $"<script>window.close();self.opener.location.reload();</script>");
+            }
+            else
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>window.close();self.opener.location.reload();</script>");
+            }
         }
     }
 }

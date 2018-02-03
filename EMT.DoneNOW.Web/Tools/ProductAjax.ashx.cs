@@ -136,6 +136,12 @@ namespace EMT.DoneNOW.Web
                     var gpId = context.Request.QueryString["product_id"];
                     GetProductCost(context,long.Parse(gpId));
                     break;
+                case "GetInsProInfo":
+                    GetInsProInfo(context);
+                    break;
+                case "GetInsProDetail":
+                    GetInsProDetail(context);
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     break;
@@ -590,6 +596,82 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(((decimal)thisCost).ToString("#0.00"));
             }
             
+        }
+        /// <summary>
+        /// 获取到配置项信息
+        /// </summary>
+        private void GetInsProInfo(HttpContext context)
+        {
+            var insProId = context.Request.QueryString["insProId"];
+            if (!string.IsNullOrEmpty(insProId))
+            {
+                var insPr = new crm_installed_product_dal().FindNoDeleteById(long.Parse(insProId));
+                if (insPr != null)
+                {
+                    context.Response.Write(new Tools.Serialize().SerializeJson(insPr));
+                }
+            }
+        }
+        /// <summary>
+        /// 获取配置项相关详情数据
+        /// </summary>
+        private void GetInsProDetail(HttpContext context)
+        {
+            var insProId = context.Request.QueryString["insProId"];
+            if (!string.IsNullOrEmpty(insProId))
+            {
+                var insPr = new crm_installed_product_dal().FindNoDeleteById(long.Parse(insProId));
+                if (insPr != null)
+                {
+                    string name = "";
+                    string contactName = "";
+                    string contactId = "";
+                    string insTime = "";
+                    string insUser = "";
+                    string insWarnTime = "";  // 保修期
+                    string vendorId = "";
+                    string vendorName = "";
+                    string insService = "";
+                    int relateNum = 0;         // 相关配置项
+                    var thisPro = new ivt_product_dal().FindNoDeleteById(insPr.product_id);
+                    if (thisPro != null)
+                    {
+                        name = thisPro.name;
+                    }
+                    if (insPr.contact_id != null)
+                    {
+                        var contact = new crm_contact_dal().FindNoDeleteById((long)insPr.contact_id);
+                        if (contact != null)
+                        {
+                            contactId = contact.id.ToString();
+                            contactName = contact.name;
+                        }
+                    }
+                    if (insPr.installed_resource_id != null)
+                    {
+                        var insRes = new sys_resource_dal().FindNoDeleteById((long)insPr.installed_resource_id);
+                        if (insRes != null)
+                        {
+                            insUser = insRes.name;
+                        }
+                    }
+                    if (insPr.vendor_account_id != null)
+                    {
+                        var thisVnedor = new CompanyBLL().GetCompany((long)insPr.vendor_account_id);
+                        if (thisVnedor != null)
+                        {
+                            vendorId = thisVnedor.id.ToString();
+                            vendorName = thisVnedor.name;
+                        }
+                    }
+                    insTime = Tools.Date.DateHelper.ConvertStringToDateTime(insPr.create_time).ToString("yyyy-MM-dd");
+
+
+
+
+                    context.Response.Write(new Tools.Serialize().SerializeJson(new {id=insPr.id,name=name, contactId= contactId, contactName = contactName, insTime = insTime, insUser = insUser, insWarnTime = insWarnTime, vendorId = vendorId, vendorName = vendorName, insService = insService, relateNum = relateNum }));
+                }
+            }
         }
     }
 }

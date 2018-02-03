@@ -27,7 +27,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="size">文件大小</param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public bool AddAttachment(int objType,long objId, int typeId, string title, string attLink, string fileName, string fileSaveName, string contentType, int size,long userId)
+        public bool AddAttachment(int objType,long objId, int typeId, string title, string attLink, string fileName, string fileSaveName, string contentType, int size,long userId,string pubTypeId = "")
         {
             com_attachment att = new com_attachment();
 
@@ -105,6 +105,14 @@ namespace EMT.DoneNOW.BLL
                 // 从报表添加附件 - 默认使用声联（oid=0） 的客户
                 var defaultAccount = new CompanyBLL().GetDefaultAccount();
                 att.account_id = defaultAccount.id;
+            }
+            else if (att.object_type_id == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.TASK)
+            {
+                var task = new sdk_task_dal().FindNoDeleteById(att.object_id);
+                if (task != null)
+                    att.account_id = task.account_id;
+                if (!string.IsNullOrEmpty(pubTypeId))
+                    att.publish_type_id = int.Parse(pubTypeId);
             }
             else
                 return false;

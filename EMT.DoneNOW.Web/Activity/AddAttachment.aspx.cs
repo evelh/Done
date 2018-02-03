@@ -15,20 +15,24 @@ namespace EMT.DoneNOW.Web.Activity
         protected int objType = 0;
         protected long objId = 0;
         protected List<DictionaryEntryDto> attTypeList = null;    // 附件类型
+        protected List<Core.d_general> pubTypeList = null;        // 发布类型- 工单使用
+        protected bool isTicket = false;     // 是否是工单
         protected void Page_Load(object sender, EventArgs e)
         {
             attTypeList = new GeneralBLL().GetDicValues(GeneralTableEnum.ATTACHMENT_TYPE);
-
+            pubTypeList = new DAL.d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.ATTACHMENT_PUBLISH_TYPE);
             if (!IsPostBack)
             {
                 objType = int.Parse(Request.QueryString["objType"]);
                 objId = int.Parse(Request.QueryString["objId"]);
+                
             }
             else
             {
                 var action = Request.Form["action"];
                 var actType = int.Parse(Request.Form["actType"]);
                 var attName = Request.Form["attName"];
+                var pubType = Request.Form["pubType"];
                 objId = long.Parse(Request.Form["objId"]);
                 objType = int.Parse(Request.Form["objType"]);
 

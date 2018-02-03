@@ -84,6 +84,12 @@ namespace EMT.DoneNOW.Web
                 case "GetAccByRes":
                     GetAccByRes(context,long.Parse(context.Request.QueryString["resource_id"]),context.Request.QueryString["showType"],!string.IsNullOrEmpty(context.Request.QueryString["isShowCom"]));
                     break;
+                case "GetAccAlert":
+                    GetAccAlert(context);
+                    break;
+                case "GetAccDetail":
+                    GetAccDetail(context);
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     return;
@@ -375,6 +381,88 @@ namespace EMT.DoneNOW.Web
             }
           
         }
-        
+        /// <summary>
+        /// 返回客户的提醒信息
+        /// </summary>
+        private void GetAccAlert(HttpContext context)
+        {
+            var accountId = context.Request.QueryString["account_id"];
+            if (!string.IsNullOrEmpty(accountId))
+            {
+                var alertList = new crm_account_alert_dal().FindByAccount(long.Parse(accountId)); 
+                if(alertList!=null&& alertList.Count > 0)
+                {
+                    var accAlert = alertList.FirstOrDefault(_ => _.alert_type_id == (int)DTO.DicEnum.ACCOUNT_ALERT_TYPE.COMPANY_DETAIL_ALERT);
+                    var ticketAlert = alertList.FirstOrDefault(_ => _.alert_type_id == (int)DTO.DicEnum.ACCOUNT_ALERT_TYPE.NEW_TICKET_ALERT);
+                    var ticketDetail = alertList.FirstOrDefault(_ => _.alert_type_id == (int)DTO.DicEnum.ACCOUNT_ALERT_TYPE.TICKET_DETAIL_ALERT);
+                    if(accAlert!=null|| ticketAlert!=null|| ticketDetail != null)
+                    {
+                        context.Response.Write(new Tools.Serialize().SerializeJson(new {
+                            hasAccAlert = accAlert!=null,
+                            accAlert = accAlert==null?"":accAlert.alert_text,
+                            hasTicketAlert = ticketAlert!=null,
+                            ticketAlert = ticketAlert == null ? "" : ticketAlert.alert_text,
+                            hasTicketDetail = ticketDetail!=null,
+                            ticketDetail = ticketDetail == null ? "" : ticketDetail.alert_text,
+                        }));
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// 获取客户详情
+        /// </summary>
+        private void GetAccDetail(HttpContext context)
+        {
+            var accountId = context.Request.QueryString["account_id"];
+            if (!string.IsNullOrEmpty(accountId))
+            {
+                var thisAcc = new CompanyBLL().GetCompany(long.Parse(accountId));
+                if (thisAcc != null)
+                {
+                    // 返回客户Id，名称，地址信息
+                    var location = new LocationBLL().GetLocationByAccountId(thisAcc.id);
+                    string city ="";
+                    string provice = "";
+                    string quXian = "";
+                    string address1 = "";
+                    string address2 = "";
+                    int ticketNum = 0;  // 所有打开的工单的数量
+                    int monthNum = 0;  // 近三十天工单的数量
+                    if (location != null)
+                    {
+                        var thisCity = new d_district_dal().FindById(location.city_id);
+                        if (thisCity != null)
+                        {
+                            city = thisCity.name;
+                        }
+                        var thisprovice = new d_district_dal().FindById(location.province_id);
+                        if (thisprovice != null)
+                        {
+                            provice = thisprovice.name;
+                        }
+                        if (location.district_id != null)
+                        {
+                            var thisquXian = new d_district_dal().FindById((long)location.district_id);
+                            if (thisquXian != null)
+                            {
+                                quXian = thisquXian.name;
+                            }
+                        }
+                        address1 = location.address;
+                        address2 = location.additional_address;
+
+
+                    }
+
+                    var ticketList = new sdk_task_dal().GetTicketByAccount(thisAcc.id);
+                    if(ticketList!=null&& ticketList.Count > 0)
+                    {
+                        ticketNum = ticketList.Count;
+                    }
+                    context.Response.Write(new Tools.Serialize().SerializeJson(new {id=thisAcc.id,name=thisAcc.name,phone = thisAcc.phone, city= city, provice = provice, quXian = quXian, address1 = address1, address2 = address2, ticketNum = ticketNum, monthNum = monthNum, }));
+                }
+            }
+        }
     }
 }

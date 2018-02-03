@@ -13,7 +13,7 @@ namespace EMT.DoneNOW.DAL
         /// <returns></returns>
         public List<crm_account_alert> FindByAccount(long account_id)
         {
-            return FindListBySql("SELECT * FROM crm_account_alert WHERE account_id=" + account_id);
+            return FindListBySql("SELECT * FROM crm_account_alert WHERE delete_time = 0 and account_id=" + account_id);
         }
 
         /// <summary>

@@ -308,9 +308,7 @@
 		<option value="2">未支付</option>
 	 </select>
 	</li>
-                    <%} else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVED_REPORT) { %>
-                    <li><%--<input type="checkbox" id="ckPaid"/>--%><span></span></li>
-                    <%} %>
+                    <%}  %>
                 </ul>
                 <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_UDF) { %>
                 <div class="DropDownMenu" id="D1" style=" background-color: #FFF;padding: 5px;border: 1px solid #BCBCBC;cursor: pointer;box-shadow: 1px 3px 4px rgba(0,0,0,0.33);position: fixed;top: 35px;border-top:white;display:none;">

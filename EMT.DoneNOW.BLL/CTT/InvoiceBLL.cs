@@ -593,6 +593,11 @@ namespace EMT.DoneNOW.BLL
                                     case "[发票：发票记录]":
                                         thisText = thisText.Replace(t, param.notes);
                                         break;
+                                    case "[发票：税收详细信息]":
+                                        var thiInfo = varTable.Rows[0][t].ToString();
+                                        //thiInfo = thiInfo.Replace(" ", "&nbsp;");
+                                        thisText = thisText.Replace(t, thiInfo);
+                                        break;
                                     default:
                                         if (!string.IsNullOrEmpty(varTable.Rows[0][t].ToString()))
                                         {
@@ -1003,7 +1008,7 @@ namespace EMT.DoneNOW.BLL
             var noBillHours = GetBillHours(paramList, false) + GetBillHours(billTOThisParamList, false);// 不计费
             var billHours = GetBillHours(paramList, true) + GetBillHours(billTOThisParamList, true); // 计费
             var prepaidHours = GetPrepaidHours(paramList) + GetPrepaidHours(billTOThisParamList);     // 预付费
-            var taxCate = GetTaxCateHtml(paramList, billTOThisParamList,account);  // 分税信息的展示
+            var taxCate = "";  // 分税信息的展示
  
             thisHtmlText.Append($"<div><table style = 'width:100%; padding-top:20px; border-collapse:collapse;' ><tbody><tr><td style = 'vertical-align:top;' ></td><td style = 'vertical-align:top;width:300px; '><table class='InvoiceTotalsBlock'><tbody><tr class='invoiceTotalsRow'><td class='invoiceTotalsNameCell'>不计费时间</td><td class='invoiceTotalsValueCell'>{noBillHours.ToString("#0.00")}</td></tr><tr class='invoiceTotalsRow'> <td class='invoiceTotalsNameCell'>预付费时间</td><td class='invoiceTotalsValueCell'>{prepaidHours.ToString("#0.00")}</td></tr><tr class='invoiceTotalsRow'> <td class='invoiceTotalsNameCell'>付费时间汇总</td><td class='invoiceTotalsValueCell'>{billHours.ToString("#0.00")}</td></tr>{totalTaxHtml}<tr class='invoiceTotalsRow'><td class='invoiceTotalsNameCell'>总额汇总</td><td class='invoiceTotalsValueCell'>{totalMoney.ToString("#0.00")}</td></tr><tr class='invoiceTotalsRow'><td class='invoiceGrandTotalNameCell'>总价</td><td class='invoiceGrandTotalValueCell'>{(totalMoney + totalTax).ToString("#0.00")}</td></tr>{taxCate}</tbody></table></td></tr></tbody></table></div>");
             return thisHtmlText.ToString();

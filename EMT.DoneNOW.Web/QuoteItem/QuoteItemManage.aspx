@@ -224,8 +224,8 @@
                                 <td><%=quoteItem.unit_discount %></td>
                                 <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null)?(quoteItem.unit_price-quoteItem.unit_discount).ToString():"" %></td>
                                 <td><%=quoteItem.unit_cost %></td>
-                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_discount-quoteItem.unit_cost)*quoteItem.quantity).ToString()),2).ToString()):"" %></td>
-                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_price!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_cost)*100/(quoteItem.unit_cost==0?1:quoteItem.unit_cost)).ToString()),2).ToString())+"%":"" %></td>
+                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_cost!=0&&quoteItem.unit_price!=null)?(((quoteItem.unit_price??0)-(quoteItem.unit_discount??0)-(quoteItem.unit_cost??0))*quoteItem.quantity??0).ToString("#0.00"):"" %></td>
+                               <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_cost!=0&&quoteItem.unit_price!=null)?(((quoteItem.unit_price??0)-(quoteItem.unit_discount??0)-(quoteItem.unit_cost??0))*100/((decimal)quoteItem.unit_cost)).ToString("#0.00")+"%":"" %></td>
                                 <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_discount)*quoteItem.quantity).ToString()),2).ToString()):"" %></td>
                             </tr>
                             <% }%>
@@ -285,7 +285,7 @@
                                 <td colspan="<%=IssaleOrder?10:9 %>"></td>
                                 <td><b>汇总：</b></td>
                                 <td><%=(decimal.Round(decimal.Parse(item.Value.ToList().Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0).ToString()),2).ToString()) %></td>
-                                <td><%=  ((decimal)((item.Value.Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-item.Value.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/(item.Value.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)==0?1:item.Value.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)))).ToString("#0.00")+"%" %></td>
+                                <td><%=  ((decimal)((item.Value.Sum(_=>((_.unit_price??0)*(_.quantity??0))-(_.unit_discount??0))-item.Value.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/(item.Value.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)==0?1:item.Value.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)))).ToString("#0.00")+"%" %></td>
 
                                 <td><%=(decimal.Round(decimal.Parse(totalPrice.ToString()),2).ToString()) %></td>
                             </tr>
@@ -339,8 +339,8 @@
                                 <td><%=quoteItem.unit_discount %></td>
                                 <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null)?(quoteItem.unit_price-quoteItem.unit_discount).ToString():"" %></td>
                                 <td><%=quoteItem.unit_cost %></td>
-                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_discount-quoteItem.unit_cost)*quoteItem.quantity).ToString()),2).ToString()):"" %></td>
-                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_price!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_cost)*100/(quoteItem.unit_cost==0?1:quoteItem.unit_cost)).ToString()),2).ToString())+"%":"" %></td>
+                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_cost!=0&&quoteItem.unit_price!=null)?(((quoteItem.unit_price??0)-(quoteItem.unit_discount??0)-(quoteItem.unit_cost??0))*quoteItem.quantity??0).ToString("#0.00"):"" %></td>
+                              <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_cost!=0&&quoteItem.unit_price!=null)?(((quoteItem.unit_price??0)-(quoteItem.unit_discount??0)-(quoteItem.unit_cost??0))*100/((decimal)quoteItem.unit_cost)).ToString("#0.00")+"%":"" %></td>
                                 <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_discount)*quoteItem.quantity).ToString()),2).ToString()):"" %></td>
                             </tr>
 
@@ -400,7 +400,7 @@
                                 <td colspan="<%=IssaleOrder?10:9 %>"></td>
                                 <td><b>汇总：</b></td>
                                 <td><%=(decimal.Round(decimal.Parse(distributionList.Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0).ToString()),2).ToString()) %></td>
-                                <td><%=((decimal)((distributionList.Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-distributionList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/distributionList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))).ToString("#0.00")+"%" %></td>
+                                <td><%=((decimal)((distributionList.Sum(_=>((_.unit_price??0)*(_.quantity??0))-(_.unit_discount??0))-distributionList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/distributionList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))).ToString("#0.00")+"%" %></td>
                                 <td><%=(decimal.Round(decimal.Parse(totalPrice.ToString()),2).ToString()) %></td>
 
                             </tr>
@@ -561,7 +561,7 @@
                                 <td><b>除去可选的汇总：</b></td>
                                 <td><%=(decimal.Round(decimal.Parse((quoteItemList.Where(_=>_.optional!=1).Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0)).ToString()),2).ToString()) %></td>
                                 <% var thisSum = quoteItemList.Where(_ => _.optional != 1).Sum(_ => _.unit_cost != null ? _.unit_cost * _.quantity : 0);  %>
-                                <td><%=((decimal)((quoteItemList.Where(_=>_.optional!=1).Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-quoteItemList.Where(_=>_.optional!=1).Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/(thisSum==0?1:thisSum))).ToString("#0.00")+"%" %></td>
+                                <td><%=thisSum==0?"":((decimal)((quoteItemList.Where(_=>_.optional!=1).Sum(_=>((_.unit_price??0)*(_.quantity??0))-(_.unit_discount??0))-quoteItemList.Where(_=>_.optional!=1).Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/(thisSum==0?1:thisSum))).ToString("#0.00")+"%" %></td>
                                 <td><%=(decimal.Round(decimal.Parse((quoteItemList.Where(_=>_.optional!=1).Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent==null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent):0)).ToString()),2).ToString()) %></td>
                             </tr>
                             <tr>
@@ -602,8 +602,8 @@
                                 <td><%=quoteItem.unit_discount %></td>
                                 <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null)?(quoteItem.unit_price-quoteItem.unit_discount).ToString():"" %></td>
                                 <td><%=quoteItem.unit_cost %></td>
-                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_discount-quoteItem.unit_cost)*quoteItem.quantity).ToString()),2).ToString()):"" %></td>
-                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_price!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_cost)*100/(quoteItem.unit_cost==0?1:quoteItem.unit_cost)).ToString()),2).ToString())+"%":"" %></td>
+                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_cost!=0&&quoteItem.unit_price!=null)?(((quoteItem.unit_price??0)-(quoteItem.unit_discount??0)-(quoteItem.unit_cost??0))*quoteItem.quantity??0).ToString("#0.00"):"" %></td>
+                               <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_cost!=0&&quoteItem.unit_price!=null)?(((quoteItem.unit_price??0)-(quoteItem.unit_discount??0)-(quoteItem.unit_cost??0))*100/((decimal)quoteItem.unit_cost)).ToString("#0.00")+"%":"" %></td>
                                 <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_discount)*quoteItem.quantity).ToString()),2).ToString()):"" %></td>
                             </tr>
                             <%}%>
@@ -665,7 +665,7 @@
                                 <td colspan="<%=IssaleOrder?10:9 %>"></td>
                                 <td><b>可选汇总：</b></td>
                                 <td><%=(decimal.Round(decimal.Parse(optionalItemList.Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0).ToString()),2).ToString()) %></td>
-                                <td><%=((decimal)((optionalItemList.Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-optionalItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/optionalItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))).ToString("#0.00")+"%" %></td>
+                                <td><%=((decimal)((optionalItemList.Sum(_=>((_.unit_price??0)*(_.quantity??0))-(_.unit_discount??0))-optionalItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/optionalItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))).ToString("#0.00")+"%" %></td>
                                 <td><%=(decimal.Round(decimal.Parse(totalPrice.ToString()),2).ToString()) %></td>
                             </tr>
                             <%  }%>
@@ -673,8 +673,8 @@
                             <tr>
                                 <td colspan="<%=IssaleOrder?10:9 %>"></td>
                                 <td><b>全部汇总：</b></td>
-                                <td><%=(decimal.Round(decimal.Parse(quoteItemList.Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0).ToString()),2).ToString()) %></td>
-                                <td><%=((decimal)((quoteItemList.Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/(quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)==0?1:quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)))).ToString("#0.00")+"%" %></td>
+                                <td><%=(decimal.Round(decimal.Parse(quoteItemList.Sum(_=>(_.unit_cost!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-(_.unit_discount??0)-_.unit_cost)*_.quantity:0).ToString()),2).ToString()) %></td>
+                                <td><%=quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)==0?"":((decimal)((quoteItemList.Sum(_=>_.unit_price!=null?((_.unit_price??0)-(_.unit_discount??0))*_.quantity:0)-quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/(quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)??1))).ToString("#0.00")+"%" %></td>
                                 <td><%=decimal.Round(((decimal)(quoteItemList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent==null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent):0))),2).ToString() %></td>
                             </tr>
                             <tr>
@@ -802,8 +802,8 @@
                                 <td><%=quoteItem.unit_discount %></td>
                                 <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null)?(quoteItem.unit_price-quoteItem.unit_discount).ToString():"" %></td>
                                 <td><%=quoteItem.unit_cost %></td>
-                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_discount-quoteItem.unit_cost)*quoteItem.quantity).ToString()),2).ToString()):"" %></td>
-                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_price!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_cost)*100/(quoteItem.unit_cost==0?1:quoteItem.unit_cost)).ToString()),2).ToString())+"%":"" %></td>
+                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_cost!=0&&quoteItem.unit_price!=null)?(((quoteItem.unit_price??0)-(quoteItem.unit_discount??0)-(quoteItem.unit_cost??0))*quoteItem.quantity??0).ToString("#0.00"):"" %></td>
+                                 <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_cost!=0&&quoteItem.unit_price!=null)?(((quoteItem.unit_price??0)-(quoteItem.unit_discount??0)-(quoteItem.unit_cost??0))*100/((decimal)quoteItem.unit_cost)).ToString("#0.00")+"%":"" %></td>
                                 <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_discount)*quoteItem.quantity).ToString()),2).ToString()):"" %></td>
                             </tr>
                             <%      }
@@ -863,7 +863,7 @@
                                 <td colspan="<%=IssaleOrder?10:9 %>"></td>
                                 <td><b>汇总：</b></td>
                                 <td><%=(decimal.Round(decimal.Parse(inGroupBy.Value.ToList().Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0).ToString()),2).ToString()) %></td>
-                                <td><%=  ((decimal)((inGroupBy.Value.Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-inGroupBy.Value.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/(inGroupBy.Value.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)==0?1:inGroupBy.Value.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)))).ToString("#0.00")+"%" %></td>
+                                <td><%=  ((decimal)((inGroupBy.Value.Sum(_=>_.unit_price!=null?((_.unit_price??0)-(_.unit_discount??0))*_.quantity:0)-inGroupBy.Value.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/(inGroupBy.Value.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)==0?1:inGroupBy.Value.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)))).ToString("#0.00")+"%" %></td>
 
                                 <td><%=(decimal.Round(decimal.Parse(totalPrice.ToString()),2).ToString()) %></td>
                             </tr>
@@ -904,8 +904,8 @@
                                 <td><%=quoteItem.unit_discount %></td>
                                 <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null)?(quoteItem.unit_price-quoteItem.unit_discount).ToString():"" %></td>
                                 <td><%=quoteItem.unit_cost %></td>
-                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_discount-quoteItem.unit_cost)*quoteItem.quantity).ToString()),2).ToString()):"" %></td>
-                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_price!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_cost)*100/(quoteItem.unit_cost==0?1:quoteItem.unit_cost)).ToString()),2).ToString())+"%":"" %></td>
+                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_cost!=0&&quoteItem.unit_price!=null)?(((quoteItem.unit_price??0)-(quoteItem.unit_discount??0)-(quoteItem.unit_cost??0))*quoteItem.quantity??0).ToString("#0.00"):"" %></td>
+                                 <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_cost!=0&&quoteItem.unit_price!=null)?(((quoteItem.unit_price??0)-(quoteItem.unit_discount??0)-(quoteItem.unit_cost??0))*100/((decimal)quoteItem.unit_cost)).ToString("#0.00")+"%":"" %></td>
                                 <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_discount)*quoteItem.quantity).ToString()),2).ToString()):"" %></td>
                             </tr>
 
@@ -1168,8 +1168,8 @@
                                 <td><%=quoteItem.unit_discount %></td>
                                 <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null)?(quoteItem.unit_price-quoteItem.unit_discount).ToString():"" %></td>
                                 <td><%=quoteItem.unit_cost %></td>
-                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_discount-quoteItem.unit_cost)*quoteItem.quantity).ToString()),2).ToString()):"" %></td>
-                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_price!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_cost)*100/(quoteItem.unit_cost==0?1:quoteItem.unit_cost)).ToString()),2).ToString())+"%":"" %></td>
+                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_cost!=0&&quoteItem.unit_price!=null)?(((quoteItem.unit_price??0)-(quoteItem.unit_discount??0)-(quoteItem.unit_cost??0))*quoteItem.quantity??0).ToString("#0.00"):"" %></td>
+                                 <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_cost!=0&&quoteItem.unit_price!=null)?(((quoteItem.unit_price??0)-(quoteItem.unit_discount??0)-(quoteItem.unit_cost??0))*100/((decimal)quoteItem.unit_cost)).ToString("#0.00")+"%":"" %></td>
                                 <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_discount)*quoteItem.quantity).ToString()),2).ToString()):"" %></td>
                             </tr>
                             <%}%>
@@ -1242,8 +1242,8 @@
                             <tr>
                                 <td colspan="<%=IssaleOrder?10:9 %>"></td>
                                 <td><b>全部汇总：</b></td>
-                                <td><%=(decimal.Round(decimal.Parse(quoteItemList.Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0).ToString()),2).ToString()) %></td>
-                                <td><%=((decimal)((quoteItemList.Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/(quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)==0?1:quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)))).ToString("#0.00")+"%" %></td>
+                                <td><%=(decimal.Round(decimal.Parse(quoteItemList.Sum(_=>(_.unit_cost!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-(_.unit_discount??0)-_.unit_cost)*_.quantity:0).ToString()),2).ToString()) %></td>
+                                <td><%=quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)==0?"":((decimal)((quoteItemList.Sum(_=>_.unit_price!=null?((_.unit_price??0)-(_.unit_discount??0))*_.quantity:0)-quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/(quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)??1))).ToString("#0.00")+"%" %></td>
                                 <td><%=decimal.Round(((decimal)(quoteItemList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent==null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent):0))),2).ToString() %></td>
                             </tr>
                             <tr>
@@ -1300,8 +1300,8 @@
                                 <td><%=quoteItem.unit_discount %></td>
                                 <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null)?(quoteItem.unit_price-quoteItem.unit_discount).ToString():"" %></td>
                                 <td><%=quoteItem.unit_cost %></td>
-                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_discount-quoteItem.unit_cost)*quoteItem.quantity).ToString()),2).ToString()):"" %></td>
-                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_price!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_cost)*100/(quoteItem.unit_cost==0?1:quoteItem.unit_cost)).ToString()),2).ToString())+"%":"" %></td>
+                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_cost!=0&&quoteItem.unit_price!=null)?(((quoteItem.unit_price??0)-(quoteItem.unit_discount??0)-(quoteItem.unit_cost??0))*quoteItem.quantity??0).ToString("#0.00"):"" %></td>
+                                 <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_cost!=0&&quoteItem.unit_price!=null)?(((quoteItem.unit_price??0)-(quoteItem.unit_discount??0)-(quoteItem.unit_cost??0))*100/((decimal)quoteItem.unit_cost)).ToString("#0.00")+"%":"" %></td>
                                 <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_discount)*quoteItem.quantity).ToString()),2).ToString()):"" %></td>
                             </tr>
                             <% }
@@ -1399,8 +1399,8 @@
                                 <td><%=quoteItem.unit_discount %></td>
                                 <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null)?(quoteItem.unit_price-quoteItem.unit_discount).ToString():"" %></td>
                                 <td><%=quoteItem.unit_cost %></td>
-                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_discount-quoteItem.unit_cost)*quoteItem.quantity).ToString()),2).ToString()):"" %></td>
-                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_price!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_cost)*100/(quoteItem.unit_cost==0?1:quoteItem.unit_cost)).ToString()),2).ToString())+"%":"" %></td>
+                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_cost!=0&&quoteItem.unit_price!=null)?(((quoteItem.unit_price??0)-(quoteItem.unit_discount??0)-(quoteItem.unit_cost??0))*quoteItem.quantity??0).ToString("#0.00"):"" %></td>
+                                 <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_cost!=0&&quoteItem.unit_price!=null)?(((quoteItem.unit_price??0)-(quoteItem.unit_discount??0)-(quoteItem.unit_cost??0))*100/((decimal)quoteItem.unit_cost)).ToString("#0.00")+"%":"" %></td>
                                 <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_discount)*quoteItem.quantity).ToString()),2).ToString()):"" %></td>
                             </tr>
 
@@ -1669,8 +1669,8 @@
                                 <td><%=quoteItem.unit_discount %></td>
                                 <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null)?(quoteItem.unit_price-quoteItem.unit_discount).ToString():"" %></td>
                                 <td><%=quoteItem.unit_cost %></td>
-                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_discount-quoteItem.unit_cost)*quoteItem.quantity).ToString()),2).ToString()):"" %></td>
-                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_price!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_cost)*100/(quoteItem.unit_cost==0?1:quoteItem.unit_cost)).ToString()),2).ToString())+"%":"" %></td>
+                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_cost!=0&&quoteItem.unit_price!=null)?(((quoteItem.unit_price??0)-(quoteItem.unit_discount??0)-(quoteItem.unit_cost??0))*quoteItem.quantity??0).ToString("#0.00"):"" %></td>
+                                <td><%=(quoteItem.unit_cost!=null&&quoteItem.unit_cost!=0&&quoteItem.unit_price!=null)?(((quoteItem.unit_price??0)-(quoteItem.unit_discount??0)-(quoteItem.unit_cost??0))*100/((decimal)quoteItem.unit_cost)).ToString("#0.00")+"%":"" %></td>
                                 <td><%=(quoteItem.unit_discount!=null&&quoteItem.unit_price!=null&&quoteItem.quantity!=null)?(decimal.Round(decimal.Parse(((quoteItem.unit_price-quoteItem.unit_discount)*quoteItem.quantity).ToString()),2).ToString()):"" %></td>
                             </tr>
                             <%}%>
@@ -1736,8 +1736,8 @@
                             <tr>
                                 <td colspan="<%=IssaleOrder?10:9 %>"></td>
                                 <td><b>全部汇总：</b></td>
-                                <td><%=(decimal.Round(decimal.Parse(quoteItemList.Sum(_=>(_.unit_cost!=null&&_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount-_.unit_cost)*_.quantity:0).ToString()),2).ToString()) %></td>
-                                <td><%=((decimal)((quoteItemList.Sum(_=>_.unit_price!=null?_.unit_price*_.quantity:0)-quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/(quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)==0?1:quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)))).ToString("#0.00")+"%" %></td>
+                                <td><%=(decimal.Round(decimal.Parse(quoteItemList.Sum(_=>(_.unit_cost!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-(_.unit_discount??0)-_.unit_cost)*_.quantity:0).ToString()),2).ToString()) %></td>
+                                <td><%=quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)==0?"":((decimal)((quoteItemList.Sum(_=>_.unit_price!=null?((_.unit_price??0)-(_.unit_discount??0))*_.quantity:0)-quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0))*100/(quoteItemList.Sum(_=>_.unit_cost!=null?_.unit_cost*_.quantity:0)??1))).ToString("#0.00")+"%" %></td>
                                 <td><%=decimal.Round(((decimal)(quoteItemList.Sum(_=>(_.unit_discount!=null&&_.unit_price!=null&&_.quantity!=null)?(_.unit_price-_.unit_discount)*_.quantity:0)-discountQIList.Where(_=>_.discount_percent==null).ToList().Sum(_=>(_.unit_discount!=null&&_.quantity!=null)?_.unit_discount*_.quantity:0)-(oneTimeList != null && oneTimeList.Count > 0?discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_=>oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0)*_.discount_percent):0))),2).ToString() %></td>
                             </tr>
                             <tr>

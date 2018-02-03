@@ -46,6 +46,13 @@ namespace EMT.DoneNOW.Web
                         var ggTableId = context.Request.QueryString["table_id"];
                         GetGenListByTableId(context,int.Parse(ggTableId));
                         break;
+                    case "GetGeneralByParentId":
+                        var pId = context.Request.QueryString["parent_id"];
+                        GetGeneralByParentId(context,long.Parse(pId));
+                        break;
+                    case "GetSysSetting":
+                        GetSysSetting(context);
+                        break;
                     default:
                         break;
                 }
@@ -150,6 +157,32 @@ namespace EMT.DoneNOW.Web
             if (genList != null && genList.Count > 0)
             {
                 context.Response.Write(new Tools.Serialize().SerializeJson(genList));
+            }
+        }
+        /// <summary>
+        /// 根据父ID 获取相应信息
+        /// </summary>
+        private void GetGeneralByParentId(HttpContext context, long parent_id)
+        {
+            var genList = new d_general_dal().GetGeneralByParentId(parent_id);
+            if (genList != null && genList.Count > 0)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(genList));
+            }
+        }
+        /// <summary>
+        /// 获取到系统设置信息
+        /// </summary>
+        private void GetSysSetting(HttpContext context)
+        {
+            var sysId = context.Request.QueryString["sys_id"];
+            if (!string.IsNullOrEmpty(sysId))
+            {
+                var thisSet = new sys_system_setting_dal().FindById(long.Parse(sysId));
+                if (thisSet != null)
+                {
+                    context.Response.Write(new Tools.Serialize().SerializeJson(thisSet));
+                }
             }
         }
     }

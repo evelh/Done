@@ -83,6 +83,7 @@
     <Compile Include="PRO\ExpenseBLL.cs" />
     <Compile Include="PRO\ProjectBLL.cs" />
     <Compile Include="PRO\TaskBLL.cs" />
+    <Compile Include="SDK\TicketBLL.cs" />
     <Compile Include="SYS\AccountClassBLL.cs" />
     <Compile Include="SYS\ConfigTypeBLL.cs" />
     <Compile Include="SYS\DistrictBLL.cs" />
