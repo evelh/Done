@@ -188,7 +188,7 @@ namespace EMT.DoneNOW.BLL
                 sp.period_price = cs.quantity * cs.unit_price;
                 sp.period_adjusted_price = sp.period_price;
                 sp.period_cost = cs.quantity * cs.unit_cost;
-                sp.vendor_account_id = ivtService.vendor_id;
+                sp.vendor_account_id = ivtService.vendor_account_id;
                 sp.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 sp.update_time = sp.create_time;
                 sp.create_user_id = userId;
@@ -313,7 +313,7 @@ namespace EMT.DoneNOW.BLL
                         sabs.service_id = sbs.service_id;
                         sabs.contract_service_adjust_id = sa.id;
                         sabs.prorated_cost_change = (decimal)sBll.GetServiceById(sbs.service_id).unit_cost;
-                        sabs.vendor_account_id = ivtServiceBundle.vendor_id;
+                        sabs.vendor_account_id = ivtServiceBundle.vendor_account_id;
                         sabsDal.Insert(sabs);
                     }
                 }
@@ -339,7 +339,7 @@ namespace EMT.DoneNOW.BLL
                 sp.period_price = cs.quantity * cs.unit_price;
                 sp.period_adjusted_price = sp.period_price;
                 sp.period_cost = cs.quantity * cs.unit_cost;
-                sp.vendor_account_id = ivtServiceBundle.vendor_id;
+                sp.vendor_account_id = ivtServiceBundle.vendor_account_id;
                 sp.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 sp.update_time = sp.create_time;
                 sp.create_user_id = userId;
@@ -355,7 +355,7 @@ namespace EMT.DoneNOW.BLL
                     spbs.id = spbsDal.GetNextIdCom();
                     spbs.service_id = sbs.service_id;
                     spbs.contract_service_period_id = sp.id;
-                    spbs.vendor_account_id = ivtServiceBundle.vendor_id;
+                    spbs.vendor_account_id = ivtServiceBundle.vendor_account_id;
                     spbs.period_cost = (decimal)sBll.GetServiceById(sbs.service_id).unit_cost;
                     spbsDal.Insert(spbs);
                 }

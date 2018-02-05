@@ -47,6 +47,7 @@ namespace EMT.DoneNOW.DTO
         SEX = 49,
         EMAILTYPE = 50,
         OUTSOURCE_SECURITY = 51,                  //外包权限
+        TIME_OFF_PERIOD_TYPE = 56,              // 休假策略：累计增长周期类型
         ATTACHMENT_TYPE = 62,                   // 附件类型
         DEPARTMENT_CATE = 64,                     //部门：类型
         ACCOUNT_SUFFIX = 75,                     // 客户名称后缀
@@ -753,7 +754,12 @@ namespace EMT.DoneNOW.DTO
             PROJECT_TASK_INFORMATION = 1418,            // 任务的扩展信息（自定义信息）
             TICKET_CHECK_LIST = 1420,                   // 工单的检查单
             TICKET_SERVICE_REQUEST = 1421,              // 服务请求审批人信息
+            IVT_SERVICE = 1423,                         // 服务
+            IVT_SERVICE_BUNDLE = 1424,                  // 服务包
             TICKET_SLA_EVENT,                        // 工单sla 事件
+
+
+
         }
 
         /// <summary>

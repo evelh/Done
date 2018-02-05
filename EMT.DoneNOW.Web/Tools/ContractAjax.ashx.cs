@@ -455,11 +455,11 @@ namespace EMT.DoneNOW.Web
             {
                 // 获取供应商名称
                 string vendorName = "";
-                if (service.vendor_id != null)
+                if (service.vendor_account_id != null)
                 {
                     var vendorDal = new ivt_product_vendor_dal();
                     var accountDal = new crm_account_dal();
-                    var vendor = vendorDal.FindById((long)service.vendor_id);
+                    var vendor = vendorDal.FindById((long)service.vendor_account_id);
                     if (vendor.vendor_account_id != null)
                     {
                         vendorName = accountDal.FindById((long)vendor.vendor_account_id).name;
@@ -535,11 +535,11 @@ namespace EMT.DoneNOW.Web
 
             // 获取供应商名称
             string vendorName = "";
-            if (serBun.vendor_id != null)
+            if (serBun.vendor_account_id != null)
             {
                 var vendorDal = new ivt_product_vendor_dal();
                 var accountDal = new crm_account_dal();
-                var vendor = vendorDal.FindById((long)serBun.vendor_id);
+                var vendor = vendorDal.FindById((long)serBun.vendor_account_id);
                 if (vendor.vendor_account_id != null)
                 {
                     vendorName = accountDal.FindById((long)vendor.vendor_account_id).name;

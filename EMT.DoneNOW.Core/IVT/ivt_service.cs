@@ -27,7 +27,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? sla_id { get; set; }
         [DataMember]
-        public Int64? vendor_id { get; set; }
+        public Int64? vendor_account_id { get; set; }
         [DataMember]
         public Int32? period_type_id { get; set; }
         [DataMember]
