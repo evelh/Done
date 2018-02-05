@@ -23,6 +23,7 @@ namespace EMT.DoneNOW.DTO
         SDK_DEPARTMENT_REQUIRE = 27,         // 分配项目任务/问题时需要部门
         PRO_TASK_DONE_REASON = 28,           // 完成Task时是否必填原因
         SDK_TICKET_ADD_LABOUR = 41,          // 已完成工单是否允许添加工时
+        SDK_TICKET_STATUS_LABOUR = 44,       // 添加工时的时候是否 必须将工单状态改为非“new”
         SDK_TICKET_COMPLETE_REASON = 45,     // 关闭工单或者重新打开工单需要输入原因
         SDK_ALLOW_CROSS_NIGHT = 59,          // 是否允许跨夜
         SDK_ENTRY_PROXY = 70,                // 工时是否允许代理操作

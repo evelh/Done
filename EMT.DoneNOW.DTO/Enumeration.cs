@@ -753,6 +753,7 @@ namespace EMT.DoneNOW.DTO
             PROJECT_TASK_INFORMATION = 1418,            // 任务的扩展信息（自定义信息）
             TICKET_CHECK_LIST = 1420,                   // 工单的检查单
             TICKET_SERVICE_REQUEST = 1421,              // 服务请求审批人信息
+            TICKET_SLA_EVENT,                        // 工单sla 事件
         }
 
         /// <summary>

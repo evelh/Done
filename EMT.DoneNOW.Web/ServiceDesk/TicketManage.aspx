@@ -22,7 +22,7 @@
 <body class="Linen AutotaskBlueTheme FullScroll EntityPage EntityNew">
     <form id="form1" runat="server">
         <!-- 上方 标题 按钮等 -->
-        <div class="PageHeadingContainer" style="z-index: 1;">
+        <div class="PageHeadingContainer" style="z-index: 2;">
             <div class="HeaderRow">
                 <table>
                     <tbody>
@@ -497,7 +497,7 @@
                                 <div class="Spacer"></div>
                                 <div class="Right"></div>
                             </div>
-                            <div class="DescriptionText">You may enter up to 20 total items (ad-hoc, from a saved Library checklist, or a mixture of both).</div>
+                            <div class="DescriptionText"><%--You may enter up to 20 total items (ad-hoc, from a saved Library checklist, or a mixture of both).--%> 最多可以添加20个检查单。</div>
                             <div class="Content">
                                 <div class="ToolBar">
                                     <div class="ToolBarItem Left ButtonGroupStart"><a class="Button ButtonIcon New NormalState" id="AddCheckListButton" tabindex="0"><span class="Icon"></span><span class="Text">新增检查单</span></a></div>
@@ -720,7 +720,7 @@
                                         <%} %>
                                         <%if (thisTicket.resolution_actual_time != null)
                                 { %>
-                                        <div class="Dot" style="left: calc(79% - 6px);">
+                                        <div class="Dot" style="left: calc(79% - 6px);z-index:1;">
                                             <div class="Pole VerticalSize1">
                                                 <div class="Flag TargetAchieved Reverse" id="z5bc5fff464e34e689cdacf4990114637">
                                                     <div class="Banner">
@@ -843,8 +843,17 @@
                                         </div>
                                         <div class="TargetProgress" style="width: 100%;"></div>
                                     </div>
-                                    <div class="TicketSlaTimelineStart">
-                                        <div class="TimelineIcon SlaStartLabel" style="background-position: -166px -1px; height: 15px; width: 15px;"></div>
+                                    <div class="TicketSlaTimelineStart" style="z-index:1;">
+                                        <%if (thisTicket.sla_start_time != null)
+                                            {  %>
+                                              
+                                        <div class="TimelineIcon SlaStartLabel" style="background-position: -39px 4px; height: 19px; width: 19px;"></div>
+                                        <%}
+                                        else
+                                        { %>
+                                        <div class="TimelineIcon SlaStartLabel" style="background-position: -167px -1px; height: 19px; width: 19px;"></div>
+                                        <%} %>
+                                        
                                     </div>
                                     <div class="ContextOverlayContainer">
                                         <div class="TimelineContextOverlay ContextOverlay">

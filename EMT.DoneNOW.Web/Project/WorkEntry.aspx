@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title></title>
+    <title>工时管理</title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link href="../Content/style.css" rel="stylesheet" />
@@ -855,8 +855,6 @@
                 dataType: "json",
                 success: function (data) {
                     if (data != "") {
-
-                        // var obj = JSON.parse(data);
                         for (var i = 0; i < data.length; i++) {
                             accSelect += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                         }

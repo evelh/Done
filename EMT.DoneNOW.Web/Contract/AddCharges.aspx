@@ -580,7 +580,7 @@
         }
 
         .AddNoteTitleImage {
-            background-image: url(../Images/TicketNoteIcon.png);
+            background-image: url(../Images/ico_charge.png);
         }
 
         .Popup_TitleCell {

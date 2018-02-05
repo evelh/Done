@@ -95,7 +95,7 @@
                         <span class="icon" style="background: url(../Images/Icons.png) no-repeat -198px -144px; width: 16px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
                         <span class="Text" style="line-height: 24px;">工具</span>
 
-                        <span class="icon" style="background: url(../Images/Icons.png) no-repeat -182px -48px; width: 16px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
+                        <span class="icon" style="background: url(../Images/Icons.png) no-repeat -182px -48px; width: 15px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
                     </a>
                 </li>
                 <li class="DropDownButton" style="top: 72px; left: 214px; display: none;" id="Down2">
@@ -839,7 +839,7 @@
                             <div class="Right"></div>
                         </div>
                         <div class="Content">
-                            <% var showResolu = thisTicket.resolution.Replace("\r\n","<br />").Replace("\n","<br />"); %>
+                            <% var showResolu = (thisTicket.resolution??"").Replace("\r\n","<br />").Replace("\n","<br />"); %>
                             <div class="EntityBodyEnhancedText"><span class="Content"><%=showResolu %></span></div>
                         </div>
                     </div>
@@ -1196,7 +1196,16 @@
                                     </tr>
                                     <tr class="TableRow">
                                         <td>
-                                            <div class="Text HighImportance" title="5.00 worked hours">5h</div>
+                                            <div class="Text HighImportance">
+                                                <%
+                                                    decimal entryHours = 0;
+                                                    if (entryList != null && entryList.Count > 0)
+                                                    {
+                                                        entryHours = entryList.Sum(_ => _.hours_worked ?? 0);
+                                                    }
+                                                 %>
+                                                <%=entryHours.ToString("#0.00")+"h" %>
+                                            </div>
                                         </td>
                                         <td>
                                             <div class="Text HighImportance"><%=thisTicket.estimated_hours.ToString("#0.00")+'h' %></div>
@@ -1210,8 +1219,13 @@
                                     <div class="Progress IsGreaterThanZero Critical" style="width: 100.00%;"></div>
                                 </div>
                                 <div class="Text CriticalImportance">
-                                    <div class="Text" style="display: inline;">2h 59m</div>
-                                    Over Estimate
+                                    <div class="Text" style="display: inline;">
+                                        <% var overHours = thisTicket.estimated_hours - entryHours;  %>
+                                        <% if (overHours < 0) {
+                                                overHours = 0 - overHours;
+                                            } %>
+                                        <%=overHours.ToString("#0.00")+"h" %>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1601,7 +1615,7 @@
     }
     // 完成工单--添加工时，默认工单状态为完成
     function CompleteEntry() {
-        window.open("../ServiceDesk/TicketLabour.aspx?ticket_id=<%=thisTicket.id %>&status_id=<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_LABOUR %>", 'left=200,top=200,width=600,height=800', false);
+        window.open("../ServiceDesk/TicketLabour.aspx?ticket_id=<%=thisTicket.id %>&is_complete=1", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_LABOUR %>", 'left=200,top=200,width=600,height=800', false);
     }
 
     // 新增工单附件
