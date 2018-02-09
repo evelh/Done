@@ -907,6 +907,18 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "查看项目", click_function = "ViewProject()" });
                
                     break;
+                case (long)QueryType.SERVICE:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "DeleteService()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "InActive()", id = "InActSer" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActSer" });
+                    break;
+                case (long)QueryType.SERVICE_BUNDLE:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "DeleteServiceBundle()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "InActive()", id = "InActSer" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActSer" });
+                    break;
                 default:
                     break;
             }

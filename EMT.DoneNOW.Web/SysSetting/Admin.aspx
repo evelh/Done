@@ -350,6 +350,18 @@
                                         </div>
                                       <%}%>
                                     </div>
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE %>" target="PageFrame1">服务</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
+                                    </div>
+                                     <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_BUNDLE %>" target="PageFrame1">服务包</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

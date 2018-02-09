@@ -49,6 +49,7 @@ namespace EMT.DoneNOW.DTO
         OUTSOURCE_SECURITY = 51,                  //外包权限
         ATTACHMENT_TYPE = 62,                   // 附件类型
         DEPARTMENT_CATE = 64,                     //部门：类型
+        ACCOUNT_SUFFIX = 75,                     // 客户名称后缀
         LIMIT_TYPE = 76,                         //系统权限：类型 取值 有无、全部部分 等
         LIMIT_TYPE_VALUE = 77,                    //系统权限：类型详情 取值 有无（有、无）、全部部分（全部、我的、无）等
         MATERIAL_CODE_TO_USE = 80,              // 系统管理：系统配置：配送报价项转为账单时使用的物料代码
@@ -585,6 +586,8 @@ namespace EMT.DoneNOW.DTO
             SHIPPING_ITEM_SERIAL_NUM = 1575,        // 库存管理-产品序列号查找带回（取消接收用）
             EXC_CONTRACT_CALLBACK = 1576,           // 合同管理-合同详情-例外因素-合同查找带回
             CONTRACT_PRODUCT_SN_CALLBACK = 1577,    // 成本-成本产品序列号查找带回（取消拣货用）
+            SERVICE = 1588,                                // 服务查询  
+            SERVICE_BUNDLE = 1589,                         // 服务包查询
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -709,6 +712,8 @@ namespace EMT.DoneNOW.DTO
             PURCHASE_RECEIVE = 1402,                    // 采购接收
             PURCHASE_RECEIVE_SN = 1403,                 // 采购接收串号
             PROJECT_TASK_INFORMATION = 1418,            // 任务的扩展信息（自定义信息）
+            IVT_SERVICE = 1423,                         // 服务
+            IVT_SERVICE_BUNDLE = 1424,                  // 服务包
         }
 
         /// <summary>
@@ -1314,7 +1319,8 @@ namespace EMT.DoneNOW.DTO
         ShipedList = 152,               // 库存管理-配送管理-已配送列表查询
         PURCHASE_ORDER_HISTORY=153,     // 库存管理-采购订单历史-查询
         ShippingItemSerailNum = 154,    // 库存管理-产品序列号查找带回（取消接收用）
-
+        SERVICE = 173,                                // 服务查询  
+        SERVICE_BUNDLE = 174,                         // 服务包查询
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
         Line_Of_Business,              //系统管理：组织：业务条线

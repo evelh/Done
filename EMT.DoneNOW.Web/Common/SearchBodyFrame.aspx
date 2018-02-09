@@ -291,7 +291,13 @@
                   <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PURCHASE_APPROVAL) { %>
                     <li onclick="Approval()"><span style="margin: 0 10px;">通过</span></li>
                     <li onclick="ApprovalReject()"><span style="margin: 0 10px;">拒绝</span></li>
-                  <%} %>
+                  <%}  else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE) { %>
+                    <li onclick="Add()"><i style="background-image: url(../Images/new.png);"></i><span>新增服务</span></li>
+                   <li onclick="">查看价格清单</li>
+                     <%} else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_BUNDLE) { %>
+                    <li onclick="Add()"><i style="background-image: url(../Images/new.png);"></i><span>新增服务包</span></li>
+                   <li onclick="">查看价格清单</li>
+                    <%} %> 
                     <li id="PrintLi" class="General"><i style="background-image: url(../Images/print.png);"></i></li>
                     <li id="SelectLi" class="General" onclick="javascript:window.open('../Common/ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
                     <li id="ExportLi" class="General"><i style="background-image: url(../Images/export.png);"></i></li>

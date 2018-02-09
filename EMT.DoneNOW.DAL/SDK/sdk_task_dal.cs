@@ -108,7 +108,7 @@ namespace EMT.DoneNOW.DAL
         /// </summary>
         public string GetContractSql(string contractSql)
         {
-            if (string.IsNullOrEmpty(contractSql) || string.IsNullOrWhiteSpace(contractSql))
+            if (string.IsNullOrEmpty(contractSql) || contractSql == "concat()")
             {
                 return "";
             }

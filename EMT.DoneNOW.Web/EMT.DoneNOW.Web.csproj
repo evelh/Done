@@ -427,9 +427,14 @@
     <Content Include="Scripts\Search\PurchaseReceive.js" />
     <Content Include="Scripts\Search\revoke_expense.js" />
     <Content Include="Scripts\Search\revoke_labour.js" />
+    <Content Include="Scripts\Search\service.js" />
+    <Content Include="Scripts\Search\service_bundle.js" />
     <Content Include="Scripts\Search\ShipedList.js" />
     <Content Include="Scripts\Search\ShippingList.js" />
     <Content Include="Scripts\Search\purchase_order_history.js" />
+    <Content Include="SysSetting\EditServiceAlert.aspx" />
+    <Content Include="SysSetting\Service.aspx" />
+    <Content Include="SysSetting\ServiceBundle.aspx" />
     <Content Include="Tools\PurchaseOrderAjax.ashx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\alert.png" />
@@ -1841,6 +1846,27 @@
     </Compile>
     <Compile Include="Refresh.aspx.designer.cs">
       <DependentUpon>Refresh.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\EditServiceAlert.aspx.cs">
+      <DependentUpon>EditServiceAlert.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\EditServiceAlert.aspx.designer.cs">
+      <DependentUpon>EditServiceAlert.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\Service.aspx.cs">
+      <DependentUpon>Service.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\Service.aspx.designer.cs">
+      <DependentUpon>Service.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\ServiceBundle.aspx.cs">
+      <DependentUpon>ServiceBundle.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\ServiceBundle.aspx.designer.cs">
+      <DependentUpon>ServiceBundle.aspx</DependentUpon>
     </Compile>
     <Compile Include="Tools\PurchaseOrderAjax.ashx.cs">
       <DependentUpon>PurchaseOrderAjax.ashx</DependentUpon>
