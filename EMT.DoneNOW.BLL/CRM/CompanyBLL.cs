@@ -1149,7 +1149,7 @@ namespace EMT.DoneNOW.BLL
         {
             // var nameList = new List<string>() { "股份", "有限", "信息", "科技", "公司", "技术", "责任", "集团", "贸易", "工贸", "工程", "网络", "实业", "营业部", "事业部", "办事处", "分公司", "管理" };  // 后缀名称处理   todo—— 前缀名称处理
             // 客户：名称后缀
-            var List = new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.NAME_SUFFIX));
+            var List = new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.ACCOUNT_SUFFIX));
             var nameList = List.Select(_ => _.show);
             var area = new d_district_dal().GetDictionary();
             var areaList = area.Select(_=>_.show).ToList();

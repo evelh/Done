@@ -27,6 +27,9 @@ namespace EMT.DoneNOW.Web
                     Active(context, Convert.ToInt64(type_id)); break;
                 case "No_Active":
                     No_Active(context, Convert.ToInt64(type_id)); break;
+                case "GetUdfByCate":
+                    GetUdfByCate(context);
+                    break;
                 default: break;
             }
         }
@@ -95,6 +98,53 @@ namespace EMT.DoneNOW.Web
             {
                 context.Response.Write("停用失败！");
             }
+        }
+
+        public void GetUdfByCate(HttpContext context)
+        {
+            var insProId = context.Request.QueryString["insProId"];
+            crm_installed_product insPro = null;
+            List<DTO.UserDefinedFieldValue> iProduct_udfValueList = null;
+            if (!string.IsNullOrEmpty(insProId))
+            {
+                insPro = new DAL.crm_installed_product_dal().FindNoDeleteById(long.Parse(insProId));
+                var iProduct_udfList = new UserDefinedFieldsBLL().GetUdf(DTO.DicEnum.UDF_CATE.CONFIGURATION_ITEMS);
+                iProduct_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DTO.DicEnum.UDF_CATE.CONFIGURATION_ITEMS, insPro.id, iProduct_udfList);
+            }
+            var cateId = context.Request.QueryString["cateId"];
+            string udfHtml = "";
+            if (!string.IsNullOrEmpty(cateId))
+            {
+                var usdList = new DAL.sys_udf_field_dal().GetUdfByGroupId(long.Parse(cateId));
+                if(usdList!=null&& usdList.Count > 0)
+                {
+                    usdList.ForEach(_ => {
+                        DTO.UserDefinedFieldValue thisValue = null;
+                        if(iProduct_udfValueList!=null&& iProduct_udfValueList.Count > 0)
+                        {
+                            thisValue = iProduct_udfValueList.FirstOrDefault(ip => ip.id == _.id);
+                        }
+                        switch (_.data_type_id)
+                        {
+                            case (int)DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT:
+                                udfHtml += $"<tr><td class='ip_general_label_udf'><div class='clear'><label>{_.col_comment}</label><input type = 'text' name='{_.id}' class='sl_cdt' value='{(thisValue==null?"":thisValue.value)}' /></div></td></tr>";
+                                break;
+                            case (int)DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT:
+                                udfHtml += $"<tr><td class='ip_general_label_udf'><div class='clear'><label>{_.col_comment}</label><textarea name='{_.id}' rows='2' cols='20'>{(thisValue == null ? "" : thisValue.value)}</textarea></div></td></tr>";
+                                break;
+                            case (int)DTO.DicEnum.UDF_DATA_TYPE.DATETIME:
+                                udfHtml += $"<tr><td class='ip_general_label_udf'><div class='clear'><label>{_.col_comment}</label><input type = 'text' name='{_.id}' onclick='WdatePicker()' class='sl_cdt' value='{(thisValue == null ? "" : thisValue.value)}' /></div></td></tr>";
+                                break;
+                            case (int)DTO.DicEnum.UDF_DATA_TYPE.NUMBER:
+                                udfHtml += $"<tr><td class='ip_general_label_udf'><div class='clear'><label>{_.col_comment}</label><input type = 'text' name='{_.id}'  maxlength='11' onkeyup=\"value = value.replace(/[^\\d] / g, '') \" onbeforepaste=\"clipboardData.setData('text', clipboardData.getData('text').replace(/[^\\d] / g, ''))\" class='sl_cdt' value='{(thisValue == null ? "" : thisValue.value)}' /></div></td></tr>";
+                                break;
+                            default:
+                                break;
+                        }
+                    });
+                }
+            }
+            context.Response.Write(udfHtml);
         }
 
     }

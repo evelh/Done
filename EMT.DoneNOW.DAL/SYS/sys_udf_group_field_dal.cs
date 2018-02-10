@@ -7,5 +7,6 @@ namespace EMT.DoneNOW.DAL
 {
     public class sys_udf_group_field_dal : BaseDAL<sys_udf_group_field>
     {
+       
     }
 }

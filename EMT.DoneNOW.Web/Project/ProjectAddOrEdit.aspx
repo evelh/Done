@@ -1873,9 +1873,9 @@
     $("#down3_2").on("click", function () {
         // SecondStep2
         var ids = "";
-        $("#SecondStep2 tr").each(function () {
+        $("#choProTaskList tr").each(function () {
             if ($(this).hasClass("Selected")) {
-                ids += $(this).val() + ","
+                ids += $(this).data("val") + ","
             }
         })
         if (ids == "") {
@@ -2759,4 +2759,27 @@
             $("Bcc_Email").html(thisEmailText);
         }
     }
+
+    $("#CheckAll_2").click(function () {
+        if ($(this).is(":checked")) {
+            $("#choProTaskList>.HighImportance").each(function () {
+                var thisValue = $(this).data("val");
+                if (thisValue != "" && thisValue != null && thisValue != undefined) {
+                    if (!$(this).hasClass("Selected")) {
+                        $(this).addClass("Selected");
+                    }
+                }
+            })
+        }
+        else {
+            $("#choProTaskList>.HighImportance").each(function () {
+                var thisValue = $(this).data("val");
+                if (thisValue != "" && thisValue != null && thisValue != undefined) {
+                    if ($(this).hasClass("Selected")) {
+                        $(this).removeClass("Selected");
+                    }
+                }
+            })
+        }
+    })
 </script>

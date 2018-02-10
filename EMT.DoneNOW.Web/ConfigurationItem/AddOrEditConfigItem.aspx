@@ -633,7 +633,7 @@
                                                         <td class="FieldLabel">服务/服务集
                                                     <div>
                                                         <span style="display: inline-block;">
-                                                            <asp:DropDownList ID="service" runat="server" CssClass="txtBlack8Class" Width="260px"></asp:DropDownList>
+                                                            <asp:DropDownList ID="service_id" runat="server" CssClass="txtBlack8Class" Width="260px"></asp:DropDownList>
                                                         </span>
                                                     </div>
                                                         </td>
@@ -729,7 +729,7 @@
                                         <div>
 
                                             <table cellpadding="0" cellspacing="0" style="width: 100%;">
-                                                <tbody>
+                                                <tbody id="insProHtml">
 
                                                     <% if (iProduct_udfList != null && iProduct_udfList.Count > 0)
                                                         {
@@ -1116,7 +1116,7 @@
          }
          else
          {%>
-        $("#service").prop("disabled", true);
+            $("#service_id").prop("disabled", true);
         <%}%>
 
 
@@ -1126,19 +1126,73 @@
         <%}
     else
     {
-        if (iProduct.service_id != null)
-        {%>
-            $("#service").val(<%=iProduct.service_id %>);
-        <%}
+       
 
-        if(iProduct.service_bundle_id != null)
+        if (iProduct.contact_id != null)
         {%>
-            $("#service").val(<%=iProduct.service_bundle_id %>);
+            $("#contact_id").val('<%=iProduct.contact_id.ToString() %>');
         <%}
+        if (iProduct.contract_id != null && (iProduct.service_id != null || iProduct.service_bundle_id != null))
+        {
+            EMT.DoneNOW.Core.ctt_contract_service conSer = null;
+            if(iProduct.service_id != null)
+            {
+                conSer = new EMT.DoneNOW.DAL.ctt_contract_service_dal().GetServiceByConSerId((long)iProduct.contract_id,(long)iProduct.service_id);
+            }else if( iProduct.service_bundle_id != null)
+            {
+                conSer = new EMT.DoneNOW.DAL.ctt_contract_service_dal().GetServiceByConSerId((long)iProduct.contract_id,(long)iProduct.service_bundle_id);
+            }
+            if (conSer != null)
+            {%>
+            $("#service_id").val('<%=conSer.id.ToString() %>');
+            <%}
+
+        }
     }%>
-        GetDaraByProduct();
+       //  GetDaraByProduct();
+        <%if (!isAdd)
+    { %>
+            var product_id = $("#product_idHidden").val();
+            if (product_id != "") {
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    dataType: "json",
+                    url: "../Tools/ProductAjax.ashx?act=GetVendorInfo&product_id=" + product_id,
+                    // data: { CompanyName: companyName },
+                    success: function (data) {
+                        debugger;
+                        if (data != "") {
+                            var thisText = data.name + '(' + data.vendor_product_no + ')';
+                            $("#manufacturer").text(thisText);
+                        }
+                    },
 
-    
+                });
+            }
+
+            $("#vendor_id").html("");
+            $.ajax({
+                type: "GET",
+                async: false,
+                // dataType: "json",
+                url: "../Tools/CompanyAjax.ashx?act=vendorList&product_id=" + product_id,
+                success: function (data) {
+                    if (data != "") {
+                        $("#vendor_id").html(data);
+                        <%if (iProduct != null && iProduct.vendor_account_id != null)
+    { %>
+                        $("#vendor_id").val('<%=iProduct.vendor_account_id.ToString() %>');
+                        <%}%>
+                    }
+                },
+
+            });
+        
+           
+        <%}%>
+
+        GetUdfByCate();
     })
     // contact_id
     $("#contact_id").change(function () {
@@ -1456,11 +1510,11 @@
                 url: "../Tools/ContractAjax.ashx?act=isService&contract_id=" + contract_id,
                 success: function (data) {
                     if (data != "") {
-                        $("#service").html(data);
-                        $("#service").prop("disabled", false);
+                        $("#service_id").html(data);
+                        $("#service_id").prop("disabled", false);
                     }
                     else {
-                        $("#service").prop("disabled", true);
+                        $("#service_id").prop("disabled", true);
                     }
                 }
             })
@@ -1474,5 +1528,30 @@
         } else {
             LayerMsg("请先选择客户");
         }
+    }
+
+    $("#installed_product_cate_id").change(function () {
+        GetUdfByCate();
+    })
+
+    function GetUdfByCate() {
+        var cateId = $("#installed_product_cate_id").val();
+        var udfHtml = "";
+        if (cateId != "" && cateId != null) {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ConfigItemTypeAjax.ashx?act=GetUdfByCate&cateId=" + cateId +"&insProId=<%=iProduct == null ? "":iProduct.id.ToString() %>",
+                success: function (data) {
+                    if (data != "") {
+                        udfHtml = data;
+                    }
+                   
+                }
+            })
+
+        }
+
+        $("#insProHtml").html(udfHtml);
     }
 </script>

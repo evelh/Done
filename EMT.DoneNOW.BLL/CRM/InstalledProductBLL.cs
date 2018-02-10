@@ -67,7 +67,7 @@ namespace EMT.DoneNOW.BLL
             {
                 id = installed_product_dal.GetNextIdCom(),
                 product_id = param.product_id,
-                cate_id = (int)param.installed_product_cate_id,
+                cate_id = param.installed_product_cate_id,
                 account_id = param.account_id,
                 start_date = param.start_date,
                 through_date = param.through_date,
@@ -89,7 +89,6 @@ namespace EMT.DoneNOW.BLL
                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 create_user_id = user.id,
                 update_user_id = user.id,
-
                 // Terms
                 hourly_cost = param.terms.hourly_cost,
                 daily_cost = param.terms.daily_cost,
@@ -99,6 +98,26 @@ namespace EMT.DoneNOW.BLL
                 accounting_link = param.terms.accounting_link,
 
             };   // 创建配置项对象
+
+            if (param.service_id != null)
+            {
+                var ser = new ctt_contract_service_dal().FindNoDeleteById((long)param.service_id);
+                if (ser != null)
+                {
+                    if (ser.object_type == 1)
+                    {
+                        installed_product.service_id = ser.object_id;
+                    }
+                    else if(ser.object_type == 2)
+                    {
+                        installed_product.service_bundle_id = ser.object_id;
+                    }
+                }
+                else
+                {
+                    
+                }
+            }
             installed_product_dal.Insert(installed_product);                            // 插入配置项
             new sys_oper_log_dal().Insert(new sys_oper_log()
             {
@@ -177,7 +196,7 @@ namespace EMT.DoneNOW.BLL
             {
                 id = old_installed_product.id,
                 product_id = param.product_id,
-                cate_id = (int)param.installed_product_cate_id,
+                cate_id = param.installed_product_cate_id,
                 account_id = param.account_id,
                 start_date = param.start_date,
                 through_date = param.through_date,
@@ -197,7 +216,7 @@ namespace EMT.DoneNOW.BLL
                 //create_user_id = user.id,
                 update_user_id = user.id,
                 remark = param.notes,
-
+                //service_id = param.service_id,
                 // Terms
                 hourly_cost = param.terms.hourly_cost,
                 daily_cost = param.terms.daily_cost,
@@ -225,15 +244,41 @@ namespace EMT.DoneNOW.BLL
                 quote_item_id = old_installed_product.quote_item_id,
                 
 
-                service_bundle_id = old_installed_product.service_bundle_id,
-                service_id = old_installed_product.service_id,
+                //service_bundle_id = old_installed_product.service_bundle_id,
+                //service_id = old_installed_product.service_id,
                 udf_group_id = old_installed_product.udf_group_id,
 
 
                 #endregion
 
             };   // 创建配置项对象
-
+            if (param.service_id != null)
+            {
+                var ser = new ctt_contract_service_dal().FindNoDeleteById((long)param.service_id);
+                if (ser != null)
+                {
+                    if (ser.object_type == 1)
+                    {
+                        installed_product.service_id = ser.object_id;
+                        installed_product.service_bundle_id = null;
+                    }
+                    else if (ser.object_type == 2)
+                    {
+                        installed_product.service_bundle_id = ser.object_id;
+                        installed_product.service_id = null;
+                    }
+                    else
+                    {
+                        installed_product.service_bundle_id = null;
+                        installed_product.service_id = null;
+                    }
+                }
+            }
+            else
+            {
+                installed_product.service_bundle_id = null;
+                installed_product.service_id =null;
+            }
             installed_product_dal.Update(installed_product);
             new sys_oper_log_dal().Insert(new sys_oper_log()
             {
@@ -249,7 +294,9 @@ namespace EMT.DoneNOW.BLL
                 remark = "修改配置项相关信息",
             });                       // 插入操作日志
 
-
+            var udf_configuration_items_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONFIGURATION_ITEMS);   // 查询自定义信息
+            var udf_configuration_items = param.udf;
+            new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.CONFIGURATION_ITEMS, udf_configuration_items_list, installed_product.id, udf_configuration_items, user, OPER_LOG_OBJ_CATE.CONFIGURAITEM);  // 保存自定义扩展信息
 
 
 

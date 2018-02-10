@@ -11,5 +11,10 @@ namespace EMT.DoneNOW.DAL
         {
             return FindSignleBySql<sys_udf_field>($"SELECT * from sys_udf_field where cate_id = {cate_id} and col_comment = '{colName}' and delete_time = 0");
         }
+
+        public List<sys_udf_field> GetUdfByGroupId(long groupId)
+        {
+            return FindListBySql<sys_udf_field>($"SELECT * from sys_udf_field where delete_time = 0 and id in( SELECT udf_field_id from sys_udf_group_field where group_id = {groupId})");
+        }
     }
 }

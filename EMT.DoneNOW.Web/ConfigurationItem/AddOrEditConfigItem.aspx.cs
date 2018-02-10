@@ -56,11 +56,18 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                 //var contactList = new crm_contact_dal().GetContactByAccountId(account.id);
                 //var serviceList = new ivt_service_dal().GetServiceList($" and vendor_id = {account.id}");
                 #region 配置下拉框数据源
-                installed_product_cate_id.DataTextField = "show";
-                installed_product_cate_id.DataValueField = "val";
-                installed_product_cate_id.DataSource = dic.FirstOrDefault(_ => _.Key == "installed_product_cate").Value;
+
+                var udfGroup = new d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.UDF_FILED_GROUP);
+                List<d_general> cateList = null;
+                if(udfGroup!=null&& udfGroup.Count > 0)
+                {
+                    cateList = udfGroup.Where(_ => _.parent_id == (int)UDF_CATE.CONFIGURATION_ITEMS).ToList();
+                }
+                installed_product_cate_id.DataTextField = "name";
+                installed_product_cate_id.DataValueField = "id";
+                installed_product_cate_id.DataSource = cateList;
                 installed_product_cate_id.DataBind();
-                installed_product_cate_id.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+                installed_product_cate_id.Items.Insert(0, new ListItem() { Value = "", Text = "   ", Selected = true });
 
                 //contact_id.DataTextField = "name";
                 //contact_id.DataValueField = "id";
@@ -85,7 +92,11 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                     {
                         contract = new ctt_contract_dal().FindNoDeleteById((long)iProduct.contract_id);
                     }
-                    installed_product_cate_id.SelectedValue = iProduct.cate_id.ToString();
+                    if (iProduct.cate_id != null)
+                    {
+                        installed_product_cate_id.SelectedValue = iProduct.cate_id.ToString();
+                    }
+                    
 
                     if (iProduct.contact_id != null)
                     {
@@ -106,10 +117,9 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
 
 
             }
-            catch (Exception)
+            catch (Exception msg)
             {
-
-                Response.End();
+                Response.Write("<script>alert('"+msg.Message+"');window.close();</script>");
             }
             
         }

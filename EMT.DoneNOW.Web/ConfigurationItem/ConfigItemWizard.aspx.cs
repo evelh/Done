@@ -153,7 +153,7 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
             param.status = 1;
             param.contact_id = null;
             param.contract_id = null;
-            param.service = null;
+            param.service_id = null;
             var productId = Request.Form[chooseProId+"_product_id"];
             if (productId != "")
             {

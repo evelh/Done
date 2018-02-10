@@ -1317,7 +1317,7 @@
                                                             </colgroup>
                                                             <tbody>
                                                                 <tr class="HeadingRow">
-                                                                    <td class="Interaction">
+                                                                    <td class="">
                                                                         <input type="checkbox" style="vertical-align: middle;" id="CheckAll_2">
                                                                     </td>
                                                                     <td class="Nesting">
@@ -3464,5 +3464,30 @@
             });
         }
         // CloseTaskAlarm();
+    })
+
+
+
+    $("#CheckAll_2").click(function () {
+        if ($(this).is(":checked")) {
+            $("#choProTaskList>.HighImportance").each(function () {
+                var thisValue = $(this).data("val");
+                if (thisValue != "" && thisValue != null && thisValue != undefined) {
+                    if (!$(this).hasClass("Selected")) {
+                        $(this).addClass("Selected");
+                    }
+                }
+            })
+        }
+        else {
+            $("#choProTaskList>.HighImportance").each(function () {
+                var thisValue = $(this).data("val");
+                if (thisValue != "" && thisValue != null && thisValue != undefined) {
+                    if ($(this).hasClass("Selected")) {
+                        $(this).removeClass("Selected");
+                    }
+                }
+            })
+        }
     })
 </script>

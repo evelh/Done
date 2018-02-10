@@ -238,7 +238,7 @@ $(".dn_tr").bind("contextmenu", function (event) {
         url: "../Tools/ProductAjax.ashx?act=property&property=is_active&iProduct_id=" + entityid,
         async: false,
         success: function (data) {
-            debugger;
+
             if (data == "1") {
                 $("#ActiveThis").css("color", "grey");
                 $("#NoActiveThis").css("color", "");
