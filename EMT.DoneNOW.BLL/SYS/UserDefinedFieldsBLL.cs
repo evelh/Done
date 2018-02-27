@@ -240,7 +240,7 @@ namespace EMT.DoneNOW.BLL
             foreach (var val in vals)
             {
                 var oldv = oldVal.Find(f => f.id == val.id);
-                if (object.Equals(oldv.value, val.value))
+                if (oldv!=null&&object.Equals(oldv.value, val.value))
                     continue;
                 var fld = fields.Find(f => f.id == val.id);
                 if (val.value == null)
@@ -253,7 +253,7 @@ namespace EMT.DoneNOW.BLL
                     updateSb.Append(fld.col_name).Append("='").Append(v).Append("',");    // 组合sql更新语句
                 }
                 
-                dict.Add(fld.col_name, oldv.value + "→" + val.value);                         // 生成操作日志
+                dict.Add(fld.col_name, (oldv==null?"":oldv.value) + "→" + val.value);                         // 生成操作日志
             }
             if (dict.Count == 0)        // 无修改
                 return true;

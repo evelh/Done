@@ -358,6 +358,9 @@
         .NoneBorder {
             border: none;
         }
+        select.sl_cdt {
+    width: 150px;
+}
     </style>
 </head>
 <body>
@@ -1508,7 +1511,9 @@
             $.ajax({
                 type: "GET",
                 url: "../Tools/ContractAjax.ashx?act=isService&contract_id=" + contract_id,
+                async: false,
                 success: function (data) {
+                    
                     if (data != "") {
                         $("#service_id").html(data);
                         $("#service_id").prop("disabled", false);
@@ -1516,7 +1521,12 @@
                     else {
                         $("#service_id").prop("disabled", true);
                     }
-                }
+                },
+                error: function (data) {
+                    debugger;
+                    console.log(data);
+                },
+
             })
         }
     }

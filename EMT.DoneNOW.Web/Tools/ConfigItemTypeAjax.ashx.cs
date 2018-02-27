@@ -115,9 +115,11 @@ namespace EMT.DoneNOW.Web
             string udfHtml = "";
             if (!string.IsNullOrEmpty(cateId))
             {
+              
                 var usdList = new DAL.sys_udf_field_dal().GetUdfByGroupId(long.Parse(cateId));
                 if(usdList!=null&& usdList.Count > 0)
                 {
+                    var udfFileDto = new UserDefinedFieldsBLL().GetUdf((DTO.DicEnum.UDF_CATE.CONFIGURATION_ITEMS));
                     usdList.ForEach(_ => {
                         DTO.UserDefinedFieldValue thisValue = null;
                         if(iProduct_udfValueList!=null&& iProduct_udfValueList.Count > 0)
@@ -137,6 +139,25 @@ namespace EMT.DoneNOW.Web
                                 break;
                             case (int)DTO.DicEnum.UDF_DATA_TYPE.NUMBER:
                                 udfHtml += $"<tr><td class='ip_general_label_udf'><div class='clear'><label>{_.col_comment}</label><input type = 'text' name='{_.id}'  maxlength='11' onkeyup=\"value = value.replace(/[^\\d] / g, '') \" onbeforepaste=\"clipboardData.setData('text', clipboardData.getData('text').replace(/[^\\d] / g, ''))\" class='sl_cdt' value='{(thisValue == null ? "" : thisValue.value)}' /></div></td></tr>";
+                                break;
+                            case (int)DTO.DicEnum.UDF_DATA_TYPE.LIST:
+                                var thisListHtml = "";
+                                if(udfFileDto!=null&& udfFileDto.Count > 0)
+                                {
+                                    var thisList = udfFileDto.FirstOrDefault(u => u.id == _.id);
+                                    if (thisList != null&& thisList.value_list!=null&& thisList.value_list.Count>0)
+                                    {
+                                        if (_.is_required == 0)
+                                            thisListHtml += "<option value=''> </option>";
+                                        thisList.value_list.ForEach(t => {
+                                            if (thisValue != null && thisValue.value.ToString() == t.val)
+                                                thisListHtml += $"<option value='{t.val}' selected='selected'>{t.show}</option>";
+                                            else
+                                                thisListHtml += $"<option value='{t.val}'>{t.show}</option>";
+                                        });
+                                    }
+                                }
+                                udfHtml += $"<tr><td class='ip_general_label_udf'><div class='clear'><label>{_.col_comment}</label><select class='sl_cdt' name='{_.id}'>{thisListHtml}</select></div></td></tr>";
                                 break;
                             default:
                                 break;

@@ -1501,7 +1501,7 @@ namespace EMT.DoneNOW.DTO
         TASK_NOTE_EDIT,        // 任务备注新增修改 
 
         TASK_ATTACH,
-
+        PROJETC_ATTACH,
         TASK_EXPENSE_ADD,     // 任务费用新增修改
         TASK_EXPENSE_EDIT,    // 任务费用新增修改
         RESOURCE_CALLBACK,    // 员工的查找带回

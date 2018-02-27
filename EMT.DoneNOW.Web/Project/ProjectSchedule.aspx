@@ -860,7 +860,7 @@
                     <div class="CancelDialogButton" id="CloseNav2"></div>
                     <div class="TitleBar">
                         <div class="Title">
-                            <span class="text">保存为模板</span>
+                            <span class="text" id="SaveTempTitle">从模板导入</span>
                         </div>
                     </div>
                     <%
@@ -1219,7 +1219,7 @@
                         <div class="ScrollingContainer" style="height: 394px; display: none;" id="SecondStep2">
 
                             <div class="WizardProgressBar">
-                                <div style="width: 25%;" class="Item Current ChooseTempIcon">
+                                <div style="width: 25%;" class="Item Current ChooseTempIcon" id="ShowTemp2">
                                     <div class="Full">
                                         <div class="Left">
                                             <div class="Indicator">
@@ -1238,7 +1238,7 @@
                                     <div class="Label">选择模板</div>
                                 </div>
 
-                                <div style="width: 25%;" class="Item Previous GenInfo">
+                                <div style="width: 25%;" class="Item Previous GenInfo" id="ShowInfo2">
                                     <div class="Full">
                                         <div class="Left">
 
@@ -1367,7 +1367,7 @@
 
                             <div class="WizardProgressBar">
 
-                                <div style="width: 25%;" class="Item Current ChooseTempIcon">
+                                <div style="width: 25%;" class="Item Current ChooseTempIcon" id="ShowTemp3">
                                     <div class="Full">
                                         <div class="Left">
                                             <div class="Indicator">
@@ -1386,7 +1386,7 @@
                                     <div class="Label">选择模板</div>
                                 </div>
 
-                                <div style="width: 25%;" class="Item Previous GenInfo">
+                                <div style="width: 25%;" class="Item Previous GenInfo" id="ShowInfo3">
                                     <div class="Full">
                                         <div class="Left">
 
@@ -1949,7 +1949,7 @@
                                 </div><%} %>
                                       <%if (CheckAuth("PRO_PROJECT_VIEW_ATTACH_ADD"))
                                       { %>
-                                <div class="Button1" id="ProAttButton" tabindex="0" onclick="NewAddAtt()">
+                                <div class="Button1" id="ProAttButton" tabindex="0" onclick="NewAddProjectAtt()">
                                     <span class="Text">附件</span>
                                 </div><%} %>
                                  <%if (CheckAuth("PRO_PROJECT_VIEW_EXPENSES_ADD_CHANGE"))
@@ -2046,7 +2046,7 @@
                                 </div> <%} %>
                                    <%if (CheckAuth("PRO_PROJECT_VIEW_ATTACH_ADD"))
                                      { %>
-                                <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="TaskAttButton" tabindex="0" onclick="NewAddAtt()">
+                                <div class="Button1 TaskMenu  OnlyTaskMenu OnlyIssMenu" id="TaskAttButton" tabindex="0" onclick="NewAddTaskAtt()">
                                     <span class="Text">附件</span>
                                 </div><%} %>
                                  <%if (CheckAuth("PRO_PROJECT_VIEW_EXPENSES_ADD_EXPENSES"))
@@ -2292,14 +2292,19 @@
     function SaveAsTemp() {
         $(".ChooseTempIcon").hide();
         $("#Nav2").show();
-        $("#BackgroundOverLay").show();
+        $("#AddStep2").show();
+        $("#secondGenInfo").show();
         $("#FirstStep2").hide();
+        $("#SaveTempTitle").html("保存为模板");
+        $("#BackgroundOverLay").show();
+        //$("#FirstStep2").hide();
         //$("#prev2_2").on("click", function () {
 
 
         //    $("#FirstStep2").show();
         //    $("#AddStep2").hide();
         //});
+        $("#down2_2").unbind("click", function () { });
         $("#down2_2").on("click", function () {
 
             var temp_name = $("#temp_name").val();
@@ -2332,6 +2337,8 @@
                     }
                 },
             });
+
+            $("#down3_2").unbind("click", function () { });
             $("#down3_2").on("click", function () {
                 // SecondStep2
                 debugger;
@@ -2348,29 +2355,37 @@
                         $("#SecondStep2").hide();
                         $("#ThirdStep2").show();
                         $("#TempChooseTaskids").val("");
+                        $("#ShowInfo3").show();
                     }, function () { });
                 } else {
                     ids = ids.substring(0, ids.length - 1);
                     $("#SecondStep2").hide();
                     $("#ThirdStep2").show();
                     $("#TempChooseTaskids").val(ids);
+                    $("#ShowInfo3").show();
                 }
 
 
             });
             $("#AddStep2").hide();
             $("#SecondStep2").show();
+            $("#ShowInfo2").show();
         });
+        //$("#prev3_2").removeAttr("click");
+        $("#prev3_2").unbind("click", function () { });
         $("#prev3_2").on("click", function () {
             $("#AddStep2").show();
             $("#SecondStep2").hide();
+            $("#FirstStep2").hide();
         });
 
+        $("#prev4_2").unbind("click", function () { });
         $("#prev4_2").on("click", function () {
             $("#SecondStep2").show();
             $("#ThirdStep2").hide();
         });
 
+        $("#Finish_2").unbind("click", function () { });
         $("#Finish_2").on("click", function () {
             var temp_name = $("#temp_name").val();
             if (temp_name == "") {
@@ -2419,9 +2434,15 @@
     function ImportFromTemp() {
         $(".GenInfo").hide();
         $("#Nav2").show();
+        $("#SaveTempTitle").html("从模板导入");
         $("#BackgroundOverLay").show();
         $("#AddStep2").hide();
+        //$("#AddStep2").show();
         $("#FirstStep2").show();
+        $("#firstChooseTempIcon").show();
+
+
+        $("#down1_2").unbind("click", function () { });
         $("#down1_2").click(function () {
             var project_temp = $("#project_temp").val();
             if (project_temp != undefined && project_temp != "" && project_temp != "0") {
@@ -2493,6 +2514,8 @@
                         $(".D").removeClass('Selected');
                     }
                 });
+                //$("#down3_2").removeAttr("click");
+                $("#down3_2").unbind("click", function () { });
                 $("#down3_2").on("click", function () {
                     // SecondStep2
                     var ids = "";
@@ -2520,6 +2543,8 @@
 
 
                 });
+                $("#ShowTemp3").show();
+                $("#ShowTemp2").show();
                 $("#FirstStep2").hide();
                 $("#SecondStep2").show();
             } else {
@@ -2528,15 +2553,23 @@
 
         })
 
+        //$("#prev3_2").removeAttr("click");
+        //down2_2
+        
+        $("#prev3_2").unbind("click", function () { });
         $("#prev3_2").on("click", function () {
             $("#FirstStep2").show();
             $("#SecondStep2").hide();
+            $("#AddStep2").hide();
         });
 
+        $("#prev4_2").unbind("click", function () { });
         $("#prev4_2").on("click", function () {
             $("#SecondStep2").show();
             $("#ThirdStep2").hide();
         });
+
+        $("#Finish_2").unbind("click", function () { });
         $("#Finish_2").on("click", function () {
             debugger;
             var project_temp = $("#project_temp").val();
@@ -3079,9 +3112,14 @@
 
         }
     }
-    function NewAddAtt() {
+    function NewAddTaskAtt() {
         if (entityid != "" && entityid != undefined) {
-            window.open("../Activity/OpenAttachment.aspx?id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASK_ATTACH %>', 'left=200,top=200,width=1080,height=800', false);
+            window.open("../Activity/AddAttachment.aspx?objId=" + entityid +"&objType=<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_OBJECT_TYPE.TASK %>", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASK_ATTACH %>', 'left=200,top=200,width=1080,height=800', false);
+        }
+    }
+    function NewAddProjectAtt() {
+        if (entityid != "" && entityid != undefined) {
+            window.open("../Activity/AddAttachment.aspx?objId=" + entityid +"&objType=<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_OBJECT_TYPE.PROJECT %>", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.PROJETC_ATTACH %>', 'left=200,top=200,width=1080,height=800', false);
         }
     }
     function NewAddCharge() {

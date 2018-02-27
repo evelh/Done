@@ -302,7 +302,7 @@ namespace EMT.DoneNOW.Web
                         var name = oppBLL.ReturnServiceName(item.object_id);
                         services.Append("<option value='" + item.id + "'>" + name + "</option>");
                     }
-                    context.Response.Write(services);
+                    context.Response.Write(services.ToString());
                     return;
                 }
             }

@@ -546,9 +546,7 @@ namespace EMT.DoneNOW.BLL
             // 5.如果时间落在项目时间外面，需要更改项目时间
             var oldTask = _dal.FindNoDeleteById(param.task.id);
             if (oldTask == null)
-            {
                 return false;
-            }
             var oldTaskEndTime = oldTask.estimated_end_time;
             var thisTask = param.task;
             if (thisTask.estimated_duration == null)
@@ -558,7 +556,11 @@ namespace EMT.DoneNOW.BLL
             else
             {
                 //var test = RetrunMaxTime(6970,DateTime.Parse("2018-01-07"),2);
-                thisTask.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(RetrunMaxTime((long)thisTask.project_id, Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time), (int)thisTask.estimated_duration));
+                var thisDura = GetDayByTime((long)thisTask.estimated_begin_time, (long)thisTask.estimated_end_time, (long)thisTask.project_id);
+                if(thisDura!= (int)thisTask.estimated_duration)
+                {
+                    thisTask.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(RetrunMaxTime((long)thisTask.project_id, Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time), (int)thisTask.estimated_duration));
+                }
             }
             var user = UserInfoBLL.GetUserInfo(user_id);
             bool isPhase = thisTask.type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE;
@@ -628,7 +630,12 @@ namespace EMT.DoneNOW.BLL
                 }
                 #endregion
                 //  根据开始时间和结束时间计算最终时间
-                param.task.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(RetrunMaxTime((long)param.task.project_id, startDate, (int)param.task.estimated_duration));
+                var thisDura = GetDayByTime(Tools.Date.DateHelper.ToUniversalTimeStamp(startDate), (long)thisTask.estimated_end_time, (long)thisTask.project_id);
+                if (thisDura != (int)thisTask.estimated_duration)
+                {
+                    thisTask.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(RetrunMaxTime((long)thisTask.project_id, startDate, (int)thisTask.estimated_duration));
+                }
+                //param.task.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(RetrunMaxTime((long)param.task.project_id, startDate, (int)param.task.estimated_duration));
 
 
                 var udf_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TASK);  // 获取合同的自定义字段信息
@@ -2132,7 +2139,6 @@ namespace EMT.DoneNOW.BLL
                                 thisTask.parent_id = newParId;
                                 thisTask.sort_order = newSortNo;
                             }
-
                             else
                             {
                                 var newSortNo = GetMinUserNoParSortNo(project_id);
@@ -2143,6 +2149,7 @@ namespace EMT.DoneNOW.BLL
                             thisTask.oid = 0;
                             thisTask.id = _dal.GetNextIdCom();
                             thisTask.project_id = thisProject.id;
+                            thisTask.no = ReturnTaskNo();
                             thisTask.create_user_id = user.id;
                             thisTask.update_user_id = user.id;
                             thisTask.create_time = nowDate;

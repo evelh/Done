@@ -100,6 +100,11 @@ namespace EMT.DoneNOW.BLL
                 var project = new pro_project_dal().FindNoDeleteById(att.object_id);
                 att.account_id = project.account_id;
             }
+            else if (att.object_type_id == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.TASK)
+            {
+                var task = new sdk_task_dal().FindNoDeleteById(att.object_id);
+                att.account_id = task.account_id;
+            }
             else
                 return false;
 
