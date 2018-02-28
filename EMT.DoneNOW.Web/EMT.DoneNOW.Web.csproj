@@ -453,6 +453,7 @@
     <Content Include="SysSetting\AddTimeOffPolicy.aspx" />
     <Content Include="ServiceDesk\TicketManage.aspx" />
     <Content Include="SysSetting\Service.aspx" />
+    <Content Include="SysSetting\WorkflowRule.aspx" />
     <Content Include="TimeSheet\ExpenseReportDetail.aspx" />
     <Content Include="TimeSheet\RefuseReportReason.aspx" />
     <Content Include="TimeSheet\ReportOperation.aspx" />
@@ -1918,6 +1919,13 @@
     <Compile Include="SysSetting\Service.aspx.designer.cs">
       <DependentUpon>Service.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\WorkflowRule.aspx.cs">
+      <DependentUpon>WorkflowRule.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\WorkflowRule.aspx.designer.cs">
+      <DependentUpon>WorkflowRule.aspx</DependentUpon>
+    </Compile>
     <Compile Include="TimeSheet\ExpenseReportDetail.aspx.cs">
       <DependentUpon>ExpenseReportDetail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2384,6 +2392,9 @@
     <Compile Include="Tools\TicketAjax.ashx.cs">
       <DependentUpon>TicketAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\WorkflowRuleAjax.ashx.cs">
+      <DependentUpon>WorkflowRuleAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2432,6 +2443,7 @@
     <Content Include="Tools\InventoryLocationAjax.ashx" />
     <Content Include="Tools\ExpenseAjax.ashx" />
     <Content Include="Tools\TicketAjax.ashx" />
+    <Content Include="Tools\WorkflowRuleAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

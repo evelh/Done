@@ -74,6 +74,7 @@
     <Compile Include="COM\v_activity_dal.cs" />
     <Compile Include="COM\v_activity_opportunity_dal.cs" />
     <Compile Include="COM\v_activity_sales_order_dal.cs" />
+    <Compile Include="COM\v_activity_ticket_dal.cs" />
     <Compile Include="CRM\crm_account_alert_dal.cs" />
     <Compile Include="CRM\crm_account_dal.cs" />
     <Compile Include="CRM\crm_account_deduction_dal.cs" />
