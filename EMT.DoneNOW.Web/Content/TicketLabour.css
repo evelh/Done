@@ -1,0 +1,190 @@
+﻿ .FieldLabels, .workspace .FieldLabels {
+    font-size: 12px;
+    color: #4F4F4F;
+    font-weight: bold;
+    line-height: 15px;
+    padding-left: 30px;
+}
+
+.DivSection .FieldLabels div, .DivSection td[class="fieldLabels"] div, .DivSectionWithHeader td[class="fieldLabels"] div {
+    margin-top: 1px;
+    padding-bottom: 21px;
+    font-weight: 100;
+}
+
+.DivSection {
+    border: 1px solid #d3d3d3;
+    margin: 0 10px 10px 10px;
+    padding: 12px 28px 4px 28px;
+}
+
+.searchareaborder td {
+    text-align: left;
+}
+
+#errorSmall {
+    color: red;
+}
+
+.CheckboxLabels, .workspace .CheckboxLabels, div[class="checkbox"] span, div[class="radio"] span {
+    font-size: 12px;
+    color: #333;
+    font-weight: normal;
+    vertical-align: middle;
+}
+
+.checkbox {
+}
+
+.AddItemToTicketTopSection {
+    color: #4F4F4F;
+    padding: 10px;
+    background-repeat: no-repeat;
+    background-position: left;
+    padding-left: 40px;
+    border: none;
+}
+
+.AddNoteTitleImage {
+    background-image: url(../Images/ico_time_entry.png);
+}
+
+.Popup_TitleCell {
+    height: 30px;
+}
+
+.AddItemToTicketTopSection td[class="Popup_TitleCell"] span {
+    font-size: 16px;
+    font-weight: Bold;
+}
+
+.Popup_Title {
+    font-size: 19px;
+    color: #4F4F4F;
+}
+.DivSection, .DivSectionOnly {
+    border: 1px solid #d3d3d3;
+    margin: 0 10px 10px 10px;
+    padding: 12px 28px 4px 28px;
+}
+.lblNormalClass {
+    font-weight: 700;
+    font-size: 12px;
+    color: #4F4F4F;
+}
+span {
+    font-size: 12px;
+}
+.txtBlack8Class {
+    font-size: 12px;
+    color: #333;
+    font-weight: normal;
+}
+input[type=text], select, textarea, input[type=password] {
+    border: solid 1px #D7D7D7;
+    font-size: 12px;
+    color: #333;
+    margin: 0;
+}
+select {
+    height: 24px;
+    padding: 0;
+}
+input[type="text"], select, textarea {
+    font-family: Arial,Helvetica,Tahoma,sans-serif;
+}
+option {
+    font-weight: normal;
+    display: block;
+    white-space: pre;
+    min-height: 1.2em;
+    padding: 0px 2px 1px;
+}
+td, th {
+    display: table-cell;
+    vertical-align: inherit;
+}
+td {
+    text-align: left;
+}
+.StopwatchContainer {
+    background-color: #F0F0F0;
+    height: 20px;
+    width: 162px;
+    padding-left: 0;
+    padding-right: 4px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border: 1px solid silver;
+    font-size: 12px;
+    margin: auto;
+}
+.StopwatchTime {
+    display: inline-block;
+    color: gray;
+    font-family: 'Lucida Console',Monaco,monospace;
+    font-size: 12px;
+    height: 20px;
+    width: 62px;
+    padding-left: 4px;
+    padding-right: 1px;
+    line-height: 22px;
+    vertical-align: top;
+}
+.VerticalSeparator {
+    display: inline-block;
+    height: 20px;
+    width: 0;
+    border-left: 1px solid #d4d4d4;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+.StopwatchContainer > .Button {
+    display: inline-block;
+    height: 16px;
+    padding: 2px 0;
+    width: 16px;
+    vertical-align: top;
+}
+    .StopwatchContainer > .Button .Icon {
+        height: 16px;
+        width: 16px;
+        cursor: pointer;
+    }
+.StopwatchContainer > .Play > .Icon {
+    background-image: url(../Images/ico_stopwatch_play.png);
+}
+
+.StopwatchContainer > .Pause > .Icon {
+    background-image: url(../Images/ico_stopwatch_pause.png);
+}
+.StopwatchContainer > .Stop > .Icon {
+    background-image: url(../Images/ico_stopwatch_stop.png);
+}
+.DivSectionWithHeader {
+    border: 1px solid #d3d3d3;
+    margin: 0 10px 10px 10px;
+    padding: 4px 0 0 0;
+}
+    .DivSectionWithHeader .HeaderRow {
+        position: relative;
+        padding-bottom: 3px;
+    }
+    .DivSectionWithHeader > .HeaderRow > span {
+        display: inline-block;
+        vertical-align: middle;
+        position: relative;
+    }
+    .DivSectionWithHeader > .HeaderRow > span {
+        padding: 2px 4px 6px 6px;
+        color: #666;
+        height: 16px;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 17px;
+        text-transform: uppercase;
+    }
+    .DivSectionWithHeader .Content {
+        padding: 0 28px 0 28px;
+    }
+

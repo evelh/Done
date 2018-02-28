@@ -39,6 +39,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected List<UserDefinedFieldValue> ticketUdfValueList = null;
         protected List<sdk_task_checklist> ticketCheckList = null;   // 工单的检查单集合
         protected List<sdk_task> pageTicketList = null;    // 页面上获取的工单集合。用于在页面上进行上下切换
+        protected List<sdk_work_entry> entryList = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -88,6 +89,8 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                         {
                             ticketCheckList = ticketCheckList.OrderBy(_ => _.sort_order).ToList();
                         }
+                        entryList = new sdk_work_entry_dal().GetList(thisTicket.id);
+
                         var otherResList = new sdk_task_resource_dal().GetTaskResByTaskId(thisTicket.id);
                         if(otherResList!=null&& otherResList.Count > 0)
                         {

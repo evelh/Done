@@ -182,7 +182,12 @@
     <Content Include="Content\style.css" />
     <Content Include="Content\sysset_user.css" />
     <Content Include="Content\Ticket.css" />
+    <Content Include="Content\TicketLabour.css" />
     <Content Include="Images\ico_charge.png" />
+    <Content Include="Images\ico_stopwatch_pause.png" />
+    <Content Include="Images\ico_stopwatch_play.png" />
+    <Content Include="Images\ico_stopwatch_stop.png" />
+    <Content Include="Images\ico_time_entry.png" />
     <Content Include="Images\TicketAlertIcons.png" />
     <Content Include="Content\WorkType.css" />
     <Content Include="Contract\AddCharges.aspx" />

@@ -28,6 +28,13 @@ namespace EMT.DoneNOW.DTO
         public bool ToTab;
         public int ToResId;
 
+        public bool isAppOtherResoule = false; // 工单使用，是否附加相关信息 
+        public bool isAppOtherNote = false;    // 工单使用，是否附加相关信息 
+        public bool isAppthisResoule = false;  // 工单使用，是否附加相关信息
+        public ctt_contract_cost thisCost = null;  // 工单工时使用，添加成本到合同中
+        public long ticketId;   // 工单 ID
+        public bool billToAccount = false;
+
 
         public List<PageEntryDto> pagEntDtoList;
     }

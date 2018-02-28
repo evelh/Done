@@ -756,6 +756,10 @@ namespace EMT.DoneNOW.DTO
             TICKET_SERVICE_REQUEST = 1421,              // 服务请求审批人信息
             IVT_SERVICE = 1423,                         // 服务
             IVT_SERVICE_BUNDLE = 1424,                  // 服务包
+            TICKET_SLA_EVENT,                        // 工单sla 事件
+
+
+
         }
 
         /// <summary>

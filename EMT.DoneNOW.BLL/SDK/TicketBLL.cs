@@ -128,29 +128,7 @@ namespace EMT.DoneNOW.BLL
                         default:
                             break;
                     }
-                    if (updateTicket.sla_id != null)
-                    {
-                        // sdk_task_sla_event
-                        var stseDal = new sdk_task_sla_event_dal();
-                        var thisTaskSla = stseDal.GetTaskSla(updateTicket.id);
-                        if (thisTaskSla != null)
-                        {
-                            thisTaskSla = new sdk_task_sla_event() {
-                                id= stseDal.GetNextIdCom(),
-                                create_time = timeNow,
-                                update_time = timeNow,
-                                create_user_id = userId,
-                                update_user_id = userId,
-                                task_id = updateTicket.id,
-                            };
-                        }
-
-                        if(updateTicket.sla_start_time!=null&&statusGeneral.ext1== ((int)SLA_EVENT_TYPE.FIRSTRESPONSE).ToString())
-                        {
-                            thisTaskSla.first_response_resource_id = userId;
-                            thisTaskSla.first_response_elapsed_hours += 0; 
-                        }
-                    }
+                    TicketSlaEvent(updateTicket,userId);
                 }
                 EditTicket(updateTicket,userId);
                 // 添加活动信息
@@ -650,5 +628,375 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
 
+        /// <summary>
+        /// 工单Sla事件管理
+        /// </summary>
+        public void TicketSlaEvent(sdk_task thisTicket,long userId)
+        {
+            var statusGeneral = new d_general_dal().FindNoDeleteById(thisTicket.status_id);
+            if (thisTicket.sla_id != null&& statusGeneral!=null)
+            {
+                var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                // sdk_task_sla_event
+                var stseDal = new sdk_task_sla_event_dal();
+                var thisTaskSla = stseDal.GetTaskSla(thisTicket.id);
+                if (thisTaskSla != null)
+                {
+                    thisTaskSla = new sdk_task_sla_event()
+                    {
+                        id = stseDal.GetNextIdCom(),
+                        create_time = timeNow,
+                        update_time = timeNow,
+                        create_user_id = userId,
+                        update_user_id = userId,
+                        task_id = thisTicket.id,
+                    };
+                    stseDal.Insert(thisTaskSla);
+                    OperLogBLL.OperLogAdd<sdk_task_sla_event>(thisTaskSla, thisTaskSla.id, userId, OPER_LOG_OBJ_CATE.TICKET_SLA_EVENT, "新增工单sla事件");
+                }
+
+                if (thisTicket.sla_start_time != null && statusGeneral.ext1 == ((int)SLA_EVENT_TYPE.FIRSTRESPONSE).ToString())
+                {
+                    thisTaskSla.first_response_resource_id = userId;
+                    thisTaskSla.first_response_elapsed_hours = GetDiffHours((long)thisTicket.sla_start_time,timeNow);
+                }
+                if(thisTicket.resolution_plan_actual_time!=null && statusGeneral.ext1 == ((int)SLA_EVENT_TYPE.RESOLUTIONPLAN).ToString())
+                {
+                    thisTaskSla.resolution_plan_resource_id = userId;
+                    thisTaskSla.resolution_plan_elapsed_hours = GetDiffHours((long)thisTicket.resolution_plan_actual_time,timeNow);
+                }
+                if (thisTicket.resolution_actual_time != null && statusGeneral.ext1 == ((int)SLA_EVENT_TYPE.RESOLUTION).ToString())
+                {
+                    thisTaskSla.resolution_resource_id = userId;
+                    thisTaskSla.resolution_elapsed_hours = GetDiffHours((long)thisTicket.resolution_actual_time, timeNow);
+                }
+                // todo 计算 sla 目标
+                #region 计算等待客户时长相关
+                var oldTicket = _dal.FindNoDeleteById(thisTicket.id);
+                if (oldTicket != null)
+                {
+                    var oldStatusGeneral = new d_general_dal().FindNoDeleteById(oldTicket.status_id);
+                    if (oldStatusGeneral != null && !string.IsNullOrEmpty(oldStatusGeneral.ext1))
+                    {
+                        if(oldStatusGeneral.ext1 != ((int)SLA_EVENT_TYPE.WAITINGCUSTOMER).ToString() && statusGeneral.ext1 == ((int)SLA_EVENT_TYPE.WAITINGCUSTOMER).ToString())
+                        {
+                            thisTaskSla.total_waiting_customer_hours += GetDiffHours(oldTicket.update_time,timeNow);
+                        }
+                    }
+                }
+                #endregion
+
+                var oldEvent = stseDal.FindNoDeleteById(thisTaskSla.id);
+                if (oldEvent != null)
+                {
+                    
+                }
+                stseDal.Update(thisTaskSla);
+                OperLogBLL.OperLogUpdate<sdk_task_sla_event>(thisTaskSla, oldEvent, thisTaskSla.id, userId, OPER_LOG_OBJ_CATE.TICKET_SLA_EVENT, "修改工单sla事件");
+            }
+        }
+
+        /// <summary>
+        /// 获取到两个时间相差的小时数
+        /// </summary>
+        public int GetDiffHours(long startDate,long endDate)
+        {
+            int hours = 0;
+            var thisStartDate = Tools.Date.DateHelper.ConvertStringToDateTime(startDate);
+            var thisEndDate = Tools.Date.DateHelper.ConvertStringToDateTime(endDate);
+            TimeSpan ts1 = new TimeSpan(thisStartDate.Ticks);
+            TimeSpan ts2 = new TimeSpan(thisEndDate.Ticks);
+            TimeSpan ts = ts1.Subtract(ts2).Duration();
+            if (ts.Days > 0)
+            {
+                hours += ts.Days * 24;
+            }
+            if (ts.Hours > 0)
+            {
+                hours += ts.Hours;
+            }
+            return hours;
+        }
+
+
+        #region 工单工时管理
+        /// <summary>
+        /// 添加工单工时信息
+        /// </summary>
+        public bool AddLabour(sdk_work_entry thisEntry,long userId)
+        {
+            var sweDal = new sdk_work_entry_dal();
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            thisEntry.id = sweDal.GetNextIdCom();
+            thisEntry.create_time = timeNow;
+            thisEntry.update_time = timeNow;
+            thisEntry.create_user_id = userId;
+            thisEntry.update_user_id = userId;
+            sweDal.Insert(thisEntry);
+            OperLogBLL.OperLogAdd<sdk_work_entry>(thisEntry, thisEntry.id, userId, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "新增工时");
+            return true;
+        }
+        public bool EditLabour(sdk_work_entry thisEntry, long userId)
+        {
+            var sweDal = new sdk_work_entry_dal();
+            var oldLabour = sweDal.FindNoDeleteById(thisEntry.id);
+            if (oldLabour != null)
+            {
+                thisEntry.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                thisEntry.update_user_id = userId;
+                sweDal.Update(thisEntry);
+                OperLogBLL.OperLogUpdate<sdk_work_entry>(thisEntry, oldLabour,thisEntry.id, userId, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "修改工时");
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 工单工时的添加处理
+        /// </summary>
+        public bool AddTicketLabour(SdkWorkEntryDto param,long userId,ref string failReason)
+        {
+            try
+            {
+                #region  添加工时
+                AddLabour(param.workEntry,userId);
+                #endregion
+
+                #region 保存工单相关
+                var oldTicket = _dal.FindNoDeleteById(param.ticketId);
+                if (oldTicket != null)
+                {
+                    if (oldTicket.status_id != param.status_id)
+                    {
+                        oldTicket.status_id = param.status_id;
+                    }
+                    if (param.isAppthisResoule)
+                    {
+                        oldTicket.resolution += "\r\n" + param.workEntry.summary_notes;
+                    }
+                    EditTicket(oldTicket, userId);
+                }
+
+                #endregion
+
+                #region 更新相关事故的解决方案
+                var proTicketList = _dal.GetSubTaskByType(param.ticketId,DicEnum.TICKET_TYPE.PROBLEM);
+                if (proTicketList != null && proTicketList.Count > 0)
+                {
+                    proTicketList.ForEach(_ => {
+                        if (param.isAppOtherResoule)
+                        {
+                            _.resolution += "\r\n" + param.workEntry.summary_notes;
+                        }
+                        if (param.isAppOtherNote)
+                        {
+                            if (_.status_id != (int)DicEnum.TICKET_STATUS.DONE)
+                            {
+                                _.status_id = param.status_id;
+                            }
+                            if (!string.IsNullOrEmpty(param.workEntry.summary_notes)&&!string.IsNullOrEmpty(param.workEntry.internal_notes))
+                            {
+                                long noteId;
+                                AppNoteLabour(_, param.workEntry.summary_notes,userId ,out noteId,true);
+                                if (noteId != 0)
+                                {
+                                    AppNoteLabour(_, param.workEntry.internal_notes, userId, out noteId, false, noteId);
+                                }
+                                
+                            }
+                        }
+                        EditTicket(_, userId);
+                    });
+                }
+                #endregion
+
+                #region 通知相关
+
+                #endregion
+
+                #region 根据合同设置 是否立刻审批并提交
+                if (param.workEntry.contract_id != null)
+                {
+                    var contract = new ctt_contract_dal().FindNoDeleteById((long)param.workEntry.contract_id);
+                    if(contract!=null && contract.bill_post_type_id == (int)DicEnum.BILL_POST_TYPE.BILL_NOW)
+                    {
+                        new ApproveAndPostBLL().PostWorkEntry(param.workEntry.id, Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd")), userId, "A");
+                    }
+                }
+                #endregion
+
+                #region 新增合同成本相关
+                AddTicketLabourCost(param.thisCost,userId);
+                #endregion
+
+
+            }
+            catch (Exception msg)
+            {
+                failReason = msg.Message;
+                return false;
+            }
+
+            return true;
+        }
+        /// <summary>
+        /// 添加工单工时时，附件相关备注 isSummary 代表是工时说明备注，还是内部说明备注
+        /// </summary>
+        public void AppNoteLabour(sdk_task thisTicket, string note, long userId,out long thisNoteId, bool isSummary = false, long? noteId = null)
+        {
+            var activ = new com_activity();
+            var caDal = new com_activity_dal();
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            activ.id = caDal.GetNextIdCom();
+            if (isSummary)
+            {
+                thisNoteId = activ.id;
+            }
+            else
+            {
+                thisNoteId = 0;
+            }
+            activ.cate_id = (int)DicEnum.ACTIVITY_CATE.TICKET_NOTE;
+            activ.object_type_id = (int)DicEnum.OBJECT_TYPE.TICKETS;
+            activ.account_id = thisTicket.account_id;
+            activ.contact_id = thisTicket.contact_id;
+            activ.ticket_id = thisTicket.id;
+            activ.description = note;
+            activ.create_time = timeNow;
+            activ.update_time = timeNow;
+            activ.create_user_id = userId;
+            activ.update_user_id = userId;
+            if (isSummary)
+            {
+                activ.object_type_id = (int)DicEnum.OBJECT_TYPE.TICKETS;
+                activ.object_id = thisTicket.id;
+                activ.publish_type_id = (int)NOTE_PUBLISH_TYPE.TASK_ALL_USER;
+            }
+            else
+            {
+                activ.object_type_id = (int)DicEnum.OBJECT_TYPE.NOTES;
+                activ.object_id = (long)noteId;
+                activ.publish_type_id = (int)NOTE_PUBLISH_TYPE.TASK_INTERNA_USER;
+            }
+            caDal.Insert(activ);
+            OperLogBLL.OperLogAdd<com_activity>(activ, activ.id, userId, OPER_LOG_OBJ_CATE.ACTIVITY, "新增备注");
+        }
+        /// <summary>
+        /// 新增 项目工时成本
+        /// </summary>
+        public void AddTicketLabourCost(ctt_contract_cost thisCost,long userId)
+        {
+            if (thisCost != null)
+            {
+                var costCode = new d_cost_code_dal().FindNoDeleteById(thisCost.cost_code_id);
+                if (costCode != null)
+                {
+                    var cccDal = new ctt_contract_cost_dal();
+                    thisCost.id = cccDal.GetNextIdCom();
+                    thisCost.is_billable = 1;
+                    thisCost.name = costCode.name;
+                    thisCost.unit_cost = costCode.unit_cost;
+                    thisCost.sub_cate_id = (int)DicEnum.BILLING_ENTITY_SUB_TYPE.CONTRACT_COST;
+                    thisCost.cost_type_id = (int)COST_TYPE.OPERATIONA;
+                    thisCost.status_id = (int)COST_STATUS.UNDETERMINED;
+                    cccDal.Insert(thisCost);
+                    OperLogBLL.OperLogAdd<ctt_contract_cost>(thisCost, thisCost.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_COST, "新增合同成本");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 修改工单工时信息
+        /// </summary>
+        public bool EditTicketLabour(SdkWorkEntryDto param, long userId, ref string failReason)
+        {
+            var oldLaour = new sdk_work_entry_dal().FindNoDeleteById(param.workEntry.id);
+            if (oldLaour == null )
+            {
+                failReason = "未查询到该工时信息";
+                return false;
+            }
+            if(oldLaour.approve_and_post_date != null || oldLaour.approve_and_post_user_id != null)
+            {
+                failReason = "该工时已经进行审批提交，不可进行更改";
+                return false;
+            }
+            var thisTicket = _dal.FindNoDeleteById(param.ticketId);
+            if (thisTicket == null)
+            {
+                failReason = "相关工单已删除";
+                return false;
+            }
+            if (thisTicket.status_id == (int)TICKET_STATUS.DONE)
+            {
+                failReason = "已完成工单不能进行编辑工时相关操作";
+                return false;
+            }
+
+                #region 修改工单相关
+                EditLabour(param.workEntry,userId);
+            #endregion
+
+            #region 保存工单相关
+            var oldTicket = _dal.FindNoDeleteById(param.ticketId);
+            if (oldTicket != null)
+            {
+                if (oldTicket.status_id != param.status_id)
+                {
+                    oldTicket.status_id = param.status_id;
+                }
+                if (param.isAppthisResoule)
+                {
+                    oldTicket.resolution += "\r\n" + param.workEntry.summary_notes;
+                }
+                EditTicket(oldTicket, userId);
+            }
+
+            #endregion
+
+            #region 更新相关事故的解决方案
+            var proTicketList = _dal.GetSubTaskByType(param.ticketId, DicEnum.TICKET_TYPE.PROBLEM);
+            if (proTicketList != null && proTicketList.Count > 0)
+            {
+                proTicketList.ForEach(_ => {
+                    if (param.isAppOtherResoule)
+                    {
+                        _.resolution += "\r\n" + param.workEntry.summary_notes;
+                    }
+                    if (param.isAppOtherNote)
+                    {
+                        if (_.status_id != (int)DicEnum.TICKET_STATUS.DONE)
+                        {
+                            _.status_id = param.status_id;
+                        }
+                        if (!string.IsNullOrEmpty(param.workEntry.summary_notes) && !string.IsNullOrEmpty(param.workEntry.internal_notes))
+                        {
+                            long noteId;
+                            AppNoteLabour(_, param.workEntry.summary_notes, userId, out noteId, true);
+                            if (noteId != 0)
+                            {
+                                AppNoteLabour(_, param.workEntry.internal_notes, userId, out noteId, false, noteId);
+                            }
+
+                        }
+                    }
+                    EditTicket(_, userId);
+                });
+            }
+            #endregion
+
+            #region 新增合同成本相关
+            AddTicketLabourCost(param.thisCost, userId);
+            #endregion
+
+            return true;
+        }
+
+
+
+        #endregion
     }
 }
