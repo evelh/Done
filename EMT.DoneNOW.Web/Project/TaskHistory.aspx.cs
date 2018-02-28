@@ -27,7 +27,7 @@ namespace EMT.DoneNOW.Web.Project
         protected List<DictionaryEntryDto> queryParaValue = new List<DictionaryEntryDto>();
         protected int tableWidth = 1200;
         protected long objId = 0;
-
+        protected bool isFromTicket = false;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -41,6 +41,8 @@ namespace EMT.DoneNOW.Web.Project
                         objId = thisTask.id;
                     }
                 }
+                isFromTicket = !string.IsNullOrEmpty(Request.QueryString["fromTicket"]);
+
                 if (thisTask == null)
                 {
                     Response.End();

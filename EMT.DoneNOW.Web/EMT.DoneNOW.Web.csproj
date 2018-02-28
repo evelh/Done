@@ -446,10 +446,18 @@
     <Content Include="Scripts\Search\PurchaseReceive.js" />
     <Content Include="Scripts\Search\revoke_expense.js" />
     <Content Include="Scripts\Search\revoke_labour.js" />
+    <Content Include="Scripts\Search\service.js" />
+    <Content Include="Scripts\Search\service_bundle.js" />
     <Content Include="Scripts\Search\ShipedList.js" />
     <Content Include="Scripts\Search\ShippingList.js" />
     <Content Include="Scripts\Search\purchase_order_history.js" />
+    <Content Include="Scripts\Search\ticket_account_list.js" />
+    <Content Include="Scripts\Search\ticket_cost_expense.js" />
+    <Content Include="Scripts\Search\ticket_search.js" />
+    <Content Include="Scripts\Search\ticket_service_list.js" />
+    <Content Include="Scripts\Search\ticket_sla_list.js" />
     <Content Include="Scripts\Ticket.js" />
+    <Content Include="ServiceDesk\AccountTicketList.aspx" />
     <Content Include="ServiceDesk\TicketActivity.aspx" />
     <Content Include="ServiceDesk\TicketHistory.aspx" />
     <Content Include="ServiceDesk\TicketLabour.aspx" />
@@ -457,7 +465,9 @@
     <Content Include="ServiceDesk\TicketView.aspx" />
     <Content Include="SysSetting\AddTimeOffPolicy.aspx" />
     <Content Include="ServiceDesk\TicketManage.aspx" />
+    <Content Include="SysSetting\EditServiceAlert.aspx" />
     <Content Include="SysSetting\Service.aspx" />
+    <Content Include="SysSetting\ServiceBundle.aspx" />
     <Content Include="TimeSheet\ExpenseReportDetail.aspx" />
     <Content Include="TimeSheet\RefuseReportReason.aspx" />
     <Content Include="TimeSheet\ReportOperation.aspx" />
@@ -1867,6 +1877,13 @@
     <Compile Include="Refresh.aspx.designer.cs">
       <DependentUpon>Refresh.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ServiceDesk\AccountTicketList.aspx.cs">
+      <DependentUpon>AccountTicketList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\AccountTicketList.aspx.designer.cs">
+      <DependentUpon>AccountTicketList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ServiceDesk\TicketActivity.aspx.cs">
       <DependentUpon>TicketActivity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1916,12 +1933,26 @@
     <Compile Include="ServiceDesk\TicketManage.aspx.designer.cs">
       <DependentUpon>TicketManage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\EditServiceAlert.aspx.cs">
+      <DependentUpon>EditServiceAlert.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\EditServiceAlert.aspx.designer.cs">
+      <DependentUpon>EditServiceAlert.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SysSetting\Service.aspx.cs">
       <DependentUpon>Service.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="SysSetting\Service.aspx.designer.cs">
       <DependentUpon>Service.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\ServiceBundle.aspx.cs">
+      <DependentUpon>ServiceBundle.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\ServiceBundle.aspx.designer.cs">
+      <DependentUpon>ServiceBundle.aspx</DependentUpon>
     </Compile>
     <Compile Include="TimeSheet\ExpenseReportDetail.aspx.cs">
       <DependentUpon>ExpenseReportDetail.aspx</DependentUpon>

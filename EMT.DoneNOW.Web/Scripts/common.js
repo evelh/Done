@@ -244,7 +244,10 @@ var windowObj = {
     expense: "expense",
     expenseReport:"expenseReport",
     workEntry: "workEntry",
-    task:"task",
+    task: "task",
+    ticket: "ticket",
+    service: "service",
+    serviceBundle:"serviceBundle",
 }
 var windowType = {
     blank: '_blank',

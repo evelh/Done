@@ -158,8 +158,8 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (int)DicEnum.QUERY_CATE.PROJECT_SEARCH:
                     currentQuery.page_name = "项目管理";
-					break;
-                case (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH:  
+                    break;
+                case (int)DicEnum.QUERY_CATE.CRM_NOTE_SEARCH:
                     currentQuery.page_name = "备注查询";
                     break;
                 case (int)DicEnum.QUERY_CATE.TODOS:
@@ -179,7 +179,7 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (int)DicEnum.QUERY_CATE.PURCHASE_ORDER:
                     currentQuery.page_name = "采购订单管理";
-					break;
+                    break;
                 case (int)DicEnum.QUERY_CATE.PROJECT_TEMP_SEARCH:
                     currentQuery.page_name = "项目模板管理";
                     break;
@@ -194,12 +194,24 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (int)DicEnum.QUERY_CATE.PURCHASE_RECEIVE:
                     currentQuery.page_name = "采购接收";
-					break;
+                    break;
                 case (int)DicEnum.QUERY_CATE.PURCHASE_ORDER_HISTORY:
                     currentQuery.page_name = "采购订单历史";
                     break;
                 case (int)DicEnum.QUERY_CATE.APPROVED_REPORT:
                     currentQuery.page_name = "已审批费用报表";
+                    break;
+                case (int)DicEnum.QUERY_CATE.TICKET_SEARCH:
+                    currentQuery.page_name = "工单查询";
+                    break;
+                case (int)DicEnum.QUERY_CATE.TICKET_ACCOUNT_LIST:
+                    currentQuery.page_name = "工单未关闭工单查询";
+                    break;
+                case (int)DicEnum.QUERY_CATE.SERVICE:
+                    currentQuery.page_name = "服务查询";
+                    break;
+                case (int)DicEnum.QUERY_CATE.SERVICE_BUNDLE:
+                    currentQuery.page_name = "服务包查询";
                     break;
                 default:
                     currentQuery.page_name = "";
@@ -211,9 +223,9 @@ namespace EMT.DoneNOW.Web
             {
                 currentQuery.page_query.Add(new PageQueryConditionNameDto.PageQuery { query_name = v.name, typeId = v.query_type_id, groupId = v.id });
             }
-            
+
         }
-        
+
         protected PageQueryConditionNameDto currentQuery;   // 当前查询页的标题、链接等信息
     }
 }

@@ -4,14 +4,27 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using EMT.DoneNOW.BLL;
+using EMT.DoneNOW.Core;
+using EMT.DoneNOW.DAL;
+using EMT.DoneNOW.DTO;
 
 namespace EMT.DoneNOW.Web.ServiceDesk
 {
-    public partial class TicketHistory : System.Web.UI.Page
+    public partial class TicketHistory : BasePage
     {
+        protected sdk_task thisTicket = null;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            var ticketId = Request.QueryString["ticket_id"];
+            if (!string.IsNullOrEmpty(ticketId))
+            {
+                thisTicket = new sdk_task_dal().FindNoDeleteById(long.Parse(ticketId));
+            }
+            if (thisTicket == null)
+            {
+                Response.Write("<script>alert('未查询到该工单信息！');window.close();</script>");
+            }
         }
     }
 }

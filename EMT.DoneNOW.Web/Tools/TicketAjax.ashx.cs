@@ -42,6 +42,9 @@ namespace EMT.DoneNOW.Web
                     case "DeleteTicket":
                         DeleteTicket(context);
                         break;
+                    case "AddTicketNote":
+                        AddTicketNote(context);
+                        break;
                     default:
                         break;
                 }
@@ -145,7 +148,6 @@ namespace EMT.DoneNOW.Web
                 var thisCheck = new sdk_task_checklist_dal().FindNoDeleteById(long.Parse(ckId));
                 if (thisCheck != null)
                 {
-
                     var creRes = new sys_resource_dal().FindNoDeleteById(thisCheck.create_user_id);
                     var creaTeTime = Tools.Date.DateHelper.ConvertStringToDateTime(thisCheck.create_time);
                     // 返回 重要，完成，创建时间，创建人
@@ -202,6 +204,25 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { result = result, reason = faileReason, }));
             }
         }
-
+        /// <summary>
+        /// 快速新增备注
+        /// </summary>
+        private void AddTicketNote(HttpContext context)
+        {
+            var ticket_id = context.Request.QueryString["ticket_id"];
+            var isInter = !string.IsNullOrEmpty(context.Request.QueryString["is_inter"]);
+            var notiContacr = !string.IsNullOrEmpty(context.Request.QueryString["noti_contact"]);
+            var notiPriRes = !string.IsNullOrEmpty(context.Request.QueryString["noti_pri_res"]);
+            var notiIntAll = !string.IsNullOrEmpty(context.Request.QueryString["noti_inter_all"]);
+            var ticketNoteType = context.Request.QueryString["ticket_note_type_id"];
+            var noteDesc = context.Request.QueryString["ticket_note_desc"];
+            var result = false;
+            if (!string.IsNullOrEmpty(ticket_id) && !string.IsNullOrEmpty(noteDesc)&&!string.IsNullOrEmpty(ticketNoteType))
+            {
+                var notiEmail = new TicketBLL().GetNotiEmail(long.Parse(ticket_id), notiContacr, notiPriRes, notiIntAll);
+                result = new TicketBLL().SimpleAddTicketNote(long.Parse(ticket_id),LoginUserId,int.Parse(ticketNoteType),noteDesc,isInter,notiEmail);
+            }
+            context.Response.Write(result);
+        }
     }
 }

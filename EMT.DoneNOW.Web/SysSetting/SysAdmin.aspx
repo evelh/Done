@@ -513,12 +513,7 @@
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
                                     </div>
-                                    <div class="PageNavigationLinkColumn">
-                                        <div class="PageNavigationLink">
-                                            <a href="#" class="Button ButtonIcon Link NormalState chaxun">服务(暂未开发)</a>
-                                            <div class="StandardText">介绍介绍</div>
-                                        </div>
-                                    </div>
+                                   
                                 </div>
                                <%-- <div class="PageNavigationLinkGroup">
                                     <div class="Heading">

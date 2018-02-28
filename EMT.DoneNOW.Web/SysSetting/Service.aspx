@@ -26,6 +26,9 @@
                     <li id="saveClose"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                         <input type="button" value="保存并关闭" style="width:68px;" />
                     </li>
+                    <li id="Close"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
+                    <input type="button" value="取消" style="width: 30px;" />
+                </li>
                 </ul>
             </div>
             <div class="DivSection" style="border: none; padding-left: 0;">
@@ -41,14 +44,14 @@
                         <tr>
                             <td width="30%" class="FieldLabels">描述
                                 <div>
-                                    <input type="text" name="description" <%if (service != null) { %> value="<%=service.name %>" <%} %> />
+                                    <input type="text" name="description" <%if (service != null) { %> value="<%=service.description %>" <%} %> />
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td width="30%" class="FieldLabels">发票描述
                                 <div>
-                                    <input type="text" name="invoice_description" <%if (service != null) { %> value="<%=service.name %>" <%} %> />
+                                    <input type="text" name="invoice_description" <%if (service != null) { %> value="<%=service.invoice_description %>" <%} %> />
                                 </div>
                             </td>
                         </tr>
@@ -124,6 +127,10 @@
                         </tr>
                     </tbody>
                 </table>
+                <input type="hidden" id="isUpdate" name="isUpdate" value=""/>
+                <input type="hidden" id="isUpdateNoAppCost" name="isUpdateNoAppCost" value=""/>
+                <input type="hidden" id="updateDate" name="updateDate" value=""/>
+                <input type="hidden" id="isUpdateAppCost" name="isUpdateAppCost" value=""/>
             </div>
         </div>
     </form>
@@ -144,7 +151,51 @@
                 LayerMsg("请选择计费代码！");
                 return;
             }
+            <%if (isAdd){ %>
             $("#form1").submit();
+            <%}else{%>
+            var oldPrice = '<%=service!=null&&service.unit_price!=null?((decimal)service.unit_price).ToString("#0.00"):"" %>';
+            var newPrice = $("#unit_price").val();
+            var isShowMsg1 = (Number(oldPrice) != Number(newPrice));
+
+            var oldCost = '<%=service!=null&&service.unit_cost!=null?((decimal)service.unit_cost).ToString("#0.00"):"" %>';
+            var newCost = $("#unit_cost").val();
+
+            var oldVendor = '<%=service!=null&&service.vendor_account_id!=null?service.vendor_account_id.ToString():"" %>';
+            var newVendor = $("#vendorSelectHidden").val();
+
+            var isShowMsg2 = ((Number(oldCost) != Number(newCost)) || (oldVendor != newVendor));
+
+            if (!isShowMsg1 && !isShowMsg2)  // 代表无更改
+            {
+                $("#form1").submit();
+            }
+            else
+            {
+                var isUpdate = $("#isUpdate").val();  // 相关信息变更后是否已经确认更改信息
+                if (isUpdate != "")
+                {
+                    $("#form1").submit();
+                }
+                else
+                {
+                    var url = '../SysSetting/EditServiceAlert.aspx?a=1';
+                    if (isShowMsg1)
+                    {
+                        url += "&msg1=1";
+                    }
+                    if (isShowMsg2)
+                    {
+                        url += "&msg2=1";
+                    }
+                    window.open(url, '_blank', 'left=200,top=200,width=600,height=800', false)
+                }
+            }
+
+            // 单价更改 提示1
+            // 供应商/单元成本更改，提示2
+            
+            <%}%>
         });
         $("#unit_cost").change(function () {
             calcMarkup();
@@ -166,6 +217,9 @@
                 $("#markup").val(mkp + "%");
             }
         }
+        $("#Close").click(function () {
+            window.close();
+        })
     </script>
 </body>
 </html>

@@ -278,6 +278,35 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('未获取到相关截止时间，请重新填写！');</script>");
                 return null;
             }
+            #region 如果sla设置自动计算截止时间 ，保存时计算出工单的结束时间
+            if (pageTicket.sla_id != null)
+            {
+                var thisSla = new d_sla_dal().FindNoDeleteById((long)pageTicket.sla_id);
+                if (thisSla != null && thisSla.set_ticket_due_date == 1)
+                {
+                    if (pageTicket.sla_start_time == null)
+                        pageTicket.sla_start_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    var slaValue = new sdk_task_dal().GetSlaTime(pageTicket);
+                    string slaTimeValue = "";
+                    if (slaValue != null)
+                        slaTimeValue = slaValue.ToString();
+                    if (!string.IsNullOrEmpty(slaTimeValue)&& slaTimeValue.Substring(0, 1) == "{")
+                    {
+                        var slaDic = new EMT.Tools.Serialize().JsonToDictionary(slaTimeValue);
+                        if(slaDic!=null&& slaDic.Count > 0)
+                        {
+                            var duteDateDic = slaDic.FirstOrDefault(_=>_.Key=="截止时间");
+                            if(!default(KeyValuePair<string, object>).Equals(duteDateDic))
+                            {
+                                var duteDate = DateTime.Parse(duteDateDic.Value.ToString());
+                                pageTicket.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(duteDate);
+                            }
+                        }
+                    }
+                }
+            }
+            #endregion
+
             if (isAdd)
             {
                 pageTicket.type_id = (int)DTO.DicEnum.TASK_TYPE.SERVICE_DESK_TICKET;

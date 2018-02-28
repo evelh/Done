@@ -111,10 +111,10 @@
                 <td>
                   <div class="clear">
                     <label>工单</label>
-                    <input type="hidden" id="TicketNameHidden" name="ticket_id" />
-                    <input type="text" readonly="readonly" id="TicketName" />
+                    <input type="hidden" id="TicketNameHidden" name="ticket_id" value="<%=ticket==null?"":ticket.id.ToString() %>" />
+                    <input type="text" readonly="readonly" id="TicketName" value="<%=ticket==null?"":ticket.title.ToString() %>" />
                     <i style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
-                    <i style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/view.png) no-repeat;"></i>
+                    <i onclick="ViewTicket()" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/view.png) no-repeat;"></i>
                     <i style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/add.png) no-repeat;"></i>
                   </div>
                 </td>
@@ -227,6 +227,7 @@
     <input type="hidden" id="accountId" value="<%=accountId %>" />
     <input type="hidden" id="contactId" value="<%=contactId %>" />
     <input type="hidden" id="opportunityId" value="<%=opportunityId %>" />
+      <input type="hidden" id="ticketId" value="<%=ticketId %>" />
     <input type="hidden" name="object_id" value="<%=objId %>" />
     <input type="hidden" name="object_type_id" value="<%=objType %>" />
   </form>
@@ -313,13 +314,13 @@
     }
     function ViewCompany() {
       var account_id = $("#AccountNameHidden").val();
-      if (account_id != "" && account_id != 0) {
+      if (account_id != "" && account_id != 0 && account_id != null) {
         window.open('../Company/ViewCompany.aspx?id=' + account_id, '_blank', 'left=200,top=200,width=1200,height=1000', false);
       }
     }
     function ViewContact() {
-      var contact_id = $("#contact_id").val();
-      if (contact_id != "" && contact_id != 0) {
+        var contact_id = $("#contact_id").val();
+        if (contact_id != "" && contact_id != 0 && contact_id != null) {
         window.open('../Contact/ViewContact.aspx?id=' + contact_id, '_blank', 'left=200,top=200,width=1200,height=1000', false);
       }
     }
@@ -334,7 +335,13 @@
       if (contract_id != "" && contract_id != 0) {
         window.open('../Contract/ContractView.aspx?id=' + contract_id, '_blank', 'left=200,top=200,width=1200,height=1000', false);
       }
-    }
+      }
+      function ViewTicket() {
+          var ticketId = $("#TicketNameHidden").val();
+          if (ticketId != "" && ticketId != null && ticketId != 0) {
+              window.open('../ServiceDesk/TicketView.aspx?id=' + ticketId, '_blank', 'left=200,top=200,width=1200,height=1000', false);
+          }
+      }
     $("#is_completed").change(function () {
       if ($("#is_completed").is(':checked')) {
         $('#complete_time1').removeAttr("disabled");

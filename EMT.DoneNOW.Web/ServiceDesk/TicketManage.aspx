@@ -95,7 +95,7 @@
                 </div>
             </div>
         </div>
-        <div class="MainContainer InsightsEnabled" style="margin-left: 45px; z-index: 0;">
+        <div class="MainContainer InsightsEnabled" style="margin-left: 45px; z-index: 0;margin-top: 85px;">
             <div class="SecondaryContainer Left Active" id="z91f4b4ab746e4bd4be9d1c4412a64c27">
                 <div class="TabButtonContainer">
                     <div>
@@ -1629,7 +1629,10 @@
     }
     // 显示客户的未关闭工单的列表
     function ShowAccNoTicket() {
-
+        var account_idHidden = $("#account_idHidden").val();
+        if (account_idHidden != "") {
+            window.open("../ServiceDesk/AccountTicketList.aspx?account_id=" + account_idHidden, "_blank", 'left=200,top=200,width=600,height=800', false);
+        }
     }
     // 新增客户操作 新增成功后，将客户名称和Id 带回
     function AddAccount() {

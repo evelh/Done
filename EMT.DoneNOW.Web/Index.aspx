@@ -313,6 +313,22 @@
                                 <%}%>
                                 <!--第六个-->
                                 <div class="Module">
+                                    <div class="Normal ContextOverlayColumn">
+                                        <div>
+                                            
+                                            <div class="Group">
+                                                  <div class="Heading">
+                                                    <div class="Text">查询</div>
+                                                </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&isCheck=1" target="PageFrame">
+                                                        <span class="Text">工单</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
                                 </div>
                                 <!--第七个-->
                                 <div class="Module">

@@ -30,12 +30,13 @@
         .ImgLink {
             background: linear-gradient(to bottom,#fff 0,#fdfdfd 100%);
         }
-        .TitleBarIcon{
 
+        .TitleBarIcon {
         }
     </style>
 </head>
 <body>
+    <input id="ticket_id" value="<%=thisTicket.id.ToString() %>"/>
     <!-- 上方 标题 按钮等 -->
     <div class="PageHeadingContainer" style="z-index: 1;">
         <div class="HeaderRow">
@@ -48,14 +49,14 @@
                             {
                                 var pageTicket = pageTicketList.FirstOrDefault(_ => _.id == thisTicket.id);
                                 var thisIndex = pageTicketList.IndexOf(pageTicket);
-                                %>
+                        %>
                         <td>
-                            <div class="TitleBarItem TitleBarToolbar" style="float:right;">
-                                <div class="TitleBarButton NavigateLeft NormalState" style="margin-top: 9px;margin-left: -19px;" onclick="ViewTicket('<%=thisIndex!=0?pageTicketList[thisIndex-1].id:pageTicketList[pageTicketList.Count-1].id %>')">
+                            <div class="TitleBarItem TitleBarToolbar" style="float: right;">
+                                <div class="TitleBarButton NavigateLeft NormalState" style="margin-top: 9px; margin-left: -19px;" onclick="ViewTicket('<%=thisIndex!=0?pageTicketList[thisIndex-1].id:pageTicketList[pageTicketList.Count-1].id %>')">
                                     <div class="TitleBarIcon NavigateLeft"></div>
                                 </div>
-                                <span class="Text" style="width: 53px;max-width: 66px;"><%=thisIndex+1 %> of <%=pageTicketList.Count %></span>
-                                <div class="TitleBarButton NavigateRight NormalState" style="margin-top: -16px;margin-left: 53px;" onclick="ViewTicket('<%=thisIndex!=(pageTicketList.Count-1)?pageTicketList[thisIndex+1].id:pageTicketList[0].id %>')">
+                                <span class="Text" style="width: 53px; max-width: 66px;"><%=thisIndex+1 %> of <%=pageTicketList.Count %></span>
+                                <div class="TitleBarButton NavigateRight NormalState" style="margin-top: -16px; margin-left: 53px;" onclick="ViewTicket('<%=thisIndex!=(pageTicketList.Count-1)?pageTicketList[thisIndex+1].id:pageTicketList[0].id %>')">
                                     <div class="TitleBarIcon NavigateRight"></div>
                                 </div>
                             </div>
@@ -188,13 +189,13 @@
             <div class="Text">服务<span class="KeyCode"></span></div>
             <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -260px;"></div>
         </div>
-        <div class="QuickLaunchButton ToDo DisabledState">
+        <div class="QuickLaunchButton ToDo DisabledState" onclick="AddTicketTodo()">
             <div class="Text">待办<span class="KeyCode"></span></div>
             <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -309px;"></div>
         </div>
     </div>
 
-    <div class="MessageBarContainer" style="margin-left: 45px; margin-top: 82px;">
+    <div class="MessageBarContainer" style="margin-left: 45px; margin-top: 66px;">
         <div class="MessageBar Alert" id="AccountAlert">
             <div class="IconContainer">
                 <div class="MessageBarIcon Alert" style="background-position: -1px -1px;"></div>
@@ -214,7 +215,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="TabButton EntityPageTabIcon Insights" onclick="();">
+                    <div class="TabButton EntityPageTabIcon Insights" >
                         <div class="Icon"></div>
                         <div class="Text">Insights</div>
                     </div>
@@ -602,7 +603,7 @@
                                         </div>
                                     </div>
                                     <div class="ContextOverlayContainer">
-                                        <div class="TimelineContextOverlay ContextOverlay">
+                                        <div class="TimelineContextOverlay ContextOverlay" style="left: calc(0% - 6px);top:-103px;position:absolute;">
                                             <div class="Content">
                                                 <div class="Label">
                                                     <div class="TimelineIcon OverlayEventMet" style="background-position: -101px -1px;"></div>
@@ -626,7 +627,7 @@
                                         </div>
                                     </div>
                                     <div class="ContextOverlayContainer" id="z7efe3f18ca5b4d3c83ca253200492b48">
-                                        <div class="TimelineContextOverlay ContextOverlay">
+                                        <div class="TimelineContextOverlay ContextOverlay" style="left: calc(79% - 6px);top:-65px;position:absolute;">
                                             <div class="Outline Arrow"></div>
                                             <div class="Arrow"></div>
                                             <div class="Content">
@@ -643,7 +644,7 @@
                                         { %>
                                     <div class="Dot" style="left: calc(79% - 6px);">
                                         <div class="Pole VerticalSize1">
-                                            <div class="Flag TargetAchieved Reverse" id="z5bc5fff464e34e689cdacf4990114637">
+                                            <div class="Flag TargetAchieved Reverse">
                                                 <div class="Banner">
                                                     <div class="Triangle"></div>
                                                 </div>
@@ -651,8 +652,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="ContextOverlayContainer" id="z4f42c44b95244db284b0a5dd5f8709e9">
-                                        <div class="TimelineContextOverlay ContextOverlay">
+                                    <div class="ContextOverlayContainer">
+                                        <div class="TimelineContextOverlay ContextOverlay" style="left: calc(79% - 6px);top:-65px;position:absolute;">
                                             <div class="Outline Arrow"></div>
                                             <div class="Arrow"></div>
                                             <div class="Content">
@@ -670,7 +671,7 @@
                                         { %>
                                     <div class="Dot" style="left: calc(79% - 6px);">
                                         <div class="Pole VerticalSize0">
-                                            <div class="Flag TargetAchieved Reverse" id="z3af3911af8374cd8a93aa6d8c31ef64f">
+                                            <div class="Flag TargetAchieved Reverse">
                                                 <div class="Banner">
                                                     <div class="Triangle"></div>
                                                 </div>
@@ -679,7 +680,7 @@
                                         </div>
                                     </div>
                                     <div class="ContextOverlayContainer">
-                                        <div class="TimelineContextOverlay ContextOverlay">
+                                        <div class="TimelineContextOverlay ContextOverlay" style="left: calc(79% - 6px);top:-65px;position:absolute;">
                                             <div class="Outline Arrow"></div>
                                             <div class="Arrow"></div>
                                             <div class="Content">
@@ -697,7 +698,16 @@
                                     <div class="SlaBarIndicator" style="width: 0%;"></div>
                                 </div>
                                 <div class="Divider"></div>
+                                <%if (slaDic != null && slaDic.Count > 0)
+                                    {
+                                        var slaFirstResponse = slaDic.FirstOrDefault(_ => _.Key == "响应时间");
+                                        var slaComplete = slaDic.FirstOrDefault(_ => _.Key == "完成时间");
+                                        var resolution = slaDic.FirstOrDefault(_ => _.Key == "解决时间");
+                                        var resolutionPlan = slaDic.FirstOrDefault(_ => _.Key == "解决方案提供时间");
+                                %>
                                 <div class="Bar Bottom">
+                                    <%if (!default(KeyValuePair<string, object>).Equals(slaFirstResponse))
+                                        { %>
                                     <div class="TimelineIcon TargetPointer" style="left: calc(81% - 3px);">
                                         <div class="TimelineIcon Target" id="z85414a86487245f1b11077ad0e2efce0"></div>
                                     </div>
@@ -706,14 +716,17 @@
                                             <div class="Outline Arrow"></div>
                                             <div class="Arrow"></div>
                                             <div class="Content">
-                                                <div class="Label">
+                                                <div class="Label" style="margin-left: 20px;">
                                                     <div class="TimelineIcon OverlayTargetMet"></div>
-                                                    <div class="Text Achieved">First Response</div>
+                                                    <div class="Text Achieved"><%=slaFirstResponse.Key %></div>
                                                 </div>
-                                                <div class="DateTime">30/01/2018 09:27 AM</div>
+                                                <div class="DateTime"><%=slaFirstResponse.Value.ToString() %></div>
                                             </div>
                                         </div>
                                     </div>
+                                    <%} %>
+                                    <%if (!default(KeyValuePair<string, object>).Equals(resolutionPlan))
+                                        { %>
                                     <div class="TimelineIcon TargetPointer" style="left: calc(89% - 3px);">
                                         <div class="TimelineIcon Target" id="z554f2ecf460e4b6797ee7b5b38bebf80"></div>
                                     </div>
@@ -722,14 +735,17 @@
                                             <div class="Outline Arrow"></div>
                                             <div class="Arrow"></div>
                                             <div class="Content">
-                                                <div class="Label">
+                                                <div class="Label" style="margin-left: 20px;">
                                                     <div class="TimelineIcon OverlayTargetMet"></div>
-                                                    <div class="Text Achieved">Resolution Plan</div>
+                                                    <div class="Text Achieved"><%=resolutionPlan.Key %></div>
                                                 </div>
-                                                <div class="DateTime">30/01/2018 11:27 AM</div>
+                                                <div class="DateTime"><%=resolutionPlan.Value.ToString() %></div>
                                             </div>
                                         </div>
                                     </div>
+                                    <%} %>
+                                    <%if (!default(KeyValuePair<string, object>).Equals(resolution))
+                                        { %>
                                     <div class="TimelineIcon TargetPointer" style="left: calc(98% - 3px);">
                                         <div class="TimelineIcon Target" id="z1c4c3ca136d0466c8582986c7eb839a5"></div>
                                     </div>
@@ -738,14 +754,17 @@
                                             <div class="Outline Arrow"></div>
                                             <div class="Arrow"></div>
                                             <div class="Content">
-                                                <div class="Label">
+                                                <div class="Label" style="margin-left: 20px;">
                                                     <div class="TimelineIcon OverlayTargetMet"></div>
-                                                    <div class="Text Achieved">Resolution</div>
+                                                    <div class="Text Achieved"><%=resolution.Key %></div>
                                                 </div>
-                                                <div class="DateTime">30/01/2018 01:27 PM</div>
+                                                <div class="DateTime"><%=resolution.Value.ToString() %></div>
                                             </div>
                                         </div>
                                     </div>
+                                    <%} %>
+                                    <%if (!default(KeyValuePair<string, object>).Equals(slaComplete))
+                                        { %>
                                     <div class="TimelineIcon TargetPointer" style="left: calc(100% - 3px);">
                                         <div class="TimelineIcon Target" id="z4b018c06499842449f9c2f0a5cdbb24b"></div>
                                     </div>
@@ -754,16 +773,18 @@
                                             <div class="Outline Arrow"></div>
                                             <div class="Arrow"></div>
                                             <div class="Content">
-                                                <div class="Label">
+                                                <div class="Label" style="margin-left: 20px;">
                                                     <div class="TimelineIcon OverlayTargetMet"></div>
-                                                    <div class="Text Achieved">Complete</div>
+                                                    <div class="Text Achieved"><%=slaComplete.Key %></div>
                                                 </div>
-                                                <div class="DateTime">30/01/2018 01:54 PM</div>
+                                                <div class="DateTime"><%=slaComplete.Value.ToString() %></div>
                                             </div>
                                         </div>
                                     </div>
+                                    <%} %>
                                     <div class="TargetProgress" style="width: 100%;"></div>
                                 </div>
+                                <%} %>
                                 <div class="TicketSlaTimelineStart">
                                     <div class="TimelineIcon SlaStartLabel" style="background-position: -166px -1px; height: 15px; width: 15px;"></div>
                                 </div>
@@ -839,234 +860,112 @@
                             <div class="Right"></div>
                         </div>
                         <div class="Content">
-                            <% var showResolu = (thisTicket.resolution??"").Replace("\r\n","<br />").Replace("\n","<br />"); %>
+                            <% var showResolu = (thisTicket.resolution ?? "").Replace("\r\n", "<br />").Replace("\n", "<br />"); %>
                             <div class="EntityBodyEnhancedText"><span class="Content"><%=showResolu %></span></div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="AccessoryTabButtonBar">
-                <div class="Button TicketButton SelectedState" id="z8479140f8ede469db9b4c2aa9717bea5">
+                <div class="Button TicketButton SelectedState" id="TicketViewActivityDiv">
                     <div class="Text">活动</div>
                 </div>
-                <div class="Button TicketButton NormalState" id="z7b45f31108934400a8a2fedbb46de972">
+                <div class="Button TicketButton NormalState" id="TicketViewCostDiv">
                     <div class="Text">成本和费用</div>
                 </div>
-                <div class="Button TicketButton NormalState" id="ze57643eeffa34687a4c5a43efabbdc18">
-                    <div class="Text">Service Calls &amp; To-Dos (0)</div>
+                <div class="Button TicketButton NormalState" id="TicketViewServiceDiv">
+                    <div class="Text">服务预定和待办</div>
                 </div>
                 <div class="Spacer Small"></div>
             </div>
-            <div class="TabContainer Active ActivityTabContainer">
-                <div class="ActivityTabShell" id="z66e25f96af534e079844de5b415f4dfc">
+            <div class="TabContainer Active ActivityTabContainer" id="ShowActivityDiv" style="padding-left: 25px;">
+                <div class="ActivityTabShell">
                     <div class="LoadingIndicator"></div>
-                    <%--<div class="Content">
+                    <div class="Content">
                         <div class="ToolBar">
-                            <div class="ToolBarItem Left ButtonGroupStart"><a class="Button ButtonIcon Time NormalState" id="zc1d534eee8a045aba876a8636414a64c" tabindex="0"><span class="Icon"></span><span class="Text">New Time Entry</span></a></div>
-                            <div class="ToolBarItem Left"><a class="Button ButtonIcon Note Navigation NormalState" id="z063829063ee24c53a5e964e474538c35" tabindex="0"><span class="Icon"></span><span class="Text">New Note</span></a></div>
-                            <div class="ToolBarItem Left ButtonGroupEnd"><a class="Button ButtonIcon Attachment Navigation NormalState" id="z9c876b59dbcb430687e56944c42eda8e" tabindex="0"><span class="Icon"></span><span class="Text">New Attachment</span></a></div>
+                            <div class="ToolBarItem Left ButtonGroupStart"><a class="Button ButtonIcon Time NormalState" tabindex="0" onclick="AddTimeEntry()"><span class="Icon" style="width: 17px; background: url(../Images/Icons.png) no-repeat -310px 0px;"></span><span class="Text">新增工时</span></a></div>
+                            <div class="ToolBarItem Left"><a class="Button ButtonIcon Note Navigation NormalState" tabindex="0" onclick="AddTicketNote('')"><span class="Icon" style="width: 17px; background: url(../Images/Icons.png) no-repeat -229px -16px;"></span><span class="Text">新增备注</span></a></div>
+                            <div class="ToolBarItem Left ButtonGroupEnd"><a class="Button ButtonIcon Attachment Navigation NormalState" tabindex="0" onclick="AddTicketAttachment()"><span class="Icon" style="width: 17px; background: url(../Images/Icons.png) no-repeat -21px -64px;"></span><span class="Text">新增附件</span></a></div>
                             <div class="ButtonGroupDivider"></div>
-                            <div class="ToolBarItem Left ButtonGroupStart ButtonGroupEnd LockedWidth"><a class="Button ButtonIcon IconOnly Refresh NormalState" id="zdb655bb8bdbf423a99c1453a420ccb56" tabindex="0"><span class="Icon"></span><span class="Text"></span></a></div>
+                            <div class="ToolBarItem Left ButtonGroupStart ButtonGroupEnd LockedWidth" style="margin-left: 15px;"><a class="Button ButtonIcon IconOnly Refresh NormalState" id="" tabindex="0"><span class="Icon" style="width: 17px; height: 17px; background: url(../Images/Icons.png) no-repeat -293px 1px;"></span><span class="Text"></span></a></div>
                             <div class="Spacer"></div>
                         </div>
-                        <div class="QuickNote Starter" id="z5a800ff1e8144c8c80a31334e10bf0a3">
-                            <div class="Avatar">
+                        <div class="QuickNote Starter">
+                            <div class="Avatar" style="float: left;">
                                 <div class="Initials ColorSwatch ColorSample Color4">ll</div>
                             </div>
-                            <div class="Details">
-                                <div class="Editor TextArea" data-editor-id="z8507795bdd3043a9a4fd6c1ad1325d43" data-rdp="z8507795bdd3043a9a4fd6c1ad1325d43">
+                            <div class="Details" style="float: left;">
+                                <div class="Editor TextArea">
                                     <div class="InputField">
-                                        <textarea class="Medium" id="z8507795bdd3043a9a4fd6c1ad1325d43" name="Text" placeholder="Add a note..." data-val-length="Character limit (2000) exceeded" data-val-length-max="2000" data-val-editor-id="z8507795bdd3043a9a4fd6c1ad1325d43" data-val-position="0"></textarea>
-                                    </div>
+                                        <textarea class="Medium" id="Note" name="Note" placeholder="添加一个备注.." style="margin-top: 0px;margin-bottom: 0px;height: 80px;width: 550px;"></textarea></div>
                                     <div class="CharacterInformation"><span class="CurrentCount">0</span>/<span class="Maximum">2000</span></div>
+                                    <input type="hidden" id="isShowSave" value=""/>
                                 </div>
-                                <div class="ButtonBar">
-                                    <div class="Editor SingleSelect" data-editor-id="z34f11c636d8f4e4385a09bbd3adddbf4" data-rdp="z34f11c636d8f4e4385a09bbd3adddbf4">
+                                <div class="ButtonBar" style="display:none;width: 560px;">
+                                    <div class="Editor SingleSelect">
                                         <div class="InputField">
-                                            <select id="z34f11c636d8f4e4385a09bbd3adddbf4" name="NoteTypes">
-                                                <option value="2" title="Task Detail">Task Detail</option>
-                                                <option value="3" title="Task Notes">Task Notes</option>
-                                                <option value="1" title="Task Summary" selected="selected">Task Summary</option>
-                                            </select>
-                                        </div>
+                                            <select  name="NoteTypes" id="NoteTypes">
+                                                <%if (ticketNoteTypeList != null && ticketNoteTypeList.Count > 0)
+                                                    {foreach (var ticketNoteType in ticketNoteTypeList)
+                                                        {
+                                                    %>
+                                                <option value="<%=ticketNoteType.id %>"><%=ticketNoteType.name %></option>
+                                                <% } } %>
+                                            </select></div>
                                     </div>
-                                    <a class="Button ButtonIcon SuggestiveBackground DisabledState" id="ze5791323c1584d79b5df5c226ae47437" tabindex="0"><span class="Icon"></span><span class="Text">Save</span></a><a class="Button ButtonIcon NormalState" id="z4f4f15cb69394dfc90ca3cf4d0a8e405" tabindex="0"><span class="Icon"></span><span class="Text">Cancel</span></a>
+                                    <a class="Button ButtonIcon SuggestiveBackground DisabledState" id="SaveTicketNoteAdd" tabindex="0"><span class="Icon"></span><span class="Text">保存</span></a><a class="Button ButtonIcon NormalState" id="CancelTicketNoteAdd" tabindex="0"><span class="Icon"></span><span class="Text">取消</span></a>
                                 </div>
-                                <div class="OptionBar">
+                                <div class="OptionBar" style="display:none;">
                                     <div class="OptionBarRow">
                                         <div class="OptionBarHalf">
-                                            <div class="Editor CheckBox" data-editor-id="z328394d108d644a1b4bc839f84725b6e" data-rdp="z328394d108d644a1b4bc839f84725b6e">
+                                            <div class="Editor CheckBox">
                                                 <div class="InputField">
                                                     <div>
-                                                        <input id="z328394d108d644a1b4bc839f84725b6e" type="checkbox" value="true" name="IsInternal">
-                                                    </div>
+                                                        <input id="punlishInter" type="checkbox" value="true" name="IsInternal" /></div>
                                                     <div class="EditorLabelContainer">
                                                         <div class="Label">
-                                                            <label for="z328394d108d644a1b4bc839f84725b6e">Internal Only</label>
-                                                        </div>
+                                                            <label>发布对象为内部用户</label></div>
                                                     </div>
-                                                    <input id="z328394d108d644a1b4bc839f84725b6e_HiddenField" name="IsInternal" type="hidden" value="false">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="OptionBarHalf">
-                                            <div class="Editor CheckBox" data-editor-id="z197c8a33a9f2493c966387184598875c" data-rdp="z197c8a33a9f2493c966387184598875c">
+                                            <div class="Editor CheckBox" >
                                                 <div class="InputField">
                                                     <div>
-                                                        <input id="z197c8a33a9f2493c966387184598875c" type="checkbox" value="true" name="IsNotifyingContact">
-                                                    </div>
+                                                        <input id="TicketNoteNotiContact" type="checkbox" value="true" name="IsNotifyingContact" /></div>
                                                     <div class="EditorLabelContainer">
                                                         <div class="Label">
-                                                            <label for="z197c8a33a9f2493c966387184598875c">Notify Ticket Contact<span class="SecondaryText">Mr. laoliu 139</span></label>
-                                                        </div>
+                                                            <label>通知工单联系人<span class="SecondaryText"><%=thisContact==null?"":thisContact.name %></span></label></div>
                                                     </div>
-                                                    <input id="z197c8a33a9f2493c966387184598875c_HiddenField" name="IsNotifyingContact" type="hidden" value="false">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="OptionBarRow">
                                         <div class="OptionBarHalf">
-                                            <div class="Editor CheckBox" data-editor-id="z2824c420ba444bd99d92529b5ec39394" data-rdp="z2824c420ba444bd99d92529b5ec39394">
+                                            <div class="Editor CheckBox">
                                                 <div class="InputField">
                                                     <div>
-                                                        <input id="z2824c420ba444bd99d92529b5ec39394" type="checkbox" value="true" name="IsNotifyingPrimaryResource">
+                                                        <input id="TicketNoteNotiPriRes" type="checkbox" value="true" name="IsNotifyingPrimaryResource" />
                                                     </div>
                                                     <div class="EditorLabelContainer">
                                                         <div class="Label">
-                                                            <label for="z2824c420ba444bd99d92529b5ec39394">Notify Primary Resource<span class="SecondaryText">Hong Li</span></label>
+                                                            <label>通知主负责人<span class="SecondaryText"><%=priRes==null?"":priRes.name %></span></label>
                                                         </div>
                                                     </div>
-                                                    <input id="z2824c420ba444bd99d92529b5ec39394_HiddenField" name="IsNotifyingPrimaryResource" type="hidden" value="false">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="OptionBarHalf">
-                                            <div class="Editor CheckBox" data-editor-id="z4464ac061e5246e594236233210682ad" data-rdp="z4464ac061e5246e594236233210682ad">
+                                            <div class="Editor CheckBox">
                                                 <div class="InputField">
                                                     <div>
-                                                        <input id="z4464ac061e5246e594236233210682ad" type="checkbox" value="true" name="IsNotifyingInternalContributors" title="This will send notification to all resources that: created this ticket, have edited this ticket, are Primary Resource on this ticket, are Secondary Resource on this ticket, have a time entry on this ticket, have a note on this ticket, have an attachment on this ticket, and/or have a charge on this ticket.">
-                                                    </div>
-                                                    <div class="EditorLabelContainer">
-                                                        <div class="Label" title="This will send notification to all resources that: created this ticket, have edited this ticket, are Primary Resource on this ticket, are Secondary Resource on this ticket, have a time entry on this ticket, have a note on this ticket, have an attachment on this ticket, and/or have a charge on this ticket.">
-                                                            <label for="z4464ac061e5246e594236233210682ad">Notify All Internal Ticket Contributors</label>
-                                                        </div>
-                                                    </div>
-                                                    <input id="z4464ac061e5246e594236233210682ad_HiddenField" name="IsNotifyingInternalContributors" type="hidden" value="false">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ActivityFilterBar" id="z4fd29825aacb4b10ac77eaaf6d152adf">
-                            <div class="FilterBarRow">
-                                <div class="FilterBarHalf">
-                                    <div class="Editor CheckBox" data-editor-id="z02e456849e0f4ee3b7840f0f4ec012fd" data-rdp="z02e456849e0f4ee3b7840f0f4ec012fd">
-                                        <div class="InputField">
-                                            <div>
-                                                <input id="z02e456849e0f4ee3b7840f0f4ec012fd" type="checkbox" value="true" name="AreSystemNotesVisible">
-                                            </div>
-                                            <div class="EditorLabelContainer">
-                                                <div class="Label">
-                                                    <label for="z02e456849e0f4ee3b7840f0f4ec012fd">Show System Notes</label>
-                                                </div>
-                                            </div>
-                                            <input id="z02e456849e0f4ee3b7840f0f4ec012fd_HiddenField" name="AreSystemNotesVisible" type="hidden" value="false">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="FilterBarHalf">
-                                    <div class="Editor CheckBox" data-editor-id="z102c563bff7f4988b35cf8f86db2b9fe" data-rdp="z102c563bff7f4988b35cf8f86db2b9fe">
-                                        <div class="InputField">
-                                            <div>
-                                                <input id="z102c563bff7f4988b35cf8f86db2b9fe" type="checkbox" value="true" name="IsBillingDataVisible">
-                                            </div>
-                                            <div class="EditorLabelContainer">
-                                                <div class="Label">
-                                                    <label for="z102c563bff7f4988b35cf8f86db2b9fe">Show Billing Data</label>
-                                                </div>
-                                            </div>
-                                            <input id="z102c563bff7f4988b35cf8f86db2b9fe_HiddenField" name="IsBillingDataVisible" type="hidden" value="false">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ActivityAdvancedOptions">
-                            <a class="Button ButtonIcon Filter" id="z9c4661e773034f6eaf6f24751c957d8f"><span class="Icon"></span><span class="Text">Filter</span></a><div class="ContextOverlayContainer" id="zd158cb58b48f4afb94a8dbda8a2e8538">
-                                <div class="ActivityFilterContextOverlay ContextOverlay">
-                                    <div class="Outline Arrow"></div>
-                                    <div class="Arrow"></div>
-                                    <div class="Active LoadingIndicator"></div>
-                                    <div class="Content"></div>
-                                </div>
-                                <div class="ActivityFilterContextOverlay ContextOverlay">
-                                    <div class="Outline Arrow"></div>
-                                    <div class="Arrow"></div>
-                                    <div class="Active LoadingIndicator"></div>
-                                    <div class="Content"></div>
-                                </div>
-                            </div>
-                            <a class="Button ButtonIcon IconOnly Cancel DisabledState" id="z91e10bf21c8b4d12b1872f9ebb7adced" tabindex="0" title="Clear filters"><span class="Icon"></span><span class="Text"></span></a>
-                            <input id="zf8922504443f4a1f9f5f7d2785bf0db5" type="text" value="" placeholder="Search..."><select id="zefd9896e85674d47a16f5fdcdb13ac09"><option value="OldestFirst" title="Oldest First">Oldest First</option>
-                                <option value="NewestFirst" title="Newest First" selected="selected">Newest First</option>
-                                <option value="NewestFirstWithEscalation" title="The &quot;Newest First with Escalation&quot; option will move a conversation to the start of the Activity feed when a reply is made to it">Newest First with Escalation</option>
-                            </select>
-                        </div>
-                        <div class="QuickNote ConversationItem Reply" id="z34c75ffde4de4899b95d1707f3ca0bbd">
-                            <div class="Avatar">
-                                <div class="Initials ColorSwatch ColorSample Color4">ll</div>
-                            </div>
-                            <div class="Details">
-                                <div class="Editor TextArea" data-editor-id="zf1f0799004604e71a0787c04393bc9db" data-rdp="zf1f0799004604e71a0787c04393bc9db">
-                                    <div class="InputField">
-                                        <textarea class="Medium" id="zf1f0799004604e71a0787c04393bc9db" name="Text" placeholder="Add a note..." data-val-length="Character limit (2000) exceeded" data-val-length-max="2000" data-val-editor-id="zf1f0799004604e71a0787c04393bc9db" data-val-position="0"></textarea>
-                                    </div>
-                                    <div class="CharacterInformation"><span class="CurrentCount">0</span>/<span class="Maximum">2000</span></div>
-                                </div>
-                                <div class="ButtonBar">
-                                    <div class="Editor SingleSelect" data-editor-id="zeda08e57a87743bdb33dc72fc6807c62" data-rdp="zeda08e57a87743bdb33dc72fc6807c62">
-                                        <div class="InputField">
-                                            <select id="zeda08e57a87743bdb33dc72fc6807c62" name="NoteTypes">
-                                                <option value="2" title="Task Detail">Task Detail</option>
-                                                <option value="3" title="Task Notes">Task Notes</option>
-                                                <option value="1" title="Task Summary" selected="selected">Task Summary</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <a class="Button ButtonIcon SuggestiveBackground DisabledState" id="z6e9674f3e4f1460590c05a81650f7d67" tabindex="0"><span class="Icon"></span><span class="Text">Save</span></a><a class="Button ButtonIcon NormalState" id="z9cbee3e2974943068f2909a94c9f3134" tabindex="0"><span class="Icon"></span><span class="Text">Cancel</span></a>
-                                </div>
-                                <div class="OptionBar">
-                                    <div class="OptionBarRow">
-                                        <div class="OptionBarHalf">
-                                            <div class="Editor CheckBox" data-editor-id="z1a2f3ec7e5474cfe93ea395ea117c324" data-rdp="z1a2f3ec7e5474cfe93ea395ea117c324">
-                                                <div class="InputField">
-                                                    <div>
-                                                        <input id="z1a2f3ec7e5474cfe93ea395ea117c324" type="checkbox" value="true" name="IsInternal">
-                                                    </div>
+                                                        <input id="TicketNoteNotiInterAll" type="checkbox" value="true" name="IsNotifyingInternalContributors" /></div>
                                                     <div class="EditorLabelContainer">
                                                         <div class="Label">
-                                                            <label for="z1a2f3ec7e5474cfe93ea395ea117c324">Internal Only</label>
-                                                        </div>
+                                                            <label>通知工单内部相关人</label></div>
                                                     </div>
-                                                    <input id="z1a2f3ec7e5474cfe93ea395ea117c324_HiddenField" name="IsInternal" type="hidden" value="false">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="OptionBarHalf">
-                                            <div class="Editor CheckBox" data-editor-id="zd2d6251f69ad497cba1ba2d8c5b6abc5" data-rdp="zd2d6251f69ad497cba1ba2d8c5b6abc5">
-                                                <div class="InputField">
-                                                    <div>
-                                                        <input id="zd2d6251f69ad497cba1ba2d8c5b6abc5" type="checkbox" value="true" name="IsNotifyingOriginalAuthor" title="Notify the person you are replying to">
-                                                    </div>
-                                                    <div class="EditorLabelContainer">
-                                                        <div class="Label" title="Notify the person you are replying to">
-                                                            <label for="zd2d6251f69ad497cba1ba2d8c5b6abc5">Notify</label>
-                                                        </div>
-                                                    </div>
-                                                    <input id="zd2d6251f69ad497cba1ba2d8c5b6abc5_HiddenField" name="IsNotifyingOriginalAuthor" type="hidden" value="false">
                                                 </div>
                                             </div>
                                         </div>
@@ -1074,37 +973,25 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="ContextOverlayContainer" id="ze18290e9e4c84920b99ca7cd87630d12">
-                            <div class="ContextOverlay">
-                                <div class="Active LoadingIndicator"></div>
-                                <div class="Content"></div>
-                            </div>
-                            <div class="ContextOverlay">
-                                <div class="Active LoadingIndicator"></div>
-                                <div class="Content"></div>
-                            </div>
-                        </div>
-                        <div class="Conversation" id="z988ba7ab91bb4b5d8ddf519a016bd325">
-                            <div class="ConversationChunk">
-                                <div class="ConversationFooter"></div>
-                            </div>
-                        </div>
-                        <div class="NoDataMessage Active">No items to display</div>
-                    </div>--%>
+                    </div>
                 </div>
             </div>
-            <div class="TabContainer AccessoryTabContainer">
-                <div class="AccessoryTabShell" id="zd9246c791c7041768fba9d569d925414">
+            <div class="TabContainer AccessoryTabContainer" id="ShowIframeDiv">
+                <div class="AccessoryTabShell">
                     <div class="LoadingIndicator"></div>
                     <div class="TransitionContainer"></div>
-                    <div class="Content" id="zdaeb784a648341d2b3c73bf6c7cacb9f"></div>
+                    <div class="Content" id="">
+                        <iframe src="" id="TicketShowIframe" style="height:360px;width:100%;border-width: 0px;">
+
+                        </iframe>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="SecondaryContainer Right">
             <div class="TabButtonContainer">
                 <div>
-                    <div class="TabButton EntityPageTabIcon Details" onclick="autotask.findPage().__toggleSecondaryContainer();">
+                    <div class="TabButton EntityPageTabIcon Details" onclick="">
                         <div class="Icon"></div>
                         <div class="Text">Details</div>
                     </div>
@@ -1203,7 +1090,7 @@
                                                     {
                                                         entryHours = entryList.Sum(_ => _.hours_worked ?? 0);
                                                     }
-                                                 %>
+                                                %>
                                                 <%=entryHours.ToString("#0.00")+"h" %>
                                             </div>
                                         </td>
@@ -1213,15 +1100,17 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <% var overHours = thisTicket.estimated_hours - entryHours;  %>
                             <div class="NormalSpacer"></div>
                             <div class="ProgressBar">
-                                <div class="Bar" title="250% of Estimated Hours worked">
-                                    <div class="Progress IsGreaterThanZero Critical" style="width: 100.00%;"></div>
+                                <div class="Bar">
+                                    <div class="Progress IsGreaterThanZero <%=overHours<0?"Critical":"" %>" style="width: <%=overHours<0?100:(entryHours*100/thisTicket.estimated_hours) %>%;"></div>
                                 </div>
-                                <div class="Text CriticalImportance">
+                                <div class="Text <%=overHours<0?"CriticalImportance":"" %>">
                                     <div class="Text" style="display: inline;">
-                                        <% var overHours = thisTicket.estimated_hours - entryHours;  %>
-                                        <% if (overHours < 0) {
+
+                                        <% if (overHours < 0)
+                                            {
                                                 overHours = 0 - overHours;
                                             } %>
                                         <%=overHours.ToString("#0.00")+"h" %>
@@ -1602,7 +1491,10 @@
             success: function (data) {
                 if (data != "") {
                     if (data.setting_value == "1") {
-                        window.open("../ServiceDesk/TicketLabour.aspx?ticket_id=<%=thisTicket.id %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_LABOUR %>", 'left=200,top=200,width=600,height=800', false);
+                        window.open("../ServiceDesk/TicketLabour.aspx?ticket_id=<%=thisTicket.id %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_LABOUR %>", 'left=200,top=200,width=1000,height=800', false);
+                    }
+                    else {
+                        LayerMsg("已完成工单不可添加工时！");
                     }
                 }
             }
@@ -1610,7 +1502,7 @@
         <%}
     else
     {%>
-        window.open("../ServiceDesk/TicketLabour.aspx?ticket_id=<%=thisTicket.id %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_LABOUR %>", 'left=200,top=200,width=600,height=800', false);
+        window.open("../ServiceDesk/TicketLabour.aspx?ticket_id=<%=thisTicket.id %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_LABOUR %>", 'left=200,top=200,width=1000,height=800', false);
         <%}%>
     }
     // 完成工单--添加工时，默认工单状态为完成
@@ -1630,6 +1522,10 @@
     function AddTicketCharge() {
         window.open("../Contract/AddCharges.aspx?ticket_id=<%=thisTicket.id %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ConChargeAdd %>", 'left=200,top=200,width=800,height=800', false);
     }
+    // 添加工单待办
+    function AddTicketTodo() {
+        window.open("../Activity/Todos.aspx?ticketId=<%=thisTicket.id %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.TodoAdd %>", 'left=200,top=200,width=800,height=800', false);
+    }
 
     // 跳转到编辑配置项相关页面
     function EditInsPro(id) {
@@ -1643,7 +1539,7 @@
             window.open("../Contract/ContractView.aspx?id=" + contract_id, "_blank", 'left=200,top=200,width=600,height=800', false);
         }
     }
-  
+
     // 删除工单
     function DeleteTicket() {
         LayerConfirm("确认删除该工单吗？", "是", "否", function () {
@@ -1700,4 +1596,25 @@
     function ViewTicket(ticket_id) {
         location.href = "../ServiceDesk/TicketView?ids=<%=Request.QueryString["ids"] %>&id=" + ticket_id;
     }
+</script>
+
+<script>
+
+    $("#TicketViewActivityDiv").click(function () {
+        $("#ShowActivityDiv").show();
+        $("#ShowIframeDiv").hide();
+    })
+
+    $("#TicketViewCostDiv").click(function () {
+        $("#ShowActivityDiv").hide();
+        $("#ShowIframeDiv").show();
+        
+        $("#TicketShowIframe").attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_COST_EXPENSE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_COST_EXPENSE %>&con1762=<%=thisTicket==null?"":thisTicket.id.ToString() %>");
+    })
+
+    $("#TicketViewServiceDiv").click(function () {
+        $("#ShowActivityDiv").hide();
+        $("#ShowIframeDiv").show();
+        $("#TicketShowIframe").attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SERVICE_LIST %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SERVICE_LIST %>&con1761=<%=thisTicket==null?"":thisTicket.id.ToString() %>");
+    })
 </script>

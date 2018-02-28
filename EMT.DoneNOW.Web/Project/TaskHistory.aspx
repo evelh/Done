@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <link rel="stylesheet" type="text/css" href="../Content/searchList.css" />
-    <title>任务操作历史</title>
+    <title> 任务操作历史</title>
     <style>
         .searchcontent {
             width: 100%;
@@ -32,21 +32,26 @@
     <form id="form1" runat="server">
         <div class="PageContentContainer">
             <div class="PageHeadingContainer">
+                <%if (!isFromTicket)
+                    { %>
                 <div class="Active ThemePrimaryColor TitleBar EntityPage">
                     <div class="TitleBarItem Title"><span class="Text">任务历史</span><span class="SecondaryText">(<%=thisTask.no %> - <%=thisTask.title %>)</span></div>
                 </div>
+                <%} %>
                 <div class="contentboby">
                     <div class="RightClickMenu" style="left: 10px; top: 36px; display: none;">
                     </div>
+                     <%if (!isFromTicket){ %>
                     <div class="contenttitle clear" style="position: fixed; border-bottom: 1px solid #e8e8fa; left: 0; top: 0; background: #fff; width: 100%;">
                         <ul class="clear fl">
-
+                          
                             <li id="Print"><i style="background-image: url(../Images/print.png);"></i></li>
-
+                            
 
                         </ul>
                         <%if (queryResult != null && queryResult.count > 0)
                             { %>
+                       
                         <div class="page fl">
                             <%
                                 int indexFrom = queryResult.page_size * (queryResult.page - 1) + 1;
@@ -78,12 +83,14 @@
                             <span>&nbsp;/&nbsp;<%=queryResult.page_count %></span>
                             <i onclick="ChangePage(<%=queryResult.page+1 %>)">></i>&nbsp;&nbsp;<i onclick="ChangePage(<%=queryResult.page_count %>)">>></i>
                         </div>
+                             
                         <%} %>
                     </div>
+                    <%} %>
                 </div>
               
             </div>
-            <div class="searchcontent" id="searchcontent" style="margin-top: 56px; min-width: <%=tableWidth%>px; overflow: hidden;">
+            <div class="searchcontent" id="searchcontent" style="margin-top: 56px; min-width: <%=tableWidth%>px; height:660px;">
 
                 <table cellpadding="0">
                    <tr>

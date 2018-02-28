@@ -38,8 +38,10 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected List<UserDefinedFieldDto> tickUdfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TICKETS);
         protected List<UserDefinedFieldValue> ticketUdfValueList = null;
         protected List<sdk_task_checklist> ticketCheckList = null;   // 工单的检查单集合
-        protected List<sdk_task> pageTicketList = null;    // 页面上获取的工单集合。用于在页面上进行上下切换
+        protected List<sdk_task> pageTicketList = null;     // 页面上获取的工单集合。用于在页面上进行上下切换
         protected List<sdk_work_entry> entryList = null;
+        protected Dictionary<string, object> slaDic = null;
+        protected List<d_general> ticketNoteTypeList = null;    
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -117,6 +119,21 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                             }
                         }
                         createRes = new sys_resource_dal().FindNoDeleteById(thisTicket.create_user_id);
+
+                        var slaValue = new sdk_task_dal().GetSlaTime(thisTicket);
+                        string slaTimeValue = "";
+                        if (slaValue != null)
+                            slaTimeValue = slaValue.ToString();
+                        if (!string.IsNullOrEmpty(slaTimeValue))
+                        {
+                            if(slaTimeValue.Substring(0,1)=="{")
+                                slaDic = new EMT.Tools.Serialize().JsonToDictionary(slaTimeValue);
+                        }
+                        var actList = new d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.ACTION_TYPE);
+                        if (actList != null && actList.Count > 0)
+                        {
+                            ticketNoteTypeList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TICKET_NOTE).ToString()).ToList();
+                        }
                     }
                 }
                 var ticketIds = Request.QueryString["ids"];

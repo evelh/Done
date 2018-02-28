@@ -293,7 +293,11 @@ namespace EMT.DoneNOW.Web.Project
             pageExp.account_id = long.Parse(Request.Form["account_id"]);
             if (rbAssTask.Checked)
             {
-
+                var ticket_id = Request.Form["ticket_id"];
+                if (!string.IsNullOrEmpty(ticket_id))
+                {
+                    pageExp.task_id = long.Parse(ticket_id);
+                }
             }
             else if (rbAssProTask.Checked)
             {
