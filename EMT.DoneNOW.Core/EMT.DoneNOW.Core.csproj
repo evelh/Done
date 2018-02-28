@@ -60,6 +60,7 @@
     <Compile Include="COM\v_activity_contact.cs" />
     <Compile Include="COM\v_activity_opportunity.cs" />
     <Compile Include="COM\v_activity_sales_order.cs" />
+    <Compile Include="COM\v_activity_ticket.cs" />
     <Compile Include="CRM\crm_account.cs" />
     <Compile Include="CRM\crm_account_alert.cs" />
     <Compile Include="CRM\crm_account_deduction.cs" />

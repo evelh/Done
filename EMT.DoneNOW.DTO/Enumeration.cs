@@ -795,6 +795,8 @@ namespace EMT.DoneNOW.DTO
             NUMBER_EQUAL = 816,     // 数值(做等于判断)
             TIMESPAN = 817,         // 日期-时间戳
             UN_EQUAL = 818,         // 不等于
+            DYNAMIC = 819,          // 动态参考
+            CHANGED = 820,          // 变更
         }
 
         /// <summary>
@@ -1231,6 +1233,16 @@ namespace EMT.DoneNOW.DTO
             PROJECT_INTERNA_USER = 2122,            // 项目-团队中员工
             PROJECT_TEAM = 2123,            //  项目-团队全部成员
         }
+
+        /// <summary>
+        /// 附件发布类型 - 147
+        /// </summary>
+        public enum PUBLISH_TYPE
+        {
+            PUBLIC = 2128,          // 全部用户
+            INTERNAL = 2129,        // 内部用户
+        }
+
         /// <summary>
         /// 费用超支政策 - 148
         /// </summary>
@@ -1334,6 +1346,39 @@ namespace EMT.DoneNOW.DTO
             AEM_WARN = 2274,     // AEM告警
         }
 
+        /// <summary>
+        /// 工作流对象 - 176
+        /// </summary>
+        public enum WORKFLOW_OBJECT
+        {
+            OPPORTUNITY = 2410,             // 商机
+            SALES_ORDER = 2411,             // 销售订单
+            CONFIGURATION_ITEM = 2412,      // 配置项
+            CONTRACT = 2413,                // 合同
+            PROJECT = 2414,                 // 项目
+            TASK = 2415,                    // 任务
+            TICKET = 2416,                  // 工单
+        }
+
+        /// <summary>
+        /// 工作流操作符 - 177
+        /// </summary>
+        public enum WORKFLOW_OPERATOR
+        {
+            EQUAL = 2426,           // =
+            GREATER = 2427,         // >
+            SMALLER = 2428,         // <
+            NO_SMALLER = 2429,      // >=
+            NO_GREATER = 2430,      // <=
+            NO_EQUAL = 2431,        // 不等于
+            CONTAIN = 2432,         // 包含
+            EXCEED = 2433,          // 超过（预估时间）
+            CHANGED = 2434,         // 改变
+            CHANGED_TO = 2435,      // 更改至
+            CHANGED_FROM = 2436,    // 更改自
+            IN = 2437,              // 属于列表
+            NOT_IN = 2438,          // 不属于列表
+        }
     }
 
     /// <summary>

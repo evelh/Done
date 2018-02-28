@@ -101,7 +101,8 @@ namespace EMT.DoneNOW.BLL
 
                 // 下拉框和多选下拉框，获取列表值
                 if (col.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.DROPDOWN
-                    || col.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN)
+                    || col.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN
+                    || col.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.DYNAMIC)
                 {
                     if (col.id == 1244)  // 费用报表
                     {
