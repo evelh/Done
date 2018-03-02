@@ -542,6 +542,9 @@
 
         <%
     var notifiType = Request.QueryString["notifi_type"];
+    if (!string.IsNullOrEmpty(notifiType))
+    {
+
     if (notifiType.Contains("priRes"))
     {%>
         $("#CkPriRes").prop("checked", true);
@@ -555,7 +558,8 @@
     {%>
         $("#CkOtherRes").prop("checked", true);
     <%}
-
+    
+    }
     // 
 
     %>

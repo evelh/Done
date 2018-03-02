@@ -998,6 +998,47 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
+                case (long)QueryType.MY_TASK_TICKET:
+                    #region 工单右键
+                    contextMenu.Add(new PageContextMenuDto { text = "工时", click_function = "AddLabour()", class_name = "ticket"});
+                    contextMenu.Add(new PageContextMenuDto { text = "服务预定工时", click_function = "AddServiceLabour()", class_name = "ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑工单", click_function = "EditTicket()", class_name = "ticket" });
+                    var MyTicketView = new PageContextMenuDto { text = "查看", class_name = "ticket" };
+                    MyTicketView.submenu = new List<PageContextMenuDto>() {
+                         new PageContextMenuDto(){text = "工单详情", click_function = "ViewTicket()", class_name = "ticket" },
+                         new PageContextMenuDto(){text = "工单历史", click_function = "ViewTicketHistory()", class_name = "ticket" },
+                         new PageContextMenuDto(){text = "客户打开工单历史", click_function = "ViewTicketOpenHistory()" , class_name = "ticket"},
+                         new PageContextMenuDto(){text = "生成报表", click_function = "ToGoReport()", class_name = "ticket" },
+                    };
+                    contextMenu.Add(MyTicketView);
+                    contextMenu.Add(new PageContextMenuDto { text = "复制工单", click_function = "CopyTicket()", class_name = "ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制工单到项目", click_function = "CopyTicketToProject()", class_name = "ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "合并到其他工单", click_function = "MergeToTicket()", class_name = "ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "合并到多个工单", click_function = "AbsorbToTicket()", class_name = "ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加服务预定", click_function = "AddServiceCall()", class_name = "ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加工单备注", click_function = "AddTicketNote()", class_name = "ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "修改工单", click_function = "ModifyTicket()", class_name = "ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除工单", click_function = "DeleteTicket()", class_name = "ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加到我的工作列表", click_function = "AddMyWorkList()", class_name = "ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加到主负责人的工作列表", click_function = "AddPriWorkList()", class_name = "ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加到其他负责人的工作列表", click_function = "AddOtherWorkList()", class_name = "ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "解除关联项目", click_function = "DisProject()", class_name = "ticket" });
+                    #endregion
+
+                    #region 任务右键
+                    contextMenu.Add(new PageContextMenuDto { text = "工时", click_function = "AddTaskLabour()", class_name = "task" });
+                    contextMenu.Add(new PageContextMenuDto { text = "服务预定工时", click_function = "AddTaskServiceLabour()", class_name = "task" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑任务", click_function = "EditTask()", class_name = "task" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加服务预定", click_function = "AddTaskServiceCall()", class_name = "task" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看任务详情", click_function = "ViewTask()", class_name = "task" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看任务备注", click_function = "ViewTaskNote()", class_name = "task" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看项目", click_function = "ViewProject()", class_name = "task" });
+                    contextMenu.Add(new PageContextMenuDto { text = "生成报表", click_function = "ToGoTaskReport()", class_name = "task" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加到我的工作列表", click_function = "AddTaskMyWorkList()", class_name = "task" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加到主负责人的工作列表", click_function = "AddTaskPriWorkList()", class_name = "task" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加到其他负责人的工作列表", click_function = "AddTaskOtherWorkList()", class_name = "task" });
+                    #endregion
+                    break;
                 default:
                     break;
             }

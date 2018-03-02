@@ -36,6 +36,10 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected List<UserDefinedFieldDto> tickUdfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TICKETS);
         protected List<UserDefinedFieldValue> ticketUdfValueList = null;
         protected List<sdk_task_checklist> ticketCheckList = null;   // 工单的检查单集合
+
+        protected Dictionary<string, object> slaDic = null;    // 时间轴显示
+        protected List<d_general> ticketNoteTypeList = null;  // 工单备注类型
+        protected List<sdk_work_entry> entryList = null;  // 显示工单 工时剩余时间
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -147,6 +151,23 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                         {
                             ticketCheckList = ticketCheckList.OrderBy(_=>_.sort_order).ToList();
                         }
+                        #region 时间轴显示相关 工单备注类型获取
+                        var slaValue = new sdk_task_dal().GetSlaTime(thisTicket);
+                        string slaTimeValue = "";
+                        if (slaValue != null)
+                            slaTimeValue = slaValue.ToString();
+                        if (!string.IsNullOrEmpty(slaTimeValue))
+                        {
+                            if (slaTimeValue.Substring(0, 1) == "{")
+                                slaDic = new EMT.Tools.Serialize().JsonToDictionary(slaTimeValue);
+                        }
+                        var actList = new d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.ACTION_TYPE);
+                        if (actList != null && actList.Count > 0)
+                        {
+                            ticketNoteTypeList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TICKET_NOTE).ToString()).ToList();
+                        }
+                        #endregion
+                        entryList = new sdk_work_entry_dal().GetList(thisTicket.id);
                     }
                 }
                 
@@ -458,29 +479,39 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 string faileReason;
                 var result = false;
                 if (isAdd)
-                {
                     result = new TicketBLL().AddTicket(para, LoginUserId, out faileReason);
-                }
                 else
-                {
                     result = new TicketBLL().EditTicket(para, LoginUserId, out faileReason);
-                }
-                if (result)
+                if (!string.IsNullOrEmpty(CallBack))
                 {
-                    if (!string.IsNullOrEmpty(CallBack))
-                    {
-
-                    }
-                    else
-                    {
-                        // 跳转到查看页面  暂时关闭
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功');self.opener.location.reload();window.close();</script>");
-                    }
 
                 }
                 else
                 {
+                      // 跳转到查看页面 
+                      ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存{(result?"成功":"失败")}');self.opener.location.reload();location.href='TicketManage?id="+ para.ticket.id + "';</script>");
+                }
+            }
+        }
 
+        protected void save_close_Click(object sender, EventArgs e)
+        {
+            var para = GetParam();
+            if (para != null)
+            {
+                string faileReason;
+                var result = false;
+                if (isAdd)
+                    result = new TicketBLL().AddTicket(para, LoginUserId, out faileReason);
+                else
+                    result = new TicketBLL().EditTicket(para, LoginUserId, out faileReason);
+               if (!string.IsNullOrEmpty(CallBack))
+                {
+                }
+                else
+                {
+                     // 跳转到查看页面  暂时关闭
+                     ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存{(result?"成功":"失败")}');self.opener.location.reload();window.close();</script>");
                 }
             }
         }

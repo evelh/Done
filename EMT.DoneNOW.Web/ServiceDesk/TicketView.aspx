@@ -36,7 +36,7 @@
     </style>
 </head>
 <body>
-    <input id="ticket_id" value="<%=thisTicket.id.ToString() %>"/>
+    <input id="ticket_id" value="<%=thisTicket.id.ToString() %>" />
     <!-- 上方 标题 按钮等 -->
     <div class="PageHeadingContainer" style="z-index: 1;">
         <div class="HeaderRow">
@@ -215,7 +215,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="TabButton EntityPageTabIcon Insights" >
+                    <div class="TabButton EntityPageTabIcon Insights">
                         <div class="Icon"></div>
                         <div class="Text">Insights</div>
                     </div>
@@ -603,7 +603,7 @@
                                         </div>
                                     </div>
                                     <div class="ContextOverlayContainer">
-                                        <div class="TimelineContextOverlay ContextOverlay" style="left: calc(0% - 6px);top:-103px;position:absolute;">
+                                        <div class="TimelineContextOverlay ContextOverlay" style="left: calc(0% - 6px); top: -103px; position: absolute;">
                                             <div class="Content">
                                                 <div class="Label">
                                                     <div class="TimelineIcon OverlayEventMet" style="background-position: -101px -1px;"></div>
@@ -627,7 +627,7 @@
                                         </div>
                                     </div>
                                     <div class="ContextOverlayContainer" id="z7efe3f18ca5b4d3c83ca253200492b48">
-                                        <div class="TimelineContextOverlay ContextOverlay" style="left: calc(79% - 6px);top:-65px;position:absolute;">
+                                        <div class="TimelineContextOverlay ContextOverlay" style="left: calc(79% - 6px); top: -65px; position: absolute;">
                                             <div class="Outline Arrow"></div>
                                             <div class="Arrow"></div>
                                             <div class="Content">
@@ -653,7 +653,7 @@
                                         </div>
                                     </div>
                                     <div class="ContextOverlayContainer">
-                                        <div class="TimelineContextOverlay ContextOverlay" style="left: calc(79% - 6px);top:-65px;position:absolute;">
+                                        <div class="TimelineContextOverlay ContextOverlay" style="left: calc(79% - 6px); top: -65px; position: absolute;">
                                             <div class="Outline Arrow"></div>
                                             <div class="Arrow"></div>
                                             <div class="Content">
@@ -680,7 +680,7 @@
                                         </div>
                                     </div>
                                     <div class="ContextOverlayContainer">
-                                        <div class="TimelineContextOverlay ContextOverlay" style="left: calc(79% - 6px);top:-65px;position:absolute;">
+                                        <div class="TimelineContextOverlay ContextOverlay" style="left: calc(79% - 6px); top: -65px; position: absolute;">
                                             <div class="Outline Arrow"></div>
                                             <div class="Arrow"></div>
                                             <div class="Content">
@@ -897,46 +897,54 @@
                             <div class="Details" style="float: left;">
                                 <div class="Editor TextArea">
                                     <div class="InputField">
-                                        <textarea class="Medium" id="Note" name="Note" placeholder="添加一个备注.." style="margin-top: 0px;margin-bottom: 0px;height: 80px;width: 550px;"></textarea></div>
+                                        <textarea class="Medium" id="Note" name="Note" placeholder="添加一个备注.." style="margin-top: 0px; margin-bottom: 0px; height: 80px; width: 550px;"></textarea>
+                                    </div>
                                     <div class="CharacterInformation"><span class="CurrentCount">0</span>/<span class="Maximum">2000</span></div>
-                                    <input type="hidden" id="isShowSave" value=""/>
+                                    <input type="hidden" id="isShowSave" value="" />
                                 </div>
-                                <div class="ButtonBar" style="display:none;width: 560px;">
+                                <div class="ButtonBar" style="display: none; width: 560px;">
                                     <div class="Editor SingleSelect">
                                         <div class="InputField">
-                                            <select  name="NoteTypes" id="NoteTypes">
+                                            <select name="NoteTypes" id="NoteTypes" style="float:right;">
                                                 <%if (ticketNoteTypeList != null && ticketNoteTypeList.Count > 0)
-                                                    {foreach (var ticketNoteType in ticketNoteTypeList)
+                                                    {
+                                                        foreach (var ticketNoteType in ticketNoteTypeList)
                                                         {
-                                                    %>
+                                                %>
                                                 <option value="<%=ticketNoteType.id %>"><%=ticketNoteType.name %></option>
-                                                <% } } %>
-                                            </select></div>
+                                                <% }
+                                                    } %>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <a class="Button ButtonIcon SuggestiveBackground DisabledState" id="SaveTicketNoteAdd" tabindex="0"><span class="Icon"></span><span class="Text">保存</span></a><a class="Button ButtonIcon NormalState" id="CancelTicketNoteAdd" tabindex="0"><span class="Icon"></span><span class="Text">取消</span></a>
+                                    <a class="Button ButtonIcon SuggestiveBackground DisabledState" id="SaveTicketNoteAdd" tabindex="0"><span class="Icon"></span><span class="Text" style="color:white;">保存</span></a><a class="Button ButtonIcon NormalState" id="CancelTicketNoteAdd" tabindex="0"><span class="Icon"></span><span class="Text" >取消</span></a>
                                 </div>
-                                <div class="OptionBar" style="display:none;">
+                                <div class="OptionBar" style="display: none;">
                                     <div class="OptionBarRow">
                                         <div class="OptionBarHalf">
                                             <div class="Editor CheckBox">
                                                 <div class="InputField">
                                                     <div>
-                                                        <input id="punlishInter" type="checkbox" value="true" name="IsInternal" /></div>
+                                                        <input id="punlishInter" type="checkbox" value="true" name="IsInternal" />
+                                                    </div>
                                                     <div class="EditorLabelContainer">
                                                         <div class="Label">
-                                                            <label>发布对象为内部用户</label></div>
+                                                            <label>发布对象为内部用户</label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="OptionBarHalf">
-                                            <div class="Editor CheckBox" >
+                                            <div class="Editor CheckBox">
                                                 <div class="InputField">
                                                     <div>
-                                                        <input id="TicketNoteNotiContact" type="checkbox" value="true" name="IsNotifyingContact" /></div>
+                                                        <input id="TicketNoteNotiContact" type="checkbox" value="true" name="IsNotifyingContact" />
+                                                    </div>
                                                     <div class="EditorLabelContainer">
                                                         <div class="Label">
-                                                            <label>通知工单联系人<span class="SecondaryText"><%=thisContact==null?"":thisContact.name %></span></label></div>
+                                                            <label>通知工单联系人<span class="SecondaryText"><%=thisContact==null?"":thisContact.name %></span></label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -961,10 +969,12 @@
                                             <div class="Editor CheckBox">
                                                 <div class="InputField">
                                                     <div>
-                                                        <input id="TicketNoteNotiInterAll" type="checkbox" value="true" name="IsNotifyingInternalContributors" /></div>
+                                                        <input id="TicketNoteNotiInterAll" type="checkbox" value="true" name="IsNotifyingInternalContributors" />
+                                                    </div>
                                                     <div class="EditorLabelContainer">
                                                         <div class="Label">
-                                                            <label>通知工单内部相关人</label></div>
+                                                            <label>通知工单内部相关人</label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -972,6 +982,112 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="ActivityFilterBar">
+                            <div class="FilterBarRow">
+                                <div class="FilterBarHalf">
+                                    <div class="Editor CheckBox">
+                                        <div class="InputField">
+                                            <div>
+                                                <input id="CkShowSysNote" type="checkbox" value="" name="AreSystemNotesVisible" />
+                                            </div>
+                                            <div class="EditorLabelContainer">
+                                                <div class="Label">
+                                                    <label>显示系统备注</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="FilterBarHalf">
+                                    <div class="Editor CheckBox">
+                                        <div class="InputField">
+                                            <div>
+                                                <input id="CkShowBillData" type="checkbox" value="" name="IsBillingDataVisible" />
+                                            </div>
+                                            <div class="EditorLabelContainer">
+                                                <div class="Label">
+                                                    <label>显示计费信息</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ActivityAdvancedOptions">
+                            <a class="Button ButtonIcon Filter" style="padding-top: 3px;" id="filter">
+                                <span class="Icon" style="width: 17px; background: url(../Images/Icons.png) no-repeat -166px -32px; height: 17px;"></span>
+                                <span class="Text">过滤器</span>
+                            </a>
+                            <div style="display:none;width:220px;position: absolute;background-color: #fff;border: 1px solid #dee0e7;margin-top: -1px;padding-left: 10px;padding-top: 10px;padding-bottom:10px;" id="FilterDiv">
+                                <div class="">
+                                    <div class="Content">
+                                        <div class="Group" style="float: left; min-width: 100px;">
+                                            <div class="Heading">
+                                                <div class="Text" style="font-weight: bold;">发布对象</div>
+                                            </div>
+                                            <div class="Content">
+                                                <div class="Button1"  tabindex="0">
+                                                    <input type="checkbox" id="CkPublic"/>
+                                                    <span class="Text">全部用户</span>
+                                                </div>
+                                                <div class="Button1"  tabindex="0">
+                                                    <input type="checkbox" id="CkInter"/>
+                                                    <span class="Text">内部用户</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      
+                                        <div class="Group" style="float: left; min-width: 100px;">
+                                            <div class="Heading">
+                                                <div class="Text" style="font-weight: bold;">负责人</div>
+                                            </div>
+                                            <div class="Content">
+                                                <div class="Button1"  tabindex="0">
+                                                    <input type="checkbox" id="CkMe"/>
+                                                    <span class="Text">我</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                           <div class="Group" style="clear:both; float: left; min-width: 100px;">
+                                            <div class="Heading">
+                                                <div class="Text" style="font-weight: bold;">对象类型</div>
+                                            </div>
+                                            <div class="Content">
+                                                <div class="Button1"  tabindex="0">
+                                                    <input type="checkbox" id="CkLabour"/>
+                                                    <span class="Text">工时</span>
+                                                </div>
+                                                <div class="Button1"  tabindex="0">
+                                                    <input type="checkbox" id="CkNote"/>
+                                                    <span class="Text">备注</span>
+                                                </div>
+                                                <div class="Button1"  tabindex="0">
+                                                    <input type="checkbox" id="CkAtt"/>
+                                                    <span class="Text">附件</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="clear:both;">
+                                            <input type="button" onclick="ApplyFilter()" style="color:white;background-color:#3872b2;width:110px;height:20px;" value="应用过滤器"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="Button ButtonIcon IconOnly Cancel DisabledState" tabindex="0" title="Clear filters" style="width: 20px; height: 27px; top: 0px;">
+                                <span class="Icon" style="width: 15px; background: url(../Images/Icons.png) no-repeat -102px 3px; height: 19px; display: block;"></span>
+                                <span class="Text"></span>
+                            </a>
+                            <input id="ActivitySeachText" type="text" value="" placeholder="查询..." style="width: 180px;" />
+                            <select id="orderBy" style="width: 180px;">
+                                <option value="Old">修改时间倒序</option>
+                                <option value="New">修改时间升序</option>
+                                <option value="NFE" title="根据本身以及所有子对象的修改时间排序" selected="selected">修改时间（子对象）倒序</option>
+                            </select>
+                        </div>
+                        <div id="ShowTicketActivity">
+
                         </div>
                     </div>
                 </div>
@@ -981,9 +1097,7 @@
                     <div class="LoadingIndicator"></div>
                     <div class="TransitionContainer"></div>
                     <div class="Content" id="">
-                        <iframe src="" id="TicketShowIframe" style="height:360px;width:100%;border-width: 0px;">
-
-                        </iframe>
+                        <iframe src="" id="TicketShowIframe" style="height: 360px; width: 100%; border-width: 0px;"></iframe>
                     </div>
                 </div>
             </div>
@@ -1608,7 +1722,7 @@
     $("#TicketViewCostDiv").click(function () {
         $("#ShowActivityDiv").hide();
         $("#ShowIframeDiv").show();
-        
+
         $("#TicketShowIframe").attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_COST_EXPENSE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_COST_EXPENSE %>&con1762=<%=thisTicket==null?"":thisTicket.id.ToString() %>");
     })
 

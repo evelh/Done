@@ -72,7 +72,7 @@
 </style>
 </head>
 <body style="overflow-x:auto;overflow-y:auto;">
-             <% if (currentQuery.page_name == "角色管理" || currentQuery.page_name == "部门管理" || currentQuery.page_name == "联系人管理" || currentQuery.page_name == "安全等级管理" || currentQuery.page_name == "里程碑状态管理" || currentQuery.page_name == "产品管理" || currentQuery.page_name == "配置项类型管理" || currentQuery.page_name == "撤销成本审批" || currentQuery.page_name == "撤销里程碑审批" || currentQuery.page_name == "撤销定期服务审批" || currentQuery.page_name == "撤销订阅审批" || currentQuery.page_name == "市场领域管理" || currentQuery.page_name == "客户地域管理" || currentQuery.page_name == "竞争对手管理" || currentQuery.page_name == "客户类别管理" || currentQuery.page_name == "姓名后缀管理" || currentQuery.page_name == "活动类型管理" || currentQuery.page_name == "商机阶段管理" || currentQuery.page_name == "商机来源管理" || currentQuery.page_name == "关闭商机原因管理" || currentQuery.page_name == "丢失商机原因管理"||catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_LABOUR||catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_EXPENSE||catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE||catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_BUNDLE)
+             <% if (currentQuery.page_name == "角色管理" || currentQuery.page_name == "部门管理" || currentQuery.page_name == "安全等级管理" || currentQuery.page_name == "里程碑状态管理" || currentQuery.page_name == "产品管理" || currentQuery.page_name == "配置项类型管理" || currentQuery.page_name == "撤销成本审批" || currentQuery.page_name == "撤销里程碑审批" || currentQuery.page_name == "撤销定期服务审批" || currentQuery.page_name == "撤销订阅审批" || currentQuery.page_name == "市场领域管理" || currentQuery.page_name == "客户地域管理" || currentQuery.page_name == "竞争对手管理" || currentQuery.page_name == "客户类别管理" || currentQuery.page_name == "姓名后缀管理" || currentQuery.page_name == "活动类型管理" || currentQuery.page_name == "商机阶段管理" || currentQuery.page_name == "商机来源管理" || currentQuery.page_name == "关闭商机原因管理" || currentQuery.page_name == "丢失商机原因管理"||catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_LABOUR||catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REVOKE_EXPENSE||catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE||catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_BUNDLE||catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CRM_EXPORT_COMPANY||catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CRM_EXPORT_CONTACT||catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CRM_INSPRO_DETAIL||catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_SERVICEDESK_TICKETBYACCOUNT||catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CONTRACT_BILLED)
      { %>
         <%} else {%>
     <div class="header">
@@ -154,6 +154,39 @@
             </div>
     <%} %>
       <%--合同管理--审批（结束）--%>
+    <%--我的工单等 相关--%>
+      <% if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET)
+                 {%>
+      <div class="TabBar" style="margin-top:5px;">
+                <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET)
+                    { %>SelectedState <%} %>" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET %>" target="PageFrame" id="MyTaskTicket">
+                    <span class="Text">工时</span>
+                </a>
+             <%--   <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES)
+                    { %>SelectedState <%} %>" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES %>" target="PageFrame" id="tab2">
+                    <span class="Text">成本</span>
+                </a>
+                <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_EXPENSE)
+                    { %>SelectedState <%} %>" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_EXPENSE %>" target="PageFrame" id="tab3">
+                    <span class="Text">费用</span>
+                </a>
+                <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS)
+                    { %>SelectedState <%} %>" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS %>" target="PageFrame" id="tab4">
+                    <span class="Text">订阅</span>
+                </a>
+                <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES)
+                    { %>SelectedState <%} %>" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES %>" target="PageFrame" id="tab5">
+                    <span class="Text">定期服务</span>
+                </a>
+                <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_MILESTONES)
+                    { %> SelectedState<%} %>"  href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_MILESTONES %>" target="PageFrame" id="tab6">
+                    <span class="Text">里程碑</span>
+                </a>--%>
+            </div>
+    <%} %>
+
+    <%--结束--%>
+
     <div class="information clear" style="border:none;">
         <button class="Search" id="SearchBtn">搜索</button>
 		<p class="informationTitle"> <i id="Icon"></i>搜索</p>
@@ -172,7 +205,10 @@
 							<input type="text" name="<%=condition[i].id %>" <%if (!string.IsNullOrEmpty(condition[i].defaultValue)){ %> value="<%=condition[i].defaultValue %>" <%} %> class="sl_cdt" />
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DROPDOWN) { %>
                             <select name="<%=condition[i].id %>" class="sl_cdt">
+                                <%if (condition[i].is_not_null != 1)
+                                    { %>
                                 <option value=""></option>
+                                <%} %>
                                 <%foreach (var item in condition[i].values) {
                                       if (!string.IsNullOrEmpty(condition[i].defaultValue) && condition[i].defaultValue.Equals(item.val)) { %>
                               <option value="<%=item.val %>" selected="selected"><%=item.show %></option>
@@ -256,7 +292,10 @@
 							<input type="text" name="<%=condition[i].id %>" <%if (!string.IsNullOrEmpty(condition[i].defaultValue)){ %> value="<%=condition[i].defaultValue %>" <%} %> class="sl_cdt" />
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DROPDOWN) { %>
                             <select name="<%=condition[i].id %>" class="sl_cdt">
+                                <%if (condition[i].is_not_null != 1)
+                                    { %>
                                 <option value=""></option>
+                                <%} %>
                                 <%foreach (var item in condition[i].values) {
                                       if (!string.IsNullOrEmpty(condition[i].defaultValue) && condition[i].defaultValue.Equals(item.val)) { %>
                               <option value="<%=item.val %>" selected="selected"><%=item.show %></option>
@@ -340,7 +379,10 @@
 							<input type="text" name="<%=condition[i].id %>" <%if (!string.IsNullOrEmpty(condition[i].defaultValue)){ %> value="<%=condition[i].defaultValue %>" <%} %> class="sl_cdt" />
                         <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DROPDOWN) { %>
                             <select name="<%=condition[i].id %>" class="sl_cdt">
+                                <%if (condition[i].is_not_null != 1)
+                                    { %>
                                 <option value=""></option>
+                                <%} %>
                                 <%foreach (var item in condition[i].values) {
                                       if (!string.IsNullOrEmpty(condition[i].defaultValue) && condition[i].defaultValue.Equals(item.val)) { %>
                               <option value="<%=item.val %>" selected="selected"><%=item.show %></option>
@@ -476,3 +518,11 @@
     </script>
 </body>
 </html>
+<script>
+    <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET)
+    { %>
+        if ($("select[name = '1793']").val() != undefined) {
+            $("select[name = '1793']").val('<%=LoginUserId %>');
+        }
+    <%}%>
+</script>

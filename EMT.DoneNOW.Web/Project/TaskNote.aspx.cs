@@ -125,6 +125,7 @@ namespace EMT.DoneNOW.Web.Project
 
                 if (thisTask != null)
                 {
+                    thisAccount = accDal.FindNoDeleteById(thisTask.account_id);
                     object_id = thisTask.id;
                     if (thisTask.type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE)
                     {

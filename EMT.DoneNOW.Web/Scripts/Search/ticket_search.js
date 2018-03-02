@@ -82,7 +82,7 @@ function DeleteTicket() {
 }
 // 编辑工单
 function EditTicket() {
-    OpenWindow("../ServiceDesk/TicketManage?id=" + entityid, windowObj.ticket + windowType.edit, );
+    window.open("../ServiceDesk/TicketManage?id=" + entityid, windowObj.ticket + windowType.edit, 'left=200,top=200,width=1280,height=800', false);
 }
 
 // 工单历史查询

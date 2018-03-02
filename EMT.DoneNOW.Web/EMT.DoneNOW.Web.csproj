@@ -399,6 +399,7 @@
     <Content Include="Quote\QuotePreview.aspx" />
     <Content Include="Quote\QuoteView.aspx" />
     <Content Include="Refresh.aspx" />
+    <Content Include="Reports\ReportHomePage.aspx" />
     <Content Include="RichText\css\FootEdit.css" />
     <Content Include="RichText\css\HeadEdit.css" />
     <Content Include="RichText\css\QuoteBody.css" />
@@ -431,6 +432,7 @@
     <Content Include="RichText\js\third-party\video-js\font\vjs.eot" />
     <Content Include="RichText\js\third-party\video-js\font\vjs.ttf" />
     <Content Include="RichText\js\third-party\video-js\font\vjs.woff" />
+    <Content Include="Scripts\Report.js" />
     <Content Include="Scripts\Search\approved_report.js" />
     <Content Include="Scripts\Search\ContractService.js" />
     <Content Include="Scripts\Search\ContractServiceTransHistory.js" />
@@ -439,6 +441,7 @@
     <Content Include="Scripts\Search\HolidaySet.js" />
     <Content Include="Scripts\Search\expense_report.js" />
     <Content Include="Scripts\Search\myapprove_expense_report.js" />
+    <Content Include="Scripts\Search\my_task_ticket.js" />
     <Content Include="Scripts\Search\project_search.js" />
     <Content Include="Scripts\Search\PurchaseFulfillment.js" />
     <Content Include="Scripts\Search\PurchaseItem.js" />
@@ -1878,6 +1881,13 @@
     <Compile Include="Refresh.aspx.designer.cs">
       <DependentUpon>Refresh.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Reports\ReportHomePage.aspx.cs">
+      <DependentUpon>ReportHomePage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportHomePage.aspx.designer.cs">
+      <DependentUpon>ReportHomePage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ServiceDesk\AccountTicketList.aspx.cs">
       <DependentUpon>AccountTicketList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1954,7 +1964,7 @@
     </Compile>
     <Compile Include="SysSetting\ServiceBundle.aspx.designer.cs">
       <DependentUpon>ServiceBundle.aspx</DependentUpon>
- </Compile>
+    </Compile>
     <Compile Include="SysSetting\WorkflowRule.aspx.cs">
       <DependentUpon>WorkflowRule.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -213,6 +213,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SERVICE_BUNDLE:
                     currentQuery.page_name = "服务包查询";
                     break;
+                case (int)DicEnum.QUERY_CATE.MY_TASK_TICKET:
+                    currentQuery.page_name = "我的任务和工单";
+                    break;
                 default:
                     currentQuery.page_name = "";
                     break;

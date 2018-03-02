@@ -16,6 +16,7 @@ namespace EMT.DoneNOW.DTO
         public string defaultValue; // 查询条件默认值
         public string description;  // 查询条件描述
         public string ref_url;      // 查找带回的打开地址
+        public sbyte is_not_null;   // 下拉框是否可以为空
         public List<DictionaryEntryDto> values;     // 查询条件值为列表时的值列表
     }
 

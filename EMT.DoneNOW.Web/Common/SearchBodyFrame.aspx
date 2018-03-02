@@ -457,7 +457,7 @@
     <%if (queryResult != null) { %>
 
     <div class="searchcontent" id="searchcontent" style="margin-top: 56px; min-width: <%=tableWidth%>px; overflow: hidden;">
-        <table border="" cellspacing="0" cellpadding="0" style="overflow: scroll; width: 100%; height: 100%;">
+        <table border="" cellspacing="0" cellpadding="0" style="overflow: scroll; width: 100%; height: 100%;" id="SearchTable">
             <tr>
                 <%if (!string.IsNullOrEmpty(isCheck))
                     { %>
@@ -596,14 +596,14 @@
         <ul style="width: 220px;" id="menuUl">
             <%foreach (var menu in contextMenu)
                 { %>
-            <li id="<%=menu.id %>" onclick="<%=menu.click_function %>"><i class="menu-i1"></i><%=menu.text %>
+            <li id="<%=menu.id %>" class="<%=menu.class_name %>" onclick="<%=menu.click_function %>"><i class="menu-i1"></i><%=menu.text %>
                 <%if (menu.submenu != null)
                     { %>
                 <i class="menu-i2">>></i>
                 <ul id="menu-i2-right">
                     <%foreach (var submenu in menu.submenu)
                         { %>
-                    <li onclick="<%=submenu.click_function %>"><%=submenu.text %></li>
+                    <li onclick="<%=submenu.click_function %>"  id="<%=submenu.id %>" class="<%=submenu.class_name %>"><%=submenu.text %></li>
                     <%} %>
                 </ul>
                 <%} %>

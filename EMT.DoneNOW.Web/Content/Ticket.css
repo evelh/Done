@@ -1977,3 +1977,70 @@ input[type="checkbox"], input[type="radio"] {
     border-bottom: 1px solid #dee0e7;
     padding-bottom: 10px;
 }
+.TabContainer > .ActivityTabShell > .Content > .ActivityFilterBar {
+    padding: 12px 0 12px 0;
+}
+
+    .TabContainer > .ActivityTabShell > .Content > .ActivityFilterBar > .FilterBarRow:last-child {
+        padding-bottom: 0;
+    }
+.FilterBarRow > .FilterBarHalf {
+    display: inline-block;
+    padding-right: 20px;
+    width: calc(50% - 20px);
+    float: left;
+}
+.Editor {
+    width: 100%;
+}
+.ActivityFilterBar .Editor {
+    padding-bottom: 0;
+}
+.ActivityAdvancedOptions {
+    display: block;
+    padding-bottom: 10px;
+    margin-top:15px;
+}
+    .ActivityAdvancedOptions > .Button {
+        flex: 0 0 auto;
+        border-bottom-left-radius: 2px;
+        border-top-left-radius: 2px;
+        border-right: 0;
+        background: linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%);
+        border: 1px solid #d7d7d7;
+        display: inline-flex;
+        color: #4f4f4f;
+        cursor: pointer;
+        height: 24px;
+        padding: 0 3px;
+        position: relative;
+        text-decoration: none;
+    }
+a.Button.DisabledState {
+    color: rgba(95,95,95,0.4);
+    cursor: default;
+}
+a.Button.IconOnly {
+    font-size: 0;
+    line-height: 0;
+    padding: 0 1px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.ActivityAdvancedOptions > input {
+    flex: 1 1 auto;
+    border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+}
+.ActivityAdvancedOptions > select {
+    flex: 0 0 auto;
+    border-radius: 2px;
+    height: 26px;
+    margin-left: 12px;
+    width: 145px;
+    padding: 1px 0 1px 8px;
+    color: #2c3444;
+}
+

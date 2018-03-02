@@ -42,7 +42,10 @@ namespace EMT.DoneNOW.Core
         public String exists_para { get; set; }
         [DataMember]
         public String operator_type_id { get; set; }
-
+        [DataMember]
+        public String ref_col { get; set; }
+        [DataMember]
+        public SByte isnot_null { get; set; }
 
     }
 }

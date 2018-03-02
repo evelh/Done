@@ -62,8 +62,8 @@ $(".Toggle4").on("click", function () {
     $(this).parent().parent().css("background", colors[color4 % 2]);
     color4++;
 });
-// ToolLi
-// Down2
+// filter
+// FilterDiv
 $("#ToolLi").on("mousemove", function () {
     $("#Down2").show();
     $(this).css("border-bottom", "1px solid white").css("background", "white");
@@ -78,6 +78,21 @@ $("#Down2").on("mousemove", function () {
     $(this).hide();
     $("#ToolLi").css("border-bottom", "1px solid #d7d7d7").css("background", "linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%)");
     });
+
+$("#filter").on("mousemove", function () {
+    $("#FilterDiv").show();
+    $(this).css("border-bottom", "1px solid white").css("background", "white");
+}).on("mouseout", function () {
+    $("#FilterDiv").hide();
+    $(this).css("border-bottom", "1px solid #d7d7d7").css("background", "linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%)");
+});
+$("#FilterDiv").on("mousemove", function () {
+    $(this).show();
+    $("#filter").css("border-bottom", "1px solid white").css("background", "white");
+}).on("mouseout", function () {
+    $(this).hide();
+    $("#filter").css("border-bottom", "1px solid #d7d7d7").css("background", "linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%)");
+});
 
 $(".QuickLaunchButton").mouseover(function () {
     $(this).children().first().show();
@@ -491,4 +506,64 @@ $("#SaveTicketNoteAdd").click(function () {
 
 $("#Refresh").click(function () {
     location.reload();
+})
+// 应用过滤器 查看工单活动使用
+function ApplyFilter() {
+    var ticket_id = $("#ticket_id").val();
+    if (ticket_id != null && ticket_id != "") {
+        LayerLoad();
+        var url = "../Tool/TicketAjax?act=aa&ticketId=" + ticket_id;
+        if ($("#CkPublic").is(":checked")) {
+            url += "&CkPublic=1";
+        }
+        if ($("#CkInter").is(":checked")) {
+            url += "&CkInter=1";
+        }
+        if ($("#CkLabour").is(":checked")) {
+            url += "&CkLabour=1";
+        }
+        if ($("#CkNote").is(":checked")) {
+            url += "&CkNote=1";
+        }
+        if ($("#CkAtt").is(":checked")) {
+            url += "&CkAtt=1";
+        }
+        if ($("#CkMe").is(":checked")) {
+            url += "&CkMe=1";
+        }
+        var orderBy = $("#orderBy").val();
+        if (orderBy != null && orderBy != "" && orderBy != undefined) {
+            url += "&orderBy=" + orderBy;
+        }
+
+        var actHtml = "";
+        $.ajax({
+            type: "GET",
+            url: url,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data != "") {
+                    actHtml = data;
+                }
+            }
+        })
+       
+        setTimeout(function () {
+            $("#ShowTicketActivity").html(actHtml);
+            LayerLoadClose();
+        }, 300);
+    }
+}
+
+$("#CkShowSysNote").click(function () {
+    ApplyFilter();
+})
+
+$("#CkShowBillData").click(function () {
+    ApplyFilter();
+})
+
+$("#CancelLi").click(function () {
+    window.close();
 })
