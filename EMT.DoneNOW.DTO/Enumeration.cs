@@ -640,6 +640,9 @@ namespace EMT.DoneNOW.DTO
             REPORT_CRM_INSPRO_DETAIL = 1593,        // 报表-CRM配置项-配置项详情
             REPORT_SERVICEDESK_TICKETBYACCOUNT = 1594, // 报表--服务台常规-工单和任务按客户
             REPORT_CONTRACT_BILLED = 1595,          // 报表-CRM配置项-已计费信息
+            REPORT_PROJECT_PROJECT_LIST = 1597,     // 报表-项目项目-项目清单
+            REPORT_OTHER_SYSTEM_LOGINLOG = 1598,    // 报表-其他-系统-登录日志
+            REPORT_OTHER_SYSTEM_OPERLOG = 1599,     // 报表-其他-系统-操作日志
             //RESOURCE_CALLBACK,                      //  
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -1114,11 +1117,11 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum TICKET_TYPE
         {
-            ALARM,                       // 告警
-            CHANGE_REQUEST,              // 变更请求
-            INCIDENT,                    // 事故
-            PROBLEM,                     // 问题
-            SERVICE_REQUEST,             // 服务请求
+            ALARM=1804,                       // 告警
+            CHANGE_REQUEST=1803,              // 变更请求
+            INCIDENT=1801,                    // 事故
+            PROBLEM=1802,                     // 问题
+            SERVICE_REQUEST=1800,             // 服务请求
         }
         /// <summary>
         ///  任务类型 - 130

@@ -491,22 +491,26 @@
                                                         <span class="Text">CRM</span>
                                                     </a>
                                                 </div>
-                                               <%--<div class="Content">
-                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage" target="PageFrame">
+                                               <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage?SearchType=Project" target="PageFrame">
                                                         <span class="Text">项目</span>
                                                     </a>
-                                                </div>--%>
+                                                </div>
                                                 <div class="Content">
-                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage" target="PageFrame">
+                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage?SearchType=ServiceDesk" target="PageFrame">
                                                         <span class="Text">服务台</span>
                                                     </a>
                                                 </div>
                                                 <div class="Content">
-                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage" target="PageFrame">
+                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage?SearchType=ContractBill" target="PageFrame">
                                                         <span class="Text">合同计费</span>
                                                     </a>
                                                 </div>
-                                               
+                                               <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage?SearchType=Other" target="PageFrame">
+                                                        <span class="Text">其他</span>
+                                                    </a>
+                                                </div>
                                             </div>
                                             <div class="Group">
                                                 <div class="Heading">

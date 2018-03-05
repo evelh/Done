@@ -112,6 +112,17 @@ function DisProject() {
 
 }
 
+// 新增工单
+function AddTicket(ticket_type_id) {
+    if (ticket_type_id == "") {
+        OpenWindow("../ServiceDesk/TicketManage", windowObj.ticket + windowType.add, );
+    }
+    else {
+        OpenWindow("../ServiceDesk/TicketManage?ticket_type_id=" + ticket_type_id, windowObj.ticket + windowType.add, );
+    }
+
+}
+
 
 // 右键菜单处理
 function RightClickFunc() {

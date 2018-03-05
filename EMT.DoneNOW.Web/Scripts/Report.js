@@ -10,8 +10,7 @@ var colors = ["white", "#efefef"];
 $(function () {
    
     $.each($('.Collapsed'), function (i) {
-        $('.Collapsed').eq(i).click(function () {
-            debugger;
+        $('.Collapsed').eq(i).children().first().click(function () {
             if ($('.Collapsed').eq(i).hasClass("col")) {
                 $('.Collapsed').eq(i).removeClass("col");
                 $('.Collapsed').eq(i).css("background", "white");
@@ -116,6 +115,29 @@ $("#d8").on("click", function () {
         }
     })
     $('.TabContainer4>.Collapsed').css("background", "#efefef");
+});
+
+$("#d9").on("click", function () {
+    $(".Toggle5").find(".Vertical5").hide();
+    $(".Content5").show();
+    var color = colors[0];
+    $(".Normal5").css("background", color);
+
+    $('.TabContainer5>.Collapsed').removeClass("col");
+    $('.TabContainer5>.Collapsed').css("background", "white");
+
+});
+$("#d10").on("click", function () {
+    $(".Toggle5").find(".Vertical5").show();
+    $(".Content5").hide();
+    var color = colors[1];
+    $(".Normal5").css("background", color);
+    $('.TabContainer5>.Collapsed').each(function () {
+        if (!$(this).hasClass("col")) {
+            $(this).addClass("col");
+        }
+    })
+    $('.TabContainer5>.Collapsed').css("background", "#efefef");
 });
 
 

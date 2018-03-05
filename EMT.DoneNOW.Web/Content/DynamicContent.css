@@ -687,7 +687,7 @@ a.Button.Link.Mailto:hover {
     }
 
 .ContextHelpButton {
-    background-image: url("../../FrameworkContent/Images/Icons/DecorationIcons.svg?v=3");
+    /*background-image: url("../../FrameworkContent/Images/Icons/DecorationIcons.svg?v=3");*/
     background-position: -77px 0;
     cursor: pointer;
     display: inline-block;

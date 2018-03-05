@@ -395,7 +395,7 @@
                                                                                        { %><li><span class='DropDownMenuItemText' onclick='CopyFromOppo()'>从商机复制</span></li><%}%></ul>
                 </div>
                 <%}
-               else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_ACCOUNT_LIST)
+               else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_ACCOUNT_LIST||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET)
                { %>
                 <div class="DropDownMenu" id="D1" style=" background-color: #FFF;padding: 5px;border: 1px solid #BCBCBC;cursor: pointer;box-shadow: 1px 3px 4px rgba(0,0,0,0.33);position: fixed;top: 35px;border-top:white;display:none;">
                     <ul>
@@ -534,39 +534,43 @@
                     { %>title="<%=rslt[tooltip] %>"
                     <%} %> style="background: url(..<%=rslt[para.name] %>) no-repeat center;"></td>
                 <%}
+                    else if (catId==(int)(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_OTHER_SYSTEM_OPERLOG&&para.name == "详情")
+                    {var stDal = new EMT.DoneNOW.DAL.sdk_task_dal();%>
+                <td><%=stDal.GetContractSql(rslt[para.name].ToString()) %></td>
+                    <%}
                     else
                     {
-                      string url = null;
-                      if(para.url!=null)
-                      {
-                        url = para.url.url;
-                        if (para.url.parms!=null&&para.url.parms.Count!=0)
+                        string url = null;
+                        if(para.url!=null)
                         {
-                          url += "?";
-                          foreach(var urlPara in para.url.parms)
-                          {
-                            if (rslt.ContainsKey(urlPara.value))
-                              url += urlPara.name + "=" + rslt[urlPara.value] + "&";
-                            else
-                              url += urlPara.name + "=" + urlPara.value + "&";
-                          }
+                            url = para.url.url;
+                            if (para.url.parms!=null&&para.url.parms.Count!=0)
+                            {
+                                url += "?";
+                                foreach(var urlPara in para.url.parms)
+                                {
+                                    if (rslt.ContainsKey(urlPara.value))
+                                        url += urlPara.name + "=" + rslt[urlPara.value] + "&";
+                                    else
+                                        url += urlPara.name + "=" + urlPara.value + "&";
+                                }
+                            }
+                            if(para.url.url=="/ContractProjectTicket" && rslt.ContainsKey("parent_type"))
+                            {
+                                if (rslt["parent_type"].ToString()=="contract")
+                                {
+                                    url = "/Contract/ContractView?id=" + rslt["contract_id"];
+                                }
+                                else if (rslt["parent_type"].ToString()=="project")
+                                {
+                                    url = "/Project/ProjectView?id=" + rslt["project_id"];
+                                }
+                                else if (rslt["parent_type"].ToString()=="ticket")
+                                {
+                                    url = "";
+                                }
+                            }
                         }
-                        if(para.url.url=="/ContractProjectTicket" && rslt.ContainsKey("parent_type"))
-                        {
-                          if (rslt["parent_type"].ToString()=="contract")
-                          {
-                            url = "/Contract/ContractView?id=" + rslt["contract_id"];
-                          }
-                          else if (rslt["parent_type"].ToString()=="project")
-                          {
-                            url = "/Project/ProjectView?id=" + rslt["project_id"];
-                          }
-                          else if (rslt["parent_type"].ToString()=="ticket")
-                          {
-                            url = "";
-                          }
-                        }
-                      }
                         %>
               <%if (url == null) { %>
                 <td><%=rslt[para.name] %></td>

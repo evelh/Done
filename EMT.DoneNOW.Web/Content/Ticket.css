@@ -745,7 +745,7 @@ a.Button.IconOnly {
 }
 .Decoration.Icon {
     background-color: transparent;
-    background-image: url(../../FrameworkContent/Images/Icons/DecorationIcons.svg?v=3);
+    /*background-image: url(../../FrameworkContent/Images/Icons/DecorationIcons.svg?v=3);*/
     background-repeat: no-repeat;
     display: inline-block;
 }
@@ -1013,7 +1013,7 @@ InsightShell > .ContentContainer > .Content .LinkButton > .Button.Link {
 }
 .Decoration.Icon {
     background-color: transparent;
-    background-image: url(../../FrameworkContent/Images/Icons/DecorationIcons.svg?v=3);
+    /*background-image: url(../../FrameworkContent/Images/Icons/DecorationIcons.svg?v=3);*/
     background-repeat: no-repeat;
     display: inline-block;
 }
@@ -2043,4 +2043,157 @@ a.Button.IconOnly {
     padding: 1px 0 1px 8px;
     color: #2c3444;
 }
+.NotificationPanelPositioningContainer {
+    z-index: 4;
+}
+.NotificationPanelPositioningContainer {
+    bottom: -1px;
+    height: 1px;
+    left: 0;
+    position: fixed;
+    right: 0;
+}
+.NotificationPanel.Active {
+    max-height: 640px;
+    -webkit-transition: max-height 500ms linear;
+    -moz-transition: max-height 500ms linear;
+    transition: max-height 500ms linear;
+}
+.NotificationPanel {
+    z-index: 2;
+}
+.NotificationPanel {
+    border-radius: 5px 5px 0 0;
+    bottom: 0;
+    box-shadow: rgba(0,0,0,0.5) 0 0 5px 0;
+    height: initial;
+    left: 0;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 0;
+    position: absolute;
+    right: 0;
+    top: initial;
+    width: 800px;
+    -webkit-transition: max-height 500ms linear;
+    -moz-transition: max-height 500ms linear;
+    transition: max-height 500ms linear;
+}
+    .NotificationPanel > .HandleBar {
+        z-index: 3;
+    }
+    .NotificationPanel > .HandleBar {
+        display: flex;
+        height: 28px;
+        justify-content: center;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+        .NotificationPanel > .HandleBar > .HandleContainer {
+            flex: 0 0 auto;
+        }
 
+        .NotificationPanel > .HandleBar > .HandleContainer > .Handle {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            display: inline-flex;
+            align-items: center;
+            background-color: #f8f9fb;
+            border-radius: 5px 5px 0 0;
+            box-shadow: rgba(0,0,0,0.5) 0 0 5px 0;
+            cursor: pointer;
+            height: 28px;
+            padding: 0 10px;
+            position: relative;
+            top: -27px;
+        }
+            .NotificationPanel > .HandleBar > .HandleContainer > .Handle > .Text {
+                flex: 0 0 auto;
+                color: #455571;
+                font-size: 13px;
+                padding-right: 8px;
+            }
+            .NotificationPanel > .HandleBar > .HandleContainer > .Handle > .Badge {
+                flex: 0 0 auto;
+                background-color: #acb8cb;
+                border-radius: 15px;
+                color: #fff;
+                font-size: 12px;
+                font-weight: 600;
+                height: 16px;
+                line-height: 16px;
+                text-align: center;
+                width: 28px;
+            }
+    .NotificationPanel > .Content > .RecipientEditors > .ToLabel, .NotificationPanel > .Content > .RecipientEditors > .CarbonCopyLabel, .NotificationPanel > .Content > .RecipientEditors > .BlindCarbonCopyLabel {
+        display: flex;
+    }
+    .NotificationPanel > .Content {
+        z-index: 4;
+    }
+    .NotificationPanel > .Content {
+        background-color: #f8f9fb;
+        border-radius: 5px 5px 0 0;
+        padding: 20px 12px 24px 20px;
+        position: relative;
+    }
+        .NotificationPanel > .Content > .RecipientEditors {
+            z-index: 4;
+        }
+        .NotificationPanel > .Content > .RecipientEditors {
+            position: relative;
+        }
+        .NotificationPanel > .Content > .RecipientEditors, .NotificationPanel > .Content > .EmailContentEditors, .NotificationPanel > .Content > .Footer {
+            padding-right: 21px;
+        }
+            .NotificationPanel > .Content > .RecipientEditors > div > .Spacer {
+                flex: 1 1 auto;
+            }
+            .NotificationPanel > .Content > .RecipientEditors > div > .LinkContainer {
+                display: flex;
+                flex: 0 0 auto;
+            }
+        .NotificationPanel > .Content .Button.Link {
+            color: #1272d0;
+            font-weight: 400;
+            outline: none;
+        }
+        .NotificationPanel > .Content > .RecipientEditors > div > .LinkContainer > .Button.Link {
+            flex: 0 0 auto;
+            margin-left: 12px;
+        }
+        .NotificationPanel > .Content > .EmailContentEditors > .Editor.ItemSelector, .NotificationPanel > .Content > .RecipientEditors > .Editor.RecipientSelector {
+            margin-bottom: 12px;
+            width: 100%;
+            padding-bottom:0px;
+        }
+.Editor.ItemSelector > .ContentContainer > .ValueContainer > .InputContainer > input, .Editor.SingleDataSelector > .ContentContainer > .ValueContainer > .InputContainer > input, .Editor.MultipleDataSelector > .ContentContainer > .ValueContainer > .InputContainer > input, .Editor.RecipientSelector > .ContentContainer > .ValueContainer > .InputContainer > input {
+    box-shadow: none;
+    color: #455571;
+    outline: none;
+    padding: 0;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #d7d7d7;
+}
+.NotificationPanel > .Content > .EmailContentEditors > .Editor.TextBox, .NotificationPanel > .Content > .EmailContentEditors > .Editor.TextArea {
+    width: 100%;
+}
+.NotificationPanel > .Content > .EmailContentEditors > .Editor.TextBox input, .NotificationPanel > .Content > .EmailContentEditors > .Editor.TextArea textarea {
+    width: calc(100% - 14px);
+}
+.Editor.RecipientSelector > .Button {
+    background: none;
+    border: none;
+    bottom: 0;
+    height: 16px;
+    padding: 2px;
+    position: absolute;
+    right: -7px;
+    top: 17px;
+    width: 16px;
+}

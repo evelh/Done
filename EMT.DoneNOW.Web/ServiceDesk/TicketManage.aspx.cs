@@ -70,7 +70,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                         isAdd = false;
                         if (!IsPostBack)
                         {
-                            status_id.SelectedValue = thisTicket.status_id.ToString();
+                            this.status_id.SelectedValue = thisTicket.status_id.ToString();
                             if (thisTicket.priority_type_id != null)
                             {
                                 priority_type_id.SelectedValue = thisTicket.priority_type_id.ToString();
@@ -172,6 +172,12 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 }
                 
 
+                var ticket_type_id = Request.QueryString["ticket_type_id"];
+                if (!string.IsNullOrEmpty(ticket_type_id))
+                {
+                    this.ticket_type_id.SelectedValue = ticket_type_id;
+                }
+
             }
             catch (Exception msg)
             {
@@ -222,12 +228,17 @@ namespace EMT.DoneNOW.Web.ServiceDesk
             department_id.DataSource = depList;
             department_id.DataBind();
             department_id.Items.Insert(0, new ListItem() { Value = "", Text = "   ", Selected = true });
-            // sla_id
+            
             sla_id.DataValueField = "id";
             sla_id.DataTextField = "name";
             sla_id.DataSource = slaList;
             sla_id.DataBind();
             sla_id.Items.Insert(0, new ListItem() { Value = "", Text = "   ", Selected = true });
+
+            notify_id.DataValueField = "id";
+            notify_id.DataTextField = "name";
+            notify_id.DataSource = new sys_notify_tmpl_dal().GetTempByEvent(DicEnum.NOTIFY_EVENT.TICKET_CREATED_EDITED);
+            notify_id.DataBind();
         }
 
         protected void save_Click(object sender, EventArgs e)
@@ -238,13 +249,9 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 string faileReason;
                 var result = false;
                 if (isAdd)
-                {
                     result =  new TicketBLL().AddTicket(para, LoginUserId, out faileReason);
-                }
                 else
-                {
                     result =  new TicketBLL().EditTicket(para, LoginUserId, out faileReason);
-                }
                 if (result)
                 {
                     if (!string.IsNullOrEmpty(CallBack))
@@ -440,13 +447,9 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 string faileReason;
                 var result = false;
                 if (isAdd)
-                {
                     result = new TicketBLL().AddTicket(para, LoginUserId, out faileReason);
-                }
                 else
-                {
                     result = new TicketBLL().EditTicket(para, LoginUserId, out faileReason);
-                }
                 if (result)
                 {
                     if (!string.IsNullOrEmpty(CallBack))

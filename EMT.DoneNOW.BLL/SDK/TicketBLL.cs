@@ -29,9 +29,7 @@ namespace EMT.DoneNOW.BLL
                 var thisTicket = param.ticket;
                 #region 1 新增工单
                 if (thisTicket != null)
-                {
                     InsertTicket(thisTicket, userId);
-                }
                 #endregion
 
                 #region 2 新增自定义信息
@@ -48,6 +46,9 @@ namespace EMT.DoneNOW.BLL
                 CheckManage(param.ckList, thisTicket.id,userId);
                 #endregion
 
+                #region 5 发送邮件相关
+                SendTicketEmail(param,userId);
+                #endregion
 
             }
             catch (Exception msg)
@@ -155,6 +156,10 @@ namespace EMT.DoneNOW.BLL
 
                 #region 检查单相关处理
                 CheckManage(param.ckList, updateTicket.id, userId);
+                #endregion
+
+                #region 发送邮件相关
+                SendTicketEmail(param, userId);
                 #endregion
             }
             catch (Exception msg)
@@ -1051,6 +1056,64 @@ namespace EMT.DoneNOW.BLL
         public string GetNotiEmail(long ticketId,bool notiContact,bool notiPriRes,bool noriInterAll)
         {
             return "";
+        }
+        /// <summary>
+        /// 获取相关邮箱，发送邮件
+        /// </summary>
+        public void SendTicketEmail(TicketManageDto param,long userId)
+        {
+            if (param.notify_id == 0||string.IsNullOrEmpty(param.Subject))
+                return;
+            var srDal = new sys_resource_dal();
+            var thisUser = srDal.FindNoDeleteById(userId);
+            if (thisUser == null)
+                return;
+            var toEmail = new StringBuilder();
+            var ccEmail = new StringBuilder();
+            var bccEmail = new StringBuilder();
+            if (!string.IsNullOrEmpty(param.ToResId))
+            {
+                var toResList = srDal.GetListByIds(param.ToResId);
+                if(toResList!=null&& toResList.Count > 0)
+                    toResList.ForEach(_ => { if (!string.IsNullOrEmpty(_.email)) { toEmail.Append(_.email + ','); } });
+            }
+            else
+            {
+                return;
+            }
+            if (!string.IsNullOrEmpty(param.CCResId))
+            {
+                var ccResList = srDal.GetListByIds(param.CCResId);
+                if (ccResList != null && ccResList.Count > 0)
+                    ccResList.ForEach(_ => { if (!string.IsNullOrEmpty(_.email)) { ccEmail.Append(_.email + ','); } });
+            }
+            if (!string.IsNullOrEmpty(param.BCCResId))
+            {
+                var bccResList = srDal.GetListByIds(param.CCResId);
+                if (bccResList != null && bccResList.Count > 0)
+                    bccResList.ForEach(_ => { if (!string.IsNullOrEmpty(_.email)) { bccEmail.Append(_.email + ','); } });
+            }
+            var cneDal = new com_notify_email_dal();
+            var tempEmail = new sys_notify_tmpl_email_dal().GetEmailByTempId(param.notify_id);
+            var email = new com_notify_email() {
+                id=cneDal.GetNextIdCom(),
+                cate_id = (int)NOTIFY_CATE.TICKETS,
+                event_id = (int)NOTIFY_EVENT.TICKET_CREATED_EDITED,
+                create_user_id = userId,
+                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                update_user_id = userId,
+                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                to_email = toEmail.ToString(),   // 界面输入，包括发送对象、员工、其他地址等四个部分组成
+                notify_tmpl_id = (int)param.notify_id,  // 根据通知模板
+                from_email = param.EmailFrom? thisUser.email:"",
+                from_email_name = param.EmailFrom ? thisUser.name : "",
+                //body_text =  tempEmail[0].body_text,
+                //body_html = tempEmail[0].body_html,
+                subject = param.Subject,
+                
+            };
+            cneDal.Insert(email);
+            OperLogBLL.OperLogAdd<com_notify_email>(email, email.id, userId, OPER_LOG_OBJ_CATE.NOTIFY, "新增通知-工单新增编辑");
         }
     }
 }

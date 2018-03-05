@@ -37,6 +37,27 @@ namespace EMT.DoneNOW.DTO
         /// 是否附加解决方案
         /// </summary>
         public bool isAppSlo;
+        #region 通知相关参数
+        /// <summary>
+        /// 通知模板Id
+        /// </summary>
+        public int notify_id;
+        /// <summary>
+        /// 通知员工Id
+        /// </summary>
+        public string ToResId;
+        public string CCResId;
+        public string BCCResId;
+        public string Subject;
+        /// <summary>
+        /// 追加文本
+        /// </summary>
+        public string AdditionalEmailText;
+        /// <summary>
+        /// 是否以当前用户名义发送
+        /// </summary>
+        public bool EmailFrom;
+        #endregion
     }
     public class CheckListDto
     {

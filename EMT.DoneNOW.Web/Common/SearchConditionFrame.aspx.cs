@@ -205,7 +205,7 @@ namespace EMT.DoneNOW.Web
                     currentQuery.page_name = "工单查询";
                     break;
                 case (int)DicEnum.QUERY_CATE.TICKET_ACCOUNT_LIST:
-                    currentQuery.page_name = "工单未关闭工单查询";
+                    currentQuery.page_name = "客户未关闭工单查询";
                     break;
                 case (int)DicEnum.QUERY_CATE.SERVICE:
                     currentQuery.page_name = "服务查询";

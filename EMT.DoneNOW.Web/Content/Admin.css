@@ -28,7 +28,7 @@ body {
     }
 
 .collection {
-    background-image: url(../img/collection.png);
+    background-image: url(../Images/collection.png);
     cursor: pointer;
     display: inline-block;
     height: 16px;
@@ -43,7 +43,7 @@ body {
 }
 
 .help {
-    background-image: url(../img/help.png);
+    background-image: url(../Images/help.png);
     cursor: pointer;
     display: inline-block;
     height: 16px;
@@ -93,27 +93,27 @@ li.Button {
 }
 
 .SaveAndClone {
-    background-image: url("../img/save.png");
+    background-image: url("../Images/save.png");
 }
 
 .Save {
-    background-image: url("../img/save.png");
+    background-image: url("../Images/save.png");
 }
 
 .ViewPdf {
-    background-image: url("../img/view.png");
+    background-image: url("../Images/view.png");
 }
 
 .EditProperties {
-    background-image: url("../img/edit.png");
+    background-image: url("../Images/edit.png");
 }
 
 .EditAppendix {
-    background-image: url("../img/book.png");
+    background-image: url("../Images/book.png");
 }
 
 .CancelButton {
-    background-image: url("../img/cancel.png");
+    background-image: url("../Images/cancel.png");
 }
 
 .Button > .Text {

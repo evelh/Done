@@ -15,7 +15,9 @@
             padding: 0 1px 0 3px;
             color: #4F4F4F;
             vertical-align: top;
-            height: 16px;
+            height: 17px;
+            margin-top: 1px;
+            background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
         }
     </style>
 </head>
@@ -42,16 +44,16 @@
                                 <asp:Button ID="save" runat="server" Text="保存" BorderStyle="None" CssClass="clickBtn" OnClick="save_Click" /></span>
                         </a>
                     </li>
-                    <li> 
+                    <li>
                         <a class="ImgLink">
                             <span class="icon" style="background: url(../Images/Icons.png) no-repeat -53px 1px; width: 16px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
                             <span class="Text" style="line-height: 24px;">
-                                <asp:Button ID="save_close" runat="server" Text="保存并关闭" BorderStyle="None" CssClass="clickBtn" OnClick="save_close_Click"  /></span>
+                                <asp:Button ID="save_close" runat="server" Text="保存并关闭" BorderStyle="None" CssClass="clickBtn" OnClick="save_close_Click" /></span>
                         </a>
                     </li>
                     <li>
                         <a class="Button ButtonIcon Cancel NormalState" id="CancelLi" tabindex="0">
-                            <span class="Icon" style="width: 16px;height: 16px;display: inline-block;margin: -2px 3px;margin-top: 3px;background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0px;"></span>
+                            <span class="Icon" style="width: 16px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px; background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0px;"></span>
                             <span class="Text">取消</span>
                         </a>
                     </li>
@@ -61,23 +63,28 @@
 
         <!-- 下左 快捷添加相应操作（编辑 查看会触发相应事件） -->
         <div class="QuickLaunchBar" style="top: 82px;">
-            <div class="QuickLaunchButton TimeEntry DisabledState" id="" onclick="AddTimeEntry()">
+            <div class="QuickLaunchButton TimeEntry DisabledState" id="" onclick="<%if (thisTicket != null)
+                {%><%="AddTimeEntry()" %> <% } %>">
                 <div class="Text">工时<span class="KeyCode"></span></div>
                 <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -15px;"></div>
             </div>
-            <div class="QuickLaunchButton Note DisabledState" onclick="AddTicketNote('')">
+            <div class="QuickLaunchButton Note DisabledState" onclick="<%if (thisTicket != null)
+                {%><%="AddTicketNote('')" %> <% } %>">
                 <div class="Text">备注<span class="KeyCode"></span></div>
                 <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -64px;"></div>
             </div>
-            <div class="QuickLaunchButton Attachment DisabledState" onclick="AddTicketAttachment()">
+            <div class="QuickLaunchButton Attachment DisabledState" onclick="<%if (thisTicket != null)
+                {%><%="AddTicketAttachment()" %> <% } %>">
                 <div class="Text">附件<span class="KeyCode"></span></div>
                 <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -113px;"></div>
             </div>
-            <div class="QuickLaunchButton Charge DisabledState" onclick="AddTicketCharge()">
+            <div class="QuickLaunchButton Charge DisabledState" onclick="<%if (thisTicket != null)
+                {%><%="AddTicketCharge()" %> <% } %>">
                 <div class="Text">成本<span class="KeyCode"></span></div>
                 <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -163px;"></div>
             </div>
-            <div class="QuickLaunchButton Expense DisabledState" onclick="AddTicketExpense()">
+            <div class="QuickLaunchButton Expense DisabledState" onclick="<%if (thisTicket != null)
+                {%><%="AddTicketExpense()" %> <% } %>">
                 <div class="Text">费用<span class="KeyCode"></span></div>
                 <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -212px;"></div>
             </div>
@@ -85,7 +92,8 @@
                 <div class="Text">服务<span class="KeyCode"></span></div>
                 <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -260px;"></div>
             </div>
-            <div class="QuickLaunchButton ToDo DisabledState" onclick="AddTicketTodo()">
+            <div class="QuickLaunchButton ToDo DisabledState" onclick="<%if (thisTicket != null)
+                {%><%="AddTicketTodo()" %> <% } %>">
                 <div class="Text">待办<span class="KeyCode"></span></div>
                 <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -309px;"></div>
             </div>
@@ -93,7 +101,7 @@
 
         <!-- 下右 管理相关 属性 字段 -->
         <div style="margin-top: 86px;"></div>
-        <div class="MessageBarContainer" id="ShowAlert" style="display:none;">
+        <div class="MessageBarContainer" id="ShowAlert" style="display: none;">
             <div class="MessageBar Alert">
                 <div class="IconContainer">
                     <div class="MessageBarIcon Alert"></div>
@@ -227,7 +235,7 @@
                                 <label>截止日期</label><span class="Required">*</span>
                             </div>
                         </div>
-                        <div class="DateAndTimeEditor">
+                        <div class="DateAndTimeEditor" style="display: flex;">
                             <div class="Editor DateBox" style="float: left;">
                                 <div class="InputField">
                                     <div class="Container">
@@ -521,7 +529,7 @@
                                 </div>
                                 <div class="Grid Small" id="TicketChecklistItemsGrid">
                                     <div class="HeaderContainer">
-                                        <table cellpadding="0">
+                                        <table cellpadding="0" style="min-width:650px;">
                                             <thead class="HeaderContainer">
                                                 <tr class="HeadingRow">
                                                     <td class=" Interaction DragEnabled" style="width: 60px;">
@@ -935,7 +943,8 @@
                         </div>
                     </div>
                 </div>
-               <% if (thisTicket != null) { %>
+                <% if (thisTicket != null)
+                    { %>
                 <div class="AccessoryTabButtonBar">
                     <div class="Button TicketButton SelectedState" id="TicketViewActivityDiv">
                         <div class="Text">活动</div>
@@ -977,13 +986,13 @@
                                             <div class="InputField">
                                                 <select name="NoteTypes" id="NoteTypes" style="float: right;">
                                                     <%if (ticketNoteTypeList != null && ticketNoteTypeList.Count > 0)
-                        {
-                            foreach (var ticketNoteType in ticketNoteTypeList)
-                            {
+                                                        {
+                                                            foreach (var ticketNoteType in ticketNoteTypeList)
+                                                            {
                                                     %>
                                                     <option value="<%=ticketNoteType.id %>"><%=ticketNoteType.name %></option>
                                                     <% }
-                        } %>
+                                                        } %>
                                                 </select>
                                             </div>
                                         </div>
@@ -1170,8 +1179,7 @@
                         </div>
                     </div>
                 </div>
-               <%} %>
-
+                <%} %>
             </div>
             <div class="SecondaryContainer Right">
                 <div class="TabButtonContainer">
@@ -1245,72 +1253,73 @@
                             </div>
                         </div>
                     </div>
-                     <div class="InsightShell Collapsed">
-                    <div class="Title Title6">
-                        <div class="Text">工时汇总</div>
-                        <%-- <div class="Toggle">
+                    <div class="InsightShell Collapsed">
+                        <div class="Title Title6">
+                            <div class="Text">工时汇总</div>
+                            <%-- <div class="Toggle">
                             <div class="InlineIcon ArrowUpSmall"></div>
                         </div>--%>
-                    </div>
-                    <div class="ContentContainer">
-                        <div class="LoadingIndicator"></div>
-                        <div class="TransitionContainer"></div>
-                        <div class="Content" id="z9ac8e203dc7e4dfab0d0a982b4afeece">
-                            <% if (thisTicket != null){ %>
-                            <table class="Table" cellpadding="0">
-                                <tbody>
-                                    <tr class="TableRow">
-                                        <td>
-                                            <div class="Text LowImportance">实际工时</div>
-                                        </td>
-                                        <td>
-                                            <div class="Text LowImportance">预估工时</div>
-                                        </td>
-                                    </tr>
-                                    <tr class="TableRow">
-                                        <td>
-                                            <div class="Text HighImportance">
-                                                <%
-                                     decimal entryHours = 0;
-                                     if (entryList != null && entryList.Count > 0)
-                                     {
-                                         entryHours = entryList.Sum(_ => _.hours_worked ?? 0);
-                                     }
-                                                %>
-                                                <%=entryHours.ToString("#0.00") + "h" %>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="Text HighImportance"><%=thisTicket.estimated_hours.ToString("#0.00") + 'h' %></div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <% var overHours = thisTicket.estimated_hours - entryHours;  %>
-                            <div class="NormalSpacer"></div>
-                            <div class="ProgressBar">
-                                <div class="Bar">
-                                    <div class="Progress IsGreaterThanZero <%=overHours < 0 ? "Critical" : "" %>" style="width: <%=overHours<0?100:(entryHours*100/thisTicket.estimated_hours) %>%;"></div>
-                                </div>
-                                <div class="Text <%=overHours < 0 ? "CriticalImportance" : "" %>">
-                                    <div class="Text" style="display: inline;">
+                        </div>
+                        <div class="ContentContainer">
+                            <div class="LoadingIndicator"></div>
+                            <div class="TransitionContainer"></div>
+                            <div class="Content" id="z9ac8e203dc7e4dfab0d0a982b4afeece">
+                                <% if (thisTicket != null)
+                                { %>
+                                <table class="Table" cellpadding="0">
+                                    <tbody>
+                                        <tr class="TableRow">
+                                            <td>
+                                                <div class="Text LowImportance">实际工时</div>
+                                            </td>
+                                            <td>
+                                                <div class="Text LowImportance">预估工时</div>
+                                            </td>
+                                        </tr>
+                                        <tr class="TableRow">
+                                            <td>
+                                                <div class="Text HighImportance">
+                                                    <%
+                                                        decimal entryHours = 0;
+                                                        if (entryList != null && entryList.Count > 0)
+                                                        {
+                                                            entryHours = entryList.Sum(_ => _.hours_worked ?? 0);
+                                                        }
+                                                    %>
+                                                    <%=entryHours.ToString("#0.00") + "h" %>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="Text HighImportance"><%=thisTicket.estimated_hours.ToString("#0.00") + 'h' %></div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <% var overHours = thisTicket.estimated_hours - entryHours;  %>
+                                <div class="NormalSpacer"></div>
+                                <div class="ProgressBar">
+                                    <div class="Bar">
+                                        <div class="Progress IsGreaterThanZero <%=overHours < 0 ? "Critical" : "" %>" style="width: <%=overHours<0?100:(entryHours*100/thisTicket.estimated_hours) %>%;"></div>
+                                    </div>
+                                    <div class="Text <%=overHours < 0 ? "CriticalImportance" : "" %>">
+                                        <div class="Text" style="display: inline;">
 
-                                        <% if (overHours < 0)
-                                     {
-                                         overHours = 0 - overHours;
-                                     } %>
-                                        <%=overHours.ToString("#0.00") + "h" %>
+                                            <% if (overHours < 0)
+                                                {
+                                                    overHours = 0 - overHours;
+                                                } %>
+                                            <%=overHours.ToString("#0.00") + "h" %>
+                                        </div>
                                     </div>
                                 </div>
+                                <%} %>
                             </div>
-                            <%} %>
                         </div>
                     </div>
-                </div>
                     <div class="InsightShell Collapsed" id="z48d3540e2e584765910e8058b1be991f">
-                        <div class="Title Title7" >
+                        <div class="Title Title7">
                             <div class="Text">配置项</div>
-                            <div class="Toggle"  style="border: 0px solid #dee0e7;">
+                            <div class="Toggle" style="border: 0px solid #dee0e7;">
                                 <div class="InlineIcon ArrowUpSmall"></div>
                             </div>
                         </div>
@@ -1355,7 +1364,7 @@
                     <div class="InsightShell Invisible" id="za4e05a3de99042b09d62b550b4b766bf" style="display: none;">
                         <div class="Title">
                             <div class="Text">商机</div>
-                            <div class="Toggle"  style="border: 0px solid #dee0e7;">
+                            <div class="Toggle" style="border: 0px solid #dee0e7;">
                                 <div class="InlineIcon ArrowUpSmall"></div>
                             </div>
                         </div>
@@ -1363,6 +1372,199 @@
                             <div class="LoadingIndicator"></div>
                             <div class="TransitionContainer"></div>
                             <div class="Content" id="z9f356c8974c1409b855378914d4caef6"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="NotificationPanelPositioningContainer">
+                <div class="NotificationPanel Active" id="zbebd58dbbd554af38aaa76eb2f4cb84c">
+                    <div class="HandleBar">
+                        <div class="HandleContainer">
+                            <div class="Handle" id="ShowNotifyDiv">
+                                <div class="Text">通知</div>
+                                <div class="Badge">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Content" style="display:none;">
+                        <div class="RecipientEditors HideCarbonCopy HideBlindCarbonCopy">
+                            <div class="ToLabel Inactive">
+                                <div class="EditorLabelContainer">
+                                    <div class="Label">
+                                        <label>发送</label></div>
+                                </div>
+  
+                                <a class="Button ButtonIcon Link NormalState" id="ClearTo" tabindex="0" style="margin-top: -3px;display:none;">清除</a><div class="Spacer"></div>
+                                <div class="LinkContainer"><a class="Button ButtonIcon Link NormalState" id="ShowCC" tabindex="0">抄送</a><a class="Button ButtonIcon Link NormalState" id="ShowBCC" tabindex="0">密送</a></div>
+                            </div>
+                            <div class="Editor RecipientSelector" >
+                                <div class="ContentContainer">
+                                    <div class="BubbleList" id="zf9aa12ba5bb746a0aadad9e6d17f177f"></div>
+                                    <div class="ContextOverlayContainer" id="z529b91f751014f0c8aa7d4637a047d0f">
+                                        <div class="BubbleOverlay ContextOverlay">
+                                            <div class="Outline Arrow"></div>
+                                            <div class="Arrow"></div>
+                                            <div class="Active LoadingIndicator"></div>
+                                            <div class="Content"></div>
+                                        </div>
+                                        <div class="BubbleOverlay ContextOverlay">
+                                            <div class="Outline Arrow"></div>
+                                            <div class="Arrow"></div>
+                                            <div class="Active LoadingIndicator"></div>
+                                            <div class="Content"></div>
+                                        </div>
+                                    </div>
+                                    <div class="ValueContainer">
+                                        <div class="Placeholder"></div>
+                                        <div class="InputContainer">
+                                            <input id="ToResId" type="text" value="" name="ToSelections" />
+                                            <input type="hidden" id="ToResIdHidden" name="ToResId"/>
+                                        </div>
+                                    </div>
+                                    <div class="LoadingIndicatorOverlay">
+                                        <div class="LoadingIndicator"></div>
+                                    </div>
+                                </div>
+                                <a class="Button ButtonIcon IconOnly Browse NormalState" tabindex="0" onclick="SelectTo()">
+                                    <span class="Icon" style="background: url(../Images/Icons.png) no-repeat -246px -144px;width: 16px;height: 16px;display: inline-block;"></span>
+                                    <span class="Text"></span>
+
+                                </a>
+                                <div class="ContextOverlayContainer">
+                                    <div class="SelectorContextOverlay ContextOverlay">
+                                        <div class="Outline Arrow"></div>
+                                        <div class="Arrow"></div>
+                                        <div class="Content">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ContextOverlayContainer" id="zd0d90ef2685749f1be272aa76cbf27d3">
+                                    <div class="AutoComplete ContextOverlay">
+                                        <div class="Content">
+                                            <div class="LoadingIndicatorContainer">
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="CarbonCopyLabel Inactive" style="display:none;">
+                                <div class="EditorLabelContainer">
+                                    <div class="Label">
+                                        <label>抄送</label></div>
+                                </div>
+                                <a class="Button ButtonIcon Link NormalState" id="ClearCC" tabindex="0" style="margin-top: -3px;display:none;">清除</a></div>
+                            <div class="Editor RecipientSelector"  style="display:none;">
+                                <div class="ContentContainer">
+                                    <div class="ValueContainer">
+                                        <div class="Placeholder"></div>
+                                        <div class="InputContainer">
+                                            <input id="CCResId" type="text" value="" name="CarbonCopySelections" />
+                                             <input type="hidden" id="CCResIdHidden" name="CCResId"/>
+                                        </div>
+                                    </div>
+                                    <div class="LoadingIndicatorOverlay">
+                                        <div class="LoadingIndicator"></div>
+                                    </div>
+                                </div>
+                                <a class="Button ButtonIcon IconOnly Browse NormalState" onclick="SelectCc()" tabindex="0" style="    top: 69px;"><span class="Icon"  style="background: url(../Images/Icons.png) no-repeat -246px -144px;width: 16px;height: 16px;display: inline-block;"></span><span class="Text"></span></a>
+                                <div class="ContextOverlayContainer" id="z3d24d880bc2c4ef7ae9a2baa2896c7df">
+                                    <div class="SelectorContextOverlay ContextOverlay">
+                                        <div class="Outline Arrow"></div>
+                                        <div class="Arrow"></div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="ContextOverlayContainer" id="zcd55ba331d0f4b22aac23ff3a92bcd5b">
+                                    <div class="AutoComplete ContextOverlay">
+                                        <div class="Content">
+                                            <div class="LoadingIndicatorContainer">
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="BlindCarbonCopyLabel Inactive"  style="display:none;">
+                                <div class="EditorLabelContainer">
+                                    <div class="Label">
+                                        <label>密送</label></div>
+                                </div>
+                                <a class="Button ButtonIcon Link NormalState" id="ClearBCC" tabindex="0" style="margin-top: -3px;display:none;">清除</a></div>
+                            <div class="Editor RecipientSelector"  style="display:none;">
+                                <div class="ContentContainer">
+                                    <div class="ValueContainer">
+                                        <div class="Placeholder"></div>
+                                        <div class="InputContainer">
+                                            <input id="BCCResId" type="text" value="" name="BlindCarbonCopySelections" />
+                                             <input type="hidden" id="BCCResIdHidden" name="BCCResId"/>
+                                        </div>
+                                    </div>
+                                    <div class="LoadingIndicatorOverlay">
+                                        <div class="LoadingIndicator"></div>
+                                    </div>
+                                </div>
+                                <a class="Button ButtonIcon IconOnly Browse NormalState" onclick="SelectBcc()" tabindex="0" style="    top: 120px;"><span class="Icon"  style="background: url(../Images/Icons.png) no-repeat -246px -144px;width: 16px;height: 16px;display: inline-block;"></span><span class="Text"></span></a>
+                                <div class="ContextOverlayContainer" id="zc98f8a242cc244d795f505896968b4ea">
+                                    <div class="SelectorContextOverlay ContextOverlay">
+                                        <div class="Outline Arrow"></div>
+                                        <div class="Arrow"></div>
+                                       
+                                    </div>
+                                </div>
+                                <div class="ContextOverlayContainer">
+                                    <div class="AutoComplete ContextOverlay">
+                                        <div class="Content">
+                                            <div class="LoadingIndicatorContainer">
+                                                <div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="EmailContentEditors">
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>模板</label></div>
+                            </div>
+                            <div class="Editor ItemSelector">
+                                <asp:DropDownList ID="notify_id" runat="server"></asp:DropDownList>
+                            </div>
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>主题</label></div>
+                            </div>
+                            <div class="Editor TextBox">
+                                <div class="InputField">
+                                    <input id="Subject" type="text" value="" name="Subject" /></div>
+                            </div>
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>附加邮件内容</label></div>
+                            </div>
+                            <div class="Editor TextArea">
+                                <div class="InputField">
+                                    <textarea class="Medium" id="AdditionalEmailText" name="AdditionalEmailText" placeholder=""></textarea></div>
+                            </div>
+                        </div>
+                        <div class="Footer">
+                            <div class="Editor CheckBox">
+                                <div class="InputField">
+                                    <div>
+                                        <input id="" type="checkbox" value="" name="SendFromUser" checked="checked" />
+                                    </div>
+                                    <div class="EditorLabelContainer">
+                                        <div class="Label">
+                                            <label for="z58ece7eba5274a2186ad481ce574e72e">从<%=LoginUser.email %> 发送</label></div>
+                                    </div>
+                                  </div>
+                            </div>
+                            <div class="DefaultSettings" style="margin-bottom: 5px;"><a class="Button ButtonIcon Link NormalState" tabindex="0" style="float:right;">修改默认设置</a></div>
                         </div>
                     </div>
                 </div>
@@ -1950,7 +2152,7 @@
     function ShowAccNoTicket() {
         var account_idHidden = $("#account_idHidden").val();
         if (account_idHidden != "") {
-            window.open("../ServiceDesk/AccountTicketList.aspx?account_id=" + account_idHidden, "_blank", 'left=200,top=200,width=600,height=800', false);
+            window.open("../ServiceDesk/AccountTicketList.aspx?account_id=" + account_idHidden, "_blank", 'left=200,top=200,width=960,height=800', false);
         }
     }
     // 新增客户操作 新增成功后，将客户名称和Id 带回
@@ -2885,11 +3087,79 @@
     })
 
     $("#TicketViewServiceDiv").click(function () {
-          $("#ShowActivityDiv").hide();
-          $("#ShowIframeDiv").show();
-          $("#TicketShowIframe").attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SERVICE_LIST %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SERVICE_LIST %>&con1761=<%=thisTicket==null?"":thisTicket.id.ToString() %>");
+        $("#ShowActivityDiv").hide();
+        $("#ShowIframeDiv").show();
+        $("#TicketShowIframe").attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SERVICE_LIST %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SERVICE_LIST %>&con1761=<%=thisTicket==null?"":thisTicket.id.ToString() %>");
     })
 
     <%}%>
 
+    $("#ShowNotifyDiv").click(function () {
+        $(".NotificationPanel").find(".Content").toggle();
+    })
+    $("#ShowCC").click(function () {
+        $(".RecipientEditors").find(".CarbonCopyLabel").show();
+        $(".RecipientEditors").find(".CarbonCopyLabel").next().show();
+    })
+    $("#ShowBCC").click(function () {
+        $(".RecipientEditors").find(".BlindCarbonCopyLabel").show();
+        $(".RecipientEditors").find(".BlindCarbonCopyLabel").next().show();
+    })
+    $("#ClearTo").click(function () {
+        $("#ToResId").val("");
+        $("#ToResIdHidden").val("");
+        $(this).hide();
+    })
+    $("#ClearCC").click(function () {
+        $("#CCResId").val("");
+        $("#CCResIdHidden").val("");
+        $(this).hide();
+    })
+    $("#ClearBCC").click(function () {
+        $("#BCCResId").val("");
+        $("#BCCResIdHidden").val("");
+        $(this).hide();
+    })
+    function SelectTo() {
+        var url = "../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE_CALLBACK %>&muilt=1&field=ToResId&callBack=ShowToClear";
+        window.open(url, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+    function ShowToClear() {
+        var ToResId = $("#ToResIdHidden").val();
+        if (ToResId != "" && ToResId != null && ToResId != undefined) {
+            $("#ClearTo").show();
+        }
+        else {
+            $("#ClearTo").hide();
+        }
+    }
+    function SelectCc() {
+        var url = "../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE_CALLBACK %>&muilt=1&field=CCResId&callBack=ShowCcClear";
+        window.open(url, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+    function ShowCcClear() {
+        var CCResId = $("#CCResIdHidden").val();
+        if (CCResId != "" && CCResId != null && CCResId != undefined) {
+            $("#ClearCC").show();
+        }
+        else {
+            $("#ClearCC").hide();
+        }
+    }
+    function SelectBcc() {
+        var url = "../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE_CALLBACK %>&muilt=1&field=BCCResId&callBack=ShowBccClear";
+        window.open(url, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+    function ShowBccClear() {
+        var BCCResId = $("#BCCResIdHidden").val();
+        if (BCCResId != "" && BCCResId != null && BCCResId != undefined) {
+            $("#ClearBCC").show();
+        }
+        else {
+            $("#ClearBCC").hide();
+        }
+    }
+    $("#notify_id").change(function () {
+
+    })
 </script>

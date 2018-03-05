@@ -88,6 +88,14 @@ $(".Logo").on("click", function () {
         $("#yibiaopan").show();
     }, 300);
 });
+$(".MyOverlay").on("click", function () {
+    setTimeout(function () {
+        $(".cont").show();
+    }, 300);
+    setTimeout(function () {
+        $("#yibiaopan").hide();
+    }, 100);
+});
 $("#HomePage").on("click", function () {
     $(".cont").hide();
     setTimeout(function () {

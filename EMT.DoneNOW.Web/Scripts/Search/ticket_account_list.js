@@ -69,12 +69,12 @@ function GetData() {
 }
 
 // 新增工单
-function AddTicket(status_id) {
-    if (status_id == "") {
-
+function AddTicket(ticket_type_id) {
+    if (ticket_type_id == "") {
+        OpenWindow("../ServiceDesk/TicketManage", windowObj.ticket + windowType.add, );
     }
     else {
-        OpenWindow("../ServiceDesk/TicketManage?status_id=" + status_id, windowObj.ticket + windowType.add, );
+        OpenWindow("../ServiceDesk/TicketManage?ticket_type_id=" + ticket_type_id, windowObj.ticket + windowType.add, );
     }
 
 }

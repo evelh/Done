@@ -32,17 +32,20 @@
                 </div>
                 <!--选择框-->
                 <div class="TabBar">
-                    <a class="Button ButtonIcon SelectedState">
+                    <a class="Button ButtonIcon SelectedState" id="TabButtonCrm">
                         <span class="Text">CRM</span>
                     </a>
-                    <a class="Button ButtonIcon">
+                    <a class="Button ButtonIcon" id="TabButtonProject">
                         <span class="Text">项目</span>
                     </a>
-                    <a class="Button ButtonIcon">
+                    <a class="Button ButtonIcon" id="TabButtonServiceDesk">
                         <span class="Text">服务台</span>
                     </a>
-                    <a class="Button ButtonIcon">
+                    <a class="Button ButtonIcon" id="TabButtonContractBill">
                         <span class="Text">合同计费</span>
+                    </a>
+                    <a class="Button ButtonIcon" id="TabButtonOther">
+                        <span class="Text">其他</span>
                     </a>
                 </div>
                 <div class="ScrollingContainer Active" style="top: 82px; bottom: 0;">
@@ -183,7 +186,7 @@
                                     <div class="Vertical Vertical2"></div>
                                     <div class="Horizontal"></div>
                                 </div>
-                                <span class="Text">自动任务加载项</span>
+                                <span class="Text">项目</span>
                                 <span></span>
                             </div>
                             <div class="Content Content2" id="g1">
@@ -191,7 +194,7 @@
                                     <div class="PageNavigationLinkGroup">
                                         <div class="PageNavigationLinkColumn">
                                             <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_PROJECT_PROJECT_LIST %>" target="PageFrame1">项目清单</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
                                             <div class="PageNavigationLink">
@@ -207,7 +210,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!--第二个框-->
+                       <%-- <!--第二个框-->
                         <div class="Normal Collapsed Section Normal2 col" id="f2">
                             <div class="Heading">
                                 <div class="Toggle Expand Toggle2" id="e2">
@@ -285,7 +288,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>--%>
                     </div>
                     <!--第三部分-->
                     <div class="TabContainer TabContainer3">
@@ -340,16 +343,16 @@
                             </a>
                         </div>
                         <!--第一个框-->
-                        <div class="Normal Collapsed Section Normal4 col" id="f1">
+                        <div class="Normal Collapsed Section Normal4 col" >
                             <div class="Heading">
-                                <div class="Toggle Expand Toggle4" id="e1">
+                                <div class="Toggle Expand Toggle4">
                                     <div class="Vertical Vertical4"></div>
                                     <div class="Horizontal"></div>
                                 </div>
                                 <span class="Text">合同</span>
                                 <span></span>
                             </div>
-                            <div class="Content Content4" id="g1">
+                            <div class="Content Content4">
                                 <div class="Large Column">
                                     <div class="PageNavigationLinkGroup">
                                         <div class="PageNavigationLinkColumn">
@@ -371,16 +374,16 @@
                             </div>
                         </div>
                         <!--第二个框-->
-                        <div class="Normal Collapsed Section Normal4 col" id="f2">
+                        <div class="Normal Collapsed Section Normal4 col">
                             <div class="Heading">
-                                <div class="Toggle Expand Toggle4" id="e2">
+                                <div class="Toggle Expand Toggle4">
                                     <div class="Vertical Vertical4"></div>
                                     <div class="Horizontal"></div>
                                 </div>
                                 <span class="Text">计费</span>
                                 <span></span>
                             </div>
-                            <div class="Content Content4" id="g2">
+                            <div class="Content Content4">
                                 <div class="Large Column">
                                    <div class="PageNavigationLinkGroup">
                                         <div class="PageNavigationLinkColumn">
@@ -459,6 +462,48 @@
                             </div>
                         </div>
                     </div>
+                    <!--第五部分-->
+                    <div class="TabContainer TabContainer5">
+                        <div class="ButtonContainer">
+                            <a class="Button ButtonIcon NormalState" tabindex="0" id="d9">
+                                <span class="Text">展开所有</span>
+                            </a>
+                            <a class="Button ButtonIcon NormalState" tabindex="0" id="d10">
+                                <span class="Text">折叠所有</span>
+                            </a>
+                        </div>
+                        <!--第一个框-->
+                        <div class="Normal Collapsed Section Normal5 col" id="">
+                            <div class="Heading">
+                                <div class="Toggle Expand Toggle5" id="">
+                                    <div class="Vertical Vertical5"></div>
+                                    <div class="Horizontal"></div>
+                                </div>
+                                <span class="Text">系统</span>
+                                <span></span>
+                            </div>
+                            <div class="Content Content5">
+                                <div class="Large Column">
+                                    <div class="PageNavigationLinkGroup">
+                                        <div class="PageNavigationLinkColumn">
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_OTHER_SYSTEM_LOGINLOG %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">登录日志</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                            <div class="PageNavigationLink">
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_OTHER_SYSTEM_OPERLOG %>" target="PageFrame1" >操作日志</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                            <div class="PageNavigationLink">
+                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div id="chaxun" style="display: none">
@@ -510,6 +555,27 @@
             $("#chaxun").hide();
             $("#body").show();
         }
+
+        $(function () {
+            var queryPanel = '<%=Request.QueryString["SearchType"] %>';
+            if (queryPanel == "Project")
+            {
+                $("#TabButtonProject").trigger("click");
+            }
+            else if (queryPanel == "ServiceDesk") {
+                $("#TabButtonServiceDesk").trigger("click");
+            }
+            else if (queryPanel == "ContractBill") {
+                $("#TabButtonContractBill").trigger("click");
+            }
+            else if (queryPanel == "Other") {
+                $("#TabButtonOther").trigger("click");
+            }
+            else {
+                $("#TabButtonCrm").trigger("click");
+            }
+        })
+         
     </script>
 </body>
 </html>
