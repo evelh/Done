@@ -243,10 +243,8 @@
                                             </td>
                                         </tr>
                                         <% if (isAdd)
-                                            {
-                                                if (thisTicket != null && thisTicket.ticket_type_id == (int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.PROBLEM)
-                                                {
-                                                %>
+                                            {if (thisTicket != null && thisTicket.ticket_type_id == (int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.PROBLEM)
+                                                {%>
                                         <tr>
                                             <td style="padding-top: 0px;">
                                                 <span id="TE_chkCreateNoteOnIncidents">
@@ -326,160 +324,7 @@
                 <div class="Content">
 
 
-                    <%-- <div id="TE_NS_mainPanel" style="margin-left: 0;">
-
-                        <input name="TE:NS:employeeIdBox" type="hidden" id="TE_NS_employeeIdBox" tabindex="0">
-                        <input name="TE:NS:employeeLoaded" type="checkbox" id="TE_NS_employeeLoaded" style="display: none" origchecked="true" tabindex="0">
-                        <input name="TE:NS:contactIdBox" type="hidden" id="TE_NS_contactIdBox" tabindex="0">
-                        <table id="TE_NS_notificationTable" cellspacing="0" cellpadding="0" border="0" style="width: 582px; border-collapse: collapse;">
-                            <tbody>
-                                <tr>
-                                    <td class="checkboxPadding"><span id="TE_NS_accountManagerCheckBox" disabled="disabled"><span disabled="disabled" class="txtBlack8Class" defaulttext="Account Manager">
-                                        <input id="TE_NS_accountManagerCheckBox_ATCheckBox" type="checkbox" name="TE:NS:accountManagerCheckBox:ATCheckBox" disabled="disabled" style="vertical-align: middle;" origchecked="true" tabindex="0"><label for="TE_NS_accountManagerCheckBox_ATCheckBox" style="vertical-align: middle;">Account Manager</label></span></span><input name="TE:NS:accountManagerIdBox" type="hidden" id="TE_NS_accountManagerIdBox" tabindex="0"></td>
-                                    <td class="checkboxPadding"><span id="TE_NS_itemCreatorCheckBox"><span class="txtBlack8Class" defaulttext="Item Creator">
-                                        <input id="TE_NS_itemCreatorCheckBox_ATCheckBox" type="checkbox" name="TE:NS:itemCreatorCheckBox:ATCheckBox" style="vertical-align: middle;" origchecked="true" tabindex="0"><label for="TE_NS_itemCreatorCheckBox_ATCheckBox" style="vertical-align: middle;">Item Creator (Hong Li)</label></span></span><input name="TE:NS:itemCreatorIdBox" type="hidden" id="TE_NS_itemCreatorIdBox" value="29682885" tabindex="0"></td>
-                                </tr>
-                                <tr>
-                                    <td class="checkboxPadding"><span id="TE_NS_accountTeamCheckBox" disabled="disabled"><span disabled="disabled" class="txtBlack8Class" defaulttext="Account Team">
-                                        <input id="TE_NS_accountTeamCheckBox_ATCheckBox" type="checkbox" name="TE:NS:accountTeamCheckBox:ATCheckBox" disabled="disabled" style="vertical-align: middle;" origchecked="true" tabindex="0"><label for="TE_NS_accountTeamCheckBox_ATCheckBox" style="vertical-align: middle;">Account Team</label></span></span><input name="TE:NS:accountTeamIdBox" type="hidden" id="TE_NS_accountTeamIdBox" tabindex="0"></td>
-                                    <td class="checkboxPadding"><span id="TE_NS_selfCheckBox"><span class="txtBlack8Class">
-                                        <input id="TE_NS_selfCheckBox_ATCheckBox" type="checkbox" name="TE:NS:selfCheckBox:ATCheckBox" style="vertical-align: middle;" origchecked="true" tabindex="0"><label for="TE_NS_selfCheckBox_ATCheckBox" style="vertical-align: middle;">CC Me</label></span></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="checkboxPadding"><span id="TE_NS_ticketContactCheckBox" disabled="disabled"><span disabled="disabled" class="txtBlack8Class" defaulttext="Ticket Contact">
-                                        <input id="TE_NS_ticketContactCheckBox_ATCheckBox" type="checkbox" name="TE:NS:ticketContactCheckBox:ATCheckBox" disabled="disabled" style="vertical-align: middle;" origchecked="true" tabindex="0"><label for="TE_NS_ticketContactCheckBox_ATCheckBox" style="vertical-align: middle;">Ticket Contact</label></span></span><input name="TE:NS:ticketContactIdBox" type="hidden" id="TE_NS_ticketContactIdBox" tabindex="0"></td>
-                                    <td class="checkboxPadding"><span id="TE_NS_selectedResourceCheckBox"><span class="txtBlack8Class" defaulttext="Selected Resource (s)">
-                                        <input id="TE_NS_selectedResourceCheckBox_ATCheckBox" type="checkbox" name="TE:NS:selectedResourceCheckBox:ATCheckBox" style="vertical-align: middle;" origchecked="true" tabindex="0"><label for="TE_NS_selectedResourceCheckBox_ATCheckBox" style="vertical-align: middle;">Selected Resource (li li)</label></span></span><input name="TE:NS:selectedResourceIdBox" type="hidden" id="TE_NS_selectedResourceIdBox" value="29682887" tabindex="0"></td>
-                                </tr>
-                                <tr>
-                                    <td class="checkboxPadding"><span id="TE_NS_secondaryContactCheckBox" disabled="disabled"><span disabled="disabled" class="txtBlack8Class" defaulttext="Additional Contact(s)">
-                                        <input id="TE_NS_secondaryContactCheckBox_ATCheckBox" type="checkbox" name="TE:NS:secondaryContactCheckBox:ATCheckBox" disabled="disabled" style="vertical-align: middle;" origchecked="true" tabindex="0"><label for="TE_NS_secondaryContactCheckBox_ATCheckBox" style="vertical-align: middle;">Additional Contact(s)</label></span></span><input name="TE:NS:secondaryContactIdBox" type="hidden" id="TE_NS_secondaryContactIdBox" tabindex="0"></td>
-                                    <td class="checkboxPadding"><span id="TE_NS_changeApproverCheckBox" disabled="disabled" style="display: none;"><span disabled="disabled" class="txtBlack8Class" defaulttext="Change Approver(s)">
-                                        <input id="TE_NS_changeApproverCheckBox_ATCheckBox" type="checkbox" name="TE:NS:changeApproverCheckBox:ATCheckBox" disabled="disabled" style="vertical-align: middle;" origchecked="true" tabindex="0"><label for="TE_NS_changeApproverCheckBox_ATCheckBox" style="vertical-align: middle;">Change Approver(s)</label></span></span><input name="TE:NS:changeApproverMemberOrOtherApproverIdBox" type="hidden" id="TE_NS_changeApproverMemberOrOtherApproverIdBox" tabindex="0"><input name="TE:NS:otherContactApproverIdBox" type="hidden" id="TE_NS_otherContactApproverIdBox" tabindex="0"><input name="TE:NS:changeApproverPrimaryAccountContactIdBox" type="hidden" id="TE_NS_changeApproverPrimaryAccountContactIdBox" tabindex="0"><input name="TE:NS:changeApproverParentAccountPrimaryContactIdBox" type="hidden" id="TE_NS_changeApproverParentAccountPrimaryContactIdBox" tabindex="0"><input name="TE:NS:changeApproverAccountOwnerIdBox" type="hidden" id="TE_NS_changeApproverAccountOwnerIdBox" tabindex="0"><input name="TE:NS:changeApproverTicketContactIdBox" type="hidden" id="TE_NS_changeApproverTicketContactIdBox" tabindex="0"></td>
-                                </tr>
-                                <tr>
-                                    <td class="checkboxPadding"><span id="TE_NS_assignedResourceCheckBox"><span class="txtBlack8Class" defaulttext="Primary Resource">
-                                        <input id="TE_NS_assignedResourceCheckBox_ATCheckBox" type="checkbox" name="TE:NS:assignedResourceCheckBox:ATCheckBox" onclick="TicketNotificationSelection_PersistPrimaryResourceCheckboxState(true);" style="vertical-align: middle;" origchecked="true" tabindex="0"><label for="TE_NS_assignedResourceCheckBox_ATCheckBox" style="vertical-align: middle;">Primary Resource (Hong Li)</label></span></span><input name="TE:NS:persistAssignedResourceCheckBoxState" type="hidden" id="TE_NS_persistAssignedResourceCheckBoxState" value="true" tabindex="0"><input name="TE:NS:assignedResourceIdBox" type="hidden" id="TE_NS_assignedResourceIdBox" value="29682885" tabindex="0"></td>
-                                </tr>
-                                <tr>
-                                    <td class="checkboxExtraPadding" colspan="2"><span id="TE_NS_secondaryResourceCheckBox" disabled="disabled"><span disabled="disabled" class="txtBlack8Class" defaulttext="Secondary Resource(s)">
-                                        <input id="TE_NS_secondaryResourceCheckBox_ATCheckBox" type="checkbox" name="TE:NS:secondaryResourceCheckBox:ATCheckBox" disabled="disabled" style="vertical-align: middle;" origchecked="true" tabindex="0"><label for="TE_NS_secondaryResourceCheckBox_ATCheckBox" style="vertical-align: middle;">Secondary Resource(s)</label></span></span><input name="TE:NS:secondaryResourceIdBox" type="hidden" id="TE_NS_secondaryResourceIdBox" tabindex="0"></td>
-                                </tr>
-                                <tr id="TE_NS_includeSummaryHelpDeskEmailRow">
-                                    <td class="checkboxPadding"><span id="TE_NS_includeSummaryNotesCheckBox"><span class="txtBlack8Class">
-                                        <input id="TE_NS_includeSummaryNotesCheckBox_ATCheckBox" type="checkbox" name="TE:NS:includeSummaryNotesCheckBox:ATCheckBox" style="vertical-align: middle;" origchecked="true" tabindex="0"><label for="TE_NS_includeSummaryNotesCheckBox_ATCheckBox" style="vertical-align: middle;">Include Summary Notes in Email notification</label></span></span></td>
-                                    <td class="checkboxPadding" colspan="2"><span id="TE_NS_sendHelpDeskEmailCheckBox"><span class="txtBlack8Class">
-                                        <input id="TE_NS_sendHelpDeskEmailCheckBox_ATCheckBox" type="checkbox" name="TE:NS:sendHelpDeskEmailCheckBox:ATCheckBox" style="vertical-align: middle;" origchecked="true" tabindex="0"><label for="TE_NS_sendHelpDeskEmailCheckBox_ATCheckBox" style="vertical-align: middle;">Send Email from hong.li@itcat.net.cn</label></span></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="checkboxPadding" colspan="2"></td>
-                                </tr>
-                                <tr id="TE_NS_accountContactEmployeeRow" valign="top">
-                                    <td id="TE_NS_accountContactCell" style="padding-right: 7px;">
-                                        <table style="padding-right: 0px; padding-left: 0px; padding-bottom: 0px; width: 100%; padding-top: 0px;" cellspacing="0" cellpadding="0">
-                                            <tbody>
-                                                <tr>
-                                                    <td colspan="3" style="height: 15px;">&nbsp;
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <span id="TE_NS_accountContactLabel" class="lblNormalClass" style="font-weight: bold;">Contacts</span>
-                                                        <span class="txtBlack8Class">(<a href="../../../CommonControls/#" id="TE_NS_contactLink" onclick="loadContacts();return false;" tabindex="0">Load</a>)</span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <iframe src="/autotask/blankpage.htm" id="TE_NS_contactContainer" style="border: 1px solid #D7D7D7; height: 150px; margin-bottom: 10px; background-color: #fff; width: 275px;" frameborder="0" tabindex="0"></iframe>
-                                    </td>
-                                    <td id="TE_NS_employeeCell" style="padding-right: 2px;">
-                                        <table style="padding: 0; margin: 0px; width: 100%;" cellspacing="0" cellpadding="0">
-                                            <tbody>
-                                                <tr>
-                                                    <td colspan="3" align="right" style="text-align: right; height: 15px;">&nbsp; <span style="text-align: right"><a href="../../../CommonControls/#" id="TE_NS_selectAllContributorsLinkOnTimeEntryOrNote" class="txtBlack8Class" tabindex="0">Select All Ticket Contributors</a></span>
-
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td nowrap="">
-                                                        <span id="TE_NS_employeeLabel" class="lblNormalClass" style="font-weight: bold;">Resources</span>
-                                                        <span class="txtBlack8Class">(<a href="../../../CommonControls/#" id="TE_NS_employeeLink" tabindex="0">Load</a>)</span>
-                                                    </td>
-                                                    <td align="right"></td>
-                                                    <td align="right" style="text-align: right;">
-                                                        <span style="text-align: right;"><a href="../../../CommonControls/#" id="TE_NS_recallPreviousLink" class="txtBlack8Class" tabindex="0">Recall Previous Selection(s)</a></span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <iframe src="/autotask/blankpage.htm" id="TE_NS_employeeContainer" style="border: 1px solid #D7D7D7; height: 150px; margin-bottom: 10px; background-color: #fff; width: 100%;" frameborder="0" tabindex="0"></iframe>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td id="TE_NS_bottomTd" colspan="2">
-                                        <table cellspacing="0" cellpadding="0" width="100%" style="padding-top: 3px;" class="PaddingBottomForTd">
-                                            <tbody>
-                                                <tr id="TE_NS_otherEmailRow" style="padding-top: 8px;">
-                                                    <td style="width: 80px;">
-                                                        <span id="TE_NS_otherEmailLabel" class="lblNormalClass" style="font-weight: bold; display: block; white-space: nowrap;">Other Email(s)</span>
-                                                    </td>
-                                                    <td>
-                                                        <span id="TE_NS_otherEmailTextBox" class="stretchTextBox" style="display: inline-block;">
-                                                            <input name="TE:NS:otherEmailTextBox:ATTextEdit" type="text" id="TE_NS_otherEmailTextBox_ATTextEdit" class="txtBlack8Class" style="width: 444px;" tabindex="0"></span>
-                                                    </td>
-                                                </tr>
-                                                <tr id="TE_NS_templateRow">
-                                                    <td style="width: 80px;">
-                                                        <span id="TE_NS_templateLabel" class="lblNormalClass" style="font-weight: bold; display: block; padding-right: 6px; white-space: nowrap;">Notification Template</span>
-                                                    </td>
-                                                    <td>
-                                                        <span id="TE_NS_notificationTemplateDropDownList" style="display: inline-block;">
-                                                            <select name="TE:NS:notificationTemplateDropDownList:ATDropDown" id="TE_NS_notificationTemplateDropDownList_ATDropDown" class="txtBlack8Class" onchange="TicketNotification_TemplateChanged()" style="width: 458px;" tabindex="0">
-                                                                <option selected="selected" value="19">Ticket Time Entry - Created or Edited</option>
-
-                                                            </select></span>
-                                                    </td>
-                                                </tr>
-                                                <tr id="TE_NS_subjectRow">
-                                                    <td style="width: 80px;">
-                                                        <span id="TE_NS_subjectLabel" class="lblNormalClass" style="font-weight: bold; display: block;">Subject</span>
-                                                    </td>
-                                                    <td>
-                                                        <span id="TE_NS_subjectTextBox" class="stretchTextBox" style="display: inline-block;">
-                                                            <input name="TE:NS:subjectTextBox:ATTextEdit" type="text" value="Ticket Time Entry [Miscellaneous: Event]: [Ticket: Number] - [Ticket: Title] ([Ticket: Account])" id="TE_NS_subjectTextBox_ATTextEdit" class="txtBlack8Class" style="width: 444px;" tabindex="0"></span>
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td style="width: 80px; vertical-align: top;">
-                                                        <span id="TE_NS_additionalEmailTextLabel" class="lblNormalClass" style="font-weight: bold; display: block; padding-top: 4px;">Additional<br>
-                                                            Email Text</span>
-                                                    </td>
-                                                    <td style="padding-bottom: 0px;">
-                                                        <span id="TE_NS_additionalEmailTextBox" class="stretchTextArea" style="display: inline-block;">
-                                                            <textarea name="TE:NS:additionalEmailTextBox:ATTextEdit" id="TE_NS_additionalEmailTextBox_ATTextEdit" class="txtBlack8Class" rows="6" style="width: 444px; resize: none;" tabindex="0"></textarea></span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <table id="TE_NS_notificationHeader" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse; padding-right: 0px; padding-left: 0px; padding-bottom: 0px; margin-bottom: 5px; margin-top: 5px; width: 100%; padding-top: 0px;">
-                                            <tbody>
-                                                <tr>
-                                                    <td id="TE_NS_editNotifyDefaultSettingLinkCell" valign="top" style="text-align: right;">&nbsp; <span style="text-align: right"><a href="../../../CommonControls/#" id="TE_NS_editNotifyDefaultSettingLink" class="txtBlack8Class" onclick="window.open('/mvc/Notifications/Ticket.mvc/TicketTimeEntryAddEdit', 'edit', 'menubar=no,toolbar=no,status=no,width=475,height=575,resizable=no,scrollbars=no'); return false;" tabindex="0">Edit Default Settings</a></span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>--%>
+                    
                 </div>
             </div>
         </div>
@@ -494,6 +339,8 @@
 <script>
     var hour, minute, second;//时 分 秒
     hour = minute = second = 0;//初始化
+
+    
     //var millisecond = 0;//毫秒
     var int;
     function Reset()//重置

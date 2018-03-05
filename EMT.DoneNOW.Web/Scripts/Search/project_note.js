@@ -29,7 +29,8 @@ function DeleteNote() {
                     LayerMsg("删除失败");
                 }
 
-                history.go(0);
+                //history.go(0);
+                parent.history.go(0);
             }
         })
     }, function () { });
@@ -47,8 +48,11 @@ function Add() {
         if (parAddType == "contract") {
             var contract_id = $("#contract_id", parent.document).val();
             window.open("../Project/TaskNote.aspx?contract_id=" + contract_id, windowObj.notes + windowType.add, 'left=200,top=200,width=1080,height=800', false);
-        } else {
-
+        }
+        else if (parAddType == "task"){
+            window.open("../Project/TaskNote.aspx?task_id=" + object_id, windowObj.notes + windowType.add, 'left=200,top=200,width=1080,height=800', false);
+        }
+        else {
             window.open("../Project/TaskNote.aspx?project_id=" + object_id, windowObj.notes + windowType.add, 'left=200,top=200,width=1080,height=800', false);
         }
 

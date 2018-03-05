@@ -16,5 +16,6 @@ namespace EMT.DoneNOW.DTO
         public string image;    // 菜单图标
         public List<PageContextMenuDto> submenu;    // 子菜单
         public string id;   // 加个ID可以动态控制li的事件和显示样式
+        public string class_name;  // li class类名称
     }
 }

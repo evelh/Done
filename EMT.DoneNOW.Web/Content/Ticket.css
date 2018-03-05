@@ -1457,7 +1457,7 @@ body.AutotaskBlueTheme .ThemePrimaryColor {
                     white-space: nowrap;
                 }
     .Timeline > .TicketTimelineStart, .Timeline > .TicketSlaTimelineStart {
-        z-index: 5;
+        z-index: 0;
     }
     .Timeline > .TicketTimelineStart {
         height: 17px;
@@ -1519,8 +1519,8 @@ body.AutotaskBlueTheme .ThemePrimaryColor {
 }
 .TimelineIcon.OverlayEventMet {
     background-position: -102px -1px;
-    height: 14px;
-    width: 14px;
+    height: 15px;
+    width: 17px;
 }
 .TimelineIcon {
     background-color: transparent;
@@ -1588,7 +1588,7 @@ body.AutotaskBlueTheme .ThemePrimaryColor {
 }
 .TimelineIcon.Target {
     background-position: -74px -1px;
-    height: 18px;
+    height: 20px;
     width: 18px;
 }
 .Checklist {
@@ -1824,3 +1824,223 @@ body.AutotaskBlueTheme .ThemePrimaryColor {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.TabContainer > .ActivityTabShell > .Content .Avatar {
+    flex: 0 0 auto;
+}
+     .Content .Avatar > .Initials, .DetailsSection > .Content > .ReadOnlyData > .Value > .PrimaryResource > .Left > .Initials {
+        border-radius: 5px;
+        box-shadow: rgba(0,0,0,0.5) 0 0 1px 0;
+        color: #fff;
+        font-size: 22px;
+        height: 48px;
+        line-height: 48px;
+        text-align: center;
+        width: 48px;
+    }
+.ColorSwatch.Color4.ColorSample, .ColorSwatch.Color4 .ColorSample {
+    background-color: #f4b900;
+}
+.TabContainer > .ActivityTabShell > .Content .Details {
+    flex: 1 1 auto;
+    padding-left: 10px;
+}
+.TabContainer > .ActivityTabShell > .Content .QuickNote > .Details > .Editor.TextArea {
+    width: 100%;
+}
+.QuickNote .Editor, .ActivityFilterBar .Editor {
+    padding-bottom: 0;
+}
+.Editor {
+    display: inline-block;
+    padding-bottom: 12px;
+    vertical-align: top;
+}
+.TabContainer > .ActivityTabShell > .Content .QuickNote > .Details textarea {
+    border: 1px solid #D7D7D7;
+    border-radius: 2px;
+    box-shadow: 0 0 3px 0 rgba(80,139,201,0.5);
+    height: auto;
+    line-height: 18px;
+    min-height: 72px;
+    outline: none;
+    padding: 6px 10px;
+    width: calc(100% - 22px);
+}
+.Editor.TextArea textarea {
+    min-width: 306px;
+    width: 306px;
+}
+textarea {
+    font-size: 12px;
+    height: 118px;
+    margin: 0;
+    min-height: 118px;
+    padding: 6px;
+}
+.TextArea .CharacterInformation {
+    color: #666;
+    font-size: 11px;
+}
+.TabContainer > .ActivityTabShell > .Content .QuickNote > .Details > .ButtonBar {
+    display: flex;
+    justify-content: flex-end;
+    margin: -4px 0 10px 0;
+}
+.QuickNote .Editor, .ActivityFilterBar .Editor {
+    padding-bottom: 0;
+}
+.TabContainer > .ActivityTabShell > .Content .QuickNote > .Details > .ButtonBar select {
+    flex: 0 0 auto;
+    height: 26px;
+    margin-left: 10px;
+    padding: 1px 8px 1px 8px;
+    width: 145px;
+}
+select {
+    color: #333;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+}
+input[type="text"], select, textarea {
+    border: 1px solid #d7d7d7;
+    font-size: 12px;
+    resize: vertical;
+}
+a.Button.SuggestiveBackground {
+    background: #3872b2;
+    background: -moz-linear-gradient(top,#518bc9 0,#3872b2 100%);
+    background: -webkit-linear-gradient(top,#518bc9 0,#3872b2 100%);
+    background: -ms-linear-gradient(top,#518bc9 0,#3872b2 100%);
+    background: linear-gradient(to bottom,#518bc9 0,#3872b2 100%);
+    border: 1px solid #3366a0;
+    color: #fff;
+    text-shadow: 0 0 2px rgba(0,0,0,0.2);
+}
+.TabContainer > .ActivityTabShell > .Content .QuickNote > .Details > .OptionBar > .OptionBarRow {
+    padding-bottom: 6px;
+}
+    .TabContainer > .ActivityTabShell > .Content .QuickNote > .Details > .OptionBar > .OptionBarRow > .OptionBarHalf {
+        display: inline-block;
+        padding-right: 20px;
+        width: calc(60% - 20px);
+    }
+        .TabContainer > .ActivityTabShell > .Content .QuickNote > .Details > .OptionBar > .OptionBarRow > .OptionBarHalf > .Editor {
+            width: 100%;
+        }
+input[type="checkbox"], input[type="radio"] {
+    margin: 0;
+    display: block;
+    float: left;
+    clear: left;
+    padding: 0;
+    margin-right: 3px;
+}
+.Editor.CheckBox > .InputField > .EditorLabelContainer > .Label {
+    height: auto;
+    line-height: initial;
+}
+
+.EditorLabelContainer > .Label {
+    color: #4f4f4f;
+    font-weight: 700;
+    height: 14px;
+    line-height: 13px;
+    overflow: hidden;
+    padding-bottom: 1px;
+    padding-right: 5px;
+    vertical-align: bottom;
+    white-space: nowrap;
+}
+#CancelTicketNoteAdd {
+    width: 40px;
+    background: linear-gradient(to bottom,#fdfdfd 0,#ebebeb 100%);
+    border: 1px solid #f8f9fb;
+    /* color: #fff; */
+    text-shadow: 0 0 2px rgba(0,0,0,0.2);
+    text-align: center;
+    padding-top: 3px;
+    margin-left: 10px;
+}
+#SaveTicketNoteAdd {
+    text-align: center;
+    padding-top: 3px;
+    margin-left: 20px;
+    width: 40px;
+}
+.OptionBarRow {
+    float: left;
+}
+.TabContainer > .ActivityTabShell > .Content .QuickNote.Starter {
+    display: flex;
+    border-bottom: 1px solid #dee0e7;
+    padding-bottom: 10px;
+}
+.TabContainer > .ActivityTabShell > .Content > .ActivityFilterBar {
+    padding: 12px 0 12px 0;
+}
+
+    .TabContainer > .ActivityTabShell > .Content > .ActivityFilterBar > .FilterBarRow:last-child {
+        padding-bottom: 0;
+    }
+.FilterBarRow > .FilterBarHalf {
+    display: inline-block;
+    padding-right: 20px;
+    width: calc(50% - 20px);
+    float: left;
+}
+.Editor {
+    width: 100%;
+}
+.ActivityFilterBar .Editor {
+    padding-bottom: 0;
+}
+.ActivityAdvancedOptions {
+    display: block;
+    padding-bottom: 10px;
+    margin-top:15px;
+}
+    .ActivityAdvancedOptions > .Button {
+        flex: 0 0 auto;
+        border-bottom-left-radius: 2px;
+        border-top-left-radius: 2px;
+        border-right: 0;
+        background: linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%);
+        border: 1px solid #d7d7d7;
+        display: inline-flex;
+        color: #4f4f4f;
+        cursor: pointer;
+        height: 24px;
+        padding: 0 3px;
+        position: relative;
+        text-decoration: none;
+    }
+a.Button.DisabledState {
+    color: rgba(95,95,95,0.4);
+    cursor: default;
+}
+a.Button.IconOnly {
+    font-size: 0;
+    line-height: 0;
+    padding: 0 1px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.ActivityAdvancedOptions > input {
+    flex: 1 1 auto;
+    border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+}
+.ActivityAdvancedOptions > select {
+    flex: 0 0 auto;
+    border-radius: 2px;
+    height: 26px;
+    margin-left: 12px;
+    width: 145px;
+    padding: 1px 0 1px 8px;
+    color: #2c3444;
+}
+

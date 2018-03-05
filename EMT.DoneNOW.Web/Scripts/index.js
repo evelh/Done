@@ -130,6 +130,30 @@ $(".NewOverlay").on("mouseout", function () {
     $(this).hide();
 });
 
+//我的下拉菜单
+$(".My").on("mousemove", function () {
+    $(this).addClass("HoverState");
+    $(this).css("borderBottom", "1px solid #fff");
+    $(".MyOverlay").show();
+});
+$(".My").on("mouseout", function () {
+    $(this).removeClass("HoverState");
+    $(this).css("borderTop", "1px solid #d7d7d7");
+    $(this).css("borderBottom", "1px solid #d7d7d7");
+    $(".MyOverlay").hide();
+});
+$(".MyOverlay").on("mousemove", function () {
+    $(".My").addClass("HoverState");
+    $(".My").css("borderBottom", "1px solid #fff");
+    $(this).show();
+});
+$(".MyOverlay").on("mouseout", function () {
+    $(".My").removeClass("HoverState");
+    $(".My").css("borderTop", "1px solid #d7d7d7");
+    $(".My").css("borderBottom", "1px solid #d7d7d7");
+    $(this).hide();
+});
+
 
 //历史的下拉菜单
 $(".Recent").on("mousemove", function () {

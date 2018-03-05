@@ -627,9 +627,21 @@ namespace EMT.DoneNOW.DTO
             HOLIDAYS = 1580,                        // 系统设置-节假日查询
             MYAPPROVE_EXPENSE_REPORT=1581,          // 工时表-等待我审批的费用报表-查询
             APPROVED_REPORT=1582,                   // 工时表-已审批的费用报表-查询
+            TICKET_SEARCH = 1583,                   // 工单管理-工单查询
+            TICKET_ACCOUNT_LIST=1584,               // 客户未关闭工单列表
+            TICKET_SLA_LIST = 1585,                 // 工单管理-SLA事件查询
+            TICKET_SERVICE_LIST = 1586,             // 工单管理-待办和服务预定
+            TICKET_COST_EXPENSE = 1587,             // 工单管理-成本和费用
+            SERVICE=1588,                                // 服务查询  
+            SERVICE_BUNDLE=1589,                         // 服务包查询
+            MY_TASK_TICKET=1590,                    // 我的任务和工单
+            REPORT_CRM_EXPORT_COMPANY = 1591,       // 报表-导出-导出客户信息
+            REPORT_CRM_EXPORT_CONTACT = 1592,       // 报表-导出-导出联系人信息
+            REPORT_CRM_INSPRO_DETAIL = 1593,        // 报表-CRM配置项-配置项详情
+            REPORT_SERVICEDESK_TICKETBYACCOUNT = 1594, // 报表--服务台常规-工单和任务按客户
+            REPORT_CONTRACT_BILLED = 1595,          // 报表-CRM配置项-已计费信息
             WORKFLOW_RULE = 1600,                   // 工作流规则查询
             //RESOURCE_CALLBACK,                      //  
-
             //以下是还没有配查询语句的枚举（系统管理）
 
             General,                       //general表的通用处理
@@ -1500,6 +1512,19 @@ namespace EMT.DoneNOW.DTO
         Holidays = 159,                 // 系统设置-节假日查询
         MYAPPROVE_EXPENSE_REPORT = 160, // 工时表-等待我审批的费用报表-查询
         APPROVED_REPORT = 161,          // 工时表-已审批的费用报表-查询  
+        TICKET_SEARCH = 168,            // 工单管理-工单查询
+        TICKET_ACCOUNT_LIST = 169,      // 客户未关闭工单列表
+        TICKET_SLA_LIST = 170,              // 工单管理-SLA事件查询
+        TICKET_SERVICE_LIST = 171,          // 工单管理-待办和服务预定
+        TICKET_COST_EXPENSE = 172,          // 工单管理-成本和费用
+        SERVICE=173,                        // 服务查询  
+        SERVICE_BUNDLE=174,                 // 服务包查询
+        MY_TASK_TICKET = 175,               // 我的任务和工单
+        REPORT_CRM_EXPORT_COMPANY = 176,    // 报表-导出-导出客户信息
+        REPORT_CRM_EXPORT_CONTACT = 177,    // 报表-导出-导出联系人信息
+        REPORT_CRM_INSPRO_DETAIL = 178,     // 报表-CRM配置项-配置项详情
+        REPORT_SERVICEDESK_TICKETBYACCOUNT = 179, // 报表--服务台常规-工单和任务按客户
+        REPORT_CONTRACT_BILLED = 180,          // 报表-CRM配置项-已计费信息
         WorkflowRule = 185,             // 工作流规则查询
 
         //以下是还没有配查询语句的枚举（系统管理）

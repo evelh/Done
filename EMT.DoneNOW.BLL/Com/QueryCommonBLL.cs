@@ -97,6 +97,7 @@ namespace EMT.DoneNOW.BLL
                     defaultValue = col.default_value,
                     description = col.col_comment,
                     ref_url = col.ref_url,
+                    is_not_null = col.isnot_null,
                 };
 
                 // 下拉框和多选下拉框，获取列表值

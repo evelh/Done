@@ -492,12 +492,12 @@
                                 <div class="Medium Column">
                                     <div class="EditorLabelContainer Inactive AssTicket">
                                         <div class="Label">
-                                            <label for="z23a2329a1ce6401a87c17dd2c6cca73b">工单</label><span class="Required Off">*</span>
+                                            <label>工单</label><span class="Required Off">*</span>
                                         </div>
                                     </div>
-                                    <div class="Editor DataSelector Inactive AssTicket" data-editor-id="z23a2329a1ce6401a87c17dd2c6cca73b" data-rdp="z23a2329a1ce6401a87c17dd2c6cca73b">
+                                    <div class="Editor DataSelector Inactive AssTicket">
                                         <div class="InputField">
-                                            <input id="ticket_id" type="text" value="<%=thisTicket==null?"":thisTicket.title %>" /><a class="Button ButtonIcon IconOnly DataSelector DisabledState" id="z23a2329a1ce6401a87c17dd2c6cca73b_Button" tabindex="0"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><input id="ticket_idHidden" name="ticket_id" type="hidden" value="<%=thisTicket==null?"":thisTicket.id.ToString() %>" /><div class="ContextOverlayContainer" id="z23a2329a1ce6401a87c17dd2c6cca73b_ContextOverlay">
+                                            <input id="ticket_id" type="text" value="<%=thisTicket==null?"":thisTicket.title %>" /><a class="Button ButtonIcon IconOnly DataSelector DisabledState"  tabindex="0"><span class="Icon" style="background: url(../Images/data-selector.png) no-repeat;"></span><span class="Text"></span></a><input id="ticket_idHidden" name="ticket_id" type="hidden" value="<%=thisTicket==null?"":thisTicket.id.ToString() %>" /><div class="ContextOverlayContainer" >
                                                 <div class="AutoComplete ContextOverlay">
                                                     <div class="Active LoadingIndicator"></div>
                                                     <div class="Content"></div>

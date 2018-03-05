@@ -5,9 +5,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
+    <title><%=thisTask!=null?"任务备注":"" %></title>
     <style>
-            
+            .header {
+    height: 40px;
+    line-height: 40px;
+    background: #346A95;
+    padding: 0 10px;
+    font-size: 18px;
+    color: #FFFFFF;
+}
         .NoteSection {
             border: 1px solid #d3d3d3;
             padding: 10px 10px 10px 10px;
@@ -42,11 +49,14 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <%if (thisTask != null){ %>
+        <div class="header">项目任务备注-<%=thisTask.no %><%=thisAccount!=null?"-"+thisAccount.name:"" %></div>
+        <%} %>
         <div>
-            <input type="hidden" id="AddNoteType" value="contract"/>
+            <input type="hidden" id="AddNoteType" value="<%=thisContract!=null?"contract":(thisTask!=null?"task":"") %>"/>
             <iframe runat="server" id="ShowNoteList" style="width: 100%; height: 385px; border-width: 0px;"></iframe>
             <input type="hidden" id="note_id" />
-            <input type="hidden" id="contract_id" value="<%=thisContract.id %>"/>
+            <input type="hidden" id="contract_id" value="<%=thisContract!=null?thisContract.id.ToString():"" %>"/>
         </div>
         <div>
             <div class="NoteSection">
@@ -60,7 +70,7 @@
                             <td align="right" valign="middle" width="10%" rowspan="2">
                                 <div class="contentButton">
                                     <a class="OnlyImageButton" id="HREF_btnPrint" name="HREF_btnPrint" href="javascript:btnPrint.punch(true);">
-                                        <img title="Print" onmouseout="btnPrint.normal();" name="IMG_btnPrint" src="https://ww6.autotask.net/graphics/icons/buttonbar/print.png?v=41661" border="0"></a>
+                                        <img title="Print" onmouseout="btnPrint.normal();" src="../Images/print.png" border="0" /></a>
                                 </div>
                             </td>
                         </tr>

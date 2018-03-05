@@ -42,6 +42,14 @@ namespace EMT.DoneNOW.Web
                     case "DeleteTicket":
                         DeleteTicket(context);
                         break;
+                    case "AddTicketNote":
+                        AddTicketNote(context);
+                        break;
+                    case "IsTicket":
+                        IsTicket(context);
+                        break;
+                    case "GetTicketActivity":
+                        break;
                     default:
                         break;
                 }
@@ -116,9 +124,33 @@ namespace EMT.DoneNOW.Web
                 var thisTicket = new sdk_task_dal().FindNoDeleteById(long.Parse(ticketId));
                 if (thisTicket != null)
                 {
-                    context.Response.Write(BaseDAL<ctt_contract>.GetObjectPropertyValue(thisTicket, propertyName));
+                    context.Response.Write(BaseDAL<sdk_task>.GetObjectPropertyValue(thisTicket, propertyName));
                 }
             }
+        }
+        /// <summary>
+        /// 判断是工单还是任务
+        /// </summary>
+        private void IsTicket(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            var isTicket = "0";
+            if (!string.IsNullOrEmpty(ticketId))
+            {
+                var thisTicket = new sdk_task_dal().FindNoDeleteById(long.Parse(ticketId));
+                if (thisTicket != null)
+                {
+                    if(thisTicket.type_id==(int)DTO.DicEnum.TASK_TYPE.PROJECT_ISSUE|| thisTicket.type_id == (int)DTO.DicEnum.TASK_TYPE.PROJECT_PHASE|| thisTicket.type_id == (int)DTO.DicEnum.TASK_TYPE.PROJECT_TASK)
+                    {
+                        isTicket = "2";
+                    }
+                    else if (thisTicket.type_id == (int)DTO.DicEnum.TASK_TYPE.SERVICE_DESK_TICKET || thisTicket.type_id == (int)DTO.DicEnum.TASK_TYPE.RECURRING_TICKET_MASTER || thisTicket.type_id == (int)DTO.DicEnum.TASK_TYPE.TASKFIRE_TICKET)
+                    {
+                        isTicket = "1";
+                    }
+                }
+            }
+            context.Response.Write(isTicket);
         }
         /// <summary>
         /// 改变检查单的完成状态
@@ -145,7 +177,6 @@ namespace EMT.DoneNOW.Web
                 var thisCheck = new sdk_task_checklist_dal().FindNoDeleteById(long.Parse(ckId));
                 if (thisCheck != null)
                 {
-
                     var creRes = new sys_resource_dal().FindNoDeleteById(thisCheck.create_user_id);
                     var creaTeTime = Tools.Date.DateHelper.ConvertStringToDateTime(thisCheck.create_time);
                     // 返回 重要，完成，创建时间，创建人
@@ -202,6 +233,50 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { result = result, reason = faileReason, }));
             }
         }
-
+        /// <summary>
+        /// 快速新增备注
+        /// </summary>
+        private void AddTicketNote(HttpContext context)
+        {
+            var ticket_id = context.Request.QueryString["ticket_id"];
+            var isInter = !string.IsNullOrEmpty(context.Request.QueryString["is_inter"]);
+            var notiContacr = !string.IsNullOrEmpty(context.Request.QueryString["noti_contact"]);
+            var notiPriRes = !string.IsNullOrEmpty(context.Request.QueryString["noti_pri_res"]);
+            var notiIntAll = !string.IsNullOrEmpty(context.Request.QueryString["noti_inter_all"]);
+            var ticketNoteType = context.Request.QueryString["ticket_note_type_id"];
+            var noteDesc = context.Request.QueryString["ticket_note_desc"];
+            var result = false;
+            if (!string.IsNullOrEmpty(ticket_id) && !string.IsNullOrEmpty(noteDesc)&&!string.IsNullOrEmpty(ticketNoteType))
+            {
+                var notiEmail = new TicketBLL().GetNotiEmail(long.Parse(ticket_id), notiContacr, notiPriRes, notiIntAll);
+                result = new TicketBLL().SimpleAddTicketNote(long.Parse(ticket_id),LoginUserId,int.Parse(ticketNoteType),noteDesc,isInter,notiEmail);
+            }
+            context.Response.Write(result);
+        }
+        /// <summary>
+        /// 获取到工单活动相关页面
+        /// </summary>
+        private void GetTicketActivity(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            if (string.IsNullOrEmpty(ticketId))
+                return;
+            List<string> filter = new List<string>();
+            if (!string.IsNullOrEmpty(context.Request.QueryString["CkPublic"]))
+                filter.Add("public");
+            if (!string.IsNullOrEmpty(context.Request.QueryString["CkInter"]))
+                filter.Add("internal");
+            if (!string.IsNullOrEmpty(context.Request.QueryString["CkLabour"]))
+                filter.Add("timesheet");
+            if (!string.IsNullOrEmpty(context.Request.QueryString["CkNote"]))
+                filter.Add("notes");
+            if (!string.IsNullOrEmpty(context.Request.QueryString["CkAtt"]))
+                filter.Add("attachment");
+            //if (!string.IsNullOrEmpty(context.Request.QueryString["CkMe"]))
+            //    filter.Add("public");
+            //if (!string.IsNullOrEmpty(context.Request.QueryString["orderBy"]))
+            //    filter.Add("public");
+            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.ActivityBLL().GetTicketActHtml(long.Parse(ticketId),LoginUserId,filter)));
+        }
     }
 }

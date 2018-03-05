@@ -25,6 +25,13 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<sdk_work_entry>($"SELECT * from sdk_work_entry where delete_time = 0  and approve_and_post_date is null and approve_and_post_user_id is NULL and batch_id = {batch_id}");
         }
+        /// <summary>
+        /// 根据服务获取到相应的工时信息
+        /// </summary>
+        public List<sdk_work_entry> GetListByService(long serviceId)
+        {
+            return FindListBySql<sdk_work_entry>($"SELECT id from sdk_work_entry where service_id = {serviceId} and delete_time = 0");
+        }
 
         
     }

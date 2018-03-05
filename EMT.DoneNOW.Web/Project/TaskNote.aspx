@@ -221,7 +221,7 @@
                             <tr>
                                 <td>
                                     <div class="clear">
-                                        <label>任务状态<span class="red">*</span></label><asp:DropDownList ID="status_id" runat="server"></asp:DropDownList>
+                                        <label><%=isTicket?"工单":"任务" %>状态<span class="red">*</span></label><asp:DropDownList ID="status_id" runat="server"></asp:DropDownList>
                                     </div>
                                 </td>
                                 <td></td>
@@ -542,6 +542,9 @@
 
         <%
     var notifiType = Request.QueryString["notifi_type"];
+    if (!string.IsNullOrEmpty(notifiType))
+    {
+
     if (notifiType.Contains("priRes"))
     {%>
         $("#CkPriRes").prop("checked", true);
@@ -555,7 +558,8 @@
     {%>
         $("#CkOtherRes").prop("checked", true);
     <%}
-
+    
+    }
     // 
 
     %>

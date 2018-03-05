@@ -53,6 +53,14 @@ namespace EMT.DoneNOW.DAL
             string sql = $"SELECT * from crm_quote_item where quote_id = {quote_id} and delete_time = 0 "+where;
             return FindListBySql<crm_quote_item>(sql);
         }
+        /// <summary>
+        /// 根据报价项对象ID 获取相关报价项信息
+        /// </summary>
+        public List<crm_quote_item> GetItemByObjId(long objectId, string where = "")
+        {
+            string sql = $"SELECT * from crm_quote_item where object_id = {objectId} and delete_time = 0 " + where;
+            return FindListBySql<crm_quote_item>(sql);
+        }
 
 
 

@@ -37,7 +37,7 @@ $(".Title7").on("click", function () {
 });
 
 var colors = ["#white", "white"];
-var color1 = 0; var color2 = 0; var color3 = 0;
+var color1 = 0; var color2 = 0; var color3 = 0; var color4 = 0;
 $(".Toggle1").on("click", function () {
     $(this).parent().parent().find($(".Vertical")).toggle();
     $(this).parent().parent().find($('.Content')).toggle();
@@ -56,8 +56,14 @@ $(".Toggle3").on("click", function () {
     $(this).parent().parent().css("background", colors[color3 % 2]);
     color3++;
 });
-// ToolLi
-// Down2
+$(".Toggle4").on("click", function () {
+    $(this).parent().parent().find($(".Vertical")).toggle();
+    $(this).parent().parent().find($('.Content')).toggle();
+    $(this).parent().parent().css("background", colors[color4 % 2]);
+    color4++;
+});
+// filter
+// FilterDiv
 $("#ToolLi").on("mousemove", function () {
     $("#Down2").show();
     $(this).css("border-bottom", "1px solid white").css("background", "white");
@@ -72,6 +78,21 @@ $("#Down2").on("mousemove", function () {
     $(this).hide();
     $("#ToolLi").css("border-bottom", "1px solid #d7d7d7").css("background", "linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%)");
     });
+
+$("#filter").on("mousemove", function () {
+    $("#FilterDiv").show();
+    $(this).css("border-bottom", "1px solid white").css("background", "white");
+}).on("mouseout", function () {
+    $("#FilterDiv").hide();
+    $(this).css("border-bottom", "1px solid #d7d7d7").css("background", "linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%)");
+});
+$("#FilterDiv").on("mousemove", function () {
+    $(this).show();
+    $("#filter").css("border-bottom", "1px solid white").css("background", "white");
+}).on("mouseout", function () {
+    $(this).hide();
+    $("#filter").css("border-bottom", "1px solid #d7d7d7").css("background", "linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%)");
+});
 
 $(".QuickLaunchButton").mouseover(function () {
     $(this).children().first().show();
@@ -274,30 +295,51 @@ $(".CopyTextButton").click(function () {
 })
 
 $(".Dot").mouseover(function (event) {
+    //var winWidth = window.innerWidth;
+    //var winHeight = window.innerHeight;
+
+
+    //var Left = $(document).scrollLeft() + event.clientX;
+    //var Top = $(document).scrollTop() + event.clientY;
+    //var menuWidth = $(this).next().children().first().width();
+    //var menuHeight = $(this).next().children().first().height();
+    //var scrLeft = $(document).scrollLeft();
+    //var scrTop = $(document).scrollTop();
+
+
+    //$(this).next().children().first().css("left",  Left -30 + "px");
+    //$(this).next().children().first().css("margin-top", Top - 145 + "px");
+    $(this).next().children().first().show();
+
+})
+
+
+$(".Dot").mouseleave(function () {
+    $(this).next().children().first().hide();
+})
+
+
+$(".TargetPointer>.Target").mouseover(function (event) {
     var winWidth = window.innerWidth;
     var winHeight = window.innerHeight;
 
 
     var Left = $(document).scrollLeft() + event.clientX;
     var Top = $(document).scrollTop() + event.clientY;
-    var menuWidth = $(this).next().children().first().width();
-    var menuHeight = $(this).next().children().first().height();
+    var menuWidth = $(this).parent().next().children().first().width();
+    var menuHeight = $(this).parent().next().children().first().height();
     var scrLeft = $(document).scrollLeft();
     var scrTop = $(document).scrollTop();
 
 
-    $(this).next().children().first().css("left",  Left -30 + "px");
-    $(this).next().children().first().css("margin-top", Top - 145 + "px");
-    $(this).next().children().first().show();
+    $(this).parent().next().children().first().css("left", Left - 30 + "px");
+    $(this).parent().next().children().first().css("margin-top", Top - 145 + "px");
+    $(this).parent().next().children().first().show();
+})
+$(".TargetPointer>.Target").mouseleave(function () {
+    $(this).parent().next().children().first().hide();
+})
 
-})
-$(".Dot").mouseleave(function () {
-    $(this).next().children().first().hide();
-})
-
-$(".Dot").mouseout(function () {
-    $(this).next().children().first().hide();
-})
 // 隐藏完成的检查单
 function HideItem() {
     $(".Completed").hide();
@@ -389,4 +431,139 @@ $(".ChecklistIcon").click(function () {
     }
     $("#CompletedCount").text(count);
 
+})
+
+$("#Note").click(function () {
+    var isShowSave = $("#isShowSave").val();
+    if (isShowSave == "") {
+        $(".Details>.ButtonBar").show();
+        $(".Details>.OptionBar").show();
+
+        $("#isShowSave").val("1");
+    }
+})
+
+$("#CancelTicketNoteAdd").click(function () {
+    $("#isShowSave").val("");
+    $(".Details>.ButtonBar").hide();
+    $(".Details>.OptionBar").hide();
+})
+
+// 保存备注相关操作
+$("#SaveTicketNoteAdd").click(function () {
+    var ticket_id = $("#ticket_id").val();
+    if (ticket_id == "" || ticket_id == null || ticket_id == undefined) {
+        LayerMsg("工单信息丢失，请刷新页面重试！");
+        return false;
+    }
+    var Note = $("#Note").val();
+    if (Note == "") {
+        LayerMsg("q请填写备注信息！");
+        return false;
+    }
+    var NoteTypes = $("#NoteTypes").val();
+    if (NoteTypes == "") {
+        LayerMsg("请选择工单备注类型");
+        return false;
+    }
+    var url = "../Tools/TicketAjax.ashx?act=AddTicketNote&ticket_id=" + ticket_id + "&ticket_note_type_id=" + NoteTypes + "&ticket_note_desc=" + Note;
+    // is_inter    noti_contact   noti_pri_res   noti_inter_all
+    if ($("#punlishInter").is(":checked")) {
+        url += "&is_inter=1";
+    }
+    if ($("#TicketNoteNotiPriRes").is(":checked")) {
+        url += "&noti_pri_res=1";
+    }
+    if ($("#TicketNoteNotiContact").is(":checked")) {
+        url += "&noti_contact=1";
+    }
+    if ($("#TicketNoteNotiInterAll").is(":checked")) {
+        url += "&noti_inter_all=1";
+    }
+
+    $.ajax({
+        type: "GET",
+        url: url,
+        async: false,
+        //dataType: "json",
+        success: function (data) {
+            if (data != "") {
+                if (data == "True") {
+                    LayerMsg("添加成功！");
+                }
+                else {
+                    LayerMsg("添加失败！");
+                }
+            }
+            setTimeout(function () { history.go(0);},1000)
+            
+        }
+    })
+
+
+
+})
+
+$("#Refresh").click(function () {
+    location.reload();
+})
+// 应用过滤器 查看工单活动使用
+function ApplyFilter() {
+    var ticket_id = $("#ticket_id").val();
+    if (ticket_id != null && ticket_id != "") {
+        LayerLoad();
+        var url = "../Tool/TicketAjax?act=aa&ticketId=" + ticket_id;
+        if ($("#CkPublic").is(":checked")) {
+            url += "&CkPublic=1";
+        }
+        if ($("#CkInter").is(":checked")) {
+            url += "&CkInter=1";
+        }
+        if ($("#CkLabour").is(":checked")) {
+            url += "&CkLabour=1";
+        }
+        if ($("#CkNote").is(":checked")) {
+            url += "&CkNote=1";
+        }
+        if ($("#CkAtt").is(":checked")) {
+            url += "&CkAtt=1";
+        }
+        if ($("#CkMe").is(":checked")) {
+            url += "&CkMe=1";
+        }
+        var orderBy = $("#orderBy").val();
+        if (orderBy != null && orderBy != "" && orderBy != undefined) {
+            url += "&orderBy=" + orderBy;
+        }
+
+        var actHtml = "";
+        $.ajax({
+            type: "GET",
+            url: url,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data != "") {
+                    actHtml = data;
+                }
+            }
+        })
+       
+        setTimeout(function () {
+            $("#ShowTicketActivity").html(actHtml);
+            LayerLoadClose();
+        }, 300);
+    }
+}
+
+$("#CkShowSysNote").click(function () {
+    ApplyFilter();
+})
+
+$("#CkShowBillData").click(function () {
+    ApplyFilter();
+})
+
+$("#CancelLi").click(function () {
+    window.close();
 })

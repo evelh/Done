@@ -109,7 +109,7 @@ namespace EMT.DoneNOW.DAL
         /// </summary>
         public string GetContractSql(string contractSql)
         {
-            if (string.IsNullOrEmpty(contractSql) || string.IsNullOrWhiteSpace(contractSql))
+            if (string.IsNullOrEmpty(contractSql) || contractSql== "concat()")
             {
                 return "";
             }
@@ -156,6 +156,19 @@ namespace EMT.DoneNOW.DAL
         public List<sdk_task> GetTicketByIds(string ids)
         {
             return FindListBySql<sdk_task>($"SELECT * from sdk_task where delete_time = 0 and id in({ids})");
+        }
+
+        public object GetSlaTime(sdk_task ticket)
+        {
+            if(ticket.sla_id==null|| ticket.cate_id == null || ticket.ticket_type_id == null || ticket.priority_type_id == null || ticket.issue_type_id == null || ticket.sub_issue_type_id == null || ticket.sla_start_time == null)
+            {
+                return "";
+            }
+            else
+            {
+                return GetSingle($"select f_get_sla_time({ticket.sla_id.ToString()},{ticket.cate_id.ToString()},{ticket.ticket_type_id.ToString()},{ticket.priority_type_id.ToString()},{ticket.issue_type_id.ToString()},{ticket.sub_issue_type_id.ToString()},'{Tools.Date.DateHelper.ConvertStringToDateTime((long)ticket.sla_start_time).ToString("yyyy-MM-dd HH:mm:ss")}')");
+            }
+          
         }
 
         #endregion

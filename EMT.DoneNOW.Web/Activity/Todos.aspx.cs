@@ -22,6 +22,8 @@ namespace EMT.DoneNOW.Web.Activity
         protected long contactId = 0;       // 初始联系人id
         protected long opportunityId = 0;   // 初始商机id
         protected long saleOrderId = 0;     // 初始销售订单id
+        protected long ticketId = 0;        // 初始工单id
+        protected sdk_task ticket;          // 初始工单信息
         protected int objType = 0;          // 对象类型
         protected long objId = 0;           // 对象id
 
@@ -80,6 +82,18 @@ namespace EMT.DoneNOW.Web.Activity
                     if (opp.contact_id != null)
                         contactId = (long)opp.contact_id;
                 }
+                if (long.TryParse(Request.QueryString["ticketId"], out ticketId))
+                {
+                    objType = (int)DicEnum.OBJECT_TYPE.TICKETS;
+                    objId = ticketId;
+                    ticket = new DAL.sdk_task_dal().FindNoDeleteById(ticketId);
+                    accountId = ticket.account_id;
+                    if (ticket.contact_id != null)
+                        contactId = (long)ticket.contact_id;
+                    if (ticket.opportunity_id != null)
+                        opportunityId = (long)ticket.opportunity_id;
+                }
+
             }
             else
             {

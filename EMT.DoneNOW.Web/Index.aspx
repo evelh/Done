@@ -313,6 +313,22 @@
                                 <%}%>
                                 <!--第六个-->
                                 <div class="Module">
+                                    <div class="Normal ContextOverlayColumn">
+                                        <div>
+                                            
+                                            <div class="Group">
+                                                  <div class="Heading">
+                                                    <div class="Text">查询</div>
+                                                </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&isCheck=1" target="PageFrame">
+                                                        <span class="Text">工单</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
                                 </div>
                                 <!--第七个-->
                                 <div class="Module">
@@ -463,9 +479,52 @@
                                 <%} %>
                                 <!--第九个-->
                                 <div class="Module">
+                                    <div class="Normal ContextOverlayColumn">
+                                        <div>
+                                            <div class="Group">
+                                                <div class="Heading">
+                                                    <div class="Text">报表种类</div>
+                                                </div>
+                                               
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage" target="PageFrame">
+                                                        <span class="Text">CRM</span>
+                                                    </a>
+                                                </div>
+                                               <%--<div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage" target="PageFrame">
+                                                        <span class="Text">项目</span>
+                                                    </a>
+                                                </div>--%>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage" target="PageFrame">
+                                                        <span class="Text">服务台</span>
+                                                    </a>
+                                                </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage" target="PageFrame">
+                                                        <span class="Text">合同计费</span>
+                                                    </a>
+                                                </div>
+                                               
+                                            </div>
+                                            <div class="Group">
+                                                <div class="Heading">
+                                                    <div class="Text">搜索</div>
+                                                </div>
+                                            </div>
+                                            <div class="Group">
+                                                <div class="Heading">
+                                                    <div class="Text">工具</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <!--第10个-->
                                 <div class="Module">
+                                    
+                                
                                 </div>
                                 <!--第11个-->
                                 <%if (CheckAuth("MENU_SETTING"))
@@ -661,7 +720,99 @@
                     </div>
                 </div>
             </div>
-
+            <!--我的下拉菜单-->
+            <div class="ContextOverlayContainer">
+                <div class="MyOverlay ContextOverlay" style="left: 355px; top: 39px;">
+                    <div class="Content">
+                        <div class="Title">我的...</div>
+                        <div class="ColumnSet">
+                            <div class="Normal ContextOverlayColumn">
+                                <div>
+                                    <div class="Group">
+                                        <div class="Heading">
+                                            <div class="Text">服务台</div>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET %>" target="PageFrame">
+                                                <span class="Text">任务和工单</span>
+                                            </a>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState">
+                                                <span class="Text">My Home Page</span>
+                                            </a>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState">
+                                                <span class="Text">My Home Page</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="Group">
+                                        <div class="Heading">
+                                            <div class="Text">Service Desk</div>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState">
+                                                <span class="Text">My Home Page</span>
+                                            </a>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState">
+                                                <span class="Text">My Home Page</span>
+                                            </a>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState">
+                                                <span class="Text">My Home Page</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="Normal ContextOverlayColumn">
+                                <div>
+                                    <div class="Group">
+                                        <div class="Heading">
+                                            <div class="Text">Service Desk</div>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState">
+                                                <span class="Text">My Home Page</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="Group">
+                                        <div class="Heading">
+                                            <div class="Text">Service Desk</div>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState">
+                                                <span class="Text">My Home Page</span>
+                                            </a>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState">
+                                                <span class="Text">My Home Page</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="Group">
+                                        <div class="Heading">
+                                            <div class="Text">Service Desk</div>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState">
+                                                <span class="Text">My Home Page</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!--历史纪录的下拉菜单-->
             <div class="ContextOverlayContainer">
                 <div class="RecentOverlay ContextOverlay" style="left: 390px; top: 39px;">

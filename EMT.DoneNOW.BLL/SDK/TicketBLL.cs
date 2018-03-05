@@ -479,6 +479,7 @@ namespace EMT.DoneNOW.BLL
                 thisActivity.oid = 0;
                 thisActivity.object_id = thisTicket.id;
                 thisActivity.account_id = thisTicket.account_id;
+                thisActivity.task_status_id = thisTicket.status_id;
                 caDal.Insert(thisActivity);
                 OperLogBLL.OperLogAdd<com_activity>(thisActivity, thisActivity.id, user_id, OPER_LOG_OBJ_CATE.ACTIVITY, "新增备注");
 
@@ -640,7 +641,7 @@ namespace EMT.DoneNOW.BLL
                 // sdk_task_sla_event
                 var stseDal = new sdk_task_sla_event_dal();
                 var thisTaskSla = stseDal.GetTaskSla(thisTicket.id);
-                if (thisTaskSla != null)
+                if (thisTaskSla == null)
                 {
                     thisTaskSla = new sdk_task_sla_event()
                     {
@@ -689,7 +690,7 @@ namespace EMT.DoneNOW.BLL
                 var oldEvent = stseDal.FindNoDeleteById(thisTaskSla.id);
                 if (oldEvent != null)
                 {
-                    
+                
                 }
                 stseDal.Update(thisTaskSla);
                 OperLogBLL.OperLogUpdate<sdk_task_sla_event>(thisTaskSla, oldEvent, thisTaskSla.id, userId, OPER_LOG_OBJ_CATE.TICKET_SLA_EVENT, "修改工单sla事件");
@@ -998,5 +999,58 @@ namespace EMT.DoneNOW.BLL
 
 
         #endregion
+
+
+        /// <summary>
+        /// 快速新增工单备注
+        /// </summary>
+        public bool SimpleAddTicketNote(long ticketId,long userId,int noteTypeId,string noteDes,bool isInter,string notifiEmail)
+        {
+            var result = false;
+            try
+            {
+                var thisTicket = _dal.FindNoDeleteById(ticketId);
+                var caDal = new com_activity_dal();
+                var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                var thisNote = new com_activity()
+                {
+                    id= caDal.GetNextIdCom(),
+                    account_id = thisTicket.account_id,
+                    object_id = thisTicket.id,
+                    ticket_id = thisTicket.id,
+                    action_type_id = noteTypeId,
+                    publish_type_id= isInter?((int)NOTE_PUBLISH_TYPE.TASK_INTERNA_USER) :((int)NOTE_PUBLISH_TYPE.TASK_ALL_USER),
+                    cate_id = (int)ACTIVITY_CATE.TICKET_NOTE,
+                    name = noteDes.Length>=40? noteDes.Substring(0,39): noteDes,
+                    description = noteDes,
+                    create_time = timeNow,
+                    update_time = timeNow,
+                    create_user_id = userId,
+                    update_user_id = userId,
+                    object_type_id = (int)OBJECT_TYPE.TICKETS,
+                    task_status_id =thisTicket.status_id,
+                    resource_id = thisTicket.owner_resource_id,
+                };
+                caDal.Insert(thisNote);
+                OperLogBLL.OperLogAdd<com_activity>(thisNote, thisNote.id, userId, OPER_LOG_OBJ_CATE.ACTIVITY, "新增备注");
+
+                #region todo 工单备注事件的默认模板，如果不设置则不发送
+                #endregion
+                result = true;
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+
+            return result;
+        }
+        /// <summary>
+        /// 快速新增中，获取相关的通知人邮箱
+        /// </summary>
+        public string GetNotiEmail(long ticketId,bool notiContact,bool notiPriRes,bool noriInterAll)
+        {
+            return "";
+        }
     }
 }
