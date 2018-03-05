@@ -270,6 +270,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.EXPENSE_REPORT:
                     addBtn = "添加费用报表";
                     break;
+                case (int)DicEnum.QUERY_CATE.WORKFLOW_RULE:
+                    addBtn = "新增";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -943,6 +946,13 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "全部标记为已支付", click_function = "PaidAll()" });
                     contextMenu.Add(new PageContextMenuDto { text = "标记为已审批", click_function = "Approval()" });
                     contextMenu.Add(new PageContextMenuDto { text = "全部标记为已审批", click_function = "ApprovalAll()" });
+                    break;
+                case (long)QueryType.WorkflowRule:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "SetActive()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "SetInactive()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()" });
                     break;
                 case (long)QueryType.TICKET_SEARCH:
                     var ticketView = new PageContextMenuDto { text="查看"};

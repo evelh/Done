@@ -643,6 +643,7 @@ namespace EMT.DoneNOW.DTO
             REPORT_PROJECT_PROJECT_LIST = 1597,     // 报表-项目项目-项目清单
             REPORT_OTHER_SYSTEM_LOGINLOG = 1598,    // 报表-其他-系统-登录日志
             REPORT_OTHER_SYSTEM_OPERLOG = 1599,     // 报表-其他-系统-操作日志
+            WORKFLOW_RULE = 1600,                   // 工作流规则查询
             //RESOURCE_CALLBACK,                      //  
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -771,6 +772,7 @@ namespace EMT.DoneNOW.DTO
             TICKET_SERVICE_REQUEST = 1421,              // 服务请求审批人信息
             IVT_SERVICE = 1423,                         // 服务
             IVT_SERVICE_BUNDLE = 1424,                  // 服务包
+            WORKFLOW_RULE = 1425,                       // 工作流规则
             TICKET_SLA_EVENT,                        // 工单sla 事件
 
 
@@ -800,6 +802,7 @@ namespace EMT.DoneNOW.DTO
             MULTI_DROPDOWN = 810,   // 多选下拉框
             AREA = 811,             // 行政区
             CALLBACK = 812,         // 查找带回
+            BOOLEAN = 813,          // 布尔值
             MUILT_CALLBACK = 814,   // 多选查找带回
             NUMBER_EQUAL = 816,     // 数值(做等于判断)
             TIMESPAN = 817,         // 日期-时间戳
@@ -1525,6 +1528,8 @@ namespace EMT.DoneNOW.DTO
         REPORT_CRM_INSPRO_DETAIL = 178,     // 报表-CRM配置项-配置项详情
         REPORT_SERVICEDESK_TICKETBYACCOUNT = 179, // 报表--服务台常规-工单和任务按客户
         REPORT_CONTRACT_BILLED = 180,          // 报表-CRM配置项-已计费信息
+        WorkflowRule = 185,             // 工作流规则查询
+
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
         Line_Of_Business,              //系统管理：组织：业务条线

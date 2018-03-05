@@ -28,6 +28,7 @@ namespace EMT.DoneNOW.DTO
         public long id;             // 查询条件id
         public int data_type;       // 查询条件值类型
         public string defaultValue; // 查询条件默认值
+        public string col_name;     // 查询条件列名
         public string description;  // 查询条件描述
         public string ref_url;      // 查找带回的打开地址
         public string operator_type_id;             // 操作符id

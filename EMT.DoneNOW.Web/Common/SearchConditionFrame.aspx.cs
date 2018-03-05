@@ -201,6 +201,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.APPROVED_REPORT:
                     currentQuery.page_name = "已审批费用报表";
                     break;
+                case (int)DicEnum.QUERY_CATE.WORKFLOW_RULE:
+                    currentQuery.page_name = "工作流规则";
+                    break;
                 case (int)DicEnum.QUERY_CATE.TICKET_SEARCH:
                     currentQuery.page_name = "工单查询";
                     break;

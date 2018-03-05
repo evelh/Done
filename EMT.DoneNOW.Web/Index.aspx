@@ -551,12 +551,12 @@
                                             </div>
                                             <div class="Group">
                                                 <div class="Heading">
-                                                    <div class="Text">搜索</div>
+                                                    <div class="Text">常用</div>
                                                 </div>
-                                            </div>
-                                            <div class="Group">
-                                                <div class="Heading">
-                                                    <div class="Text">工具</div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.WORKFLOW_RULE %>" target="PageFrame">
+                                                        <span class="Text">工作流规则</span>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
