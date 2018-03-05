@@ -627,6 +627,7 @@ namespace EMT.DoneNOW.DTO
             HOLIDAYS = 1580,                        // 系统设置-节假日查询
             MYAPPROVE_EXPENSE_REPORT=1581,          // 工时表-等待我审批的费用报表-查询
             APPROVED_REPORT=1582,                   // 工时表-已审批的费用报表-查询
+            WORKFLOW_RULE = 1600,                   // 工作流规则查询
             //RESOURCE_CALLBACK,                      //  
 
             //以下是还没有配查询语句的枚举（系统管理）
@@ -756,6 +757,7 @@ namespace EMT.DoneNOW.DTO
             TICKET_SERVICE_REQUEST = 1421,              // 服务请求审批人信息
             IVT_SERVICE = 1423,                         // 服务
             IVT_SERVICE_BUNDLE = 1424,                  // 服务包
+            WORKFLOW_RULE = 1425,                       // 工作流规则
             TICKET_SLA_EVENT,                        // 工单sla 事件
 
 
@@ -785,6 +787,7 @@ namespace EMT.DoneNOW.DTO
             MULTI_DROPDOWN = 810,   // 多选下拉框
             AREA = 811,             // 行政区
             CALLBACK = 812,         // 查找带回
+            BOOLEAN = 813,          // 布尔值
             MUILT_CALLBACK = 814,   // 多选查找带回
             NUMBER_EQUAL = 816,     // 数值(做等于判断)
             TIMESPAN = 817,         // 日期-时间戳
@@ -1497,6 +1500,7 @@ namespace EMT.DoneNOW.DTO
         Holidays = 159,                 // 系统设置-节假日查询
         MYAPPROVE_EXPENSE_REPORT = 160, // 工时表-等待我审批的费用报表-查询
         APPROVED_REPORT = 161,          // 工时表-已审批的费用报表-查询  
+        WorkflowRule = 185,             // 工作流规则查询
 
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
