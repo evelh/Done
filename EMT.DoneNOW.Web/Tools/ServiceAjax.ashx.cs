@@ -47,21 +47,6 @@ namespace EMT.DoneNOW.Web
                 case "ActiveService":
                     ActiveService(context);
                     break;
-                case "GetServicesByIds":
-                    GetServicesByIds(context);
-                    break;
-                case "GetServicePriceByIds":
-                    GetServicePriceByIds(context);
-                    break;
-                case "GetServiceContractCount":
-                    GetServiceContractCount(context);
-                    break;
-                case "DeleteService":
-                    DeleteService(context);
-                    break;
-                case "ActiveService":
-                    ActiveService(context);
-                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     break;

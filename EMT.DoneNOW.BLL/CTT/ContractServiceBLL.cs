@@ -287,43 +287,13 @@ namespace EMT.DoneNOW.BLL
                 ctt_contract_service_adjust_bundle_service_dal sabsDal = new ctt_contract_service_adjust_bundle_service_dal();
                 foreach (var sbs in sbsList)
                 {
-                    ctt_contract_service_adjust_dal saDal = new ctt_contract_service_adjust_dal();
-                    ctt_contract_service_adjust sa = new ctt_contract_service_adjust();
-                    sa.id = saDal.GetNextIdCom();
-                    sa.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                    sa.update_time = sa.create_time;
-                    sa.create_user_id = userId;
-                    sa.update_user_id = userId;
-                    sa.contract_id = service.contract_id;
-                    sa.object_id = cs.object_id;
-                    sa.object_type = cs.object_type;
-                    sa.quantity_change = cs.quantity;
-                    sa.contract_service_id = cs.id;
-                    sa.effective_date = dtStart;
-                    sa.end_date = tmp2;
-                    if (sa.end_date > contract.end_date)
-                        sa.end_date = contract.end_date;
-                    sa.prorated_cost_change = (decimal)service.adjusted_price;
-                    sa.adjust_prorated_price_change = service.quantity * (decimal)service.adjusted_price * adjustDaysCnt / periodDaysCnt;
-                    sa.prorated_price_change = sa.adjust_prorated_price_change;
-
-                    saDal.Insert(sa);
-                    OperLogBLL.OperLogAdd<ctt_contract_service_adjust>(sa, sa.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_ADJUST, "新增合同服务包调整");
-
-                    dtStart = tmp2.AddDays(1);
-
-                    // 插入服务调整表包含的服务ctt_contract_service_adjust_bundle_service
-                    ctt_contract_service_adjust_bundle_service_dal sabsDal = new ctt_contract_service_adjust_bundle_service_dal();
-                    foreach (var sbs in sbsList)
-                    {
-                        ctt_contract_service_adjust_bundle_service sabs = new ctt_contract_service_adjust_bundle_service();
-                        sabs.id = sabsDal.GetNextIdCom();
-                        sabs.service_id = sbs.service_id;
-                        sabs.contract_service_adjust_id = sa.id;
-                        sabs.prorated_cost_change = (decimal)sBll.GetServiceById(sbs.service_id).unit_cost;
-                        sabs.vendor_account_id = ivtServiceBundle.vendor_account_id;
-                        sabsDal.Insert(sabs);
-                    }
+                    ctt_contract_service_adjust_bundle_service sabs = new ctt_contract_service_adjust_bundle_service();
+                    sabs.id = sabsDal.GetNextIdCom();
+                    sabs.service_id = sbs.service_id;
+                    sabs.contract_service_adjust_id = sa.id;
+                    sabs.prorated_cost_change = (decimal)sBll.GetServiceById(sbs.service_id).unit_cost;
+                    sabs.vendor_account_id = ivtServiceBundle.vendor_account_id;
+                    sabsDal.Insert(sabs);
                 }
 
                 start = end.AddDays(1);     // 周期开始日期指向下一周期
