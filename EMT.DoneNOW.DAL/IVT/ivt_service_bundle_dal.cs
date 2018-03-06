@@ -24,6 +24,5 @@ namespace EMT.DoneNOW.DAL
         {
             return GetSingle($"SELECT COUNT(DISTINCT(cc.id))  from ctt_contract_service ccs INNER JOIN ctt_contract cc on ccs.contract_id = cc.id where cc.type_id = {(int)DTO.DicEnum.CONTRACT_TYPE.SERVICE} and ccs.delete_time = 0 and cc.delete_time = 0 and ccs.object_id = {serviceId}");
         }
-
     }
 }

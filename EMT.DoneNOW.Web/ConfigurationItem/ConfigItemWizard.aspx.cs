@@ -15,6 +15,8 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
     {
         protected ctt_contract contract = null;
         protected ctt_contract_cost conCost = null;
+        protected List<ctt_contract_cost> costList = null;      // 成本中未生成配置项的数量  （集合中的成本代表同一个成本）
+        protected List<ctt_contract_cost> exisCostList = null;  // 已经生成了配置项的成本    （集合中的成本代表同一个成本）
         protected ivt_product product = null;
         protected pro_project thisProject = null;
         protected void Page_Load(object sender, EventArgs e)
@@ -44,12 +46,40 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                     {
                         product = new ivt_product_dal().GetDefaultProduct();
                     }
+                    if (conCost.quantity != null)
+                    {
+                        var thisSubList = new crm_installed_product_dal().GetInsProByCostId(conCost.id, (long)conCost.quantity);
+                        int num = (int)conCost.quantity;
+                        if (thisSubList!=null&& thisSubList.Count > 0)
+                        {
+                            num = (int)conCost.quantity - thisSubList.Count;
+                            exisCostList = new ctt_contract_cost_dal().GetItemByNum(conCost.id, thisSubList.Count);
+                           
+                        }
+                        if (num > 0)
+                        {
+                            costList = new ctt_contract_cost_dal().GetItemByNum(conCost.id, num);
+                        }
+
+
+                    }
+                    if(costList!=null&& costList.Count > 0)
+                    {
+
+                    }
+                    
+                }
+                if (conCost == null)
+                {
+                    Response.Write("<script>alert('未查询到成本');window.close();</script>");
+                    return;
+                }
+                if (conCost.create_ci==1)
+                {
+                    Response.Write("<script>alert('成本已创建配置项！');window.close();</script>");
+                    return;
                 }
 
-                if(contract==null&& thisProject == null)
-                {
-                    Response.End();
-                }
             }
             catch (Exception)
             {
@@ -59,11 +89,22 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
 
         protected void btnFinish_Click(object sender, EventArgs e)
         {
-            if (CheckOne.Checked)
+
+            var ChooseProId = Request.Form["ChooseProId"];
+            if (!string.IsNullOrEmpty(ChooseProId))
             {
-                var param = GetParam();
-                var result = new InstalledProductBLL().ConfigurationItemAdd(param,GetLoginUserId());
-                if (result)
+                var chooseProArr = ChooseProId.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                int sucessNum = 0;
+                foreach (var chooseProId in chooseProArr)
+                {
+                    var param = GetParam(chooseProId);
+                    var result = new InstalledProductBLL().ConfigurationItemAdd(param, GetLoginUserId());
+                    if (result)
+                    {
+                        sucessNum++;
+                    }
+                }
+                if (sucessNum>0)
                 {
                     conCost.create_ci = 1;
                     AddChargeDto dto = new AddChargeDto()
@@ -73,7 +114,7 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                     };
                     bool isDelShiCost = false;
                     var isHasPurchaseOrder = "";
-                    new ContractCostBLL().UpdateCost(dto, GetLoginUserId(),out isDelShiCost,out isHasPurchaseOrder);
+                    new ContractCostBLL().UpdateCost(dto, GetLoginUserId(), out isDelShiCost, out isHasPurchaseOrder);
                     ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('配置项向导成功！');window.close();self.opener.location.reload();</script>");
                 }
                 else
@@ -85,12 +126,16 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>window.close();self.opener.location.reload();</script>");
             }
+                
+            
+                
+            
         }
         /// <summary>
         /// 获取到页面参数
         /// </summary>
         /// <returns></returns>
-        protected ConfigurationItemAddDto GetParam()
+        protected ConfigurationItemAddDto GetParam(string chooseProId)
         {
             var param = AssembleModel<ConfigurationItemAddDto>();
             if (contract != null)
@@ -108,17 +153,26 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
             param.status = 1;
             param.contact_id = null;
             param.contract_id = null;
-            param.service = null;
-            if (product.installed_product_cate_id != null)
+            param.service_id = null;
+            var productId = Request.Form[chooseProId+"_product_id"];
+            if (productId != "")
             {
-                param.installed_product_cate_id = product.installed_product_cate_id;
-            }
-            else
-            {
-                var thisGeneral = new d_general_dal().GetGeneralById((long)product.cate_id);
-                if (thisGeneral != null)
+                var thisProduct = new ivt_product_dal().FindNoDeleteById(long.Parse(productId));
+                if (thisProduct != null)
                 {
-                    param.installed_product_cate_id = int.Parse(thisGeneral.ext1);
+                    param.product_id = thisProduct.id;
+                    if (product.installed_product_cate_id != null)
+                    {
+                        param.installed_product_cate_id = product.installed_product_cate_id;
+                    }
+                    else
+                    {
+                        var thisGeneral = new d_general_dal().GetGeneralById((long)product.cate_id);
+                        if (thisGeneral != null)
+                        {
+                            param.installed_product_cate_id = int.Parse(thisGeneral.ext1);
+                        }
+                    }
                 }
             }
             

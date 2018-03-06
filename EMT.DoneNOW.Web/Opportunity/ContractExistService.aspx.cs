@@ -9,9 +9,9 @@ using System.Web.UI.WebControls;
 
 namespace EMT.DoneNOW.Web.Opportunity
 {
-    public partial class ContractExistService : System.Web.UI.Page
+    public partial class ContractExistService : BasePage
     {
-        protected Dictionary<long,string> serviceList = null;   // 所有的相同的服务
+        protected Dictionary<long,string> serviceList = new Dictionary<long, string>();   // 所有的相同的服务
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -28,10 +28,18 @@ namespace EMT.DoneNOW.Web.Opportunity
                         {
                             if (itemList.Any(_ => _.object_id == conser.object_id))
                             {
-                                if (serviceList.Any(ser => ser.Key != conser.object_id)) // 
+                                if (serviceList.Count > 0)
+                                {
+                                    if (!serviceList.Any(ser => ser.Key == conser.object_id)) // 
+                                    {
+                                        serviceList.Add(conser.object_id, isServiceOrBag(conser.object_id));
+                                    }
+                                }
+                                else
                                 {
                                     serviceList.Add(conser.object_id, isServiceOrBag(conser.object_id));
                                 }
+                                
                             }
 
                         });
@@ -46,7 +54,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                     Response.End();
                 }
             }
-            catch (Exception)
+            catch (Exception msg)
             {
 
                 Response.End() ;

@@ -23,7 +23,7 @@ namespace EMT.DoneNOW.DTO
         public long? contact_id;                     // 联系人
         public string location;                     // 区域-- 安装位置
         public int? contract_id;                        // 合同
-        public int? service;               // 服务/服务包
+        public int? service_id;               // 服务/服务包
         public bool reviewed_for_contract;          //        待确认
         public string materal_code;                 // 物料成本代码
         public int? vendor_id;                          // 供应商(类型为供应商的客户)

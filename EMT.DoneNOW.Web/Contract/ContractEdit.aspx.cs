@@ -111,9 +111,13 @@ namespace EMT.DoneNOW.Web.Contract
                     }
                 }
             }
+            else
+            {
+                SaveClose_Click();
+            }
         }
 
-        protected void SaveClose_Click(object sender, EventArgs e)
+        protected void SaveClose_Click()
         {
             ctt_contract contractEdit = AssembleModel<ctt_contract>();
             if (!string.IsNullOrEmpty(Request.Form["MastInput"]) && Request.Form["MastInput"].Equals("on"))

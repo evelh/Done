@@ -464,35 +464,35 @@ namespace EMT.DoneNOW.BLL
             var contract_costlist = new ctt_contract_cost_dal().FindListBySql($"select * from ctt_contract_cost where product_id={id} and delete_time=0");
             int n = 1;
             if (opportunitylist.Count > 0) {
-                result.Append("商机：");
-                foreach (var op in opportunitylist) {
+                result.Append($"{opportunitylist.Count} 商机\n");
+                //foreach (var op in opportunitylist) {
 
-                    result.Append("N"+(n++)+"   "+op.id + "\n");
-                }
+                //    result.Append("N"+(n++)+"   "+op.id + "\n");
+                //}
             }
             if (installed_productlist.Count > 0)
             {
-                result.Append("配置项：");
-                foreach (var op in installed_productlist)
-                {
-                    result.Append("N" + (n++) + "  " + op.id + "\n");
-                }
+                result.Append($"{installed_productlist.Count} 配置项\n");
+                //foreach (var op in installed_productlist)
+                //{
+                //    result.Append("N" + (n++) + "  " + op.id + "\n");
+                //}
             }
             if (warehouse_productlist.Count > 0)
             {
-                result.Append("库存：");
-                foreach (var op in warehouse_productlist)
-                {
-                    result.Append("N" + (n++) + "  " + op.id + "\n");
-                }
+                result.Append($"{warehouse_productlist.Count} 库存\n");
+                //foreach (var op in warehouse_productlist)
+                //{
+                //    result.Append("N" + (n++) + "  " + op.id + "\n");
+                //}
             }
             if (contract_costlist.Count > 0)
             {
-                result.Append("工单：");
-                foreach (var op in contract_costlist)
-                {
-                    result.Append("N" + (n++) + "  " + op.id + "\n");
-                }
+                result.Append($"{contract_costlist.Count} 工单\n");
+                //foreach (var op in contract_costlist)
+                //{
+                //    result.Append("N" + (n++) + "  " + op.id + "\n");
+                //}
             }
             if (contract_costlist.Count > 0 || warehouse_productlist.Count > 0 || installed_productlist.Count > 0 || opportunitylist.Count > 0) {
                 returnvalue = result.ToString();

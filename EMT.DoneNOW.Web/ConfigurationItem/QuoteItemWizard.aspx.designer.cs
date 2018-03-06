@@ -10,7 +10,7 @@
 namespace EMT.DoneNOW.Web.ConfigurationItem {
     
     
-    public partial class ConfigItemWizard {
+    public partial class QuoteItemWizard {
         
         /// <summary>
         /// form1 控件。

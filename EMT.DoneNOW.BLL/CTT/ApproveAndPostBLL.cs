@@ -171,7 +171,22 @@ namespace EMT.DoneNOW.BLL
                 cc = cc_dal.FindNoDeleteById(ccsa.contract_id);
                 cad.account_id = cc.account_id;//客户id
                 cad.bill_create_user_id = ccsa.create_user_id;//条目创建人
-                dcc = new d_cost_code_dal().FindNoDeleteById(new ivt_service_dal().FindNoDeleteById(ccsa.object_id).cost_code_id);
+                if (ccsa.object_type == 1)
+                {
+                    var thisService = new ivt_service_dal().FindNoDeleteById(ccsa.object_id);
+                    if (thisService != null)
+                    {
+                        dcc = new d_cost_code_dal().FindNoDeleteById(thisService.cost_code_id);
+                    }
+                }
+                else {
+                    var thisSerBun = new ivt_service_bundle_dal().FindNoDeleteById(ccsa.object_id);
+                    if (thisSerBun != null)
+                    {
+                        dcc = new d_cost_code_dal().FindNoDeleteById(thisSerBun.cost_code_id);
+                    }
+                }
+                
             }
             //合同服务周期
             if (ccsp != null)
@@ -183,8 +198,25 @@ namespace EMT.DoneNOW.BLL
                 cad.quantity = ccsp.quantity;//数量
                 cc = cc_dal.FindNoDeleteById(ccsp.contract_id);
                 cad.account_id = cc.account_id;//客户id
+                if (ccsp.object_type == 1)
+                {
+                    var thisService = new ivt_service_dal().FindNoDeleteById(ccsp.object_id);
+                    if (thisService != null)
+                    {
+                        dcc = new d_cost_code_dal().FindNoDeleteById(thisService.cost_code_id);
+                    }
+                }
+                else if (ccsp.object_type == 2)
+                {
+                    var serBun = new ivt_service_bundle_dal().FindNoDeleteById(ccsp.object_id);
+                    if (serBun != null)
+                    {
+                        dcc = new d_cost_code_dal().FindNoDeleteById(serBun.cost_code_id);
+                    }
+                }
+
                 cad.bill_create_user_id = ccsp.create_user_id;//条目创建人
-                dcc = new d_cost_code_dal().FindNoDeleteById(new ivt_service_dal().FindNoDeleteById(ccsp.object_id).cost_code_id);
+               // dcc = new d_cost_code_dal().FindNoDeleteById(new ivt_service_dal().FindNoDeleteById(ccsp.object_id).cost_code_id);
             }
 
             ca = ca_dal.FindNoDeleteById(cc.account_id);
@@ -192,11 +224,11 @@ namespace EMT.DoneNOW.BLL
             string tax_category_name = null;//税收种类
             string tax_region_name = null;//税区
             decimal tax_rate = 0;//税率
-            if (dcc.tax_category_id != null)
+            if (dcc!=null&&dcc.tax_category_id != null)
                 tax_category_name = gbll.GetGeneralName((int)dcc.tax_category_id);
             if (ca.tax_region_id != null)
                 tax_region_name = gbll.GetGeneralName((int)ca.tax_region_id);
-            if (dcc.tax_category_id != null && ca.tax_region_id != null)
+            if (dcc != null && dcc.tax_category_id != null && ca.tax_region_id != null)
                 tax_rate = new d_tax_region_cate_dal().FindSignleBySql<d_tax_region_cate>($"select * from d_tax_region_cate where tax_region_id={ca.tax_region_id} and tax_cate_id={dcc.tax_category_id} ").total_effective_tax_rate;
             cad.id = (int)(cad_dal.GetNextIdCom());//id
             cad.posted_date = DateTime.ParseExact(date.ToString(), "yyyyMMdd", null).Date;//转换时间格式

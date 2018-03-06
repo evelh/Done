@@ -24,7 +24,13 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<ctt_contract>($"SELECT DISTINCT(cc.id) from ctt_contract_service ccs INNER JOIN ctt_contract cc on ccs.contract_id = cc.id where ccs.delete_time = 0 and cc.delete_time = 0 and ccs.object_id = {serviceId}");
         }
-        
+        /// <summary>
+        /// 根据合同和服务ID 获取相应合同服务
+        /// </summary>
+        public ctt_contract_service GetServiceByConSerId(long contractId,long serviceId)
+        {
+            return FindSignleBySql<ctt_contract_service>($"SELECT * from ctt_contract_service  where delete_time = 0 and contract_id = {contractId} and object_id={serviceId}");
+        }
     }
 
 }

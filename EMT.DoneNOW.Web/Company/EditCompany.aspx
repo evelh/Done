@@ -243,7 +243,7 @@
                 <tr>
                     <td>
                         <div class="clear">
-                            <label>公司类型<span class="red">*</span></label>
+                            <label>客户类型<span class="red">*</span></label>
                             <asp:DropDownList ID="CompanyType" runat="server"></asp:DropDownList>
                         </div>
                     </td>
@@ -251,8 +251,7 @@
                 <tr>
                     <td>
                         <div class="clear">
-                            <label>客户类型<span class="red"></span></label>
-
+                            <label>客户类别<span class="red"></span></label>
                             <asp:DropDownList ID="classification" runat="server" AutoPostBack="False">
                             </asp:DropDownList>
                         </div>
@@ -284,7 +283,7 @@
                 <tr>
                     <td>
                         <div class="clear">
-                            <label>销售区域<span class="red"></span></label>
+                            <label>地域<span class="red"></span></label>
                             <asp:DropDownList ID="TerritoryName" runat="server"></asp:DropDownList>
                         </div>
                     </td>

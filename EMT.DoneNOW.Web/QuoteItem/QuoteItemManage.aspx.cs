@@ -66,12 +66,16 @@ namespace EMT.DoneNOW.Web.QuoteItem
                     if (quote.quote_tmpl_id != null)
                     {
                         var sys_quote_temp = new QuoteTemplateBLL().GetQuoteTemplate((long)quote.quote_tmpl_id);
-                        // 获取到该报价的报价模板用于设置税的显示方式和汇总名称
-                        show_each_tax_in_tax_group.Value =sys_quote_temp.show_each_tax_in_tax_group.ToString();
-                        show_each_tax_in_tax_period.Value = sys_quote_temp.show_each_tax_in_tax_period.ToString(); // 选中第一个：按照周期分组时起作用，每个周期后显示税 最后的汇总也有税）
-                        // var a3 =sys_quote_temp.show_labels_when_grouped;  // 预留字段
-                        show_tax_cate.Value = sys_quote_temp.show_tax_cate.ToString();
-                        show_tax_cate_superscript.Value = sys_quote_temp.show_tax_cate_superscript.ToString();
+                        if (sys_quote_temp != null)
+                        {
+                            // 获取到该报价的报价模板用于设置税的显示方式和汇总名称
+                            show_each_tax_in_tax_group.Value = sys_quote_temp.show_each_tax_in_tax_group.ToString();
+                            show_each_tax_in_tax_period.Value = sys_quote_temp.show_each_tax_in_tax_period.ToString(); // 选中第一个：按照周期分组时起作用，每个周期后显示税 最后的汇总也有税）
+                                                                                                                       // var a3 =sys_quote_temp.show_labels_when_grouped;  // 预留字段
+                            show_tax_cate.Value = sys_quote_temp.show_tax_cate.ToString();
+                            show_tax_cate_superscript.Value = sys_quote_temp.show_tax_cate_superscript.ToString();
+                        }
+                       
                     }
 
                 }

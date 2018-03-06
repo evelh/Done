@@ -67,7 +67,7 @@ namespace EMT.DoneNOW.BLL
             {
                 id = installed_product_dal.GetNextIdCom(),
                 product_id = param.product_id,
-                cate_id = (int)param.installed_product_cate_id,
+                cate_id = param.installed_product_cate_id,
                 account_id = param.account_id,
                 start_date = param.start_date,
                 through_date = param.through_date,
@@ -89,7 +89,6 @@ namespace EMT.DoneNOW.BLL
                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                 create_user_id = user.id,
                 update_user_id = user.id,
-
                 // Terms
                 hourly_cost = param.terms.hourly_cost,
                 daily_cost = param.terms.daily_cost,
@@ -99,6 +98,26 @@ namespace EMT.DoneNOW.BLL
                 accounting_link = param.terms.accounting_link,
 
             };   // 创建配置项对象
+
+            if (param.service_id != null)
+            {
+                var ser = new ctt_contract_service_dal().FindNoDeleteById((long)param.service_id);
+                if (ser != null)
+                {
+                    if (ser.object_type == 1)
+                    {
+                        installed_product.service_id = ser.object_id;
+                    }
+                    else if(ser.object_type == 2)
+                    {
+                        installed_product.service_bundle_id = ser.object_id;
+                    }
+                }
+                else
+                {
+                    
+                }
+            }
             installed_product_dal.Insert(installed_product);                            // 插入配置项
             new sys_oper_log_dal().Insert(new sys_oper_log()
             {
@@ -107,7 +126,7 @@ namespace EMT.DoneNOW.BLL
                 name = user.name,
                 phone = user.mobile == null ? "" : user.mobile,
                 oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
+                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONFIGURAITEM,
                 oper_object_id = installed_product.id,
                 oper_type_id = (int)OPER_LOG_TYPE.ADD,
                 oper_description = installed_product_dal.AddValue(installed_product),
@@ -177,7 +196,7 @@ namespace EMT.DoneNOW.BLL
             {
                 id = old_installed_product.id,
                 product_id = param.product_id,
-                cate_id = (int)param.installed_product_cate_id,
+                cate_id = param.installed_product_cate_id,
                 account_id = param.account_id,
                 start_date = param.start_date,
                 through_date = param.through_date,
@@ -197,7 +216,7 @@ namespace EMT.DoneNOW.BLL
                 //create_user_id = user.id,
                 update_user_id = user.id,
                 remark = param.notes,
-
+                //service_id = param.service_id,
                 // Terms
                 hourly_cost = param.terms.hourly_cost,
                 daily_cost = param.terms.daily_cost,
@@ -225,15 +244,41 @@ namespace EMT.DoneNOW.BLL
                 quote_item_id = old_installed_product.quote_item_id,
                 
 
-                service_bundle_id = old_installed_product.service_bundle_id,
-                service_id = old_installed_product.service_id,
+                //service_bundle_id = old_installed_product.service_bundle_id,
+                //service_id = old_installed_product.service_id,
                 udf_group_id = old_installed_product.udf_group_id,
 
 
                 #endregion
 
             };   // 创建配置项对象
-
+            if (param.service_id != null)
+            {
+                var ser = new ctt_contract_service_dal().FindNoDeleteById((long)param.service_id);
+                if (ser != null)
+                {
+                    if (ser.object_type == 1)
+                    {
+                        installed_product.service_id = ser.object_id;
+                        installed_product.service_bundle_id = null;
+                    }
+                    else if (ser.object_type == 2)
+                    {
+                        installed_product.service_bundle_id = ser.object_id;
+                        installed_product.service_id = null;
+                    }
+                    else
+                    {
+                        installed_product.service_bundle_id = null;
+                        installed_product.service_id = null;
+                    }
+                }
+            }
+            else
+            {
+                installed_product.service_bundle_id = null;
+                installed_product.service_id =null;
+            }
             installed_product_dal.Update(installed_product);
             new sys_oper_log_dal().Insert(new sys_oper_log()
             {
@@ -249,7 +294,9 @@ namespace EMT.DoneNOW.BLL
                 remark = "修改配置项相关信息",
             });                       // 插入操作日志
 
-
+            var udf_configuration_items_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONFIGURATION_ITEMS);   // 查询自定义信息
+            var udf_configuration_items = param.udf;
+            new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.CONFIGURATION_ITEMS, udf_configuration_items_list, installed_product.id, udf_configuration_items, user, OPER_LOG_OBJ_CATE.CONFIGURAITEM);  // 保存自定义扩展信息
 
 
 
@@ -325,6 +372,7 @@ namespace EMT.DoneNOW.BLL
             var months = (lastTime.Year - firstTime.Year) * 12 + (lastTime.Month - firstTime.Month) + (lastTime.Day >= firstTime.Day ? 1 : 0);
             decimal periodMonths = 1;
             decimal period = 1;
+            decimal dayMoney = subscription.period_price;  // 
             switch (subscription.period_type_id)
             {
                 case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
@@ -358,6 +406,31 @@ namespace EMT.DoneNOW.BLL
                     period_price = subscription.period_price,
 
                 };
+                if (i == period - 1)
+                {
+                    var diffDays = GetDiffDay(firstTime, subscription.expiration_date);
+                    switch (subscription.period_type_id)
+                    {
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
+                            var halfYearDay = GetDiffDay(firstTime, firstTime.AddMonths(6));
+                            sub_period.period_price = (sub_period.period_price / halfYearDay) * diffDays;
+                            break;
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH:
+                            var monthDay = GetDiffDay(firstTime, firstTime.AddMonths(1));
+                            sub_period.period_price = (sub_period.period_price / monthDay) * diffDays;
+                            break;
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER:
+                            var quarterDay = GetDiffDay(firstTime, firstTime.AddMonths(3));
+                            sub_period.period_price = (sub_period.period_price / quarterDay) * diffDays;
+                            break;
+                        case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR:
+                            var yearDay = GetDiffDay(firstTime, firstTime.AddYears(1));
+                            sub_period.period_price = (sub_period.period_price / yearDay) * diffDays;
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 sub_period_dal.Insert(sub_period);
                 new sys_oper_log_dal().Insert(new sys_oper_log()
                 {
@@ -372,11 +445,20 @@ namespace EMT.DoneNOW.BLL
                     oper_description = _dal.AddValue(sub_period),
                     remark = "新增分期订阅",
                 });
-
                 firstTime = firstTime.AddMonths((int)periodMonths);
 
             }
 
+        }
+        /// <summary>
+        /// 获取两个时间相差天数
+        /// </summary>
+        public int GetDiffDay(DateTime startDate,DateTime endDate)
+        {
+            TimeSpan ts1 = new TimeSpan(startDate.Ticks);
+            TimeSpan ts2 = new TimeSpan(endDate.Ticks);
+            var diffDays = ts1.Subtract(ts2).Duration().Days + 1;
+            return diffDays;
         }
 
         /// <summary>
@@ -809,10 +891,10 @@ namespace EMT.DoneNOW.BLL
         /// <param name="ipID"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public bool RelieveInsProduct(long contract_id,long ipID,long user_id)
+        public bool RelieveInsProduct(long contract_id,long ip_id,long user_id)
         {
             var user = BLL.UserInfoBLL.GetUserInfo(user_id);
-            var insPro = _dal.FindNoDeleteById(ipID);
+            var insPro = _dal.FindNoDeleteById(ip_id);
             if (user != null && insPro != null)
             {
                 insPro.contract_id = null;
@@ -845,10 +927,10 @@ namespace EMT.DoneNOW.BLL
         /// <param name="ipID"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public bool RelationInsProduct(long contract_id, long ipID, long user_id,long? service_id = null)
+        public bool RelationInsProduct(long contract_id, long ip_id, long user_id,long? service_id = null)
         {
             var user = BLL.UserInfoBLL.GetUserInfo(user_id);
-            var insPro = _dal.FindNoDeleteById(ipID);
+            var insPro = _dal.FindNoDeleteById(ip_id);
             if (user != null && insPro != null)
             {
                 // isServiceOrBag
@@ -885,6 +967,202 @@ namespace EMT.DoneNOW.BLL
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// 通过报价生成配置项
+        /// </summary>
+        public bool AddInsProByQuote(QuoteConfigItemDto param,long user_id)
+        {
+            var cipDal = new crm_installed_product_dal();
+            var cqiDal = new crm_quote_item_dal();
+            var ipDal = new ivt_product_dal();
+            var ipvDal = new ivt_product_vendor_dal();
+            var csDal = new crm_subscription_dal();
+            var quote = new crm_quote_dal().FindNoDeleteById(param.quote_id);
+            if (quote == null)
+            {
+                return false;
+            }
+            var user = UserInfoBLL.GetUserInfo(user_id);
+            if (param.insProList!=null&& param.insProList.Count > 0)
+            {
+                foreach (var insPro in param.insProList)
+                {
+                    #region  产品转配置项相关
+                    var thisItem = cqiDal.FindNoDeleteById(insPro.itemId);
+                    if (thisItem == null)
+                    {
+                        continue;
+                    }
+                    var thisProduct = ipDal.FindNoDeleteById((long)thisItem.object_id);
+                    if (thisProduct == null)
+                    {
+                        continue;
+                    }
+                    var defaultVendor = ipvDal.GetDefault(thisProduct.id);
+
+
+                    crm_installed_product installed_product = new crm_installed_product()
+                    {
+                        id = cipDal.GetNextIdCom(),
+                        product_id = (long)thisItem.object_id,
+                        cate_id = thisProduct.installed_product_cate_id,
+                        account_id = quote.account_id,
+                        start_date = insPro.insDate,
+                        through_date = insPro.expDate,
+                        number_of_users = null,
+                        serial_number = insPro.serNumber,
+                        reference_number = insPro.refNumber,
+                        reference_name = insPro.refName,
+                        contract_id = null,
+                        location = null,
+                        contact_id = null,
+                        vendor_account_id = defaultVendor==null?null: defaultVendor.vendor_account_id,
+                        is_active = 1,
+                        installed_resource_id = user_id,
+                        remark = "从报价项中生成",
+                        quote_item_id = insPro.itemId,
+                        // installed_contact_id = param.contact_id, // todo -- 安装人与联系人
+
+                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        create_user_id = user_id,
+                        update_user_id = user_id,
+
+                     
+                    };   // 创建配置项对象
+                    cipDal.Insert(installed_product);                            // 插入配置项
+
+                    OperLogBLL.OperLogAdd<crm_installed_product>(installed_product, installed_product.id,user_id,OPER_LOG_OBJ_CATE.CONFIGURAITEM,"新增配置项");
+                 
+                    var udf_configuration_items_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONFIGURATION_ITEMS);   // 查询自定义信息
+                    new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONFIGURATION_ITEMS, user_id, installed_product.id, udf_configuration_items_list, null, OPER_LOG_OBJ_CATE.CONFIGURAITEM);  // 保存自定义扩展信息
+                        #endregion
+
+                    if(param.insProSubList!=null&& param.insProSubList.Count > 0)
+                    {
+                        var thisSub = param.insProSubList.FirstOrDefault(_=>_.insProId==insPro.pageProId);
+                        if (thisSub != null)
+                        {
+                            var sub = new crm_subscription() {
+                                id = csDal.GetNextIdCom(),
+                                name = thisSub.subName,
+                                description = thisSub.subDes,
+                                period_type_id = thisSub.perType,
+                                effective_date = thisSub.effDate,
+                                expiration_date = thisSub.expDate,
+                                period_price = thisSub.sunPerPrice,
+                                cost_code_id = thisProduct.cost_code_id,
+                                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                create_user_id = user_id,
+                                update_user_id = user_id,
+                                installed_product_id = installed_product.id,
+                                status_id = 1,
+                                period_cost = thisProduct.unit_cost,
+                            };
+
+                            var periods = 1;   // 定义初始的期数为1 
+                           var firstTime = sub.effective_date; // 生效日期
+                           var lastTime = sub.expiration_date; // 结束日期
+                            var period_type = sub.period_type_id;
+                            var days = Math.Ceiling((lastTime - firstTime).TotalDays); // 获取到相差几天
+
+                            var months = (lastTime.Year - firstTime.Year) * 12 + (lastTime.Month - firstTime.Month) + (lastTime.Day >= firstTime.Day ? 1 : 0);
+                            decimal periodMonths = 1;
+                            decimal period = 1;
+                            switch (sub.period_type_id)
+                            {
+                                case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
+                                    periods = Convert.ToInt32(Math.Ceiling(days / 180));
+                                    periodMonths = 6;
+                                    break;
+                                case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH:
+                                    periods = Convert.ToInt32(Math.Ceiling(days / 30));
+                                    periodMonths = 1;
+                                    break;
+                                case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER:
+                                    periods = Convert.ToInt32(Math.Ceiling(days / 90));
+                                    periodMonths = 3;
+                                    break;
+                                case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR:
+                                    periods = Convert.ToInt32(Math.Ceiling(days / 365));
+                                    periodMonths = 12;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            period = Math.Ceiling(months / periodMonths);
+                            sub.total_price = sub.period_price * period;
+                            sub.total_cost = sub.period_cost * period;
+                            csDal.Insert(sub);
+                            OperLogBLL.OperLogAdd<crm_subscription>(sub, sub.id, user_id, OPER_LOG_OBJ_CATE.SUBSCRIPTION, "新增订阅");
+                            InsertSubPeriod(sub.effective_date,sub.expiration_date,sub,user);
+                        }
+                    }
+                }
+            }
+            if (param.insChargeList != null && param.insChargeList.Count > 0)
+            {
+                foreach (var insPro in param.insChargeList)
+                {
+                    var thisItem = cqiDal.FindNoDeleteById(insPro.itemId);
+                    if (thisItem == null)
+                    {
+                        continue;
+                    }
+                    ivt_product thisProduct = null;
+                    ivt_product_vendor defaultVendor = null;
+                    if (insPro.productId != null)
+                    {
+                        thisProduct = ipDal.FindNoDeleteById((long)insPro.productId);
+                        if (thisProduct == null)
+                        {
+                            continue;
+                        }
+                        defaultVendor = ipvDal.GetDefault(thisProduct.id);
+                    }
+                    if (thisProduct == null)
+                    {
+                        continue;
+                    }
+                    crm_installed_product installed_product = new crm_installed_product()
+                    {
+                        id = cipDal.GetNextIdCom(),
+                        product_id = thisProduct.id,
+                        cate_id = thisProduct.installed_product_cate_id,
+                        account_id = quote.account_id,
+                        start_date = insPro.insDate,
+                        through_date = insPro.warExpDate,
+                        number_of_users = null,
+                        serial_number = insPro.serNumber,
+                        reference_number = insPro.refNumber,
+                        reference_name = insPro.refName,
+                        contract_id = null,
+                        location = null,
+                        contact_id = null,
+                        vendor_account_id = defaultVendor == null ? null : defaultVendor.vendor_account_id,
+                        is_active = 1,
+                        installed_resource_id = user_id,
+                        remark = "从报价项中生成",
+                        quote_item_id = insPro.itemId,
+                        // installed_contact_id = param.contact_id, // todo -- 安装人与联系人
+
+                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                        create_user_id = user_id,
+                        update_user_id = user_id,
+
+
+                    };   // 创建配置项对象
+                    cipDal.Insert(installed_product);                            // 插入配置项
+
+                    OperLogBLL.OperLogAdd<crm_installed_product>(installed_product, installed_product.id, user_id, OPER_LOG_OBJ_CATE.CONFIGURAITEM, "新增配置项");
+                }
+            }
+
+             return true;
         }
 
     }

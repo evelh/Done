@@ -53,25 +53,46 @@ function InActive() {
     setTimeout(function () { history.go(0); }, 800)
 }
 function DeleteServiceBundle() {
-    LayerConfirm("删除后无法恢复，是否继续?", "是", "否", function () {
+
+    if (confirm("删除后无法恢复，是否继续?")) {
         $.ajax({
             type: "GET",
             async: false,
             dataType: "json",
-            url: "../Tools/ServiceAjax.ashx?act=DeleteService&service_id=" + entityid +"&is_bundle=1",
+            url: "../Tools/ServiceAjax.ashx?act=DeleteService&service_id=" + entityid + "&is_bundle=1",
             success: function (data) {
                 if (data != "") {
                     if (data.result) {
                         LayerMsg("删除服务包成功！");
                     }
                     else {
-                        LayerMsg("服务包不能被删除，因为它被以下对象引用：\n" + data.reason);
+                        alert("服务包不能被删除，因为它被以下对象引用：\n" + data.reason);
                     }
                 }
             },
         });
         setTimeout(function () { history.go(0); }, 800);
-    }, function () { });
+
+    }
+    //LayerConfirm("删除后无法恢复，是否继续?", "是", "否", function () {
+    //    $.ajax({
+    //        type: "GET",
+    //        async: false,
+    //        dataType: "json",
+    //        url: "../Tools/ServiceAjax.ashx?act=DeleteService&service_id=" + entityid +"&is_bundle=1",
+    //        success: function (data) {
+    //            if (data != "") {
+    //                if (data.result) {
+    //                    LayerMsg("删除服务包成功！");
+    //                }
+    //                else {
+    //                    alert("服务包不能被删除，因为它被以下对象引用：\n" + data.reason);
+    //                }
+    //            }
+    //        },
+    //    });
+    //    setTimeout(function () { history.go(0); }, 800);
+    //}, function () { });
 }
 
 function RightClickFunc() {

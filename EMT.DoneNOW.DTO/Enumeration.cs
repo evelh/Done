@@ -644,7 +644,9 @@ namespace EMT.DoneNOW.DTO
             REPORT_OTHER_SYSTEM_LOGINLOG = 1598,    // 报表-其他-系统-登录日志
             REPORT_OTHER_SYSTEM_OPERLOG = 1599,     // 报表-其他-系统-操作日志
             WORKFLOW_RULE = 1600,                   // 工作流规则查询
-            //RESOURCE_CALLBACK,                      //  
+            SERVICE = 1588,                                // 服务查询  
+            SERVICE_BUNDLE = 1589,                         // 服务包查询
+            //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 
             General,                       //general表的通用处理
@@ -774,9 +776,6 @@ namespace EMT.DoneNOW.DTO
             IVT_SERVICE_BUNDLE = 1424,                  // 服务包
             WORKFLOW_RULE = 1425,                       // 工作流规则
             TICKET_SLA_EVENT,                        // 工单sla 事件
-
-
-
         }
 
         /// <summary>
@@ -1529,7 +1528,6 @@ namespace EMT.DoneNOW.DTO
         REPORT_SERVICEDESK_TICKETBYACCOUNT = 179, // 报表--服务台常规-工单和任务按客户
         REPORT_CONTRACT_BILLED = 180,          // 报表-CRM配置项-已计费信息
         WorkflowRule = 185,             // 工作流规则查询
-
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
         Line_Of_Business,              //系统管理：组织：业务条线
@@ -1710,7 +1708,7 @@ namespace EMT.DoneNOW.DTO
         TASK_NOTE_EDIT,        // 任务备注新增修改 
 
         TASK_ATTACH,
-
+        PROJETC_ATTACH,
         TASK_EXPENSE_ADD,     // 任务费用新增修改
         TASK_EXPENSE_EDIT,    // 任务费用新增修改
         RESOURCE_CALLBACK,    // 员工的查找带回

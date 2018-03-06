@@ -76,7 +76,7 @@ namespace EMT.DoneNOW.Web.SysSetting
 
                 var result = false;
                 if (isAdd)
-                    result = bll.AddServiceBundle(pageServiceBundle, LoginUserId,serIds??"");
+                    result = bll.AddServiceBundle(pageServiceBundle, LoginUserId, serIds ?? "");
                 else
                 {
                     pageServiceBundle.id = serviceBundle.id;

@@ -223,6 +223,7 @@ var windowObj = {
     subscription: 'subscription',
     quote: 'quote',
     contract: 'contract',
+    contractService : 'contractService',
     contractCost: "contractCost",
     contractCharge: 'contractCharge',
     contractNotRule: 'contractNotRule',

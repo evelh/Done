@@ -308,7 +308,7 @@ namespace EMT.DoneNOW.Web
                         var name = oppBLL.ReturnServiceName(item.object_id);
                         services.Append("<option value='" + item.id + "'>" + name + "</option>");
                     }
-                    context.Response.Write(services);
+                    context.Response.Write(services.ToString());
                     return;
                 }
             }
@@ -450,7 +450,8 @@ namespace EMT.DoneNOW.Web
         {
             var service = new ivt_service_dal().FindById(id);
             string txt = "";
-            decimal pricePerMonth = 0;
+            decimal pricePerPeriod = 0;
+            int monthsPerPeriod = 1;
             if (service != null)
             {
                 // 获取供应商名称
@@ -472,18 +473,17 @@ namespace EMT.DoneNOW.Web
                 {
                     period = new GeneralBLL().GetGeneralName((int)service.period_type_id);
                     if (service.unit_price == null)
-                        pricePerMonth = 0;
+                        pricePerPeriod = 0;
                     else
-                    {
-                        if (service.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH)
-                            pricePerMonth = service.unit_price == null ? 0 : (decimal)service.unit_price;
-                        if (service.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER)
-                            pricePerMonth = service.unit_price == null ? 0 : (decimal)service.unit_price / 3;
-                        if (service.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR)
-                            pricePerMonth = service.unit_price == null ? 0 : (decimal)service.unit_price / 6;
-                        if (service.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR)
-                            pricePerMonth = service.unit_price == null ? 0 : (decimal)service.unit_price / 12;
-                    }
+                        pricePerPeriod = (decimal)service.unit_price;
+
+                    if (service.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER)
+                        monthsPerPeriod = 3;
+                    if (service.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR)
+                        monthsPerPeriod = 6;
+                    if (service.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR)
+                        monthsPerPeriod = 12;
+
                 }
 
                 string unitCost = "";
@@ -496,18 +496,19 @@ namespace EMT.DoneNOW.Web
                 txt += $"<td style='white - space:nowrap; '><img src = '../Images/delete.png' onclick='RemoveService({service.id})' alt = '' /></ td > ";
                 txt += $"<td><span>{service.name}</span></td>";
                 txt += $"<td nowrap>{vendorName}</td>";
-                txt += $"<td nowrap><span>{period}</span></td>";
+                txt += $"<td nowrap><span>{period}</span><input type='hidden' id='period{service.id}' value='{monthsPerPeriod}' ></td>";
                 txt += $"<td nowrap align='right'><span>{unitCost}</span></td>";
-                txt += $"<td nowrap align='right'><input type = 'text' onblur='CalcService()' id='price{service.id}' name='price{service.id}' value = '{pricePerMonth}' ></ td > ";
+                txt += $"<td nowrap align='right'><input type = 'text' onblur='CalcService()' id='price{service.id}' name='price{service.id}' value = '{pricePerPeriod}' ></ td > ";
                 txt += $"<td nowrap align='right'><input type = 'text' onblur='CalcService()' id='num{service.id}' name='num{service.id}' value = '1' ></ td > ";
-                txt += $"<td nowrap align='right'>￥<input type = 'text' id='pricenum{service.id}' value = '{pricePerMonth}' disabled ></ td > ";
+                txt += $"<td nowrap align='right'>￥<input type = 'text' id='pricenum{service.id}' value = '{pricePerPeriod}' disabled ></ td > ";
                 txt += "</tr>";
             }
 
             List<object> result = new List<object>();
             result.Add(txt);
-            result.Add(pricePerMonth);
+            result.Add(pricePerPeriod);
             result.Add(service.id);
+            result.Add(monthsPerPeriod);
 
             context.Response.Write(new Tools.Serialize().SerializeJson(result));
         }
@@ -521,13 +522,14 @@ namespace EMT.DoneNOW.Web
         {
             var serBun = new ivt_service_bundle_dal().FindById(id);
             string txt = "";
-            decimal pricePerMonth = 0;
+            decimal pricePerPeriod = 0;
+            int monthsPerPeriod = 1;
             List<object> result = new List<object>();
 
             if (serBun == null)
             {
                 result.Add(txt);
-                result.Add(pricePerMonth);
+                result.Add(pricePerPeriod);
 
                 context.Response.Write(new Tools.Serialize().SerializeJson(result));
                 return;
@@ -552,18 +554,16 @@ namespace EMT.DoneNOW.Web
             {
                 period = new GeneralBLL().GetGeneralName((int)serBun.period_type_id);
                 if (serBun.unit_price == null)
-                    pricePerMonth = 0;
+                    pricePerPeriod = 0;
                 else
-                {
-                    if (serBun.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH)
-                        pricePerMonth = serBun.unit_price == null ? 0 : (decimal)serBun.unit_price;
-                    if (serBun.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER)
-                        pricePerMonth = serBun.unit_price == null ? 0 : (decimal)serBun.unit_price / 3;
-                    if (serBun.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR)
-                        pricePerMonth = serBun.unit_price == null ? 0 : (decimal)serBun.unit_price / 6;
-                    if (serBun.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR)
-                        pricePerMonth = serBun.unit_price == null ? 0 : (decimal)serBun.unit_price / 12;
-                }
+                    pricePerPeriod = (decimal)serBun.unit_price;
+
+                if (serBun.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER)
+                    monthsPerPeriod = 3;
+                if (serBun.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR)
+                    monthsPerPeriod = 6;
+                if (serBun.period_type_id == (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR)
+                    monthsPerPeriod = 12;
             }
 
             string unitCost = "";
@@ -576,16 +576,17 @@ namespace EMT.DoneNOW.Web
             txt += $"<td style='white - space:nowrap; '><img src = '../Images/delete.png' onclick='RemoveServiceBundle({serBun.id})' alt = '' /></ td > ";
             txt += $"<td><span>{serBun.name}</span></td>";
             txt += $"<td nowrap>{vendorName}</td>";
-            txt += $"<td nowrap><span>{period}</span></td>";
+            txt += $"<td nowrap><span>{period}</span><input type='hidden' id='period{serBun.id}' value='{monthsPerPeriod}' ></td>";
             txt += $"<td nowrap align='right'><span>{unitCost}</span></td>";
-            txt += $"<td nowrap align='right'>" + $"<input type='text' onblur='CalcService()' id='price{serBun.id}' name='price{serBun.id}' value = '{pricePerMonth}' >" + "</ td > ";
+            txt += $"<td nowrap align='right'>" + $"<input type='text' onblur='CalcService()' id='price{serBun.id}' name='price{serBun.id}' value = '{pricePerPeriod}' >" + "</ td > ";
             txt += $"<td nowrap align='right'>" + $"<input type='text' onblur='CalcService()' id='num{serBun.id}' name='num{serBun.id}' value = '1' >" + "</ td > ";
-            txt += $"<td nowrap align='right'>￥" + $"<input type='text' id='pricenum{serBun.id}' value = '{pricePerMonth}' disabled >" + "</ td > ";
+            txt += $"<td nowrap align='right'>￥" + $"<input type='text' id='pricenum{serBun.id}' value = '{pricePerPeriod}' disabled >" + "</ td > ";
             txt += "</tr>";
 
             result.Add(txt);
-            result.Add(pricePerMonth);
+            result.Add(pricePerPeriod);
             result.Add(serBun.id);
+            result.Add(monthsPerPeriod);
 
             context.Response.Write(new Tools.Serialize().SerializeJson(result));
         }
@@ -711,8 +712,9 @@ namespace EMT.DoneNOW.Web
         private void CalcServiceAdjustPercent(HttpContext context)
         {
             long contractId = long.Parse(context.Request.QueryString["contractId"]);
+            long serviceId = long.Parse(context.Request.QueryString["serviceId"]);
             DateTime date = DateTime.Parse(context.Request.QueryString["date"]);
-            var result = new Tools.Serialize().SerializeJson(new ContractServiceBLL().CalcServiceAdjustDatePercent(contractId, date));
+            var result = new Tools.Serialize().SerializeJson(new ContractServiceBLL().CalcServiceAdjustDatePercent(contractId, serviceId, date));
             context.Response.Write(result);
         }
 

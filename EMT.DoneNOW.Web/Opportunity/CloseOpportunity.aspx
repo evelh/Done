@@ -641,7 +641,7 @@
                                                         <input type="hidden" id="disCodeSelct" runat="server" />
 
                                                         <input type="hidden" id="jqueryCode" runat="server" />
-                                                        <!-- -->
+                                                        <!-- 合同服务重复时，用户的选择 -->
                                                         <input type="hidden" name="isAddService" id="isAddService" />
                                                         <input type="hidden" name="isUpdatePrice" id="isUpdatePrice" />
                                                         <input type="hidden" name="isUpdateCost" id="isUpdateCost" />
@@ -722,7 +722,7 @@
                                                                         </td>
                                                                         <td class="FieldLabels">生效日期<span class="errorSmall">*</span>
                                                                             <div style="margin: 0; padding: 0;">
-                                                                                <input type="text" style="width: 95px;" name="effective_date " id="effective_date" onclick="WdatePicker()" class="Wdate" value="<%=DateTime.Now.ToString("yyyy-MM-dd") %>" />
+                                                                                <input type="text" style="width: 95px;" name="effective_date" id="effective_date" onclick="WdatePicker()" class="Wdate" value="<%=DateTime.Now.ToString("yyyy-MM-dd") %>" />
                                                                             </div>
                                                                         </td>
                                                                     </tr>
@@ -1330,7 +1330,7 @@
         </div>
         <!--第八页-->
         <div class="Workspace Workspace8" style="display: none;">
-            <div class="PageInstructions">向导已经完成。请从下面选择或关闭此窗口。</div>e
+            <div class="PageInstructions">向导已经完成。请从下面选择或关闭此窗口。</div>
             <div class="WizardSection">
                 <table cellspacing="0" cellpadding="0" width="100%">
                     <tbody>
@@ -1676,7 +1676,7 @@
             $("#trAddContractServicesInfo").hide();
             $("#addContractServices").prop('checked', false);
             if (isChooseItem()) {
-                // rbContractCost
+                
                 $("#rbContractCost").prop('disabled', false);
                 $("#rbContractCost").prop('checked', true);
                 $("#rbContractCostText").css("color", "");
@@ -1698,13 +1698,17 @@
             if (isChooseItem()) {
                 // rbContractCost
                 $("#rbContractCost").prop('disabled', false);
-                $("#rbContractCost").prop('checked', true);
+                // $("#rbContractCost").prop('checked', true);
+                $("#RadioCCEx").prop('checked', true);
+                $("#ccexDiv").show();
                 $("#rbContractCostText").css("color", "");
             }
         } else {
             $("#trAddContractServicesInfo").hide();
             $("#rbContractCost").prop('disabled', true);
-            $("#rbContractCost").prop('checked', false);
+            // $("#rbContractCost").prop('checked', false);
+            $("#RadioCCEx").prop('checked', false);
+            $("#ccexDiv").hide();
             $("#rbContractCostText").css("color", "rgb(176, 176, 176)");
             NoDisabledText();
         }
@@ -1952,7 +1956,7 @@
 
     // 合同查找带回（包括带回事件）
     function callBackContract() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACTMANAGE_CALLBACK %>&con626=1&con627=<%=opportunity.account_id %>&field=contract_id&callBack=GetDataByContract", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>', 'left=200,top=200,width=600,height=800', false);
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACTMANAGE_CALLBACK %>&con626=1&con627=<%=opportunity.account_id %>&con1246=<%=(int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE %>&field=contract_id&callBack=GetDataByContract", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>', 'left=200,top=200,width=600,height=800', false);
     }
     //  合同查找带回（不包括带回事件）
     function callBackContractNoDeal() {
@@ -1970,15 +1974,17 @@
             $("#ConvertContractId").val(contractName);
             $("#ConvertContractIdHidden").val(contract_idHidden);
             // 2.检查报价中包含初始费用且合同中也有，此时会提示“报价中初始费用不会替换已有初始费用
-            var quote_id = <%=primaryQuote==null?"":primaryQuote.id.ToString() %>
+            var quote_id = '<%=primaryQuote==null?"":primaryQuote.id.ToString() %>';
+
                 $.ajax({
                     type: "GET",
                     async: false,
-                    dataType: "json",
-                    url: "../Tools/QuoteAjax.ashx?act=compareSetupFee&quote_id=" + quote_id + "&contract_id" + contract_idHidden,
+                    //dataType: "json",
+                    url: "../Tools/QuoteAjax.ashx?act=compareSetupFee&quote_id=" + quote_id + "&contract_id=" + contract_idHidden,
                     // data: { CompanyName: companyName },
                     success: function (data) {
-                        if (data != "True") {
+                        debugger;
+                        if (data == "True") {
                             alert("报价中初始费用不会替换已有初始费用");
                         }
                     },
@@ -1988,15 +1994,19 @@
             $.ajax({
                 type: "GET",
                 async: false,
-                dataType: "json",
-                url: "../Tools/QuoteAjax.ashx?act=compareService&quote_id=" + quote_id + "&contract_id" + contract_idHidden,
+                //dataType: "json",
+                url: "../Tools/QuoteAjax.ashx?act=compareService&quote_id=" + quote_id + "&contract_id=" + contract_idHidden,
                 // data: { CompanyName: companyName },
                 success: function (data) {
-                    if (data != "True") {
+                    debugger;
+                    if (data == "True") {
                         // todo -- 弹出新窗口，确认是否累加服务包
+                        window.open("../Opportunity/ContractExistService.aspx?quote_id=" + quote_id + "&contract_id=" + contract_idHidden, '_blank', 'left=200,top=200,width=600,height=800', false);
                     }
                     else {
-
+                        $("#isAddService").val("");
+                        $("#isUpdatePrice").val("");
+                        $("#isUpdateCost").val("");
                     }
                 },
             });

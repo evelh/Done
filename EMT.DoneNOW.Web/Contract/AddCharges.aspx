@@ -653,7 +653,6 @@
                             <tr>
                                 <td colspan="2" style="color: red;">
                                     <div id="ShowMessage" style="display: none;">
-                                        This contract charge is associated with a recurring purchase. You can only edit some of the fields on this page. If you need to edit Quantity, Unit Price, or Date Purchased, you will need to edit the associated recurring purchase.
                                         这项合同费用与经常性购买有关。您只能编辑此页上的一些字段。如果您需要编辑数量，单价，或日期购买，您将需要编辑相关的经常性购买。 
                                     </div>
                                 </td>
@@ -1390,6 +1389,7 @@
          <%if ((!isAdd) && conCost.create_ci == 1)
     { %>
         $("#AddConfigItem").prop("disabled", true);
+        $("#quantity").prop("disabled", true);
         <%}%>
 
         <%if ((!isAdd) && (conCost.status_id == (int)EMT.DoneNOW.DTO.DicEnum.COST_STATUS.IN_PURCHASING || conCost.status_id == (int)EMT.DoneNOW.DTO.DicEnum.COST_STATUS.PENDING_DELIVERY || conCost.status_id == (int)EMT.DoneNOW.DTO.DicEnum.COST_STATUS.ALREADY_DELIVERED))
@@ -1549,7 +1549,7 @@
 
 
 
-            quantity = toDecimal4(quantity);
+            quantity = toDecimal4(Math.round(quantity));
             $(this).val(quantity);
             GetSumCost();
             $("#pricequantity").val(quantity);

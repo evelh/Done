@@ -410,6 +410,11 @@ namespace EMT.DoneNOW.BLL
             }
             // todo 根据页面的勾选情况进行不同的必填项验证
 
+            bool isFirstClost = true;  // 代表是不是第一次关闭商机
+            if (param.opportunity.status_id == (int)OPPORTUNITY_STATUS.CLOSED)
+            {
+                isFirstClost = false;
+            }
 
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
@@ -512,6 +517,7 @@ namespace EMT.DoneNOW.BLL
 
             // 新增合同和更新合同二选一的关系
             #region 4.新增合同信息 -- todo 需求逻辑（二，三，四，五）
+            var conSerBll = new ContractServiceBLL();
             if (param.createContract) // 代表用户勾选了创建周期服务合同
             {
                 var lastAddContract = new ctt_contract_dal().GetLastAddContract();
@@ -563,7 +569,7 @@ namespace EMT.DoneNOW.BLL
                     sla_id = lastAddContract == null ? null : lastAddContract.sla_id,
                     setup_fee = setup_fee,
                     timeentry_need_begin_end = lastAddContract == null ? (sbyte)1 : lastAddContract.timeentry_need_begin_end,
-                    occurrences = thisProced,
+                    occurrences = null,
                     // 通知接收人？？todo 
                     create_user_id = user.id,
                     update_user_id = user.id,
@@ -604,6 +610,7 @@ namespace EMT.DoneNOW.BLL
                         var ccsabsDal = new ctt_contract_service_adjust_bundle_service_dal();
                         var ivtSerDal = new ivt_service_dal();
 
+                        
                         foreach (var item in serviceItem)
                         {
                             var isService = isServiceOrBag((long)item.object_id);
@@ -619,156 +626,164 @@ namespace EMT.DoneNOW.BLL
                                 object_type = (sbyte)isService,
                                 effective_date = param.contract.start_date,
                                 unit_cost = item.unit_cost,
-                                unit_price = item.unit_price- (item.unit_discount??0),
-                                adjusted_price = (item.unit_price - (item.unit_discount ?? 0)) * item.quantity,
+                                unit_price = (item.unit_price-item.unit_discount??0),
+                                adjusted_price = ((item.unit_price??0) - (item.unit_discount ?? 0)) * item.quantity,
                                 quantity = (int)item.quantity,
                                 create_user_id = user.id,
                                 update_user_id = user.id,
                                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                             };
-                            conSerDal.Insert(conService);
-                            new sys_oper_log_dal().Insert(new sys_oper_log()
-                            {
-                                user_cate = "用户",
-                                user_id = (int)user.id,
-                                name = user.name,
-                                phone = user.mobile == null ? "" : user.mobile,
-                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE,
-                                oper_object_id = conService.id,
-                                oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                                oper_description = _dal.AddValue(conService),
-                                remark = "创建合同服务"
 
-                            });
+                            conSerBll.AddServiceServiceBundle(conService,user_id);
 
-                            var period = ReturnPeriod(contract.start_date, contract.end_date, (int)contract.period_type);
-                            var startTime = param.contract.start_date;
+                            #region 原来的关闭商机新增服务相关逻辑
+                            //conSerDal.Insert(conService);
+                            //new sys_oper_log_dal().Insert(new sys_oper_log()
+                            //{
+                            //    user_cate = "用户",
+                            //    user_id = (int)user.id,
+                            //    name = user.name,
+                            //    phone = user.mobile == null ? "" : user.mobile,
+                            //    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            //    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE,
+                            //    oper_object_id = conService.id,
+                            //    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                            //    oper_description = _dal.AddValue(conService),
+                            //    remark = "创建合同服务"
 
-                            for (int i = 0; i < period; i++)
-                            {
-                                var endDate = startTime.AddMonths(ReturnMonths((int)param.contract.period_type)).AddDays(-1);
+                            //});
+                            //var period = ReturnPeriod(contract.start_date, contract.end_date, (int)contract.period_type);
+                            //var startTime = param.contract.start_date;
+                            //for (int i = 0; i < period; i++)
+                            //{
+                            //    var endDate = startTime.AddMonths(ReturnMonths((int)param.contract.period_type)).AddDays(-1);
 
-                                if (i == period - 1)
-                                {
-                                    endDate = thisEndDate;
-                                }
+                            //    if (i == period - 1)
+                            //    {
+                            //        endDate = thisEndDate;
+                            //    }
 
-                                ctt_contract_service_period thisSerPri = new ctt_contract_service_period()
-                                {
-                                    id = conserPriDal.GetNextIdCom(),
-                                    contract_id = contract.id,
-                                    contract_service_id = conService.id,
-                                    object_id = (long)item.object_id,
-                                    object_type = (sbyte)isService,
-                                    period_begin_date = startTime,
-                                    period_end_date = param.contract.period_type == (int)QUOTE_ITEM_PERIOD_TYPE.ONE_TIME ? param.contract.end_date : endDate,
-                                    quantity = (int)item.quantity,
-                                    period_adjusted_price = (item.unit_price - (item.unit_discount ?? 0)) * item.quantity,
-                                    period_cost = item.quantity * item.unit_cost,
-                                    period_price = item.quantity * (item.unit_price - (item.unit_discount ?? 0)),
-                                    create_user_id = user.id,
-                                    update_user_id = user.id,
-                                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            //    ctt_contract_service_period thisSerPri = new ctt_contract_service_period()
+                            //    {
+                            //        id = conserPriDal.GetNextIdCom(),
+                            //        contract_id = contract.id,
+                            //        contract_service_id = conService.id,
+                            //        object_id = (long)item.object_id,
+                            //        object_type = (sbyte)isService,
+                            //        period_begin_date = startTime,
+                            //        period_end_date = param.contract.period_type == (int)QUOTE_ITEM_PERIOD_TYPE.ONE_TIME ? param.contract.end_date : endDate,
+                            //        quantity = (int)item.quantity,
+                            //        period_adjusted_price = (item.unit_price - item.unit_discount ?? 0) * item.quantity,
+                            //        period_cost = item.quantity * item.unit_cost,
+                            //        period_price = item.quantity * (item.unit_price - item.unit_discount ?? 0),
+                            //        create_user_id = user.id,
+                            //        update_user_id = user.id,
+                            //        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            //        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
 
-                                };
-                                conserPriDal.Insert(thisSerPri);
-                                new sys_oper_log_dal().Insert(new sys_oper_log()
-                                {
-                                    user_cate = "用户",
-                                    user_id = (int)user.id,
-                                    name = user.name,
-                                    phone = user.mobile == null ? "" : user.mobile,
-                                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_PERIOD,
-                                    oper_object_id = thisSerPri.id,
-                                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                                    oper_description = _dal.AddValue(thisSerPri),
-                                    remark = "创建合同分期服务"
+                            //    };
+                            //    conserPriDal.Insert(thisSerPri);
+                            //    new sys_oper_log_dal().Insert(new sys_oper_log()
+                            //    {
+                            //        user_cate = "用户",
+                            //        user_id = (int)user.id,
+                            //        name = user.name,
+                            //        phone = user.mobile == null ? "" : user.mobile,
+                            //        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            //        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE_PERIOD,
+                            //        oper_object_id = thisSerPri.id,
+                            //        oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                            //        oper_description = _dal.AddValue(thisSerPri),
+                            //        remark = "创建合同分期服务"
 
-                                });
-
-
-                                startTime = startTime.AddMonths(ReturnMonths((int)param.contract.period_type));
-
-
-                                if (isService == 2)
-                                {
-                                    var serIdList = ivtSerBunSerDal.GetSerList((long)item.object_id);
-                                    if (serIdList != null && serIdList.Count > 0)
-                                    {
-                                        foreach (var serID in serIdList)
-                                        {
-                                            var ivtSer = ivtSerDal.FindNoDeleteById(serID.id);
-                                            if (ivtSer == null)
-                                                continue;
-                                            ctt_contract_service_period_bundle_service ccspbs = new ctt_contract_service_period_bundle_service()
-                                            {
-                                                id = _dal.GetNextIdCom(),
-                                                contract_service_period_id = thisSerPri.id,
-                                                service_id = serID.service_id,
-                                                vendor_account_id = ivtSer.vendor_account_id,
-                                                period_cost = ivtSer.unit_cost == null ? 0 : (decimal)ivtSer.unit_cost,
-                                            };
-                                            ccspbsDal.Insert(ccspbs);
-                                            new sys_oper_log_dal().Insert(new sys_oper_log()
-                                            {
-                                                user_cate = "用户",
-                                                user_id = (int)user.id,
-                                                name = user.name,
-                                                phone = user.mobile == null ? "" : user.mobile,
-                                                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE,
-                                                oper_object_id = ccspbs.id,
-                                                oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                                                oper_description = _dal.AddValue(ccspbs),
-                                                remark = ""
-
-                                            });
+                            //    });
 
 
-                                            //ctt_contract_service_adjust_bundle_service ccsabs = new ctt_contract_service_adjust_bundle_service()
-                                            //{
-                                            //    id = ccsabsDal.GetNextIdCom(),
-                                            //    contract_service_adjust_id = 
-                                            //};
-                                        }
-                                    }
-                                }
-                            }
-                            if (isService == 2) // 代表是服务包
-                            {
-                                var serIdList = ivtSerBunSerDal.GetSerList((long)item.object_id);
-                                if (serIdList != null && serIdList.Count > 0)
-                                {
-                                    foreach (var serID in serIdList)
-                                    {
-                                        ctt_contract_service_bundle_service ccsbs = new ctt_contract_service_bundle_service()
-                                        {
-                                            id = _dal.GetNextIdCom(),
-                                            contract_service_id = conService.id,
-                                            service_id = serID.id,
-                                        };
-                                        ccsbsDal.Insert(ccsbs);
-                                        new sys_oper_log_dal().Insert(new sys_oper_log()
-                                        {
-                                            user_cate = "用户",
-                                            user_id = (int)user.id,
-                                            name = user.name,
-                                            phone = user.mobile == null ? "" : user.mobile,
-                                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE,
-                                            oper_object_id = ccsbs.id,
-                                            oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                                            oper_description = _dal.AddValue(ccsbs),
-                                            remark = ""
+                            //    startTime = startTime.AddMonths(ReturnMonths((int)param.contract.period_type));
 
-                                        });
-                                    }
-                                }
-                            }
+
+                            //    if (isService == 2)
+                            //    {
+                            //        var serIdList = ivtSerBunSerDal.GetSerList((long)item.object_id);
+                            //        if (serIdList != null && serIdList.Count > 0)
+                            //        {
+                            //            foreach (var serID in serIdList)
+                            //            {
+                            //                var ivtSer = ivtSerDal.FindNoDeleteById(serID.id);
+                            //                if (ivtSer == null)
+                            //                    continue;
+                            //                ctt_contract_service_period_bundle_service ccspbs = new ctt_contract_service_period_bundle_service()
+                            //                {
+                            //                    id = _dal.GetNextIdCom(),
+                            //                    contract_service_period_id = thisSerPri.id,
+                            //                    service_id = serID.service_id,
+                            //                    vendor_account_id = ivtSer.vendor_id,
+                            //                    period_cost = ivtSer.unit_cost == null ? 0 : (decimal)ivtSer.unit_cost,
+                            //                };
+                            //                ccspbsDal.Insert(ccspbs);
+                            //                new sys_oper_log_dal().Insert(new sys_oper_log()
+                            //                {
+                            //                    user_cate = "用户",
+                            //                    user_id = (int)user.id,
+                            //                    name = user.name,
+                            //                    phone = user.mobile == null ? "" : user.mobile,
+                            //                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            //                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE,
+                            //                    oper_object_id = ccspbs.id,
+                            //                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                            //                    oper_description = _dal.AddValue(ccspbs),
+                            //                    remark = ""
+
+                            //                });
+
+
+                            //                //ctt_contract_service_adjust_bundle_service ccsabs = new ctt_contract_service_adjust_bundle_service()
+                            //                //{
+                            //                //    id = ccsabsDal.GetNextIdCom(),
+                            //                //    contract_service_adjust_id = 
+                            //                //};
+                            //            }
+                            //        }
+                            //    }
+                            //}
+                            #endregion
+
+                            #region 原有的新增服务包信息
+                            //if (isService == 2) // 代表是服务包
+                            //{
+                            //    var serIdList = ivtSerBunSerDal.GetSerList((long)item.object_id);
+                            //    if (serIdList != null && serIdList.Count > 0)
+                            //    {
+                            //        foreach (var serID in serIdList)
+                            //        {
+                            //            ctt_contract_service_bundle_service ccsbs = new ctt_contract_service_bundle_service()
+                            //            {
+                            //                id = _dal.GetNextIdCom(),
+                            //                contract_service_id = conService.id,
+                            //                service_id = serID.id,
+                            //            };
+                            //            ccsbsDal.Insert(ccsbs);
+                            //            new sys_oper_log_dal().Insert(new sys_oper_log()
+                            //            {
+                            //                user_cate = "用户",
+                            //                user_id = (int)user.id,
+                            //                name = user.name,
+                            //                phone = user.mobile == null ? "" : user.mobile,
+                            //                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            //                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE,
+                            //                oper_object_id = ccsbs.id,
+                            //                oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                            //                oper_description = _dal.AddValue(ccsbs),
+                            //                remark = ""
+
+                            //            });
+                            //        }
+                            //    }
+                            //}
+                            #endregion
+
+
                         }
                     }
                 }
@@ -820,88 +835,113 @@ namespace EMT.DoneNOW.BLL
                 }
 
                 // （二） 报价项中的服务/包，合同中不存在，插入服务包
-                var ccsDal = new ctt_contract_service_dal();
-                var conServiceList = new ctt_contract_service_dal().GetConSerList(param.contract.id);
-                if (quoteItemList != null && quoteItemList.Count > 0)
+                // 已关闭商机再次关闭时，选择已存在定期服务合同不会转为合同服务
+                if (isFirstClost)
                 {
-                    var serviceItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.SERVICE).ToList();
-                    if (serviceItem != null && serviceItem.Count > 0)
+                    var ccsDal = new ctt_contract_service_dal();
+                    var conServiceList = new ctt_contract_service_dal().GetConSerList(param.contract.id);
+                    if (quoteItemList != null && quoteItemList.Count > 0)
                     {
-                        serviceItem.ForEach(_ =>
+                        var serviceItem = quoteItemList.Where(_ => _.type_id == (int)QUOTE_ITEM_TYPE.SERVICE).ToList();
+                        if (serviceItem != null && serviceItem.Count > 0)
                         {
-                            // 如果报价的服务/包在合同中不存在，则插入服务/包信息
-                            if (conServiceList.Any(csl => csl.object_id != _.object_id))
+                            serviceItem.ForEach(_ =>
                             {
-                                // 新增
-                                var service = new ctt_contract_service()
+                                // 如果报价的服务/包在合同中不存在，则插入服务/包信息
+                                if (!conServiceList.Any(csl => csl.object_id == _.object_id))
                                 {
-                                    id = _dal.GetNextIdCom(),
-                                    effective_date = param.effective_date,
-                                    object_id = (long)_.object_id,
-                                    object_type = (sbyte)isServiceOrBag((int)_.object_id),
-                                    unit_price = _.unit_price,
-                                    unit_cost = _.unit_cost,
-                                    quantity = _.quantity == null ? 0 : (int)_.quantity,
-                                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                    create_user_id = user.id,
-                                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                    update_user_id = user.id,
-                                };
-                                ccsDal.Insert(service);
-                                new sys_oper_log_dal().Insert(new sys_oper_log()
-                                {
-                                    user_cate = "用户",
-                                    user_id = (int)user.id,
-                                    name = user.name,
-                                    phone = user.mobile == null ? "" : user.mobile,
-                                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE,
-                                    oper_object_id = service.id,// 操作对象id
-                                    oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                                    oper_description = _dal.AddValue(service),
-                                    remark = "新增合同服务项"
-
-                                });
-                            }
-                            else // 如果报价的服务/包在合同中存在，且用户选择了更新操作，则更新服务/包信息
-                            {
-                                if (param.isAddService)
-                                {
-                                    var conSer = conServiceList.FirstOrDefault(cs => cs.object_id == _.object_id);
-                                    if (conSer != null)
+                                    // 新增
+                                    var service = new ctt_contract_service()
                                     {
-                                        conSer.effective_date = param.effective_date;
-                                        if (param.isUpdatePrice)
-                                        {
-                                            conSer.unit_price = _.unit_price;
-                                        }
-                                        if (param.isUpdateCost)
-                                        {
-                                            conSer.unit_cost = _.unit_cost;
-                                        }
-                                        conSer.quantity += (int)_.quantity;
-                                        new sys_oper_log_dal().Insert(new sys_oper_log()
-                                        {
-                                            user_cate = "用户",
-                                            user_id = (int)user.id,
-                                            name = user.name,
-                                            phone = user.mobile == null ? "" : user.mobile,
-                                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE,
-                                            oper_object_id = conSer.id,// 操作对象id
-                                            oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                                            oper_description = _dal.CompareValue(ccsDal.GetSinConSer(conSer.id), conSer),
-                                            remark = "修改合同服务项"
+                                        id = _dal.GetNextIdCom(),
+                                        effective_date = param.effective_date,
+                                        object_id = (long)_.object_id,
+                                        object_type = (sbyte)isServiceOrBag((int)_.object_id),
+                                        unit_price = (_.unit_price ?? 0) - (_.unit_discount ?? 0),
+                                        unit_cost = _.unit_cost,
+                                        contract_id = param.contract.id,
+                                        adjusted_price=((_.unit_price??0)-(_.unit_discount??0)) *(_.quantity??0),
+                                        quantity = (int)(_.quantity ?? 0),
+                                        create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        create_user_id = user.id,
+                                        update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                        update_user_id = user.id,
+                                    };
+                                    conSerBll.AddServiceServiceBundle(service, user_id);
 
-                                        });
-                                        ccsDal.Update(conSer);
+                                    //ccsDal.Insert(service);
+                                    //new sys_oper_log_dal().Insert(new sys_oper_log()
+                                    //{
+                                    //    user_cate = "用户",
+                                    //    user_id = (int)user.id,
+                                    //    name = user.name,
+                                    //    phone = user.mobile == null ? "" : user.mobile,
+                                    //    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                    //    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE,
+                                    //    oper_object_id = service.id,// 操作对象id
+                                    //    oper_type_id = (int)OPER_LOG_TYPE.ADD,
+                                    //    oper_description = _dal.AddValue(service),
+                                    //    remark = "新增合同服务项"
+                                    //});
+
+
+
+
+                                }
+                                else // 如果报价的服务/包在合同中存在，且用户选择了更新操作，则更新服务/包信息
+                                {
+                                    if (param.isAddService)
+                                    {
+                                        var conSer = conServiceList.FirstOrDefault(cs => cs.object_id == _.object_id);
+                                        if (conSer != null)
+                                        {
+                                            conSer.effective_date = param.effective_date;
+                                            if (param.isUpdatePrice)
+                                            {
+                                                conSer.unit_price = (_.unit_price ?? 0) - (_.unit_discount ?? 0);
+                                            }
+                                            if (param.isUpdateCost)
+                                            {
+                                                conSer.unit_cost = _.unit_cost;
+                                            }
+                                            conSer.quantity += (int)_.quantity;
+
+                                            if(isServiceOrBag((int)_.object_id) == 1)
+                                            {
+                                                conSerBll.AdjustService(conSer, user_id);
+                                            }
+                                            else if (isServiceOrBag((int)_.object_id) == 2)
+                                            {
+                                                //var oldconSer = ccsDal.FindNoDeleteById(conSer.id);
+                                                //ccsDal.Update(conSer);
+                                                //OperLogBLL.OperLogUpdate<ctt_contract_service>(conSer, oldconSer, conSer.id,user_id,OPER_LOG_OBJ_CATE.CONTRACT_SERVICE, "修改合同服务项");
+                                                conSerBll.AdjustServiceBundle(conSer, user_id);
+                                            }
+                                           
+                                            //new sys_oper_log_dal().Insert(new sys_oper_log()
+                                            //{
+                                            //    user_cate = "用户",
+                                            //    user_id = (int)user.id,
+                                            //    name = user.name,
+                                            //    phone = user.mobile == null ? "" : user.mobile,
+                                            //    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                            //    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTRACT_SERVICE,
+                                            //    oper_object_id = conSer.id,// 操作对象id
+                                            //    oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
+                                            //    oper_description = _dal.CompareValue(ccsDal.GetSinConSer(conSer.id), conSer),
+                                            //    remark = "修改合同服务项"
+
+                                            //});
+                                            //ccsDal.Update(conSer);
+                                        }
                                     }
                                 }
-                            }
 
-                        });
+                            });
+                        }
                     }
                 }
+              
 
             }
 
@@ -1220,7 +1260,7 @@ namespace EMT.DoneNOW.BLL
                             cost_type_id = (int)COST_TYPE.OPERATIONA,
                             status_id = status_id,
                             quantity = quote_item.quantity,
-                            unit_price = quote_item.unit_price,
+                            unit_price = (quote_item.unit_price??0)- (quote_item.unit_discount??0),
                             unit_cost = quote_item.unit_cost,
                             extended_price = quote_item.unit_price * quote_item.quantity,
                             create_user_id = user.id,
@@ -1637,15 +1677,58 @@ namespace EMT.DoneNOW.BLL
             total += (decimal)((opportunity.yearly_revenue == null ? 0 : (opportunity.yearly_revenue / 12)) * month);
             if (opportunity.use_quote == 1)
             {
+                total = 0;
+                decimal? oneTimeRevenue = 0;
+                decimal? monthRevenue = 0;
+                decimal? quarterRevenue = 0;
+                decimal? halfRevenue = 0;
+                decimal? yearRevenue = 0;
+
                 var priQuote = new crm_quote_dal().GetPriQuote(oId);
                 if (priQuote != null)
                 {
                     var itemList = new crm_quote_item_dal().GetAllQuoteItem(priQuote.id);
                     if (itemList != null && itemList.Count > 0)
                     {
-                       var shipList = itemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional == 0).ToList(); // 配送类型的报价项
-                        var oneTimeList = itemList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME && _.optional == 0 && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();
+                        var thisItem = itemList.Where(_ => _.type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional != 1 && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT).ToList();
+
+                        var shipList = itemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional == 0).ToList(); // 配送类型的报价项
+                        var thisOneTimeList = itemList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME && _.optional == 0 && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();
                         var discountQIList = itemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.optional == 0).ToList();
+
+                        if (thisItem != null && thisItem.Count > 0)
+                        {
+                            var oneTimeList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME).ToList();
+                            var monthList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH).ToList();
+                            var quarterList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER).ToList();
+                            var halfList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR).ToList();
+                            var yearList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR).ToList();
+                            if (oneTimeList != null && oneTimeList.Count > 0)
+                            {
+                                oneTimeRevenue = (decimal)oneTimeList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                               //  oneTimeCost = (decimal)oneTimeList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (monthList != null && monthList.Count > 0)
+                            {
+                                monthRevenue = (decimal)monthList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                // monthCost = (decimal)monthList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (quarterList != null && quarterList.Count > 0)
+                            {
+                                quarterRevenue = (decimal)quarterList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                // quarterCost = (decimal)quarterList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (halfList != null && halfList.Count > 0)
+                            {
+                                halfRevenue = (decimal)halfList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                // halfCost = (decimal)halfList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (yearList != null && yearList.Count > 0)
+                            {
+                                yearRevenue = (decimal)yearList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                // yearCost = (decimal)yearList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                        }
 
                         // 加上配送的金额
                         if (shipList != null && shipList.Count > 0)
@@ -1656,12 +1739,22 @@ namespace EMT.DoneNOW.BLL
                         // 减去折扣的金额
                         if (discountQIList != null && discountQIList.Count > 0)
                         {
-                            var totalPrice = (discountQIList.Where(_ => _.discount_percent == null).ToList().Sum(_ => (_.unit_discount != null && _.quantity != null) ? _.unit_discount * _.quantity : 0) + (oneTimeList != null && oneTimeList.Count > 0 ? discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_ => oneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0) * _.discount_percent * 100 / 100) : 0));
+                            var totalPrice = (discountQIList.Where(_ => _.discount_percent == null).ToList().Sum(_ => (_.unit_discount != null && _.quantity != null) ? _.unit_discount * _.quantity : 0) + (thisOneTimeList != null && thisOneTimeList.Count > 0 ? discountQIList.Where(_ => _.discount_percent != null).ToList().Sum(_ => thisOneTimeList.Sum(one => (one.unit_discount != null && one.unit_price != null && one.quantity != null) ? (one.unit_price - one.unit_discount) * one.quantity : 0) * _.discount_percent * 100 / 100) : 0));
                             total -= (decimal)totalPrice;
                         }
 
                     }
                 }
+
+                total += (decimal)(oneTimeRevenue??0);
+                total += (decimal)((monthRevenue??0) * month);
+                total += (decimal)(((quarterRevenue??0)/3) * month);
+                total += (decimal)(((quarterRevenue ?? 0)/6) * month);
+                total += (decimal)(((quarterRevenue ?? 0)/12) * month);
+            }
+            else
+            {
+
             }
             return total;
         }
@@ -1684,20 +1777,75 @@ namespace EMT.DoneNOW.BLL
             total += (decimal)((opportunity.yearly_cost == null ? 0 : (opportunity.yearly_cost / 12)) * month);
             if (opportunity.use_quote == 1)
             {
+                total = 0;
+                decimal? oneTimeCost = 0;
+                decimal? monthCost = 0;
+                decimal? quarterCost = 0;
+                decimal? halfCost = 0;
+                decimal? yearCost = 0;
+
                 var priQuote = new crm_quote_dal().GetPriQuote(oId);
                 if (priQuote != null)
                 {
                     var itemList = new crm_quote_item_dal().GetAllQuoteItem(priQuote.id);
                     if (itemList != null && itemList.Count > 0)
                     {
+                        var thisItem = itemList.Where(_ => _.type_id != (int)EMT.DoneNOW.DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional != 1 && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT).ToList();
+
                         var shipList = itemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES && _.optional == 0).ToList(); // 配送类型的报价项
+                        var thisOneTimeList = itemList.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME && _.optional == 0 && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.type_id != (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES).ToList();
+                        var discountQIList = itemList.Where(_ => _.type_id == (int)DTO.DicEnum.QUOTE_ITEM_TYPE.DISCOUNT && _.optional == 0).ToList();
+
+                        if (thisItem != null && thisItem.Count > 0)
+                        {
+                            var oneTimeList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME).ToList();
+                            var monthList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH).ToList();
+                            var quarterList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER).ToList();
+                            var halfList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR).ToList();
+                            var yearList = thisItem.Where(_ => _.period_type_id == (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR).ToList();
+                            if (oneTimeList != null && oneTimeList.Count > 0)
+                            {
+                                // oneTimeRevenue = (decimal)oneTimeList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                oneTimeCost = (decimal)oneTimeList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (monthList != null && monthList.Count > 0)
+                            {
+                                // monthRevenue = (decimal)monthList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                monthCost = (decimal)monthList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (quarterList != null && quarterList.Count > 0)
+                            {
+                                // quarterRevenue = (decimal)quarterList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                quarterCost = (decimal)quarterList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (halfList != null && halfList.Count > 0)
+                            {
+                                // halfRevenue = (decimal)halfList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                halfCost = (decimal)halfList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                            if (yearList != null && yearList.Count > 0)
+                            {
+                                // yearRevenue = (decimal)yearList.Sum(_ => (_.unit_price != null && _.quantity != null) ? (((_.unit_price ?? 0) - (_.unit_discount ?? 0)) * _.quantity) : 0);
+                                yearCost = (decimal)yearList.Sum(_ => (_.unit_cost != null && _.quantity != null) ? (_.unit_cost * _.quantity) : 0);
+                            }
+                        }
+
+                        // 加上配送的金额
                         if (shipList != null && shipList.Count > 0)
                         {
-                            var totalPrice = shipList.Sum(_ => ( _.unit_cost != null && _.quantity != null) ? _.unit_cost * _.quantity : 0);
+                            var totalPrice = shipList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_cost) * _.quantity : 0);
                             total += (decimal)totalPrice;
                         }
+                        
+
                     }
                 }
+
+                total += (decimal)(oneTimeCost ?? 0);
+                total += (decimal)((monthCost ?? 0) * month);
+                total += (decimal)(((quarterCost ?? 0) / 3) * month);
+                total += (decimal)(((halfCost ?? 0) / 6) * month);
+                total += (decimal)(((yearCost ?? 0) / 12) * month);
             }
             return total;
         }

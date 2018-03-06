@@ -26,7 +26,21 @@ namespace EMT.DoneNOW.DAL
         {
             return FindSignleBySql<crm_installed_product>($"select * from crm_installed_product where id = {id} and delete_time = 0");
         }
-        // SELECT id  from crm_installed_product where delete_time = 0 and service_bundle_id = 1
+        /// <summary>
+        /// 根据报价ID 获取相应的配置项和数量
+        /// </summary>
+        public List<crm_installed_product> GetInsProByQuoteId(long quote_id,long num)
+        {
+            return FindListBySql<crm_installed_product>($"SELECT * from crm_installed_product where quote_item_id = {quote_id} and delete_time=0 LIMIT 0,{num}");
+        }
+        /// <summary>
+        /// 根据成本ID 获取相应的配置项和数量
+        /// </summary>
+        public List<crm_installed_product> GetInsProByCostId(long cost_id, long num)
+        {
+            return FindListBySql<crm_installed_product>($"SELECT * from crm_installed_product where  delete_time=0 and contract_cost_id = {cost_id}  LIMIT {num}");
+        }
+
         /// <summary>
         /// 根据服务包ID 获取相关配置项
         /// </summary>

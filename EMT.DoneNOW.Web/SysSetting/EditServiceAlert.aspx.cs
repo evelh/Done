@@ -10,7 +10,7 @@ namespace EMT.DoneNOW.Web.SysSetting
     public partial class EditServiceAlert : BasePage
     {
         protected bool msg1 = false;
-        protected bool msg2 = false; 
+        protected bool msg2 = false;
         protected void Page_Load(object sender, EventArgs e)
         {
             msg1 = !string.IsNullOrEmpty(Request.QueryString["msg1"]);

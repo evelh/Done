@@ -48,6 +48,13 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<ctt_contract_cost>($"SELECT * FROM ctt_contract_cost where task_id = {ticketId} and delete_time = 0 "+where);
         }
+        /// <summary>
+        /// 获取多次 同一个成本
+        /// </summary>
+        public List<ctt_contract_cost> GetItemByNum(long quote_item_id, long num)
+        {
+            return FindListBySql<ctt_contract_cost>($"select * from ctt_contract_cost a,(select 1 from d_general limit {num})b where id={quote_item_id} and delete_time = 0");
+        }
 
 
     }

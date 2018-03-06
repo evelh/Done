@@ -74,22 +74,18 @@
 
     $("#saveClose").click(function () {
         window.opener.document.getElementById("isUpdate").value = "1";
-        if ($("#chkUpdateNonPosted").is(":checked"))
-        {
+        if ($("#chkUpdateNonPosted").is(":checked")) {
             window.opener.document.getElementById("isUpdateNoAppCost").value = "1";
             window.opener.document.getElementById("updateDate").value = $("#EffectiveDate").val();
         }
-        else
-        {
+        else {
             window.opener.document.getElementById("isUpdateNoAppCost").value = "";
             window.opener.document.getElementById("updateDate").value = "";
         }
-        if ($("#chkUpdate").is(":checked"))
-        {
+        if ($("#chkUpdate").is(":checked")) {
             window.opener.document.getElementById("isUpdateAppCost").value = "1";
         }
-        else
-        {
+        else {
             window.opener.document.getElementById("isUpdateAppCost").value = "";
         }
         // window.opener.document.getElementById("form1").submit();

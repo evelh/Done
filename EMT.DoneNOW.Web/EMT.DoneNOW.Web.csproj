@@ -143,6 +143,7 @@
     <Content Include="ConfigurationItem\ConfigItemWizard.aspx" />
     <Content Include="ConfigurationItem\ConfigType.aspx" />
     <Content Include="ConfigurationItem\ConfigUdfField.aspx" />
+    <Content Include="ConfigurationItem\QuoteItemWizard.aspx" />
     <Content Include="ConfigurationItem\RelatiobContract.aspx" />
     <Content Include="ConfigurationItem\SubscriptionAddOrEdit.aspx" />
     <Content Include="Contact\AddContact.aspx" />
@@ -1045,6 +1046,13 @@
     </Compile>
     <Compile Include="ConfigurationItem\ConfigUdfField.aspx.designer.cs">
       <DependentUpon>ConfigUdfField.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationItem\QuoteItemWizard.aspx.cs">
+      <DependentUpon>QuoteItemWizard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConfigurationItem\QuoteItemWizard.aspx.designer.cs">
+      <DependentUpon>QuoteItemWizard.aspx</DependentUpon>
     </Compile>
     <Compile Include="ConfigurationItem\RelatiobContract.aspx.cs">
       <DependentUpon>RelatiobContract.aspx</DependentUpon>

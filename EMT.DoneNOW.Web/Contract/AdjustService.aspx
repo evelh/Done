@@ -48,7 +48,7 @@
                 <span style="font-weight: normal;">(输入一个<%=contract.start_date.ToString("yyyy-MM-dd")+" - "+contract.end_date.ToString("yyyy-MM-dd") %>之间的日期)</span>
               </span>
               <div>
-                <input type="text" onclick="WdatePicker()" value="<%=DateTime.Now.ToString("yyyy-MM-dd") %>" name="effective_date" class="Wdate" style="width: 90px;" />
+                <input type="text" onclick="WdatePicker()" value="<%=DateTime.Now.ToString("yyyy-MM-dd") %>" name="effective_date" id="effective_date" class="Wdate" style="width: 90px;" />
                 <label>注意：价格变动将对所有未提交的、开始日期在生效日期之后（包括生效日期）的服务周期生效</label>
               </div>
             </td>
@@ -179,15 +179,19 @@
 
     $("#SaveAndCloneButton").click(function () {
       var num = $("#num2").val();
-      if (!checkNumInt(num) || parseInt(num) <= 0) {
+      if (parseInt(num) < 0) {
         alert("请输入单位数");
         return;
       }
-      if ((/^\d{1,15}\.?\d{0,2}$/.test($("#num3").val())) == false) {
+      if ($("#effective_date").val() == "") {
+          alert("请输入生效日期");
+          return;
+      }
+      if ((/^\d{1,15}\.?\d{0,4}$/.test($("#num3").val())) == false) {
         alert('单价输入格式错误');
         return;
       }
-      if ((/^\d{1,15}\.?\d{0,2}$/.test($("#num6").val())) == false) {
+      if ((/^\d{1,15}\.?\d{0,4}$/.test($("#num6").val())) == false) {
         alert('单位成本输入格式错误');
         return;
       }
@@ -195,6 +199,13 @@
         alert("请输入按比例分配的总成本");
         return;
       }
+        <%var endTime = new EMT.DoneNOW.BLL.ContractServiceBLL().GetServiceMaxApproveTime(service.id);
+      if (endTime != null) {%>
+        if (compareTime('<%=((DateTime)endTime).ToString("yyyy-MM-dd") %>', $("#effective_date").val())) {
+            alert("结束时间不能早于已审批并提交的服务结束时间");
+            return;
+        }
+      <% } %>
       $("#form1").submit();
     })
     $("#CancelButton").click(function () {
@@ -202,10 +213,6 @@
     })
 
     $("#num1").change(function () {
-      if (!checkNumInt($("#num1").val())) {
-        alert("请输入整数");
-        return;
-      }
       var change = parseInt($("#num1").val());
       change = change + parseInt($("#units").val());
       $("#num2").val(change);
@@ -220,8 +227,8 @@
 
     $("#num3").change(function () {
       var k2 = $("#num3").val();
-      if ((/^\d{1,15}\.?\d{0,2}$/.test(k2)) == false) {
-        alert('只能输入两位小数');
+      if ((/^\d{1,15}\.?\d{0,4}$/.test(k2)) == false) {
+        alert('只能输入四位小数');
       }
       var change = parseFloat($("#num3").val());
       var discount = parseInt((parseFloat($("#price").val()) - change) / parseFloat($("#price").val()) * 10000) / 100;
@@ -246,8 +253,8 @@
 
     $("#num5").change(function () {
       var k2 = $("#num5").val();
-      if ((/^\d{1,15}\.?\d{0,2}$/.test(k2)) == false) {
-        alert('只能输入两位小数');
+      if ((/^\d{1,15}\.?\d{0,4}$/.test(k2)) == false) {
+        alert('只能输入四位小数');
       }
       var change = parseFloat($("#num5").val());
       var price = change / parseInt($("#num2").val());
@@ -260,8 +267,8 @@
 
     $("#num6").change(function () {
       var k2 = $("#num6").val();
-      if ((/^\d{1,15}\.?\d{0,2}$/.test(k2)) == false) {
-        alert('只能输入两位小数');
+      if ((/^\d{1,15}\.?\d{0,4}$/.test(k2)) == false) {
+        alert('只能输入四位小数');
       }
       var change = parseFloat($("#num6").val());
       var price = change * $("#num2").val();
@@ -272,8 +279,8 @@
 
     $("#num7").change(function () {
       var k2 = $("#num7").val();
-      if ((/^\d{1,15}\.?\d{0,2}$/.test(k2)) == false) {
-        alert('只能输入两位小数');
+      if ((/^\d{1,15}\.?\d{0,4}$/.test(k2)) == false) {
+        alert('只能输入四位小数');
       }
       var change = parseFloat($("#num7").val());
       var price = parseInt(change / $("#num2").val() * 100) / 100;
@@ -281,11 +288,7 @@
         $("#num6").val(price);
       }
     })
-
-    function checkNumInt(num) {
-      var r = "^-?//d+$";
-      return r.test(num);
-    }
+      
   </script>
 </body>
 </html>

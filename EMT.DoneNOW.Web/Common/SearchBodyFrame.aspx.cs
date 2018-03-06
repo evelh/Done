@@ -792,7 +792,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 case (long)QueryType.ContractService:
-                    contextMenu.Add(new PageContextMenuDto { text = "调整服务/服务包", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "调整服务/服务包", click_function = "AdjustService()" });
                     contextMenu.Add(new PageContextMenuDto { text = "编辑发票描述", click_function = "EditDescription()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
@@ -997,6 +997,12 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "DeleteService()" });
                     contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "InActive()",id="InActSer"});
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()",id="ActSer" });
+					break;
+                case (long)QueryType.SERVICE:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "DeleteService()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "InActive()", id = "InActSer" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActSer" });
                     break;
                 case (long)QueryType.SERVICE_BUNDLE:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });

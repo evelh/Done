@@ -17,14 +17,15 @@ namespace EMT.DoneNOW.Web.QuoteItem
         protected bool isAdd = true;
         protected string type = "";
         protected Dictionary<string, object> dic = null;
-        protected bool isSaleOrder = false;
+        protected bool isSaleOrder = false;  // 是否是销售订单
         protected List<ivt_reserve> thisReserList = null;
-        protected long? saleOrderId = null;
+        protected long? saleOrderId = null;  // 销售订单ID
+        protected long quote_id;             // 报价ID
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
-                isSaleOrder = !string.IsNullOrEmpty(Request.QueryString["isSaleOrder"]); 
+                isSaleOrder = !string.IsNullOrEmpty(Request.QueryString["isSaleOrder"]);
                 var sId = Request.QueryString["sale_order_id"];
                 if (!string.IsNullOrEmpty(sId))
                 {
@@ -34,6 +35,10 @@ namespace EMT.DoneNOW.Web.QuoteItem
 
                 type = Request.QueryString["type_id"];             // 报价项类型
                 var quote_id = Request.QueryString["quote_id"];    // 报价ID 需要根据报价ID 添加报价项
+                if (!string.IsNullOrEmpty(quote_id))
+                {
+                    this.quote_id = long.Parse(quote_id);
+                }
                 var quote_item_id = Request.QueryString["id"];
                 thisQuoteId.Value = quote_id;
                 dic = new QuoteItemBLL().GetField();
@@ -42,13 +47,17 @@ namespace EMT.DoneNOW.Web.QuoteItem
                     quote_item = new crm_quote_item_dal().GetQuoteItem(long.Parse(quote_item_id));
                     if (quote_item != null)
                     {
+                        if (quote_item.quote_id != null)
+                        {
+                            this.quote_id = (long)quote_item.quote_id;
+                        }
                         isAdd = false;
                         if (!IsPostBack)
                         {
                             _optional.Checked = quote_item.optional == 1;
                         }
                         ItemTypeId.Value = quote_item.type_id.ToString();
-                       
+
                         switch (quote_item.type_id)   // todo 不同类型的报价项
                         {
                             case (int)QUOTE_ITEM_TYPE.WORKING_HOURS:
@@ -71,6 +80,9 @@ namespace EMT.DoneNOW.Web.QuoteItem
                                 break;
                             case (int)QUOTE_ITEM_TYPE.SERVICE:
                                 type = "服务";
+                                break;
+                            case (int)QUOTE_ITEM_TYPE.START_COST:
+                                type = "初始费用";
                                 break;
                             default:
                                 break;
@@ -103,6 +115,9 @@ namespace EMT.DoneNOW.Web.QuoteItem
                         case (int)QUOTE_ITEM_TYPE.SERVICE:
                             type = "服务";
                             break;
+                        case (int)QUOTE_ITEM_TYPE.START_COST:
+                            type = "初始费用";
+                            break;
                         default:
                             Response.End();  // 未传类型，暂不创建
                             break;
@@ -114,8 +129,8 @@ namespace EMT.DoneNOW.Web.QuoteItem
                 //}
 
 
-               // var type_id = Convert.ToInt64(type);
-  
+                // var type_id = Convert.ToInt64(type);
+
 
                 #region 下拉框配置数据源
                 // 税收种类
@@ -141,7 +156,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
                     {
                         tax_cate_id.SelectedValue = quote_item.tax_cate_id.ToString();
                     }
-                    if (quote_item.period_type_id!=null)
+                    if (quote_item.period_type_id != null)
                     {
                         period_type_id.SelectedValue = quote_item.period_type_id.ToString();
                     }
@@ -171,25 +186,25 @@ namespace EMT.DoneNOW.Web.QuoteItem
             {
                 if (isSaleOrder)
                 {
-                    result = new QuoteItemBLL().Insert(param, wareDic, GetLoginUserId(),true,saleOrderId);
+                    result = new QuoteItemBLL().Insert(param, wareDic, GetLoginUserId(), true, saleOrderId);
                 }
                 else
                 {
-                    result = new QuoteItemBLL().Insert(param, wareDic,GetLoginUserId());
+                    result = new QuoteItemBLL().Insert(param, wareDic, GetLoginUserId());
                 }
-                 
+
             }
             else
             {
                 if (isSaleOrder)
                 {
-                    result = new QuoteItemBLL().Update(param, wareDic, GetLoginUserId(),true, saleOrderId);
+                    result = new QuoteItemBLL().Update(param, wareDic, GetLoginUserId(), true, saleOrderId);
                 }
                 else
                 {
-                    result = new QuoteItemBLL().Update(param, wareDic,GetLoginUserId());
+                    result = new QuoteItemBLL().Update(param, wareDic, GetLoginUserId());
                 }
-                
+
             }
             switch (result)
             {
@@ -228,25 +243,25 @@ namespace EMT.DoneNOW.Web.QuoteItem
                 {
                     result = new QuoteItemBLL().Insert(param, wareDic, GetLoginUserId());
                 }
-                
+
             }
             else
             {
                 if (isSaleOrder)
                 {
-                    result = new QuoteItemBLL().Update(param, wareDic, GetLoginUserId(),true, saleOrderId);
+                    result = new QuoteItemBLL().Update(param, wareDic, GetLoginUserId(), true, saleOrderId);
                 }
                 else
                 {
                     result = new QuoteItemBLL().Update(param, wareDic, GetLoginUserId());
                 }
-                
+
             }
 
             switch (result)
             {
                 case DTO.ERROR_CODE.SUCCESS:
-                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存报价项成功');self.opener.location.reload();location.href = 'QuoteItemAddAndUpdate.aspx?type_id=" + param.type_id + "&quote_id=" + param.quote_id + "&isSaleOrder="+ Request.QueryString["isSaleOrder"] + "&sale_order_id="+ Request.QueryString["sale_order_id"] +"';</script>");
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存报价项成功');self.opener.location.reload();location.href = 'QuoteItemAddAndUpdate.aspx?type_id=" + param.type_id + "&quote_id=" + param.quote_id + "&isSaleOrder=" + Request.QueryString["isSaleOrder"] + "&sale_order_id=" + Request.QueryString["sale_order_id"] + "';</script>");
                     break;
                 case DTO.ERROR_CODE.ERROR:
                     break;
@@ -261,7 +276,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
                     break;
             }
 
-            
+
 
         }
 
@@ -291,36 +306,36 @@ namespace EMT.DoneNOW.Web.QuoteItem
             switch (quote_item.type_id)
             {
                 case (int)QUOTE_ITEM_TYPE.WORKING_HOURS:
-                    
+
                     break;
                 case (int)QUOTE_ITEM_TYPE.COST:
-                    
+
                     break;
                 case (int)QUOTE_ITEM_TYPE.DEGRESSION:
-                    
+
                     break;
                 case (int)QUOTE_ITEM_TYPE.DISCOUNT:
-                    
+
                     break;
                 case (int)QUOTE_ITEM_TYPE.PRODUCT:
                     var wareIds = Request.Form["wareIds"];
                     if (!string.IsNullOrEmpty(wareIds))
                     {
-                        var wareIdArr = wareIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                        var wareIdArr = wareIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                         foreach (var wareId in wareIdArr)
                         {
-                            var thisAvailable = Request.Form[wareId+"_available"];
+                            var thisAvailable = Request.Form[wareId + "_available"];
                             var hand = Request.Form[wareId + "_hand"];
                             var use = Request.Form[wareId + "_use"];
                             if (!string.IsNullOrEmpty(thisAvailable))
                             {
-                                wareDic.Add(long.Parse(wareId),int.Parse(thisAvailable));
+                                wareDic.Add(long.Parse(wareId), int.Parse(thisAvailable));
                             }
                         }
                     }
                     break;
                 case (int)QUOTE_ITEM_TYPE.DISTRIBUTION_EXPENSES:
-                    
+
                     break;
                 case (int)QUOTE_ITEM_TYPE.SERVICE:
                     var opBLL = new OpportunityBLL();
@@ -334,7 +349,7 @@ namespace EMT.DoneNOW.Web.QuoteItem
                                 quote_item.period_type_id = service.period_type_id;
                             }
                         }
-                        else  if(opBLL.isServiceOrBag((long)quote_item.object_id) == 1)
+                        else if (opBLL.isServiceOrBag((long)quote_item.object_id) == 2)
                         {
                             var serviceBundle = new ivt_service_bundle_dal().GetSinSerBun((long)quote_item.object_id);
                             if (serviceBundle != null)

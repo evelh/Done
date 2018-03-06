@@ -327,7 +327,16 @@ namespace EMT.DoneNOW.BLL
                         throw new Exception("修改合同，周期类型错误");
                 }
 
-                // TODO: 修改合同，修改周期
+                // 修改合同，修改周期
+                if (contractOld.end_date != ct.end_date)
+                {
+                    var serviceBll = new ContractServiceBLL();
+                    var serviceList = serviceBll.GetServiceList(contract.id);
+                    foreach (var service in serviceList)
+                    {
+                        serviceBll.EditServiceEndDate(contractOld, service.id, ct.end_date, userId);
+                    }
+                }
             }
             else
             {

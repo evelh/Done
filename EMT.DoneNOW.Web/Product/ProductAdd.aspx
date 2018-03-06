@@ -282,8 +282,10 @@
                 <%}
                     else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)    /* 日期 */
                     {
-                      var udfValue = udfv_list.FirstOrDefault(_ => _.id == udf.id).value;
-                      string vlu = udfValue == null ? "" : (udfValue.ToString() == "" ? "" : DateTime.Parse(udfValue.ToString()).ToString("yyyy-MM-dd"));
+                        object udfValue = null;
+                        if (udfv_list != null)
+                            udfValue = udfv_list.FirstOrDefault(_ => _.id == udf.id).value;
+                        string vlu = udfValue == null ? "" : (udfValue.ToString() == "" ? "" : DateTime.Parse(udfValue.ToString()).ToString("yyyy-MM-dd"));
                         %>
                         <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" style="width:180px;" <%if (udfv_list != null) { %> value="<%=vlu %>" <%} %> />
                 <%}

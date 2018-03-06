@@ -15,7 +15,7 @@
     }
   </style>
 </head>
-<body>
+<body style="overflow:auto;">
   <div class="header"><%if (isAdd) { %>新增<%} else { %>编辑<%} %>采购订单</div>
   <div class="header-title" style="min-width: 700px;">
     <ul>
@@ -45,7 +45,7 @@
   </div>
   <form id="form1" runat="server">
     <div class="information clear" style="min-width: 764px;">
-      <p class="informationTitle"><i></i>常规信息</p>
+      <p class="informationTitle"><i id="generalInfo"></i>常规信息</p>
       <div class="content clear">
         <table border="none" cellspacing="" cellpadding="" style="width: 364px;">
           <tr>
@@ -383,13 +383,33 @@
       }
       return true;
     }
-    var Height = $(window).height() - 693 + "px";
+      var Height = $(window).height() - 693 + "px";
+      if (parseInt($(window).height() - 693) < 150)
+          Height = 150 + "px";
     $("#showItem").css("height", Height);
 
     $(window).resize(function () {
-      var Height = $(window).height() - 693 + "px";
+        var Height = $(window).height() - 693 + "px";
+        if (parseInt($(window).height() - 693) < 150)
+            Height = 150 + "px";
       $("#showItem").css("height", Height);
-    })
+      })
+      var isOpen = 1;
+      $("#generalInfo").click(function () {
+          var Height;
+          if (isOpen == 0) {
+              Height = $(window).height() - 693 + "px";
+              if (parseInt($(window).height() - 693) < 150)
+                  Height = 150 + "px";
+              isOpen = 1;
+          } else {
+              Height = $(window).height() - 141 + "px";
+              if (parseInt($(window).height() - 141) < 150)
+                  Height = 150 + "px";
+              isOpen = 0;
+          }
+          $("#showItem").css("height", Height);
+      })
     var haveVendor = 0;
     function SelectVendor() {
       if ($("#venderNameHidden").val() == "") {

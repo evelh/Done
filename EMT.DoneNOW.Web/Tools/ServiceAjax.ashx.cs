@@ -22,15 +22,30 @@ namespace EMT.DoneNOW.Web
             {
                 case "service":
                     var service_id = context.Request.QueryString["service_id"];
-                    GetService(context,long.Parse(service_id));
+                    GetService(context, long.Parse(service_id));
                     break;// service_bundle
                 case "service_bundle":
                     var service_bundle_id = context.Request.QueryString["service_bundle_id"];
-                    GetServiceBundle(context,long.Parse(service_bundle_id));
+                    GetServiceBundle(context, long.Parse(service_bundle_id));
                     break;
                 case "GetSerList":
-                    var conId  = context.Request.QueryString["contract_id"];
-                    GetSerList(context,long.Parse(conId));
+                    var conId = context.Request.QueryString["contract_id"];
+                    GetSerList(context, long.Parse(conId));
+                    break;
+                case "GetServicesByIds":
+                    GetServicesByIds(context);
+                    break;
+                case "GetServicePriceByIds":
+                    GetServicePriceByIds(context);
+                    break;
+                case "GetServiceContractCount":
+                    GetServiceContractCount(context);
+                    break;
+                case "DeleteService":
+                    DeleteService(context);
+                    break;
+                case "ActiveService":
+                    ActiveService(context);
                     break;
                 case "GetServicesByIds":
                     GetServicesByIds(context);
@@ -57,7 +72,7 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         /// <param name="context"></param>
         /// <param name="service_id"></param>
-        public void GetService(HttpContext context,long service_id)
+        public void GetService(HttpContext context, long service_id)
         {
             var service = new ivt_service_dal().FindSignleBySql<ivt_service>($"select * from ivt_service where id= {service_id} ");
             if (service != null)
@@ -81,7 +96,7 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         ///  根据合同Id获取相关信息，用横线隔开
         /// </summary>
-        public void GetSerList(HttpContext context,long contract_id)
+        public void GetSerList(HttpContext context, long contract_id)
         {
             var contract = new ctt_contract_dal().FindNoDeleteById(contract_id);
             if (contract != null)
@@ -105,7 +120,7 @@ namespace EMT.DoneNOW.Web
                         {
                             services.Append("<option>-------</option>");
                         }
-                     
+
                     }
                     if (serBagList != null && serBagList.Count > 0)
                     {
@@ -114,13 +129,13 @@ namespace EMT.DoneNOW.Web
                             var name = oppBLL.ReturnServiceName(item.object_id);
                             services.Append("<option value='" + item.id + "'>" + name + "</option>");
                         }
-                        
+
                     }
 
 
 
                     context.Response.Write(services);
-                   
+
                 }
             }
         }
@@ -133,19 +148,20 @@ namespace EMT.DoneNOW.Web
             if (!string.IsNullOrEmpty(serviceIds))
             {
                 var serList = new ivt_service_dal().GetServiceList($" and id in({serviceIds})");
-                if(serList!=null&& serList.Count > 0)
+                if (serList != null && serList.Count > 0)
                 {
                     List<ServiceDto> serDtoList = new List<ServiceDto>();
                     var accBll = new CompanyBLL();
                     var dDal = new d_general_dal();
                     var dccDal = new d_cost_code_dal();
                     serList.ForEach(_ => {
-                        var thisDto = new ServiceDto() {
-                            id=_.id,
+                        var thisDto = new ServiceDto()
+                        {
+                            id = _.id,
                             name = _.name,
                             description = _.description,
-                            unit_cost = (_.unit_cost??0),
-                            unit_price = (_.unit_price??0),
+                            unit_cost = (_.unit_cost ?? 0),
+                            unit_price = (_.unit_price ?? 0),
                             cost_code_id = _.cost_code_id,
                             period_type_id = _.period_type_id,
                             vendor_id = _.vendor_account_id,
@@ -166,7 +182,7 @@ namespace EMT.DoneNOW.Web
                         if (thisCode != null)
                             thisDto.cost_code_name = thisCode.name;
                         serDtoList.Add(thisDto);
-                     
+
                     });
 
                     context.Response.Write(new EMT.Tools.Serialize().SerializeJson(serDtoList));
@@ -193,7 +209,7 @@ namespace EMT.DoneNOW.Web
                                 unit_price += (_.unit_price ?? 0);
                                 break;
                             case (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER:
-                                unit_price += ((_.unit_price ?? 0)/3);
+                                unit_price += ((_.unit_price ?? 0) / 3);
                                 break;
                             case (int)DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
                                 unit_price += ((_.unit_price ?? 0) / 6);
@@ -237,11 +253,11 @@ namespace EMT.DoneNOW.Web
             if (!string.IsNullOrEmpty(serId))
             {
                 if (!string.IsNullOrEmpty(context.Request.QueryString["is_bundle"]))
-                    result = new ServiceBLL().DeleteServiceBundle(long.Parse(serId),LoginUserId,ref faileReason);
+                    result = new ServiceBLL().DeleteServiceBundle(long.Parse(serId), LoginUserId, ref faileReason);
                 else
                     result = new ServiceBLL().DeleteService(long.Parse(serId), LoginUserId, ref faileReason);
             }
-            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new {result=result,reason = faileReason }));
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { result = result, reason = faileReason }));
         }
         /// <summary>
         /// 激活/停用 相关服务
@@ -255,24 +271,25 @@ namespace EMT.DoneNOW.Web
             if (!string.IsNullOrEmpty(serviceId))
             {
                 if (!string.IsNullOrEmpty(context.Request.QueryString["is_bundle"]))
-                    result = new ServiceBLL().ActiveServiceBundle(long.Parse(serviceId), isActive, LoginUserId,ref faileReason);
+                    result = new ServiceBLL().ActiveServiceBundle(long.Parse(serviceId), isActive, LoginUserId, ref faileReason);
                 else
-                    result = new ServiceBLL().ActiveService(long.Parse(serviceId),isActive,LoginUserId, ref faileReason);
+                    result = new ServiceBLL().ActiveService(long.Parse(serviceId), isActive, LoginUserId, ref faileReason);
             }
             context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { result = result, reason = faileReason }));
         }
-        
+
     }
-    public class ServiceDto{
+    public class ServiceDto
+    {
         public long id;
         public string name;
-        public string description="";
+        public string description = "";
         public long? vendor_id;
-        public string vendor_name="";
+        public string vendor_name = "";
         public long? period_type_id;
-        public string period_type_name="";
+        public string period_type_name = "";
         public long cost_code_id;
-        public string cost_code_name="";
+        public string cost_code_name = "";
         public decimal unit_price;
         public decimal unit_cost;
     }

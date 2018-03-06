@@ -31,6 +31,13 @@ namespace EMT.DoneNOW.Web.Contract
             }
             service = bll.GetService(serviceId);
             contract = new ContractBLL().GetContract(service.contract_id);
+            DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE svcPeriod, maxPeriod;
+            decimal rate = bll.GetPeriodRate((DTO.DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type, service.id, 0, out svcPeriod, out maxPeriod);
+            if (rate > 1)
+            {
+                service.unit_cost = service.unit_cost / rate;
+                service.unit_price = service.unit_price / rate;
+            }
             if (service.object_type == 1)
                 serviceTypeName = "服务";
             else if (service.object_type == 2)

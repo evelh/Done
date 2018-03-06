@@ -162,7 +162,6 @@
                             <td>
                                 <div class="clear">
                                     <label>客户类型<span class="red"></span></label>
-
                                     <asp:DropDownList ID="classification" runat="server" AutoPostBack="False">
                                     </asp:DropDownList>
                                 </div>

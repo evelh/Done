@@ -83,7 +83,6 @@ namespace EMT.DoneNOW.BLL
             ivt_service_dal dal = new ivt_service_dal();
             ivt_service service = dal.FindById(ser.id);
             ivt_service serOld = dal.FindById(ser.id);
-            
             service.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
             service.update_user_id = userId;
             service.name = ser.name;
@@ -103,7 +102,6 @@ namespace EMT.DoneNOW.BLL
                 dal.Update(service);
                 OperLogBLL.OperLogUpdate(desc, service.id, userId, DTO.DicEnum.OPER_LOG_OBJ_CATE.IVT_SERVICE, "编辑服务");
             }
-            
             return true;
         }
 
@@ -240,7 +238,6 @@ namespace EMT.DoneNOW.BLL
                     isbDal.SoftDelete(thisSerBundle,userId);
                     OperLogBLL.OperLogDelete<ivt_service_bundle>(thisSerBundle, thisSerBundle.id, userId, DTO.DicEnum.OPER_LOG_OBJ_CATE.IVT_SERVICE_BUNDLE, "删除服务包");
                 }
-                
             }
             catch (Exception)
             {

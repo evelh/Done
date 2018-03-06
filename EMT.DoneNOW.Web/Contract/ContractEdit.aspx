@@ -10,8 +10,9 @@
   <link rel="stylesheet" href="../Content/NewConfigurationItem.css" />
   <link rel="stylesheet" href="../Content/LostOpp.css"/>
 </head>
-<body>
-  <form id="form1" onsubmit="CheckForm()" runat="server">
+<body style="overflow:auto;">
+    <%="" %>
+  <form id="form1" runat="server">
     <!--顶部-->
     <div class="TitleBar">
       <div class="Title">
@@ -24,7 +25,7 @@
         <li class="Button ButtonIcon NormalState" id="SaveAndCloneButton" tabindex="0">
           <span class="Icon SaveAndClone"></span>
           <span class="Text">
-            <asp:Button ID="SaveClose" runat="server" Text="保存并关闭" OnClick="SaveClose_Click" style="background: transparent;cursor: pointer;border: none;outline:none;"/></span>
+            <asp:Button ID="SaveClose" runat="server" Text="保存并关闭" style="background: transparent;cursor: pointer;border: none;outline:none;"/></span>
         </li>
         <li class="Button ButtonIcon NormalState" id="CancelButton" tabindex="0">
           <span class="Icon Cancel"></span>
@@ -44,7 +45,7 @@
     <!--切换项-->
     <div class="TabContainer">
         <div style="left: 0;overflow-x: auto;overflow-y: auto;position: fixed;right: 0;bottom: 0;top:120px;">
-            <div class="DivScrollingContainer Tab">
+            <div class="DivScrollingContainer Tab" style="bottom:auto;">
         <div class="DivSectionWithHeader">
           <!--头部-->
           <div class="HeaderRow">
@@ -337,7 +338,7 @@
                             </td>
                             <td class="FieldLabel">结束日期<span style="color: Red;">*</span>
                               <div>
-                                <input type="text" name="end_date" value="<%=contract.contract.end_date.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" class="Wdate" />
+                                <input type="text" name="end_date" id="endDate" value="<%=contract.contract.end_date.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()" class="Wdate" />
                               </div>
                             </td>
                             <td class="FieldLabel">计费客户
@@ -582,15 +583,35 @@
     </div>
   </form>
   <script type="text/javascript" src="../Scripts/jquery-3.1.0.min.js"></script>
+  <script src="../Scripts/common.js"></script>
   <script type="text/javascript" src="../Scripts/NewConfigurationItem.js"></script>
   <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
   <script type="text/javascript">
-    function CheckForm() {
-      if ($("#name").val() == "") {
-        alert("请输入合同名称");
-        return false;
-      }
-    }
+      $("#SaveAndCloneButton").click(function () {
+          if ($("#name").val() == "") {
+              alert("请输入合同名称");
+              return;
+          }
+          <%if (contract.contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE) {
+          var endTime = new EMT.DoneNOW.BLL.ContractServiceBLL().GetContractMaxApproveTime(contract.contract.id);
+          if (endTime != null) {
+           %>
+          if ($("#endDate").val() != "" && compareTime('<%=((DateTime)endTime).ToString("yyyy-MM-dd") %>', $("#endDate").val())) {
+              alert("结束时间不能早于已审批并提交的服务结束时间");
+              return;
+          }
+      <%}
+      }%>
+          <%if (contract.contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS
+          ||contract.contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET
+          ||contract.contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER) { %>
+          if (compareTime('<%=contract.contract.end_date.ToString("yyyy-MM-dd") %>', $("#endDate").val())) {
+              alert("结束时间不能向前修改");
+              return;
+          }
+      <%}%>
+          $("#form1").submit();
+      })
     $("#CancelButton").on("click", function () {
       window.close();
     });

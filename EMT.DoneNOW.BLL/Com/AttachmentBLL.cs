@@ -31,6 +31,7 @@ namespace EMT.DoneNOW.BLL
         {
             com_attachment att = new com_attachment();
 
+			
             att.object_type_id = objType;
             att.object_id = objId;
 

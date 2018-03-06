@@ -154,7 +154,7 @@
                                                             <thead>
                                                                 <tr>
                                                                     <td align="center" style="width: 20px;">
-                                                                        <input type="checkbox" style="margin: 0;">
+                                                                        <input type="checkbox" style="margin: 0;" id="all" />
                                                                     </td>
                                                                     <td>物料代码</td>
                                                                     <td style="width: 150px;">产品名称<span class="errorSmall">*</span>
@@ -168,9 +168,16 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
+                                                                <% if (costList != null && costList.Count > 0)
+                                                                    {
+                                                                        int num = 0;
+                                                                        foreach (var itemCost in costList)
+                                                                        {
+                                                                            num++;
+                                                                    %>
                                                                 <tr>
                                                                     <td align="center">
-                                                                        <asp:CheckBox ID="CheckOne" runat="server" />
+                                                                <input type="checkbox" id="<%=itemCost.id+"_"+num %>" value="<%=itemCost.id+"_"+num %>" checked="checked" class="ckChooseCost"/>
                                                                     </td>
                                                                     <%
                                                                         EMT.DoneNOW.Core.d_cost_code costCode = new EMT.DoneNOW.DAL.d_cost_code_dal().FindNoDeleteById(conCost.cost_code_id);
@@ -179,30 +186,31 @@
                                                                     <td><%=costCode!=null?costCode.name:"" %></td>
                                                                     <td style="width: 150px;">
                                                                         <span style="display: inline-block; width: 79%; vertical-align: top; font-size: 12px;">
-                                                                            <input type="text" style="padding-left: 0px; border: 0px; font: bold; background-color: transparent; text-align: left" id="product_id" value="<%=product==null?"":product.name %>" />
-                                                                            <input type="hidden" name="product_id" id="product_idHidden" value="<%=product==null?"":product.id.ToString() %>" />
-
-
+                                                                            <input type="text" style="padding-left: 0px; border: 0px; font: bold; background-color: transparent; text-align: left" id="<%=itemCost.id+"_"+num %>_product_id" value="<%=product==null?"":product.name %>" />
+                                                                            <input type="hidden" name="<%=itemCost.id+"_"+num %>_product_id" id="<%=itemCost.id+"_"+num %>_product_idHidden" value="<%=product==null?"":product.id.ToString() %>" />
                                                                         </span>
-                                                                       
-                                                                        <img src="../Images/data-selector.png" style="vertical-align: middle;">
+                                                                        <img src="../Images/data-selector.png" style="vertical-align: middle;" onclick="CallBackPro('<%=itemCost.id+"_"+num %>')" />
                                                                     </td>
                                                                     <td align="center">
-                                                                        <input type="text" style="width: 80px;" onclick="WdatePicker()" class="Wdate" name="start_date" id="start_date" value="<%=conCost.date_purchased.ToString("yyyy-MM-dd") %>" />
+                                                                        <input type="text" style="width: 80px;" onclick="WdatePicker()" class="Wdate" name="<%=itemCost.id+"_"+num %>_start_date" id="<%=itemCost.id+"_"+num %>_start_date" value="<%=conCost.date_purchased.ToString("yyyy-MM-dd") %>" />
                                                                     </td>
                                                                     <td align="center">
-                                                                        <input type="text" style="width: 80px;" onclick="WdatePicker()" class="Wdate" name="through_date" id="through_date" />
+                                                                        <input type="text" style="width: 80px;" onclick="WdatePicker()" class="Wdate" name="<%=itemCost.id+"_"+num %>_through_date" id="<%=itemCost.id+"_"+num %>_through_date" />
                                                                     </td>
                                                                     <td>
-                                                                        <input type="text" name="serial_number" style="width: 60px;">
+                                                                        <input type="text" name="<%=itemCost.id+"_"+num %>_serial_number"  id="<%=itemCost.id+"_"+num %>_serial_number" style="width: 60px;" />
                                                                     </td>
                                                                     <td>
-                                                                        <input type="text" name="reference_number" style="width: 60px;">
+                                                                        <input type="text" name="<%=itemCost.id+"_"+num %>_reference_number" id="<%=itemCost.id+"_"+num %>_reference_number" style="width: 60px;" />
                                                                     </td>
                                                                     <td>
-                                                                        <input type="text" style="width: 60px;" name="reference_name" value="<%=conCost.name %>">
+                                                                        <input type="text" style="width: 60px;" id="<%=itemCost.id+"_"+num %>_reference_name" name="<%=itemCost.id+"_"+num %>_reference_name" value="<%=conCost.name %>" />
                                                                     </td>
                                                                 </tr>
+                                                                <%
+                                                                        }
+                                                                        } %>
+                                                                
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -215,6 +223,7 @@
                         </tr>
                     </tbody>
                 </table>
+                <input type="hidden" id="ChooseProId" name="ChooseProId"/>
             </div>
             <div class="ButtonBar WizardButtonBar" style="width: 97%;">
                 <ul>
@@ -262,7 +271,7 @@
                                             <td class="FieldLabels">
                                                 <div>
                                                     <span style="display: inline-block;">
-                                                        <img src="../Images/check.png" style="vertical-align: middle;">
+                                                        <img src="../Images/check.png" style="vertical-align: middle;" />
                                                     </span>
                                                     (<span id="sum">1</span>)
                                                 <span style="color: #333333; font-weight: normal;">配置项将从<%=contract!=null?"合同":thisProject!=null?"项目":"" %>成本中创建
@@ -315,7 +324,7 @@
 </html>
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
-<script>
+<script>    
 
     Date.prototype.format = function (fmt) {
         var o = {
@@ -339,9 +348,7 @@
     }    
 
     $("#b1").on("click", function () {
-        debugger;
         if ($("#rbBuyDate").is(":checked")) {
-
             $("#start_date").val('<%=conCost.date_purchased.ToString("yyyy-MM-dd") %>');
         }
 
@@ -398,17 +405,35 @@
         $(".Workspace2").hide();
     });
     $("#b2").on("click", function () {
-        var product_id = $("#product_idHidden").val();
-        if (product_id == "") {
+
+        var isProNoChoose = ""; // 是否有相关产品为选择
+        var chooseProId = "";
+        $(".ckChooseCost").each(function () {
+            if ($(this).is(":checked")) {
+                var thisValue = $(this).val();
+                chooseProId += thisValue + ',';
+                var chpProId = $("#" + thisValue + "_product_idHidden").val();
+                if (chpProId != "" && chpProId != null && chpProId != undefined) {
+
+                }
+                else {
+                    isProNoChoose += "1";
+                }
+            }
+        })
+        if (isProNoChoose != "") {
             alert("请通过查找带回选择产品");
             return false;
         }
-        if ($("#CheckOne").is(":checked")) {
-            $("#sum").text("1");
-        }
-        else {
+        if (chooseProId != "") {
+            chooseProId = chooseProId.substring(0, chooseProId.length - 1);
+            var isArr = chooseProId.split(',');
+            $("#sum").text(isArr.length);
+        } else {
             $("#sum").text("0");
         }
+        $("#ChooseProId").val(chooseProId);
+        
         $(".Workspace2").hide();
         $(".Workspace3").show();
     });
@@ -463,4 +488,8 @@
         }
     }
 
+
+    function CallBackPro(pageProId) {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CALLBACK %>&field=" + pageProId+"_product_id", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProductSelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
 </script>

@@ -841,12 +841,12 @@
                 var quarterly_cost = $("#quarterly_cost").val();         // 季支出
                 if (quarterly_revenue != "" && !isNaN(quarterly_revenue))       // 收益和支出是数字时开始计算
                 {
-                    total_income = Number(total_income.toFixed(2)) + Number(toDecimal2((quarterly_revenue / 4)) * CalculationMonths);
+                    total_income = Number(total_income.toFixed(2)) + Number(toDecimal2((quarterly_revenue / 3)) * CalculationMonths);
                     //  total_income += toDecimal2((quarterly_revenue / 4)) * CalculationMonths;
                     $("#quarterly_revenue").val(toDecimal2(quarterly_revenue));
                 }
                 if (quarterly_cost != "" && !isNaN(quarterly_cost)) {
-                    total_expenditure = Number(total_expenditure.toFixed(2)) + Number(toDecimal2((quarterly_cost / 4)) * CalculationMonths);
+                    total_expenditure = Number(total_expenditure.toFixed(2)) + Number(toDecimal2((quarterly_cost / 3)) * CalculationMonths);
                     //total_expenditure += toDecimal2((quarterly_cost / 4)) * CalculationMonths;
                     $("#quarterly_cost").val(toDecimal2(quarterly_cost));
                 }
@@ -923,7 +923,7 @@
                     success: function (data) {
                         if (data != "") {
                             $("#one_time_revenue").val(toDecimal2(data.oneTimeRevenue));
-                            $("#one_time_cost").val(toDecimal2(data.oneTimeRevenue));
+                            $("#one_time_cost").val(toDecimal2(data.oneTimeCost));
                             $("#monthly_revenue").val(toDecimal2(data.monthRevenue));
                             $("#monthly_cost").val(toDecimal2(data.monthCost));
                             $("#quarterly_revenue").val(toDecimal2(data.quarterRevenue));

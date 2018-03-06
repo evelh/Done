@@ -122,6 +122,20 @@
                 input[type="radio" i] {
     width: 24px;
 }
+                #serviceHtml td {
+    border-width: 1px;
+    border-style: solid;
+    border-left-color: #F8F8F8;
+    border-right-color: #F8F8F8;
+    border-top-color: #e8e8e8;
+    border-bottom-width: 0;
+    font-size: 12px;
+    color: #333;
+    text-decoration: none;
+    vertical-align: top;
+    padding: 4px;
+    word-wrap: break-word;
+}
     </style>
 </head>
 <body>
