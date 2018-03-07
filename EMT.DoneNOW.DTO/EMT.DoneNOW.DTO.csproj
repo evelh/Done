@@ -109,6 +109,7 @@
     <Compile Include="UserDefinedFieldDto.cs" />
     <Compile Include="UserDefinedFieldValue.cs" />
     <Compile Include="UserInfoDto.cs" />
+    <Compile Include="WorkflowRuleDto.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EMT.DoneNOW.Core\EMT.DoneNOW.Core.csproj">

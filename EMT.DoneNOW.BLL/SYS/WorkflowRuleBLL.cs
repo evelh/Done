@@ -12,6 +12,29 @@ namespace EMT.DoneNOW.BLL
     public class WorkflowRuleBLL
     {
         /// <summary>
+        /// 获取所有可用的工作流
+        /// </summary>
+        /// <returns></returns>
+        public List<WorkflowRuleDto> GetAllWorkflow()
+        {
+            var srlz = new Tools.Serialize();
+            var workflowList = new sys_workflow_dal().FindListBySql<WorkflowRuleDto>("select * from sys_workflow where delete_time=0 and is_active=1");
+            foreach (var wf in workflowList)
+            {
+                if (!string.IsNullOrEmpty(wf.event_json))
+                    wf.eventJson = srlz.DeserializeJson<List<dynamic>>(wf.event_json);
+                if (!string.IsNullOrEmpty(wf.condition_json))
+                    wf.conditionJson = srlz.DeserializeJson<List<dynamic>>(wf.condition_json);
+                if (!string.IsNullOrEmpty(wf.update_json))
+                    wf.updateJson = srlz.DeserializeJson<List<dynamic>>(wf.update_json);
+                if (!string.IsNullOrEmpty(wf.email_send_from))
+                    wf.emailJson = srlz.DeserializeJson<List<dynamic>>(wf.email_send_from);
+            }
+
+            return workflowList;
+        }
+
+        /// <summary>
         /// 获取工作流规则的各种定义信息
         /// </summary>
         /// <param name="obj"></param>

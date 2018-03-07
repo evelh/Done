@@ -45,7 +45,7 @@ namespace EMT.DoneNOW.Web
         {
             Exception currentError = Server.GetLastError();
 
-            new EMT.DoneNOW.BLL.ErrorLogBLL().AddLog(GetLoginUserId(), Request.Url.ToString(), currentError.Message, currentError.StackTrace);
+            new EMT.DoneNOW.BLL.ErrorLogBLL().AddLog(LoginUserId, Request.Url.ToString(), currentError.Message, currentError.StackTrace);
 
             string errorMsg = "抱歉，系统发生错误！<br />";
             Response.Write(errorMsg);

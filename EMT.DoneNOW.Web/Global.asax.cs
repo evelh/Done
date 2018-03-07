@@ -19,6 +19,8 @@ namespace EMT.DoneNOW.Web
 
             // 初始化每个权限等级的权限点信息
             EMT.DoneNOW.BLL.AuthBLL.InitSecLevelPermit();
+            // 初始化工作流规则
+            BLL.WorkflowRuleProcBLL.Instance.WorkflowRuleChanged();
         }
     }
 }

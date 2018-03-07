@@ -102,6 +102,7 @@
     <Compile Include="SYS\UserInfoBLL.cs" />
     <Compile Include="SYS\UserResourceBLL.cs" />
     <Compile Include="SYS\WorkflowRuleBLL.cs" />
+    <Compile Include="SYS\WorkflowRuleProcBLL.cs" />
     <Compile Include="TST\TimeOffPolicyBLL.cs" />
   </ItemGroup>
   <ItemGroup>
