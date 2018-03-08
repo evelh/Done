@@ -45,6 +45,7 @@ namespace EMT.DoneNOW.BLL
                 && ticket.type_id != (int)DicEnum.TASK_TYPE.RECURRING_TICKET_MASTER)
                 return;
 
+            sys_workflow_log_dal logDal = new sys_workflow_log_dal();
             foreach (var wf in workflowList)
             {
                 if (wf.workflow_object_id == (int)DicEnum.WORKFLOW_OBJECT.TICKET)
@@ -56,8 +57,18 @@ namespace EMT.DoneNOW.BLL
                             if (((string)evt["value"]).Equals("1") || ((string)evt["value"]).Equals("2"))   // 任何人或员工新增
                             {
                                 string sql = GetWorkflowSql(wf.id, wf.workflow_object_id, ticket.id);
-                                if (!string.IsNullOrEmpty(sql))
-                                    dal.ExecuteSQL(sql);
+                                if (string.IsNullOrEmpty(sql))
+                                    continue;
+
+                                var workflowSql = new Tools.Serialize().DeserializeJson<List<dynamic>>(sql);
+                                foreach (var wfsql in workflowSql)
+                                {
+                                    if (string.IsNullOrEmpty((string)wfsql["update"]))
+                                        continue;
+
+                                    if (dal.ExecuteSQL((string)wfsql["update"]) > 0)
+                                        logDal.AddWorkflowLog(wf.id, ticket.id, (string)wfsql["update"]);
+                                }
                             }
                         }
                     }

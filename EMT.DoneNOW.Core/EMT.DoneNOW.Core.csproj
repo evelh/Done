@@ -172,6 +172,7 @@
     <Compile Include="SYS\sys_udf_group_field.cs" />
     <Compile Include="SYS\sys_udf_list.cs" />
     <Compile Include="SYS\sys_workflow.cs" />
+    <Compile Include="SYS\sys_workflow_log.cs" />
     <Compile Include="SYS\sys_workgroup.cs" />
     <Compile Include="sys_resource.cs" />
     <Compile Include="TST\tst_timeoff_activity.cs" />
