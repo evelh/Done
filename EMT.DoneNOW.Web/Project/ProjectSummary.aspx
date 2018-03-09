@@ -742,14 +742,15 @@
             dataType: "json",
             success: function (data) {
                 if (data != "") {
-                    if (data.result == "True") {
+                    if (data.result) {
                         LayerMsg("删除项目成功！");
-                    } else if (data.result == "False") {
+                        setTimeout(function () { self.parent.window.close(); }, 1000)
+                        
+                    } else if (data.result == false) {
                         LayerMsg("该项目不能被删除，因为有一个或多个时间条目，费用，费用，服务预定，备注，附件，里程碑！");
                     }
                 }
-                window.close();
-                self.parent.location.reload();
+                setTimeout(function () { self.parent.location.reload(); },1000)
             },
         });
     }

@@ -42,5 +42,19 @@ namespace EMT.DoneNOW.DAL
         {
             return FindSignleBySql<sys_department>($"SELECT * from sys_department where id in ( select department_id from sys_resource_department where resource_id = {res_id} and is_default = 1 )  and delete_time = 0");
         }
+        /// <summary>
+        /// 根据部门和员工获取相应信息
+        /// </summary>
+        public List<sys_resource_department> GetResRoleList(long department_id, long res_id)
+        {
+            return FindListBySql<sys_resource_department>($"SELECT * from sys_resource_department where department_id = {department_id} and resource_id = {res_id} and is_active = 1");
+        }
+        /// <summary>
+        /// 获取到默认的员工队列信息
+        /// </summary>
+        public sys_resource_department GetDefault(long res_id)
+        {
+            return FindSignleBySql<sys_resource_department>($"SELECT * from sys_resource_department where  resource_id = {res_id} and is_active = 1 and is_default = 1");
+        }
     }
 }

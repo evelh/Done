@@ -184,10 +184,12 @@
     <Content Include="Content\sysset_user.css" />
     <Content Include="Content\Ticket.css" />
     <Content Include="Content\TicketLabour.css" />
+    <Content Include="Images\ACheck50.gif" />
     <Content Include="Images\ico_charge.png" />
     <Content Include="Images\ico_stopwatch_pause.png" />
     <Content Include="Images\ico_stopwatch_play.png" />
     <Content Include="Images\ico_stopwatch_stop.png" />
+    <Content Include="Images\ico_ticket_modify.png" />
     <Content Include="Images\ico_time_entry.png" />
     <Content Include="Images\TicketAlertIcons.png" />
     <Content Include="Content\WorkType.css" />
@@ -466,6 +468,7 @@
     <Content Include="ServiceDesk\TicketActivity.aspx" />
     <Content Include="ServiceDesk\TicketHistory.aspx" />
     <Content Include="ServiceDesk\TicketLabour.aspx" />
+    <Content Include="ServiceDesk\TicketModify.aspx" />
     <Content Include="ServiceDesk\TicketNote.aspx" />
     <Content Include="ServiceDesk\TicketView.aspx" />
     <Content Include="SysSetting\AddTimeOffPolicy.aspx" />
@@ -1924,6 +1927,13 @@
     </Compile>
     <Compile Include="ServiceDesk\TicketLabour.aspx.designer.cs">
       <DependentUpon>TicketLabour.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\TicketModify.aspx.cs">
+      <DependentUpon>TicketModify.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\TicketModify.aspx.designer.cs">
+      <DependentUpon>TicketModify.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServiceDesk\TicketNote.aspx.cs">
       <DependentUpon>TicketNote.aspx</DependentUpon>

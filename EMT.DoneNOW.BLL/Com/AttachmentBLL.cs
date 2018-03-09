@@ -64,6 +64,25 @@ namespace EMT.DoneNOW.BLL
                     att.object_id = attachment.object_id;
                 }
             }
+            else if (objType == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.LABOUR)
+            {
+                var labour = new sdk_work_entry_dal().FindById(objId);
+                if (labour.parent_id != null)
+                {
+                    att.object_type_id = (int)DicEnum.ATTACHMENT_OBJECT_TYPE.LABOUR;
+                    att.object_id = (long)labour.parent_id;
+                }
+                else if(labour.parent_attachment_id != null)
+                {
+                    att.object_type_id = (int)DicEnum.ATTACHMENT_OBJECT_TYPE.ATTACHMENT;
+                    att.object_id = (long)labour.parent_attachment_id;
+                }
+                else if (labour.parent_note_id != null)
+                {
+                    att.object_type_id = (int)DicEnum.ATTACHMENT_OBJECT_TYPE.NOTES;
+                    att.object_id = (long)labour.parent_note_id;
+                }
+            }
 
             if (att.object_type_id == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.ATTACHMENT)
             {
@@ -114,6 +133,16 @@ namespace EMT.DoneNOW.BLL
                     att.account_id = task.account_id;
                 if (!string.IsNullOrEmpty(pubTypeId))
                     att.publish_type_id = int.Parse(pubTypeId);
+            }
+            else if (att.object_type_id == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.LABOUR)
+            {
+                var labour = new sdk_work_entry_dal().FindNoDeleteById(att.object_id);
+                if (labour == null)
+                    return false;
+                var ticket = new sdk_task_dal().FindNoDeleteById(labour.task_id);
+                if (ticket == null)
+                    return false;
+                att.account_id = ticket.account_id;
             }
             else
                 return false;

@@ -390,7 +390,10 @@
                     <%
                         var accInvDicList = accInvDic.ToList();
                         var firstDic = accInvDicList.FirstOrDefault(_ => _.Key == account_id);
-                        
+                        if (firstDic.Key == null)
+                        {
+                            firstDic = accInvDicList[0];
+                        }
                         %>
                     <li class="right pagination">
                         <a class="disabledLink" onclick="changeByAccount('<%=accInvDicList.IndexOf(firstDic) == accInvDicList.Count - 1 ? "0" : accInvDicList[accInvDicList.Count - 1].Key.ToString() %>')">

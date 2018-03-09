@@ -95,7 +95,11 @@ namespace EMT.DoneNOW.Web.Project
                                 {
                                     foreach (var udfTask in udfTaskPara)
                                     {
-                                        var thisValue = udfValue.FirstOrDefault(_ => _.id == udfTask.id).value;
+                                        var thisValue = "";
+                                        if(udfValue.FirstOrDefault(_ => _.id == udfTask.id) != null)
+                                        {
+                                            thisValue = udfValue.FirstOrDefault(_ => _.id == udfTask.id).value.ToString();
+                                        }
                                         var count = udfBLL.GetSameValueCount(UDF_CATE.TASK, ids,udfTask.col_name,thisValue.ToString());
                                         if (count > 1)
                                         {
@@ -393,17 +397,10 @@ namespace EMT.DoneNOW.Web.Project
                             new_udf.id = udf.id;
                             var thisvv = Request.Form[udf.id.ToString()];
                             if(thisvv== "多个值-保持不变")
-                            {
                                 new_udf.value = thisUdfValue.FirstOrDefault(_ => _.id == udf.id).value;
-                            }
                             else
-                            {
                                 new_udf.value = thisvv == "" ? null : thisvv; 
-                            }
-                            
-                            
                             list.Add(new_udf);
-
                         }
                         udfBLL.UpdateUdfValue(UDF_CATE.TASK, udfTaskPara, thisTask.id, list, user, OPER_LOG_OBJ_CATE.PROJECT_TASK);
                     }

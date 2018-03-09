@@ -278,8 +278,11 @@
                     else
                     { %>
                 <td data-val="<%=id %>" <%=rslt["排序字段"].ToString() == "1"?"class='dn_tr'":"" %>><%if (rslt["排序字段"].ToString() != "1"&&para.name=="客户名称")
-                        { %>
-                    <a onclick="xiangdao('<%=id %>','<%=rslt["排序字段"].ToString() %>','<%=rslt["客户名称"].ToString() %>')"><%=rslt[para.name] %></a>
+                                                                                                    {
+                                                                                                        var projectId = rslt["项目id"].ToString();
+                                                                                                        var name = rslt["客户名称"].ToString();
+                                                                                                        %>
+                    <a onclick="xiangdao('<%=id %>','<%=rslt["排序字段"].ToString() %>','<%=rslt["排序字段"].ToString()=="3"?projectId:name %>')"><%=rslt[para.name] %></a>
                     <%}
                     else
                     { 

@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <link href="../Content/Ticket.css" rel="stylesheet" />
     <title>查看工单</title>
     <style>
@@ -34,11 +35,16 @@
         .TitleBarIcon {
         }
     </style>
+ 
 </head>
 <body>
-    <input id="ticket_id" value="<%=thisTicket.id.ToString() %>" />
+    <input id="ticket_id" type="hidden" value="<%=thisTicket.id.ToString() %>" />
+    <input type="hidden" id="toTicketId"/>
+    <input type="hidden" id="toTicketIdHidden"/>
+    <input type="hidden" id="AbsorbTicketIds"/>
+    <input type="hidden" id="AbsorbTicketIdsHidden"/>
     <!-- 上方 标题 按钮等 -->
-    <div class="PageHeadingContainer" style="z-index: 1;">
+    <div class="PageHeadingContainer" style="z-index: 2;">
         <div class="HeaderRow">
             <table>
                 <tbody>
@@ -78,9 +84,9 @@
                 </li>
 
                 <li>
-                    <a class="ImgLink" onclick="" style="background: linear-gradient(to bottom,#fff 0,#fdfdfd 100%);">
+                    <a class="ImgLink" onclick="<%=thisTicket.owner_resource_id==null?"AcceptTicket()":"" %>" style="background: linear-gradient(to bottom,#fff 0,#fdfdfd 100%);">
                         <span class="icon" style="background: url(../Images/Icons.png) no-repeat -86px -144px; width: 16px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
-                        <span class="Text" style="line-height: 24px;">接受</span>
+                        <span class="Text" style="line-height: 24px;<%=thisTicket.owner_resource_id!=null?"color: rgba(95,95,95,0.4);":"" %>">接受</span>
                     </a>
                 </li>
 
@@ -107,7 +113,7 @@
                                     <span class="Icon"></span>
                                     <span class="Text">复制</span>
                                 </div>
-                                <div class="Button1" id="" tabindex="0" onclick="">
+                                <div class="Button1" id="" tabindex="0" onclick="MergeOtherTicketCallBack()">
                                     <span class="Icon"></span>
                                     <span class="Text">合并到其他工单</span>
                                 </div>
@@ -899,7 +905,7 @@
                                     <div class="InputField">
                                         <textarea class="Medium" id="Note" name="Note" placeholder="添加一个备注.." style="margin-top: 0px; margin-bottom: 0px; height: 80px; width: 550px;"></textarea>
                                     </div>
-                                    <div class="CharacterInformation"><span class="CurrentCount">0</span>/<span class="Maximum">2000</span></div>
+                                    <div class="CharacterInformation"><span class="CurrentCount" id="WordNumber">0</span>/<span class="Maximum">2000</span></div>
                                     <input type="hidden" id="isShowSave" value="" />
                                 </div>
                                 <div class="ButtonBar" style="display: none; width: 560px;">
@@ -1030,11 +1036,11 @@
                                             <div class="Content">
                                                 <div class="Button1"  tabindex="0">
                                                     <input type="checkbox" id="CkPublic"/>
-                                                    <span class="Text">全部用户</span>
+                                                    <span class="Text">全部用户<span class="TicketItemCount" id="pubUser"></span></span>
                                                 </div>
                                                 <div class="Button1"  tabindex="0">
                                                     <input type="checkbox" id="CkInter"/>
-                                                    <span class="Text">内部用户</span>
+                                                    <span class="Text">内部用户<span class="TicketItemCount" id="intUser"></span></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -1046,7 +1052,7 @@
                                             <div class="Content">
                                                 <div class="Button1"  tabindex="0">
                                                     <input type="checkbox" id="CkMe"/>
-                                                    <span class="Text">我</span>
+                                                    <span class="Text">我<span class="TicketItemCount" id="ItemMe"></span></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -1057,33 +1063,34 @@
                                             <div class="Content">
                                                 <div class="Button1"  tabindex="0">
                                                     <input type="checkbox" id="CkLabour"/>
-                                                    <span class="Text">工时</span>
+                                                    <span class="Text">工时<span class="TicketItemCount" id="ItemLabour"></span></span>
                                                 </div>
                                                 <div class="Button1"  tabindex="0">
                                                     <input type="checkbox" id="CkNote"/>
-                                                    <span class="Text">备注</span>
+                                                    <span class="Text">备注<span class="TicketItemCount" id="ItemNote"></span></span>
                                                 </div>
                                                 <div class="Button1"  tabindex="0">
                                                     <input type="checkbox" id="CkAtt"/>
-                                                    <span class="Text">附件</span>
+                                                    <span class="Text">附件<span class="TicketItemCount" id="ItemAtt"></span></span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div style="clear:both;">
-                                            <input type="button" onclick="ApplyFilter()" style="color:white;background-color:#3872b2;width:110px;height:20px;" value="应用过滤器"/>
+                                            <input type="button" onclick="ApplyFilter('1')" style="color:white;background-color:#3872b2;width:110px;height:20px;" value="应用过滤器"/>
+                                            <input type="hidden" id="isAppFilter" value=""/>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <a class="Button ButtonIcon IconOnly Cancel DisabledState" tabindex="0" title="Clear filters" style="width: 20px; height: 27px; top: 0px;">
+                            <a class="Button ButtonIcon IconOnly Cancel DisabledState" tabindex="0" title="清除过滤器" style="width: 20px; height: 27px; top: 0px;" onclick="ApplyFilter('0')">
                                 <span class="Icon" style="width: 15px; background: url(../Images/Icons.png) no-repeat -102px 3px; height: 19px; display: block;"></span>
                                 <span class="Text"></span>
                             </a>
-                            <input id="ActivitySeachText" type="text" value="" placeholder="查询..." style="width: 180px;" />
-                            <select id="orderBy" style="width: 180px;">
+                            <input id="ActivitySeachText" type="text" value="" placeholder="查询..." style="/*width: 180px;*/width: 50%;" />
+                            <select id="orderBy" style="width: 180px;float: right;margin-right: 25px;">
                                 <option value="Old">修改时间倒序</option>
                                 <option value="New">修改时间升序</option>
-                                <option value="NFE" title="根据本身以及所有子对象的修改时间排序" selected="selected">修改时间（子对象）倒序</option>
+                               <%-- <option value="NFE" title="根据本身以及所有子对象的修改时间排序" selected="selected">修改时间（子对象）倒序</option>--%>
                             </select>
                         </div>
                         <div id="ShowTicketActivity">
@@ -1361,6 +1368,7 @@
 <script src="../Scripts/Ticket.js"></script>
 <!--页面常规信息js操作 -->
 <script>
+   
     function GetAccountInfo() {
         var account_id = '<%=thisAccount==null?"":thisAccount.id.ToString() %>';
         if (account_id != "") {
@@ -1560,6 +1568,7 @@
         GetContactInfo();
         GetInsProInfo();
         ShowTicketAlert();
+        ApplyFilter('0');
     })
 
     // 打开客户
@@ -1587,7 +1596,7 @@
     // 添加工单的备注
     // 
     function AddTicketNote(type) {
-        window.open("../Project/TaskNote.aspx?ticket_id=<%=thisTicket.id %>&notifi_type=" + type, "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_NOTE %>", 'left=200,top=200,width=1080,height=800', false);
+        window.open("../Project/TaskNote.aspx?ticket_id=<%=thisTicket.id %>&notifi_type=" + type +"&noFunc=ApplyFilter", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_NOTE %>", 'left=200,top=200,width=1080,height=800', false);
     }
     // 跳转到修改工单相关功能
     function EditTicket() {
@@ -1605,7 +1614,7 @@
             success: function (data) {
                 if (data != "") {
                     if (data.setting_value == "1") {
-                        window.open("../ServiceDesk/TicketLabour.aspx?ticket_id=<%=thisTicket.id %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_LABOUR %>", 'left=200,top=200,width=1000,height=800', false);
+                        window.open("../ServiceDesk/TicketLabour.aspx?noFunc=ApplyFilter&ticket_id=<%=thisTicket.id %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_LABOUR %>", 'left=200,top=200,width=1000,height=800', false);
                     }
                     else {
                         LayerMsg("已完成工单不可添加工时！");
@@ -1626,7 +1635,7 @@
 
     // 新增工单附件
     function AddTicketAttachment() {
-        window.open("../Activity/AddAttachment.aspx?objId=<%=thisTicket.id %>&objType=<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_OBJECT_TYPE.TASK %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_NOTE %>", 'left=200,top=200,width=800,height=800', false);
+        window.open("../Activity/AddAttachment.aspx?objId=<%=thisTicket.id %>&objType=<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_OBJECT_TYPE.TASK %>&noFunc=ApplyFilter", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_NOTE %>", 'left=200,top=200,width=800,height=800', false);
     }
     // 新增工单费用
     function AddTicketExpense() {
@@ -1731,4 +1740,37 @@
         $("#ShowIframeDiv").show();
         $("#TicketShowIframe").attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SERVICE_LIST %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SERVICE_LIST %>&con1761=<%=thisTicket==null?"":thisTicket.id.ToString() %>");
     })
+</script>
+<%--// 工具中的事件处理--%>
+<script>
+    function MergeOtherTicketCallBack() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_MERGE %>&field=toTicketId&callBack=MergeTicket&con2252=<%=thisTicket.account_id %>&con2253=<%=thisTicket.id %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>", 'left=200,top=200,width=600,height=800', false);
+    }
+    function MergeTicket() {
+        LayerConfirm("您将要将此工单合并到另一工单中，此工单的状态将被设置为完成。\其备注、工时、成本、服务预定、待办、费用等仍将与此工单保持关联。此工单的联系人和其他联系人，将作为另一个工单上的其他联系人。此外，您正在合并工单与合并目标的工单有不同的联系人。工单变更时，正在合并的工单的联系人将不再会收到相关通知。你确定要合并此工单吗？", "确定", "取消", function () {
+            var ticketId = $("#ticket_id").val();
+            var toTicketId = $("#toTicketIdHidden").val();
+            if (ticketId != "" && toTicketId != "") {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/TicketAjax.ashx?act=MergeTicket&from_ticket_id=" + ticketId + "&to_ticket_id=" + toTicketId,
+                     async: false,
+                     success: function (data) {
+                         if (data != "") {
+                             if (data.result) {
+                                 LayerMsg("合并成功！");
+                             }
+                             else {
+                                 LayerMsg("合并失败！" + data.reason);
+                             }
+                         }   
+                     }
+                 })
+            }
+        }, function () { });
+    }
+    // 吸收工单-查找带回
+    function AbsorbCallBack() {
+
+    }
 </script>

@@ -24,6 +24,7 @@
 <body class="Linen AutotaskBlueTheme FullScroll EntityPage EntityNew">
     <form id="form1" runat="server">
         <!-- 上方 标题 按钮等 -->
+         <input id="ticket_id" type="hidden" value="<%=thisTicket==null?"":thisTicket.id.ToString() %>" />
         <div class="PageHeadingContainer" style="z-index: 2;">
             <div class="HeaderRow">
                 <table>
@@ -1299,7 +1300,7 @@
                                 <div class="NormalSpacer"></div>
                                 <div class="ProgressBar">
                                     <div class="Bar">
-                                        <div class="Progress IsGreaterThanZero <%=overHours < 0 ? "Critical" : "" %>" style="width: <%=overHours<0?100:(entryHours*100/thisTicket.estimated_hours) %>%;"></div>
+                                        <div class="Progress IsGreaterThanZero <%=overHours < 0 ? "Critical" : "" %>" style="width: <%=overHours<0?100:(entryHours*100/(thisTicket.estimated_hours==0?1:thisTicket.estimated_hours)) %>%;"></div>
                                     </div>
                                     <div class="Text <%=overHours < 0 ? "CriticalImportance" : "" %>">
                                         <div class="Text" style="display: inline;">

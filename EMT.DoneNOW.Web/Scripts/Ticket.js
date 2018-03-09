@@ -458,7 +458,7 @@ $("#SaveTicketNoteAdd").click(function () {
     }
     var Note = $("#Note").val();
     if (Note == "") {
-        LayerMsg("q请填写备注信息！");
+        LayerMsg("请填写备注信息！");
         return false;
     }
     var NoteTypes = $("#NoteTypes").val();
@@ -495,7 +495,7 @@ $("#SaveTicketNoteAdd").click(function () {
                     LayerMsg("添加失败！");
                 }
             }
-            setTimeout(function () { history.go(0);},1000)
+            setTimeout(function () { ApplyFilter("");},1000)
             
         }
     })
@@ -504,36 +504,57 @@ $("#SaveTicketNoteAdd").click(function () {
 
 })
 
-$("#Refresh").click(function () {
-    location.reload();
+$(".Refresh").click(function () {
+    ApplyFilter("");
 })
 // 应用过滤器 查看工单活动使用
-function ApplyFilter() {
+function ApplyFilter(isAppFilter) {
+    if (isAppFilter == "1") {
+        $("#isAppFilter").val("1");
+    }
+    else if (isAppFilter == "0") {
+        $("#isAppFilter").val("");
+        $("#CkPublic").prop("checked", false);
+        $("#CkInter").prop("checked", false);
+        $("#CkLabour").prop("checked", false);
+        $("#CkNote").prop("checked", false);
+        $("#CkAtt").prop("checked", false);
+        $("#CkMe").prop("checked", false);
+    }
+    GetItemCount();
     var ticket_id = $("#ticket_id").val();
     if (ticket_id != null && ticket_id != "") {
         LayerLoad();
-        var url = "../Tool/TicketAjax?act=aa&ticketId=" + ticket_id;
-        if ($("#CkPublic").is(":checked")) {
-            url += "&CkPublic=1";
+        var url = "../Tools/TicketAjax.ashx?act=GetTicketActivity&ticketId=" + ticket_id;
+
+        var isApp = $("#isAppFilter").val();
+        if (isApp == "1") {
+            if ($("#CkPublic").is(":checked")) {
+                url += "&CkPublic=1";
+            }
+            if ($("#CkInter").is(":checked")) {
+                url += "&CkInter=1";
+            }
+            if ($("#CkLabour").is(":checked")) {
+                url += "&CkLabour=1";
+            }
+            if ($("#CkNote").is(":checked")) {
+                url += "&CkNote=1";
+            }
+            if ($("#CkAtt").is(":checked")) {
+                url += "&CkAtt=1";
+            }
+            if ($("#CkMe").is(":checked")) {
+                url += "&CkMe=1";
+            }
         }
-        if ($("#CkInter").is(":checked")) {
-            url += "&CkInter=1";
-        }
-        if ($("#CkLabour").is(":checked")) {
-            url += "&CkLabour=1";
-        }
-        if ($("#CkNote").is(":checked")) {
-            url += "&CkNote=1";
-        }
-        if ($("#CkAtt").is(":checked")) {
-            url += "&CkAtt=1";
-        }
-        if ($("#CkMe").is(":checked")) {
-            url += "&CkMe=1";
-        }
+      
         var orderBy = $("#orderBy").val();
         if (orderBy != null && orderBy != "" && orderBy != undefined) {
             url += "&orderBy=" + orderBy;
+        }
+        if ($("#CkShowSysNote").is(":checked")) {
+            url += "&CkShowSys=1";
         }
 
         var actHtml = "";
@@ -543,27 +564,282 @@ function ApplyFilter() {
             async: false,
             dataType: "json",
             success: function (data) {
-                if (data != "") {
+                if (data !=  "") {
                     actHtml = data;
                 }
             }
         })
        
+
+       
         setTimeout(function () {
             $("#ShowTicketActivity").html(actHtml);
+            if ($("#CkShowBillData").is(":checked")) {
+                $(".LabourBillData").show();
+            }
+            else {
+                $(".LabourBillData").hide();
+            }
             LayerLoadClose();
         }, 300);
     }
 }
 
 $("#CkShowSysNote").click(function () {
-    ApplyFilter();
+    ApplyFilter("");
+})
+$("#orderBy").change(function () {
+    ApplyFilter("");
 })
 
+//$("#CkShowBillData").click(function () {
+//    ApplyFilter("");
+//})
 $("#CkShowBillData").click(function () {
-    ApplyFilter();
+    if ($(this).is(":checked")) {
+        $(".LabourBillData").show();
+    }
+    else {
+        $(".LabourBillData").hide();
+    }
 })
 
 $("#CancelLi").click(function () {
     window.close();
 })
+
+function AcceptTicket() {
+    debugger;
+    var ticket_id = $("#ticket_id").val();
+    if (ticket_id != "" && ticket_id != null && ticket_id != undefined) {
+        $.ajax({
+            type: "GET",
+            url: "../Tools/TicketAjax.ashx?act=AcceptTicket&ticket_id=" + ticket_id,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data != "") {
+                    if (data.result) {
+                        LayerMsg("接受成功！");
+                    }
+                    else {
+                        LayerMsg("接受失败！" + data.reason);
+                    }
+                }
+            }
+        })
+        setTimeout(function () { location.reload(); }, 1000)
+    }
+}
+
+function ActDelete(id) {
+    LayerConfirm("删除后无法恢复，是否继续", "确定", "取消", function () {
+        requestData("../Tools/ActivityAjax.ashx?act=Delete&id=" + id, null, function (data) {
+            if (data == true) {
+                LayerAlert("删除成功", "确定", function () {
+                    ApplyFilter("");
+                })
+            }
+            else {
+                LayerMsg("删除失败");
+            }
+        })
+    }, function () { })
+}
+
+function TodoComplete(id) {
+    requestData("../Tools/ActivityAjax.ashx?act=TodoComplete&id=" + id, null, function (data) {
+        ApplyFilter("");
+    })
+}
+function TodoEdit(id) {
+    window.open("../Activity/Todos.aspx?id=" + id, windowObj.todos + windowType.edit, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+}
+
+function NoteAddNote(cate, level, objType, objId) {
+    window.open("../Activity/QuickAddNote.aspx?cate=" + cate + "&level=" + level + "&type=" + objType + "&objectId=" + objId +"&func=ApplyFilter", windowObj.notes + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+}
+function NoteEdit(id) {
+    window.open("../Activity/Notes.aspx?id=" + id, windowObj.notes + windowType.edit, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+}
+
+function NoteAddAttach(objId, objType) {
+    window.open("../Activity/AddAttachment?objId=" + objId + "&objType=" + objType +"&noFunc=ApplyFilter", windowObj.attachment + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+}
+function AttDelete(id) {
+    LayerConfirm("删除后无法恢复，是否继续", "确定", "取消", function () {
+        requestData("../Tools/AttachmentAjax.ashx?act=DeleteAttachment&id=" + id, null, function (data) {
+            ApplyFilter("");
+        })
+    }, function () { })
+}
+function OpenAttachment(id, isUrl, name) {
+    if (isUrl == 1)
+        window.open(name, windowType.blank, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+    else
+        window.open("../Activity/OpenAttachment.aspx?id=" + id, windowType.blank, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+}
+function ViewOpportunity(id) {
+    window.open('../Opportunity/ViewOpportunity.aspx?id=' + id, windowType.blank, 'left=200,top=200,width=900,height=750', false);
+}
+function ViewSalesOrder(id) {
+    window.open('../SaleOrder/SaleOrderView.aspx?id=' + id, windowType.blank, 'left=200,top=200,width=900,height=750', false);
+}
+function ViewContract(id) {
+    window.open('../Contract/ContractView.aspx?id=' + id, windowType.blank, 'left=200,top=200,width=900,height=750', false);
+}
+function ViewContact(id) {
+    window.open('../Contact/ViewContact.aspx?id=' + id, windowType.blank, 'left=200,top=200,width=900,height=750', false);
+}
+function NoteAddLabour(ticketId, parentId, AddType) {
+    window.open('../ServiceDesk/TicketLabour.aspx?ticket_id=' + ticketId + "&parentObjId=" + parentId + "&AddType=" + AddType + "&noFunc=ApplyFilter", windowType.blank, 'left=200,top=200,width=1000,height=943', false);
+}
+
+function LabourDelete(id) {
+    LayerConfirm("删除后无法恢复，是否继续", "确定", "取消", function () {
+        requestData("../Tools/ProjectAjax.ashx?act=DeleteEntry&entry_id=" + id, null, function (data) {
+            if (data.result) {
+                LayerMsg("删除成功");
+            }
+            else {
+                LayerMsg("删除失败！" + data.reason);
+            }
+            setTimeout(function () { ApplyFilter(""); },1000)
+            
+        })
+    }, function () { })
+}
+
+function EditLabour(id) {
+    window.open("../ServiceDesk/TicketLabour.aspx?id=" + id, windowObj.workEntry + windowType.edit, 'left=0,top=0,location=no,status=no,width=1000,height=943', false);
+}
+
+$(function () {
+    //var maxNumber = 2000;
+    //$("#WordNumber").text(maxNumber);
+    $("#Note").keyup(function () {
+        var insert = $("#Note").val();
+        if (insert != '') {
+            var length = insert.length;
+            $("#WordNumber").text(length);
+            if (length > 2000) {
+                $(this).val($(this).val().substring(0, 2000));
+                $("#WordNumber").text(length);
+            }
+        }
+
+    });
+})
+// 页内查询
+$("#ActivitySeachText").keyup(function () {
+    highlight();
+})
+// 清除高亮显示
+function clearSelection() {
+    //找到所有highlight属性的元素；
+    $('#ShowTicketActivity span').find('.highlight').each(function () {
+        $(this).replaceWith($(this).html());//将他们的属性去掉；
+    });
+}
+
+var i = 0;
+var sCurText;
+function highlight() {
+    clearSelection();//先清空一下上次高亮显示的内容；
+
+    var flag = 0;
+    var bStart = true;
+
+    //$('#tip').text('');
+    //$('#tip').hide();
+    var searchText = $('#ActivitySeachText').val();
+    //var _searchTop = $('#searchstr').offset().top + 30;
+    //var _searchLeft = $('#searchstr').offset().left;
+    if ($.trim(searchText) == "") {
+        //showTips("请输入查找车站名", _searchTop, 3, _searchLeft);
+        return;
+    }
+    //查找匹配
+    var searchText = $('#ActivitySeachText').val();//获取你输入的关键字；
+    var regExp = new RegExp(searchText, 'g');//创建正则表达式，g表示全局的，如果不用g，则查找到第一个就不会继续向下查找了；
+    var content = $("#ShowTicketActivity").text();
+		if (!regExp.test(content)) {
+			// showTips("没有找到要查找的车站",_searchTop,3,_searchLeft);
+	        return;
+	    } else {
+	        if (sCurText != searchText) {
+	            i = 0;
+	            sCurText = searchText;
+	         }
+	    }
+		//高亮显示
+        $('#ShowTicketActivity span').each(function(){
+			var html = $(this).html();
+            //将找到的关键字替换，加上highlight属性；
+			var newHtml = html.replace(regExp, '<span class="highlight">'+searchText+'</span>');
+			$(this).html(newHtml);//更新；
+			flag = 1;
+		});
+		
+        //定位并提示信息
+        if (flag == 1 && $(".highlight") != undefined) {
+            if ($(".highlight").length > 1) {
+				var _top = $(".highlight").eq(i).offset().top+$(".highlight").eq(i).height();
+				var _tip = $(".highlight").eq(i).parent().find("strong").text();
+				if(_tip=="") _tip = $(".highlight").eq(i).parent().parent().find("strong").text();
+				var _left = $(".highlight").eq(i).offset().left;
+	            var _tipWidth = $("#tip").width();
+				if (_left > $(document).width() - _tipWidth) {
+	                 _left = _left - _tipWidth;
+	            }
+				//$("#tip").html(_tip).show();
+	   //         $("#tip").offset({ top: _top, left: _left });
+	   //         $("#search_btn").val("查找下一个");
+			}else{
+				var _top = $(".highlight").offset().top+$(".highlight").height();
+				var _tip = $(".highlight").parent().find("strong").text();
+	            var _left = $(".highlight").offset().left;
+	            //$('#tip').show();
+	            //$("#tip").html(_tip).offset({ top: _top, left: _left });
+			}
+			//$("html, body").animate({ scrollTop: _top - 50 });
+	        i++;
+            if (i > $(".highlight").length - 1) {
+	            i = 0;
+	        }
+		}
+}
+
+// 获取 相关条目数量
+function GetItemCount() {
+    var ticket_id = $("#ticket_id").val();
+    if (ticket_id != "" && ticket_id != null && ticket_id != undefined) {
+        $.ajax({
+            type: "GET",
+            url: "../Tools/TicketAjax.ashx?act=GetTicketItemCount&ticketId=" + ticket_id,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data != "") {
+                    $(".TicketItemCount").show();
+                    $("#pubUser").text('('+data["pub"]+')'); 
+                    $("#intUser").text('(' + data["int"] + ')');
+
+                    $("#ItemLabour").text('(' + data["entry"] + ')');
+                    $("#ItemNote").text('(' + data["act"] + ')');
+                    $("#ItemAtt").text('(' + data["att"] + ')');
+
+                    $("#ItemMe").text('(' + data["me"] + ')');
+                } else {
+                    $(".TicketItemCount").hide();
+                }
+            },
+            error: function (data) {
+                $(".TicketItemCount").hide();
+            },
+        })
+    } else {
+        $(".TicketItemCount").hide();
+    }
+}
+

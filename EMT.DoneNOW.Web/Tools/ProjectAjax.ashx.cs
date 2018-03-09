@@ -577,9 +577,7 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void ImportFromTemp(HttpContext context)
         {
-
             bool result = false;
-
             var tempId = context.Request.QueryString["project_temp_id"];
             var copyCalItem = context.Request.QueryString["copyCalItem"];
             var copyProCha = context.Request.QueryString["copyProCha"];
@@ -587,7 +585,7 @@ namespace EMT.DoneNOW.Web
             var thisProjetcId = context.Request.QueryString["thisProjetcId"];
             var choIds = context.Request.QueryString["choIds"];
             new TaskBLL().ImportFromTemp(long.Parse(thisProjetcId), choIds, LoginUserId, !string.IsNullOrEmpty(copyProTeam));
-
+            new TaskBLL().AdjustProDate(long.Parse(thisProjetcId), LoginUserId);
             context.Response.Write(result);
         }
         /// <summary>

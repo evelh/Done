@@ -1386,7 +1386,7 @@ body.AutotaskBlueTheme .ThemePrimaryColor {
         margin-top: 65px;
     }
     .Timeline > .Bar.Top > .Dot, .Timeline > .Bar.Bottom > .TargetPointer {
-        /*z-index: 4;*/
+        z-index: 1;
     }
     .Timeline > .Bar.Top > .Dot {
         bottom: 0;
@@ -2196,4 +2196,21 @@ a.Button.IconOnly {
     right: -7px;
     top: 17px;
     width: 16px;
+}
+.Badge {
+    padding-bottom: 5px;
+}
+div.Badge > span {
+    border: 1px solid;
+    border-color: #2aa85f;
+    border-radius: 10px;
+    color: #2aa85f;
+    font-weight: 800;
+    font-size: 11px;
+    line-height: 16px;
+    padding: 0 10px;
+    text-transform: uppercase;
+}
+.highlight {
+    background-color: #FFE76E;
 }

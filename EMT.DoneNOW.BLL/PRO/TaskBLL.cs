@@ -2112,7 +2112,8 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         public void ImportFromTemp(long project_id, string taskIds, long user_id, bool isCopyTeamber)
         {
-            var thisProject = new pro_project_dal().FindNoDeleteById(project_id);
+            var ppDal = new pro_project_dal();
+            var thisProject = ppDal.FindNoDeleteById(project_id);
             var user = UserInfoBLL.GetUserInfo(user_id);
             var nowDate = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             if (thisProject != null && user != null)
@@ -2122,15 +2123,25 @@ namespace EMT.DoneNOW.BLL
                     var taskIDArr = taskIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     // 导入，无需排序
                     // 创建字典，关联新老关系
+                    // todo - 关联前驱后续相关关系
                     var strDal = new sdk_task_resource_dal();
-                    Dictionary<long, long> idDic = new Dictionary<long, long>();
+                    var stpDal = new sdk_task_predecessor_dal();
+                    Dictionary<long, long> idDic = new Dictionary<long, long>(); // task 的ID 的新旧关联
+                    Dictionary<long, List<sdk_task_predecessor>> taskPreDic = new Dictionary<long, List<sdk_task_predecessor>>();  // 新的taskID 和 旧的前驱任务的对应
                     foreach (var thisTaskId in taskIDArr)
                     {
                         var thisTask = _dal.FindNoDeleteById(long.Parse(thisTaskId));
                         if (thisTask != null)
                         {
                             var taskResList = strDal.GetTaskResByTaskId(thisTask.id);
+                            if (thisTask.project_id == null)
+                                continue;
+                            var oldProject = ppDal.FindNoDeleteById((long)thisTask.project_id);
+                            if (oldProject == null)
+                                continue;
+                            int diffDays = GetDiffDays((DateTime)oldProject.start_date,Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTask.estimated_begin_time));
                             #region task相关
+                            // 获取到旧的任务与旧的项目开始天数时间差，平移到新的项目上
                             var oldId = thisTask.id;
                             if (thisTask.parent_id != null && taskIDArr.Contains(thisTask.parent_id.ToString()))
                             {
@@ -2142,7 +2153,6 @@ namespace EMT.DoneNOW.BLL
                             else
                             {
                                 var newSortNo = GetMinUserNoParSortNo(project_id);
-                                thisTask.project_id = thisProject.id;
                                 thisTask.sort_order = newSortNo;
                                 thisTask.parent_id = null;
                             }
@@ -2155,6 +2165,8 @@ namespace EMT.DoneNOW.BLL
                             thisTask.create_time = nowDate;
                             thisTask.update_time = nowDate;
                             thisTask.owner_resource_id = isCopyTeamber ? thisTask.owner_resource_id : null;
+                            thisTask.estimated_begin_time = Tools.Date.DateHelper.ToUniversalTimeStamp(((DateTime)thisProject.start_date).AddDays(diffDays));
+                            thisTask.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(RetrunMaxTime(thisProject.id, ((DateTime)thisProject.start_date).AddDays(diffDays),(int)thisTask.estimated_duration));
                             _dal.Insert(thisTask);
                             OperLogBLL.OperLogAdd<sdk_task>(thisTask, thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "新增task");
                             idDic.Add(oldId, thisTask.id);
@@ -2180,8 +2192,37 @@ namespace EMT.DoneNOW.BLL
 
                             #endregion
 
+                            #region 获取相关前驱任务信息
+                            var thisPreList = stpDal.GetRelList(long.Parse(thisTaskId));
+                            if (thisPreList != null && thisPreList.Count > 0)
+                                taskPreDic.Add(thisTask.id,thisPreList);
+                            #endregion
                         }
+                    }
 
+                    if (taskPreDic.Count > 0)
+                    {
+                        foreach (var taskPre in taskPreDic)
+                        {
+                            taskPre.Value.ForEach(_ => {
+                                if (taskIDArr.Contains(_.predecessor_task_id.ToString())&& idDic.Any(thisID => thisID.Key == _.predecessor_task_id))
+                                {
+                                    var preNewId = idDic.FirstOrDefault(thisID => thisID.Key == _.predecessor_task_id).Value;
+                                    var thisPre = new sdk_task_predecessor() {
+                                        id = stpDal.GetNextIdCom(),
+                                        task_id = taskPre.Key,
+                                        create_time = nowDate,
+                                        update_time = nowDate,
+                                        create_user_id = user_id,
+                                        update_user_id = user_id,
+                                        predecessor_task_id = preNewId,
+                                        dependant_lag = _.dependant_lag,
+                                    };
+                                    stpDal.Insert(thisPre);
+                                    OperLogBLL.OperLogAdd<sdk_task_predecessor>(thisPre, thisPre.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK_PREDECESSOR, "新增task前驱");
+                                }
+                            });
+                        }
                     }
                 }
             }
@@ -2912,13 +2953,7 @@ namespace EMT.DoneNOW.BLL
                     }
 
                 }
-
-
-
-
-
                 var choTask = _dal.FindNoDeleteById(para.workEntry.task_id);
-
                 if (choTask != null)
                 {
                     var v_task = new v_task_all_dal().FindById(choTask.id);
@@ -3074,17 +3109,13 @@ namespace EMT.DoneNOW.BLL
                         //}
                         sweDal.SoftDelete(thisEntry, user_id);
                         OperLogBLL.OperLogDelete<sdk_work_entry>(thisEntry, thisEntry.id, user_id, OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "删除工时");
-
-
                     }
                     else
                     {
                         reason = "已录入工时，不可删除";
                         return false;
                     }
-
                 }
-
             }
             catch (Exception msg)
             {
@@ -4190,6 +4221,17 @@ namespace EMT.DoneNOW.BLL
 
             }
             return returnRule;
+        }
+        /// <summary>
+        /// 获取两个时间相差天数
+        /// </summary>
+        public int GetDiffDays(DateTime startDate,DateTime endDate)
+        {
+            int diffDay = 0;
+            TimeSpan ts1 = new TimeSpan(startDate.Ticks);
+            TimeSpan ts2 = new TimeSpan(endDate.Ticks);
+            diffDay = ts1.Subtract(ts2).Duration().Days;   
+            return diffDay;
         }
     }
 }

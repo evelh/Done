@@ -285,14 +285,15 @@ namespace EMT.DoneNOW.Web.Project
             Session.Remove(object_id + "_Att");
             //if (result)
             //{
-            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>window.close();self.opener.location.reload();</script>");
-            //}
-            //else
-            //{
-            //    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>window.close();self.opener.location.reload();</script>");
-            //}
-            
-            
+            var func = Request.QueryString["noFunc"];
+            if (!string.IsNullOrEmpty(func))
+                ClientScript.RegisterStartupScript(this.GetType(), "父窗口事件", $"<script>self.opener.location.{func}();</script>");
+            else
+                ClientScript.RegisterStartupScript(this.GetType(), "父窗口事件", "<script>self.opener.location.reload();</script>");
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>window.close();</script>");
+
+
+
         }
 
         private TaskNoteDto GetParam()

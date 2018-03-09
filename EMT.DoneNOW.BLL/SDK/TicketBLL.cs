@@ -198,6 +198,9 @@ namespace EMT.DoneNOW.BLL
             var oldTicket = _dal.FindNoDeleteById(ticket.id);
             if (oldTicket != null)
             {
+                string desc = _dal.CompareValue<sdk_task>(oldTicket, ticket);
+                if (string.IsNullOrEmpty(desc))
+                    return true;
                 ticket.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 ticket.update_user_id = user_id;
                 _dal.Update(ticket);
@@ -424,7 +427,7 @@ namespace EMT.DoneNOW.BLL
                     contact_id = ticket.contact_id,
                     name = isRepeat? "重新打开原因" : "完成原因",
                     description = ticket.reason,
-                    publish_type_id = (int)NOTE_PUBLISH_TYPE.TASK_ALL_USER,
+                    publish_type_id = (int)NOTE_PUBLISH_TYPE.TICKET_ALL_USER,
                     ticket_id = ticket.id,
                     create_user_id = userId,
                     update_user_id = userId,
@@ -748,6 +751,9 @@ namespace EMT.DoneNOW.BLL
             var oldLabour = sweDal.FindNoDeleteById(thisEntry.id);
             if (oldLabour != null)
             {
+                string desc = _dal.CompareValue<sdk_work_entry>(oldLabour, thisEntry);
+                if (string.IsNullOrEmpty(desc))
+                    return true;
                 thisEntry.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 thisEntry.update_user_id = userId;
                 sweDal.Update(thisEntry);
@@ -767,6 +773,10 @@ namespace EMT.DoneNOW.BLL
         {
             try
             {
+                #region 过滤父级工单，暂不支持多级
+                param.workEntry = GetParentId(param.workEntry);
+                #endregion
+
                 #region  添加工时
                 AddLabour(param.workEntry,userId);
                 #endregion
@@ -848,6 +858,57 @@ namespace EMT.DoneNOW.BLL
 
             return true;
         }
+
+        public sdk_work_entry GetParentId(sdk_work_entry thisEntry)
+        {
+            if (thisEntry.parent_id == null && thisEntry.parent_note_id == null && thisEntry.parent_attachment_id == null)
+                return thisEntry;
+            if(thisEntry.parent_note_id != null)
+            {
+                var parNote = new com_activity_dal().FindNoDeleteById((long)thisEntry.parent_note_id);
+                if (parNote != null)
+                {
+                    if (parNote.parent_id != null)
+                        thisEntry.parent_note_id = (int)parNote.object_id;
+                }
+                else
+                    thisEntry.parent_note_id = null;
+
+            }
+            else if(thisEntry.parent_attachment_id != null)
+            {
+                var parAtt = new com_attachment_dal().FindNoDeleteById((long)thisEntry.parent_attachment_id);
+                if (parAtt != null)
+                {
+                    if (parAtt.parent_id != null)
+                        thisEntry.parent_attachment_id = (int)parAtt.object_id;
+                }
+                else
+                    thisEntry.parent_attachment_id = null;
+            }
+            else if (thisEntry.parent_id != null)
+            {
+                var parEnt = new sdk_work_entry_dal().FindNoDeleteById((long)thisEntry.parent_id);
+                if (parEnt != null)
+                {
+                    if (parEnt.parent_id != null)
+                        thisEntry.parent_id = (int)parEnt.parent_id;
+                    if (parEnt.parent_note_id != null)
+                    {
+                        thisEntry.parent_id = null;
+                        thisEntry.parent_note_id = parEnt.parent_note_id;
+                    }
+                    else if (parEnt.parent_attachment_id != null)
+                    {
+                        thisEntry.parent_id = null;
+                        thisEntry.parent_attachment_id = parEnt.parent_attachment_id;
+                    }
+                }
+                else
+                    thisEntry.parent_id = null;
+            }
+            return thisEntry;
+        }
         /// <summary>
         /// 添加工单工时时，附件相关备注 isSummary 代表是工时说明备注，还是内部说明备注
         /// </summary>
@@ -879,13 +940,13 @@ namespace EMT.DoneNOW.BLL
             {
                 activ.object_type_id = (int)DicEnum.OBJECT_TYPE.TICKETS;
                 activ.object_id = thisTicket.id;
-                activ.publish_type_id = (int)NOTE_PUBLISH_TYPE.TASK_ALL_USER;
+                activ.publish_type_id = (int)NOTE_PUBLISH_TYPE.TICKET_ALL_USER;
             }
             else
             {
                 activ.object_type_id = (int)DicEnum.OBJECT_TYPE.NOTES;
                 activ.object_id = (long)noteId;
-                activ.publish_type_id = (int)NOTE_PUBLISH_TYPE.TASK_INTERNA_USER;
+                activ.publish_type_id = (int)NOTE_PUBLISH_TYPE.TICKET_INTERNA_USER;
             }
             caDal.Insert(activ);
             OperLogBLL.OperLogAdd<com_activity>(activ, activ.id, userId, OPER_LOG_OBJ_CATE.ACTIVITY, "新增备注");
@@ -1024,7 +1085,7 @@ namespace EMT.DoneNOW.BLL
                     object_id = thisTicket.id,
                     ticket_id = thisTicket.id,
                     action_type_id = noteTypeId,
-                    publish_type_id= isInter?((int)NOTE_PUBLISH_TYPE.TASK_INTERNA_USER) :((int)NOTE_PUBLISH_TYPE.TASK_ALL_USER),
+                    publish_type_id= isInter?((int)NOTE_PUBLISH_TYPE.TICKET_INTERNA_USER) :((int)NOTE_PUBLISH_TYPE.TICKET_ALL_USER),
                     cate_id = (int)ACTIVITY_CATE.TICKET_NOTE,
                     name = noteDes.Length>=40? noteDes.Substring(0,39): noteDes,
                     description = noteDes,
@@ -1114,6 +1175,252 @@ namespace EMT.DoneNOW.BLL
             };
             cneDal.Insert(email);
             OperLogBLL.OperLogAdd<com_notify_email>(email, email.id, userId, OPER_LOG_OBJ_CATE.NOTIFY, "新增通知-工单新增编辑");
+        }
+        /// <summary>
+        /// 工单接受
+        /// </summary>
+        public bool AcceptTicket(long ticketId,long userId,ref string failReason)
+        {
+            var thisTicket = _dal.FindNoDeleteById(ticketId);
+            if (thisTicket == null)
+            {
+                failReason = "工单已被删除！";
+                return false;
+            }
+            if (thisTicket.owner_resource_id != null)
+            {
+                failReason = "工单已有主负责人,无法接受！";
+                return false;
+            }
+            thisTicket.owner_resource_id = userId;
+            long? roleId = null;
+            if (thisTicket.department_id != null)
+            {
+                var roleList =  new sys_resource_department_dal().GetResRoleList((long)thisTicket.department_id,userId);
+                if(roleList!=null&& roleList.Count > 0)
+                {
+                    var defRole = roleList.FirstOrDefault(_ => _.is_default == 1);
+                    if (defRole != null)
+                        roleId = defRole.role_id;
+                    else
+                        roleId = roleList[0].role_id;
+                }
+                else
+                {
+                    var queueDepList = new sys_resource_department_dal().GetRolesBySource(userId, DicEnum.DEPARTMENT_CATE.SERVICE_QUEUE);
+                    if(queueDepList!=null&& queueDepList.Count > 0)
+                    {
+                        var defRole = queueDepList.FirstOrDefault(_ => _.is_default == 1);
+                        if (defRole != null)
+                            roleId = defRole.role_id;
+                        else
+                            roleId = queueDepList[0].role_id;
+                    }
+                    if (roleId == null)
+                    {
+                        var depList = new sys_resource_department_dal().GetRolesBySource(userId, DicEnum.DEPARTMENT_CATE.DEPARTMENT);
+                        if(depList!=null&& depList.Count > 0)
+                        {
+                            var defRole = depList.FirstOrDefault(_ => _.is_default == 1);
+                            if (defRole != null)
+                                roleId = defRole.role_id;
+                            else
+                                roleId = depList[0].role_id;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var role = new sys_resource_department_dal().GetDefault(userId);
+                if (role != null)
+                    roleId = role.role_id;
+            }
+            if (roleId == null)
+            {
+                failReason = "当前用户不属于任何队列不能执行该操作！";
+                return false;
+            }
+            thisTicket.role_id = roleId;
+            EditTicket(thisTicket,userId);
+            return true;
+        }
+        /// <summary>
+        /// 转发修改工单-添加备注
+        /// </summary>
+        public void AddModifyTicketNote(long ticketId,long userId)
+        {
+            var caDal = new com_activity_dal();
+            var thisTicket = _dal.FindNoDeleteById(ticketId);
+            if (thisTicket == null)
+                return;
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            var modifyNote = new com_activity()
+            {
+                id = caDal.GetNextIdCom(),
+                account_id = thisTicket.account_id,
+                object_id = thisTicket.id,
+                ticket_id = thisTicket.id,
+                action_type_id = (int)ACTIVITY_TYPE.TASK_INFO,
+                contact_id = thisTicket.contact_id,
+                publish_type_id =  ((int)NOTE_PUBLISH_TYPE.TICKET_ALL_USER),
+                cate_id = (int)ACTIVITY_CATE.TICKET_NOTE,
+                name = "工单转发",
+                description = "",
+                create_time = timeNow,
+                update_time = timeNow,
+                create_user_id = userId,
+                update_user_id = userId,
+                object_type_id = (int)OBJECT_TYPE.TICKETS,
+                status_id = thisTicket.status_id,
+                is_system_generate = 1,
+            };
+            caDal.Insert(modifyNote);
+            OperLogBLL.OperLogAdd<com_activity>(modifyNote, modifyNote.id, userId, OPER_LOG_OBJ_CATE.ACTIVITY, "新增备注");
+        }
+        /// <summary>
+        /// 合并吸收工单 - 原工单的parent_id 变更为目标工单
+        /// </summary>
+        /// <param name="toTicketId">目标工单</param>
+        /// <param name="fromTicketIds">原工单</param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool MergeTickets(long toTicketId,string fromTicketIds,long userId)
+        {
+            return true;
+        }
+        /// <summary>
+        /// 合并吸收单个工单
+        /// </summary>
+        public bool MergeTicket(long toTicketId,long fromTicketId,long userId,ref string faileReason)
+        {
+            #region 合并条件筛选
+            if (toTicketId == fromTicketId)
+            {
+                faileReason = "原工单不能是目标工单";
+                return false;
+            }
+            var toTicket = _dal.FindNoDeleteById(toTicketId);
+            if (toTicket == null)
+            {
+                faileReason = "目标工单已删除";
+                return false;
+            }
+            var fromTicket = _dal.FindNoDeleteById(fromTicketId);
+            if (fromTicket == null)
+            {
+                faileReason = "原工单已删除";
+                return false;
+            }
+            if(fromTicket.type_id ==(int)DicEnum.TICKET_TYPE.PROBLEM|| fromTicket.type_id == (int)DicEnum.TICKET_TYPE.CHANGE_REQUEST)
+            {
+                faileReason = "原工单不能是问题和变更申请";
+                return false;
+            }
+            if (toTicket.type_id == (int)DicEnum.TICKET_TYPE.PROBLEM || toTicket.type_id == (int)DicEnum.TICKET_TYPE.CHANGE_REQUEST)
+            {
+                faileReason = "目标工单不能是问题和变更申请";
+                return false;
+            }
+            #endregion
+            // 相关操作
+            #region  联系人转移
+            if(fromTicket.contact_id!=null)
+                TransferContact(toTicketId,(long)fromTicket.contact_id,userId);
+            #endregion
+
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            #region 变更原工单相关信息
+            var queueSet = new SysSettingBLL().GetSetById(SysSettingEnum.SDK_TICKER_MERGE_QUEUE);
+            if (queueSet != null && !string.IsNullOrEmpty(queueSet.setting_value))
+                fromTicket.department_id = long.Parse(queueSet.setting_value);
+            fromTicket.date_completed = timeNow;
+            fromTicket.status_id = (int)DicEnum.TICKET_STATUS.DONE;
+            fromTicket.parent_id = toTicketId;
+            EditTicket(fromTicket, userId);
+            #endregion
+
+            #region 生成两条备注
+            var caDal = new com_activity_dal();
+            var fromNote = new com_activity()
+            {
+                id = caDal.GetNextIdCom(),
+                account_id = fromTicket.account_id,
+                object_id = fromTicket.id,
+                ticket_id = fromTicket.id,
+                action_type_id = (int)ACTIVITY_TYPE.TASK_INFO,
+                contact_id = fromTicket.contact_id,
+                publish_type_id = ((int)NOTE_PUBLISH_TYPE.TICKET_ALL_USER),
+                cate_id = (int)ACTIVITY_CATE.TICKET_NOTE,
+                name = "工单完成并被合并",
+                description = $"工单完成并被合并到{toTicket.no}",
+                create_time = timeNow,
+                update_time = timeNow,
+                create_user_id = userId,
+                update_user_id = userId,
+                object_type_id = (int)OBJECT_TYPE.TICKETS,
+                status_id = fromTicket.status_id,
+                is_system_generate = 0,
+                can_edit = 0,
+            };
+            caDal.Insert(fromNote);
+            OperLogBLL.OperLogAdd<com_activity>(fromNote, fromNote.id, userId, OPER_LOG_OBJ_CATE.ACTIVITY, "新增备注");
+
+            var toNote = new com_activity()
+            {
+                id = caDal.GetNextIdCom(),
+                account_id = toTicket.account_id,
+                object_id = toTicket.id,
+                ticket_id = toTicket.id,
+                action_type_id = (int)ACTIVITY_TYPE.TASK_INFO,
+                contact_id = toTicket.contact_id,
+                publish_type_id = ((int)NOTE_PUBLISH_TYPE.TICKET_ALL_USER),
+                cate_id = (int)ACTIVITY_CATE.TICKET_NOTE,
+                name = "工单吸收合并其他工单",
+                description = $"工单吸收合并以下工单：{toTicket.no}",
+                create_time = timeNow,
+                update_time = timeNow,
+                create_user_id = userId,
+                update_user_id = userId,
+                object_type_id = (int)OBJECT_TYPE.TICKETS,
+                status_id = toTicket.status_id,
+                is_system_generate = 0,
+                can_edit = 0,
+            };
+            caDal.Insert(toNote);
+            OperLogBLL.OperLogAdd<com_activity>(toNote, toNote.id, userId, OPER_LOG_OBJ_CATE.ACTIVITY, "新增备注");
+            #endregion
+
+
+            return true;
+        }
+        /// <summary>
+        /// 工单中插入联系人
+        /// </summary>
+        public void TransferContact(long ticketId,long contactId,long userId)
+        {
+            var thisTicket = _dal.FindNoDeleteById(ticketId);
+            var thisContact = new crm_contact_dal().FindNoDeleteById(contactId);
+            if (thisTicket == null || thisContact == null)
+                return;
+            if (thisTicket.contact_id == contactId)
+                return;
+            var srDal = new sdk_task_resource_dal();
+            var thisCon = srDal.GetConTact(ticketId, contactId);
+            if (thisCon != null)
+                return;
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            thisCon = new sdk_task_resource() {
+                id=srDal.GetNextIdCom(),
+                contact_id = contactId,
+                create_time = timeNow,
+                create_user_id = userId,
+                update_time = timeNow,
+                update_user_id = userId,
+                task_id = ticketId,
+            };
+            srDal.Insert(thisCon);
+            OperLogBLL.OperLogAdd<sdk_task_resource>(thisCon, thisCon.id, userId, OPER_LOG_OBJ_CATE.PROJECT_TASK_RESOURCE, "新增工单分配对象");
         }
     }
 }

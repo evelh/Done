@@ -93,6 +93,7 @@ namespace EMT.DoneNOW.BLL
                                 isCopyRes = true;
                             }
                             new TaskBLL().ImportFromTemp(thisProject.id, param.tempChoTaskIds, user.id, isCopyRes);
+                            new TaskBLL().AdjustProDate(thisProject.id,user_id);
                         }
                         // 日历条目
                         if (!string.IsNullOrEmpty(param.IsCopyCalendarItem))

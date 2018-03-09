@@ -125,3 +125,6 @@ function ViewContract(id) {
 function ViewContact(id) {
     window.open('../Contact/ViewContact.aspx?id=' + id, windowType.blank, 'left=200,top=200,width=900,height=750', false);
 }
+function NoteAddLabour(ticketId,parentId,AddType) {
+    window.open('../ServiceDesk/TicketLabour.aspx?ticket_id=' + ticketId + "&parentObjId=" + parentId + "&AddType=" + AddType, windowType.blank, 'left=200,top=200,width=900,height=750', false);
+}

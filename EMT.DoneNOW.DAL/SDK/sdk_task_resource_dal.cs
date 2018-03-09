@@ -57,5 +57,12 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<sdk_task_resource>($"SELECT str.* from sdk_task_resource str INNER JOIN sdk_task st on st.id = str.task_id INNER JOIN pro_project pp on st.project_id = pp.id where pp.id = {project_id} and str.contact_id = {contact_id} and str.delete_time = 0 and st.delete_time = 0 and pp.delete_time = 0 ");
         }
+        /// <summary>
+        /// 根据工单ID 和 联系人ID 获取相关数据
+        /// </summary>
+        public sdk_task_resource GetConTact(long ticketId,long contactId)
+        {
+            return FindSignleBySql<sdk_task_resource>($"SELECT * from sdk_task_resource where task_id = {ticketId} and contact_id = {contactId} and delete_time = 0");
+        }
     }
 }

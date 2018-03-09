@@ -128,7 +128,12 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 result = new TicketBLL().AddTicketLabour(param, LoginUserId, ref faileReason);
             else
                 result = new TicketBLL().EditTicketLabour(param, LoginUserId, ref faileReason);
-            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存"+(result?"成功":"失败") +"！');self.opener.location.reload();window.close();</script>");
+            var parFunc = Request.QueryString["noFunc"];
+            if(!string.IsNullOrEmpty(parFunc))
+                ClientScript.RegisterStartupScript(this.GetType(), "父窗口事件", $"<script>self.opener.location.{parFunc}();</script>");
+            else
+                ClientScript.RegisterStartupScript(this.GetType(), "父窗口事件", $"<script>self.opener.location.reload();</script>");
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存" + (result ? "成功" : "失败") + "！');window.close();</script>");
         }
 
         protected void save_new_Click(object sender, EventArgs e)
@@ -140,7 +145,12 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 result = new TicketBLL().AddTicketLabour(param, LoginUserId, ref faileReason);
             else
                 result = new TicketBLL().EditTicketLabour(param, LoginUserId, ref faileReason);
-            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存" + (result ? "成功" : "失败") + "！');self.opener.location.reload();location.href='TicketLabour?ticket_id="+ param.ticketId.ToString() + "';</script>");
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存" + (result ? "成功" : "失败") + "！');location.href='TicketLabour?ticket_id="+ param.ticketId.ToString() + "';</script>");
+            var parFunc = Request.QueryString["noFunc"];
+            if (!string.IsNullOrEmpty(parFunc))
+                ClientScript.RegisterStartupScript(this.GetType(), "父窗口事件", $"<script>self.opener.location.{parFunc}();</script>");
+            else
+                ClientScript.RegisterStartupScript(this.GetType(), "父窗口事件", $"<script>self.opener.location.reload();</script>");
         }
 
         protected void save_modify_Click(object sender, EventArgs e)
@@ -205,6 +215,19 @@ namespace EMT.DoneNOW.Web.ServiceDesk
             pageEntry.task_id = thisTicket.id;
             if (isAdd)
             {
+                
+                var parentType = Request.QueryString["AddType"];
+                var parentobjId = Request.QueryString["parentObjId"];
+                if(!string.IsNullOrEmpty(parentType)&& !string.IsNullOrEmpty(parentobjId))
+                {
+
+                    if (parentType == "att")
+                        pageEntry.parent_attachment_id = int.Parse(parentobjId);
+                    else if(parentType =="note")
+                        pageEntry.parent_note_id = int.Parse(parentobjId);
+                    else if(parentType =="entry")
+                        pageEntry.parent_id = int.Parse(parentobjId);
+                }
                 param.workEntry = pageEntry;
             }
             else

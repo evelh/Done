@@ -48,6 +48,8 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String resource_avatar { get; set; }
         [DataMember]
+        public Int64? update_user_id { get; set; }
+        [DataMember]
         public String update_user_name { get; set; }
         [DataMember]
         public String update_user_email { get; set; }
@@ -73,6 +75,8 @@ namespace EMT.DoneNOW.Core
         public Int64? publish_type_id { get; set; }
         [DataMember]
         public Int64? ticket_id { get; set; }
+        [DataMember]
+        public SByte? is_system_generate { get; set; }
 
 
     }

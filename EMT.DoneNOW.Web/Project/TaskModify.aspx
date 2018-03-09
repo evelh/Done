@@ -8,7 +8,7 @@
     <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/NewConfigurationItem.css" rel="stylesheet" />
     <link href="../Content/DynamicContent.css" rel="stylesheet" />
-    <title></title>
+    <title>转发/修改</title>
     <style>
         .ProjectInfo_Inset {
             background-color: #F0F5FB;
@@ -469,7 +469,7 @@
                                 <div class="Editor DateBox Udf">
                                     <div class="InputField">
                                         <div class="Container">
-                                            <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%= udfValue.FirstOrDefault(_ => _.id == udf.id).value %>" />
+                                            <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=udfValue.FirstOrDefault(_ => _.id == udf.id)==null?"": udfValue.FirstOrDefault(_ => _.id == udf.id).value.ToString() %>" />
                                         </div>
                                     </div>
                                 </div>

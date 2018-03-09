@@ -75,6 +75,8 @@ namespace EMT.DoneNOW.Core
         public SByte? announce { get; set; }
         [DataMember]
         public SByte? is_system_generate { get; set; }
+        [DataMember]
+        public SByte? can_edit { get; set; }
 
 
     }

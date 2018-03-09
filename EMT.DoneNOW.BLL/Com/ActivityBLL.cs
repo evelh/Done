@@ -1086,6 +1086,33 @@ namespace EMT.DoneNOW.BLL
                     else
                         return false;
                 }
+                else if (objectTypeId == (int)DicEnum.OBJECT_TYPE.LABOUR)
+                {
+                    var curt = new sdk_work_entry_dal().FindById(objectId);
+                    if (curt == null)
+                        return false;
+                    if (curt.parent_id != null)
+                    {
+                        parentType = (int)DicEnum.OBJECT_TYPE.LABOUR;
+                        parentId = (long)curt.parent_id;
+                    }
+                    else if (curt.parent_note_id != null)
+                    {
+                        parentType = (int)DicEnum.OBJECT_TYPE.NOTES;
+                        parentId = (long)curt.parent_note_id;
+                    }
+                    else if (curt.parent_attachment_id != null)
+                    {
+                        parentType = (int)DicEnum.OBJECT_TYPE.ATTACHMENT;
+                        parentId = (long)curt.parent_attachment_id;
+                    }
+                    else
+                    {
+                        parentType = (int)DicEnum.OBJECT_TYPE.LABOUR;
+                        parentId = (long)curt.id;
+                    }
+                        
+                }
                 else
                     return false;
             }
@@ -1198,6 +1225,18 @@ namespace EMT.DoneNOW.BLL
                         note.contact_id = opp.contact_id;
                     }
                 }
+                else if(parentType == (int)DicEnum.OBJECT_TYPE.LABOUR)
+                {
+                    //note.cate_id = (int)DicEnum.ACTIVITY_CATE.TICKET_NOTE;
+                    //note.action_type_id  = 
+                    var labour = new sdk_work_entry_dal().FindNoDeleteById(parentId);
+                    if (labour == null)
+                        return false;
+                    var ticket = new sdk_task_dal().FindNoDeleteById(labour.task_id);
+                    if (ticket == null)
+                        return false;
+                    note.account_id = ticket.account_id;
+                }
                 else
                     return false;
             }
@@ -1263,13 +1302,61 @@ namespace EMT.DoneNOW.BLL
 
             return counts;
         }
+        /// <summary>
+        /// 获取相关过滤数量
+        /// </summary>
+        public Dictionary<string,int> GetTciektItemCount(long ticketId,long userId)
+        {
+            Dictionary<string, int> counts = new Dictionary<string, int>();
+            v_activity_ticket_dal dal = new v_activity_ticket_dal();
+            var actList = dal.GetTicketActByTicketId(ticketId);
+            var intItems = from act in actList where act.publish_type_id == (long)DicEnum.NOTE_PUBLISH_TYPE.TICKET_INTERNA_USER select act;
+            counts.Add("int",intItems.Count());
+            counts.Add("pub", actList.Count- intItems.Count());
 
-        public string GetTicketActHtml(long ticketId, long userId, List<string> filter)
+            var noteItem = from act in actList where act.act_cate.Equals("act") select act;
+            var attItem = from act in actList where act.act_cate.Equals("att") select act;
+            var entryItem = from act in actList where act.act_cate.Equals("entry") select act;
+            counts.Add("act", noteItem.Count());
+            counts.Add("att", attItem.Count());
+            counts.Add("entry", entryItem.Count());
+
+            var meItem = from act in actList where act.owner_reource_id !=null where act.owner_reource_id.Equals(userId)  select act;
+            counts.Add("me", meItem.Count());
+
+            return counts;
+        }
+
+        public string GetTicketActHtml(long ticketId, long userId,string orderBy,string isShowSys, List<string> filter, int secLevelId, List<AuthPermitDto> userPermit)
         {
             v_activity_ticket_dal dal = new v_activity_ticket_dal();
             var users = dal.GetOwnerUsers(ticketId);
             IEnumerable<v_activity_ticket> acts;
+            #region 根据过滤器 获取筛选SQL语句
+            //string sqlWhere = "";
+            //if (filter.Exists(_ => _.Equals("public")) && (!filter.Exists(_ => _.Equals("internal"))))
+            //    sqlWhere += $"and publish_type_id ={((int)DicEnum.NOTE_PUBLISH_TYPE.TICKET_ALL_USER)} ";
+            //if (filter.Exists(_ => _.Equals("internal")) && (!filter.Exists(_ => _.Equals("public"))))
+            //    sqlWhere += $"and publish_type_id ={((int)DicEnum.NOTE_PUBLISH_TYPE.TICKET_INTERNA_USER)} ";
 
+            //string actCate = "";
+            //if (filter.Exists(_ => _.Equals("notes")))
+            //    actCate += "act,";
+            //if (filter.Exists(_ => _.Equals("attachment")))
+            //    actCate += "att,";
+            //if (filter.Exists(_ => _.Equals("timesheet")))
+            //    actCate += "entry,";
+            //if (!string.IsNullOrEmpty(actCate))
+            //{
+            //    actCate = actCate.Substring(0, actCate.Length-1);
+            //    sqlWhere += $"act_cate in({actCate}) ";
+            //}
+            //else
+            //{
+
+            //}
+            #endregion
+            StringBuilder html = new StringBuilder();
             // 过滤owner
             string ids = "";
             foreach (var usr in users)
@@ -1277,7 +1364,7 @@ namespace EMT.DoneNOW.BLL
                 if (filter.Exists(_ => _.Equals(usr.id.ToString())))
                     ids += usr.id.ToString() + ",";
             }
-            if (ids == "")
+            if (ids == ""||(!filter.Exists(_ => _.Equals("me"))))
                 acts = dal.GetTicketActByTicketId(ticketId).AsEnumerable();
             else
             {
@@ -1287,9 +1374,9 @@ namespace EMT.DoneNOW.BLL
 
             // 过滤public、internal
             if (filter.Exists(_ => _.Equals("public")) && (!filter.Exists(_ => _.Equals("internal"))))
-                acts = from act in acts where act.publish_type_id == (long)DicEnum.PUBLISH_TYPE.PUBLIC select act;
+                acts = from act in acts where act.publish_type_id != (long)DicEnum.NOTE_PUBLISH_TYPE.TICKET_INTERNA_USER select act;
             if (filter.Exists(_ => _.Equals("internal")) && (!filter.Exists(_ => _.Equals("public"))))
-                acts = from act in acts where act.publish_type_id != (long)DicEnum.PUBLISH_TYPE.PUBLIC select act;
+                acts = from act in acts where act.publish_type_id == (long)DicEnum.NOTE_PUBLISH_TYPE.TICKET_INTERNA_USER select act;
 
             // 过滤活动类型
             if (filter.Exists(_ => _.Equals("notes")) || filter.Exists(_ => _.Equals("attachment")) || filter.Exists(_ => _.Equals("timesheet")))
@@ -1301,12 +1388,260 @@ namespace EMT.DoneNOW.BLL
                 if (!filter.Exists(_ => _.Equals("timesheet")))
                     acts = from act in acts where !act.act_cate.Equals("entry") select act;
             }
+          
 
             if (acts.Count() == 0)
                 return "";
+            if(orderBy=="New")
+                acts = from a in acts orderby a.act_date_1lv ascending select a;
+            else // if(orderBy == "Old")
+                acts = from a in acts orderby a.act_date_1lv descending select a;
+            var actList = acts.ToList();
+            foreach (var act in acts)
+            {
+                if (act.is_system_generate == 1 && string.IsNullOrEmpty(isShowSys))
+                    continue;
+                if (act.lv != 1)
+                    continue;
+                if (act.act_cate == "act")
+                    html.Append(GetTicketNoteHtml(actList,act, act.cate,userId,1,secLevelId, userPermit, isShowSys));
+                else if(act.act_cate == "att")
+                    html.Append(GetTicketAttachmentHtml(actList, act, act.cate, userId, 1, secLevelId, userPermit));
+                else if (act.act_cate == "entry")
+                    html.Append(GetTicketLabourHtml(actList, act, act.cate, userId, 1, secLevelId, userPermit));
+            }
+            
+            return html.ToString();
+        }
+        /// <summary>
+        /// 生成工单备注以及下级备注
+        /// </summary>
+        private string GetTicketNoteHtml(List<v_activity_ticket> actList, v_activity_ticket note, long cate, long userId,int level, int secLevelId, List<AuthPermitDto> userPermit,string showSys="")
+        {
+            StringBuilder html = new StringBuilder();
+            if (note.is_system_generate == 1 && !string.IsNullOrEmpty(showSys))
+                note.resource_avatar = "/Images/ACheck50.gif";
+            if(string.IsNullOrEmpty(note.resource_avatar))
+                note.resource_avatar = "/Images/pop.jpg";
+            html.Append($"<div class='EntityFeedLevel{level}'><a style='float:left;cursor:pointer;'><img src='..{note.resource_avatar}' /></a> ");
+            html.Append($"<div class='PostContent'><a class='PostContentName'>{note.resource_name}</a>");
+            if (note.resource_id != userId && !string.IsNullOrEmpty(note.resource_email))
+                html.Append($"<a href='mailto:{note.resource_email}' class='SmallLink'>发送邮件</a>");
+            html.Append($"<img src='../Images/note.png' />");
+            if (note.contact_id != null)
+            {
+                if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_VIEW_CONTACT"))
+                    html.Append($"<span>(联系人:<a class='PostContentName' onclick='ViewContact({note.contact_id})'>{note.contact_name}</a>");
+                else
+                    html.Append($"<span>(联系人:<a class='PostContentName'>{note.contact_name}</a>");
+                if (!string.IsNullOrEmpty(note.contact_email))
+                    html.Append($"<a href='mailto:{note.contact_email}' class='SmallLink'>发送邮件</a>");
+                html.Append($")</span>");
+            }
+            if(note.publish_type_id==(int)DicEnum.NOTE_PUBLISH_TYPE.TICKET_INTERNA_USER)
+                html.Append($"<div class='Badge'><span>{note.act_desc}</span></div>");
+            else
+                html.Append($"<div><span>{note.act_desc}</span></div>");
+            if (cate == 2 || cate == 3 || cate == 4)
+            {
+                html.Append($"<div><span style='color:gray;'>创建/修改人:&nbsp</span><a style='color:gray;'>{note.update_user_name}</a>");
+                if (note.update_user_id != userId && !string.IsNullOrEmpty(note.update_user_email))
+                    html.Append($"<a href='mailto:{note.update_user_email}' class='SmallLink'>发送邮件</a>");
+                html.Append("</div>");
+            }
 
-            //if (filter.Exists(_ => _.Equals("attachment")))
-            return "";
+            html.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
+            html.Append($"{note.act_date}</span>");
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_ADD_NOTE"))
+                html.Append($"<a onclick='NoteAddNote({cate},{level},{(int)DicEnum.OBJECT_TYPE.NOTES},{note.id})' class='CommentLink'>添加备注</a>");
+            //if (cate == 5)
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_ADD_NOTE"))
+                html.Append($"<a onclick='NoteAddLabour({note.ticket_id},{note.id},\"note\")' class='CommentLink'>添加工时</a>");   // TODO: 权限
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_ADD_ATTACHMENT"))
+                html.Append($"<a onclick='NoteAddAttach({note.id},{(int)DicEnum.ATTACHMENT_OBJECT_TYPE.NOTES})' class='CommentLink'>添加附件</a>");
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_EDIT"))
+                html.Append($"<a onclick='NoteEdit({note.id})' class='CommentLink'>编辑</a>");
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_DELETE"))
+                html.Append($"<a onclick='ActDelete({note.id})' class='CommentLink'>删除</a>");
+            html.Append("</div></div></div>");
+
+            if (level == 3)
+                return html.ToString();
+            if (cate == 2 && level == 2)
+                return html.ToString();
+
+            IOrderedEnumerable<v_activity_ticket> actList1;    // 下级备注和附件
+            if (level == 1)
+                actList1 = from act in actList where act.id_1lv == note.id && act.lv == 2 orderby act.act_date_2lv ascending select act;
+            else
+                actList1 = from act in actList where note.id.ToString().Equals(act.id_2lv) && act.lv == 3 orderby act.act_date ascending select act;
+
+            foreach (var act in actList1)
+            {
+                if (act.lv != (level + 1))
+                    continue;
+                if (act.act_cate != null && act.act_cate.Equals("act"))
+                    html.Append(GetTicketNoteHtml(actList, act, cate, userId, level + 1, secLevelId, userPermit));
+                else if (act.act_cate != null && act.act_cate.Equals("att"))
+                    html.Append(GetTicketAttachmentHtml(actList, act, cate, userId, level + 1, secLevelId, userPermit));
+                else if (act.act_cate == "entry")
+                    html.Append(GetTicketLabourHtml(actList, act, act.cate, userId, level + 1, secLevelId, userPermit));
+            }
+
+            if (level == 1)
+                html.Append("<hr class='activityTitlerighthr' />");
+
+            return html.ToString();
+        }
+        /// <summary>
+        /// 生成一个工单附件及其下级的备注和附件的html
+        /// </summary>
+        private string GetTicketAttachmentHtml(List<v_activity_ticket> actList, v_activity_ticket att, long cate, long userId, int level, int secLevelId, List<AuthPermitDto> userPermit)
+        {
+            StringBuilder html = new StringBuilder();
+            if (string.IsNullOrEmpty(att.resource_avatar))
+                att.resource_avatar = "/Images/pop.jpg";
+            html.Append($"<div class='EntityFeedLevel{level}'><a style='float:left;cursor:pointer;'><img src='..{att.resource_avatar}' /></a> ");
+            html.Append($"<div class='PostContent' style='width:auto;padding-right:10px;'><a class='PostContentName'>{att.resource_name}</a>");
+            if (att.resource_id != userId && !string.IsNullOrEmpty(att.resource_email))
+                html.Append($"<a href='mailto:{att.resource_email}' class='SmallLink'>发送邮件</a>");
+
+            if (att.att_type_id == (int)DicEnum.ATTACHMENT_TYPE.URL)
+                html.Append($"<a title='{att.att_filename}' onclick=\"OpenAttachment({att.id},1,'{att.att_filename}')\" ><img src='../Images/LiveLinksindex.png' /><span style='cursor:pointer; '>{att.act_name}</span></a>");
+            else
+                html.Append($"<a title='{att.att_filename}' onclick=\"OpenAttachment({att.id},0,'')\" ><img src='../Images/LiveLinksindex.png' /><span style='cursor:pointer; '>{att.act_name}</span></a>");
+
+            html.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
+            html.Append($"{att.act_date}</span>");
+
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_ADD_NOTE"))
+                html.Append($"<a onclick='NoteAddNote({cate},{level},{(int)DicEnum.OBJECT_TYPE.ATTACHMENT},{att.id})' class='CommentLink'>添加备注</a>");
+            //if (cate == 5)
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_ADD_NOTE"))
+                html.Append($"<a  onclick='NoteAddLabour({att.ticket_id},{att.id},\"att\")' class='CommentLink'>添加工时</a>");   // TODO: 权限
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_ADD_ATTACHMENT"))
+                html.Append($"<a onclick='NoteAddAttach({att.id},{(int)DicEnum.ATTACHMENT_OBJECT_TYPE.ATTACHMENT})' class='CommentLink'>添加附件</a>");
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_DELETE"))
+                html.Append($"<a onclick='AttDelete({att.id})' class='CommentLink'>删除</a>");
+
+            html.Append("</div></div>");
+            if (att.att_type_id == (int)DicEnum.ATTACHMENT_TYPE.ATTACHMENT)
+            {
+                var file = new AttachmentBLL().GetAttachment(att.id);
+                if (file.content_type != null && file.content_type.ToLower().IndexOf("image") == 0)
+                {
+                    html.Append($"<a><img src='..{file.href}' style='width:50px;height:50px;' /></a>");
+                }
+            }
+            html.Append("</div>");
+
+            if (level == 3)
+                return html.ToString();
+            if (cate == 2 && level == 2)
+                return html.ToString();
+
+            IOrderedEnumerable<v_activity_ticket> actList1;    // 下级备注和附件
+            if (level == 1)
+                actList1 = from act in actList where act.id_1lv == att.id && act.lv == 2 orderby act.act_date_2lv ascending select act;
+            else
+                actList1 = from act in actList where att.id.ToString().Equals(act.id_2lv) && act.lv == 3 orderby act.act_date ascending select act;
+
+            //var actList = new v_activity_dal().GetActivities(att.id, level + 1, null);
+            foreach (var act in actList1)
+            {
+                if (act.lv != (level + 1))
+                    continue;
+                if (act.act_cate != null && act.act_cate.Equals("act"))
+                    html.Append(GetTicketNoteHtml(actList, act, cate, userId, level + 1, secLevelId, userPermit));
+                else if (act.act_cate != null && act.act_cate.Equals("att"))
+                    html.Append(GetTicketAttachmentHtml(actList, act, cate, userId, level + 1, secLevelId, userPermit));
+                else if (act.act_cate == "entry")
+                    html.Append(GetTicketLabourHtml(actList, act, act.cate, userId, level + 1, secLevelId, userPermit));
+            }
+
+            if (level == 1)
+                html.Append("<hr class='activityTitlerighthr' />");
+
+            return html.ToString();
+        }
+        /// <summary>
+        /// 工单-查看-活动-工时-相关
+        /// </summary>
+        private string GetTicketLabourHtml(List<v_activity_ticket> actList, v_activity_ticket entry, long cate, long userId, int level, int secLevelId, List<AuthPermitDto> userPermit)
+        {
+            StringBuilder html = new StringBuilder();
+            var sweDal = new sdk_work_entry_dal();
+            var thisEntry = sweDal.FindNoDeleteById(entry.id);
+            if (thisEntry == null)
+                return "";
+            sys_role thisRole = null;
+            if (thisEntry.role_id != null)
+                thisRole = new sys_role_dal().FindNoDeleteById((long)thisEntry.role_id);
+            if (string.IsNullOrEmpty(entry.resource_avatar))
+                entry.resource_avatar = "/Images/pop.jpg";
+            html.Append($"<div class='EntityFeedLevel{level}'><a style='float:left;cursor:pointer;'><img src='..{entry.resource_avatar}' /></a> ");
+            html.Append($"<div class='PostContent' style='width:auto;padding-right:10px;'><a class='PostContentName'>{(entry.resource_name+ (thisRole==null?"":$"({thisRole.name})"))}</a>");
+            //if (entry.resource_id != userId && !string.IsNullOrEmpty(entry.resource_email))
+            //    html.Append($"<a href='mailto:{entry.resource_email}' class='SmallLink'>发送邮件</a>");
+
+            //if (entry.att_type_id == (int)DicEnum.ATTACHMENT_TYPE.URL)
+            //    html.Append($"<a title='{entry.att_filename}' onclick=\"OpenAttachment({entry.id},1,'{entry.att_filename}')\" ><img src='../Images/LiveLinksindex.png' /><span style='cursor:pointer; '>{entry.act_name}</span></a>");
+            //else
+            //    html.Append($"<a title='{entry.att_filename}' onclick=\"OpenAttachment({entry.id},0,'')\" ><img src='../Images/LiveLinksindex.png' /><span style='cursor:pointer; '>{entry.act_name}</span></a>");
+            html.Append($"<div class='LabourTitle'><span>{entry.act_name}</span></div>");
+            html.Append($"<div class='LabourBillData'><span>{entry.act_desc}</span></div>");
+            html.Append($"<div class='EntityDateTimeLinks'><span class='MostRecentPostedTime'>");
+            html.Append($"{entry.act_date}</span>");
+
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_ADD_NOTE"))
+                html.Append($"<a onclick='NoteAddNote({cate},{level},{(int)DicEnum.OBJECT_TYPE.LABOUR},{entry.id})' class='CommentLink'>添加备注</a>");
+            //if (cate == 5)
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_ADD_NOTE"))
+                html.Append($"<a  onclick='NoteAddLabour({entry.ticket_id},{entry.id},\"entry\")' class='CommentLink'>添加工时</a>");   // TODO: 权限
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_ADD_ATTACHMENT"))
+                html.Append($"<a onclick='NoteAddAttach({entry.id},{(int)DicEnum.ATTACHMENT_OBJECT_TYPE.LABOUR})' class='CommentLink'>添加附件</a>");
+            html.Append($"<a onclick='EditLabour({entry.id})' class='CommentLink'>编辑</a>");
+            if (AuthBLL.CheckAuth(secLevelId, userPermit, "CRM_COMPANY_VIEW_COMPANY_VIEW_ACT_NOTES_DELETE"))
+                html.Append($"<a onclick='LabourDelete({entry.id})' class='CommentLink'>删除</a>");
+            html.Append("</div></div>");
+            if (entry.att_type_id == (int)DicEnum.ATTACHMENT_TYPE.ATTACHMENT)
+            {
+                var file = new AttachmentBLL().GetAttachment(entry.id);
+                if (file.content_type != null && file.content_type.ToLower().IndexOf("image") == 0)
+                {
+                    html.Append($"<a><img src='..{file.href}' style='width:50px;height:50px;' /></a>");
+                }
+            }
+            html.Append("</div>");
+
+            if (level == 3)
+                return html.ToString();
+            if (cate == 2 && level == 2)
+                return html.ToString();
+
+            IOrderedEnumerable<v_activity_ticket> actList1;    // 下级备注和附件
+            if (level == 1)
+                actList1 = from act in actList where act.id_1lv == entry.id && act.lv == 2 orderby act.act_date_2lv ascending select act;
+            else
+                actList1 = from act in actList where entry.id.ToString().Equals(act.id_2lv) && act.lv == 3 orderby act.act_date ascending select act;
+
+            //var actList = new v_activity_dal().GetActivities(att.id, level + 1, null);
+            foreach (var act in actList1)
+            {
+                if (act.lv != (level + 1))
+                    continue;
+                if (act.act_cate != null && act.act_cate.Equals("act"))
+                    html.Append(GetTicketNoteHtml(actList, act, cate, userId, level + 1, secLevelId, userPermit));
+                else if (act.act_cate != null && act.act_cate.Equals("att"))
+                    html.Append(GetTicketAttachmentHtml(actList, act, cate, userId, level + 1, secLevelId, userPermit));
+                else if (act.act_cate == "entry")
+                    html.Append(GetTicketLabourHtml(actList, act, act.cate, userId, level + 1, secLevelId, userPermit));
+            }
+
+            if (level == 1)
+                html.Append("<hr class='activityTitlerighthr' />");
+
+            return html.ToString();
         }
 
         /*

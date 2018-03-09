@@ -73,28 +73,28 @@ namespace EMT.DoneNOW.Web.Activity
                     string isNoFunc = Request.QueryString["noFunc"];
                     if (new AttachmentBLL().AddAttachment(objType, objId, actType, attName, attLink, null, null, null, 0, GetLoginUserId()))
                     {
-                        if (!string.IsNullOrEmpty(isNoFunc))
+                        if (isNoFunc == "1")
                         {
                             if (action == "saveNew")
-                            {
                                 Response.Write($"<script>alert('添加附件成功');window.location.href='AddAttachment?objType={objType}&objId={objId}&noFunc=1';self.opener.location.reload();</script>");
-                            }
                             else
-                            {
                                 Response.Write($"<script>alert('添加附件成功');window.close();self.opener.location.reload();</script>");
-                            }
+                            return;
+                        }
+                        else if (!string.IsNullOrEmpty(isNoFunc))
+                        {
+                            if (action == "saveNew")
+                                Response.Write($"<script>alert('添加附件成功');window.location.href='AddAttachment?objType={objType}&objId={objId}&noFunc=1';self.opener.location.{isNoFunc}();</script>");
+                            else
+                                Response.Write($"<script>alert('添加附件成功');window.close();self.opener.location.{isNoFunc}();</script>");
                             return;
                         }
                         else
                         {
                             if (action == "saveNew")
-                            {
                                 Response.Write($"<script>alert('添加附件成功');window.location.href='AddAttachment?objType={objType}&objId={objId}';self.opener.RequestActivity();</script>");
-                            }
                             else
-                            {
                                 Response.Write($"<script>alert('添加附件成功');window.close();self.opener.RequestActivity();</script>");
-                            }
                             return;
                         }
                       

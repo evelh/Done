@@ -436,7 +436,7 @@ namespace EMT.DoneNOW.DTO
             EXPIRED = 618,    // 过期
         }
         /// <summary>
-        /// 自定义字段分组
+        /// 自定义字段分组 - 47
         /// </summary>
         public enum UDF_FILED_GROUP
         {
@@ -481,6 +481,7 @@ namespace EMT.DoneNOW.DTO
             ATTACHMENT = 715,       // 附件
             COMPANY = 716,          // 客户
             EXPENSE_REPORT = 717,   // 费用报表
+            LABOUR = 718,           // 工时
         }
 
         /// <summary>
@@ -644,6 +645,7 @@ namespace EMT.DoneNOW.DTO
             REPORT_OTHER_SYSTEM_LOGINLOG = 1598,    // 报表-其他-系统-登录日志
             REPORT_OTHER_SYSTEM_OPERLOG = 1599,     // 报表-其他-系统-操作日志
             WORKFLOW_RULE = 1600,                   // 工作流规则查询
+            TICKET_MERGE = 1606 ,                   // 合并工单的查找带回
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -685,6 +687,7 @@ namespace EMT.DoneNOW.DTO
             NOTES = 743,        // 备注
             ATTACHMENT = 744,   // 附件
             TASK=745,           // TASK
+            LABOUR=746,         // 工时
         }
 
         /// <summary>
@@ -1241,6 +1244,9 @@ namespace EMT.DoneNOW.DTO
             PROJECT_ALL_USER = 2121,            //  项目-全部用户
             PROJECT_INTERNA_USER = 2122,            // 项目-团队中员工
             PROJECT_TEAM = 2123,            //  项目-团队全部成员
+            TICKET_ALL_USER = 2124,             // 工单-全部用户
+            TICKET_INTERNA_USER = 2125,         // 工单-内部用户
+            TICKET_TEAM = 2126                  // 工单-团队用户
         }
 
         /// <summary>

@@ -20,6 +20,7 @@ namespace EMT.DoneNOW.Web.Invoice
         protected List<crm_account_deduction> accDedList = null;
         protected crm_account_deduction_dal accDedDal = new crm_account_deduction_dal();
         protected List<UserDefinedFieldDto> contract_udfList = null;
+        protected pro_project thisProject = null;
         //protected List<UserDefinedFieldValue> contract_udfValueList = null; //company
         protected string isCheckSunAccountPara;  // 是否勾选客户的子客户
         protected string itemStartDatePara;
@@ -37,6 +38,14 @@ namespace EMT.DoneNOW.Web.Invoice
                 contractTypePara = Request.QueryString["contract_type"];
                 contractCatePara = Request.QueryString["contract_cate"];
                 projectItemPara = Request.QueryString["itemDeal"];
+
+                var thisProjectId = Request.QueryString["thisProject"];
+                if (!string.IsNullOrEmpty(thisProjectId))
+                {
+                    thisProject = new pro_project_dal().FindNoDeleteById(long.Parse(thisProjectId));
+                }
+                if (thisProject != null)
+                    project_idHidden.Value = thisProject.id.ToString();
 
 
                 contract_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTRACTS);

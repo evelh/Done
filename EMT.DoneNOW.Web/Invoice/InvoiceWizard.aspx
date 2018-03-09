@@ -72,7 +72,7 @@
                                             <tr>
                                                 <td class="FieldLabels">项目名称
                                                 <div>
-                                                    <input type="text" style="width: 196px;" id="project_id" />
+                                                    <input type="text" style="width: 196px;" id="project_id" value="<%=thisProject==null?"":thisProject.name %>" />
                                                     <input type="hidden" name="project_id" id="project_idHidden" runat="server" />
                                                     <img src="../Images/data-selector.png" alt="" onclick="ChooseProject()" />
                                                 </div>
@@ -1028,10 +1028,18 @@
         var account_id = $("#account_idHidden").val();
         var sortOrder = '<%=Request.QueryString["sortOrder"] %>';
         if (sortOrder == '3') {
-            account_id = account_id + '_' + '<%=Request.QueryString["thisProject"] %>';
+            account_id = account_id;  <%--// + '_' + '<%=Request.QueryString["thisProject"] %>'--%>
         } else if (sortOrder == '4') {
             <% var thisPurOrder = Request.QueryString["thisPurOrder"];
-            thisPurOrder = thisPurOrder.Substring(5, thisPurOrder.Length - 5); %>
+    if (!string.IsNullOrEmpty(thisPurOrder))
+    {
+        thisPurOrder = thisPurOrder.Substring(5, thisPurOrder.Length - 5);
+    }
+    else
+    {
+        thisPurOrder = "";
+    }
+     %>
             account_id = account_id + '_' + '<%=thisPurOrder %>';
         }
         window.open("InvoicePreview.aspx?accDedIds=" + ids + "&stareDate=" + stareDate + "&endDate=" + endDate + "&item_type=" + item_type + "&contract_type=" + contract_type + "&contract_cate=" + contract_cate + "&itemDeal=" + itemDeal + "&account_id=" + account_id + "&invoiceDate=" + invoice_date + "&notes=" + notes + "&pay_term=" + payment_term_id, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PREVIEW %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);

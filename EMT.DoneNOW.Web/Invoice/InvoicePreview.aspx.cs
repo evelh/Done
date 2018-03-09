@@ -99,6 +99,20 @@ namespace EMT.DoneNOW.Web.Invoice
                                    )).ToList(); // 该客户下有采购订单的发票
                                 if (noPurOrderList != null && noPurOrderList.Count > 0)
                                 {
+                                    //var prijectList = noPurOrderList.Where(_ => _.project_id != null).ToList();
+                                    //if (prijectList != null && prijectList.Count > 0)
+                                    //{
+                                    //    var poDic = prijectList.GroupBy(_ => _.project_id).ToDictionary(_ => _.Key, _ => _.ToList());
+                                    //    if (poDic != null && poDic.Count > 0)
+                                    //    {
+                                    //        foreach (var thisDic in poDic)
+                                    //        {
+                                    //            accInvDic.Add(thisAcc.id.ToString() + "_" + thisDic.Key, thisAcc.name + "(项目:" + thisDic.Key + ")");
+                                    //        }
+
+                                    //    }
+                                    //}
+                                    // todo
                                     accInvDic.Add(thisAcc.id.ToString(), thisAcc.name);
                                 }
                                 if (purchOrderList != null && purchOrderList.Count > 0)
@@ -252,12 +266,29 @@ namespace EMT.DoneNOW.Web.Invoice
                     {
                         string purcha_no = account_id.Substring(thisAccount_id[0].Length + 1, account_id.Length - thisAccount_id[0].Length - 1);
                         account = new CompanyBLL().GetCompany(long.Parse(thisAccount_id[0]));
+                        bool isProject = false;
+                        if( Regex.IsMatch(purcha_no, @"^[0-9]\d*$"))
+                        {
+                            var thisProject = new pro_project_dal().FindNoDeleteById(long.Parse(purcha_no));
+                            if (thisProject != null)
+                                isProject = true;
+                        }
+
                         if (isInvoice)
                         {
                             if (thisInvoice != null)
                             {
-                                paramList = cadDal.GetInvDedDtoList($" and account_id={thisAccount_id[0]} and purchase_order_no ='{purcha_no}' and invoice_id ={thisInvoice.id} ");
-                                billTOThisParamList = cadDal.GetInvDedDtoList($" and bill_account_id={thisAccount_id[0]} and account_id <> {thisAccount_id[0]} and purchase_order_no ='{purcha_no}' and invoice_id ={thisInvoice.id} ");
+                                //if (isProject)
+                                //{
+                                //    paramList = cadDal.GetInvDedDtoList($" and account_id={thisAccount_id[0]} and project_id ='{purcha_no}' and invoice_id ={thisInvoice.id} ");
+                                //    billTOThisParamList = cadDal.GetInvDedDtoList($" and bill_account_id={thisAccount_id[0]} and account_id <> {thisAccount_id[0]} and project_id ='{purcha_no}' and invoice_id ={thisInvoice.id} ");
+                                //}
+                                //else
+                                //{
+                                    paramList = cadDal.GetInvDedDtoList($" and account_id={thisAccount_id[0]} and purchase_order_no ='{purcha_no}' and invoice_id ={thisInvoice.id} ");
+                                    billTOThisParamList = cadDal.GetInvDedDtoList($" and bill_account_id={thisAccount_id[0]} and account_id <> {thisAccount_id[0]} and purchase_order_no ='{purcha_no}' and invoice_id ={thisInvoice.id} ");
+                                //}
+
                             }
                               
                         }
@@ -266,13 +297,31 @@ namespace EMT.DoneNOW.Web.Invoice
 
                             if (isAccDeds && accDedList != null && accDedList.Count > 0)
                             {
-                                paramList = accDedList.Where(_ => _.account_id == long.Parse(thisAccount_id[0]) && _.invoice_id == null&&_.purchase_order_no==purcha_no).ToList();
-                                billTOThisParamList = accDedList.Where(_ => _.account_id != long.Parse(thisAccount_id[0]) && _.bill_account_id == long.Parse(thisAccount_id[0]) && _.invoice_id == null&&_.purchase_order_no==purcha_no).ToList();
+                                //if (isProject)
+                                //{
+                                //    paramList = accDedList.Where(_ => _.account_id == long.Parse(thisAccount_id[0]) && _.invoice_id == null && _.project_id == long.Parse(purcha_no)).ToList();
+                                //    billTOThisParamList = accDedList.Where(_ => _.account_id != long.Parse(thisAccount_id[0]) && _.bill_account_id == long.Parse(thisAccount_id[0]) && _.invoice_id == null && _.project_id == long.Parse(purcha_no)).ToList();
+                                //}
+                                //else
+                                //{
+                                    paramList = accDedList.Where(_ => _.account_id == long.Parse(thisAccount_id[0]) && _.invoice_id == null && _.purchase_order_no == purcha_no).ToList();
+                                    billTOThisParamList = accDedList.Where(_ => _.account_id != long.Parse(thisAccount_id[0]) && _.bill_account_id == long.Parse(thisAccount_id[0]) && _.invoice_id == null && _.purchase_order_no == purcha_no).ToList();
+                                //}
+
                             }
                             else
                             {
-                                paramList = cadDal.GetInvDedDtoList($" and account_id={thisAccount_id[0]} and purchase_order_no ='{purcha_no}' and invoice_id is null");
-                                billTOThisParamList = cadDal.GetInvDedDtoList($" and bill_account_id={thisAccount_id[0]} and account_id <> {thisAccount_id[0]} and purchase_order_no ='{purcha_no}' and invoice_id is null ");
+                                //if (isProject)
+                                //{
+                                //    paramList = cadDal.GetInvDedDtoList($" and account_id={thisAccount_id[0]} and project_id ='{purcha_no}' and invoice_id is null");
+                                //    billTOThisParamList = cadDal.GetInvDedDtoList($" and bill_account_id={thisAccount_id[0]} and account_id <> {thisAccount_id[0]} and project_id ='{purcha_no}' and invoice_id is null ");
+                                //}
+                                //else
+                                //{
+                                    paramList = cadDal.GetInvDedDtoList($" and account_id={thisAccount_id[0]} and purchase_order_no ='{purcha_no}' and invoice_id is null");
+                                    billTOThisParamList = cadDal.GetInvDedDtoList($" and bill_account_id={thisAccount_id[0]} and account_id <> {thisAccount_id[0]} and purchase_order_no ='{purcha_no}' and invoice_id is null ");
+                                //}
+                               
                             }
 
                             
@@ -367,6 +416,7 @@ namespace EMT.DoneNOW.Web.Invoice
             }
             catch (Exception msg)
             {
+                Response.Write("<script>alert('"+msg.Message+ "');window.close();</script>");
                 Response.End();
             }
 
@@ -388,6 +438,19 @@ namespace EMT.DoneNOW.Web.Invoice
                    )).ToList();
                 if (noPurOrderList != null && noPurOrderList.Count > 0)
                 {
+                    //var prijectList = noPurOrderList.Where(_ => _.project_id != null).ToList();
+                    //if (prijectList != null && prijectList.Count > 0)
+                    //{
+                    //    var poDic = prijectList.GroupBy(_ => _.project_id).ToDictionary(_ => _.Key, _ => _.ToList());
+                    //    if (poDic != null && poDic.Count > 0)
+                    //    {
+                    //        foreach (var thisDic in poDic)
+                    //        {
+                    //            accInvDic.Add(account.id.ToString() + "_" + thisDic.Key, account.name + "(项目:" + thisDic.Key + ")");
+                    //        }
+
+                    //    }
+                    //}
                     accInvDic.Add(account.id.ToString(), account.name);
                 }
                 if (purchOrderList != null && purchOrderList.Count > 0)

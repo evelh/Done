@@ -49,6 +49,16 @@ namespace EMT.DoneNOW.Web
                         IsTicket(context);
                         break;
                     case "GetTicketActivity":
+                        GetTicketActivity(context);
+                        break;
+                    case "GetTicketItemCount":
+                        GetTicketItemCount(context);
+                        break;
+                    case "AcceptTicket":
+                        AcceptTicket(context);
+                        break;
+                    case "MergeTicket":
+                        MergeTicket(context);
                         break;
                     default:
                         break;
@@ -253,12 +263,23 @@ namespace EMT.DoneNOW.Web
             }
             context.Response.Write(result);
         }
+        private void GetTicketItemCount(HttpContext context)
+        {
+            var ticket = context.Request.QueryString["ticketId"];
+            if (!string.IsNullOrEmpty(ticket))
+            {
+                var dic = new ActivityBLL().GetTciektItemCount(long.Parse(ticket),LoginUserId);
+                context.Response.Write(new EMT.Tools.Serialize().SerializeJson(dic));
+            }
+            
+        }
+
         /// <summary>
         /// 获取到工单活动相关页面
         /// </summary>
         private void GetTicketActivity(HttpContext context)
         {
-            var ticketId = context.Request.QueryString["ticket_id"];
+            var ticketId = context.Request.QueryString["ticketId"];
             if (string.IsNullOrEmpty(ticketId))
                 return;
             List<string> filter = new List<string>();
@@ -272,11 +293,41 @@ namespace EMT.DoneNOW.Web
                 filter.Add("notes");
             if (!string.IsNullOrEmpty(context.Request.QueryString["CkAtt"]))
                 filter.Add("attachment");
+            if(!string.IsNullOrEmpty(context.Request.QueryString["CkMe"]))
+                filter.Add("me");
             //if (!string.IsNullOrEmpty(context.Request.QueryString["CkMe"]))
             //    filter.Add("public");
             //if (!string.IsNullOrEmpty(context.Request.QueryString["orderBy"]))
             //    filter.Add("public");
-            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.ActivityBLL().GetTicketActHtml(long.Parse(ticketId),LoginUserId,filter)));
+            var order = context.Request.QueryString["orderBy"];
+            var isShowSys = context.Request.QueryString["CkShowSys"];
+            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.ActivityBLL().GetTicketActHtml(long.Parse(ticketId),LoginUserId, order, isShowSys, filter, LoginUser.security_Level_id, UserPermit)));
+        }
+        /// <summary>
+        /// 接受工单
+        /// </summary>
+        private void AcceptTicket(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            var result = false;
+            var faileReason = "";
+            if (!string.IsNullOrEmpty(ticketId))
+                result = new TicketBLL().AcceptTicket(long.Parse(ticketId),LoginUserId,ref faileReason);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { result = result, reason = faileReason, }));
+            // AcceptTicket
+        }
+
+        private void MergeTicket(HttpContext context)
+        {
+            var fromTicketId = context.Request.QueryString["from_ticket_id"];
+            var toTicketId = context.Request.QueryString["to_ticket_id"];
+            var reason = "";
+            var result = false;
+            if(!string.IsNullOrEmpty(fromTicketId) && !string.IsNullOrEmpty(toTicketId))
+            {
+                result = new TicketBLL().MergeTicket(long.Parse(toTicketId),long.Parse(fromTicketId),LoginUserId,ref reason);
+            }
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { result = result, reason = reason, }));
         }
     }
 }

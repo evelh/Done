@@ -57,7 +57,11 @@ namespace EMT.DoneNOW.Web.Activity
                     isNotify = true;
                 if (bll.FastAddNote(objType,objectId, cate, level, Request.Form["desc"],isNotify,GetLoginUserId()))
                 {
-                    Response.Write("<script>alert('添加备注成功');window.close();self.opener.RequestActivity();</script>");
+                    var func = Request.QueryString["func"];
+                    if(!string.IsNullOrEmpty(func))
+                        Response.Write($"<script>alert('添加备注成功');window.close();self.opener.{func}();</script>");
+                    else
+                        Response.Write("<script>alert('添加备注成功');window.close();self.opener.RequestActivity();</script>");
                 }
                 else
                 {
