@@ -15,6 +15,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
     {
         protected sdk_task thisTicket = null;   // 当前工单
         protected bool isAdd = true;            // 新增还是编辑
+        protected bool isCopy = false;          // 复制
         protected crm_account thisAccount = null;  // 工单的客户
         protected crm_contact thisContact = null;  // 工单的联系人
         protected sys_resource priRes = null;      // 工单的主负责人
@@ -67,7 +68,11 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     thisTicket = new sdk_task_dal().FindNoDeleteById(long.Parse(taskId));
                     if (thisTicket != null)
                     {
-                        isAdd = false;
+                        var isCopyString = Request.QueryString["isCopy"];
+                        if (string.IsNullOrEmpty(isCopyString))
+                            isAdd = false;
+                        else
+                            isCopy = true;
                         if (!IsPostBack)
                         {
                             this.status_id.SelectedValue = thisTicket.status_id.ToString();
@@ -261,7 +266,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     else
                     {
                         // 跳转到查看页面  暂时关闭
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存成功');self.opener.location.reload();window.close();</script>");
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存成功');self.opener.location.reload();location.href='../ServiceDesk/TicketManage?id={para.ticket.id}';</script>");
                     }
                     
                 }

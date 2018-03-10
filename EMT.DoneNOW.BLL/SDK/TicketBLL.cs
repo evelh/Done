@@ -1287,6 +1287,15 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public bool MergeTickets(long toTicketId,string fromTicketIds,long userId)
         {
+            var faileReason = "";
+            var toTicket = _dal.FindNoDeleteById(toTicketId);
+            if (toTicket == null || string.IsNullOrEmpty(fromTicketIds))
+                return false;
+            var fromArr = fromTicketIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var fromTicketId in fromArr)
+            {
+                MergeTicket(toTicketId,long.Parse(fromTicketId),userId,ref faileReason);
+            }
             return true;
         }
         /// <summary>
@@ -1421,6 +1430,130 @@ namespace EMT.DoneNOW.BLL
             };
             srDal.Insert(thisCon);
             OperLogBLL.OperLogAdd<sdk_task_resource>(thisCon, thisCon.id, userId, OPER_LOG_OBJ_CATE.PROJECT_TASK_RESOURCE, "新增工单分配对象");
+        }
+        /// <summary>
+        /// 复制到项目
+        /// </summary>
+        public bool CopyToProject(string ticketIds,long projectId,long departmentId,long? phaseId,long userId)
+        {
+            var project = new pro_project_dal().FindNoDeleteById(projectId);
+            if (project == null||string.IsNullOrEmpty(ticketIds))
+                return false;
+            var ticketIdArr = ticketIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+            foreach (var ticketId in ticketIdArr)
+            {
+                SingCopyProject(long.Parse(ticketId),projectId, departmentId, phaseId,userId);
+            }
+            return true;
+        }
+        /// <summary>
+        /// 单个工单  复制到项目
+        /// </summary>">
+        public bool SingCopyProject(long ticketId, long projectId, long departmentId, long? phaseId, long userId)
+        {
+            var thisTicket = _dal.FindNoDeleteById(ticketId);
+            var thisProject = new pro_project_dal().FindNoDeleteById(projectId);
+            if (thisTicket == null||thisProject==null)
+                return false;
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            var oldStatus = thisTicket.status_id;
+            thisTicket.status_id = (int)DicEnum.TICKET_STATUS.DONE;
+            thisTicket.date_completed = timeNow;
+            EditTicket(thisTicket,userId);
+
+            #region 新增相关任务
+            var tBll = new TaskBLL();
+            sdk_task parPhase = null;
+            if (phaseId != null)
+                parPhase = _dal.FindNoDeleteById((long)phaseId);
+            var newTask = new sdk_task();
+            newTask.id = _dal.GetNextIdCom();
+            newTask.account_id = thisProject.account_id;
+            newTask.status_id = oldStatus;
+            newTask.title = thisTicket.title;
+            newTask.description = thisTicket.description;
+            newTask.priority = 0;
+            newTask.is_visible_in_client_portal = 1;
+            newTask.can_client_portal_user_complete_task = 0;
+            newTask.type_id = (int)DicEnum.TASK_TYPE.PROJECT_TASK;
+            newTask.estimated_begin_time = parPhase == null ? Tools.Date.DateHelper.ToUniversalTimeStamp((DateTime)thisProject.start_date) : parPhase.estimated_begin_time;
+            newTask.estimated_end_time = newTask.estimated_begin_time;
+            newTask.estimated_duration = 1;
+            newTask.start_no_earlier_than_date = parPhase == null ?thisProject.start_date:Tools.Date.DateHelper.ConvertStringToDateTime((long)parPhase.estimated_begin_time);
+            newTask.department_id = departmentId;
+            newTask.estimated_hours = 0;
+            newTask.sort_order = parPhase == null ? tBll.GetMinUserNoParSortNo(projectId) : tBll.GetMinUserSortNo((long)phaseId);
+            newTask.no = tBll.ReturnTaskNo();
+            newTask.create_time = timeNow;
+            newTask.update_time = timeNow;
+            newTask.create_user_id = userId;
+            newTask.update_user_id = userId;
+            _dal.Insert(newTask);
+            OperLogBLL.OperLogAdd<sdk_task>(newTask, newTask.id,userId, OPER_LOG_OBJ_CATE.PROJECT_TASK, "新增task");
+            #endregion
+
+            #region 新增备注
+            var caDal = new com_activity_dal();
+
+            var fromNote = new com_activity()
+            {
+                id = caDal.GetNextIdCom(),
+                account_id = thisTicket.account_id,
+                object_id = thisTicket.id,
+                ticket_id = thisTicket.id,
+                action_type_id = (int)ACTIVITY_TYPE.TASK_INFO,
+                contact_id = thisTicket.contact_id,
+                publish_type_id = ((int)NOTE_PUBLISH_TYPE.TICKET_ALL_USER),
+                cate_id = (int)ACTIVITY_CATE.TICKET_NOTE,
+                name = "工单复制到项目",
+                description = $"项目名称：{thisProject.name} \n\r 任务标题：{newTask.title}\n\r 查看任务详情：任务详情链接",
+                create_time = timeNow,
+                update_time = timeNow,
+                create_user_id = userId,
+                update_user_id = userId,
+                object_type_id = (int)OBJECT_TYPE.TICKETS,
+                status_id = thisTicket.status_id,
+                is_system_generate = 1,
+            };
+            caDal.Insert(fromNote);
+            OperLogBLL.OperLogAdd<com_activity>(fromNote, fromNote.id, userId, OPER_LOG_OBJ_CATE.ACTIVITY, "新增备注");
+
+            var taskNote = new com_activity()
+            {
+                id = caDal.GetNextIdCom(),
+                account_id = null,
+                object_id = newTask.id,
+                ticket_id = null,
+                action_type_id = (int)ACTIVITY_TYPE.TASK_INFO,
+                contact_id = null,
+                publish_type_id = ((int)NOTE_PUBLISH_TYPE.TASK_ALL_USER),
+                cate_id = (int)ACTIVITY_CATE.TASK_NOTE,
+                name = "工单复制到项目",
+                description = $"工单：{thisTicket.title} \n\r 查看工单详情：工单详情链接",
+                create_time = timeNow,
+                update_time = timeNow,
+                create_user_id = userId,
+                update_user_id = userId,
+                object_type_id = (int)OBJECT_TYPE.TASK,
+                status_id = newTask.status_id,
+                is_system_generate = 1,
+            };
+            caDal.Insert(taskNote);
+            OperLogBLL.OperLogAdd<com_activity>(taskNote, taskNote.id, userId, OPER_LOG_OBJ_CATE.ACTIVITY, "新增备注");
+            #endregion
+            return true;
+        }
+        /// <summary>
+        /// 取消与项目的关联
+        /// </summary>
+        public bool DisRelationProject(long ticketId,long userId)
+        {
+            var thisTicket = _dal.FindNoDeleteById(ticketId);
+            if (thisTicket == null)
+                return false;
+            thisTicket.project_id = null;
+            EditTicket(thisTicket,userId);
+            return true;
         }
     }
 }

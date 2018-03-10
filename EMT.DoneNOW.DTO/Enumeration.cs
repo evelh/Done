@@ -646,6 +646,7 @@ namespace EMT.DoneNOW.DTO
             REPORT_OTHER_SYSTEM_OPERLOG = 1599,     // 报表-其他-系统-操作日志
             WORKFLOW_RULE = 1600,                   // 工作流规则查询
             TICKET_MERGE = 1606 ,                   // 合并工单的查找带回
+            PROJECT_PHASE = 1610,                   // 项目阶段的查找带回
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 

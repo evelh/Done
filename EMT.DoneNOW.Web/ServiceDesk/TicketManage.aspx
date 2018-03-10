@@ -24,7 +24,7 @@
 <body class="Linen AutotaskBlueTheme FullScroll EntityPage EntityNew">
     <form id="form1" runat="server">
         <!-- 上方 标题 按钮等 -->
-         <input id="ticket_id" type="hidden" value="<%=thisTicket==null?"":thisTicket.id.ToString() %>" />
+         <input id="ticket_id" type="hidden" value="<%=thisTicket!=null&&!isCopy?thisTicket.id.ToString():"" %>" />
         <div class="PageHeadingContainer" style="z-index: 2;">
             <div class="HeaderRow">
                 <table>
@@ -64,27 +64,27 @@
 
         <!-- 下左 快捷添加相应操作（编辑 查看会触发相应事件） -->
         <div class="QuickLaunchBar" style="top: 82px;">
-            <div class="QuickLaunchButton TimeEntry DisabledState" id="" onclick="<%if (thisTicket != null)
+            <div class="QuickLaunchButton TimeEntry DisabledState" id="" onclick="<%if (thisTicket != null&&!isCopy)
                 {%><%="AddTimeEntry()" %> <% } %>">
                 <div class="Text">工时<span class="KeyCode"></span></div>
                 <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -15px;"></div>
             </div>
-            <div class="QuickLaunchButton Note DisabledState" onclick="<%if (thisTicket != null)
+            <div class="QuickLaunchButton Note DisabledState" onclick="<%if (thisTicket != null&&!isCopy)
                 {%><%="AddTicketNote('')" %> <% } %>">
                 <div class="Text">备注<span class="KeyCode"></span></div>
                 <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -64px;"></div>
             </div>
-            <div class="QuickLaunchButton Attachment DisabledState" onclick="<%if (thisTicket != null)
+            <div class="QuickLaunchButton Attachment DisabledState" onclick="<%if (thisTicket != null&&!isCopy)
                 {%><%="AddTicketAttachment()" %> <% } %>">
                 <div class="Text">附件<span class="KeyCode"></span></div>
                 <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -113px;"></div>
             </div>
-            <div class="QuickLaunchButton Charge DisabledState" onclick="<%if (thisTicket != null)
+            <div class="QuickLaunchButton Charge DisabledState" onclick="<%if (thisTicket != null&&!isCopy)
                 {%><%="AddTicketCharge()" %> <% } %>">
                 <div class="Text">成本<span class="KeyCode"></span></div>
                 <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -163px;"></div>
             </div>
-            <div class="QuickLaunchButton Expense DisabledState" onclick="<%if (thisTicket != null)
+            <div class="QuickLaunchButton Expense DisabledState" onclick="<%if (thisTicket != null&&!isCopy)
                 {%><%="AddTicketExpense()" %> <% } %>">
                 <div class="Text">费用<span class="KeyCode"></span></div>
                 <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -212px;"></div>
@@ -93,7 +93,7 @@
                 <div class="Text">服务<span class="KeyCode"></span></div>
                 <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -260px;"></div>
             </div>
-            <div class="QuickLaunchButton ToDo DisabledState" onclick="<%if (thisTicket != null)
+            <div class="QuickLaunchButton ToDo DisabledState" onclick="<%if (thisTicket != null&&!isCopy)
                 {%><%="AddTicketTodo()" %> <% } %>">
                 <div class="Text">待办<span class="KeyCode"></span></div>
                 <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -309px;"></div>
@@ -573,7 +573,7 @@
                                                 <div class="border_right">
                                                 </div>
                                                 <div class="border-line"></div>
-                                                <% if (ticketCheckList != null && ticketCheckList.Count > 0)
+                                                <% if (ticketCheckList != null && ticketCheckList.Count > 0&&!isCopy)
                                                     {
                                                         int num = 0;
                                                         foreach (var item in ticketCheckList)
@@ -676,7 +676,7 @@
                                 </div>
                             </div>
                         </div>
-                        <%if (!isAdd && thisTicket != null)
+                        <%if (!isAdd && thisTicket != null&&!isCopy)
                             { %>
                         <div class="Normal Section Timeline">
                             <div class="Heading" data-toggle-enabled="true">
@@ -944,7 +944,7 @@
                         </div>
                     </div>
                 </div>
-                <% if (thisTicket != null)
+                <% if (thisTicket != null&&!isCopy)
                     { %>
                 <div class="AccessoryTabButtonBar">
                     <div class="Button TicketButton SelectedState" id="TicketViewActivityDiv">
@@ -1265,7 +1265,7 @@
                             <div class="LoadingIndicator"></div>
                             <div class="TransitionContainer"></div>
                             <div class="Content" id="z9ac8e203dc7e4dfab0d0a982b4afeece">
-                                <% if (thisTicket != null)
+                                <% if (thisTicket != null&&!isCopy)
                                 { %>
                                 <table class="Table" cellpadding="0">
                                     <tbody>

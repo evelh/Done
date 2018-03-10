@@ -465,6 +465,7 @@
     <Content Include="Scripts\Search\ticket_sla_list.js" />
     <Content Include="Scripts\Ticket.js" />
     <Content Include="ServiceDesk\AccountTicketList.aspx" />
+    <Content Include="ServiceDesk\CopyToProject.aspx" />
     <Content Include="ServiceDesk\TicketActivity.aspx" />
     <Content Include="ServiceDesk\TicketHistory.aspx" />
     <Content Include="ServiceDesk\TicketLabour.aspx" />
@@ -1906,6 +1907,13 @@
     </Compile>
     <Compile Include="ServiceDesk\AccountTicketList.aspx.designer.cs">
       <DependentUpon>AccountTicketList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\CopyToProject.aspx.cs">
+      <DependentUpon>CopyToProject.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\CopyToProject.aspx.designer.cs">
+      <DependentUpon>CopyToProject.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServiceDesk\TicketActivity.aspx.cs">
       <DependentUpon>TicketActivity.aspx</DependentUpon>

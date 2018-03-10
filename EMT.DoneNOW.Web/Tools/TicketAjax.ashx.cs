@@ -60,6 +60,12 @@ namespace EMT.DoneNOW.Web
                     case "MergeTicket":
                         MergeTicket(context);
                         break;
+                    case "AbsorbTicket":
+                        AbsorbTicket(context);
+                        break;
+                    case "DisRelationProject":
+                        DisRelationProject(context);
+                        break;
                     default:
                         break;
                 }
@@ -316,7 +322,9 @@ namespace EMT.DoneNOW.Web
             context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { result = result, reason = faileReason, }));
             // AcceptTicket
         }
-
+        /// <summary>
+        /// 合并工单
+        /// </summary>
         private void MergeTicket(HttpContext context)
         {
             var fromTicketId = context.Request.QueryString["from_ticket_id"];
@@ -328,6 +336,30 @@ namespace EMT.DoneNOW.Web
                 result = new TicketBLL().MergeTicket(long.Parse(toTicketId),long.Parse(fromTicketId),LoginUserId,ref reason);
             }
             context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { result = result, reason = reason, }));
+        }
+        /// <summary>
+        /// 吸收工单
+        /// </summary>
+        private void AbsorbTicket(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["to_ticket_id"];
+            var fromIds = context.Request.QueryString["from_ticket_ids"];
+            var result = false;
+            // var faileReason = "";
+            if(!string.IsNullOrEmpty(ticketId)&&!string.IsNullOrEmpty(fromIds))
+                result = new TicketBLL().MergeTickets(long.Parse(ticketId), fromIds, LoginUserId);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 取消与项目的关联
+        /// </summary>
+        private void DisRelationProject(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            var result = false;
+            if (!string.IsNullOrEmpty(ticketId))
+                result = new TicketBLL().DisRelationProject(long.Parse(ticketId), LoginUserId);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
         }
     }
 }
