@@ -952,7 +952,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "SetActive()" });
                     contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "SetInactive()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()\" \" style='color:grey;'" });
                     break;
                 case (long)QueryType.TICKET_SEARCH:
                     var ticketView = new PageContextMenuDto { text="查看"};

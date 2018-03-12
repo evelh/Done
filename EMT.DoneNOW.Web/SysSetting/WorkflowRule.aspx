@@ -63,19 +63,19 @@
                                     <td style="width:300px; vertical-align:top;">
                                         <div class="clear">
                                             <label>工作流名称<span class="red">*</span></label>
-                                            <input type="text" name="name" id="name" value="" />
+                                            <input type="text" name="name" id="name" <%if (wfEdit != null) { %> value="<%=wfEdit.name %>"<%} %> />
                                         </div>
                                     </td>
                                     <td style="width:300px;">
                                         <div class="clear">
                                             <label>描述</label>
-                                            <textarea name="description"></textarea>
+                                            <textarea name="description"><%if (wfEdit != null) { %><%=wfEdit.description %><%} %></textarea>
                                         </div>
                                     </td>
                                     <td style="vertical-align:top;">
                                         <div>
                                             <label>激活</label>
-                                            <input type="checkbox" checked="checked" name="active" />
+                                            <input type="checkbox" <%if (wfEdit == null||wfEdit.is_active==1) { %> checked="checked"<%} %> name="active" />
                                         </div>
                                     </td>
                                 </tr>
@@ -339,7 +339,9 @@
         }
         var conditions;
         var updates;
-        $("#workflow_object_id").change(function () {
+        $("#workflow_object_id").change(function () { objChange(); })
+
+        function objChange() {
             if ($("#workflow_object_id").val() == "") { return; }
             requestData("/Tools/WorkflowRuleAjax.ashx?act=getRuleFormInfo&objId=" + $("#workflow_object_id").val(), null, function (data) {
                 if (data[0] != null) {
@@ -401,6 +403,28 @@
                         document.getElementById("def1pro2").innerHTML = str;
                         document.getElementById("def1pro3").innerHTML = str;
                         document.getElementById("def1pro4").innerHTML = str;
+
+                        <%if (wfEdit!=null&&wfEdit.conditionJson != null) {
+                        int idx = 0;
+                        foreach (var cdt in wfEdit.conditionJson) {
+                            EMT.DoneNOW.DTO.WorkflowConditionParaDto cdtPara = conditionParams[1].Find(_ => _.col_name.Equals((string)cdt["col_name"]) && ((string)cdt["operator"]).Equals(_.operator_type_id));
+                            %>
+                                    $("#def1pro<%=idx%>").val("<%=cdtPara.description%>");
+                                    def1ProChange(<%=idx%>);
+                                    $("#def1oper<%=idx%>").val("<%=cdtPara.operator_type_id%>");
+                                    def1OperChange(<%=idx%>);
+                        <%if (cdtPara.data_type == 809)
+        { %>
+                                    $("#def1val<%=idx%>0").val("<%=(string)cdt["value"]%>");
+        <%}
+        else if (cdtPara.data_type == 805 || cdtPara.data_type == 806) { %>
+                                    $("#def1val<%=idx%>1").val("<%=(string)cdt["value"]%>");
+        <%} else if (cdtPara.data_type == 810) { %>
+                                    $("#def1val<%=idx%>2").val("<%=(string)cdt["value"]%>");
+        <%}%>
+                    <%
+                            idx++;
+                        } }%>
                     })
                 } else {
                     conditions = null;
@@ -442,8 +466,31 @@
                         }
                     }
                 }
+
+                <%if (wfEdit != null) { %>
+                $("#workflow_object_id").attr("disabled", "disabled");
+                var evtId;
+                    <%if (wfEdit.eventJson != null) {
+            foreach (var evt in wfEdit.eventJson) {
+                EMT.DoneNOW.DTO.WorkflowConditionParaDto cdtPara = conditionParams[0].Find(_ => _.col_name.Equals((string)evt["event"]));
+            %>
+                evtId =<%=cdtPara.id%>;
+                $("#ck" + evtId).prop("checked", true);
+                for (var i = 0; i < data[0].length; i++) {
+                    if (data[0][i].id != evtId){ continue; }
+                    if (data[0][i].data_type == 809) {
+                        $("#slt" + evtId).val("<%=(string)evt["value"]%>");
+                    } else if (data[0][i].data_type == 819) {
+                        $("#slt" + evtId).val("<%=(string)evt["unit"]%>");
+                        $("#ipt" + evtId).val("<%=(string)evt["value"]%>");
+                    }
+                    break;
+                }
+                    <%}}%>
+                
+                <%}%>
             })
-        })
+        }
 
         var notifyck = 0;
         function chooseNotifyRecipient() {
@@ -593,6 +640,13 @@
                 $(".content").eq(i).show().siblings(".content").hide();
             })
         });
+
+        <%if (wfEdit != null) { %>
+        $(document).ready(function () {
+            $("#workflow_object_id").val("<%=wfEdit.workflow_object_id%>");
+            objChange();
+        })
+        <%}%>
     </script>
 </body>
 </html>

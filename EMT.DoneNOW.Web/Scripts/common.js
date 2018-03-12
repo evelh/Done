@@ -248,7 +248,8 @@ var windowObj = {
     task: "task",
     ticket: "ticket",
     service: "service",
-    serviceBundle:"serviceBundle",
+    serviceBundle: "serviceBundle",
+    workflow: "workflow",
 }
 var windowType = {
     blank: '_blank',

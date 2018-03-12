@@ -9,8 +9,12 @@ using EMT.DoneNOW.Core;
 
 namespace EMT.DoneNOW.BLL
 {
+    /// <summary>
+    /// 工作流规则
+    /// </summary>
     public class WorkflowRuleBLL
     {
+        sys_workflow_dal dal = new sys_workflow_dal();
         /// <summary>
         /// 获取所有可用的工作流
         /// </summary>
@@ -18,7 +22,7 @@ namespace EMT.DoneNOW.BLL
         public List<WorkflowRuleDto> GetAllWorkflow()
         {
             var srlz = new Tools.Serialize();
-            var workflowList = new sys_workflow_dal().FindListBySql<WorkflowRuleDto>("select * from sys_workflow where delete_time=0 and is_active=1");
+            var workflowList = dal.FindListBySql<WorkflowRuleDto>("select * from sys_workflow where delete_time=0 and is_active=1");
             foreach (var wf in workflowList)
             {
                 if (!string.IsNullOrEmpty(wf.event_json))
@@ -32,6 +36,28 @@ namespace EMT.DoneNOW.BLL
             }
 
             return workflowList;
+        }
+
+        /// <summary>
+        /// 获取一条工作流规则信息，并反序列化json
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public WorkflowRuleDto GetWorkflowJson(long id)
+        {
+            var srlz = new Tools.Serialize();
+            var wf = dal.FindSignleBySql<WorkflowRuleDto>($"select * from sys_workflow where id={id} and delete_time=0 and is_active=1");
+
+            if (!string.IsNullOrEmpty(wf.event_json))
+                wf.eventJson = srlz.DeserializeJson<List<dynamic>>(wf.event_json);
+            if (!string.IsNullOrEmpty(wf.condition_json))
+                wf.conditionJson = srlz.DeserializeJson<List<dynamic>>(wf.condition_json);
+            if (!string.IsNullOrEmpty(wf.update_json))
+                wf.updateJson = srlz.DeserializeJson<List<dynamic>>(wf.update_json);
+            if (!string.IsNullOrEmpty(wf.email_send_from))
+                wf.emailJson = srlz.DeserializeJson<List<dynamic>>(wf.email_send_from);
+
+            return wf;
         }
 
         /// <summary>
@@ -135,7 +161,6 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public bool AddWorkflow(sys_workflow workflow, long userId)
         {
-            sys_workflow_dal dal = new sys_workflow_dal();
             workflow.id = dal.GetNextIdCom();
             workflow.create_user_id = userId;
             workflow.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
@@ -143,6 +168,77 @@ namespace EMT.DoneNOW.BLL
             workflow.update_user_id = userId;
             dal.Insert(workflow);
             OperLogBLL.OperLogAdd<sys_workflow>(workflow, workflow.id, userId, DicEnum.OPER_LOG_OBJ_CATE.WORKFLOW_RULE, "新增工作流规则");
+            return true;
+        }
+
+        /// <summary>
+        /// 编辑工作流规则
+        /// </summary>
+        /// <param name="workflow"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool EditWorkflow(sys_workflow workflow, long userId)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// 删除工作流规则
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool DeleteWorkflow(long id, long userId)
+        {
+            sys_workflow wf = dal.FindById(id);
+            wf.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            wf.delete_user_id = userId;
+            dal.Update(wf);
+            OperLogBLL.OperLogDelete<sys_workflow>(wf, wf.id, userId, DicEnum.OPER_LOG_OBJ_CATE.WORKFLOW_RULE, "删除工作流规则");
+            return true;
+        }
+
+        /// <summary>
+        /// 激活工作流规则
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool SetWorkflowActive(long id, long userId)
+        {
+            sys_workflow wf = dal.FindById(id);
+            if (wf.is_active == 1)
+                return true;
+
+            sys_workflow wfOld = dal.FindById(id);
+            wf.is_active = 1;
+            wf.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            wf.update_user_id = userId;
+            dal.Update(wf);
+            OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<sys_workflow>(wfOld, wf), id, userId, DicEnum.OPER_LOG_OBJ_CATE.WORKFLOW_RULE, "激活工作流规则");
+
+            return true;
+        }
+
+        /// <summary>
+        /// 停用工作流规则
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool SetWorkflowInactive(long id, long userId)
+        {
+            sys_workflow wf = dal.FindById(id);
+            if (wf.is_active == 0)
+                return true;
+
+            sys_workflow wfOld = dal.FindById(id);
+            wf.is_active = 0;
+            wf.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            wf.update_user_id = userId;
+            dal.Update(wf);
+            OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<sys_workflow>(wfOld, wf), id, userId, DicEnum.OPER_LOG_OBJ_CATE.WORKFLOW_RULE, "停用工作流规则");
+
             return true;
         }
     }
