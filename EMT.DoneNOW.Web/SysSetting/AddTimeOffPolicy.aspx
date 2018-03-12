@@ -41,16 +41,16 @@
         <div class="nav-title">
             <ul class="clear">
                 <li class="boders">常规</li>
-                <%if (policyItems.Exists(_ => _.cate_id == (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PERSONAL_TIME)) { %>
+                <%if (policyItems.Exists(_ => _.cate_id == 35)) { %>
                 <li>私人时间</li>
                 <%} %>
-                <%if (policyItems.Exists(_ => _.cate_id == (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.VACATION_TIME)) { %>
+                <%if (policyItems.Exists(_ => _.cate_id == 25)) { %>
                 <li>年休假</li>
                 <%} %>
-                <%if (policyItems.Exists(_ => _.cate_id == (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.SICK_TIME)) { %>
+                <%if (policyItems.Exists(_ => _.cate_id == 23)) { %>
                 <li>病假</li>
                 <%} %>
-                <%if (policyItems.Exists(_ => _.cate_id == (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PAID_TIME_OFF)) { %>
+                <%if (policyItems.Exists(_ => _.cate_id == 27)) { %>
                 <li>浮动假期</li>
                 <%} %>
             </ul>
@@ -100,21 +100,14 @@
                         </table>
                     </div>
                 </div>
-                <div class="information clear">
+                <div class="information clear" style="height:480px;">
                     <p class="informationTitle">关联员工</p>
                     <div class="text">请调整员工的生效开始日期，编辑关联。不能编辑生效截止日期。</div>
                     <div class="text clear">
                         <input type="button" value="关联员工" id="assRes" style="margin-left:0px;" />
                     </div>
-                    <div class="clear" style="margin-left:30px;margin-top:4px;width:720px;border:1px solid #d3d3d3;">
-                        <table border="none" cellspacing="" cellpadding="" style="height:420px;">
-                            <tr style="background-color:#cbd9e4;">
-                                <th style="width:262px;">员工</th>
-                                <th style="width:180px;">生效开始日期</th>
-                                <th style="width:180px;">生效结束日期</th>
-                                <th></th>
-                            </tr>
-                        </table>
+                    <div id="showResource" style="width:100%;margin-top:3px;border-top:1px solid #e8e8fa">
+                        <iframe id="resourceFrame" src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_POLICY_RESOURCE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TimeoffPolicyResource %>&con2467=<%=isAdd?0:policy.id %>" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
                     </div>
                 </div>
 
@@ -161,25 +154,14 @@
                         </table>
                     </div>
                 </div>
-                <div class="information clear">
+                <div class="information clear" style="height:460px;">
                     <p class="informationTitle">关联员工</p>
                     <div class="text">请调整员工的生效开始日期，编辑关联。不能编辑生效截止日期。</div>
-                    <div class="text">
-                        <input type="button" value="新增"  />
+                    <div class="text clear">
+                        <input type="button" value="新增" style="margin-left:0;" />
                     </div>
-                    <div>
-                        <table border="none" cellspacing="" cellpadding="">
-                            <tr>
-                                <th>工作年限（月）</th>
-                                <th>每年假期时间（小时）</th>
-                                <th>滚存限额（统一分配用）</th>
-                            </tr>
-                            <tr>
-                                <td>满0个月</td>
-                                <td>0.0000</td>
-                                <td>0.0000</td>
-                            </tr>
-                        </table>
+                    <div id="showTier" style="width:100%;margin-top:3px;border-top:1px solid #e8e8fa">
+                        <iframe id="tierFrame" src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_POLICY_TIER %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TimeoffPolicyTier %>&con2468=0" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
                     </div>
                 </div>
 

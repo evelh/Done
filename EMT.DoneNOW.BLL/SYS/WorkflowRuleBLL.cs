@@ -46,7 +46,7 @@ namespace EMT.DoneNOW.BLL
         public WorkflowRuleDto GetWorkflowJson(long id)
         {
             var srlz = new Tools.Serialize();
-            var wf = dal.FindSignleBySql<WorkflowRuleDto>($"select * from sys_workflow where id={id} and delete_time=0 and is_active=1");
+            var wf = dal.FindSignleBySql<WorkflowRuleDto>($"select * from sys_workflow where id={id} and delete_time=0 ");
 
             if (!string.IsNullOrEmpty(wf.event_json))
                 wf.eventJson = srlz.DeserializeJson<List<dynamic>>(wf.event_json);
@@ -179,7 +179,32 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public bool EditWorkflow(sys_workflow workflow, long userId)
         {
-            return false;
+            sys_workflow wf = dal.FindById(workflow.id);
+            sys_workflow wfOld = dal.FindById(workflow.id);
+
+            if (wf.workflow_object_id != workflow.workflow_object_id)   // 编辑不能修改对象类型
+                return false;
+
+            wf.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            wf.update_user_id = userId;
+            wf.name = workflow.name;
+            wf.description = workflow.description;
+            wf.is_active = workflow.is_active;
+            wf.use_default_tmpl = workflow.use_default_tmpl;
+            wf.notify_tmpl_id = workflow.notify_tmpl_id;
+            wf.notify_subject = workflow.notify_subject;
+            wf.event_json = workflow.event_json;
+            wf.condition_json = workflow.condition_json;
+            wf.update_json = workflow.update_json;
+
+            string desc = OperLogBLL.CompareValue<sys_workflow>(wfOld, wf);
+            if (!string.IsNullOrEmpty(desc))
+            {
+                dal.Update(wf);
+                OperLogBLL.OperLogUpdate(desc, wf.id, userId, DicEnum.OPER_LOG_OBJ_CATE.WORKFLOW_RULE, "编辑工作流规则");
+            }
+
+            return true;
         }
 
         /// <summary>

@@ -82,7 +82,7 @@
                                         </div>
                                         <div class="PageNavigationLinkColumn">
                                           <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_DEPARTMENT %>" target="PageFrame1">休假策略</a>
+                                            <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_POLICY %>" target="PageFrame1">休假策略</a>
                                             <div class="StandardText">介绍介绍</div>
                                           </div>
                                           <%if (CheckAuth("SYS_FEATURES_RESOURCES_DEPARTMENTS")) { %>

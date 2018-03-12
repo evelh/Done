@@ -76,6 +76,7 @@ namespace EMT.DoneNOW.BLL
             {
                 smtpClient = new SmtpClient();
                 smtpClient.Credentials = new System.Net.NetworkCredential(mailMessage.From.Address, password);//设置发件人身份的票据  
+                //smtpClient.EnableSsl = true;
                 smtpClient.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
                 smtpClient.Host = "smtp." + mailMessage.From.Host;
                 smtpClient.Send(mailMessage);

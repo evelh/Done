@@ -250,6 +250,7 @@ var windowObj = {
     service: "service",
     serviceBundle: "serviceBundle",
     workflow: "workflow",
+    timeoffPolicy: "timeoffPolicy",
 }
 var windowType = {
     blank: '_blank',

@@ -23,10 +23,10 @@ namespace EMT.DoneNOW.BLL
             if (policyId == 0)      // 新增休假策略
             {
                 List<tst_timeoff_policy_item> items = new List<tst_timeoff_policy_item>();
-                items.Add(new tst_timeoff_policy_item { cate_id = (int)DicEnum.TASK_TYPE.PERSONAL_TIME });
-                items.Add(new tst_timeoff_policy_item { cate_id = (int)DicEnum.TASK_TYPE.VACATION_TIME });
-                items.Add(new tst_timeoff_policy_item { cate_id = (int)DicEnum.TASK_TYPE.SICK_TIME });
-                items.Add(new tst_timeoff_policy_item { cate_id = (int)DicEnum.TASK_TYPE.PAID_TIME_OFF });
+                items.Add(new tst_timeoff_policy_item { cate_id = 35 });
+                items.Add(new tst_timeoff_policy_item { cate_id = 25 });
+                items.Add(new tst_timeoff_policy_item { cate_id = 23 });
+                items.Add(new tst_timeoff_policy_item { cate_id = 27 });
 
                 return items;
             }

@@ -58,14 +58,19 @@ namespace EMT.DoneNOW.Web.SysSetting
 
                 if (string.IsNullOrEmpty(Request.QueryString["id"]))
                     bll.AddWorkflow(workflow, LoginUserId);
+                else
+                {
+                    workflow.id = long.Parse(Request.QueryString["id"]);
+                    bll.EditWorkflow(workflow, LoginUserId);
+                }
 
                 if (Request.Form["action"] == "SaveNew")
                 {
-                    Response.Write("<script>alert('添加工作流规则成功！');self.opener.location.reload();window.location.href='WorkflowRule.aspx'</script>");
+                    Response.Write("<script>alert('保存工作流规则成功！');self.opener.location.reload();window.location.href='WorkflowRule.aspx'</script>");
                 }
                 else
                 {
-                    Response.Write("<script>alert('添加工作流规则成功！');window.close();self.opener.location.reload();</script>");
+                    Response.Write("<script>alert('保存工作流规则成功！');window.close();self.opener.location.reload();</script>");
                 }
             }
         }
