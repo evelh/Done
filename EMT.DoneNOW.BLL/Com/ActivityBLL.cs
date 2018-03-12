@@ -1039,7 +1039,7 @@ namespace EMT.DoneNOW.BLL
             dal.Insert(note);
             OperLogBLL.OperLogAdd<com_activity>(note, note.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ACTIVITY, "快捷新增备注");
         }
-        
+
         /// <summary>
         /// 活动列表中快速添加备注
         /// </summary>
@@ -1051,7 +1051,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="isNotify"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public bool FastAddNote(int objectTypeId, long objectId, long cate,int level, string desc, bool isNotify, long userId)
+        public bool FastAddNote(int objectTypeId, long objectId, long cate, int level, string desc, bool isNotify, long userId, string ticketNoteType = "", bool isInter = false, string isTicket = "")
         {
             var note = new com_activity();
             long parentId;
@@ -1240,8 +1240,13 @@ namespace EMT.DoneNOW.BLL
                 else
                     return false;
             }
-            
 
+            if (!string.IsNullOrEmpty(isTicket))
+            {
+                note.action_type_id = int.Parse(ticketNoteType);
+                note.publish_type_id = isInter ? (int)DicEnum.NOTE_PUBLISH_TYPE.TICKET_INTERNA_USER : (int)DicEnum.NOTE_PUBLISH_TYPE.TICKET_ALL_USER;
+                note.ticket_id = long.Parse(isTicket);
+            }
             note.description = desc;
             note.status_id = null;
             note.start_date = Tools.Date.DateHelper.ToUniversalTimeStamp();

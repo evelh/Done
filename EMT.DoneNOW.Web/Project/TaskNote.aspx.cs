@@ -192,7 +192,7 @@ namespace EMT.DoneNOW.Web.Project
                         }
                         else if (isTicket)
                         {
-                            pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TICKET_NOTE).ToString()).ToList();
+                            pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
                         }
                         else
                         {
@@ -223,7 +223,7 @@ namespace EMT.DoneNOW.Web.Project
                         }
                         else if (isTicket)
                         {
-                            actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TICKET_NOTE).ToString()).ToList();
+                            actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
                         }
                         else
                         {

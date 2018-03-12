@@ -66,6 +66,18 @@ namespace EMT.DoneNOW.Web
                     case "DisRelationProject":
                         DisRelationProject(context);
                         break;
+                    case "SignAsIssue":
+                        SignAsIssue(context);
+                        break;
+                    case "GetProCount":
+                        GetProCount(context);
+                        break;
+                    case "SinAsIncident":
+                        SinAsIncident(context);
+                        break;
+                    case "RelaNewProblem":
+                        RelaNewProblem(context);
+                        break;
                     default:
                         break;
                 }
@@ -359,6 +371,54 @@ namespace EMT.DoneNOW.Web
             var result = false;
             if (!string.IsNullOrEmpty(ticketId))
                 result = new TicketBLL().DisRelationProject(long.Parse(ticketId), LoginUserId);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 标记为问题
+        /// </summary>
+        private void SignAsIssue(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            var reason = "";
+            var result = false;
+            if (!string.IsNullOrEmpty(ticketId))
+            {
+                result = new TicketBLL().SignAsIssue(long.Parse(ticketId), LoginUserId, ref reason);
+            }
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { result = result, reason = reason, }));
+        }
+        /// <summary>
+        /// 检查选择的工单是否可以关联
+        /// </summary>
+        private void GetProCount(HttpContext context)
+        {
+            int result = 0;
+            var ticketId = context.Request.QueryString["ticket_id"];
+            if (!string.IsNullOrEmpty(ticketId))
+            {
+                result = new sdk_task_dal().GetProCount(long.Parse(ticketId));
+            }
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 标记为事故并关联其他工单
+        /// </summary>
+        private void SinAsIncident(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            var relaTicketId = context.Request.QueryString["rela_ticket_id"];
+            var result = false;
+            if (!string.IsNullOrEmpty(ticketId) && !string.IsNullOrEmpty(relaTicketId))
+                result = new TicketBLL().SinAsIncident(long.Parse(ticketId), long.Parse(relaTicketId),LoginUserId,!string.IsNullOrEmpty(context.Request.QueryString["change_account"]));
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        private void RelaNewProblem(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            var relaTicketId = context.Request.QueryString["rela_ticket_id"];
+            var result = false;
+            if (!string.IsNullOrEmpty(ticketId) && !string.IsNullOrEmpty(relaTicketId))
+                result = new TicketBLL().RelaNewProblem(long.Parse(ticketId), long.Parse(relaTicketId), LoginUserId);
             context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
         }
     }

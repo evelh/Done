@@ -75,6 +75,9 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                             isCopy = true;
                         if (!IsPostBack)
                         {
+                            cate_id.ClearSelection();
+                            cate_id.SelectedValue = thisTicket.cate_id.ToString();
+                            this.ticket_type_id.SelectedValue = thisTicket.ticket_type_id.ToString();
                             this.status_id.SelectedValue = thisTicket.status_id.ToString();
                             if (thisTicket.priority_type_id != null)
                             {
@@ -168,9 +171,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                         }
                         var actList = new d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.ACTION_TYPE);
                         if (actList != null && actList.Count > 0)
-                        {
-                            ticketNoteTypeList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TICKET_NOTE).ToString()).ToList();
-                        }
+                            ticketNoteTypeList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
                         #endregion
                         entryList = new sdk_work_entry_dal().GetList(thisTicket.id);
                     }
@@ -180,6 +181,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 var ticket_type_id = Request.QueryString["ticket_type_id"];
                 if (!string.IsNullOrEmpty(ticket_type_id))
                 {
+                    this.ticket_type_id.ClearSelection();
                     this.ticket_type_id.SelectedValue = ticket_type_id;
                 }
 
@@ -222,6 +224,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
             cate_id.DataTextField = "name";
             cate_id.DataSource = ticketCateList;
             cate_id.DataBind();
+            cate_id.SelectedValue = ((int)DicEnum.TICKET_CATE.STANDARD).ToString();
 
             ticket_type_id.DataValueField = "id";
             ticket_type_id.DataTextField = "name";
@@ -266,7 +269,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     else
                     {
                         // 跳转到查看页面  暂时关闭
-                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存成功');self.opener.location.reload();location.href='../ServiceDesk/TicketManage?id={para.ticket.id}';</script>");
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存成功');location.href='../ServiceDesk/TicketView?id={para.ticket.id}';self.opener.location.reload();</script>");
                     }
                     
                 }

@@ -657,7 +657,8 @@ function TodoEdit(id) {
 }
 
 function NoteAddNote(cate, level, objType, objId) {
-    window.open("../Activity/QuickAddNote.aspx?cate=" + cate + "&level=" + level + "&type=" + objType + "&objectId=" + objId +"&func=ApplyFilter", windowObj.notes + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+    var ticket_id = $("#ticket_id").val();
+    window.open("../Activity/QuickAddNote.aspx?cate=" + cate + "&level=" + level + "&type=" + objType + "&objectId=" + objId + "&func=ApplyFilter&ticket_id=" + ticket_id, windowObj.notes + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
 }
 function NoteEdit(id) {
     window.open("../Activity/Notes.aspx?id=" + id, windowObj.notes + windowType.edit, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
@@ -773,41 +774,41 @@ function highlight() {
 	         }
 	    }
 		//高亮显示
-        $('#ShowTicketActivity span').each(function(){
-			var html = $(this).html();
+        $('#ShowTicketActivity span').each(function () {
+            var html = $(this).text();
             //将找到的关键字替换，加上highlight属性；
-			var newHtml = html.replace(regExp, '<span class="highlight">'+searchText+'</span>');
-			$(this).html(newHtml);//更新；
+            var newHtml = html.replace(regExp, '<span class="highlight">' + searchText + '</span>');
+            $(this).html(newHtml);//更新；
 			flag = 1;
 		});
 		
-        //定位并提示信息
-        if (flag == 1 && $(".highlight") != undefined) {
-            if ($(".highlight").length > 1) {
-				var _top = $(".highlight").eq(i).offset().top+$(".highlight").eq(i).height();
-				var _tip = $(".highlight").eq(i).parent().find("strong").text();
-				if(_tip=="") _tip = $(".highlight").eq(i).parent().parent().find("strong").text();
-				var _left = $(".highlight").eq(i).offset().left;
-	            var _tipWidth = $("#tip").width();
-				if (_left > $(document).width() - _tipWidth) {
-	                 _left = _left - _tipWidth;
-	            }
-				//$("#tip").html(_tip).show();
-	   //         $("#tip").offset({ top: _top, left: _left });
-	   //         $("#search_btn").val("查找下一个");
-			}else{
-				var _top = $(".highlight").offset().top+$(".highlight").height();
-				var _tip = $(".highlight").parent().find("strong").text();
-	            var _left = $(".highlight").offset().left;
-	            //$('#tip').show();
-	            //$("#tip").html(_tip).offset({ top: _top, left: _left });
-			}
-			//$("html, body").animate({ scrollTop: _top - 50 });
-	        i++;
-            if (i > $(".highlight").length - 1) {
-	            i = 0;
-	        }
-		}
+  //      //定位并提示信息
+  //      if (flag == 1 && $(".highlight") != undefined) {
+  //          if ($(".highlight").length > 1) {
+		//		var _top = $(".highlight").eq(i).offset().top+$(".highlight").eq(i).height();
+		//		var _tip = $(".highlight").eq(i).parent().find("strong").text();
+		//		if(_tip=="") _tip = $(".highlight").eq(i).parent().parent().find("strong").text();
+		//		var _left = $(".highlight").eq(i).offset().left;
+	 //           var _tipWidth = $("#tip").width();
+		//		if (_left > $(document).width() - _tipWidth) {
+	 //                _left = _left - _tipWidth;
+	 //           }
+		//		//$("#tip").html(_tip).show();
+	 //  //         $("#tip").offset({ top: _top, left: _left });
+	 //  //         $("#search_btn").val("查找下一个");
+		//	}else{
+		//		var _top = $(".highlight").offset().top+$(".highlight").height();
+		//		var _tip = $(".highlight").parent().find("strong").text();
+	 //           var _left = $(".highlight").offset().left;
+	 //           //$('#tip').show();
+	 //           //$("#tip").html(_tip).offset({ top: _top, left: _left });
+		//	}
+		//	//$("html, body").animate({ scrollTop: _top - 50 });
+	 //       i++;
+  //          if (i > $(".highlight").length - 1) {
+	 //           i = 0;
+	 //       }
+		//}
 }
 
 // 获取 相关条目数量

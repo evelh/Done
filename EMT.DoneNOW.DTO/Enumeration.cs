@@ -650,6 +650,7 @@ namespace EMT.DoneNOW.DTO
             TIMEOFF_POLICY = 1611,                  // 休假策略查询
             TIMEOFF_POLICY_RESOURCE = 1612,         // 休假策略-关联员工查询
             TIMEOFF_POLICY_TIER = 1613,             // 休假策略-级别查询
+            ACCOUNT_SERVICE_DETAILS = 1614,         // 工单详情-客户服务详情
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -1539,6 +1540,7 @@ namespace EMT.DoneNOW.DTO
         TimeoffPolicy = 196,            // 休假策略查询
         TimeoffPolicyResource = 197,    // 休假策略-关联员工查询
         TimeoffPolicyTier = 198,        // 休假策略-级别查询
+        ACCOUNT_SERVICE_DETAILS = 199,   // 工单详情-客户服务详情
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
         Line_Of_Business,              //系统管理：组织：业务条线

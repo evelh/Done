@@ -32,10 +32,10 @@ $("#D1").on("mouseout", function () {
 // 新增工单
 function AddTicket(ticket_type_id) {
     if (ticket_type_id == "") {
-        OpenWindow("../ServiceDesk/TicketManage", windowObj.ticket + windowType.add, );
+        window.open("../ServiceDesk/TicketManage", windowType.ticket + windowType.add, 'left=200,top=200,width=1280,height=800', false);
     }
     else {
-        OpenWindow("../ServiceDesk/TicketManage?ticket_type_id=" + ticket_type_id, windowObj.ticket + windowType.add, );
+        window.open("../ServiceDesk/TicketManage?ticket_type_id=" + ticket_type_id, windowType.ticket + windowType.add, 'left=200,top=200,width=1280,height=800', false);
     }
     
 }

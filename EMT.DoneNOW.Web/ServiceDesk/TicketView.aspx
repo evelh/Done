@@ -43,6 +43,9 @@
     <input type="hidden" id="toTicketIdHidden" />
     <input type="hidden" id="AbsorbTicketIds" />
     <input type="hidden" id="AbsorbTicketIdsHidden" />
+
+    <input type="hidden" id="RelationId"/>
+    <input type="hidden" id="RelationIdHidden"/>
     <!-- 上方 标题 按钮等 -->
     <div class="PageHeadingContainer" style="z-index: 2;">
         <div class="HeaderRow">
@@ -531,7 +534,7 @@
                             <div class="StopwatchContainer">
                                 <div class="StopwatchTime"><span id="ShowWatchTime">00:00:00</span></div>
                                 <div class="StopwatchButton StopwatchIcon Normal noplay Pause" id="PlayTimeDiv"></div>
-                                <div class="StopwatchButton StopwatchIcon Normal Record" onclick="stop()" style="background: url(../Images/play.png) no-repeat -66px -1px;"></div>
+                                <div class="StopwatchButton StopwatchIcon Normal Record" onclick="AddTimeEntry()" style="background: url(../Images/play.png) no-repeat -66px -1px;"></div>
                                 <div class="StopwatchButton StopwatchIcon Normal Stop" onclick="Reset()" style="background: url(../Images/play.png) no-repeat -101px -1px;"></div>
                             </div>
                         </div>
@@ -845,7 +848,7 @@
                                     <div class="ChecklistIcon CheckBox <%=ticketCheck.is_competed==1?"Checked":"Empty" %>">
                                         <div class="Icon" tabindex="0"></div>
                                     </div>
-                                    <div class="Description"><span class="Title"><%=ticketCheck.sort_order==null?"":((decimal)ticketCheck.sort_order).ToString("#0") %></span><span class="Important"><%=ticketCheck.is_important==1?"!":"" %></span><span class="CompletedBy"><%=ticketCheck.is_competed==1?EMT.Tools.Date.DateHelper.ConvertStringToDateTime(ticketCheck.create_time).ToString("yyyy-MM-dd")+(thisCreate==null?"":thisCreate.name):"" %></span></div>
+                                    <div class="Description"><span class="Title"><%=ticketCheck.item_name %></span><span class="Important"><%=ticketCheck.is_important==1?"!":"" %></span><span class="CompletedBy"><%=ticketCheck.is_competed==1?EMT.Tools.Date.DateHelper.ConvertStringToDateTime(ticketCheck.create_time).ToString("yyyy-MM-dd")+(thisCreate==null?"":thisCreate.name):"" %></span></div>
                                 </div>
                                 <%
                                         }
@@ -1820,13 +1823,192 @@
             })
         }
     }
-
+    // 发票设置
     function ProcessInvoice() {
         window.open("../Invoice/ProcessInvoice?account_ids=<%=thisTicket.account_id %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.INVOICE_PROCESS %>", 'left=200,top=200,width=960,height=800', false);
     }
-
+    // 复制工单
     function CopyTicket() {
         window.open("../ServiceDesk/TicketManage?id=<%=thisTicket.id %>&isCopy=1",windowObj.ticket + windowType.add, 'left=200,top=200,width=960,height=800', false)
     }
-     
+    // 标记为问题
+    function SignAsIssue() {
+        var ticketId = $("#ticket_id").val();
+        if (ticketId != "") {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/TicketAjax.ashx?act=SignAsIssue&ticket_id=" + ticketId,
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data.result) {
+                        LayerMsg("标记成功！");
+                    }
+                    else {
+                        LayerMsg("标记失败！" + data.reason);
+                        
+                    }
+                    setTimeout(function () { history.go(0); }, 800);
+                }
+            })
+        }
+    }
+
+    // 标记为事故- 查找带回
+    function SignAsIncident() {
+        
+    }
+    // 标记为事故-并关联其他工单的提交校验
+    function SignInclidentCheck() {
+        var RelationId = $("#RelationIdHidden").val();
+        var ticketId = $("#ticket_id").val();
+        if (RelationId == "" || ticketId=="") {
+            return;
+        }
+        var relaType = "";   // 关联的工单的类型
+        var relaProId = "";  // 关联的工单的问题工单ID
+        var relaAccount = "";// 关联的工单的客户ID
+        $.ajax({
+            type: "GET",
+            url: "../Tools/TicketAjax.ashx?act=GetTicket&ticket_id=" + RelationId,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data != "") {
+                    relaType = data.ticket_type_id;
+                    relaProId = data.problem_ticket_id;
+                    relaAccount = data.account_id;
+                }
+            }
+        })
+        if (relaType == "<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.INCIDENT %>" && relaProId!="") {
+            LayerMsg("当前事故已关联其他问题，不能转为问题！");
+            $("#RelationIdHidden").val("");
+            $("#RelationId").val("");
+            return;
+        }
+
+
+
+        var thisType = '<%=thisTicket.ticket_type_id %>';
+        var thisAccountId = '<%=thisTicket.account_id %>';
+       
+        if (thisType == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.PROBLEM %>') {
+            var thisProCount = 0;
+            $.ajax({
+                type: "GET",
+                url: "../Tools/TicketAjax.ashx?act=GetProCount&ticket_id=" + ticketId,
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data != "") {
+                        thisProCount = data;
+                    }
+                }
+            })
+        }
+        if (!isNaN(thisProCount) && Number(thisProCount) > 0) {
+            LayerConfirm("将该工单记为事故，首先会解除所有的事故关联关系，然后将该工单和它原有的故障关联到另一个问题。 所有其他工单（变更申请单）与此工单的关联关系依旧保留。是否继续？", "是", "否", function () {
+                if (relaAccount != thisAccountId) {
+                    LayerConfirm("当前工单（一个或多个）与所选工单属于不同的客户。 为确保获得准确的盈利报告，建议将问题工单与您的公司联系起来。 你是否想为自己的公司创建一个新的问题工单，并将当前的问题工单（及其所有事故）与新的问题工单相关联？ 如果您单击否，则不会为您自己的公司创建新的问题工单（现有的问题/事故关系将保持不变）。", "是", "否", function () {
+                        $.ajax({
+                            type: "GET",
+                            url: "../Tools/TicketAjax.ashx?act=SinAsIncident&ticket_id=" + ticketId + "&rela_ticket_id=" + RelationId + "&change_account=1",
+                            async: false,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data) {
+                                    LayerMsg("标记成功！");
+                                }
+                                else {
+                                    LayerMsg("标记失败！");
+                                }
+                                setTimeout(function () { history.go(0); }, 800);
+                            }
+                        })
+                    }, function () {
+                        $.ajax({
+                            type: "GET",
+                            url: "../Tools/TicketAjax.ashx?act=SinAsIncident&ticket_id=" + ticketId + "&rela_ticket_id=" + RelationId,
+                            async: false,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data) {
+                                    LayerMsg("标记成功！");
+                                }
+                                else {
+                                    LayerMsg("标记失败！");
+                                }
+                                setTimeout(function () { history.go(0); }, 800);
+                            }
+                        })
+                    });
+                    return;
+                }
+
+            }, function () { });
+            return;
+        }
+
+        if (relaAccount != thisAccountId) {
+            LayerConfirm("当前工单（一个或多个）与所选工单属于不同的客户。 为确保获得准确的盈利报告，建议将问题工单与您的公司联系起来。 你是否想为自己的公司创建一个新的问题工单，并将当前的问题工单（及其所有事故）与新的问题工单相关联？ 如果您单击否，则不会为您自己的公司创建新的问题工单（现有的问题/事故关系将保持不变）。", "是", "否", function () {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/TicketAjax.ashx?act=SinAsIncident&ticket_id=" + ticketId + "&rela_ticket_id=" + RelationId +"&change_account=1",
+                    async: false,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data) {
+                            LayerMsg("标记成功！");
+                        }
+                        else {
+                            LayerMsg("标记失败！");
+                        }
+                        setTimeout(function () { history.go(0); }, 800);
+                    }
+                })
+            }, function () {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/TicketAjax.ashx?act=SinAsIncident&ticket_id=" + ticketId + "&rela_ticket_id=" + RelationId,
+                    async: false,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data) {
+                            LayerMsg("标记成功！");
+                        }
+                        else {
+                            LayerMsg("标记失败！");
+                        }
+                        setTimeout(function () { history.go(0); }, 800);
+                    }
+                })
+                });
+            return;
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "../Tools/TicketAjax.ashx?act=SinAsIncident&ticket_id=" + ticketId + "&rela_ticket_id=" + RelationId,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    LayerMsg("标记成功！");
+                }
+                else {
+                    LayerMsg("标记失败！");
+                }
+                setTimeout(function () { history.go(0); },800);
+            }
+        })
+    }
+    // 标记为事故并关联新的问题 - 打开新增工单页面
+    function SignInclidentNewIssueOpen() {
+        window.open("../ServiceDesk/TicketManage?id=<%=thisTicket.id %>&isCopy=1&IsIssue=1", windowObj.ticket + windowType.add, 'left=200,top=200,width=960,height=800', false)
+    }
+
+    function SignInclidentNewIssue(issueTicketId) {
+
+    }
 </script>

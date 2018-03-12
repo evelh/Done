@@ -1993,6 +1993,11 @@
         GetDataByInsPro();
         GetDataByAccount();
         GetDataByContact();
+        <%if (!string.IsNullOrEmpty(Request.QueryString["IsIssue"]))
+        { %>
+        $("#ticket_type_id").val('<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.PROBLEM %>');
+        $("#ticket_type_id").prop("disabled", true)
+        <% }%>
 
     })
 

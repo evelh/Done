@@ -30,6 +30,8 @@ namespace EMT.DoneNOW.BLL
                 #region 1 新增工单
                 if (thisTicket != null)
                     InsertTicket(thisTicket, userId);
+                else
+                    return false;
                 #endregion
 
                 #region 2 新增自定义信息
@@ -176,9 +178,7 @@ namespace EMT.DoneNOW.BLL
         {
             var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             if (ticket.sla_id != null)
-            {
                 ticket.sla_start_time = timeNow;
-            }
             ticket.id = _dal.GetNextIdCom();
             ticket.create_time = timeNow;
             ticket.create_user_id = user_id;
@@ -1552,6 +1552,113 @@ namespace EMT.DoneNOW.BLL
             if (thisTicket == null)
                 return false;
             thisTicket.project_id = null;
+            EditTicket(thisTicket,userId);
+            return true;
+        }
+        /// <summary>
+        /// 将工单类型 标记为问题
+        /// </summary>
+        public bool SignAsIssue(long ticketId,long userId, ref string failReason)
+        {
+            var thisTicket = _dal.FindNoDeleteById(ticketId);
+            if (thisTicket == null)
+            {
+                failReason = "工单已删除！";
+                return false;
+            }
+            if(thisTicket.type_id==(int)DicEnum.TICKET_TYPE.ALARM|| thisTicket.type_id == (int)DicEnum.TICKET_TYPE.SERVICE_REQUEST || thisTicket.type_id == (int)DicEnum.TICKET_TYPE.INCIDENT)
+            {
+                thisTicket.type_id = (int)DicEnum.TICKET_TYPE.PROBLEM;
+                EditTicket(thisTicket,userId);
+                return true;
+            }
+            else
+            {
+                failReason = "工单类型必须为服务请求/事故/告警之一！";
+                return false;
+            }
+        }
+        /// <summary>
+        /// 标记为事故并关联其他工单
+        /// </summary>
+        public bool SinAsIncident(long ticketId, long relaTicketId, long userId, bool isAddTicket = false)
+        {
+            var thisTicket = _dal.FindNoDeleteById(ticketId);
+            var relaTicket = _dal.FindNoDeleteById(relaTicketId);
+            if (thisTicket == null || relaTicket == null)
+                return false;
+            if (thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.ALARM && thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.SERVICE_REQUEST && thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.PROBLEM)
+                return false;
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            var tBll = new TaskBLL();
+            sdk_task newTicket = null;
+            if (isAddTicket)
+            {
+                newTicket = new sdk_task() {
+                    //id=_dal.GetNextIdCom(),
+                    //create_user_id = userId,
+                    //update_user_id = userId,
+                    //create_time = timeNow,
+                    //update_time  =timeNow,
+                    //no = tBll.ReturnTaskNo(),
+                    type_id = (int)DicEnum.TASK_TYPE.SERVICE_DESK_TICKET,
+                    ticket_type_id = (int)TICKET_TYPE.PROBLEM,
+                    title = relaTicket.title,
+                    description = relaTicket.description,
+                    account_id = thisTicket.account_id,
+                    contact_id = null,
+                    status_id = relaTicket.status_id,
+                    priority_type_id = relaTicket.priority_type_id,
+                    issue_type_id = relaTicket.issue_type_id,
+                    sub_issue_type_id = relaTicket.sub_issue_type_id,
+                    source_type_id =relaTicket.source_type_id,
+                    estimated_end_time = relaTicket.estimated_end_time,
+                    estimated_duration = relaTicket.estimated_duration,
+                    estimated_hours = relaTicket.estimated_hours,
+                    sla_id = relaTicket.sla_id,
+                    department_id = relaTicket.department_id,
+                    owner_resource_id = relaTicket.owner_resource_id,
+                    role_id = relaTicket.role_id,
+                    cost_code_id = relaTicket.cost_code_id,
+                    cate_id = (int)TICKET_CATE.STANDARD,
+                    resolution = relaTicket.resolution,
+                    sla_start_time = relaTicket.sla_start_time,
+                    last_activity_time = timeNow,
+                };
+                if (newTicket.status_id != (int)TICKET_STATUS.NEW)
+                    newTicket.first_activity_time = timeNow;
+                InsertTicket(newTicket,userId);
+            }
+            thisTicket.ticket_type_id = (int)DicEnum.TICKET_TYPE.INCIDENT;
+            thisTicket.problem_ticket_id = isAddTicket && newTicket != null ? newTicket.id : relaTicket.id;
+            EditTicket(thisTicket,userId);
+
+            var oldProTicketList = _dal.GetProList(thisTicket.id);
+            if (oldProTicketList != null && oldProTicketList.Count > 0)
+                oldProTicketList.ForEach(_ => {
+                    _.problem_ticket_id = isAddTicket && newTicket != null ? newTicket.id : relaTicket.id;
+                    EditTicket(_,userId);
+                });
+            if (!isAddTicket&&relaTicket.ticket_type_id!=(int)TICKET_TYPE.PROBLEM)
+            {
+                relaTicket.ticket_type_id = (int)TICKET_TYPE.PROBLEM;
+                EditTicket(relaTicket,userId);
+            }
+            return true;
+        }
+        /// <summary>
+        /// 标记为事故并关联新的问题
+        /// </summary>
+        public bool RelaNewProblem(long ticketId,long issueTicketId,long userId)
+        {
+            var thisTicket = _dal.FindNoDeleteById(ticketId);
+            var issTicket = _dal.FindNoDeleteById(issueTicketId);
+            if (thisTicket == null || issTicket == null)
+                return false;
+            if (thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.ALARM && thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.SERVICE_REQUEST && thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.PROBLEM)
+                return false;
+            thisTicket.ticket_type_id = (int)TICKET_TYPE.INCIDENT;
+            thisTicket.problem_ticket_id = issueTicketId;
             EditTicket(thisTicket,userId);
             return true;
         }
