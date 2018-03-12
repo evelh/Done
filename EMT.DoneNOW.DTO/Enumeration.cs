@@ -647,6 +647,7 @@ namespace EMT.DoneNOW.DTO
             WORKFLOW_RULE = 1600,                   // 工作流规则查询
             TICKET_MERGE = 1606 ,                   // 合并工单的查找带回
             PROJECT_PHASE = 1610,                   // 项目阶段的查找带回
+            ACCOUNT_SERVICE_DETAILS = 1614,         // 工单详情-客户服务详情
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -1533,6 +1534,7 @@ namespace EMT.DoneNOW.DTO
         REPORT_SERVICEDESK_TICKETBYACCOUNT = 179, // 报表--服务台常规-工单和任务按客户
         REPORT_CONTRACT_BILLED = 180,          // 报表-CRM配置项-已计费信息
         WorkflowRule = 185,             // 工作流规则查询
+        ACCOUNT_SERVICE_DETAILS = 199,   // 工单详情-客户服务详情
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
         Line_Of_Business,              //系统管理：组织：业务条线

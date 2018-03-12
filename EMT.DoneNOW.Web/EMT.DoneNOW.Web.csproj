@@ -436,6 +436,7 @@
     <Content Include="RichText\js\third-party\video-js\font\vjs.ttf" />
     <Content Include="RichText\js\third-party\video-js\font\vjs.woff" />
     <Content Include="Scripts\Report.js" />
+    <Content Include="Scripts\Search\account_service_details.js" />
     <Content Include="Scripts\Search\approved_report.js" />
     <Content Include="Scripts\Search\ContractService.js" />
     <Content Include="Scripts\Search\ContractServiceTransHistory.js" />
@@ -464,6 +465,7 @@
     <Content Include="Scripts\Search\ticket_service_list.js" />
     <Content Include="Scripts\Search\ticket_sla_list.js" />
     <Content Include="Scripts\Ticket.js" />
+    <Content Include="ServiceDesk\AccountServiceDetails.aspx" />
     <Content Include="ServiceDesk\AccountTicketList.aspx" />
     <Content Include="ServiceDesk\CopyToProject.aspx" />
     <Content Include="ServiceDesk\TicketActivity.aspx" />
@@ -1900,6 +1902,13 @@
     </Compile>
     <Compile Include="Reports\ReportHomePage.aspx.designer.cs">
       <DependentUpon>ReportHomePage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\AccountServiceDetails.aspx.cs">
+      <DependentUpon>AccountServiceDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\AccountServiceDetails.aspx.designer.cs">
+      <DependentUpon>AccountServiceDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServiceDesk\AccountTicketList.aspx.cs">
       <DependentUpon>AccountTicketList.aspx</DependentUpon>

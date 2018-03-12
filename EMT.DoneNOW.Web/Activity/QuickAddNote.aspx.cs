@@ -18,6 +18,8 @@ namespace EMT.DoneNOW.Web.Activity
         protected long objectId = 0;    // 添加备注的对象id
         protected string resouceName = "";
         private ActivityBLL bll = new ActivityBLL();
+        protected List<d_general> ticketNoteTypeList = null;  // 工单备注类型
+        protected bool isTicket = false;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -34,7 +36,11 @@ namespace EMT.DoneNOW.Web.Activity
                 objType = int.Parse(type);
                 objectId = long.Parse(objId);
                 level = int.Parse(Request.QueryString["level"]);
-
+                var actList = new DAL.d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.ACTION_TYPE);
+                if (actList != null && actList.Count > 0)
+                    ticketNoteTypeList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
+                if (!string.IsNullOrEmpty(Request.QueryString["ticket_id"]))
+                    isTicket = true;
                 //if (actType == (int)DicEnum.OBJECT_TYPE.CUSTOMER || actType == (int)DicEnum.OBJECT_TYPE.CONTACT
                 //    || actType == (int)DicEnum.OBJECT_TYPE.OPPORTUNITY || actType == (int)DicEnum.OBJECT_TYPE.SALEORDER)
                 //{
@@ -42,9 +48,9 @@ namespace EMT.DoneNOW.Web.Activity
                 //    if (parentNote.parent_id != null)
                 //        parentNote = bll.GetActivity((long)parentNote.parent_id);
 
-                //    if (parentNote.resource_id != null)
-                //        resouceName = new UserResourceBLL().GetSysResourceSingle((long)parentNote.resource_id).name;
-                //}
+                    //    if (parentNote.resource_id != null)
+                    //        resouceName = new UserResourceBLL().GetSysResourceSingle((long)parentNote.resource_id).name;
+                    //}
             }
             else
             {
@@ -53,9 +59,11 @@ namespace EMT.DoneNOW.Web.Activity
                 objType = int.Parse(Request.Form["objType"]);
                 level = int.Parse(Request.Form["level"]);
                 bool isNotify = false;
+                var ticketNoteType = Request.Form["ticketNoteType"];
+                var inter = !string.IsNullOrEmpty(Request.Form["inter"]) && Request.Form["inter"].Equals("on");
                 if (!string.IsNullOrEmpty(Request.Form["isNotify"]) && Request.Form["isNotify"].Equals("on"))
                     isNotify = true;
-                if (bll.FastAddNote(objType,objectId, cate, level, Request.Form["desc"],isNotify,GetLoginUserId()))
+                if (bll.FastAddNote(objType,objectId, cate, level, Request.Form["desc"],isNotify,GetLoginUserId(),ticketNoteType,inter, Request.QueryString["ticket_id"]))
                 {
                     var func = Request.QueryString["func"];
                     if(!string.IsNullOrEmpty(func))

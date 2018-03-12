@@ -361,7 +361,7 @@ namespace EMT.DoneNOW.Web.Invoice
 
                 if (paramList != null && paramList.Count > 0)
                 {
-                    paramList = paramList.OrderBy(_ => _.invoice_line_item_no).ToList();
+                    paramList = paramList.OrderBy(_ => _.item_date).ToList();
                     StringBuilder ids = new StringBuilder();
                     foreach (var item in paramList)
                     {  

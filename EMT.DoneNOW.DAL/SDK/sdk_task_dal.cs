@@ -170,6 +170,20 @@ namespace EMT.DoneNOW.DAL
             }
           
         }
+        /// <summary>
+        /// 获取到关联到该工单的数量
+        /// </summary>
+        public int GetProCount(long ticketId)
+        {
+            return (int)GetSingle($"SELECT count(1) from sdk_task where problem_ticket_id = {ticketId} and delete_time = 0");
+        }
+        /// <summary>
+        /// 获取到关联到这个工单的所有工单
+        /// </summary>
+        public List<sdk_task> GetProList(long ticketId)
+        {
+            return FindListBySql<sdk_task>($"SELECT * from sdk_task where problem_ticket_id = {ticketId} and delete_time = 0");
+        }
 
         #endregion
 

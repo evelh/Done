@@ -25,7 +25,7 @@ namespace EMT.DoneNOW.Web.Activity
             {
                 objType = int.Parse(Request.QueryString["objType"]);
                 objId = int.Parse(Request.QueryString["objId"]);
-                
+
             }
             else
             {
@@ -35,25 +35,45 @@ namespace EMT.DoneNOW.Web.Activity
                 var pubType = Request.Form["pubType"];
                 objId = long.Parse(Request.Form["objId"]);
                 objType = int.Parse(Request.Form["objType"]);
-
-                if (actType==(int)DicEnum.ATTACHMENT_TYPE.ATTACHMENT)
+                string isNoFunc = Request.QueryString["noFunc"];
+                if (actType == (int)DicEnum.ATTACHMENT_TYPE.ATTACHMENT)
                 {
                     string saveName;
                     var file = Request.Files["attFile"];
                     string error = SavePic(file, out saveName);
+
                     if (string.IsNullOrEmpty(error))
                     {
                         if (new AttachmentBLL().AddAttachment(objType, objId, actType, attName, "", file.FileName, saveName, file.ContentType, file.ContentLength, GetLoginUserId()))
                         {
-                            if (action== "saveNew")
+                            if (isNoFunc == "1")
                             {
-                                Response.Write($"<script>alert('添加附件成功');window.location.href='AddAttachment?objType={objType}&objId={objId}';self.opener.location.reload();</script>");
+                                if (action == "saveNew")
+                                {
+                                    Response.Write($"<script>alert('添加附件成功');window.location.href='AddAttachment?objType={objType}&objId={objId}';self.opener.location.reload();</script>");
+                                }
+                                else
+                                {
+                                    Response.Write($"<script>alert('添加附件成功');self.opener.location.reload();window.close();</script>");
+                                }
+                                return;
+                            }
+                            else if (!string.IsNullOrEmpty(isNoFunc))
+                            {
+                                if (action == "saveNew")
+                                    Response.Write($"<script>alert('添加附件成功');window.location.href='AddAttachment?objType={objType}&objId={objId}&noFunc=1';self.opener.location.{isNoFunc}();</script>");
+                                else
+                                    Response.Write($"<script>alert('添加附件成功');self.opener.{isNoFunc}();window.close();</script>");
+                                return;
                             }
                             else
                             {
-                                Response.Write($"<script>alert('添加附件成功');window.close();self.opener.location.reload();</script>");
+                                if (action == "saveNew")
+                                    Response.Write($"<script>alert('添加附件成功');window.location.href='AddAttachment?objType={objType}&objId={objId}';self.opener.RequestActivity();</script>");
+                                else
+                                    Response.Write($"<script>alert('添加附件成功');window.close();self.opener.RequestActivity();</script>");
+                                return;
                             }
-                            return;
                         }
                         else
                         {
@@ -70,7 +90,6 @@ namespace EMT.DoneNOW.Web.Activity
                 else
                 {
                     string attLink = Request.Form["attLink"];
-                    string isNoFunc = Request.QueryString["noFunc"];
                     if (new AttachmentBLL().AddAttachment(objType, objId, actType, attName, attLink, null, null, null, 0, GetLoginUserId()))
                     {
                         if (isNoFunc == "1")
@@ -78,15 +97,15 @@ namespace EMT.DoneNOW.Web.Activity
                             if (action == "saveNew")
                                 Response.Write($"<script>alert('添加附件成功');window.location.href='AddAttachment?objType={objType}&objId={objId}&noFunc=1';self.opener.location.reload();</script>");
                             else
-                                Response.Write($"<script>alert('添加附件成功');window.close();self.opener.location.reload();</script>");
+                                Response.Write($"<script>alert('添加附件成功');self.opener.location.reload();window.close();</script>");
                             return;
                         }
                         else if (!string.IsNullOrEmpty(isNoFunc))
                         {
                             if (action == "saveNew")
-                                Response.Write($"<script>alert('添加附件成功');window.location.href='AddAttachment?objType={objType}&objId={objId}&noFunc=1';self.opener.location.{isNoFunc}();</script>");
+                                Response.Write($"<script>alert('添加附件成功');window.location.href='AddAttachment?objType={objType}&objId={objId}&noFunc=1';self.opener.{isNoFunc}();</script>");
                             else
-                                Response.Write($"<script>alert('添加附件成功');window.close();self.opener.location.{isNoFunc}();</script>");
+                                Response.Write($"<script>alert('添加附件成功');self.opener.{isNoFunc}();window.close();</script>");
                             return;
                         }
                         else
@@ -97,7 +116,7 @@ namespace EMT.DoneNOW.Web.Activity
                                 Response.Write($"<script>alert('添加附件成功');window.close();self.opener.RequestActivity();</script>");
                             return;
                         }
-                      
+
                     }
                     else
                     {
@@ -134,9 +153,9 @@ namespace EMT.DoneNOW.Web.Activity
             }
             string virpath = filepath + Guid.NewGuid().ToString() + fileExtension;//这是存到服务器上的虚拟路径
             string mappath = Server.MapPath(virpath);//转换成服务器上的物理路径
-            
+
             fileForm.SaveAs(mappath);//保存图片
-      
+
             saveFileName = virpath;
             return "";
         }
