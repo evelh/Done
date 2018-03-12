@@ -9,6 +9,9 @@ using EMT.DoneNOW.DTO;
 
 namespace EMT.DoneNOW.BLL
 {
+    /// <summary>
+    /// 工作流规则的处理
+    /// </summary>
     public class WorkflowRuleProcBLL
     {
         private WorkflowRuleProcBLL()

@@ -56,7 +56,7 @@
             </ul>
         </div>
         <div style="left: 0; overflow-x: auto; overflow-y: auto; position: fixed; right: 0; bottom: 0; top: 136px;">
-            <div class="content clear" style="width: 100%;">
+            <div class="content clear" style="width:900px;">
                 <div class="text">定义此休假方案的名称和描述，然后依次到休假类别选项卡设置每种休假类别的概述信息和级别。最后为此休假方案关联员工。请确保每种休假类别里的级别都是正确的。因为一旦关联员工，只能更新假期方案里的概述信息。</div>
 
                 <div class="information clear">
@@ -84,16 +84,16 @@
                             <tr>
                                 <td>
                                     <div class="clear">
-                                        <label>激活</label>
-                                        <input type="checkbox" />
+                                        <label for="active">激活</label>
+                                        <input type="checkbox" checked="checked" id="active" name="active" />
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <div class="clear">
-                                        <label>默认（针对新员工）</label>
-                                        <input type="checkbox" />
+                                        <label for="setDft">默认（针对新员工）</label>
+                                        <input type="checkbox" id="setDft" name="setDft" />
                                     </div>
                                 </td>
                             </tr>
@@ -103,15 +103,16 @@
                 <div class="information clear">
                     <p class="informationTitle">关联员工</p>
                     <div class="text">请调整员工的生效开始日期，编辑关联。不能编辑生效截止日期。</div>
-                    <div class="text">
-                        <input type="button" value="关联员工" id="assRes" />
+                    <div class="text clear">
+                        <input type="button" value="关联员工" id="assRes" style="margin-left:0px;" />
                     </div>
-                    <div>
-                        <table border="none" cellspacing="" cellpadding="">
-                            <tr>
-                                <th>员工</th>
-                                <th>生效开始日期</th>
-                                <th>生效结束日期</th>
+                    <div class="clear" style="margin-left:30px;margin-top:4px;width:720px;border:1px solid #d3d3d3;">
+                        <table border="none" cellspacing="" cellpadding="" style="height:420px;">
+                            <tr style="background-color:#cbd9e4;">
+                                <th style="width:262px;">员工</th>
+                                <th style="width:180px;">生效开始日期</th>
+                                <th style="width:180px;">生效结束日期</th>
+                                <th></th>
                             </tr>
                         </table>
                     </div>
@@ -119,7 +120,7 @@
 
             </div>
             <%foreach (var item in policyItems) { %>
-            <div class="content clear" style="width: 100%;display:none;">
+            <div class="content clear" style="width:900px;display:none;">
                 <div class="text">设置此休假类别的级别。累计分配的时间将在每个累计增长周期的最后一天获得（累计增长量=年小时数/当年的总累计增长周期数）：统一分配的时间在1月1日获得。如果员工关联的新休假方案在1月1日之后，也不会丢失累计增长或统一分配的时间。</div>
 
                 <div class="information clear">
@@ -184,50 +185,6 @@
 
             </div>
             <%} %>
-            <div class="content clear" style="display: none">
-                <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>微博地址</label>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="content clear" style="display: none">
-                <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>微博地址</label>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="content clear" style="display: none">
-                <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>微博地址</label>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="content clear" style="display: none">
-                <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
-                    <tr>
-                        <td>
-                            <div class="clear">
-                                <label>微博地址</label>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
         </div>
 
     </form>
@@ -279,6 +236,22 @@
         $("#assRes").click(function () {
             $("#background").show();
             $("#memo").show();
+        })
+        $("#active").change(function () {
+            if ($("#active").is(':checked') == true) {
+                $("#assRes").removeAttr("disabled");
+            } else {
+                $("#assRes").attr("disabled", "disabled");
+            }
+        })
+        $("#setDft").change(function () {
+            if ($("#setDft").is(':checked') == true) {
+                $("#active").prop("checked", true);
+                $("#active").attr("disabled", "disabled");
+                $("#assRes").removeAttr("disabled");
+            } else {
+                $("#active").removeAttr("disabled");
+            }
         })
     </script>
 </body>

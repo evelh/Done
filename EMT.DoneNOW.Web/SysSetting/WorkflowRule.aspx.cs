@@ -13,9 +13,20 @@ namespace EMT.DoneNOW.Web.SysSetting
 {
     public partial class WorkflowRule : BasePage
     {
+        protected WorkflowRuleDto wfEdit;
+        protected List<List<WorkflowConditionParaDto>> conditionParams;
+        private WorkflowRuleBLL bll = new WorkflowRuleBLL();
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (IsPostBack)
+            if (!IsPostBack)
+            {
+                if (!string.IsNullOrEmpty(Request.QueryString["id"]))
+                {
+                    wfEdit = bll.GetWorkflowJson(long.Parse(Request.QueryString["id"]));
+                    conditionParams = bll.GetWorkflowFormByObject((DicEnum.WORKFLOW_OBJECT)wfEdit.workflow_object_id, LoginUserId);
+                }
+            }
+            else
             {
                 if (string.IsNullOrEmpty(Request.Form["workflow_object_id"]))
                 {
@@ -23,7 +34,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                     return;
                 }
                 int workflowObj = int.Parse(Request.Form["workflow_object_id"]);
-                var forminfo = new WorkflowRuleBLL().GetWorkflowFormByObject((DicEnum.WORKFLOW_OBJECT)workflowObj, LoginUserId);
+                var forminfo = bll.GetWorkflowFormByObject((DicEnum.WORKFLOW_OBJECT)workflowObj, LoginUserId);
 
                 sys_workflow workflow = new sys_workflow();
                 workflow.workflow_object_id = workflowObj;
@@ -45,7 +56,8 @@ namespace EMT.DoneNOW.Web.SysSetting
                 workflow.condition_json = GetConditionJson((DicEnum.WORKFLOW_OBJECT)workflowObj, forminfo[1]);
                 workflow.update_json = GetUpdateJson((DicEnum.WORKFLOW_OBJECT)workflowObj, forminfo[2]);
 
-                new WorkflowRuleBLL().AddWorkflow(workflow, LoginUserId);
+                if (string.IsNullOrEmpty(Request.QueryString["id"]))
+                    bll.AddWorkflow(workflow, LoginUserId);
 
                 if (Request.Form["action"] == "SaveNew")
                 {
@@ -133,7 +145,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                 else if (para.data_type == (int)DicEnum.QUERY_PARA_TYPE.SINGLE_LINE || para.data_type == (int)DicEnum.QUERY_PARA_TYPE.NUMBER)
                 {
                     json.Append("{\"col_name\":\"" + para.col_name + "\",\"operator\":\""
-                        + para.operator_type_id + "\",\"value\":\"" + form["def1val" + i + "2"] + "\"},");
+                        + para.operator_type_id + "\",\"value\":\"" + form["def1val" + i + "1"] + "\"},");
                 }
                 else if (para.data_type == (int)DicEnum.QUERY_PARA_TYPE.CHANGED)
                 {

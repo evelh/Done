@@ -23,6 +23,15 @@ namespace EMT.DoneNOW.Web
                 case "getRuleFormConditonInfo":
                     GetObjectRuleConditionInfo(context);
                     break;
+                case "deleteRule":
+                    DeleteRule(context);
+                    break;
+                case "setActive":
+                    SetActive(context);
+                    break;
+                case "setInactive":
+                    SetInactive(context);
+                    break;
                 default:
                     break;
             }
@@ -48,6 +57,36 @@ namespace EMT.DoneNOW.Web
             int objId = int.Parse(context.Request.QueryString["objId"]);
             var forminfo = new WorkflowRuleBLL().GetWorkflowFormConditionByObject((DTO.DicEnum.WORKFLOW_OBJECT)objId, LoginUserId);
             context.Response.Write(new EMT.Tools.Serialize().SerializeJson(forminfo));
+        }
+
+        /// <summary>
+        /// 删除工作流规则
+        /// </summary>
+        /// <param name="context"></param>
+        private void DeleteRule(HttpContext context)
+        {
+            long id = long.Parse(context.Request.QueryString["id"]);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new WorkflowRuleBLL().DeleteWorkflow(id, LoginUserId)));
+        }
+
+        /// <summary>
+        /// 激活工作流规则
+        /// </summary>
+        /// <param name="context"></param>
+        private void SetActive(HttpContext context)
+        {
+            long id = long.Parse(context.Request.QueryString["id"]);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new WorkflowRuleBLL().SetWorkflowActive(id, LoginUserId)));
+        }
+
+        /// <summary>
+        /// 停用工作流规则
+        /// </summary>
+        /// <param name="context"></param>
+        private void SetInactive(HttpContext context)
+        {
+            long id = long.Parse(context.Request.QueryString["id"]);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new WorkflowRuleBLL().SetWorkflowInactive(id, LoginUserId)));
         }
     }
 }
