@@ -285,7 +285,7 @@
                             <table border="none" cellspacing="" cellpadding="" style="width: 800px;">
                                 <tr>
                                     <td>
-                                        <input type="checkbox" style="float:left;" id="useDefTmpl" name="useDefTmpl" />
+                                        <input type="checkbox" style="float:left;" id="useDefTmpl" name="useDefTmpl" <%if (wfEdit != null && wfEdit.use_default_tmpl == 1) { %> checked="checked" <%} %> />
                                         <label for="useDefTmpl" style="width:452px;text-align:left;">使用事件默认模板，如果没有模板模板，则用工作流规则定义的模板。</label>
                                     </td>
                                 </tr>
@@ -300,7 +300,7 @@
                                 <tr>
                                     <td>
                                         <label style="text-align:left;padding-left:15px;">通知标题</label>
-                                        <input type="text" id="notify_subject" name="notify_subject" style="width:268px;" />
+                                        <input type="text" id="notify_subject" name="notify_subject" style="width:268px;" <%if (wfEdit != null && wfEdit.notify_subject != null) { %> value="<%=wfEdit.notify_subject %>" <%} %> />
                                     </td>
                                 </tr>
                             </table>
@@ -335,6 +335,7 @@
                 LayerMsg("请输入工作流名称！");
                 return false;
             }
+            $("#workflow_object_id").removeAttr("disabled");
             return true;
         }
         var conditions;
@@ -487,6 +488,22 @@
                     break;
                 }
                     <%}}%>
+                var idx = 0;
+                <%if (wfEdit.updateJson != null) {
+            foreach (var upt in wfEdit.updateJson)
+            {
+                EMT.DoneNOW.DTO.WorkflowConditionParaDto cdtPara = conditionParams[2].Find(_ => _.col_name.Equals((string)upt["col_name"]));
+            %>
+                $("#def2pro" + idx).val("<%=cdtPara.id%>");
+                def2ProChange(idx);
+                <%if (cdtPara.data_type == 819) { %>
+                $("#def2val" + idx + "0").val("<%=(string)upt["refer"]%>");
+                $("#def2val" + idx + "1").val("<%=(string)upt["value"]%>");
+        <%} else { %>
+                $("#def2val" + idx + "0").val("<%=(string)upt["value"]%>");
+        <%}%>
+                idx++;
+        <%}}%>
                 
                 <%}%>
             })

@@ -271,6 +271,7 @@ namespace EMT.DoneNOW.Web
                     addBtn = "添加费用报表";
                     break;
                 case (int)DicEnum.QUERY_CATE.WORKFLOW_RULE:
+                case (int)DicEnum.QUERY_CATE.TIMEOFF_POLICY:
                     addBtn = "新增";
                     break;
                 default:
@@ -1051,6 +1052,11 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "添加到主负责人的工作列表", click_function = "AddTaskPriWorkList()", class_name = "task" });
                     contextMenu.Add(new PageContextMenuDto { text = "添加到其他负责人的工作列表", click_function = "AddTaskOtherWorkList()", class_name = "task" });
                     #endregion
+                    break;
+                case (long)QueryType.TimeoffPolicy:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 default:
                     break;

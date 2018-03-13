@@ -648,6 +648,9 @@ namespace EMT.DoneNOW.DTO
             TICKET_MERGE = 1606 ,                   // 合并工单的查找带回
             TICKET_REQUEST = 1607,                  // 工单详情-变更请求工单
             PROJECT_PHASE = 1610,                   // 项目阶段的查找带回
+            TIMEOFF_POLICY = 1611,                  // 休假策略查询
+            TIMEOFF_POLICY_RESOURCE = 1612,         // 休假策略-关联员工查询
+            TIMEOFF_POLICY_TIER = 1613,             // 休假策略-级别查询
             ACCOUNT_SERVICE_DETAILS = 1614,         // 工单详情-客户服务详情
             TICKET_INCLIDENT_RELATION = 1615,       // 工单详情-事故关联其他工单
             //RESOURCE_CALLBACK,                      // 
@@ -1539,6 +1542,9 @@ namespace EMT.DoneNOW.DTO
         REPORT_CONTRACT_BILLED = 180,          // 报表-CRM配置项-已计费信息
         WorkflowRule = 185,             // 工作流规则查询
         TICKET_REQUEST = 192,            // 工单详情-变更请求
+        TimeoffPolicy = 196,            // 休假策略查询
+        TimeoffPolicyResource = 197,    // 休假策略-关联员工查询
+        TimeoffPolicyTier = 198,        // 休假策略-级别查询
         ACCOUNT_SERVICE_DETAILS = 199,   // 工单详情-客户服务详情
         TICKET_INCLIDENT_RELATION=200,   // 工单详情-事故关联其他工单
         //以下是还没有配查询语句的枚举（系统管理）
