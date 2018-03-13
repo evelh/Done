@@ -1566,9 +1566,9 @@ namespace EMT.DoneNOW.BLL
                 failReason = "工单已删除！";
                 return false;
             }
-            if(thisTicket.type_id==(int)DicEnum.TICKET_TYPE.ALARM|| thisTicket.type_id == (int)DicEnum.TICKET_TYPE.SERVICE_REQUEST || thisTicket.type_id == (int)DicEnum.TICKET_TYPE.INCIDENT)
+            if(thisTicket.ticket_type_id==(int)DicEnum.TICKET_TYPE.ALARM|| thisTicket.ticket_type_id == (int)DicEnum.TICKET_TYPE.SERVICE_REQUEST || thisTicket.ticket_type_id == (int)DicEnum.TICKET_TYPE.INCIDENT)
             {
-                thisTicket.type_id = (int)DicEnum.TICKET_TYPE.PROBLEM;
+                thisTicket.ticket_type_id = (int)DicEnum.TICKET_TYPE.PROBLEM;
                 EditTicket(thisTicket,userId);
                 return true;
             }
@@ -1587,7 +1587,7 @@ namespace EMT.DoneNOW.BLL
             var relaTicket = _dal.FindNoDeleteById(relaTicketId);
             if (thisTicket == null || relaTicket == null)
                 return false;
-            if (thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.ALARM && thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.SERVICE_REQUEST && thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.PROBLEM)
+            if (thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.ALARM && thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.SERVICE_REQUEST && thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.PROBLEM&& thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.INCIDENT)
                 return false;
             var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             var tBll = new TaskBLL();
@@ -1655,11 +1655,62 @@ namespace EMT.DoneNOW.BLL
             var issTicket = _dal.FindNoDeleteById(issueTicketId);
             if (thisTicket == null || issTicket == null)
                 return false;
-            if (thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.ALARM && thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.SERVICE_REQUEST && thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.PROBLEM)
+            if (thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.ALARM && thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.SERVICE_REQUEST && thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.PROBLEM && thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.INCIDENT)
                 return false;
             thisTicket.ticket_type_id = (int)TICKET_TYPE.INCIDENT;
             thisTicket.problem_ticket_id = issueTicketId;
             EditTicket(thisTicket,userId);
+            return true;
+        }
+        /// <summary>
+        /// 标记为事故并关联新的变更申请单
+        /// </summary>
+        public bool RelaNewRequests(long ticketId,string requestIds,long userId)
+        {
+            var thisTicket = _dal.FindNoDeleteById(ticketId);
+            if (thisTicket == null || string.IsNullOrEmpty(requestIds))
+                return false;
+            //if (thisTicket.ticket_type_id != (int)DicEnum.TICKET_TYPE.SERVICE_REQUEST)
+            //    return false;
+            thisTicket.ticket_type_id = (int)DicEnum.TICKET_TYPE.INCIDENT;
+            EditTicket(thisTicket,userId);
+            var idsArr = requestIds.Split(new char[] { ',' },StringSplitOptions.RemoveEmptyEntries);
+            var strDal = new sdk_task_relation_dal();
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            foreach (var id in idsArr)
+            {
+                var reqTicket = _dal.FindNoDeleteById(long.Parse(id));
+                if (reqTicket == null|| reqTicket.ticket_type_id!= (int)DicEnum.TICKET_TYPE.CHANGE_REQUEST)
+                    continue;
+                var thisRela = strDal.GetRela(ticketId, reqTicket.id);
+                if (thisRela != null)
+                    continue;
+                thisRela = new sdk_task_relation() {
+                    id=strDal.GetNextIdCom(),
+                    create_time = timeNow,
+                    update_time = timeNow,
+                    create_user_id = userId,
+                    update_user_id = userId,
+                    task_id = thisTicket.id,
+                    parent_task_id = reqTicket.id,
+                };
+                strDal.Insert(thisRela);
+                OperLogBLL.OperLogAdd<sdk_task_relation>(thisRela, thisRela.id, userId, OPER_LOG_OBJ_CATE.TICKET_RELATION, "新增工单关联");
+            }
+            return true;
+        }
+        /// <summary>
+        /// 解除两个工单之间的关联
+        /// </summary>
+        public bool DisRelaTicket(long ticketId,long relaTicketId,long userId)
+        {
+            var strDal = new sdk_task_relation_dal();
+            var thisRela = strDal.GetRela(ticketId,relaTicketId);
+            if(thisRela!=null)
+            {
+                strDal.SoftDelete(thisRela,userId);
+                OperLogBLL.OperLogDelete<sdk_task_relation>(thisRela, thisRela.id, userId, OPER_LOG_OBJ_CATE.TICKET_RELATION, "删除工单关联");
+            }
             return true;
         }
     }

@@ -1999,6 +1999,12 @@
         $("#ticket_type_id").prop("disabled", true)
         <% }%>
 
+          <%if (!string.IsNullOrEmpty(Request.QueryString["IsRequest"]))
+        { %>
+        $("#ticket_type_id").val('<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.CHANGE_REQUEST %>');
+        $("#ticket_type_id").prop("disabled", true)
+        <% }%>
+
     })
 
     function ClosePage() {
@@ -2868,7 +2874,7 @@
 
 
 
-
+        $("select").prop("disabled", false);
         return true;
     }
     $("#CloseStatusReson").click(function () {

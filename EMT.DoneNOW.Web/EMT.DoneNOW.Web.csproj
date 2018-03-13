@@ -458,6 +458,7 @@
     <Content Include="Scripts\Search\ShipedList.js" />
     <Content Include="Scripts\Search\ShippingList.js" />
     <Content Include="Scripts\Search\purchase_order_history.js" />
+    <Content Include="Scripts\Search\ticket_request.js" />
     <Content Include="Scripts\Search\WorkflowRule.js" />
     <Content Include="Scripts\Search\ticket_account_list.js" />
     <Content Include="Scripts\Search\ticket_cost_expense.js" />

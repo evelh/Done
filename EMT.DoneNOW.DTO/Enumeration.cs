@@ -646,8 +646,10 @@ namespace EMT.DoneNOW.DTO
             REPORT_OTHER_SYSTEM_OPERLOG = 1599,     // 报表-其他-系统-操作日志
             WORKFLOW_RULE = 1600,                   // 工作流规则查询
             TICKET_MERGE = 1606 ,                   // 合并工单的查找带回
+            TICKET_REQUEST = 1607,                  // 工单详情-变更请求工单
             PROJECT_PHASE = 1610,                   // 项目阶段的查找带回
             ACCOUNT_SERVICE_DETAILS = 1614,         // 工单详情-客户服务详情
+            TICKET_INCLIDENT_RELATION = 1615,       // 工单详情-事故关联其他工单
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -775,10 +777,12 @@ namespace EMT.DoneNOW.DTO
             PROJECT_TASK_INFORMATION = 1418,            // 任务的扩展信息（自定义信息）
             TICKET_CHECK_LIST = 1420,                   // 工单的检查单
             TICKET_SERVICE_REQUEST = 1421,              // 服务请求审批人信息
+            TICKET_RELATION = 1422,                     // 工单关联关系
             IVT_SERVICE = 1423,                         // 服务
             IVT_SERVICE_BUNDLE = 1424,                  // 服务包
             WORKFLOW_RULE = 1425,                       // 工作流规则
             TICKET_SLA_EVENT,                        // 工单sla 事件
+            
         }
 
         /// <summary>
@@ -1534,7 +1538,9 @@ namespace EMT.DoneNOW.DTO
         REPORT_SERVICEDESK_TICKETBYACCOUNT = 179, // 报表--服务台常规-工单和任务按客户
         REPORT_CONTRACT_BILLED = 180,          // 报表-CRM配置项-已计费信息
         WorkflowRule = 185,             // 工作流规则查询
+        TICKET_REQUEST = 192,            // 工单详情-变更请求
         ACCOUNT_SERVICE_DETAILS = 199,   // 工单详情-客户服务详情
+        TICKET_INCLIDENT_RELATION=200,   // 工单详情-事故关联其他工单
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
         Line_Of_Business,              //系统管理：组织：业务条线

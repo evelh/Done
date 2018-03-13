@@ -44,8 +44,11 @@
     <input type="hidden" id="AbsorbTicketIds" />
     <input type="hidden" id="AbsorbTicketIdsHidden" />
 
-    <input type="hidden" id="RelationId"/>
-    <input type="hidden" id="RelationIdHidden"/>
+    <input type="hidden" id="RelationId" />
+    <input type="hidden" id="RelationIdHidden" />
+
+    <input type="hidden" id="RequestServiceId" />
+    <input type="hidden" id="RequestServiceIdHidden" />
     <!-- 上方 标题 按钮等 -->
     <div class="PageHeadingContainer" style="z-index: 2;">
         <div class="HeaderRow">
@@ -135,6 +138,37 @@
                                     <span class="Icon"></span>
                                     <span class="Text">取消与项目的关联关系</span>
                                 </div>
+                                <% if (thisTicket.ticket_type_id != (int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.CHANGE_REQUEST)
+                                    { %>
+                                <% if (thisTicket.ticket_type_id != (int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.PROBLEM)
+                                    { %>
+                                <div class="Button1" id="" tabindex="0" onclick="SignAsIssue()">
+                                    <span class="Icon"></span>
+                                    <span class="Text">标记为问题</span>
+                                </div>
+                                <%} %>
+                                <div class="Button1" id="" tabindex="0" onclick="SignAsIncident()">
+                                    <span class="Icon"></span>
+                                    <span class="Text"><% if (thisTicket.ticket_type_id != (int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.INCIDENT)
+                                                           {%>标记为<%} %>事故并关联其他工单</span>
+                                </div>
+                                <div class="Button1" id="" tabindex="0" onclick="SignInclidentNewIssueOpen()">
+                                    <span class="Icon"></span>
+                                    <span class="Text"><% if (thisTicket.ticket_type_id != (int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.INCIDENT)
+                                                           {%>标记为<%} %>事故并关联新的问题</span>
+                                </div>
+                                <% if (thisTicket.ticket_type_id == (int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.SERVICE_REQUEST)
+                                    { %>
+                                <div class="Button1" id="" tabindex="0" onclick="RelaRequests()">
+                                    <span class="Icon"></span>
+                                    <span class="Text">标记为事故并关联其他变更申请单</span>
+                                </div>
+                                <div class="Button1" id="" tabindex="0" onclick="SignInclidentNewRequestOpen()">
+                                    <span class="Icon"></span>
+                                    <span class="Text">标记为事故并关联新的变更申请单</span>
+                                </div>
+                                <%} %>
+                                <%} %>
                                 <div class="Button1" id="" tabindex="0" onclick="ProcessInvoice()">
                                     <span class="Icon"></span>
                                     <span class="Text">生成发票</span>
@@ -155,6 +189,7 @@
                                     <span class="Icon"></span>
                                     <span class="Text">删除</span>
                                 </div>
+
                             </div>
                         </div>
 
@@ -885,6 +920,18 @@
                 <div class="Button TicketButton NormalState" id="TicketViewServiceDiv">
                     <div class="Text">服务预定和待办</div>
                 </div>
+                <% if (thisTicket.ticket_type_id == (int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.PROBLEM || thisTicket.ticket_type_id == (int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.INCIDENT)
+                    { %>
+                <div class="Button TicketButton NormalState" id="TicketViewChangeDiv">
+                    <div class="Text">变更请求</div>
+                </div>
+                <%} %>
+                <% if (thisTicket.ticket_type_id == (int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.CHANGE_REQUEST)
+                    { %>
+                <div class="Button TicketButton NormalState" id="TicketViewApprovalsDiv">
+                    <div class="Text">审批</div>
+                </div>
+                <%} %>
                 <div class="Spacer Small"></div>
             </div>
             <div class="TabContainer Active ActivityTabContainer" id="ShowActivityDiv" style="padding-left: 25px;">
@@ -1110,6 +1157,106 @@
                     </div>
                 </div>
             </div>
+            <div class="TabContainer AccessoryTabContainer" id="ShowApprovalDiv">
+                <div class="AccessoryTabShell">
+                    <div class="LoadingIndicator"></div>
+                    <div class="TransitionContainer"></div>
+                    <div class="Content" id="">
+                        <div class="ToolBar">
+                            <div class="ToolBarItem Left ButtonGroupStart"><a class="Button ButtonIcon Save DisabledState" id="z68ee0bef644c4541a67da52332d4dfb8" tabindex="0"><span class="Icon"></span><span class="Text">保存</span></a></div>
+                            <div class="ToolBarItem Left ButtonGroupEnd"><a class="Button ButtonIcon Cancel DisabledState" id="z009523fd3a254cdab14820a01d86fa84" tabindex="0"><span class="Icon"></span><span class="Text">取消</span></a></div>
+                            <div class="Spacer"></div>
+                            <div class="ToolBarItem Right">
+                                <div class="ApprovalStatus NotAssigned">Not Assigned</div>
+                            </div>
+                        </div>
+                        <div class="AccessoryTabColumnBlock Double">
+                            <div class="Column">
+                                <div class="EditorLabelContainer">
+                                    <div class="Label">
+                                        <label>变更委员会</label></div>
+                                </div>
+                                <div class="Editor SingleSelect" >
+                                    <div class="InputField">
+                                        <select id="" name="ChangeAdvisoryBoard">
+                                            <option value="" title=""></option>
+                                            <option value="1" title="change advisory board">change advisory board</option>
+                                            <option value="2" title="change advisory board2">change advisory board2</option>
+                                        </select></div>
+                                </div>
+                                <div class="RadioButtonGroupContainer">
+                                    <div class="RadioButtonGroupLabel">
+                                        <div></div>
+                                        <div class="Description">Approval Type</div>
+                                    </div>
+                                    <div class="Editor RadioButton" data-editor-id="z57a227a44fa1489887194f4a786412c7Allapproversmustapprove" data-rdp="z57a227a44fa1489887194f4a786412c7Allapproversmustapprove">
+                                        <div class="InputField">
+                                            <div>
+                                                <input id="z57a227a44fa1489887194f4a786412c7Allapproversmustapprove" type="radio" value="Allapproversmustapprove" name="ApprovalType" checked="checked"></div>
+                                            <div class="EditorLabelContainer">
+                                                <div class="Label">
+                                                    <label for="z57a227a44fa1489887194f4a786412c7Allapproversmustapprove">All approvers must approve</label></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="Editor RadioButton" data-editor-id="z57a227a44fa1489887194f4a786412c7Oneapprovermustapprove" data-rdp="z57a227a44fa1489887194f4a786412c7Oneapprovermustapprove">
+                                        <div class="InputField">
+                                            <div>
+                                                <input id="z57a227a44fa1489887194f4a786412c7Oneapprovermustapprove" type="radio" value="Oneapprovermustapprove" name="ApprovalType"></div>
+                                            <div class="EditorLabelContainer">
+                                                <div class="Label">
+                                                    <label for="z57a227a44fa1489887194f4a786412c7Oneapprovermustapprove">One approver must approve</label></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="Column">
+                                <div class="EditorLabelContainer">
+                                    <div class="Label">
+                                        <label for="z3e1e0112f88f469e8bf21a3b33d8e2fc">Other Resource Approvers</label></div>
+                                </div>
+                                <div class="Editor DataSelector" data-editor-id="z3e1e0112f88f469e8bf21a3b33d8e2fc" data-rdp="z3e1e0112f88f469e8bf21a3b33d8e2fc">
+                                    <div class="InputField">
+                                        <input id="z3e1e0112f88f469e8bf21a3b33d8e2fc_DisplayTextBox" type="text" value="" autocomplete="off" data-val-multipleselectioncount="Selection limit (20) exceeded" data-val-multipleselectioncount-detail="You cannot add more than 20 Other Resource Approvers to a Change Approval." data-val-multipleselectioncount-max="20" data-val-editor-id="z3e1e0112f88f469e8bf21a3b33d8e2fc" data-val-position="0"><a class="Button ButtonIcon IconOnly DataSelector NormalState" id="z3e1e0112f88f469e8bf21a3b33d8e2fc_Button" tabindex="0"><span class="Icon"></span><span class="Text"></span></a><input id="z3e1e0112f88f469e8bf21a3b33d8e2fc" name="OtherResourceApprovers" type="hidden" value=""><div class="ContextOverlayContainer" id="z3e1e0112f88f469e8bf21a3b33d8e2fc_ContextOverlay">
+                                            <div class="AutoComplete ContextOverlay">
+                                                <div class="Active LoadingIndicator"></div>
+                                                <div class="Content"></div>
+                                            </div>
+                                            <div class="AutoComplete ContextOverlay">
+                                                <div class="Active LoadingIndicator"></div>
+                                                <div class="Content"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <select id="z3e1e0112f88f469e8bf21a3b33d8e2fc_displayListBox" multiple="multiple"></select></div>
+                                    </div>
+                                </div>
+                                <div class="EditorLabelContainer">
+                                    <div class="Label">
+                                        <label for="z718465283e3b4e449799961243fd06d7">Other Contact Approvers</label></div>
+                                </div>
+                                <div class="Editor DataSelector" data-editor-id="z718465283e3b4e449799961243fd06d7" data-rdp="z718465283e3b4e449799961243fd06d7">
+                                    <div class="InputField">
+                                        <input id="z718465283e3b4e449799961243fd06d7_DisplayTextBox" type="text" value="" autocomplete="off" data-val-multipleselectioncount="Selection limit (20) exceeded" data-val-multipleselectioncount-detail="You cannot add more than 20 Other Contact Approvers to a Change Approval." data-val-multipleselectioncount-max="20" data-val-editor-id="z718465283e3b4e449799961243fd06d7" data-val-position="0"><a class="Button ButtonIcon IconOnly DataSelector NormalState" id="z718465283e3b4e449799961243fd06d7_Button" tabindex="0"><span class="Icon"></span><span class="Text"></span></a><input id="z718465283e3b4e449799961243fd06d7" name="OtherContactApprovers" type="hidden" value=""><div class="ContextOverlayContainer" id="z718465283e3b4e449799961243fd06d7_ContextOverlay">
+                                            <div class="AutoComplete ContextOverlay">
+                                                <div class="Active LoadingIndicator"></div>
+                                                <div class="Content"></div>
+                                            </div>
+                                            <div class="AutoComplete ContextOverlay">
+                                                <div class="Active LoadingIndicator"></div>
+                                                <div class="Content"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <select id="z718465283e3b4e449799961243fd06d7_displayListBox" multiple="multiple"></select></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="SecondaryContainer Right">
             <div class="TabButtonContainer">
@@ -1227,7 +1374,7 @@
                             <div class="NormalSpacer"></div>
                             <div class="ProgressBar">
                                 <div class="Bar">
-                                    <div class="Progress IsGreaterThanZero <%=overHours<0?"Critical":"" %>" style="width: <%=overHours<0?100:(entryHours*100/thisTicket.estimated_hours) %>%;"></div>
+                                    <div class="Progress IsGreaterThanZero <%=overHours<0?"Critical":"" %>" style="width: <%=overHours<0?100:(entryHours*100/(thisTicket.estimated_hours==0?1:thisTicket.estimated_hours)) %>%;"></div>
                                 </div>
                                 <div class="Text <%=overHours<0?"CriticalImportance":"" %>">
                                     <div class="Text" style="display: inline;">
@@ -1742,6 +1889,16 @@
         $("#ShowIframeDiv").show();
         $("#TicketShowIframe").attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SERVICE_LIST %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SERVICE_LIST %>&con1761=<%=thisTicket==null?"":thisTicket.id.ToString() %>");
     })
+    $("#TicketViewChangeDiv").click(function () {
+        $("#ShowActivityDiv").hide();
+        $("#ShowIframeDiv").show();
+        $("#TicketShowIframe").attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_REQUEST %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_REQUEST %>&con2259=<%=thisTicket==null?"":thisTicket.id.ToString() %>&con2260=<%=LoginUserId %>");
+    })
+    $("#TicketViewApprovalsDiv").click(function () {
+        $("#ShowActivityDiv").hide();
+        $("#ShowIframeDiv").hide();
+
+    })
 </script>
 <%--// 工具中的事件处理--%>
 <script>
@@ -1757,7 +1914,7 @@
                     type: "GET",
                     url: "../Tools/TicketAjax.ashx?act=MergeTicket&from_ticket_id=" + ticketId + "&to_ticket_id=" + toTicketId,
                     async: false,
-                    dataType:"json",
+                    dataType: "json",
                     success: function (data) {
                         if (data != "") {
                             if (data.result) {
@@ -1781,24 +1938,24 @@
     function AbsorbTicket() {
         var AbsorbTicketIds = $("#AbsorbTicketIdsHidden").val();
         var ticketId = $("#ticket_id").val();
-        if (AbsorbTicketIds != null && AbsorbTicketIds != "" && ticketId!="") {
+        if (AbsorbTicketIds != null && AbsorbTicketIds != "" && ticketId != "") {
             var absIdsArr = AbsorbTicketIds.split(',');
             LayerConfirm("您将要吸收合并其他" + absIdsArr.length + "个工单。 如果您这样做，被吸收合并的工单的状态将被设置为完成，其备注、工时、成本、服务预定、待办、费用等仍将与此工单保持关联，其联系人和其他联系人，将作为当前工单上的其他联系人。你确定要吸收合并这些工单吗", "确定", "取消", function () {
-                    $.ajax({
-                        type: "GET",
-                        url: "../Tools/TicketAjax.ashx?act=AbsorbTicket&to_ticket_id=" + ticketId + "&from_ticket_ids=" + AbsorbTicketIds,
-                        async: false,
-                        dataType: "json",
-                        success: function (data) {
-                            if (data) {
-                                LayerMsg("吸收其他工单成功！");
-                            }
-                            else {
-                                LayerMsg("吸收其他工单失败！");
-                            }
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/TicketAjax.ashx?act=AbsorbTicket&to_ticket_id=" + ticketId + "&from_ticket_ids=" + AbsorbTicketIds,
+                    async: false,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data) {
+                            LayerMsg("吸收其他工单成功！");
                         }
+                        else {
+                            LayerMsg("吸收其他工单失败！");
+                        }
+                    }
                 })
-                    setTimeout(function () { history.go(0); }, 1000);
+                setTimeout(function () { history.go(0); }, 1000);
             }, function () { });
         }
     }
@@ -1829,7 +1986,7 @@
     }
     // 复制工单
     function CopyTicket() {
-        window.open("../ServiceDesk/TicketManage?id=<%=thisTicket.id %>&isCopy=1",windowObj.ticket + windowType.add, 'left=200,top=200,width=960,height=800', false)
+        window.open("../ServiceDesk/TicketManage?id=<%=thisTicket.id %>&isCopy=1", windowObj.ticket + windowType.add, 'left=200,top=200,width=960,height=800', false)
     }
     // 标记为问题
     function SignAsIssue() {
@@ -1846,7 +2003,7 @@
                     }
                     else {
                         LayerMsg("标记失败！" + data.reason);
-                        
+
                     }
                     setTimeout(function () { history.go(0); }, 800);
                 }
@@ -1856,13 +2013,13 @@
 
     // 标记为事故- 查找带回
     function SignAsIncident() {
-        
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_INCLIDENT_RELATION %>&field=RelationId&callBack=SignInclidentCheck&con2471=<%=thisTicket.id %>&con2477=1", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>", 'left=200,top=200,width=600,height=800', false);
     }
     // 标记为事故-并关联其他工单的提交校验
     function SignInclidentCheck() {
         var RelationId = $("#RelationIdHidden").val();
         var ticketId = $("#ticket_id").val();
-        if (RelationId == "" || ticketId=="") {
+        if (RelationId == "" || ticketId == "") {
             return;
         }
         var relaType = "";   // 关联的工单的类型
@@ -1881,18 +2038,17 @@
                 }
             }
         })
-        if (relaType == "<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.INCIDENT %>" && relaProId!="") {
+
+        if (relaType == "<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.INCIDENT %>" && relaProId != "") {
             LayerMsg("当前事故已关联其他问题，不能转为问题！");
             $("#RelationIdHidden").val("");
             $("#RelationId").val("");
             return;
         }
 
-
-
         var thisType = '<%=thisTicket.ticket_type_id %>';
         var thisAccountId = '<%=thisTicket.account_id %>';
-       
+
         if (thisType == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.PROBLEM %>') {
             var thisProCount = 0;
             $.ajax({
@@ -1954,7 +2110,7 @@
             LayerConfirm("当前工单（一个或多个）与所选工单属于不同的客户。 为确保获得准确的盈利报告，建议将问题工单与您的公司联系起来。 你是否想为自己的公司创建一个新的问题工单，并将当前的问题工单（及其所有事故）与新的问题工单相关联？ 如果您单击否，则不会为您自己的公司创建新的问题工单（现有的问题/事故关系将保持不变）。", "是", "否", function () {
                 $.ajax({
                     type: "GET",
-                    url: "../Tools/TicketAjax.ashx?act=SinAsIncident&ticket_id=" + ticketId + "&rela_ticket_id=" + RelationId +"&change_account=1",
+                    url: "../Tools/TicketAjax.ashx?act=SinAsIncident&ticket_id=" + ticketId + "&rela_ticket_id=" + RelationId + "&change_account=1",
                     async: false,
                     dataType: "json",
                     success: function (data) {
@@ -1983,7 +2139,7 @@
                         setTimeout(function () { history.go(0); }, 800);
                     }
                 })
-                });
+            });
             return;
         }
 
@@ -1999,16 +2155,87 @@
                 else {
                     LayerMsg("标记失败！");
                 }
-                setTimeout(function () { history.go(0); },800);
+                setTimeout(function () { history.go(0); }, 800);
             }
         })
     }
     // 标记为事故并关联新的问题 - 打开新增工单页面
     function SignInclidentNewIssueOpen() {
-        window.open("../ServiceDesk/TicketManage?id=<%=thisTicket.id %>&isCopy=1&IsIssue=1", windowObj.ticket + windowType.add, 'left=200,top=200,width=960,height=800', false)
+        window.open("../ServiceDesk/TicketManage?id=<%=thisTicket.id %>&isCopy=1&IsIssue=1&CallBack=SignInclidentNewIssue", windowObj.ticket + windowType.add, 'left=200,top=200,width=1280,height=800', false);
+    }
+    // 标记为事故并关联新的问题
+    function SignInclidentNewIssue(issueTicketId) {
+        var ticketId = $("#ticket_id").val();
+        if (ticketId == "")
+            return;
+        $.ajax({
+            type: "GET",
+            url: "../Tools/TicketAjax.ashx?act=RelaNewProblem&ticket_id=" + ticketId + "&rela_ticket_id=" + issueTicketId,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    LayerMsg("关联成功！");
+                }
+                else {
+                    LayerMsg("关联失败！");
+                }
+                setTimeout(function () { history.go(0); }, 800);
+            }
+        })
+    }
+    // 关联服务请求
+    function RelaRequests() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_INCLIDENT_RELATION %>&field=RequestServiceId&callBack=GetDataByRequests&con2471=<%=thisTicket.id %>&con2477=2&muilt=1", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>", 'left=200,top=200,width=600,height=800', false);
+    }
+    // 关联选择的服务请求工单
+    function GetDataByRequests() {
+        var RequestServiceId = $("#RequestServiceIdHidden").val();
+        if (RequestServiceId == "")
+            return;
+        var ticketId = $("#ticket_id").val();
+        if (ticketId == "")
+            return;
+        $.ajax({
+            type: "GET",
+            url: "../Tools/TicketAjax.ashx?act=RelaNewRequests&ticket_id=" + ticketId + "&rela_ticket_ids=" + RequestServiceId,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    LayerMsg("关联成功！");
+                }
+                else {
+                    LayerMsg("关联失败！");
+                }
+                setTimeout(function () { history.go(0); }, 800);
+            }
+        })
     }
 
-    function SignInclidentNewIssue(issueTicketId) {
-
+    // 标记为事故并关联其他变更申请单 - 打开新增工单页面
+    function SignInclidentNewRequestOpen() {
+        window.open("../ServiceDesk/TicketManage?id=<%=thisTicket.id %>&isCopy=1&IsRequest=1&CallBack=SignInclidentNewRequest", windowObj.ticket + windowType.add, 'left=200,top=200,width=1280,height=800', false);
+    }
+    // 标记为事故并关联其他变更申请单
+    function SignInclidentNewRequest(requestId) {
+        var ticketId = $("#ticket_id").val();
+        if (ticketId == "")
+            return;
+        $.ajax({
+            type: "GET",
+            url: "../Tools/TicketAjax.ashx?act=RelaNewRequests&ticket_id=" + ticketId + "&rela_ticket_ids=" + requestId,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    LayerMsg("关联成功！");
+                }
+                else {
+                    LayerMsg("关联失败！");
+                }
+                setTimeout(function () { history.go(0); }, 800);
+            }
+        })
     }
 </script>
