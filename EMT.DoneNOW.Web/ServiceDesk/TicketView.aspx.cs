@@ -34,6 +34,9 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected List<d_general> ticketCateList = new d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.TICKET_CATE);     // 工单种类
         protected List<d_general> ticketTypeList = new d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.TICKET_TYPE);     // 工单类型
         protected List<sys_department> depList = new sys_department_dal().GetDepartment("", (int)DTO.DicEnum.DEPARTMENT_CATE.SERVICE_QUEUE);
+        protected List<sdk_task_other_person> ticketOtherList = null;
+        protected sdk_task_other ticketOther = null;
+        protected List<d_change_board> changeList = new d_change_board_dal().GetChangeList();
         protected List<sys_resource_department> ticketResList = null;  // 工单的员工
         protected List<UserDefinedFieldDto> tickUdfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TICKETS);
         protected List<UserDefinedFieldValue> ticketUdfValueList = null;
@@ -41,7 +44,9 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected List<sdk_task> pageTicketList = null;     // 页面上获取的工单集合。用于在页面上进行上下切换
         protected List<sdk_work_entry> entryList = null;
         protected Dictionary<string, object> slaDic = null;
-        protected List<d_general> ticketNoteTypeList = null;    
+        protected List<d_general> ticketNoteTypeList = null;
+        protected crm_contact_dal ccDal = new crm_contact_dal();
+        protected sys_resource_dal srDal = new sys_resource_dal();
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -134,6 +139,8 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                         {
                             ticketNoteTypeList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TICKET_NOTE).ToString()).ToList();
                         }
+                        ticketOther = new sdk_task_other_dal().GetTicketOther(thisTicket.id);
+                        ticketOtherList = new sdk_task_other_person_dal().GetTicketOther(thisTicket.id);
                     }
                 }
                 var ticketIds = Request.QueryString["ids"];

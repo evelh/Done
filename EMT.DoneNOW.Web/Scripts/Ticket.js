@@ -844,3 +844,60 @@ function GetItemCount() {
     }
 }
 
+function RemoveResOther(id) {
+    LayerConfirm("确认移除该审批人吗？", "是", "否", function () {
+        $("#other_" + id).remove();
+    }, function () { })
+}
+
+function CancelTicketOther() {
+    $("#bord_id").val("");
+    $("#AllPass").prop("checked", true);
+    $("#OtherOnePass").prop("checked", false);
+    $("#ticketOtherNewTbody").html("");
+}
+
+function AppOther() {
+    var ticketId = $("#ticket_id").val();
+    if (ticketId == "")
+        return;
+    $.ajax({
+        type: "GET",
+        url: "../Tools/TicketAjax.ashx?act=AppOther&ticket_id=" + ticketId,
+        async: false,
+        dataType: "json",
+        success: function (data) {
+            if (data) {
+                LayerMsg("审批成功！");
+                setTimeout(function () { history.go(0); }, 800)
+            }
+        }
+    })
+}
+function RevokeAppOther() {
+    var ticketId = $("#ticket_id").val();
+    if (ticketId == "")
+        return;
+    $.ajax({
+        type: "GET",
+        url: "../Tools/TicketAjax.ashx?act=RevokeAppOther&ticket_id=" + ticketId,
+        async: false,
+        dataType: "json",
+        success: function (data) {
+            if (data) {
+                LayerMsg("撤销审批成功！");
+                setTimeout(function () { history.go(0); }, 800)
+            }
+        }
+    })
+}
+// 跳转到变更单审批页面
+function ToAppOtherPage() {
+    var ticketId = $("#ticket_id").val();
+    if (ticketId == "")
+        return;
+    window.open("../ServiceDesk/ChangeTicketApprove.aspx?ticket_id=" + ticketId, "_blank", 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+}
+
+
+

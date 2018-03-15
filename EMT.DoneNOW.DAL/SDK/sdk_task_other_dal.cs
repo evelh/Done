@@ -11,9 +11,9 @@ namespace EMT.DoneNOW.DAL
         /// <summary>
         /// 获取工单或者任务的其他信息
         /// </summary>
-        public List<sdk_task_other> GetTicketOther(long ticket_id)
+        public sdk_task_other GetTicketOther(long ticket_id)
         {
-            return FindListBySql<sdk_task_other>($"SELECT * from  sdk_task_other where delete_time = 0 and task_id = {ticket_id}");
+            return FindSignleBySql<sdk_task_other>($"SELECT * from  sdk_task_other where delete_time = 0 and task_id = {ticket_id}");
         }
     }
 }

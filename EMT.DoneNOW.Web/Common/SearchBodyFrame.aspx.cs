@@ -957,6 +957,8 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.TICKET_SEARCH:
                 case (long)QueryType.TICKET_REQUEST:
+                case (long)QueryType.TICKET_INCIDENT:
+                case (long)QueryType.TICKET_PROBLEM:
                     var ticketView = new PageContextMenuDto { text="查看"};
                     ticketView.submenu = new List<PageContextMenuDto>() {
                         new PageContextMenuDto(){text = "查看工单", click_function = "ViewTicket()" },
@@ -989,7 +991,7 @@ namespace EMT.DoneNOW.Web
                          new PageContextMenuDto(){text = "取消与项目管理关系", click_function = "" },
                          new PageContextMenuDto(){text = "删除工单", click_function = "DeleteTicket()" },
                     };
-                    if (queryTypeId == (long)QueryType.TICKET_REQUEST)
+                    if (queryTypeId == (long)QueryType.TICKET_REQUEST|| queryTypeId == (long)QueryType.TICKET_INCIDENT || queryTypeId == (long)QueryType.TICKET_PROBLEM)
                         ticketManage.submenu.Add(new PageContextMenuDto() { text = "解除和工单的关联", click_function = "DisRelationTicket()" });
                     contextMenu.Add(ticketManage);
                     break;

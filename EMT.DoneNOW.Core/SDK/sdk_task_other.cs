@@ -16,8 +16,6 @@ namespace EMT.DoneNOW.Core
 
         [Key]
         [DataMember]
-        public Int64 id { get; set; }
-        [DataMember]
         public Int64 task_id { get; set; }
         [DataMember]
         public String impact_analysis { get; set; }
@@ -33,6 +31,8 @@ namespace EMT.DoneNOW.Core
         public Int64? change_board_id { get; set; }
         [DataMember]
         public Int32 approval_type_id { get; set; }
+        [DataMember]
+        public Int32? approve_status_id { get; set; }
 
 
     }

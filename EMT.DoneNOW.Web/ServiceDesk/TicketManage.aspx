@@ -2004,6 +2004,11 @@
         $("#ticket_type_id").val('<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.CHANGE_REQUEST %>');
         $("#ticket_type_id").prop("disabled", true)
         <% }%>
+          <%if (!string.IsNullOrEmpty(Request.QueryString["IsIncident"]))
+        { %>
+        $("#ticket_type_id").val('<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.INCIDENT %>');
+        $("#ticket_type_id").prop("disabled", true)
+        <% }%>
 
     })
 
@@ -2752,6 +2757,13 @@
         }
         return true;
     })
+    $("#save_close").click(function () {
+        if (!SubmitCheck()) {
+            return false;
+        }
+        return true;
+    })
+    
 
     $("#btnComplete").click(function () {
         var reason = $("#reason").val();
@@ -2874,7 +2886,8 @@
 
 
 
-        $("select").prop("disabled", false);
+        $("#ticket_type_id").prop("disabled", false)
+        $("#ticket_type_id").removeAttr("disabled");
         return true;
     }
     $("#CloseStatusReson").click(function () {

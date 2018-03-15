@@ -353,7 +353,16 @@
                         {%>
                         <li onclick="Relation()" style="padding-left: 5px;"><span>关联</span></li>
                        <li onclick="Add()" style="padding-left: 5px;"><span>新增</span></li>
+                        <%}else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_PROBLEM) 
+                        {%>
+                        <li onclick="Relation()" style="padding-left: 5px;"><span>关联</span></li>
+                       <li onclick="Add()" style="padding-left: 5px;"><span>新增</span></li>
+                        <%}else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_INCIDENT) 
+                        {%>
+                        <li onclick="Relation()" style="padding-left: 5px;"><span>关联</span></li>
+                       <li onclick="Add()" style="padding-left: 5px;"><span>新增</span></li>
                         <%}%>
+                    
                     
                     <li id="PrintLi" class="General"><i style="background-image: url(../Images/print.png);"></i></li>
                     <li id="SelectLi" class="General" onclick="javascript:window.open('../Common/ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>

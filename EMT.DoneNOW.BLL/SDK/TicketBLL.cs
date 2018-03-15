@@ -599,12 +599,10 @@ namespace EMT.DoneNOW.BLL
                     #region 删除变更信息
                     var stoDal = new sdk_task_other_dal();
                     var otherList = stoDal.GetTicketOther(thisTicket.id);
-                    if(otherList!=null&& otherList.Count > 0)
+                    if(otherList!=null)
                     {
-                        otherList.ForEach(_ => {
-                            stoDal.SoftDelete(_,userId);
-                            OperLogBLL.OperLogDelete<sdk_task_other>(_, _.id, userId, DicEnum.OPER_LOG_OBJ_CATE.PROJECT_TASK, "删除工单");
-                        });
+                        stoDal.SoftDelete(otherList, userId);
+                        OperLogBLL.OperLogDelete<sdk_task_other>(otherList, otherList.task_id, userId, DicEnum.OPER_LOG_OBJ_CATE.PROJECT_TASK, "删除工单");
                     }
                     #endregion
 
@@ -1712,6 +1710,394 @@ namespace EMT.DoneNOW.BLL
                 OperLogBLL.OperLogDelete<sdk_task_relation>(thisRela, thisRela.id, userId, OPER_LOG_OBJ_CATE.TICKET_RELATION, "删除工单关联");
             }
             return true;
+        }
+        /// <summary>
+        /// 关联问题
+        /// </summary>
+        public bool RelaProblem(long ticketId,string problemIds,long userId)
+        {
+            var thisTicket = _dal.FindNoDeleteById(ticketId);
+            if (thisTicket == null || string.IsNullOrEmpty(problemIds))
+                return false;
+            var idArr = problemIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+            var strDal = new sdk_task_relation_dal();
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            foreach (var thisId in idArr)
+            {
+                var problem = _dal.FindNoDeleteById(long.Parse(thisId));
+                if (problem == null || problem.ticket_type_id != (int)DicEnum.TICKET_TYPE.PROBLEM)
+                    continue;
+                var thisRela = strDal.GetRela(problem.id,ticketId);
+                if (thisRela != null)
+                    continue;
+                thisRela = new sdk_task_relation()
+                {
+                    id = strDal.GetNextIdCom(),
+                    create_time = timeNow,
+                    update_time = timeNow,
+                    create_user_id = userId,
+                    update_user_id = userId,
+                    task_id = problem.id,
+                    parent_task_id = thisTicket.id,
+                };
+                strDal.Insert(thisRela);
+                OperLogBLL.OperLogAdd<sdk_task_relation>(thisRela, thisRela.id, userId, OPER_LOG_OBJ_CATE.TICKET_RELATION, "新增工单关联");
+            }
+            return true;
+        }
+        /// <summary>
+        /// 关联事故
+        /// </summary>
+        public bool RelaIncident(long ticketId, string relaTicketIds, long userId, bool isChangeAcc = false)
+        {
+            var thisTicket = _dal.FindNoDeleteById(ticketId);
+            if (thisTicket == null || string.IsNullOrEmpty(relaTicketIds))
+                return false;
+            var idArr = relaTicketIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            var strDal = new sdk_task_relation_dal();
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            foreach (var thisId in idArr)
+            {
+                var problem = _dal.FindNoDeleteById(long.Parse(thisId));
+                if (problem == null)
+                    continue;
+                sdk_task newTicket = null;
+                if (problem.account_id!=thisTicket.account_id&& isChangeAcc)
+                {
+                    newTicket = new sdk_task()
+                    {
+                        //id=_dal.GetNextIdCom(),
+                        //create_user_id = userId,
+                        //update_user_id = userId,
+                        //create_time = timeNow,
+                        //update_time  =timeNow,
+                        //no = tBll.ReturnTaskNo(),
+                        type_id = (int)DicEnum.TASK_TYPE.SERVICE_DESK_TICKET,
+                        ticket_type_id = (int)TICKET_TYPE.INCIDENT,
+                        title = problem.title,
+                        description = problem.description,
+                        account_id = thisTicket.account_id,
+                        contact_id = null,
+                        status_id = problem.status_id,
+                        priority_type_id = problem.priority_type_id,
+                        issue_type_id = problem.issue_type_id,
+                        sub_issue_type_id = problem.sub_issue_type_id,
+                        source_type_id = problem.source_type_id,
+                        estimated_end_time = problem.estimated_end_time,
+                        estimated_duration = problem.estimated_duration,
+                        estimated_hours = problem.estimated_hours,
+                        sla_id = problem.sla_id,
+                        department_id = problem.department_id,
+                        owner_resource_id = problem.owner_resource_id,
+                        role_id = problem.role_id,
+                        cost_code_id = problem.cost_code_id,
+                        cate_id = (int)TICKET_CATE.STANDARD,
+                        resolution = problem.resolution,
+                        sla_start_time = problem.sla_start_time,
+                        last_activity_time = timeNow,
+                    };
+                    if (newTicket.status_id != (int)TICKET_STATUS.NEW)
+                        newTicket.first_activity_time = timeNow;
+                    InsertTicket(newTicket, userId);
+                }
+
+                var thisRela = strDal.GetRela(problem.id, ticketId);
+                if (!isChangeAcc&&thisRela != null)
+                    continue;
+                if(problem.account_id == thisTicket.account_id && newTicket==null)
+                {
+                    problem.ticket_type_id = (int)DicEnum.TICKET_TYPE.INCIDENT;
+                    EditTicket(problem,userId);
+                }
+
+                thisRela = new sdk_task_relation()
+                {
+                    id = strDal.GetNextIdCom(),
+                    create_time = timeNow,
+                    update_time = timeNow,
+                    create_user_id = userId,
+                    update_user_id = userId,
+                    task_id = problem.account_id != thisTicket.account_id && isChangeAcc ? newTicket.id : problem.id,
+                    parent_task_id = thisTicket.id,
+                };
+                strDal.Insert(thisRela);
+                OperLogBLL.OperLogAdd<sdk_task_relation>(thisRela, thisRela.id, userId, OPER_LOG_OBJ_CATE.TICKET_RELATION, "新增工单关联");
+            }
+            return true;
+        }
+        /// <summary>
+        /// 保存审批信息
+        /// </summary>
+        public bool AddTicketOther(long ticketId,long? boardId,int appTypeId,string resIds,long userId, string conIds="")
+        {
+            var thisTicket = _dal.FindNoDeleteById(ticketId);
+            if (thisTicket == null)
+                return false;
+            var stoDal = new sdk_task_other_dal();
+            var sto = stoDal.GetTicketOther(ticketId);
+            if (sto != null)
+                return false;
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            sto = new sdk_task_other() {
+                //id= stoDal.GetNextIdCom(),
+                create_time = timeNow,
+                update_time = timeNow,
+                create_user_id = userId,
+                update_user_id = userId,
+                change_board_id = boardId,
+                task_id = ticketId,
+                approval_type_id =appTypeId,
+                approve_status_id = (int)DicEnum.CHANGE_APPROVE_STATUS.ASSIGNED,
+            };
+            stoDal.Insert(sto);
+            OperLogBLL.OperLogAdd<sdk_task_other>(sto, sto.task_id, userId, OPER_LOG_OBJ_CATE.TICKET_RELATION, "新增变更申请");
+
+            var stopDal = new sdk_task_other_person_dal();
+            if (!string.IsNullOrEmpty(resIds))
+            {
+                var resArr = resIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                var srDal = new sys_resource_dal();
+                foreach (var resId in resArr)
+                {
+                    var thisRes = srDal.FindNoDeleteById(long.Parse(resId));
+                    if (thisRes == null)
+                        continue;
+                    var stop = new sdk_task_other_person()
+                    {
+                        id = stopDal.GetNextIdCom(),
+                        task_id = ticketId,
+                        create_time  =timeNow,
+                        update_time = timeNow,
+                        create_user_id = userId,
+                        update_user_id = userId,
+                        resource_id = thisRes.id,
+                       approve_status_id = (int)DicEnum.CHANGE_APPROVE_STATUS_PERSON.WAIT,
+                    };
+                    stopDal.Insert(stop);
+                    OperLogBLL.OperLogAdd<sdk_task_other_person>(stop, stop.id, userId, OPER_LOG_OBJ_CATE.CHANGE_REQUEST_APPROL, "新增变更申请审批人");
+                }
+                
+            }
+            #region 联系人暂时不做- 预留
+            //if (!string.IsNullOrEmpty(conIds))
+            //{
+            //    var conArr = conIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            //    var ccDal = new crm_contact_dal();
+            //    foreach (var conId in conArr)
+            //    {
+            //        var thisCon = ccDal.FindNoDeleteById(long.Parse(conId));
+            //        if (thisCon == null)
+            //            continue;
+            //        var stop = new sdk_task_other_person()
+            //        {
+            //            id = stopDal.GetNextIdCom(),
+            //            task_id = ticketId,
+            //            create_time = timeNow,
+            //            update_time = timeNow,
+            //            create_user_id = userId,
+            //            update_user_id = userId,
+            //            contact_id = thisCon.id
+            //        };
+            //        stopDal.Insert(stop);
+            //        OperLogBLL.OperLogAdd<sdk_task_other_person>(stop, stop.id, userId, OPER_LOG_OBJ_CATE.CHANGE_REQUEST_APPROL, "新增变更申请审批人");
+            //    }
+
+            //}
+            #endregion
+            return true;
+        }
+        /// <summary>
+        /// 修改审批信息
+        /// </summary>
+        public bool EditTicketOther(long ticketId, long? boardId, int appTypeId, string oldResIds,string newResIds, long userId )
+        {
+            var stoDal = new sdk_task_other_dal();
+            var stopDal = new sdk_task_other_person_dal();
+            var thisOther = stoDal.GetTicketOther(ticketId);
+            if (thisOther == null)
+                return false;
+            if (boardId == null && string.IsNullOrEmpty(oldResIds) && string.IsNullOrEmpty(newResIds))
+                return false;
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            thisOther.change_board_id = boardId;
+            thisOther.approval_type_id = appTypeId;
+            thisOther.update_time = timeNow;
+            thisOther.update_user_id = userId;
+            var oldOther = stoDal.GetTicketOther(ticketId);
+            stoDal.Update(thisOther);
+            OperLogBLL.OperLogUpdate<sdk_task_other>(thisOther, oldOther, thisOther.task_id, userId, OPER_LOG_OBJ_CATE.TICKET_RELATION, "编辑变更申请");
+            var oldPersonList = stopDal.GetTicketOther(ticketId);
+            if(oldPersonList!=null&& oldPersonList.Count > 0)
+            {
+                var resList = oldPersonList.Where(_ => _.resource_id != null).ToList();
+                if(resList!=null&& resList.Count > 0)
+                {
+                    if (!string.IsNullOrEmpty(oldResIds))
+                    {
+                        var oldResArr = oldResIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        foreach (var oldRes in oldResArr)
+                        {
+                            var thisOld = resList.FirstOrDefault(_ => _.id == long.Parse(oldRes));
+                            if (thisOld != null)
+                                resList.Remove(thisOld);
+                        }
+                        if(resList.Count>0)
+                            resList.ForEach(_ => {
+                                stopDal.SoftDelete(_, userId);
+                                OperLogBLL.OperLogDelete<sdk_task_other_person>(_, _.id, userId, OPER_LOG_OBJ_CATE.CHANGE_REQUEST_APPROL, "删除变更申请审批人");
+                            });
+                    }
+                    else
+                        resList.ForEach(_ => {
+                            stopDal.SoftDelete(_,userId);
+                            OperLogBLL.OperLogDelete<sdk_task_other_person>(_, _.id, userId, OPER_LOG_OBJ_CATE.CHANGE_REQUEST_APPROL, "删除变更申请审批人");
+                        });
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(newResIds))
+                {
+                    var resArr = newResIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    var srDal = new sys_resource_dal();
+                    foreach (var resId in resArr)
+                    {
+                        var thisRes = srDal.FindNoDeleteById(long.Parse(resId));
+                        if (thisRes == null)
+                            continue;
+                        var stop = new sdk_task_other_person()
+                        {
+                            id = stopDal.GetNextIdCom(),
+                            task_id = ticketId,
+                            create_time = timeNow,
+                            update_time = timeNow,
+                            create_user_id = userId,
+                            update_user_id = userId,
+                            resource_id = thisRes.id,
+                            approve_status_id = (int)DicEnum.CHANGE_APPROVE_STATUS_PERSON.WAIT,
+                        };
+                        stopDal.Insert(stop);
+                        OperLogBLL.OperLogAdd<sdk_task_other_person>(stop, stop.id, userId, OPER_LOG_OBJ_CATE.CHANGE_REQUEST_APPROL, "新增变更申请审批人");
+                    }
+                }
+            }
+
+            return true;
+        }
+        /// <summary>
+        /// 审批变更申请
+        /// </summary>
+        public bool AppOther(long ticketId,long userId)
+        {
+            var stoDal = new sdk_task_other_dal();
+            var thisOther = stoDal.GetTicketOther(ticketId);
+            if (thisOther == null || thisOther.approve_status_id != (int)DicEnum.CHANGE_APPROVE_STATUS.ASSIGNED)
+                return false;
+            var oldOther = stoDal.GetTicketOther(ticketId);
+            thisOther.approve_status_id = (int)DicEnum.CHANGE_APPROVE_STATUS.REQUESTED;
+            thisOther.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            thisOther.update_user_id = userId;
+            stoDal.Update(thisOther);
+            OperLogBLL.OperLogUpdate<sdk_task_other>(thisOther, oldOther, thisOther.task_id, userId, OPER_LOG_OBJ_CATE.TICKET_RELATION, "编辑变更申请");
+            return true;
+        }
+        /// <summary>
+        /// 撤销申请审批
+        /// </summary>
+        public bool RevokeAppOther(long ticketId, long userId)
+        {
+            var stoDal = new sdk_task_other_dal();
+            var stopDal = new sdk_task_other_person_dal();
+            var thisOther = stoDal.GetTicketOther(ticketId);
+            if (thisOther == null || thisOther.approve_status_id == (int)DicEnum.CHANGE_APPROVE_STATUS.NOT_ASSIGNED || thisOther.approve_status_id == (int)DicEnum.CHANGE_APPROVE_STATUS.ASSIGNED)
+                return false;
+            var oldOther = stoDal.GetTicketOther(ticketId);
+            thisOther.approve_status_id = (int)DicEnum.CHANGE_APPROVE_STATUS.ASSIGNED;
+            thisOther.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            thisOther.update_user_id = userId;
+            stoDal.Update(thisOther);
+            OperLogBLL.OperLogUpdate<sdk_task_other>(thisOther, oldOther, thisOther.task_id, userId, OPER_LOG_OBJ_CATE.TICKET_RELATION, "编辑变更申请");
+            var oldPersonList = stopDal.GetTicketOther(ticketId);
+            if (oldPersonList != null && oldPersonList.Count > 0)
+            {
+                var timeNow = thisOther.update_time;
+                oldPersonList.ForEach(_ => {
+                    var old = stopDal.FindNoDeleteById(_.id);
+                    _.update_time = timeNow;
+                    _.update_user_id = userId;
+                    _.approve_status_id = (int)DicEnum.CHANGE_APPROVE_STATUS_PERSON.WAIT;
+                    _.oper_time = null;
+                    _.description = null;
+                    stopDal.Update(_);
+                    OperLogBLL.OperLogUpdate<sdk_task_other_person>(_, old, _.id, userId, OPER_LOG_OBJ_CATE.CHANGE_REQUEST_APPROL, "编辑变更申请审批人");
+                });
+            }
+                
+            return true;
+        }
+        /// <summary>
+        /// 审批 审批人信息
+        /// </summary>
+        public bool OtherPersonManage(long ticketId,int appStatus,string reason,long userId)
+        {
+            var stopDal = new sdk_task_other_person_dal();
+            var thisOtherPerson = stopDal.GetPerson(ticketId,userId);
+            if (thisOtherPerson == null)
+                return false;
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            var oldPerson = stopDal.GetPerson(ticketId, userId);
+            thisOtherPerson.approve_status_id = appStatus;
+            // (int)DicEnum.CHANGE_APPROVE_STATUS_PERSON.APPROVED;
+            thisOtherPerson.oper_time = timeNow;
+            thisOtherPerson.description = reason;
+            thisOtherPerson.update_time = timeNow;
+            thisOtherPerson.update_user_id = userId;
+            stopDal.Update(thisOtherPerson);
+            OperLogBLL.OperLogUpdate<sdk_task_other_person>(thisOtherPerson, oldPerson, thisOtherPerson.id, userId, OPER_LOG_OBJ_CATE.CHANGE_REQUEST_APPROL, "编辑变更申请审批人");
+            ChangeOtherStatus(ticketId,userId);
+            return true;
+        }
+       
+        /// <summary>
+        /// 根据审批人的审批状态改变审批的状态
+        /// </summary>
+        public void ChangeOtherStatus(long ticketId,long userId)
+        {
+            var stoDal = new sdk_task_other_dal();
+            var stopDal = new sdk_task_other_person_dal();
+            var thisOther = stoDal.GetTicketOther(ticketId);
+            if (thisOther == null)
+                return;
+            var personList = stopDal.GetTicketOther(ticketId);
+            if (personList == null || personList.Count == 0)
+                return;
+            var oldStatus = thisOther.approve_status_id;
+            if (thisOther.approval_type_id == (int)DicEnum.APPROVAL_TYPE.ALL_APPROVERS_MUST_APPROVE)
+            {
+                if (personList.Any(_ => _.approve_status_id == (int)DicEnum.CHANGE_APPROVE_STATUS_PERSON.REJECTED))
+                    thisOther.approve_status_id = (int)DicEnum.CHANGE_APPROVE_STATUS.REJECTED;
+                else if(personList.Any(_ => _.approve_status_id == (int)DicEnum.CHANGE_APPROVE_STATUS_PERSON.APPROVED)&& personList.Any(_ => _.approve_status_id != (int)DicEnum.CHANGE_APPROVE_STATUS_PERSON.APPROVED))
+                    thisOther.approve_status_id = (int)DicEnum.CHANGE_APPROVE_STATUS.PARCIALLY_APPROVED;
+                else if(!personList.Any(_ => _.approve_status_id != (int)DicEnum.CHANGE_APPROVE_STATUS_PERSON.APPROVED))
+                    thisOther.approve_status_id = (int)DicEnum.CHANGE_APPROVE_STATUS.APPROVED;
+            }
+            else if (thisOther.approval_type_id == (int)DicEnum.APPROVAL_TYPE.ONE_APPROVER_MUST_APPROVE)
+            {
+                if (personList.Any(_ => _.approve_status_id == (int)DicEnum.CHANGE_APPROVE_STATUS_PERSON.REJECTED))
+                    thisOther.approve_status_id = (int)DicEnum.CHANGE_APPROVE_STATUS.REJECTED;
+                else if (personList.Any(_ => _.approve_status_id == (int)DicEnum.CHANGE_APPROVE_STATUS_PERSON.APPROVED))
+                    thisOther.approve_status_id = (int)DicEnum.CHANGE_APPROVE_STATUS.APPROVED;
+
+            }
+
+            if(oldStatus!= thisOther.approve_status_id)
+            {
+                var oldOther = stoDal.GetTicketOther(ticketId);
+                thisOther.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                thisOther.update_user_id = userId;
+                stoDal.Update(thisOther);
+                OperLogBLL.OperLogUpdate<sdk_task_other>(thisOther, oldOther, thisOther.task_id, userId, OPER_LOG_OBJ_CATE.TICKET_RELATION, "编辑变更申请");
+            }
         }
     }
 }

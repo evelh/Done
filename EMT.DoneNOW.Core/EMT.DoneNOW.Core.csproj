@@ -95,6 +95,7 @@
     <Compile Include="CTT\ctt_invoice.cs" />
     <Compile Include="CTT\ctt_invoice_detail.cs" />
     <Compile Include="CTT\v_contract_summary.cs" />
+    <Compile Include="Dictionary\d_change_board.cs" />
     <Compile Include="Dictionary\d_cost_code_rule.cs" />
     <Compile Include="Dictionary\d_holiday.cs" />
     <Compile Include="Dictionary\d_sla.cs" />

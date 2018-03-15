@@ -43,12 +43,21 @@
     <input type="hidden" id="toTicketIdHidden" />
     <input type="hidden" id="AbsorbTicketIds" />
     <input type="hidden" id="AbsorbTicketIdsHidden" />
-
+    <!--标记为事故并关联其他工单使用 -->
     <input type="hidden" id="RelationId" />
     <input type="hidden" id="RelationIdHidden" />
-
+    <!--标记为事故并关联其他变更请求工单使用 -->
     <input type="hidden" id="RequestServiceId" />
     <input type="hidden" id="RequestServiceIdHidden" />
+    <!--关联其他问题工单使用 -->
+    <input type="hidden" id="ProblemId" />
+    <input type="hidden" id="ProblemIdHidden" />
+    <!--事故清单 关联使用 -->
+    <input type="hidden" id="IncidentsId" />
+    <input type="hidden" id="IncidentsIdHidden" />
+    <!--审批页面 员工的查找带回使用 -->
+    <input type="hidden" id="OtherResId" />
+    <input type="hidden" id="OtherResIdHidden" />
     <!-- 上方 标题 按钮等 -->
     <div class="PageHeadingContainer" style="z-index: 2;">
         <div class="HeaderRow">
@@ -64,11 +73,11 @@
                         %>
                         <td>
                             <div class="TitleBarItem TitleBarToolbar" style="float: right;">
-                                <div class="TitleBarButton NavigateLeft NormalState" style="margin-top: 9px; margin-left: -19px;" onclick="ViewTicket('<%=thisIndex!=0?pageTicketList[thisIndex-1].id:pageTicketList[pageTicketList.Count-1].id %>')">
+                                <div class="TitleBarButton NavigateLeft NormalState" style="margin-top: 9px; margin-left: -19px;" onclick="ViewTicket('<%=thisIndex != 0 ? pageTicketList[thisIndex - 1].id : pageTicketList[pageTicketList.Count - 1].id %>')">
                                     <div class="TitleBarIcon NavigateLeft"></div>
                                 </div>
-                                <span class="Text" style="width: 53px; max-width: 66px;"><%=thisIndex+1 %> of <%=pageTicketList.Count %></span>
-                                <div class="TitleBarButton NavigateRight NormalState" style="margin-top: -16px; margin-left: 53px;" onclick="ViewTicket('<%=thisIndex!=(pageTicketList.Count-1)?pageTicketList[thisIndex+1].id:pageTicketList[0].id %>')">
+                                <span class="Text" style="width: 53px; max-width: 66px;"><%=thisIndex + 1 %> of <%=pageTicketList.Count %></span>
+                                <div class="TitleBarButton NavigateRight NormalState" style="margin-top: -16px; margin-left: 53px;" onclick="ViewTicket('<%=thisIndex != (pageTicketList.Count - 1) ? pageTicketList[thisIndex + 1].id : pageTicketList[0].id %>')">
                                     <div class="TitleBarIcon NavigateRight"></div>
                                 </div>
                             </div>
@@ -90,7 +99,7 @@
                 </li>
 
                 <li>
-                    <a class="ImgLink" onclick="<%=thisTicket.owner_resource_id==null?"AcceptTicket()":"" %>" style="background: linear-gradient(to bottom,#fff 0,#fdfdfd 100%);">
+                    <a class="ImgLink" onclick="<%=thisTicket.owner_resource_id == null ? "AcceptTicket()" : "" %>" style="background: linear-gradient(to bottom,#fff 0,#fdfdfd 100%);">
                         <span class="icon" style="background: url(../Images/Icons.png) no-repeat -86px -144px; width: 16px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
                         <span class="Text" style="line-height: 24px; <%=thisTicket.owner_resource_id!=null?"color: rgba(95,95,95,0.4);": "" %>">接受</span>
                     </a>
@@ -119,7 +128,7 @@
                                     <span class="Icon"></span>
                                     <span class="Text">复制</span>
                                 </div>
-                                <div class="Button1" id="" tabindex="0" onclick="<%=thisTicket.parent_id==null?"MergeOtherTicketCallBack()":"" %>">
+                                <div class="Button1" id="" tabindex="0" onclick="<%=thisTicket.parent_id == null ? "MergeOtherTicketCallBack()" : "" %>">
                                     <span class="Icon"></span>
                                     <span class="Text">合并到其他工单</span>
                                 </div>
@@ -245,7 +254,7 @@
                 <div class="MessageBarIcon Alert" style="background-position: -1px -1px;"></div>
             </div>
             <% var alert = new EMT.DoneNOW.DAL.crm_account_alert_dal().FindAlert(thisAccount.id, EMT.DoneNOW.DTO.DicEnum.ACCOUNT_ALERT_TYPE.COMPANY_DETAIL_ALERT);%>
-            <div class="Content FormatPreservation Left"><%=alert==null?"":alert.alert_text %></div>
+            <div class="Content FormatPreservation Left"><%=alert == null ? "" : alert.alert_text %></div>
         </div>
     </div>
 
@@ -269,12 +278,12 @@
                 <div class="Content">
                     <div class="ReadOnlyData QuickEditEnabled">
                         <div class="LabelContainer"><span class="Label" onclick="">客户</span></div>
-                        <div class="Value"><a class="Button ButtonIcon Link NormalState" tabindex="0" onclick="OpenAccount('<%=thisAccount==null?"":thisAccount.id.ToString() %>')"><%=thisAccount==null?"":thisAccount.name %></a></div>
+                        <div class="Value"><a class="Button ButtonIcon Link NormalState" tabindex="0" onclick="OpenAccount('<%=thisAccount == null ? "" : thisAccount.id.ToString() %>')"><%=thisAccount == null ? "" : thisAccount.name %></a></div>
                     </div>
                     <div class="ReadOnlyData QuickEditEnabled">
                         <div class="LabelContainer"><span class="Label">联系人</span></div>
                         <div class="Value">
-                            <a class="Button ButtonIcon Link NormalState" style="float: left;" tabindex="0" onclick="OpenContact('<%=thisContact==null?"":thisContact.id.ToString() %>')"><%=thisContact==null?"":thisContact.name %></a><div class="InlineIconButton InlineIcon Note NormalState AddNoteIcon" onclick="AddTicketNote('ckContact')"></div>
+                            <a class="Button ButtonIcon Link NormalState" style="float: left;" tabindex="0" onclick="OpenContact('<%=thisContact == null ? "" : thisContact.id.ToString() %>')"><%=thisContact == null ? "" : thisContact.name %></a><div class="InlineIconButton InlineIcon Note NormalState AddNoteIcon" onclick="AddTicketNote('ckContact')"></div>
                         </div>
                     </div>
                     <div class="ReadOnlyData QuickEditEnabled">
@@ -287,7 +296,7 @@
                                 <div class="Right">
                                     <div class="BackgroundPatch ColorSample"></div>
                                     <% var ticketStatu = ticStaList.FirstOrDefault(_ => _.id == thisTicket.status_id); %>
-                                    <div class="Text ColorSample"><%=ticketStatu==null?"":ticketStatu.name %></div>
+                                    <div class="Text ColorSample"><%=ticketStatu == null ? "" : ticketStatu.name %></div>
                                 </div>
                             </div>
                         </div>
@@ -304,7 +313,7 @@
                                     <div class="Text ColorSample">
                                         <% if (thisTicket.priority != null)
                                             {
-                                                var ticketPrior = priorityList.FirstOrDefault(_ => _.id == thisTicket.priority); %><%=ticketPrior==null?"":ticketPrior.name %> <%}%>
+                                                var ticketPrior = priorityList.FirstOrDefault(_ => _.id == thisTicket.priority); %><%=ticketPrior == null ? "" : ticketPrior.name %> <%}%>
                                     </div>
                                 </div>
                             </div>
@@ -325,7 +334,7 @@
                         <div class="Value">
                             <% if (thisTicket.issue_type_id != null)
                                 {
-                                    var ticketIssue = issueTypeList.FirstOrDefault(_ => _.id == thisTicket.issue_type_id); %><%=ticketIssue==null?"":ticketIssue.name %> <%}%>
+                                    var ticketIssue = issueTypeList.FirstOrDefault(_ => _.id == thisTicket.issue_type_id); %><%=ticketIssue == null ? "" : ticketIssue.name %> <%}%>
                         </div>
                     </div>
                     <div class="ReadOnlyData QuickEditEnabled">
@@ -333,7 +342,7 @@
                         <div class="Value">
                             <% if (thisTicket.sub_issue_type_id != null)
                                 {
-                                    var ticketSubIssue = issueTypeList.FirstOrDefault(_ => _.id == thisTicket.sub_issue_type_id); %><%=ticketSubIssue==null?"":ticketSubIssue.name %> <%}%>
+                                    var ticketSubIssue = issueTypeList.FirstOrDefault(_ => _.id == thisTicket.sub_issue_type_id); %><%=ticketSubIssue == null ? "" : ticketSubIssue.name %> <%}%>
                         </div>
                     </div>
                     <div class="ReadOnlyData QuickEditEnabled">
@@ -341,23 +350,23 @@
                         <div class="Value">
                             <% if (thisTicket.source_type_id != null)
                                 {
-                                    var ticketSource = issueTypeList.FirstOrDefault(_ => _.id == thisTicket.source_type_id); %><%=ticketSource==null?"":ticketSource.name %> <%}%>
+                                    var ticketSource = issueTypeList.FirstOrDefault(_ => _.id == thisTicket.source_type_id); %><%=ticketSource == null ? "" : ticketSource.name %> <%}%>
                         </div>
                     </div>
                     <div class="ReadOnlyData QuickEditEnabled">
                         <div class="LabelContainer"><span class="Label">截止日期</span></div>
-                        <div class="Value"><%=thisTicket.estimated_end_time!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTicket.estimated_end_time).ToString("yyyy-MM-dd HH:mm:ss"):"" %></div>
+                        <div class="Value"><%=thisTicket.estimated_end_time != null ? EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)thisTicket.estimated_end_time).ToString("yyyy-MM-dd HH:mm:ss") : "" %></div>
                     </div>
                     <div class="ReadOnlyData QuickEditEnabled">
                         <div class="LabelContainer"><span class="Label">预估时间</span></div>
-                        <div class="Value"><%=thisTicket.estimated_hours.ToString("#0.00")+'h' %></div>
+                        <div class="Value"><%=thisTicket.estimated_hours.ToString("#0.00") + 'h' %></div>
                     </div>
                     <div class="ReadOnlyData QuickEditEnabled">
                         <div class="LabelContainer"><span class="Label">服务等级协议</span></div>
                         <div class="Value">
                             <% if (thisTicket.sla_id != null)
                                 {
-                                    var ticketSla = slaList.FirstOrDefault(_ => _.id == thisTicket.sla_id); %><%=ticketSla==null?"":ticketSla.name %> <%}%>
+                                    var ticketSla = slaList.FirstOrDefault(_ => _.id == thisTicket.sla_id); %><%=ticketSla == null ? "" : ticketSla.name %> <%}%>
                         </div>
                     </div>
                 </div>
@@ -382,7 +391,7 @@
                                     <div class="Text ColorSample">
                                         <% if (thisTicket.department_id != null)
                                             {
-                                                var ticketDep = depList.FirstOrDefault(_ => _.id == thisTicket.department_id); %><%=ticketDep==null?"":ticketDep.name %> <%}%>
+                                                var ticketDep = depList.FirstOrDefault(_ => _.id == thisTicket.department_id); %><%=ticketDep == null ? "" : ticketDep.name %> <%}%>
                                     </div>
                                 </div>
                             </div>
@@ -393,10 +402,10 @@
                         <div class="Value">
                             <div class="PrimaryResource">
                                 <div class="Left" style="float: left;">
-                                    <img src="<%=priRes!=null&&priRes.avatar!=null?priRes.avatar:"" %>" style="width: 45px;" />
+                                    <img src="<%=priRes != null && priRes.avatar != null ? priRes.avatar : "" %>" style="width: 45px;" />
                                 </div>
                                 <div class="Right">
-                                    <div class="Name"><a class="Button ButtonIcon Link NormalState" style="float: left;" tabindex="0"><%=priRes==null?"":priRes.name %></a></div>
+                                    <div class="Name"><a class="Button ButtonIcon Link NormalState" style="float: left;" tabindex="0"><%=priRes == null ? "" : priRes.name %></a></div>
                                     <div class="InlineIconButton InlineIcon Note NormalState AddNoteIcon" onclick="AddTicketNote('priRes')"></div>
                                     <% EMT.DoneNOW.Core.sys_role ticketRole = null;
                                         if (thisTicket.role_id != null)
@@ -405,7 +414,7 @@
                                         }
                                     %>
                                     <br />
-                                    <div class="Support"><span class="Text"><%=ticketRole==null?"":$"({ticketRole.name})" %></span></div>
+                                    <div class="Support"><span class="Text"><%=ticketRole == null ? "" : $"({ticketRole.name})" %></span></div>
                                 </div>
                             </div>
                         </div>
@@ -450,14 +459,14 @@
                     <div class="ReadOnlyData QuickEditEnabled">
                         <div class="LabelContainer"><span class="Label">配置项</span></div>
                         <div class="Value">
-                            <a class="Button ButtonIcon Link NormalState" tabindex="0" onclick="EditInsPro('<%=insPro==null?"":insPro.id.ToString() %>')">
+                            <a class="Button ButtonIcon Link NormalState" tabindex="0" onclick="EditInsPro('<%=insPro == null ? "" : insPro.id.ToString() %>')">
                                 <% EMT.DoneNOW.Core.ivt_product thisProduct = null;
                                     if (insPro != null)
                                     {
                                         thisProduct = new EMT.DoneNOW.DAL.ivt_product_dal().FindNoDeleteById(insPro.product_id);
                                     }
                                 %>
-                                <%=thisProduct==null?"":thisProduct.name %> </a>
+                                <%=thisProduct == null ? "" : thisProduct.name %> </a>
                         </div>
                     </div>
                 </div>
@@ -472,15 +481,15 @@
                 <div class="Content">
                     <div class="ReadOnlyData QuickEditEnabled">
                         <div class="LabelContainer"><span class="Label">合同</span></div>
-                        <div class="Value"><a class="Button ButtonIcon Link NormalState" tabindex="0" onclick="ViewContract('<%=thisContract==null?"":thisContract.id.ToString() %>')"><%=thisContract==null?"":thisContract.name %></a></div>
+                        <div class="Value"><a class="Button ButtonIcon Link NormalState" tabindex="0" onclick="ViewContract('<%=thisContract == null ? "" : thisContract.id.ToString() %>')"><%=thisContract == null ? "" : thisContract.name %></a></div>
                     </div>
                     <div class="ReadOnlyData QuickEditEnabled">
                         <div class="LabelContainer"><span class="Label">服务/服务包</span></div>
-                        <div class="Value"><%=thisService!=null?thisService.name:(thisServiceBun!=null?thisServiceBun.name:"") %></div>
+                        <div class="Value"><%=thisService != null ? thisService.name : (thisServiceBun != null ? thisServiceBun.name : "") %></div>
                     </div>
                     <div class="ReadOnlyData QuickEditEnabled">
                         <div class="LabelContainer"><span class="Label">工作类型</span></div>
-                        <div class="Value"><%=thisCostCode==null?"":thisCostCode.name %></div>
+                        <div class="Value"><%=thisCostCode == null ? "" : thisCostCode.name %></div>
                     </div>
                     <div class="ReadOnlyData QuickEditEnabled">
                         <div class="LabelContainer"><span class="Label">采购订单号</span></div>
@@ -524,7 +533,7 @@
                                     {
                                         var selectValue = tickUdf.value_list.FirstOrDefault(_ => _.val == thisValue.ToString());
                             %>
-                            <%=selectValue==null?"":selectValue.show %>
+                            <%=selectValue == null ? "" : selectValue.show %>
                             <%
                                     }
                                 } %>
@@ -544,12 +553,12 @@
                             <div class="CategoryName ColorSwatch Color19 ColorSample">
                                 <% if (thisTicket.cate_id != null)
                                     {
-                                        var ticketCate = ticketCateList.FirstOrDefault(_ => _.id == thisTicket.cate_id); %><%=ticketCate==null?"":ticketCate.name %> <%}%>
+                                        var ticketCate = ticketCateList.FirstOrDefault(_ => _.id == thisTicket.cate_id); %><%=ticketCate == null ? "" : ticketCate.name %> <%}%>
                             </div>
                             <div class="TypeName">
                                 <% if (thisTicket.ticket_type_id != null)
                                     {
-                                        var ticketType = ticketTypeList.FirstOrDefault(_ => _.id == thisTicket.ticket_type_id); %><%=ticketType==null?"":ticketType.name %> <%}%>
+                                        var ticketType = ticketTypeList.FirstOrDefault(_ => _.id == thisTicket.ticket_type_id); %><%=ticketType == null ? "" : ticketType.name %> <%}%>
                             </div>
                             <div class="IdentificationTextContainer">
                                 <div class="IdentificationText"><%=thisTicket.no %></div>
@@ -586,13 +595,13 @@
                             <div class="Text Label">创建时间：</div>
                         </div>
                         <div>
-                            <div class="Text"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisTicket.create_time).ToString("yyyy-MM-dd") %> <%=GetDiffDate(EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisTicket.create_time),DateTime.Now) %></div>
+                            <div class="Text"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisTicket.create_time).ToString("yyyy-MM-dd") %> <%=GetDiffDate(EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisTicket.create_time), DateTime.Now) %></div>
                         </div>
                         <div>
                             <div class="Text">-</div>
                         </div>
                         <div>
-                            <div class="Text"><%=createRes==null?"":createRes.name %></div>
+                            <div class="Text"><%=createRes == null ? "" : createRes.name %></div>
                         </div>
                         <div>
                             <div class="EntityHeadingIconButton">
@@ -864,7 +873,7 @@
                             <div class="Left"><span class="Text">检查单</span></div>
                             <% if (ticketCheckList != null && ticketCheckList.Count > 0)
                                 { %>
-                            <div class="Middle"><span class="Text ItemCount"><span>(</span><span id="CompletedCount"><%=ticketCheckList.Where(_=>_.is_competed==1).ToList().Count %></span><span>/<%=ticketCheckList.Count %>)</span></span><a class="Button ButtonIcon Link NormalState" id="CheckMange" onclick="HideItem()" tabindex="0">隐藏完成条目</a></div>
+                            <div class="Middle"><span class="Text ItemCount"><span>(</span><span id="CompletedCount"><%=ticketCheckList.Where(_ => _.is_competed == 1).ToList().Count %></span><span>/<%=ticketCheckList.Count %>)</span></span><a class="Button ButtonIcon Link NormalState" id="CheckMange" onclick="HideItem()" tabindex="0">隐藏完成条目</a></div>
                             <%} %>
                             <div class="Spacer"></div>
                             <div class="Right"></div>
@@ -879,11 +888,11 @@
                                         {
                                             var thisCreate = srDal.FindNoDeleteById(ticketCheck.create_user_id);
                                 %>
-                                <div class="ChecklistItem <%=ticketCheck.is_competed==1?"Completed":"" %>" data-val="<%=ticketCheck.id %>">
-                                    <div class="ChecklistIcon CheckBox <%=ticketCheck.is_competed==1?"Checked":"Empty" %>">
+                                <div class="ChecklistItem <%=ticketCheck.is_competed == 1 ? "Completed" : "" %>" data-val="<%=ticketCheck.id %>">
+                                    <div class="ChecklistIcon CheckBox <%=ticketCheck.is_competed == 1 ? "Checked" : "Empty" %>">
                                         <div class="Icon" tabindex="0"></div>
                                     </div>
-                                    <div class="Description"><span class="Title"><%=ticketCheck.item_name %></span><span class="Important"><%=ticketCheck.is_important==1?"!":"" %></span><span class="CompletedBy"><%=ticketCheck.is_competed==1?EMT.Tools.Date.DateHelper.ConvertStringToDateTime(ticketCheck.create_time).ToString("yyyy-MM-dd")+(thisCreate==null?"":thisCreate.name):"" %></span></div>
+                                    <div class="Description"><span class="Title"><%=ticketCheck.item_name %></span><span class="Important"><%=ticketCheck.is_important == 1 ? "!" : "" %></span><span class="CompletedBy"><%=ticketCheck.is_competed == 1 ? EMT.Tools.Date.DateHelper.ConvertStringToDateTime(ticketCheck.create_time).ToString("yyyy-MM-dd") + (thisCreate == null ? "" : thisCreate.name) : "" %></span></div>
                                 </div>
                                 <%
                                         }
@@ -924,6 +933,18 @@
                     { %>
                 <div class="Button TicketButton NormalState" id="TicketViewChangeDiv">
                     <div class="Text">变更请求</div>
+                </div>
+                <%} %>
+                <% if (thisTicket.ticket_type_id == (int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.PROBLEM || thisTicket.ticket_type_id == (int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.CHANGE_REQUEST)
+                    { %>
+                <div class="Button TicketButton NormalState" id="TicketViewIncidentsDiv">
+                    <div class="Text">事故</div>
+                </div>
+                <%} %>
+                <% if (thisTicket.ticket_type_id == (int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.CHANGE_REQUEST)
+                    { %>
+                <div class="Button TicketButton NormalState" id="TicketViewProblemDiv">
+                    <div class="Text">问题</div>
                 </div>
                 <%} %>
                 <% if (thisTicket.ticket_type_id == (int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.CHANGE_REQUEST)
@@ -999,7 +1020,7 @@
                                                     </div>
                                                     <div class="EditorLabelContainer">
                                                         <div class="Label">
-                                                            <label>通知工单联系人<span class="SecondaryText"><%=thisContact==null?"":thisContact.name %></span></label>
+                                                            <label>通知工单联系人<span class="SecondaryText"><%=thisContact == null ? "" : thisContact.name %></span></label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1015,7 +1036,7 @@
                                                     </div>
                                                     <div class="EditorLabelContainer">
                                                         <div class="Label">
-                                                            <label>通知主负责人<span class="SecondaryText"><%=priRes==null?"":priRes.name %></span></label>
+                                                            <label>通知主负责人<span class="SecondaryText"><%=priRes == null ? "" : priRes.name %></span></label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1157,100 +1178,205 @@
                     </div>
                 </div>
             </div>
-            <div class="TabContainer AccessoryTabContainer" id="ShowApprovalDiv">
+            <div class="TabContainer AccessoryTabContainer" id="ShowApprovalDiv" style="display: none;">
                 <div class="AccessoryTabShell">
                     <div class="LoadingIndicator"></div>
                     <div class="TransitionContainer"></div>
-                    <div class="Content" id="">
+                    <input type="hidden" id="is_add_other" value="<%=ticketOther != null ? "" : "1" %>"/>
+                    <div class="Content" id="" style="padding-left: 18px;padding-top: 10px;">
                         <div class="ToolBar">
-                            <div class="ToolBarItem Left ButtonGroupStart"><a class="Button ButtonIcon Save DisabledState" id="z68ee0bef644c4541a67da52332d4dfb8" tabindex="0"><span class="Icon"></span><span class="Text">保存</span></a></div>
-                            <div class="ToolBarItem Left ButtonGroupEnd"><a class="Button ButtonIcon Cancel DisabledState" id="z009523fd3a254cdab14820a01d86fa84" tabindex="0"><span class="Icon"></span><span class="Text">取消</span></a></div>
+                            <div class="ToolBarItem Left ButtonGroupStart" style="margin-left:0px;"><a class="Button ButtonIcon Save " id="" onclick="SaveTicketOther()"><span class="Icon"></span><span class="Text">保存</span></a></div>
+                            <div class="ToolBarItem Left ButtonGroupEnd"><a class="Button ButtonIcon Cancel " id="" onclick="CancelTicketOther()"><span class="Icon"></span><span class="Text">取消</span></a></div>
+                            <div class="ToolBarItem Left ButtonGroupEnd"><a class="Button ButtonIcon " id="" onclick="OtherResCallBack()"><span class="Icon"></span><span class="Text">添加</span></a></div>
+                            <% if (ticketOther != null)
+                                {  %>
+                                  <%if (ticketOther.approve_status_id == (int)EMT.DoneNOW.DTO.DicEnum.CHANGE_APPROVE_STATUS.ASSIGNED)
+                                      {  %>
+                                   <div class="ToolBarItem Left ButtonGroupEnd"><a class="Button ButtonIcon " id="" onclick="AppOther()"><span class="Icon"></span><span    class="Text">审批</span></a></div>
+                                  <%} %>
+                            <%if (ticketOther.approve_status_id != (int)EMT.DoneNOW.DTO.DicEnum.CHANGE_APPROVE_STATUS.ASSIGNED && ticketOther.approve_status_id != (int)EMT.DoneNOW.DTO.DicEnum.CHANGE_APPROVE_STATUS.NOT_ASSIGNED)
+                                {  %>
+                                   <div class="ToolBarItem Left ButtonGroupEnd" style="width:50px;"><a class="Button ButtonIcon " id="" onclick="RevokeAppOther()"><span class="Icon"></span><span class="Text">撤销审批</span></a></div>
+                                  <%} %>
+                            
+                            <%} %>
                             <div class="Spacer"></div>
-                            <div class="ToolBarItem Right">
+                           <%-- <div class="ToolBarItem Right">
                                 <div class="ApprovalStatus NotAssigned">Not Assigned</div>
-                            </div>
+                            </div>--%>
                         </div>
                         <div class="AccessoryTabColumnBlock Double">
                             <div class="Column">
                                 <div class="EditorLabelContainer">
                                     <div class="Label">
-                                        <label>变更委员会</label></div>
+                                        <label>变更委员会</label>
+                                    </div>
                                 </div>
-                                <div class="Editor SingleSelect" >
+                                <div class="Editor SingleSelect">
                                     <div class="InputField">
-                                        <select id="" name="ChangeAdvisoryBoard">
+                                        <select id="bord_id" name="ChangeAdvisoryBoard">
                                             <option value="" title=""></option>
-                                            <option value="1" title="change advisory board">change advisory board</option>
-                                            <option value="2" title="change advisory board2">change advisory board2</option>
-                                        </select></div>
+                                            <%if (changeList != null && changeList.Count > 0)
+                                                {
+                                                    foreach (var change in changeList)
+                                                    {%>
+                                            <option value="<%=change.id %>" <%=ticketOther != null && ticketOther.change_board_id == change.id ? "selected='selected'" : "" %><%=change.name %></option>
+                                            <%}
+                                                } %>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="RadioButtonGroupContainer">
                                     <div class="RadioButtonGroupLabel">
                                         <div></div>
-                                        <div class="Description">Approval Type</div>
+                                        <div class="Description">审批通过原则</div>
                                     </div>
-                                    <div class="Editor RadioButton" data-editor-id="z57a227a44fa1489887194f4a786412c7Allapproversmustapprove" data-rdp="z57a227a44fa1489887194f4a786412c7Allapproversmustapprove">
+                                    <div class="Editor RadioButton">
                                         <div class="InputField">
                                             <div>
-                                                <input id="z57a227a44fa1489887194f4a786412c7Allapproversmustapprove" type="radio" value="Allapproversmustapprove" name="ApprovalType" checked="checked"></div>
+                                                <input id="AllPass" type="radio" value="" name="ApprovalType" <%if (ticketOther == null || ticketOther.approval_type_id == (int)EMT.DoneNOW.DTO.DicEnum.APPROVAL_TYPE.ALL_APPROVERS_MUST_APPROVE){ %> checked="checked" <%} %>/>
+                                            </div>
                                             <div class="EditorLabelContainer">
                                                 <div class="Label">
-                                                    <label for="z57a227a44fa1489887194f4a786412c7Allapproversmustapprove">All approvers must approve</label></div>
+                                                    <label>全部通过</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="Editor RadioButton" data-editor-id="z57a227a44fa1489887194f4a786412c7Oneapprovermustapprove" data-rdp="z57a227a44fa1489887194f4a786412c7Oneapprovermustapprove">
+                                    <div class="Editor RadioButton">
                                         <div class="InputField">
                                             <div>
-                                                <input id="z57a227a44fa1489887194f4a786412c7Oneapprovermustapprove" type="radio" value="Oneapprovermustapprove" name="ApprovalType"></div>
+                                                <input id="OtherOnePass" type="radio" value="Oneapprovermustapprove" name="ApprovalType" <%if (ticketOther != null && ticketOther.approval_type_id == (int)EMT.DoneNOW.DTO.DicEnum.APPROVAL_TYPE.ONE_APPROVER_MUST_APPROVE){ %> checked="checked" <%} %> />
+                                            </div>
                                             <div class="EditorLabelContainer">
                                                 <div class="Label">
-                                                    <label for="z57a227a44fa1489887194f4a786412c7Oneapprovermustapprove">One approver must approve</label></div>
+                                                    <label>任意一个通过</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="Column">
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="z3e1e0112f88f469e8bf21a3b33d8e2fc">Other Resource Approvers</label></div>
-                                </div>
-                                <div class="Editor DataSelector" data-editor-id="z3e1e0112f88f469e8bf21a3b33d8e2fc" data-rdp="z3e1e0112f88f469e8bf21a3b33d8e2fc">
-                                    <div class="InputField">
-                                        <input id="z3e1e0112f88f469e8bf21a3b33d8e2fc_DisplayTextBox" type="text" value="" autocomplete="off" data-val-multipleselectioncount="Selection limit (20) exceeded" data-val-multipleselectioncount-detail="You cannot add more than 20 Other Resource Approvers to a Change Approval." data-val-multipleselectioncount-max="20" data-val-editor-id="z3e1e0112f88f469e8bf21a3b33d8e2fc" data-val-position="0"><a class="Button ButtonIcon IconOnly DataSelector NormalState" id="z3e1e0112f88f469e8bf21a3b33d8e2fc_Button" tabindex="0"><span class="Icon"></span><span class="Text"></span></a><input id="z3e1e0112f88f469e8bf21a3b33d8e2fc" name="OtherResourceApprovers" type="hidden" value=""><div class="ContextOverlayContainer" id="z3e1e0112f88f469e8bf21a3b33d8e2fc_ContextOverlay">
-                                            <div class="AutoComplete ContextOverlay">
-                                                <div class="Active LoadingIndicator"></div>
-                                                <div class="Content"></div>
-                                            </div>
-                                            <div class="AutoComplete ContextOverlay">
-                                                <div class="Active LoadingIndicator"></div>
-                                                <div class="Content"></div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <select id="z3e1e0112f88f469e8bf21a3b33d8e2fc_displayListBox" multiple="multiple"></select></div>
+                            <div class="">
+                                <div class="Grid Small" id="ApprovalsTabGrid">
+                                    <div class="HeaderContainer">
+                                        <table cellpadding="0">
+                                            <tbody>
+                                                <tr class="HeadingRow">
+                                                    <td style="width: 21px;max-width: 21px;">
+
+                                                    </td>
+                                                    <td class="Image" style="width:50px;">
+                                                        <div class="Standard">
+                                                            <div></div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="Normal Text">
+                                                        <div class="Standard">
+                                                            <div class="Heading">成员</div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="Image" style="width: 21px;max-width: 21px;">
+                                                        <div class="Standard">
+                                                            <div class="Check ButtonIcon">
+                                                                <div class="Icon"></div>
+                                                                ✔
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class=" DateTime">
+                                                        <div class="Standard">
+                                                            <div class="Heading">审批日期</div>
+                                                        </div>
+                                                    </td>
+                                                    <td class=" Text Dynamic">
+                                                        <div class="Standard">
+                                                            <div class="Heading">审批说明</div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="ScrollBarSpacer" style="width: 17px;"></td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody id="ticketOtherOldTbody">
+                                                    <%if (ticketOtherList != null && ticketOtherList.Count > 0)
+                                                        {
+
+                                                            foreach (var ticketOther in ticketOtherList)
+                                                            {
+                                                                EMT.DoneNOW.Core.crm_contact otherCon = null;
+                                                                EMT.DoneNOW.Core.sys_resource otherRes = null;
+                                                                if (ticketOther.contact_id != null)
+                                                                    otherCon = ccDal.FindNoDeleteById((long)ticketOther.contact_id);
+                                                                else if (ticketOther.resource_id != null)
+                                                                    otherRes = srDal.FindNoDeleteById((long)ticketOther.resource_id);
+                                                                %>
+                                                    <tr class="D OldOther" data-val="<%=ticketOther.id %>" id="other_<%=ticketOther.id %>" data-resid="<%=ticketOther.resource_id %>">
+                                                        <td>
+                                                            <a onclick="RemoveResOther('<%=ticketOther.id %>')"><span class="DeleteIcon"></span></a>
+                                                        </td>
+                                                        <td class="Avatar  U0">
+                                                            <div class="Initials ColorSwatch ColorSample Color5" style="background-color: #f4b900;">ll</div>
+                                                        </td>
+                                                        <td class="Text Normal U1"><%=otherCon!=null?otherCon.name:(otherRes!=null?otherRes.name:"") %></td>
+                                                        <td class=" U2">
+                                                            <% if (ticketOther.approve_status_id == (int)EMT.DoneNOW.DTO.DicEnum.CHANGE_APPROVE_STATUS_PERSON.APPROVED)
+                                                                { %>
+                                                              <a><span class="DeleteIcon" style="background: url(../Images/Icons.png) no-repeat -70px -30px;"></span></a>
+                                                            <%}
+    else if (ticketOther.approve_status_id == (int)EMT.DoneNOW.DTO.DicEnum.CHANGE_APPROVE_STATUS_PERSON.REJECTED)
+    { %>  <a><span class="DeleteIcon"  style="background: url(../Images/Icons.png) no-repeat -150px -32px;"></span></a>  <%} %>
+                                                        </td>
+                                                        <td class="DateTime  U3"><%=ticketOther.oper_time != null ? EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)ticketOther.oper_time).ToString("yyyy-MM-dd HH:mm:ss"):"" %></td>
+                                                        <td class="Text  U4">
+                                                            <% if (ticketOther.resource_id == LoginUserId)
+                                                                { %>
+                                                            <a onclick="ToAppOtherPage()" style="cursor: pointer;">审批信息管理</a>
+                                                            <%}
+    else
+    { %>
+                                                            <%=ticketOther.description %>
+                                                            <%} %>
+
+                                                        </td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <%
+                                                            }
+                                                           } %>
+                                                </tbody>
+                                                <tbody id="ticketOtherNewTbody">
+
+                                                </tbody>
+                                        </table>
                                     </div>
-                                </div>
-                                <div class="EditorLabelContainer">
-                                    <div class="Label">
-                                        <label for="z718465283e3b4e449799961243fd06d7">Other Contact Approvers</label></div>
-                                </div>
-                                <div class="Editor DataSelector" data-editor-id="z718465283e3b4e449799961243fd06d7" data-rdp="z718465283e3b4e449799961243fd06d7">
-                                    <div class="InputField">
-                                        <input id="z718465283e3b4e449799961243fd06d7_DisplayTextBox" type="text" value="" autocomplete="off" data-val-multipleselectioncount="Selection limit (20) exceeded" data-val-multipleselectioncount-detail="You cannot add more than 20 Other Contact Approvers to a Change Approval." data-val-multipleselectioncount-max="20" data-val-editor-id="z718465283e3b4e449799961243fd06d7" data-val-position="0"><a class="Button ButtonIcon IconOnly DataSelector NormalState" id="z718465283e3b4e449799961243fd06d7_Button" tabindex="0"><span class="Icon"></span><span class="Text"></span></a><input id="z718465283e3b4e449799961243fd06d7" name="OtherContactApprovers" type="hidden" value=""><div class="ContextOverlayContainer" id="z718465283e3b4e449799961243fd06d7_ContextOverlay">
-                                            <div class="AutoComplete ContextOverlay">
-                                                <div class="Active LoadingIndicator"></div>
-                                                <div class="Content"></div>
+                                    <div class="ScrollingContentContainer">
+                                       <%-- <div class="RowContainer BodyContainer">
+                                            <table cellpadding="0">
+                                                
+                                            </table>
+                                            <div class="ContextOverlayContainer" id="ApprovalsTabGrid_ContextOverlay">
+                                                <div class="ContextOverlay">
+                                                    <div class="Outline Arrow"></div>
+                                                    <div class="Arrow"></div>
+                                                    <div class="Active LoadingIndicator"></div>
+                                                    <div class="Content"></div>
+                                                </div>
+                                                <div class="ContextOverlay">
+                                                    <div class="Outline Arrow"></div>
+                                                    <div class="Arrow"></div>
+                                                    <div class="Active LoadingIndicator"></div>
+                                                    <div class="Content"></div>
+                                                </div>
                                             </div>
-                                            <div class="AutoComplete ContextOverlay">
-                                                <div class="Active LoadingIndicator"></div>
-                                                <div class="Content"></div>
+                                            <div class="DragIndicator">
+                                                <div class="Bar"></div>
+                                                <div class="LeftArrow"></div>
+                                                <div class="RightArrow"></div>
                                             </div>
-                                        </div>
-                                        <div>
-                                            <select id="z718465283e3b4e449799961243fd06d7_displayListBox" multiple="multiple"></select></div>
+                                            <div class="DragStatus"></div>
+                                        </div>--%>
                                     </div>
+                                    <div class="FooterContainer"></div>
                                 </div>
                             </div>
                         </div>
@@ -1875,10 +2001,12 @@
     $("#TicketViewActivityDiv").click(function () {
         $("#ShowActivityDiv").show();
         $("#ShowIframeDiv").hide();
+        $("#ShowApprovalDiv").hide();
     })
 
     $("#TicketViewCostDiv").click(function () {
         $("#ShowActivityDiv").hide();
+        $("#ShowApprovalDiv").hide();
         $("#ShowIframeDiv").show();
 
         $("#TicketShowIframe").attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_COST_EXPENSE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_COST_EXPENSE %>&con1762=<%=thisTicket==null?"":thisTicket.id.ToString() %>");
@@ -1886,17 +2014,33 @@
 
     $("#TicketViewServiceDiv").click(function () {
         $("#ShowActivityDiv").hide();
+        $("#ShowApprovalDiv").hide();
         $("#ShowIframeDiv").show();
         $("#TicketShowIframe").attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SERVICE_LIST %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SERVICE_LIST %>&con1761=<%=thisTicket==null?"":thisTicket.id.ToString() %>");
     })
     $("#TicketViewChangeDiv").click(function () {
         $("#ShowActivityDiv").hide();
+        $("#ShowApprovalDiv")
         $("#ShowIframeDiv").show();
         $("#TicketShowIframe").attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_REQUEST %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_REQUEST %>&con2259=<%=thisTicket==null?"":thisTicket.id.ToString() %>&con2260=<%=LoginUserId %>");
     })
+    $("#TicketViewIncidentsDiv").click(function () {
+        $("#ShowActivityDiv").hide();
+        $("#ShowApprovalDiv")
+        $("#ShowIframeDiv").show();
+        $("#TicketShowIframe").attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_INCIDENT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_INCIDENT %>&con2464=<%=thisTicket==null?"":thisTicket.id.ToString() %>");
+    })
+    $("#TicketViewProblemDiv").click(function () {
+        $("#ShowActivityDiv").hide();
+        $("#ShowApprovalDiv").hide();
+        $("#ShowIframeDiv").show();
+        $("#TicketShowIframe").attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_PROBLEM %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_PROBLEM %>&con2465=<%=thisTicket==null?"":thisTicket.id.ToString() %>");
+    })
+
     $("#TicketViewApprovalsDiv").click(function () {
         $("#ShowActivityDiv").hide();
         $("#ShowIframeDiv").hide();
+        $("#ShowApprovalDiv").show();
 
     })
 </script>
@@ -2235,6 +2379,351 @@
                     LayerMsg("关联失败！");
                 }
                 setTimeout(function () { history.go(0); }, 800);
+            }
+        })
+    }
+    // 关联其他问题工单
+    function RelaManyProblemTicket() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_INCLIDENT_RELATION %>&field=ProblemId&callBack=GetDataByProblem&con2471=<%=thisTicket.id %>&con2477=3&muilt=1", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>", 'left=200,top=200,width=600,height=800', false);
+    }
+    function GetDataByProblem() {
+        var ProblemId = $("#ProblemIdHidden").val();
+        if (ProblemId == "")
+            return;
+        var ticketId = $("#ticket_id").val();
+        if (ticketId == "")
+            return;
+
+        $.ajax({
+            type: "GET",
+            url: "../Tools/TicketAjax.ashx?act=RelaProblem&ticket_id=" + ticketId + "&rela_ticket_ids=" + ProblemId,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    LayerMsg("关联成功！");
+                }
+                else {
+                    LayerMsg("关联失败！");
+                }
+                setTimeout(function () { history.go(0); }, 800);
+            }
+        })
+    }
+    function AddProId(proId) {
+        var ticketId = $("#ticket_id").val();
+        if (ticketId == "")
+            return;
+        $.ajax({
+            type: "GET",
+            url: "../Tools/TicketAjax.ashx?act=RelaProblem&ticket_id=" + ticketId + "&rela_ticket_ids=" + proId,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    LayerMsg("关联成功！");
+                }
+                else {
+                    LayerMsg("关联失败！");
+                }
+                setTimeout(function () { history.go(0); }, 800);
+            }
+        })
+    }
+
+    function SignManyAsIncident() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_INCLIDENT_RELATION %>&field=IncidentsId&callBack=SignManyIncCheck&con2471=<%=thisTicket.id %>&con2477=1&muilt=1", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>", 'left=200,top=200,width=600,height=800', false);
+    }
+
+    function SignManyIncCheck() {
+        var IncidentsId = $("#IncidentsIdHidden").val();
+        var ticketId = $("#ticket_id").val();
+        if (IncidentsId == "" || ticketId == "")
+            return;
+
+        var isHasDiffAcc = false;
+        var isHasPro = false;
+        var isSginInd = false;
+        $.ajax({
+            type: "GET",
+            url: "../Tools/TicketAjax.ashx?act=CheckRelaTicket&ticket_id=" + ticketId + "&rela_ticket_ids=" + IncidentsId,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data != "") {
+                    isHasDiffAcc = data.diffAcc;
+                    isHasPro = data.isHasPro;
+                    isSginInd = data.isSginInd;
+                }
+
+
+            }
+        })
+        if (isHasPro) {
+            LayerMsg("选择工单已关联其他工单，不能关联！")
+        }
+        if (isSginInd) {
+            LayerConfirm("将该工单记为事故，首先会解除所有的事故关联关系，然后将该工单和它原有的故障关联到另一个问题。 所有其他工单（变更申请单）与此工单的关联关系依旧保留。是否继续", "是", "否", function () {
+                if (isHasDiffAcc) {
+                    LayerConfirm("当前工单（一个或多个）与所选工单属于不同的客户。 为确保获得准确的盈利报告，建议将问题工单与您的公司联系起来。 你是否想为自己的公司创建一个新的问题工单，并将当前的问题工单（及其所有事故）与新的问题工单相关联？ 如果您单击否，则不会为您自己的公司创建新的问题工单（现有的问题/事故关系将保持不变）。", "是", "否", function () {
+                        $.ajax({
+                            type: "GET",
+                            url: "../Tools/TicketAjax.ashx?act=RelaIncident&ticket_id=" + ticketId + "&rela_ticket_ids=" + IncidentsId + "&change_account=1",
+                            async: false,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data) {
+                                    LayerMsg("标记成功！");
+                                }
+                                else {
+                                    LayerMsg("标记失败！");
+                                }
+                                setTimeout(function () { history.go(0); }, 800);
+                            }
+                        })
+                    }, function () {
+                        $.ajax({
+                            type: "GET",
+                            url: "../Tools/TicketAjax.ashx?act=RelaIncident&ticket_id=" + ticketId + "&rela_ticket_ids=" + IncidentsId,
+                            async: false,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data) {
+                                    LayerMsg("标记成功！");
+                                }
+                                else {
+                                    LayerMsg("标记失败！");
+                                }
+                                setTimeout(function () { history.go(0); }, 800);
+                            }
+                        })
+                    });
+                    return;
+                }
+
+            }, function () { });
+            return;
+        } else {
+
+        }
+
+        if (isHasDiffAcc) {
+            LayerConfirm("当前工单（一个或多个）与所选工单属于不同的客户。 为确保获得准确的盈利报告，建议将问题工单与您的公司联系起来。 你是否想为自己的公司创建一个新的问题工单，并将当前的问题工单（及其所有事故）与新的问题工单相关联？ 如果您单击否，则不会为您自己的公司创建新的问题工单（现有的问题/事故关系将保持不变）。", "是", "否", function () {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/TicketAjax.ashx?act=RelaIncident&ticket_id=" + ticketId + "&rela_ticket_ids=" + IncidentsId + "&change_account=1",
+                    async: false,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data) {
+                            LayerMsg("标记成功！");
+                        }
+                        else {
+                            LayerMsg("标记失败！");
+                        }
+                        setTimeout(function () { history.go(0); }, 800);
+                    }
+                })
+            }, function () {
+                $.ajax({
+                    type: "GET",
+                    url: "../Tools/TicketAjax.ashx?act=RelaIncident&ticket_id=" + ticketId + "&rela_ticket_ids=" + IncidentsId,
+                    async: false,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data) {
+                            LayerMsg("标记成功！");
+                        }
+                        else {
+                            LayerMsg("标记失败！");
+                        }
+                        setTimeout(function () { history.go(0); }, 800);
+                    }
+                })
+            });
+            return;
+        }
+
+    }
+
+    function AddIndId(IndId) {
+        $("#IncidentsIdHidden").val(IndId);
+        SignManyIncCheck();
+    }
+    // 审批负责人的查找带回
+    function OtherResCallBack() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE_CALLBACK %>&field=OtherResId&callBack=GetDataByOther&muilt=1", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>", 'left=200,top=200,width=600,height=800', false);
+    }
+
+    function GetDataByOther() {
+        var oldResIds = "";// 获取到旧的员工Id 防止重复
+        $(".OldOther").each(function () {
+            var thisRes = $(this).data("resid");
+            if (thisRes != "") {
+                oldResIds = thisRes + ",";
+            }
+        })
+        if (oldResIds != "") {
+            oldResIds = oldResIds.substring(0, oldResIds.length-1);
+        }
+        var OtherResId = $("#OtherResIdHidden").val();
+        var otherHtml = "";
+        if (OtherResId != "") {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/ResourceAjax.ashx?act=GetResInfo&resIds=" + OtherResId + "&oldResIds=" + oldResIds,
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data!="") {
+                        for (var i = 0; i < data.length; i++) {
+                            otherHtml += "<tr class='D NewOther' data-val='" + data[i].id+"' id='other_" + data[i].id + "'><td><a onclick='RemoveResOther(\"" + data[i].id +"\")'><span class='DeleteIcon'></span></a></td><td class='Avatar U0'><div class='Initials ColorSwatch ColorSample Color5'>ll</div></td><td class='Text Normal U1'>" + data[i].name + "</td><td class='U2'></td><td class='DateTime U3'></td><td class='Text  U4'></td><td></td></tr>";
+                        }
+                    }
+                }
+            })
+        }
+
+        $("#ticketOtherNewTbody").html(otherHtml);
+    }
+
+    function SaveTicketOther() {
+        var ticketId = $("#ticket_id").val();
+        // 新的员工和旧的员工 使用不同的Class 旧的取id ，新的取 员工Id ，方便后台处理
+       
+
+        var newOtherIds = "";
+        $(".NewOther").each(function () {
+            var thisId = $(this).data("val");
+            if (thisId != "" && thisId != undefined && thisId != null) {
+                newOtherIds += thisId + ',';
+            }
+        })
+        if (newOtherIds != "") {
+            newOtherIds = newOtherIds.substring(0, newOtherIds.length-1);
+        }
+
+        var oldOtherIds = "";
+        $(".OldOther").each(function () {
+            var thisId = $(this).data("val");
+            if (thisId != "" && thisId != undefined && thisId != null) {
+                oldOtherIds += thisId + ',';
+            }
+        })
+        if (oldOtherIds != "") {
+            oldOtherIds = oldOtherIds.substring(0, oldOtherIds.length - 1);
+        }
+        var bord_id = $("#bord_id").val();
+        if (bord_id == "" && newOtherIds == "" && oldOtherIds == "") {
+            LayerMsg("请至少指派一个审批人！");
+            return;
+        }
+        var isAllPass = "1";
+        if ($("#OtherOnePass").is(":checked")) {
+            isAllPass = "";
+        }
+        var isAdd = $("#is_add_other").val();
+        var isEditBord = false;
+        var isEditRule = false;
+        if (isAdd != "1") {
+            var oldBord = "<%=ticketOther!=null&&ticketOther.change_board_id!=null?ticketOther.change_board_id.ToString():"" %>";
+            var oldRule = "<%=ticketOther!=null&&ticketOther.approval_type_id==(int)EMT.DoneNOW.DTO.DicEnum.APPROVAL_TYPE.ALL_APPROVERS_MUST_APPROVE?"1":"" %>";
+            var isOneApp = false; // 是否有人批准
+            <%if(ticketOtherList!=null&&ticketOtherList.Count>0&&ticketOtherList.Any(_=>_.approve_status_id==(int)EMT.DoneNOW.DTO.DicEnum.CHANGE_APPROVE_STATUS_PERSON.APPROVED)){ %>
+            isOneApp = true;
+            <%}%>
+            if (isOneApp && oldBord != bord_id) {
+                LayerConfirm("您即将更改更改变更委员会， 如果继续，所有现有的批准和拒绝将被删除（您仍然可以在工单历史记录中看到此数据），审批状态将设置为“已指派”。 是否继续？", "是", "否", function () {
+                    if (isOneApp && oldRule != isAllPass) {
+                        if (isAllPass == "1") {
+                            LayerConfirm("改为需全部匹配，且已有人批准——您将要将审批通过原则更改为“所有审批者必须批准”，但是某些审批者尚未批准。 此变更单的状态将更改为“部分批准”。是否继续？", "是", "否", function () {
+                                $.ajax({
+                                    type: "GET",
+                                    url: "../Tools/TicketAjax.ashx?act=TicketOtherManage&ticket_id=" + ticketId + "&board_id=" + bord_id + "&app_type_id=" + isAllPass + "&old_res_ids=" + oldOtherIds + "&new_res_ids=" + newOtherIds + "&is_add=" + isAdd,
+                                    async: false,
+                                    dataType: "json",
+                                    success: function (data) {
+                                        if (data) {
+                                            LayerMsg("保存成功！");
+                                            setTimeout(function () { history.go(0); }, 800)
+                                        }
+                                    }
+                                })
+                            }, function () { });
+                            return;
+                        }
+                        else {
+                            LayerConfirm("改为任何人批准，且一有人批准——您将要将审批通过原则更改为“任何一个审批者批准即可”，由于已经有审批者已批准。 此变更单的状态将更改为“已批准”。是否继续？", "是", "否", function () {
+                                $.ajax({
+                                    type: "GET",
+                                    url: "../Tools/TicketAjax.ashx?act=TicketOtherManage&ticket_id=" + ticketId + "&board_id=" + bord_id + "&app_type_id=" + isAllPass + "&old_res_ids=" + oldOtherIds + "&new_res_ids=" + newOtherIds + "&is_add=" + isAdd,
+                                    async: false,
+                                    dataType: "json",
+                                    success: function (data) {
+                                        if (data) {
+                                            LayerMsg("保存成功！");
+                                            setTimeout(function () { history.go(0); }, 800)
+                                        }
+                                    }
+                                })
+                            }, function () { });
+                            return;
+                        }
+
+                    }
+                }, function () { });
+                return;
+            }
+            if (isOneApp && oldRule != isAllPass) {
+                if (isAllPass == "1") {
+                    LayerConfirm("改为需全部匹配，且已有人批准——您将要将审批通过原则更改为“所有审批者必须批准”，但是某些审批者尚未批准。 此变更单的状态将更改为“部分批准”。是否继续？", "是", "否", function () {
+                        $.ajax({
+                            type: "GET",
+                            url: "../Tools/TicketAjax.ashx?act=TicketOtherManage&ticket_id=" + ticketId + "&board_id=" + bord_id + "&app_type_id=" + isAllPass + "&old_res_ids=" + oldOtherIds + "&new_res_ids=" + newOtherIds + "&is_add=" + isAdd,
+                            async: false,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data) {
+                                    LayerMsg("保存成功！");
+                                    setTimeout(function () { history.go(0); }, 800)
+                                }
+                            }
+                        })
+                    }, function () { });
+                    return;
+                }
+                else {
+                    LayerConfirm("改为任何人批准，且一有人批准——您将要将审批通过原则更改为“任何一个审批者批准即可”，由于已经有审批者已批准。 此变更单的状态将更改为“已批准”。是否继续？", "是", "否", function () {
+                        $.ajax({
+                            type: "GET",
+                            url: "../Tools/TicketAjax.ashx?act=TicketOtherManage&ticket_id=" + ticketId + "&board_id=" + bord_id + "&app_type_id=" + isAllPass + "&old_res_ids=" + oldOtherIds + "&new_res_ids=" + newOtherIds + "&is_add=" + isAdd,
+                            async: false,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data) {
+                                    LayerMsg("保存成功！");
+                                    setTimeout(function () { history.go(0); }, 800)
+                                }
+                            }
+                        })
+                    }, function () { });
+                    return;
+                }
+                
+            }
+        }
+       
+       
+        $.ajax({
+            type: "GET",
+            url: "../Tools/TicketAjax.ashx?act=TicketOtherManage&ticket_id=" + ticketId + "&board_id=" + bord_id + "&app_type_id=" + isAllPass + "&old_res_ids=" + oldOtherIds + "&new_res_ids=" + newOtherIds + "&is_add=" + isAdd,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    LayerMsg("保存成功！");
+                    setTimeout(function () { history.go(0); },800)
+                }
             }
         })
     }
