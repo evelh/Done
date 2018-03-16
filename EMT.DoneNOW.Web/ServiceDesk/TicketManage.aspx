@@ -436,6 +436,130 @@
                         </div>
                     </div>
                 </div>
+
+                   <div class="DetailsSection">
+                    <div class="Title Title8">
+                        <div class="Text">自定义信息</div>
+                        <div class="Toggle">
+                            <div class="InlineIcon ArrowUp"></div>
+                        </div>
+                    </div>
+                    <div class="Content">
+                                      <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
+                            <%if (tickUdfList != null && tickUdfList.Count > 0)
+                                {
+                                    foreach (var udf in tickUdfList)
+                                    {
+
+                                        if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
+                                        {%>
+                            <tr>
+                                <td>
+                                    <div class="FieldLabels">
+                                        <span class="filed"><%=udf.name %></span>
+                                        <br />
+                                        <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=ticketUdfValueList!=null&&ticketUdfValueList.Count>0&& ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id)!=null?ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id).value.ToString():"" %>" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <%}
+                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)       /* 多行文本 */
+                                {
+                            %>
+                            <tr>
+                                <td>
+                                    <div class="FieldLabels">
+                                        <span class="filed"><%=udf.name %></span>
+                                        <br />
+                                        <textarea name="<%=udf.id %>" rows="2" cols="20"><%=ticketUdfValueList!=null&&ticketUdfValueList.Count>0&& ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id)!=null?ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id).value.ToString():""  %></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                            <%}
+                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)
+                                {
+                            %>
+                            <tr>
+                                <td>
+                                    <div class="FieldLabels">
+                                        <span class="filed"><%=udf.name %></span>
+                                        <br />
+                                        <%string val = "";
+                                            if (ticketUdfValueList!=null&&ticketUdfValueList.Count>0&& ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id)!=null)
+                                            {
+                                                object value = ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id).value;
+                                                if (value != null && (!string.IsNullOrEmpty(value.ToString())))
+                                                {
+                                                     val = DateTime.Parse(value.ToString()).ToString("yyyy-MM-dd");
+                                                }
+                                            }
+                                        %>
+                                        <input type="text" onclick="WdatePicker()" name="<%=udf.id %>" class="sl_cdt" value="<%=val %>" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <% }
+                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)
+                                {
+                            %>
+                            <tr>
+                                <td>
+                                    <div class="FieldLabels">
+                                        <span class="filed"><%=udf.name %></span>
+                                        <br />
+                                        <%string val = "";
+                                            if (ticketUdfValueList!=null&&ticketUdfValueList.Count>0&&ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id) != null)
+                                            {
+                                                object value = ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id).value;
+                                                if (value != null && (!string.IsNullOrEmpty(value.ToString())))
+                                                {
+                                                    val = DateTime.Parse(value.ToString()).ToString("yyyy-MM-dd");
+                                                }
+                                            }
+                                        %>
+                                        <input type="text" name="<%=udf.id %>" class="sl_cdt" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" value="<%=ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id).value %>" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <%
+                                }
+                                else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)
+                                {%>
+                            <tr>
+                                <td>
+                                    <div class="FieldLabels">
+                                        <span class="filed"><%=udf.name %></span>
+                                        <br />
+                                        <select>
+                                            <%if (udf.required != 1)
+                                            { %>
+                                            <option></option>
+                                            <%} %>
+                                            <% if (udf.value_list != null && udf.value_list.Count > 0)
+                                                {
+                                                    var thisValue = "";
+                                                    if (ticketUdfValueList!=null&&ticketUdfValueList.Count>0&&ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id) != null)
+                                                    {
+                                                        thisValue = ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id).value.ToString();
+                                                    }
+                                                   
+                                                foreach (var thisValeList in udf.value_list)
+                                                {%>
+                                            <option value="<%=thisValeList.val %>" <%=thisValue==thisValeList.val?"selected='selected'":"" %>><%=thisValeList.show %></option>
+                                            <%
+                                                    }
+                                                } %>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <%
+                                        }
+                                    }
+                                } %>
+                        </table>
+                    </div>
+                </div>
             </div>
             <div class="PrimaryContainer" style="width: 50%; min-width: 500px; padding-left: 15px;">
                 <div>

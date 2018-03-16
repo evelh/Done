@@ -166,6 +166,7 @@
     <Content Include="Content\login.css" />
     <Content Include="Content\LostOpp.css" />
     <Content Include="Content\LostQuote.css" />
+    <Content Include="Content\MasterTicket.css" />
     <Content Include="Content\multiple-select.css" />
     <Content Include="Content\multipleList.css" />
     <Content Include="Content\NewConfigurationItem.css" />
@@ -475,6 +476,7 @@
     <Content Include="ServiceDesk\AccountTicketList.aspx" />
     <Content Include="ServiceDesk\ChangeTicketApprove.aspx" />
     <Content Include="ServiceDesk\CopyToProject.aspx" />
+    <Content Include="ServiceDesk\MasterTicket.aspx" />
     <Content Include="ServiceDesk\TicketActivity.aspx" />
     <Content Include="ServiceDesk\TicketHistory.aspx" />
     <Content Include="ServiceDesk\TicketLabour.aspx" />
@@ -1937,6 +1939,13 @@
     </Compile>
     <Compile Include="ServiceDesk\CopyToProject.aspx.designer.cs">
       <DependentUpon>CopyToProject.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\MasterTicket.aspx.cs">
+      <DependentUpon>MasterTicket.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\MasterTicket.aspx.designer.cs">
+      <DependentUpon>MasterTicket.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServiceDesk\TicketActivity.aspx.cs">
       <DependentUpon>TicketActivity.aspx</DependentUpon>

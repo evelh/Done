@@ -1,5 +1,5 @@
 ﻿var backImg = ["up.png", "down.png"];
-var index1 = 0; var index2 = 0; var index3 = 0; var index4 = 0; var index5 = 0; var index6 = 0; var index7 = 0;
+var index1 = 0; var index2 = 0; var index3 = 0; var index4 = 0; var index5 = 0; var index6 = 0; var index7 = 0; var index8 = 0;
 $(".Title1").on("click", function () {
     $(this).next().toggle();
     $(this).children().find($('.Toggle')).children().find($('.InlineIcon ')).css("background-image", "url(../Images/" + backImg[index1 % 2] + ")");
@@ -34,6 +34,11 @@ $(".Title7").on("click", function () {
     $(this).next().toggle();
     $(this).children().find($('.Toggle')).children().find($('.InlineIcon ')).css("background-image", "url(../Images/" + backImg[index7 % 2] + ")");
     index7++;
+});
+$(".Title8").on("click", function () {
+    $(this).next().toggle();
+    $(this).children().find($('.Toggle')).children().find($('.InlineIcon ')).css("background-image", "url(../Images/" + backImg[index8 % 2] + ")");
+    index8++;
 });
 
 var colors = ["#white", "white"];

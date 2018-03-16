@@ -427,40 +427,33 @@ namespace EMT.DoneNOW.Web
                     string quXian = "";
                     string address1 = "";
                     string address2 = "";
+                    string postalCode = "";
                     int ticketNum = 0;  // 所有打开的工单的数量
                     int monthNum = 0;  // 近三十天工单的数量
                     if (location != null)
                     {
                         var thisCity = new d_district_dal().FindById(location.city_id);
                         if (thisCity != null)
-                        {
                             city = thisCity.name;
-                        }
                         var thisprovice = new d_district_dal().FindById(location.province_id);
                         if (thisprovice != null)
-                        {
                             provice = thisprovice.name;
-                        }
                         if (location.district_id != null)
                         {
                             var thisquXian = new d_district_dal().FindById((long)location.district_id);
                             if (thisquXian != null)
-                            {
                                 quXian = thisquXian.name;
-                            }
                         }
                         address1 = location.address;
                         address2 = location.additional_address;
-
-
+                        if (!string.IsNullOrEmpty(location.postal_code))
+                            postalCode = location.postal_code;
                     }
 
                     var ticketList = new sdk_task_dal().GetTicketByAccount(thisAcc.id);
                     if(ticketList!=null&& ticketList.Count > 0)
-                    {
                         ticketNum = ticketList.Count;
-                    }
-                    context.Response.Write(new Tools.Serialize().SerializeJson(new {id=thisAcc.id,name=thisAcc.name,phone = thisAcc.phone, city= city, provice = provice, quXian = quXian, address1 = address1, address2 = address2, ticketNum = ticketNum, monthNum = monthNum, }));
+                    context.Response.Write(new Tools.Serialize().SerializeJson(new {id=thisAcc.id,name=thisAcc.name,phone = thisAcc.phone, city= city, provice = provice, quXian = quXian, address1 = address1, address2 = address2, ticketNum = ticketNum, monthNum = monthNum, postalCode = postalCode }));
                 }
             }
         }
