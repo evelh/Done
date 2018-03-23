@@ -166,6 +166,7 @@
     <Content Include="Content\login.css" />
     <Content Include="Content\LostOpp.css" />
     <Content Include="Content\LostQuote.css" />
+    <Content Include="Content\MasterTicket.css" />
     <Content Include="Content\multiple-select.css" />
     <Content Include="Content\multipleList.css" />
     <Content Include="Content\NewConfigurationItem.css" />
@@ -458,6 +459,9 @@
     <Content Include="Scripts\Search\ShipedList.js" />
     <Content Include="Scripts\Search\ShippingList.js" />
     <Content Include="Scripts\Search\purchase_order_history.js" />
+    <Content Include="Scripts\Search\ticket_incident.js" />
+    <Content Include="Scripts\Search\ticket_problem.js" />
+    <Content Include="Scripts\Search\ticket_request.js" />
     <Content Include="Scripts\Search\TimeoffPolicy.js" />
     <Content Include="Scripts\Search\TimeoffPolicyResource.js" />
     <Content Include="Scripts\Search\TimeoffPolicyTier.js" />
@@ -470,7 +474,9 @@
     <Content Include="Scripts\Ticket.js" />
     <Content Include="ServiceDesk\AccountServiceDetails.aspx" />
     <Content Include="ServiceDesk\AccountTicketList.aspx" />
+    <Content Include="ServiceDesk\ChangeTicketApprove.aspx" />
     <Content Include="ServiceDesk\CopyToProject.aspx" />
+    <Content Include="ServiceDesk\MasterTicket.aspx" />
     <Content Include="ServiceDesk\TicketActivity.aspx" />
     <Content Include="ServiceDesk\TicketHistory.aspx" />
     <Content Include="ServiceDesk\TicketLabour.aspx" />
@@ -1920,12 +1926,26 @@
     <Compile Include="ServiceDesk\AccountTicketList.aspx.designer.cs">
       <DependentUpon>AccountTicketList.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ServiceDesk\ChangeTicketApprove.aspx.cs">
+      <DependentUpon>ChangeTicketApprove.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\ChangeTicketApprove.aspx.designer.cs">
+      <DependentUpon>ChangeTicketApprove.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ServiceDesk\CopyToProject.aspx.cs">
       <DependentUpon>CopyToProject.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ServiceDesk\CopyToProject.aspx.designer.cs">
       <DependentUpon>CopyToProject.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\MasterTicket.aspx.cs">
+      <DependentUpon>MasterTicket.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\MasterTicket.aspx.designer.cs">
+      <DependentUpon>MasterTicket.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServiceDesk\TicketActivity.aspx.cs">
       <DependentUpon>TicketActivity.aspx</DependentUpon>

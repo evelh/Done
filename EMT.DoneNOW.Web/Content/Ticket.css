@@ -2214,3 +2214,92 @@ div.Badge > span {
 .highlight {
     background-color: #FFE76E;
 }
+#ticketOtherNewTbody td {
+    background-color: white;
+}
+#ticketOtherOldTbody td {
+    background-color: white;
+}
+.DeleteIcon {
+    background: url(../Images/Icons.png) no-repeat -70px 1px;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    margin: -2px 3px;
+    margin-top: 3px;
+}
+
+.Column, .ReplaceableColumnContainer {
+    /*display: inline-block;*/
+    vertical-align: top;
+}
+.AccessoryTabColumnBlock.Double > .Column, .AccessoryTabColumnBlock.Double > .Column > .Editor, .AccessoryTabColumnBlock.Double > .Column > .RadioButtonGroupContainer > .Editor {
+    width: 317px;
+}
+    .AccessoryTabColumnBlock.Double > .Column > .EditorLabelContainer {
+        width: 250px;
+    }
+.AccessoryTabColumnBlock .EditorLabelContainer > .Label, .AccessoryTabColumnBlock .RadioButtonGroupLabel .Label {
+    color: #2c3444;
+    font-weight: 600;
+}
+.EditorLabelContainer {
+    display: block;
+}
+    .EditorLabelContainer > .Label {
+        color: #4f4f4f;
+        font-weight: 700;
+        height: 14px;
+        line-height: 13px;
+        overflow: hidden;
+        padding-bottom: 1px;
+        padding-right: 5px;
+        vertical-align: bottom;
+        white-space: nowrap;
+    }
+.Editor {
+    display: inline-block;
+    padding-bottom: 12px;
+    vertical-align: top;
+}
+.CheckBoxGroupContainer, .RadioButtonGroupContainer {
+    padding-bottom: 10px;
+}
+.RadioButtonGroupLabel, .CheckBoxGroupLabel {
+    font-size: 12px;
+    padding-bottom: 5px;
+}
+.CheckBoxGroupContainer .Description, .RadioButtonGroupContainer .Description {
+    color: #999;
+}
+.RadioButtonGroupContainer .Editor.RadioButton {
+    height: auto;
+    padding-bottom: 10px;
+    padding-top: 0;
+}
+.Editor.RadioButton > .InputField > div.EditorLabelContainer {
+    vertical-align: top;
+}
+.Editor.RadioButton > .InputField > div {
+    display: table-cell;
+}
+.Editor.CheckBox .InputField > .EditorLabelContainer > .Label label, .Editor.RadioButton .InputField > .EditorLabelContainer > .Label label {
+    color: #333;
+    cursor: pointer;
+}
+.EditorLabelContainer .Label label, .EditorLabelContainer .Label .Required {
+    font-size: 12px;
+}
+body.EntityPage > .MainContainer > .PrimaryContainer .Grid {
+    position: static;
+}
+.Section .Grid, body.EntityPage > .MainContainer > .PrimaryContainer .Grid, .Dialog.Selection.BubbleSelection .Grid {
+    border-bottom: solid 1px #d7d7d7;
+}
+body.AutotaskBlueTheme .Grid, body .DashboardTab.AutotaskBlueTheme .Grid {
+    border-top-color: #98b4ca;
+}
+#ShowApprovalDiv .ToolBarItem {
+    margin-left: 20px;
+    width: 30px;
+}

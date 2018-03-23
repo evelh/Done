@@ -41,7 +41,17 @@ function AddTicket(ticket_type_id) {
 }
 // 工单详情
 function ViewTicket() {
-    window.open("../ServiceDesk/TicketView?id=" + entityid, windowType.blank,  'left=200,top=200,width=1280,height=800', false);
+    var ticketIds = "";
+    $(".dn_tr").each(function () {
+        var thisId = $(this).data("val");
+        if (thisId != "") {
+            ticketIds += thisId+",";
+        }
+    })
+    if (ticketIds != "") {
+        ticketIds = ticketIds.substring(0, ticketIds.length-1);
+    }
+    window.open("../ServiceDesk/TicketView?id=" + entityid + "&ids=" + ticketIds, windowType.blank,  'left=200,top=200,width=1280,height=800', false);
 }
 // 删除工单
 function DeleteTicket() {

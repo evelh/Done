@@ -78,6 +78,33 @@ namespace EMT.DoneNOW.Web
                     case "RelaNewProblem":
                         RelaNewProblem(context);
                         break;
+                    case "RelaNewRequests":
+                        RelaNewRequests(context);
+                        break;
+                    case "DisRelaTicket":
+                        DisRelaTicket(context);
+                        break;
+                    case "RelaProblem":
+                        RelaProblem(context);
+                        break;
+                    case "RelaIncident":
+                        RelaIncident(context);
+                        break;
+                    case "CheckRelaTicket":
+                        CheckRelaTicket(context);
+                        break;
+                    case "TicketOtherManage":
+                        TicketOtherManage(context);
+                        break;
+                    case "AppOther":
+                        AppOther(context);
+                        break;
+                    case "RevokeAppOther":
+                        RevokeAppOther(context);
+                        break;
+                    case "OtherPersonManage":
+                        OtherPersonManage(context);
+                        break;
                     default:
                         break;
                 }
@@ -168,7 +195,7 @@ namespace EMT.DoneNOW.Web
                 var thisTicket = new sdk_task_dal().FindNoDeleteById(long.Parse(ticketId));
                 if (thisTicket != null)
                 {
-                    if(thisTicket.type_id==(int)DTO.DicEnum.TASK_TYPE.PROJECT_ISSUE|| thisTicket.type_id == (int)DTO.DicEnum.TASK_TYPE.PROJECT_PHASE|| thisTicket.type_id == (int)DTO.DicEnum.TASK_TYPE.PROJECT_TASK)
+                    if (thisTicket.type_id == (int)DTO.DicEnum.TASK_TYPE.PROJECT_ISSUE || thisTicket.type_id == (int)DTO.DicEnum.TASK_TYPE.PROJECT_PHASE || thisTicket.type_id == (int)DTO.DicEnum.TASK_TYPE.PROJECT_TASK)
                     {
                         isTicket = "2";
                     }
@@ -231,7 +258,7 @@ namespace EMT.DoneNOW.Web
                     var tickCreateAlert = new crm_account_alert_dal().FindAlert(thisTicket.account_id, DTO.DicEnum.ACCOUNT_ALERT_TYPE.NEW_TICKET_ALERT);
                     if (tickCreateAlert != null)
                     {
-                        accountAlert += tickCreateAlert.alert_text+ " ";
+                        accountAlert += tickCreateAlert.alert_text + " ";
                     }
 
                     var tickDetailAlert = new crm_account_alert_dal().FindAlert(thisTicket.account_id, DTO.DicEnum.ACCOUNT_ALERT_TYPE.TICKET_DETAIL_ALERT);
@@ -242,7 +269,7 @@ namespace EMT.DoneNOW.Web
 
 
 
-                    context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { accountAlert= accountAlert, outMasg= outMasg, changeMsg= changeMsg }));
+                    context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { accountAlert = accountAlert, outMasg = outMasg, changeMsg = changeMsg }));
 
                 }
             }
@@ -274,10 +301,10 @@ namespace EMT.DoneNOW.Web
             var ticketNoteType = context.Request.QueryString["ticket_note_type_id"];
             var noteDesc = context.Request.QueryString["ticket_note_desc"];
             var result = false;
-            if (!string.IsNullOrEmpty(ticket_id) && !string.IsNullOrEmpty(noteDesc)&&!string.IsNullOrEmpty(ticketNoteType))
+            if (!string.IsNullOrEmpty(ticket_id) && !string.IsNullOrEmpty(noteDesc) && !string.IsNullOrEmpty(ticketNoteType))
             {
                 var notiEmail = new TicketBLL().GetNotiEmail(long.Parse(ticket_id), notiContacr, notiPriRes, notiIntAll);
-                result = new TicketBLL().SimpleAddTicketNote(long.Parse(ticket_id),LoginUserId,int.Parse(ticketNoteType),noteDesc,isInter,notiEmail);
+                result = new TicketBLL().SimpleAddTicketNote(long.Parse(ticket_id), LoginUserId, int.Parse(ticketNoteType), noteDesc, isInter, notiEmail);
             }
             context.Response.Write(result);
         }
@@ -286,10 +313,10 @@ namespace EMT.DoneNOW.Web
             var ticket = context.Request.QueryString["ticketId"];
             if (!string.IsNullOrEmpty(ticket))
             {
-                var dic = new ActivityBLL().GetTciektItemCount(long.Parse(ticket),LoginUserId);
+                var dic = new ActivityBLL().GetTciektItemCount(long.Parse(ticket), LoginUserId);
                 context.Response.Write(new EMT.Tools.Serialize().SerializeJson(dic));
             }
-            
+
         }
 
         /// <summary>
@@ -311,7 +338,7 @@ namespace EMT.DoneNOW.Web
                 filter.Add("notes");
             if (!string.IsNullOrEmpty(context.Request.QueryString["CkAtt"]))
                 filter.Add("attachment");
-            if(!string.IsNullOrEmpty(context.Request.QueryString["CkMe"]))
+            if (!string.IsNullOrEmpty(context.Request.QueryString["CkMe"]))
                 filter.Add("me");
             //if (!string.IsNullOrEmpty(context.Request.QueryString["CkMe"]))
             //    filter.Add("public");
@@ -319,7 +346,7 @@ namespace EMT.DoneNOW.Web
             //    filter.Add("public");
             var order = context.Request.QueryString["orderBy"];
             var isShowSys = context.Request.QueryString["CkShowSys"];
-            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.ActivityBLL().GetTicketActHtml(long.Parse(ticketId),LoginUserId, order, isShowSys, filter, LoginUser.security_Level_id, UserPermit)));
+            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.ActivityBLL().GetTicketActHtml(long.Parse(ticketId), LoginUserId, order, isShowSys, filter, LoginUser.security_Level_id, UserPermit)));
         }
         /// <summary>
         /// 接受工单
@@ -330,7 +357,7 @@ namespace EMT.DoneNOW.Web
             var result = false;
             var faileReason = "";
             if (!string.IsNullOrEmpty(ticketId))
-                result = new TicketBLL().AcceptTicket(long.Parse(ticketId),LoginUserId,ref faileReason);
+                result = new TicketBLL().AcceptTicket(long.Parse(ticketId), LoginUserId, ref faileReason);
             context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { result = result, reason = faileReason, }));
             // AcceptTicket
         }
@@ -343,9 +370,9 @@ namespace EMT.DoneNOW.Web
             var toTicketId = context.Request.QueryString["to_ticket_id"];
             var reason = "";
             var result = false;
-            if(!string.IsNullOrEmpty(fromTicketId) && !string.IsNullOrEmpty(toTicketId))
+            if (!string.IsNullOrEmpty(fromTicketId) && !string.IsNullOrEmpty(toTicketId))
             {
-                result = new TicketBLL().MergeTicket(long.Parse(toTicketId),long.Parse(fromTicketId),LoginUserId,ref reason);
+                result = new TicketBLL().MergeTicket(long.Parse(toTicketId), long.Parse(fromTicketId), LoginUserId, ref reason);
             }
             context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { result = result, reason = reason, }));
         }
@@ -358,7 +385,7 @@ namespace EMT.DoneNOW.Web
             var fromIds = context.Request.QueryString["from_ticket_ids"];
             var result = false;
             // var faileReason = "";
-            if(!string.IsNullOrEmpty(ticketId)&&!string.IsNullOrEmpty(fromIds))
+            if (!string.IsNullOrEmpty(ticketId) && !string.IsNullOrEmpty(fromIds))
                 result = new TicketBLL().MergeTickets(long.Parse(ticketId), fromIds, LoginUserId);
             context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
         }
@@ -409,9 +436,12 @@ namespace EMT.DoneNOW.Web
             var relaTicketId = context.Request.QueryString["rela_ticket_id"];
             var result = false;
             if (!string.IsNullOrEmpty(ticketId) && !string.IsNullOrEmpty(relaTicketId))
-                result = new TicketBLL().SinAsIncident(long.Parse(ticketId), long.Parse(relaTicketId),LoginUserId,!string.IsNullOrEmpty(context.Request.QueryString["change_account"]));
+                result = new TicketBLL().SinAsIncident(long.Parse(ticketId), long.Parse(relaTicketId), LoginUserId, !string.IsNullOrEmpty(context.Request.QueryString["change_account"]));
             context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
         }
+        /// <summary>
+        /// 标记为事故并关联新工单
+        /// </summary>
         private void RelaNewProblem(HttpContext context)
         {
             var ticketId = context.Request.QueryString["ticket_id"];
@@ -419,6 +449,150 @@ namespace EMT.DoneNOW.Web
             var result = false;
             if (!string.IsNullOrEmpty(ticketId) && !string.IsNullOrEmpty(relaTicketId))
                 result = new TicketBLL().RelaNewProblem(long.Parse(ticketId), long.Parse(relaTicketId), LoginUserId);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 标记为事故并关联服务请求工单
+        /// </summary>
+        /// <param name="context"></param>
+        private void RelaNewRequests(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            var relaTicketId = context.Request.QueryString["rela_ticket_ids"];
+            var result = false;
+            if (!string.IsNullOrEmpty(ticketId) && !string.IsNullOrEmpty(relaTicketId))
+                result = new TicketBLL().RelaNewRequests(long.Parse(ticketId), relaTicketId, LoginUserId);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 解除关联
+        /// </summary>
+        /// <param name="context"></param>
+        private void DisRelaTicket(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            var relaTicketId = context.Request.QueryString["rela_ticket_id"];
+            var result = false;
+            if (!string.IsNullOrEmpty(ticketId) && !string.IsNullOrEmpty(relaTicketId))
+                result = new TicketBLL().DisRelaTicket(long.Parse(ticketId),long.Parse(relaTicketId),LoginUserId);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 关联问题
+        /// </summary>
+        /// <param name="context"></param>
+        private void RelaProblem(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            var relaTicketId = context.Request.QueryString["rela_ticket_ids"];
+            var result = false;
+            if (!string.IsNullOrEmpty(ticketId) && !string.IsNullOrEmpty(relaTicketId))
+                result = new TicketBLL().RelaProblem(long.Parse(ticketId), relaTicketId, LoginUserId);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 关联前的检查
+        /// </summary>
+        /// <param name="context"></param>
+        private void CheckRelaTicket(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            var relaTicketId = context.Request.QueryString["rela_ticket_ids"];
+            bool isDiffCompany = false;
+            bool isHasPro = false;
+            bool isSginInd = false;   // 是否关联事故
+            // if (!string.IsNullOrEmpty(ticketId) && !string.IsNullOrEmpty(relaTicketId))
+            var stDal = new sdk_task_dal();
+
+            var relList = stDal.GetTicketByIds(relaTicketId);
+            var thisTicket = stDal.FindNoDeleteById(long.Parse(ticketId));
+            if(relList!=null&& relList.Count > 0 && thisTicket != null)
+            {
+                if (relList.Any(_ => _.account_id != thisTicket.account_id))
+                    isDiffCompany = true;
+                if (relList.Any(_ => _.problem_ticket_id != null))
+                    isHasPro = true;
+                if (relList.Any(_ => _.ticket_type_id == (int)DTO.DicEnum.TICKET_TYPE.PROBLEM && stDal.GetProCount(_.id) != 0))
+                    isSginInd = true;
+            }
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { diffAcc = isDiffCompany, isHasPro = isHasPro, isSginInd = isSginInd, }));
+
+        }
+        /// <summary>
+        /// 关联事故
+        /// </summary>
+        /// <param name="context"></param>
+        private void RelaIncident(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            var relaTicketId = context.Request.QueryString["rela_ticket_ids"];
+            var result = false;
+            if (!string.IsNullOrEmpty(ticketId) && !string.IsNullOrEmpty(relaTicketId))
+                result = new TicketBLL().RelaIncident(long.Parse(ticketId), relaTicketId, LoginUserId, !string.IsNullOrEmpty(context.Request.QueryString["change_account"]));
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 工单审批信息管理
+        /// </summary>
+        private void TicketOtherManage(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            var boardId = context.Request.QueryString["board_id"];
+            long? board_id = null;
+            if (!string.IsNullOrEmpty(boardId))
+                board_id = long.Parse(boardId);
+            var appTypeId = context.Request.QueryString["app_type_id"];
+            int app_type_id = (int)DTO.DicEnum.APPROVAL_TYPE.ALL_APPROVERS_MUST_APPROVE;
+            if(string.IsNullOrEmpty(appTypeId))
+                app_type_id = (int)DTO.DicEnum.APPROVAL_TYPE.ONE_APPROVER_MUST_APPROVE;
+            var oldResIds = context.Request.QueryString["old_res_ids"];
+            var newResIds = context.Request.QueryString["new_res_ids"];
+            var isAdd = context.Request.QueryString["is_add"];
+            var result = false;
+            if (!string.IsNullOrEmpty(isAdd))
+                result = new TicketBLL().AddTicketOther(long.Parse(ticketId), board_id, app_type_id, newResIds,LoginUserId);
+            else
+                result = new TicketBLL().EditTicketOther(long.Parse(ticketId), board_id, app_type_id, oldResIds, newResIds, LoginUserId);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 审批变更申请
+        /// </summary>
+        private void AppOther(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            var result = false;
+            if (!string.IsNullOrEmpty(ticketId))
+                result = new TicketBLL().AppOther(long.Parse(ticketId),LoginUserId);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 撤销申请审批
+        /// </summary>
+        private void RevokeAppOther(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            var result = false;
+            if (!string.IsNullOrEmpty(ticketId))
+                result = new TicketBLL().RevokeAppOther(long.Parse(ticketId), LoginUserId);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 审批负责人管理
+        /// </summary>
+        private void OtherPersonManage(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            var isApp = context.Request.QueryString["is_app"];
+            var reason = context.Request.QueryString["reason"];
+            var result = false;
+            if (!string.IsNullOrEmpty(ticketId))
+            {
+                int app = (int)DTO.DicEnum.CHANGE_APPROVE_STATUS_PERSON.REJECTED;
+                if(!string.IsNullOrEmpty(isApp))
+                    app = (int)DTO.DicEnum.CHANGE_APPROVE_STATUS_PERSON.APPROVED;
+                result = new TicketBLL().OtherPersonManage(long.Parse(ticketId),app,reason,LoginUserId);
+            }
             context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
         }
     }

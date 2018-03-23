@@ -658,11 +658,15 @@ namespace EMT.DoneNOW.DTO
             REPORT_OTHER_SYSTEM_OPERLOG = 1599,     // 报表-其他-系统-操作日志
             WORKFLOW_RULE = 1600,                   // 工作流规则查询
             TICKET_MERGE = 1606 ,                   // 合并工单的查找带回
+            TICKET_REQUEST = 1607,                  // 工单详情-变更请求工单
+            TICKET_INCIDENT = 1608,                 // 工单详情-事故清单  
+            TICKET_PROBLEM = 1609,                  // 工单详情-问题清单
             PROJECT_PHASE = 1610,                   // 项目阶段的查找带回
             TIMEOFF_POLICY = 1611,                  // 休假策略查询
             TIMEOFF_POLICY_RESOURCE = 1612,         // 休假策略-关联员工查询
             TIMEOFF_POLICY_TIER = 1613,             // 休假策略-级别查询
             ACCOUNT_SERVICE_DETAILS = 1614,         // 工单详情-客户服务详情
+            TICKET_INCLIDENT_RELATION = 1615,       // 工单详情-事故关联其他工单
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -794,10 +798,14 @@ namespace EMT.DoneNOW.DTO
             PROJECT_TASK_INFORMATION = 1418,            // 任务的扩展信息（自定义信息）
             TICKET_CHECK_LIST = 1420,                   // 工单的检查单
             TICKET_SERVICE_REQUEST = 1421,              // 服务请求审批人信息
+            TICKET_RELATION = 1422,                     // 工单关联关系
             IVT_SERVICE = 1423,                         // 服务
             IVT_SERVICE_BUNDLE = 1424,                  // 服务包
             WORKFLOW_RULE = 1425,                       // 工作流规则
+            CHANGE_REQUEST = 1426,                      // 任务的其他信息（变更请求用）
+            CHANGE_REQUEST_APPROL = 1427,               // 变更申请单审批人信息
             TICKET_SLA_EVENT,                        // 工单sla 事件
+            
         }
 
         /// <summary>
@@ -1381,7 +1389,14 @@ namespace EMT.DoneNOW.DTO
             STANDARD = 2273,     // 标准
             AEM_WARN = 2274,     // AEM告警
         }
-
+        /// <summary>
+        /// 变更申请工单：审批通过原则 - 168
+        /// </summary>
+        public enum APPROVAL_TYPE
+        {
+            ALL_APPROVERS_MUST_APPROVE = 2277,   // 全部通过
+            ONE_APPROVER_MUST_APPROVE = 2278,    // 任意一个通过
+        }
         /// <summary>
         /// 工作流对象 - 176
         /// </summary>
@@ -1414,6 +1429,27 @@ namespace EMT.DoneNOW.DTO
             CHANGED_FROM = 2436,    // 更改自
             IN = 2437,              // 属于列表
             NOT_IN = 2438,          // 不属于列表
+        }
+        /// <summary>
+        /// 变更单审批状态 - 181
+        /// </summary>
+        public enum CHANGE_APPROVE_STATUS
+        {
+            NOT_ASSIGNED=2457,           // 未指派
+            ASSIGNED = 2458,             // 已指派
+            REQUESTED =2459,             // 已申请
+            PARCIALLY_APPROVED =2460,    // 部分批准
+            APPROVED = 2461,             // 已批准
+            REJECTED = 2462,             // 已拒绝
+        }
+        /// <summary>
+        /// 审批人员审批变更单
+        /// </summary>
+        public enum CHANGE_APPROVE_STATUS_PERSON
+        {
+            WAIT=2488,          // 待审批
+            APPROVED = 2489,    // 已批准
+            REJECTED = 2490,    // 已拒绝
         }
     }
 
@@ -1554,10 +1590,14 @@ namespace EMT.DoneNOW.DTO
         REPORT_SERVICEDESK_TICKETBYACCOUNT = 179, // 报表--服务台常规-工单和任务按客户
         REPORT_CONTRACT_BILLED = 180,          // 报表-CRM配置项-已计费信息
         WorkflowRule = 185,             // 工作流规则查询
+        TICKET_REQUEST = 192,            // 工单详情-变更请求
+        TICKET_INCIDENT = 193,                 // 工单详情-事故清单
+        TICKET_PROBLEM = 194,                  // 工单详情-问题清单
         TimeoffPolicy = 196,            // 休假策略查询
         TimeoffPolicyResource = 197,    // 休假策略-关联员工查询
         TimeoffPolicyTier = 198,        // 休假策略-级别查询
         ACCOUNT_SERVICE_DETAILS = 199,   // 工单详情-客户服务详情
+        TICKET_INCLIDENT_RELATION=200,   // 工单详情-事故关联其他工单
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
         Line_Of_Business,              //系统管理：组织：业务条线

@@ -63,6 +63,9 @@ namespace EMT.DoneNOW.Web
                     case "CheckResInResDepIds":
                         CheckResInResDepIds(context);
                         break;
+                    case "GetResInfo":
+                        GetResInfo(context);
+                        break;
                     default:
                         break;
                 }
@@ -483,6 +486,36 @@ namespace EMT.DoneNOW.Web
                 }
             }
             return newResDepIds;
+        }
+        /// <summary>
+        /// 根据 员工Id 获取相关信息
+        /// </summary>
+        private void GetResInfo(HttpContext context)
+        {
+            var ids = context.Request.QueryString["resIds"];
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var oldResIds = context.Request.QueryString["oldResIds"];
+                if (!string.IsNullOrEmpty(oldResIds))
+                {
+                   
+                    var oldResArr = oldResIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                    var thisResArr = ids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    ids = "";
+                    foreach (var thisResId in thisResArr)
+                    {
+                        if (!oldResArr.Contains(thisResId))
+                            ids += thisResId+ ",";
+                    }
+                    if (ids != "")
+                        ids = ids.Substring(0, ids.Length-1);
+                }
+                var resList = new sys_resource_dal().GetListByIds(ids);
+                if(resList!=null&& resList.Count > 0)
+                {
+                    context.Response.Write(new Tools.Serialize().SerializeJson(resList));
+                }
+            }
         }
     }
    

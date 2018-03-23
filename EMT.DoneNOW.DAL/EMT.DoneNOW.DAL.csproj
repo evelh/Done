@@ -108,6 +108,7 @@
     <Compile Include="CTT\ctt_contract_service_period_dal.cs" />
     <Compile Include="CTT\ctt_invoice_dal.cs" />
     <Compile Include="CTT\ctt_invoice_detail_dal.cs" />
+    <Compile Include="Dictionary\d_change_board_dal.cs" />
     <Compile Include="Dictionary\d_cost_code_rule_dal.cs" />
     <Compile Include="Dictionary\d_holiday_dal.cs" />
     <Compile Include="Dictionary\d_sla_dal.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="SDK\sdk_task_other_dal.cs" />
     <Compile Include="SDK\sdk_task_other_person_dal.cs" />
     <Compile Include="SDK\sdk_task_predecessor_dal.cs" />
+    <Compile Include="SDK\sdk_task_relation_dal.cs" />
     <Compile Include="SDK\sdk_task_resource_dal.cs" />
     <Compile Include="SDK\sdk_task_sla_event_dal.cs" />
     <Compile Include="SDK\sdk_work_entry_dal.cs" />

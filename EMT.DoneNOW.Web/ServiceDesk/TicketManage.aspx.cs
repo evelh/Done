@@ -80,25 +80,17 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                             this.ticket_type_id.SelectedValue = thisTicket.ticket_type_id.ToString();
                             this.status_id.SelectedValue = thisTicket.status_id.ToString();
                             if (thisTicket.priority_type_id != null)
-                            {
                                 priority_type_id.SelectedValue = thisTicket.priority_type_id.ToString();
-                            }
                             if (thisTicket.issue_type_id != null)
-                            {
                                 issue_type_id.SelectedValue = thisTicket.issue_type_id.ToString();
-                            }
                             if (thisTicket.source_type_id != null)
-                            {
                                 source_type_id.SelectedValue = thisTicket.source_type_id.ToString();
-                            }
                             if (thisTicket.issue_type_id != null)
-                            {
                                 issue_type_id.SelectedValue = thisTicket.issue_type_id.ToString();
-                            }
                             if (thisTicket.sla_id != null)
-                            {
                                 sla_id.SelectedValue = thisTicket.sla_id.ToString();
-                            }
+                            if (thisTicket.department_id != null)
+                                department_id.SelectedValue = thisTicket.department_id.ToString();
                         }
                         ticketUdfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.TASK, thisTicket.id, tickUdfList);
                         thisAccount = new CompanyBLL().GetCompany(thisTicket.account_id);
@@ -263,15 +255,10 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 if (result)
                 {
                     if (!string.IsNullOrEmpty(CallBack))
-                    {
-
-                    }
+                        ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存成功');location.href='../ServiceDesk/TicketView?id={para.ticket.id}';self.opener.{CallBack}('{para.ticket.id}');</script>");
                     else
-                    {
                         // 跳转到查看页面  暂时关闭
                         ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存成功');location.href='../ServiceDesk/TicketView?id={para.ticket.id}';self.opener.location.reload();</script>");
-                    }
-                    
                 }
                 else
                 {
@@ -517,13 +504,10 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 else
                     result = new TicketBLL().EditTicket(para, LoginUserId, out faileReason);
                if (!string.IsNullOrEmpty(CallBack))
-                {
-                }
+                    ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存{(result ? "成功" : "失败")}');self.opener.{CallBack}('{para.ticket.id}');window.close();</script>");
                 else
-                {
                      // 跳转到查看页面  暂时关闭
                      ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存{(result?"成功":"失败")}');self.opener.location.reload();window.close();</script>");
-                }
             }
         }
     }

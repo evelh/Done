@@ -1,5 +1,5 @@
 ﻿var backImg = ["up.png", "down.png"];
-var index1 = 0; var index2 = 0; var index3 = 0; var index4 = 0; var index5 = 0; var index6 = 0; var index7 = 0;
+var index1 = 0; var index2 = 0; var index3 = 0; var index4 = 0; var index5 = 0; var index6 = 0; var index7 = 0; var index8 = 0;
 $(".Title1").on("click", function () {
     $(this).next().toggle();
     $(this).children().find($('.Toggle')).children().find($('.InlineIcon ')).css("background-image", "url(../Images/" + backImg[index1 % 2] + ")");
@@ -34,6 +34,11 @@ $(".Title7").on("click", function () {
     $(this).next().toggle();
     $(this).children().find($('.Toggle')).children().find($('.InlineIcon ')).css("background-image", "url(../Images/" + backImg[index7 % 2] + ")");
     index7++;
+});
+$(".Title8").on("click", function () {
+    $(this).next().toggle();
+    $(this).children().find($('.Toggle')).children().find($('.InlineIcon ')).css("background-image", "url(../Images/" + backImg[index8 % 2] + ")");
+    index8++;
 });
 
 var colors = ["#white", "white"];
@@ -843,4 +848,61 @@ function GetItemCount() {
         $(".TicketItemCount").hide();
     }
 }
+
+function RemoveResOther(id) {
+    LayerConfirm("确认移除该审批人吗？", "是", "否", function () {
+        $("#other_" + id).remove();
+    }, function () { })
+}
+
+function CancelTicketOther() {
+    $("#bord_id").val("");
+    $("#AllPass").prop("checked", true);
+    $("#OtherOnePass").prop("checked", false);
+    $("#ticketOtherNewTbody").html("");
+}
+
+function AppOther() {
+    var ticketId = $("#ticket_id").val();
+    if (ticketId == "")
+        return;
+    $.ajax({
+        type: "GET",
+        url: "../Tools/TicketAjax.ashx?act=AppOther&ticket_id=" + ticketId,
+        async: false,
+        dataType: "json",
+        success: function (data) {
+            if (data) {
+                LayerMsg("审批成功！");
+                setTimeout(function () { history.go(0); }, 800)
+            }
+        }
+    })
+}
+function RevokeAppOther() {
+    var ticketId = $("#ticket_id").val();
+    if (ticketId == "")
+        return;
+    $.ajax({
+        type: "GET",
+        url: "../Tools/TicketAjax.ashx?act=RevokeAppOther&ticket_id=" + ticketId,
+        async: false,
+        dataType: "json",
+        success: function (data) {
+            if (data) {
+                LayerMsg("撤销审批成功！");
+                setTimeout(function () { history.go(0); }, 800)
+            }
+        }
+    })
+}
+// 跳转到变更单审批页面
+function ToAppOtherPage() {
+    var ticketId = $("#ticket_id").val();
+    if (ticketId == "")
+        return;
+    window.open("../ServiceDesk/ChangeTicketApprove.aspx?ticket_id=" + ticketId, "_blank", 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+}
+
+
 

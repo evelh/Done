@@ -8,10 +8,10 @@ using System.Runtime.Serialization;
 
 namespace EMT.DoneNOW.Core
 {
-    [Table("sdk_task_other_person")]
+    [Table("sdk_task_relation")]
     [Serializable]
     [DataContract]
-    public partial class sdk_task_other_person : SoftDeleteCore
+    public partial class sdk_task_relation : SoftDeleteCore
     {
 
         [Key]
@@ -20,15 +20,11 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64 task_id { get; set; }
         [DataMember]
-        public Int64? contact_id { get; set; }
+        public Int64 parent_task_id { get; set; }
         [DataMember]
-        public Int32 approve_status_id { get; set; }
+        public Int32 type_id { get; set; }
         [DataMember]
-        public Int64? oper_time { get; set; }
-        [DataMember]
-        public String description { get; set; }
-        [DataMember]
-        public Int64? resource_id { get; set; }
+        public Int32 lag { get; set; }
 
 
     }

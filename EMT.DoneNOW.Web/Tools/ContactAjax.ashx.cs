@@ -50,6 +50,9 @@ namespace EMT.DoneNOW.Web
                     case "GetContactDetail":
                         GetContactDetail(context);
                         break;
+                    case "GetConByAccount":
+                        GetConByAccount(context);
+                        break;
                     default:
                         break;
                 }
@@ -190,7 +193,9 @@ namespace EMT.DoneNOW.Web
                 }
             }
         }
-
+        /// <summary>
+        /// 获取联系人的详情信息
+        /// </summary>
         private void GetContactDetail(HttpContext context)
         {
             var contatc_id = context.Request.QueryString["contact_id"];
@@ -208,6 +213,19 @@ namespace EMT.DoneNOW.Web
                     }
                     context.Response.Write(new Tools.Serialize().SerializeJson(new { id = thisContact.id, name = thisContact.name, phone = thisContact.phone,  ticketNum = ticketNum, monthNum = monthNum, }));
                 }
+            }
+        }
+        /// <summary>
+        /// 获取客户下的联系人列表
+        /// </summary>
+        private void GetConByAccount(HttpContext context)
+        {
+            var accountId = context.Request.QueryString["account_id"];
+            if (!string.IsNullOrEmpty(accountId))
+            {
+                var conList = new DAL.crm_contact_dal().GetContactByAccountId(long.Parse(accountId));
+                if(conList!=null&& conList.Count>0)
+                    context.Response.Write(new Tools.Serialize().SerializeJson(conList));
             }
         }
     }
