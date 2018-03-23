@@ -117,6 +117,7 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.COMPANY_VIEW_ATTACHMENT:
                 case (int)DicEnum.QUERY_CATE.SALES_ORDER_VIEW_ATTACHMENT:
                 case (int)DicEnum.QUERY_CATE.OPPORTUNITY_VIEW_ATTACHMENT:
+                case (int)DicEnum.QUERY_CATE.MASTER_TICKET_SEARCH:
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
@@ -1059,6 +1060,40 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.MASTER_TICKET_SEARCH:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "InActive()", id = "InActTic" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActTic" });
+                    break;
+                case (long)QueryType.MASTER_SUB_TICKET_SEARCH:
+                    contextMenu.Add(new PageContextMenuDto { text = "实例详情", click_function = "ViewTicket()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑实例", click_function = "EditTicket()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除当前实例", click_function = "DeletSinge()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除已选实例", click_function = "DeleteChoose()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除所有未开始实例", click_function = "DeleteInFuture()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除所有实例，", click_function = "DeleteAll()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "转发/修改当前实例", click_function = "ForwardSingle()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "转发/修改已选实例", click_function = "Forward()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "转发/修改所有未开始实例", click_function = "ForwardFuture()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "转发/修改所有实例", click_function = "ForwardAll()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑服务预定", click_function = "EditService()" });
+                    break;
+                case (long)QueryType.SERVICE_CALL_TICKET:
+                    contextMenu.Add(new PageContextMenuDto { text = "为服务预定添加工时", click_function = "AddServiceLabour()",class_name="NeedSave" });
+                    contextMenu.Add(new PageContextMenuDto { text = "管理负责人", click_function = "ManageRes()", class_name = "NeedSave" });
+                    contextMenu.Add(new PageContextMenuDto { text = "移除", click_function = "RemoveTicket()", class_name = "NeedSave" });
+                    break; 
+                case (long)QueryType.SERVICE_CALL_SEARCH:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑服务预定", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewAccount()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "为调度条目添加备注", click_function = "AddItemNote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "转移/修改调度工单", click_function = "ModifyTicket()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "生成工作说明书", click_function = "GetWorkBook()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "完成服务预定", click_function = "DoneServiceCall()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "再次调度（复制）", click_function = "CopyCall()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除服务预定", click_function = "DeleteCall()" });
                     break;
                 default:
                     break;

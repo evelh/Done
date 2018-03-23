@@ -35,6 +35,14 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<sys_notify_tmpl>($"SELECT * from sys_notify_tmpl where id in ( SELECT notify_tmpl_id from sys_notify_tmpl_event where event_id = {(int)event_id})");
         }
-        
+        /// <summary>
+        /// 根据不同的适用事件，选择不同的通知模板
+        /// </summary>
+        public List<sys_notify_tmpl> GetTempByEvent(string ids)
+        {
+            return FindListBySql<sys_notify_tmpl>($"SELECT * from sys_notify_tmpl where id in ( SELECT notify_tmpl_id from sys_notify_tmpl_event where event_id  in ({ids}))");
+        }
+
+
     }
 }
