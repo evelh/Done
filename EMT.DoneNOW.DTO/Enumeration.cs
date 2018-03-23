@@ -456,6 +456,18 @@ namespace EMT.DoneNOW.DTO
         }
 
         /// <summary>
+        /// 休假策略：累计增长周期 - 56
+        /// </summary>
+        public enum TIMEOFF_PERIOD_TYPE
+        {
+            DAY = 667,              // 天
+            WEEK = 668,             // 周
+            DOUBLE_WEEK = 669,      // 双周
+            HALF_MONTH = 670,       // 半月
+            MONTH = 671,            // 月
+        }
+
+        /// <summary>
         /// 附件类型-62
         /// </summary>
         public enum ATTACHMENT_TYPE
@@ -775,6 +787,10 @@ namespace EMT.DoneNOW.DTO
             CTT_CONTRACT_COST_PRODUCT_SN = 1401,        // 成本关联产品的串号
             PURCHASE_RECEIVE = 1402,                    // 采购接收
             PURCHASE_RECEIVE_SN = 1403,                 // 采购接收串号
+            TIMEOFF_POLICY = 1405,                      // 假期策略
+            TIMEOFF_ITEM = 1406,                        // 假期策略类别
+            TIMEOFF_ITEM_TIER = 1407,                   // 假期策略级别
+            TIMEOFF_RESOURCE = 1411,                    // 假期策略关联员工
             PROJECT_TASK_INFORMATION = 1418,            // 任务的扩展信息（自定义信息）
             TICKET_CHECK_LIST = 1420,                   // 工单的检查单
             TICKET_SERVICE_REQUEST = 1421,              // 服务请求审批人信息
@@ -1434,6 +1450,7 @@ namespace EMT.DoneNOW.DTO
         Prouduct = 51,                  //产品
 		InternalCost = 52,                // 合同内部成本
         ContractRate = 53,              // 合同费率
+        ResourceCallBack = 54,          // 员工查找带回
 		CONFIGITEM=55,                  //配置项
         Relation_ConfigItem = 56,       // 关联到该合同的配置项
         Norelation_ConfigItem = 57,     // 未关联到该合同的配置项

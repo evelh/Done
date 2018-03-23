@@ -422,7 +422,7 @@ namespace EMT.DoneNOW.Web
 
                 queryResult = bll.GetResult(GetLoginUserId(), queryPara);
 
-                if (queryTypeId==(int)QueryType.PurchaseItem)
+                if (queryTypeId == (int)QueryType.PurchaseItem)
                 {
                     var items = Session["PurchaseOrderItem"] as PurchaseOrderItemManageDto;
                     if (items != null && items.items.Count > 0)
@@ -487,6 +487,90 @@ namespace EMT.DoneNOW.Web
                         }
                     }
                     param1 = totalSale.ToString();
+                }
+
+                if (queryTypeId == (int)QueryType.TimeoffPolicyResource)    // 休假策略关联员工
+                {
+                    if (Request.QueryString["con2467"] == "0")
+                    {
+                        var items = Session["TimeoffAssRes"] as TimeoffAssociateResourceDto;
+                        if (items != null && items.items.Count > 0)
+                        {
+                            queryResult.page_count += items.items.Count;
+                            queryResult.count += items.items.Count;
+                            queryResult.page_size = queryResult.page_size == 0 ? 20 : queryResult.page_size;
+                            queryResult.page = queryResult.page == 0 ? 1 : queryResult.page;
+                            foreach (var item in items.items)
+                            {
+                                Dictionary<string, object> oi = new Dictionary<string, object>();
+                                foreach (var rsltClmn in resultPara)
+                                {
+                                    if (rsltClmn.name == "id")
+                                        oi.Add("id", item.id);
+                                    else if (rsltClmn.name == "员工")
+                                        oi.Add("员工", item.resourceName);
+                                    else if (rsltClmn.name == "生效开始日期")
+                                        oi.Add("生效开始日期", item.effBeginDate.ToString("yyyy-MM-dd"));
+                                    else if (rsltClmn.name == "生效结束日期")
+                                        oi.Add("生效结束日期", "");
+                                    else
+                                        oi.Add(rsltClmn.name, "");
+                                }
+                                if (queryResult.result == null)
+                                    queryResult.result = new List<Dictionary<string, object>>();
+                                queryResult.result.Add(oi);
+                            }
+                        }
+                    }
+                }
+
+                if (queryTypeId == (int)QueryType.TimeoffPolicyTier)
+                {
+                    if (Request.QueryString["cateType"] == "1")
+                    {
+                        var perPeriodPara = resultPara.Find(_ => _.name == "每周期假期时间（小时）");
+                        if (perPeriodPara != null)
+                            resultPara.Remove(perPeriodPara);
+                    }
+                    if (Request.QueryString["con2468"] == "0")
+                    {
+                        var items = Session["TimeoffPolicyTier"] as TimeoffPolicyTierListDto;
+                        string itemCate = Request.QueryString["cate"];
+                        int cat;
+                        if (items != null && items.items.Count > 0 && int.TryParse(itemCate, out cat))
+                        {
+                            var cateItems = from itm in items.items where itm.cate == cat select itm;
+                            if (cateItems.Count() > 0)
+                            {
+                                queryResult.page_count += items.items.Count;
+                                queryResult.count += items.items.Count;
+                                queryResult.page_size = queryResult.page_size == 0 ? 20 : queryResult.page_size;
+                                queryResult.page = queryResult.page == 0 ? 1 : queryResult.page;
+                                foreach (var item in cateItems)
+                                {
+                                    Dictionary<string, object> oi = new Dictionary<string, object>();
+                                    foreach (var rsltClmn in resultPara)
+                                    {
+                                        if (rsltClmn.name == "id")
+                                            oi.Add("id", item.id);
+                                        else if (rsltClmn.name == "工作年限（月）")
+                                            oi.Add("工作年限（月）", item.eligibleMonths);
+                                        else if (rsltClmn.name == "每年假期时间（小时）")
+                                            oi.Add("每年假期时间（小时）", item.annualHours);
+                                        else if (rsltClmn.name == "滚存限额或累计增长限额")
+                                            oi.Add("滚存限额或累计增长限额", item.capHours);
+                                        else if (rsltClmn.name == "每周期假期时间（小时）")
+                                            oi.Add("每周期假期时间（小时）", item.hoursPerPeriod);
+                                        else
+                                            oi.Add(rsltClmn.name, "");
+                                    }
+                                    if (queryResult.result == null)
+                                        queryResult.result = new List<Dictionary<string, object>>();
+                                    queryResult.result.Add(oi);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -1054,6 +1138,9 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.TimeoffPolicyResource:
+                    contextMenu.Add(new PageContextMenuDto { text = "取消关联", click_function = "Disassociate()" });
                     break;
                 default:
                     break;
