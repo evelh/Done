@@ -13,6 +13,7 @@ namespace EMT.DoneNOW.Core
     public partial class tst_timeoff_policy_resource : SoftDeleteCore
     {
 
+        [Key]
         [DataMember]
         public Int64 id { get; set; }
         [DataMember]

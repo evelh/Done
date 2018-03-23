@@ -2429,9 +2429,6 @@
     <Compile Include="SysSetting\WorkType.aspx.designer.cs">
       <DependentUpon>WorkType.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Test.ashx.cs">
-      <DependentUpon>Test.ashx</DependentUpon>
-    </Compile>
     <Compile Include="Tools\AccountClassAjax.ashx.cs">
       <DependentUpon>AccountClassAjax.ashx</DependentUpon>
     </Compile>
@@ -2525,6 +2522,9 @@
     <Compile Include="Tools\TicketAjax.ashx.cs">
       <DependentUpon>TicketAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\TimeoffPolicyAjax.ashx.cs">
+      <DependentUpon>TimeoffPolicyAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\WorkflowRuleAjax.ashx.cs">
       <DependentUpon>WorkflowRuleAjax.ashx</DependentUpon>
     </Compile>
@@ -2543,7 +2543,6 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="Test.ashx" />
     <Content Include="Tools\AddressAjax.ashx" />
     <Content Include="Tools\CompanyAjax.ashx" />
     <Content Include="Tools\ContactAjax.ashx" />
@@ -2577,6 +2576,7 @@
     <Content Include="Tools\ExpenseAjax.ashx" />
     <Content Include="Tools\TicketAjax.ashx" />
     <Content Include="Tools\WorkflowRuleAjax.ashx" />
+    <Content Include="Tools\TimeoffPolicyAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

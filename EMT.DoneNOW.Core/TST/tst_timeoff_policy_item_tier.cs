@@ -21,7 +21,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64 timeoff_policy_item_id { get; set; }
         [DataMember]
-        public Int32 annual_hours { get; set; }
+        public Decimal? annual_hours { get; set; }
         [DataMember]
         public Decimal? cap_hours { get; set; }
         [DataMember]
