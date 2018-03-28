@@ -1,0 +1,202 @@
+*{margin: 0;padding: 0;list-style: none;font-family: '微软雅黑';box-sizing: border-box;}
+body{overflow-x:hidden;}
+
+.heard{
+    width: 100%;
+    height: auto;
+}
+select {
+    height: 24px;
+    padding: 0;
+    border: solid 1px #D7D7D7;
+}
+textarea{border: solid 1px #D7D7D7;}
+input[type=text], input[type=password] {
+    height: 24px;
+    border: solid 1px #D7D7D7;
+}
+.heard ul{padding: 10px;height: auto;overflow: hidden;}
+.heard ul li{padding: 3px 5px;float: left;cursor: pointer;border: 1px solid #BCBCBC; background: #d7d7d7;
+background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);color: #4F4F4F;
+line-height: 20px;margin-left: 10px;font-size: 14px;}
+.heard ul li:first-child{margin: 0;}
+.heard ul li:hover{background: #e7e7e7;}
+.heard ul li img{display: block;float: left;margin-top:2px;margin-right: 5px;}
+
+.GeneralCount{height: auto;padding: 10px;max-width: 800px;}
+.Additem{border: 1px solid #d3d3d3;height: auto;overflow: hidden;}
+.Additem .title{font-weight: bold;padding: 2px 4px 6px 6px;
+    color: #666;
+    height: 16px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 17px;}
+.Content{padding: 0 28px 0 28px;margin:10px; overflow: hidden;}
+.Content .item{float: left;font-size: 12px;color: #4F4F4F;height: 50px;}
+.Content .item p{font-weight: bold;}
+.Content .item2{margin-left: 80px;padding-top: 15px;height: 35px;}
+.Content .item2 input{display: block;float: left;margin-top:3px;margin-right:5px; }
+.Content .item3{width:100%;}
+.Content .item3 input{width: 100%;box-sizing: border-box;}
+.Content .item p span{color: red;margin-left: 5px;}
+
+.Content .item4{width: 100%;position: relative;}
+.Content .item4 select{width: 100%;}
+.Content .item4 .add{position: absolute;right: -20px;top:40%;cursor: pointer;}
+.Content .item5 ,.Content .item6{height: auto;}
+.Content .item6{float: right;}
+.Content .item7{width:100%;height: auto;}
+
+.RelatedTicketsSection{
+    border: 1px solid #d3d3d3;
+    margin: 0 10px 10px 10px;
+    padding: 4px 0;
+    padding-bottom:6px; 
+}
+.relatedheard{width: 100%;height: auto;overflow: hidden;
+}
+.relatedheard .toogle{display: block;float: left;
+background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+    border: 1px solid #c6c6c6;
+    cursor: pointer;
+    height: 14px;
+    margin: 2px 6px 0 6px;
+    width: 14px;
+    text-align: center;line-height: 12px;font-weight: bold;color: #888888;}
+.relatedheard .title{
+    padding: 2px 4px 6px 6px;
+    color: #666;
+    height: 16px;
+    font-size: 12px;
+    font-weight: bold;
+}
+.relatedcontent{
+    padding: 10px 28px 15px 28px;
+    overflow: hidden;
+}
+.relatedcontent p{font-weight: bold;font-size: 12px;color: #4F4F4F;}
+.relatedcontent input{    border: solid 1px #D7D7D7;
+    font-size: 12px;
+    color: #333;
+    margin: 0;
+    width:240px;float: left;}
+.relatedcontent .add{float: left;background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+    border: 1px solid #c6c6c6;
+    cursor: pointer;height: 22px;font-size:12px;text-align: center;line-height: 22px;font-weight: bold;margin-left:5px; padding: 1px 5px;}
+
+.dataGridBody{
+    width: 100%;
+    background-color: white;
+    font-size: 14px;
+    color: #333;
+    vertical-align: middle;
+    padding: 10px 0 4px 0;
+    vertical-align: top;
+    word-wrap: break-word;
+    border: 1px solid #98b4ca;
+    margin-top:40px;
+}
+.dataGridHeader{height: 28px;background: #CBD9E4; }
+
+.toccbcc{width: 100%;height: auto;}
+.toccbcc .items{width: 100%;height: 50px;}
+.toccbcc .items p{
+    color: #376597;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: normal;
+}
+.toccbcc .items input{width: 100%;}
+
+
+.Contents{width: 100%;height: auto;overflow-y: auto;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**/
+
+.header{
+    height: 40px;
+    line-height: 40px;
+    background: #346A95;
+    padding: 0 10px;
+    font-size: 18px;
+    color: #FFFFFF;
+}
+.searchBox{width: 100%;
+height: auto;
+background: white;padding-top:20px; }
+.search{float: right;background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+    border: 1px solid #c6c6c6;
+    cursor: pointer;height: 22px;font-size:12px;text-align: center;line-height: 15px;font-weight: bold;margin-left:5px; padding: 3px 5px;}
+.searchitem{height: auto;padding: 20px;}
+.searchitem ul{width: 100%;height: auto;overflow: hidden;}
+.searchitem ul li{width: 50%;height: 50px;float: left;}
+.searchitem ul li label{width: 30%;text-align: right;font-weight: bold;display: block;float: left;line-height: 26px;font-size: 14px;}
+.searchitem ul li input{width: 50%;float: left;margin-left: 5%;box-sizing: border-box;}
+.searchitem ul li select{width: 50%;float: left;margin-left: 5%;}
+
+
+
+/*contenttitle*/
+
+.contenttitle{width: 100%;position: fixed;
+    border-bottom: 1px solid #e8e8fa;
+    background: #fff;
+    overflow: hidden;
+    margin: 0 10px 10px 10px;
+    padding: 15px 0;
+    top: 0;
+    min-width: 1000px;
+}
+.contenttitle .left{
+    float: left;
+    overflow: hidden;
+}
+.contenttitle .left div{
+    cursor: pointer;
+    width: auto;
+    height: 24px;
+    border: 1px solid #BCBCBC;
+    background: #d7d7d7;
+    background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+    color: #4F4F4F;
+    padding-left: 5px;
+    padding-right: 5px;
+    line-height: 24px;
+    font-weight: 700;
+    font-size: 14px;
+    float: left;
+}
+.contenttitle .left .add img{display: block;float: left;margin-top:4px;margin-right: 5px;}
+.contenttitle .left div:hover{background: #e7e7e7;}
+.contenttitle .left .manage{margin-left: 10px;}
+.contenttitle .right{float: right;overflow: hidden;font-size: 14px;}
+.searchcontent{width: 100%;height:auto;margin-top:70px;}
+.searchcontent table{border:none;}
+.searchcontent table th{border: 1px solid #98b4ca;cursor: pointer;border-left:none;
+    box-sizing: border-box;
+}
+.searchcontent table th:first-child{border-left:1px solid #98b4ca;}
+.searchcontent table td{color: #333;padding: 4px;font-size: 12px;text-align: center;vertical-align: top;word-wrap: break-word;height: 28px;line-height: 28px;cursor: pointer;
+border: none;border-left:1px solid white; }
+.searchcontent table td:last-child{border-right:1px solid white}
+.searchcontent table tbody tr{
+    border-bottom:1px solid #e8e8fa;
+}
+ .searchcontent table tbody tr:hover{
+     background: #E0E4E5;
+ }
+/*.searchcontent table tbody tr:hover td{
+    border-left: 1px solid white;
+ }*/

@@ -84,6 +84,7 @@ namespace EMT.DoneNOW.DTO
         TASK_LIBRARY_CATE  = 149,                 // 任务库种类
         SERVICE_CALL_STATUS = 152,                // 服务请求状态
         ITEM_DESC_DISPLAY_TYPE = 155,               // 采购项描述信息显示内容类型
+        KNOWLEDGE_BASE_CATE = 164,              // 知识库文章目录
         TICKET_CATE = 167,                       // 工单种类
     }
 
@@ -658,6 +659,7 @@ namespace EMT.DoneNOW.DTO
             REPORT_OTHER_SYSTEM_LOGINLOG = 1598,    // 报表-其他-系统-登录日志
             REPORT_OTHER_SYSTEM_OPERLOG = 1599,     // 报表-其他-系统-操作日志
             WORKFLOW_RULE = 1600,                   // 工作流规则查询
+            KNOWLEDGEBASE_ARTICLE = 1604,           // 知识库文档管理-查询
             MASTER_SUB_TICKET_SEARCH = 1601,        // 定期主工单管理-详情-子工单查询
             SERVICE_CALL_SEARCH = 1602,             // 服务预定管理-服务预定查询
             SERVICE_CALL_TICKET = 1603,             // 服务预定关联工单查询 
@@ -1616,12 +1618,15 @@ namespace EMT.DoneNOW.DTO
         REPORT_CRM_INSPRO_DETAIL = 178,     // 报表-CRM配置项-配置项详情
         REPORT_SERVICEDESK_TICKETBYACCOUNT = 179, // 报表--服务台常规-工单和任务按客户
         REPORT_CONTRACT_BILLED = 180,          // 报表-CRM配置项-已计费信息
-        WorkflowRule = 185,                 // 工作流规则查询
+        WorkflowRule = 185,             // 工作流规则查询
+        KnowledgebaseArticle = 189,     // 知识库文档管理-查询
+        TICKET_REQUEST = 192,            // 工单详情-变更请求
+      
         MASTER_SUB_TICKET_SEARCH=186,       // 定期主工单管理-详情-子工单查询 
         SERVICE_CALL_SEARCH = 187,             // 服务预定管理-服务预定查询
         SERVICE_CALL_TICKET = 188,             // 服务预定关联工单查询 
         MASTER_TICKET_SEARCH = 190,         // 定期主工单查询
-        TICKET_REQUEST = 192,               // 工单详情-变更请求
+     
         TICKET_INCIDENT = 193,                 // 工单详情-事故清单
         TICKET_PROBLEM = 194,                  // 工单详情-问题清单
         TimeoffPolicy = 196,                // 休假策略查询

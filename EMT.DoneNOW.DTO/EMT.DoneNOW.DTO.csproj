@@ -76,6 +76,7 @@
     <Compile Include="InventoryOrderReceiveItemDto.cs" />
     <Compile Include="InvioceTempDto.cs" />
     <Compile Include="InvoiceDeductionDto.cs" />
+    <Compile Include="KnowledgeCateDto.cs" />
     <Compile Include="LoseOpportunityDto.cs" />
     <Compile Include="MasterTicketDto.cs" />
     <Compile Include="OpportunityAddOrUpdateDto.cs" />
@@ -117,7 +118,7 @@
     <Compile Include="UserInfoDto.cs" />
     <Compile Include="WorkflowRuleDto.cs" />
   </ItemGroup>
-  <ItemGroup>
+   <ItemGroup>
     <ProjectReference Include="..\EMT.DoneNOW.Core\EMT.DoneNOW.Core.csproj">
       <Project>{EB88BBF3-488C-466F-BF7C-02BD01530D18}</Project>
       <Name>EMT.DoneNOW.Core</Name>

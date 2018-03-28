@@ -62,10 +62,24 @@ $(".GuideOverlay").on("mouseout", function () {
     }, 200)
 });
 //循环一级菜单   显示二级菜单
+//优化
+var Navtimer; var x = 0;
 $.each($(".GuideNavigation"), function (i) {
-    $(this).mousemove(function () {
-        $(this).addClass("SelectedState").siblings("div").removeClass("SelectedState").addClass("NormalState");
-        $(".Module").eq(i).show().siblings(".Module").hide();
+    $(this).mouseover(function () {
+        var _this = this;
+        Navtimer = setInterval(function () {
+            x++;
+            if (x >= 2) {
+                $(_this).addClass("SelectedState").siblings("div").removeClass("SelectedState").addClass("NormalState");
+                $(".Module").eq(i).show().siblings(".Module").hide();
+            }
+        }, 100)
+        
+    });
+    $(this).mouseout(function () {
+        clearInterval(Navtimer)
+        x = 0;
+
     });
 });
 $(".Content").on("mouseover", function () {
