@@ -29,6 +29,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                 //常规tab页
                 //下拉框
                 Bind();
+                Session["ResInternalCost"] = null;
             }
             else
             {
@@ -114,6 +115,32 @@ namespace EMT.DoneNOW.Web.SysSetting
             this.Outsource_Security.DataSource = dic.FirstOrDefault(_ => _.Key == "Outsource_Security").Value;
             Outsource_Security.DataBind();
             Outsource_Security.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+
+            //员工类型
+            var genBll = new GeneralBLL();
+            var resType = genBll.GetDicValues(GeneralTableEnum.RESOURCE_TYPE);
+            type_id.DataTextField = "show";
+            type_id.DataValueField = "val";
+            type_id.DataSource = resType;
+            type_id.DataBind();
+
+            //薪资类型
+            var payType = genBll.GetDicValues(GeneralTableEnum.PAYROLL_TYPE);
+            payroll_type_id.DataTextField = "show";
+            payroll_type_id.DataValueField = "val";
+            payroll_type_id.DataSource = payType;
+            payroll_type_id.DataBind();
+
+            hire_date.Text = DateTime.Now.ToString("yyyy-MM-dd");
+            time_sheet_start_date.Text = DateTime.Now.ToString("yyyy-MM-dd");
+
+            // 休假方案
+            var policyList = new TimeOffPolicyBLL().GetPolicyList();
+            timeoff_policy_id.DataTextField = "name";
+            timeoff_policy_id.DataValueField = "id";
+            timeoff_policy_id.DataSource = policyList;
+            timeoff_policy_id.DataBind();
+            timeoff_policy_id.Items.Insert(0, new ListItem() { Value = "0", Text = "", Selected = true });
         }
         //protected void Avatar(object sender, ImageClickEventArgs e)
         //{
@@ -235,6 +262,13 @@ namespace EMT.DoneNOW.Web.SysSetting
             param.sys_res = AssembleModel<sys_resource>();
             param.sys_res.name = param.sys_res.first_name + param.sys_res.last_name;
             param.sys_res.avatar = SavePic();//保存头像
+            if (timeoff_policy_id.SelectedValue != "0" && (!string.IsNullOrEmpty(effective_date.Text)))
+            {
+                param.timeoffPolicy = new tst_timeoff_policy_resource();
+                param.timeoffPolicy.timeoff_policy_id = long.Parse(timeoff_policy_id.SelectedValue);
+                param.timeoffPolicy.effective_date = DateTime.Parse(effective_date.Text);
+            }
+            param.internalCost = Session["ResInternalCost"] as List<sys_resource_internal_cost>;
 
             if (this.CanEditSkills.Checked)
             {
@@ -377,7 +411,7 @@ namespace EMT.DoneNOW.Web.SysSetting
         /// <param name="e"></param>
         protected void Cancel_Click(object sender, EventArgs e)
         {
-            Response.Write("<script>window.close();self.opener.location.reload();</script>");  //  关闭添加页面的同时，刷新父页面
+            Response.Write("<script>window.close();</script>");  //  关闭添加页面的同时，刷新父页面
         }
     }
 }

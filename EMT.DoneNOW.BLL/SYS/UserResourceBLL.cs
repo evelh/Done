@@ -111,7 +111,7 @@ namespace EMT.DoneNOW.BLL
             new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
 
             data.sys_user.id = id;
-            //MD5加密
+            //加密
            data.sys_user.password = new Tools.Cryptographys().SHA1Encrypt(data.sys_user.password);
             new sys_user_dal().Insert(data.sys_user);
 
@@ -130,6 +130,20 @@ namespace EMT.DoneNOW.BLL
 
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_account_log);
+
+            if (data.timeoffPolicy != null)
+            {
+                new TimeOffPolicyBLL().AddTimeoffResource(id.ToString(), data.timeoffPolicy.timeoff_policy_id, data.timeoffPolicy.effective_date, user_id);
+            }
+            if (data.internalCost != null && data.internalCost.Count > 0)
+            {
+                var costDal = new sys_resource_internal_cost_dal();
+                foreach (var cost in data.internalCost)
+                {
+                    cost.id = costDal.GetNextIdCom();
+                    costDal.Insert(cost);
+                }
+            }
 
             return ERROR_CODE.SUCCESS;
         }

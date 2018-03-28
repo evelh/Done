@@ -66,6 +66,12 @@ namespace EMT.DoneNOW.Web
                     case "GetResInfo":
                         GetResInfo(context);
                         break;
+                    case "AddResInternalCost":
+                        AddResInternalCost(context);
+                        break;
+                    case "DeleteResInternalCost":
+                        DeleteResInternalCost(context);
+                        break;
                     default:
                         break;
                 }
@@ -88,6 +94,129 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(new Tools.Serialize().SerializeJson(sys_res));
             }
         }
+
+        /// <summary>
+        /// 添加员工内部成本
+        /// </summary>
+        /// <param name="context"></param>
+        private void AddResInternalCost(HttpContext context)
+        {
+            var costList = context.Session["ResInternalCost"] as List<sys_resource_internal_cost>;
+            if (string.IsNullOrEmpty(context.Request.QueryString["userId"]))
+            {
+                if (costList == null)
+                    costList = new List<sys_resource_internal_cost>();
+                context.Response.Write(new Tools.Serialize().SerializeJson(costList));
+                return;
+            }
+            long userId = long.Parse(context.Request.QueryString["userId"]);
+            if (userId == 0)
+            {
+                if (costList == null)
+                    costList = new List<sys_resource_internal_cost>();
+                sys_resource_internal_cost cost = new sys_resource_internal_cost();
+                if (!string.IsNullOrEmpty(context.Request.QueryString["date"]))
+                    cost.start_date = DateTime.Parse(context.Request.QueryString["date"]);
+                if (cost.start_date != null)    // 填写了开始时间，计算其他项结束时间
+                {
+                    var fd = costList.Find(_ => _.start_date == cost.start_date);
+                    if (fd != null)     // 开始时间不能重复
+                    {
+                        context.Response.Write(new Tools.Serialize().SerializeJson(false));
+                        return;
+                    }
+                    if (costList[0].end_date != null && costList[0].end_date.Value >= cost.start_date.Value)    // 生效时间最前，作为第二条
+                    {
+                        costList[0].end_date = cost.start_date.Value.AddDays(-1);
+                        cost.end_date = costList[1].start_date.Value.AddDays(-1);
+                        costList.Insert(1, cost);
+                    }
+                    else if (costList[0].end_date == null)      // 当前只有一条，作为第二条
+                    {
+                        costList[0].end_date = cost.start_date.Value.AddDays(-1);
+                        costList.Insert(1, cost);
+                    }
+                    else if (cost.start_date.Value > costList[costList.Count - 1].start_date.Value)     // 生效时间最后，最后一条
+                    {
+                        costList[costList.Count - 1].end_date = cost.start_date.Value.AddDays(-1);
+                        costList.Add(cost);
+                    }
+                    else    // 生效时间在中间
+                    {
+                        for (int i = 1; i < costList.Count - 2; i++)
+                        {
+                            if (costList[i].start_date.Value < cost.start_date.Value && costList[i + 1].start_date.Value > cost.start_date.Value)   // 找到按顺序的时间前后项
+                            {
+                                costList[i].end_date = cost.start_date.Value.AddDays(-1);
+                                cost.end_date = costList[i + 1].start_date.Value.AddDays(-1);
+                                costList.Insert(i + 1, cost);
+                            }
+                        }
+                    }
+                }
+                else if (costList.Count > 0)    // 有其他项需要填写开始时间
+                {
+                    context.Response.Write(new Tools.Serialize().SerializeJson(false));
+                    return;
+                }
+                else    // 第一条
+                {
+                    costList.Add(cost);
+                }
+                cost.hourly_rate = decimal.Parse(context.Request.QueryString["rate"]);
+                if (costList.Count == 0)
+                    cost.id = 1;
+                else
+                    cost.id = costList.Max(_ => _.id) + 1;
+                
+                context.Session["ResInternalCost"] = costList;
+                context.Response.Write(new Tools.Serialize().SerializeJson(costList));
+                return;
+            }
+        }
+
+        /// <summary>
+        /// 删除员工内部成本
+        /// </summary>
+        /// <param name="context"></param>
+        private void DeleteResInternalCost(HttpContext context)
+        {
+            long userId = long.Parse(context.Request.QueryString["userId"]);
+            if (userId == 0)
+            {
+                var costList = context.Session["ResInternalCost"] as List<sys_resource_internal_cost>;
+                if (costList == null || costList.Count == 1)
+                {
+                    context.Response.Write(new Tools.Serialize().SerializeJson(false));
+                    return;
+                }
+                long id = long.Parse(context.Request.QueryString["id"]);
+                
+                int idx = costList.FindIndex(_ => _.id == id);
+                if (idx == -1)
+                {
+                    context.Response.Write(new Tools.Serialize().SerializeJson(false));
+                    return;
+                }
+                if (idx == 0)   // 第一个
+                {
+                    costList[1].start_date = null;
+                }
+                else if (idx == costList.Count - 1)  // 最后一个
+                {
+                    costList[idx - 1].end_date = null;
+                }
+                else
+                {
+                    costList[idx - 1].end_date = costList[idx].end_date;
+                }
+                costList.RemoveAt(idx);
+                context.Session["ResInternalCost"] = costList;
+                context.Response.Write(new Tools.Serialize().SerializeJson(costList));
+                return;
+            }
+        }
+
         /// <summary>
         /// 根据关系表获取员工信息
         /// </summary>

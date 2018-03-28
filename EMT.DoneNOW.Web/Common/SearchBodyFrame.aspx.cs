@@ -273,6 +273,14 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (int)DicEnum.QUERY_CATE.WORKFLOW_RULE:
                 case (int)DicEnum.QUERY_CATE.TIMEOFF_POLICY:
+                case (int)DicEnum.QUERY_CATE.RESOURCE_TIME_SHEET:
+                case (int)DicEnum.QUERY_CATE.RESOURCE_EXPENSE_REPORT:
+                case (int)DicEnum.QUERY_CATE.RESOURCE_DEPARTMENT:
+                case (int)DicEnum.QUERY_CATE.RESOURCE_SERVICE_DESK_QUEUES:
+                case (int)DicEnum.QUERY_CATE.RESOURCE_SKILL:
+                case (int)DicEnum.QUERY_CATE.RESOURCE_CERTIFICATE:
+                case (int)DicEnum.QUERY_CATE.RESOURCE_DEGREE:
+                case (int)DicEnum.QUERY_CATE.RESOURCE_ATTACHMENT:
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.KNOWLEDGEBASE_ARTICLE:
@@ -575,6 +583,25 @@ namespace EMT.DoneNOW.Web
                             }
                         }
                     }
+                }
+
+                if (queryTypeId == (int)QueryType.ResourceDegree
+                    || queryTypeId == (int)QueryType.ResourceCertificate
+                    || queryTypeId == (int)QueryType.ResourceAttachment
+                    || queryTypeId == (int)QueryType.ResourceDepartment
+                    || queryTypeId == (int)QueryType.ResourceExpense
+                    || queryTypeId == (int)QueryType.ResourceServiceDeskQueue
+                    || queryTypeId == (int)QueryType.ResourceSkill
+                    || queryTypeId == (int)QueryType.ResourceTimeSheet)
+                {
+                    resultPara.Add(new QueryResultParaDto
+                    {
+                        id = 0,
+                        length = 4,
+                        name = "操作",
+                        type = (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TXT,
+                        visible = 1
+                    });
                 }
             }
         }

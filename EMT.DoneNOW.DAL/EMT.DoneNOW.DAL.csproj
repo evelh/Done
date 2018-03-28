@@ -191,7 +191,11 @@
     <Compile Include="SYS\sys_notify_tmpl_dal.cs" />
     <Compile Include="SYS\sys_oper_log_dal.cs" />
     <Compile Include="SYS\sys_query_type_user_dal.cs" />
+    <Compile Include="SYS\sys_resource_approver_dal.cs" />
+    <Compile Include="SYS\sys_resource_availability_dal.cs" />
     <Compile Include="SYS\sys_resource_department_dal.cs" />
+    <Compile Include="SYS\sys_resource_internal_cost_dal.cs" />
+    <Compile Include="SYS\sys_resource_skill_dal.cs" />
     <Compile Include="SYS\sys_resource_territory_dal.cs" />
     <Compile Include="SYS\sys_role_dal.cs" />
     <Compile Include="SYS\sys_system_setting_dal.cs" />
@@ -225,10 +229,6 @@
     <ProjectReference Include="..\EMT.DoneNOW.DTO\EMT.DoneNOW.DTO.csproj">
       <Project>{4cbd682d-bd97-4d4e-b552-a7e4d4dd6b09}</Project>
       <Name>EMT.DoneNOW.DTO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EMT.DoneNOW.IDAL\EMT.DoneNOW.IDAL.csproj">
-      <Project>{53e7b184-f169-470c-97c6-1674106db581}</Project>
-      <Name>EMT.DoneNOW.IDAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\EMT.Tools\EMT.Tools.csproj">
       <Project>{6e53e20f-4b91-4489-a6d5-9d188ddc650d}</Project>

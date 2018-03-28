@@ -36,8 +36,8 @@
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="StackExchange.Redis, Version=1.2.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\StackExchange.Redis.1.2.5\lib\net46\StackExchange.Redis.dll</HintPath>
@@ -86,6 +86,7 @@
     <Compile Include="PRO\TaskBLL.cs" />
     <Compile Include="SDK\KnowledgeBLL.cs" />
     <Compile Include="SDK\TicketBLL.cs" />
+    <Compile Include="SDK\WorkEntryBLL.cs" />
     <Compile Include="SYS\AccountClassBLL.cs" />
     <Compile Include="SYS\ConfigTypeBLL.cs" />
     <Compile Include="SYS\DistrictBLL.cs" />
@@ -107,12 +108,11 @@
     <Compile Include="SYS\WorkflowRuleProcBLL.cs" />
     <Compile Include="TST\TimeOffPolicyBLL.cs" />
   </ItemGroup>
-    <ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\EMT.DoneNOW.Core\EMT.DoneNOW.Core.csproj">
       <Project>{eb88bbf3-488c-466f-bf7c-02bd01530d18}</Project>
       <Name>EMT.DoneNOW.Core</Name>
     </ProjectReference>
-
     <ProjectReference Include="..\EMT.DoneNOW.DAL\EMT.DoneNOW.DAL.csproj">
       <Project>{adc67b7e-fe81-4832-b5b7-e0b931171f4f}</Project>
       <Name>EMT.DoneNOW.DAL</Name>
@@ -120,14 +120,6 @@
     <ProjectReference Include="..\EMT.DoneNOW.DTO\EMT.DoneNOW.DTO.csproj">
       <Project>{4cbd682d-bd97-4d4e-b552-a7e4d4dd6b09}</Project>
       <Name>EMT.DoneNOW.DTO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EMT.DoneNOW.IBLL\EMT.DoneNOW.IBLL.csproj">
-      <Project>{16ec491d-01b1-440c-a704-cc9aa83cc349}</Project>
-      <Name>EMT.DoneNOW.IBLL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EMT.DoneNOW.IDAL\EMT.DoneNOW.IDAL.csproj">
-      <Project>{53e7b184-f169-470c-97c6-1674106db581}</Project>
-      <Name>EMT.DoneNOW.IDAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\EMT.Tools\EMT.Tools.csproj">
       <Project>{6e53e20f-4b91-4489-a6d5-9d188ddc650d}</Project>

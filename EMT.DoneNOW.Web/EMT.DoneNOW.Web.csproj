@@ -459,6 +459,7 @@
     <Content Include="Scripts\Search\PurchaseItem.js" />
     <Content Include="Scripts\Search\PurchaseOrder.js" />
     <Content Include="Scripts\Search\PurchaseReceive.js" />
+    <Content Include="Scripts\Search\ResourceTimeSheet.js" />
     <Content Include="Scripts\Search\revoke_expense.js" />
     <Content Include="Scripts\Search\revoke_labour.js" />
     <Content Include="Scripts\Search\service.js" />
@@ -514,6 +515,7 @@
     <Content Include="SysSetting\WorkflowRule.aspx" />
     <Content Include="TimeSheet\ExpenseReportDetail.aspx" />
     <Content Include="TimeSheet\RefuseReportReason.aspx" />
+    <Content Include="TimeSheet\RegularTimeAddEdit.aspx" />
     <Content Include="TimeSheet\ReportOperation.aspx" />
     <Content Include="TimeSheet\ReportView.aspx" />
     <Content Include="Tools\PurchaseOrderAjax.ashx" />
@@ -2151,6 +2153,13 @@
     </Compile>
     <Compile Include="TimeSheet\RefuseReportReason.aspx.designer.cs">
       <DependentUpon>RefuseReportReason.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TimeSheet\RegularTimeAddEdit.aspx.cs">
+      <DependentUpon>RegularTimeAddEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TimeSheet\RegularTimeAddEdit.aspx.designer.cs">
+      <DependentUpon>RegularTimeAddEdit.aspx</DependentUpon>
     </Compile>
     <Compile Include="TimeSheet\ReportOperation.aspx.cs">
       <DependentUpon>ReportOperation.aspx</DependentUpon>

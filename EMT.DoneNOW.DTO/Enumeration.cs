@@ -47,6 +47,8 @@ namespace EMT.DoneNOW.DTO
         SEX = 49,
         EMAILTYPE = 50,
         OUTSOURCE_SECURITY = 51,                  //外包权限
+        RESOURCE_TYPE = 52,                     // 员工类型
+        PAYROLL_TYPE = 53,                      // 薪资类型
         TIME_OFF_PERIOD_TYPE = 56,              // 休假策略：累计增长周期类型
         ATTACHMENT_TYPE = 62,                   // 附件类型
         DEPARTMENT_CATE = 64,                     //部门：类型
@@ -659,10 +661,10 @@ namespace EMT.DoneNOW.DTO
             REPORT_OTHER_SYSTEM_LOGINLOG = 1598,    // 报表-其他-系统-登录日志
             REPORT_OTHER_SYSTEM_OPERLOG = 1599,     // 报表-其他-系统-操作日志
             WORKFLOW_RULE = 1600,                   // 工作流规则查询
-            KNOWLEDGEBASE_ARTICLE = 1604,           // 知识库文档管理-查询
             MASTER_SUB_TICKET_SEARCH = 1601,        // 定期主工单管理-详情-子工单查询
             SERVICE_CALL_SEARCH = 1602,             // 服务预定管理-服务预定查询
             SERVICE_CALL_TICKET = 1603,             // 服务预定关联工单查询 
+            KNOWLEDGEBASE_ARTICLE = 1604,           // 知识库文档管理-查询
             MASTER_TICKET_SEARCH = 1605,            // 定期主工单查询
             TICKET_MERGE = 1606 ,                   // 合并工单的查找带回
             TICKET_REQUEST = 1607,                  // 工单详情-变更请求工单
@@ -674,6 +676,15 @@ namespace EMT.DoneNOW.DTO
             TIMEOFF_POLICY_TIER = 1613,             // 休假策略-级别查询
             ACCOUNT_SERVICE_DETAILS = 1614,         // 工单详情-客户服务详情
             TICKET_INCLIDENT_RELATION = 1615,       // 工单详情-事故关联其他工单
+            RESOURCE_TIME_SHEET = 1623,             // 员工详情-工时表审批人
+            RESOURCE_EXPENSE_REPORT = 1624,         // 员工详情-费用审批人
+            RESOURCE_DEPARTMENT = 1625,             // 员工详情-员工部门
+            RESOURCE_SERVICE_DESK_QUEUES = 1626,    // 员工详情-员工队列
+            RESOURCE_SKILL = 1627,                  // 员工详情-员工技能
+            RESOURCE_CERTIFICATE = 1628,            // 员工详情-员工证书和培训
+            RESOURCE_DEGREE = 1629,                 // 员工详情-员工学位
+            RESOURCE_ATTACHMENT = 1630,             // 员工详情-员工附件
+
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -1629,11 +1640,20 @@ namespace EMT.DoneNOW.DTO
      
         TICKET_INCIDENT = 193,                 // 工单详情-事故清单
         TICKET_PROBLEM = 194,                  // 工单详情-问题清单
-        TimeoffPolicy = 196,                // 休假策略查询
-        TimeoffPolicyResource = 197,        // 休假策略-关联员工查询
-        TimeoffPolicyTier = 198,            // 休假策略-级别查询
-        ACCOUNT_SERVICE_DETAILS = 199,       // 工单详情-客户服务详情
-        TICKET_INCLIDENT_RELATION=200,       // 工单详情-事故关联其他工单
+        TimeoffPolicy = 196,            // 休假策略查询
+        TimeoffPolicyResource = 197,    // 休假策略-关联员工查询
+        TimeoffPolicyTier = 198,        // 休假策略-级别查询
+        ACCOUNT_SERVICE_DETAILS = 199,   // 工单详情-客户服务详情
+        TICKET_INCLIDENT_RELATION=200,   // 工单详情-事故关联其他工单
+        ResourceTimeSheet = 208,            // 员工详情-工时表审批人
+        ResourceExpense = 209,              // 员工详情-费用审批人
+        ResourceDepartment = 210,           // 员工详情-员工部门
+        ResourceServiceDeskQueue = 211,     // 员工详情-员工队列
+        ResourceSkill = 212,                // 员工详情-员工技能
+        ResourceCertificate = 213,          // 员工证书和培训
+        ResourceDegree = 214,               // 员工详情-员工学位
+        ResourceAttachment = 215,           // 员工详情-员工附件
+
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
         Line_Of_Business,              //系统管理：组织：业务条线
