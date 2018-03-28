@@ -325,6 +325,11 @@
                                                         <span class="Text">工单</span>
                                                     </a>
                                                 </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.KNOWLEDGEBASE_ARTICLE %>" target="PageFrame">
+                                                        <span class="Text">知识库</span>
+                                                    </a>
+                                                </div>
                                             </div>
                                            
                                         </div>
@@ -739,11 +744,6 @@
                                         <div class="Content">
                                             <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET %>" target="PageFrame">
                                                 <span class="Text">任务和工单</span>
-                                            </a>
-                                        </div>
-                                        <div class="Content">
-                                            <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
                                             </a>
                                         </div>
                                         <div class="Content">

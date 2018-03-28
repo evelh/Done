@@ -274,6 +274,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.TIMEOFF_POLICY:
                     addBtn = "新增";
                     break;
+                case (int)DicEnum.QUERY_CATE.KNOWLEDGEBASE_ARTICLE:
+                    addBtn = "新增文章";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -1059,6 +1062,11 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.KnowledgebaseArticle:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "DeleteServiceBundle()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "详情", click_function = "View()" });
                     break;
                 default:
                     break;

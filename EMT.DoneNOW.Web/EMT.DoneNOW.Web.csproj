@@ -51,9 +51,6 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MsgPack, Version=0.9.0.0, Culture=neutral, PublicKeyToken=a2625990d5dc0167, processorArchitecture=MSIL">
-      <HintPath>..\packages\MsgPack.Cli.0.9.2\lib\net46\MsgPack.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -153,6 +150,7 @@
     <Content Include="Company\DeleteCompany.aspx" />
     <Content Include="Company\LocationManage.aspx" />
     <Content Include="Company\ViewCompany.aspx" />
+    <Content Include="Content\1.css" />
     <Content Include="Content\Admin.css" />
     <Content Include="Content\bootstrap.min2.2.2.css" />
     <Content Include="Contact\ViewContact.aspx" />
@@ -166,6 +164,7 @@
     <Content Include="Content\login.css" />
     <Content Include="Content\LostOpp.css" />
     <Content Include="Content\LostQuote.css" />
+    <Content Include="Content\ManageKnowledgebase.css" />
     <Content Include="Content\MasterTicket.css" />
     <Content Include="Content\multiple-select.css" />
     <Content Include="Content\multipleList.css" />
@@ -176,6 +175,7 @@
     <Content Include="Content\Project.css" />
     <Content Include="Content\Quote.css" />
     <Content Include="Content\Quotebaojiaxiang.css" />
+    <Content Include="Content\repository.css" />
     <Content Include="Content\reset.css" />
     <Content Include="Content\Roles.css" />
     <Content Include="Content\searchList.css" />
@@ -192,6 +192,9 @@
     <Content Include="Images\ico_stopwatch_stop.png" />
     <Content Include="Images\ico_ticket_modify.png" />
     <Content Include="Images\ico_time_entry.png" />
+    <Content Include="Images\imgMinus.gif" />
+    <Content Include="Images\imgPlus.gif" />
+    <Content Include="Images\import.png" />
     <Content Include="Images\TicketAlertIcons.png" />
     <Content Include="Content\WorkType.css" />
     <Content Include="Contract\AddCharges.aspx" />
@@ -445,6 +448,7 @@
     <Content Include="Scripts\Search\Holidays.js" />
     <Content Include="Scripts\Search\HolidaySet.js" />
     <Content Include="Scripts\Search\expense_report.js" />
+    <Content Include="Scripts\Search\KnowledgebaseArticle.js" />
     <Content Include="Scripts\Search\myapprove_expense_report.js" />
     <Content Include="Scripts\Search\my_task_ticket.js" />
     <Content Include="Scripts\Search\project_search.js" />
@@ -472,11 +476,20 @@
     <Content Include="Scripts\Search\ticket_service_list.js" />
     <Content Include="Scripts\Search\ticket_sla_list.js" />
     <Content Include="Scripts\Ticket.js" />
+    <Content Include="Scripts\treedom.js" />
     <Content Include="ServiceDesk\AccountServiceDetails.aspx" />
     <Content Include="ServiceDesk\AccountTicketList.aspx" />
+    <Content Include="ServiceDesk\AddFileAttachment.aspx" />
+    <Content Include="ServiceDesk\AddRepository.aspx" />
     <Content Include="ServiceDesk\ChangeTicketApprove.aspx" />
     <Content Include="ServiceDesk\CopyToProject.aspx" />
+    <Content Include="ServiceDesk\EditRepository.aspx" />
+    <Content Include="ServiceDesk\Editsubcategory.aspx" />
+    <Content Include="ServiceDesk\ImportKnowledgebase.aspx" />
+    <Content Include="ServiceDesk\KnowledgebaseDetail.aspx" />
+    <Content Include="ServiceDesk\ManageKnowledgebase.aspx" />
     <Content Include="ServiceDesk\MasterTicket.aspx" />
+    <Content Include="ServiceDesk\Newsubcategory.aspx" />
     <Content Include="ServiceDesk\TicketActivity.aspx" />
     <Content Include="ServiceDesk\TicketHistory.aspx" />
     <Content Include="ServiceDesk\TicketLabour.aspx" />
@@ -1926,6 +1939,20 @@
     <Compile Include="ServiceDesk\AccountTicketList.aspx.designer.cs">
       <DependentUpon>AccountTicketList.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ServiceDesk\AddFileAttachment.aspx.cs">
+      <DependentUpon>AddFileAttachment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\AddFileAttachment.aspx.designer.cs">
+      <DependentUpon>AddFileAttachment.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\AddRepository.aspx.cs">
+      <DependentUpon>AddRepository.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\AddRepository.aspx.designer.cs">
+      <DependentUpon>AddRepository.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ServiceDesk\ChangeTicketApprove.aspx.cs">
       <DependentUpon>ChangeTicketApprove.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1940,12 +1967,54 @@
     <Compile Include="ServiceDesk\CopyToProject.aspx.designer.cs">
       <DependentUpon>CopyToProject.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ServiceDesk\EditRepository.aspx.cs">
+      <DependentUpon>EditRepository.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\EditRepository.aspx.designer.cs">
+      <DependentUpon>EditRepository.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\Editsubcategory.aspx.cs">
+      <DependentUpon>Editsubcategory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\Editsubcategory.aspx.designer.cs">
+      <DependentUpon>Editsubcategory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\ImportKnowledgebase.aspx.cs">
+      <DependentUpon>ImportKnowledgebase.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\ImportKnowledgebase.aspx.designer.cs">
+      <DependentUpon>ImportKnowledgebase.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\KnowledgebaseDetail.aspx.cs">
+      <DependentUpon>KnowledgebaseDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\KnowledgebaseDetail.aspx.designer.cs">
+      <DependentUpon>KnowledgebaseDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\ManageKnowledgebase.aspx.cs">
+      <DependentUpon>ManageKnowledgebase.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\ManageKnowledgebase.aspx.designer.cs">
+      <DependentUpon>ManageKnowledgebase.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ServiceDesk\MasterTicket.aspx.cs">
       <DependentUpon>MasterTicket.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ServiceDesk\MasterTicket.aspx.designer.cs">
       <DependentUpon>MasterTicket.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\Newsubcategory.aspx.cs">
+      <DependentUpon>Newsubcategory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\Newsubcategory.aspx.designer.cs">
+      <DependentUpon>Newsubcategory.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServiceDesk\TicketActivity.aspx.cs">
       <DependentUpon>TicketActivity.aspx</DependentUpon>
@@ -2566,7 +2635,7 @@
       <Name>EMT.DoneNOW.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\EMT.DoneNOW.DAL\EMT.DoneNOW.DAL.csproj">
-      <Project>{ADC67B7E-FE81-4832-B5B7-E0B931171F4F}</Project>
+      <Project>{adc67b7e-fe81-4832-b5b7-e0b931171f4f}</Project>
       <Name>EMT.DoneNOW.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\EMT.DoneNOW.DTO\EMT.DoneNOW.DTO.csproj">

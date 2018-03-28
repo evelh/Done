@@ -83,6 +83,7 @@ namespace EMT.DoneNOW.DTO
         ATTACHMENT_PUBLISH_TYPE = 147,           // 附件发布类型
         TASK_LIBRARY_CATE  = 149,                 // 任务库种类
         ITEM_DESC_DISPLAY_TYPE = 155,               // 采购项描述信息显示内容类型
+        KNOWLEDGE_BASE_CATE = 164,              // 知识库文章目录
         TICKET_CATE = 167,                       // 工单种类
     }
 
@@ -645,6 +646,7 @@ namespace EMT.DoneNOW.DTO
             REPORT_OTHER_SYSTEM_LOGINLOG = 1598,    // 报表-其他-系统-登录日志
             REPORT_OTHER_SYSTEM_OPERLOG = 1599,     // 报表-其他-系统-操作日志
             WORKFLOW_RULE = 1600,                   // 工作流规则查询
+            KNOWLEDGEBASE_ARTICLE = 1604,           // 知识库文档管理-查询
             TICKET_MERGE = 1606 ,                   // 合并工单的查找带回
             TICKET_REQUEST = 1607,                  // 工单详情-变更请求工单
             TICKET_INCIDENT = 1608,                 // 工单详情-事故清单  
@@ -1573,6 +1575,7 @@ namespace EMT.DoneNOW.DTO
         REPORT_SERVICEDESK_TICKETBYACCOUNT = 179, // 报表--服务台常规-工单和任务按客户
         REPORT_CONTRACT_BILLED = 180,          // 报表-CRM配置项-已计费信息
         WorkflowRule = 185,             // 工作流规则查询
+        KnowledgebaseArticle = 189,     // 知识库文档管理-查询
         TICKET_REQUEST = 192,            // 工单详情-变更请求
         TICKET_INCIDENT = 193,                 // 工单详情-事故清单
         TICKET_PROBLEM = 194,                  // 工单详情-问题清单
