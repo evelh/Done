@@ -105,6 +105,39 @@ namespace EMT.DoneNOW.Web
                     case "OtherPersonManage":
                         OtherPersonManage(context);
                         break;
+                    case "GetRecTicket":
+                        GetRecTicket(context);
+                        break;
+                    case "RecStatusManage":
+                        RecStatusManage(context);
+                        break;
+                    case "DeleteMasterTicket":
+                        DeleteMasterTicket(context);
+                        break;
+                    case "GetFutureIds":
+                        GetFutureIds(context);
+                        break;
+                    case "DeleteTicketByIds":
+                        DeleteTicketByIds(context);
+                        break;
+                    case "CheckTicketResTime":
+                        CheckTicketResTime(context);
+                        break;
+                    case "GetCall":
+                        GetCall(context);
+                        break;
+                    case "CallTicketResManage":
+                        CallTicketResManage(context);
+                        break;
+                    case "DeleteTicketCall":
+                        DeleteTicketCall(context);
+                        break;
+                    case "DoneCall":
+                        DoneCall(context);
+                        break;
+                    case "DeleteCall":
+                        DeleteCall(context);
+                        break;
                     default:
                         break;
                 }
@@ -593,6 +626,175 @@ namespace EMT.DoneNOW.Web
                     app = (int)DTO.DicEnum.CHANGE_APPROVE_STATUS_PERSON.APPROVED;
                 result = new TicketBLL().OtherPersonManage(long.Parse(ticketId),app,reason,LoginUserId);
             }
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 获取工单审批周期信息
+        /// </summary>
+        private void GetRecTicket(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            if (!string.IsNullOrEmpty(ticketId))
+            {
+                var thisRec = new sdk_recurring_ticket_dal().GetByTicketId(long.Parse(ticketId));
+                if(thisRec!=null)
+                    context.Response.Write(new EMT.Tools.Serialize().SerializeJson(thisRec));
+            }
+        }
+        /// <summary>
+        /// 工单周期状态管理
+        /// </summary>
+        private void RecStatusManage(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            var isActive = context.Request.QueryString["is_active"];
+            bool result = false;
+            if (!string.IsNullOrEmpty(ticketId) && !string.IsNullOrEmpty(isActive))
+                result = new TicketBLL().RecTicketActiveManage(long.Parse(ticketId), isActive=="1",LoginUserId);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 删除定期主工单
+        /// </summary>
+        private void DeleteMasterTicket(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            var isDeletfuture = context.Request.QueryString["delete_future"];
+            if (!string.IsNullOrEmpty(ticketId))
+            {
+                Dictionary<string, int> subResult = new Dictionary<string, int>();
+                bool result = false;
+                result = new TicketBLL().DeleteMaster(long.Parse(ticketId),LoginUserId,!string.IsNullOrEmpty(isDeletfuture),ref subResult,!string.IsNullOrEmpty(context.Request.QueryString["not_delete"]));
+                context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new {result=result,dic= subResult }));
+            }
+                
+            
+        }
+        /// <summary>
+        /// 获取该工单下的所有未开始的工单Id
+        /// </summary>
+        private void GetFutureIds(HttpContext context)
+        {
+            var ticketId = context.Request.QueryString["ticket_id"];
+            string ids = "";
+            if (!string.IsNullOrEmpty(ticketId))
+                ids = new TicketBLL().GetFutureIds(long.Parse(ticketId));
+            context.Response.Write(ids);
+        }
+        /// <summary>
+        /// 根据Id 删除相关工单
+        /// </summary>
+        private void DeleteTicketByIds(HttpContext context)
+        {
+            var ids = context.Request.QueryString["ids"];
+            var result = false;
+            if (!string.IsNullOrEmpty(ids))
+                result = new TicketBLL().DeleteTicketByIds(ids,LoginUserId);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 校验工单负责人的时间 是否已经使用
+        /// </summary>
+        private void CheckTicketResTime(HttpContext context)
+        {
+            var ticketIds = context.Request.QueryString["ids"];
+            if (!string.IsNullOrEmpty(ticketIds))
+            {
+                var tickList = new sdk_task_dal().GetTaskByIds(ticketIds);
+                if (tickList != null && tickList.Count > 0)
+                {
+                    var start = DateTime.Parse(context.Request.QueryString["start"]);
+                    var end = DateTime.Parse(context.Request.QueryString["end"]);
+                    var tbll = new TicketBLL();
+                    List<sys_resource> repearResList = new List<sys_resource>();
+                    bool isHasRes = true;
+                    if (!tickList.Any(_ => tbll.IsHasRes(_.id)))
+                        // 代表选择工单无负责人
+                        isHasRes = false;
+                    else
+                    {
+                        var startLong = Tools.Date.DateHelper.ToUniversalTimeStamp(start);
+                        var endLong = Tools.Date.DateHelper.ToUniversalTimeStamp(end);
+                        foreach (var ticket in tickList)
+                        {
+                            var resList = tbll.GetResNameByTime(ticket.id, startLong, endLong);
+                            if (resList != null && resList.Count > 0)
+                                repearResList.AddRange(resList);
+                        }
+                        if (repearResList != null && repearResList.Count > 0)
+                            repearResList = repearResList.Distinct().ToList();
+                    }
+                    context.Response.Write(new EMT.Tools.Serialize().SerializeJson(new { hasRes= isHasRes,resList= repearResList }));
+
+                }
+            }
+        }
+        /// <summary>
+        /// 返回服务预定信息
+        /// </summary>
+        /// <param name="context"></param>
+        private void GetCall(HttpContext context)
+        {
+            var callId = context.Request.QueryString["callId"];
+            if (!string.IsNullOrEmpty(callId))
+            {
+                var call = new sdk_service_call_dal().FindNoDeleteById(long.Parse(callId));
+                if(call!=null)
+                    context.Response.Write(new EMT.Tools.Serialize().SerializeJson(call));
+            }
+        }
+        /// <summary>
+        /// 服务预定工单员工管理
+        /// </summary>
+        /// <param name="context"></param>
+        private void CallTicketResManage(HttpContext context)
+        {
+            var result = false;
+            var callTicketId = context.Request.QueryString["callTicketId"];
+            var resIds = context.Request.QueryString["resIds"];
+            if (!string.IsNullOrEmpty(callTicketId))
+            {
+                result = true;
+                new TicketBLL().CallTicketResManage(long.Parse(callTicketId),resIds,LoginUserId);
+            }
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 删除相关服务预定
+        /// </summary>
+        /// <param name="context"></param>
+        private void DeleteTicketCall(HttpContext context)
+        {
+            var result = false;
+            var callId = context.Request.QueryString["callId"];
+            var ticketId = context.Request.QueryString["ticketId"];
+            if (!string.IsNullOrEmpty(callId) && !string.IsNullOrEmpty(ticketId))
+            {
+                result = true;
+                new TicketBLL().DeleteTaicktCall(long.Parse(callId), long.Parse(ticketId), LoginUserId);
+            }
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 完成服务预定
+        /// </summary>
+        private void DoneCall(HttpContext context)
+        {
+            var callId = context.Request.QueryString["callId"];
+            var result = false;
+            if (!string.IsNullOrEmpty(callId))
+                result = new TicketBLL().DoneCall(long.Parse(callId),LoginUserId);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 删除服务预定
+        /// </summary>
+        private void DeleteCall(HttpContext context)
+        {
+            var callId = context.Request.QueryString["callId"];
+            var result = false;
+            if (!string.IsNullOrEmpty(callId))
+                result = new TicketBLL().DeleteCall(long.Parse(callId), LoginUserId);
             context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
         }
     }

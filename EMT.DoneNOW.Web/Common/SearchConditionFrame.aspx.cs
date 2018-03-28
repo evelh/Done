@@ -219,6 +219,15 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.MY_TASK_TICKET:
                     currentQuery.page_name = "我的任务和工单";
                     break;
+                case (int)DicEnum.QUERY_CATE.MASTER_TICKET_SEARCH:
+                    currentQuery.page_name = "定期主工单";
+                    break;
+                case (int)DicEnum.QUERY_CATE.MASTER_SUB_TICKET_SEARCH:
+                    currentQuery.page_name = "实例";
+                    break;
+                case (int)DicEnum.QUERY_CATE.SERVICE_CALL_SEARCH:
+                    currentQuery.page_name = "服务预定管理";
+                    break;
                 default:
                     currentQuery.page_name = "";
                     break;

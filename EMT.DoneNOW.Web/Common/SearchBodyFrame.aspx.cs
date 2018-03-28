@@ -117,6 +117,7 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.COMPANY_VIEW_ATTACHMENT:
                 case (int)DicEnum.QUERY_CATE.SALES_ORDER_VIEW_ATTACHMENT:
                 case (int)DicEnum.QUERY_CATE.OPPORTUNITY_VIEW_ATTACHMENT:
+                case (int)DicEnum.QUERY_CATE.MASTER_TICKET_SEARCH:
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
@@ -425,7 +426,7 @@ namespace EMT.DoneNOW.Web
 
                 queryResult = bll.GetResult(GetLoginUserId(), queryPara);
 
-                if (queryTypeId==(int)QueryType.PurchaseItem)
+                if (queryTypeId == (int)QueryType.PurchaseItem)
                 {
                     var items = Session["PurchaseOrderItem"] as PurchaseOrderItemManageDto;
                     if (items != null && items.items.Count > 0)
@@ -490,6 +491,90 @@ namespace EMT.DoneNOW.Web
                         }
                     }
                     param1 = totalSale.ToString();
+                }
+
+                if (queryTypeId == (int)QueryType.TimeoffPolicyResource)    // 休假策略关联员工
+                {
+                    if (Request.QueryString["con2467"] == "0")
+                    {
+                        var items = Session["TimeoffAssRes"] as TimeoffAssociateResourceDto;
+                        if (items != null && items.items.Count > 0)
+                        {
+                            queryResult.page_count += items.items.Count;
+                            queryResult.count += items.items.Count;
+                            queryResult.page_size = queryResult.page_size == 0 ? 20 : queryResult.page_size;
+                            queryResult.page = queryResult.page == 0 ? 1 : queryResult.page;
+                            foreach (var item in items.items)
+                            {
+                                Dictionary<string, object> oi = new Dictionary<string, object>();
+                                foreach (var rsltClmn in resultPara)
+                                {
+                                    if (rsltClmn.name == "id")
+                                        oi.Add("id", item.id);
+                                    else if (rsltClmn.name == "员工")
+                                        oi.Add("员工", item.resourceName);
+                                    else if (rsltClmn.name == "生效开始日期")
+                                        oi.Add("生效开始日期", item.effBeginDate.ToString("yyyy-MM-dd"));
+                                    else if (rsltClmn.name == "生效结束日期")
+                                        oi.Add("生效结束日期", "");
+                                    else
+                                        oi.Add(rsltClmn.name, "");
+                                }
+                                if (queryResult.result == null)
+                                    queryResult.result = new List<Dictionary<string, object>>();
+                                queryResult.result.Add(oi);
+                            }
+                        }
+                    }
+                }
+
+                if (queryTypeId == (int)QueryType.TimeoffPolicyTier)
+                {
+                    if (Request.QueryString["cateType"] == "1")
+                    {
+                        var perPeriodPara = resultPara.Find(_ => _.name == "每周期假期时间（小时）");
+                        if (perPeriodPara != null)
+                            resultPara.Remove(perPeriodPara);
+                    }
+                    if (Request.QueryString["con2468"] == "0")
+                    {
+                        var items = Session["TimeoffPolicyTier"] as TimeoffPolicyTierListDto;
+                        string itemCate = Request.QueryString["cate"];
+                        int cat;
+                        if (items != null && items.items.Count > 0 && int.TryParse(itemCate, out cat))
+                        {
+                            var cateItems = from itm in items.items where itm.cate == cat select itm;
+                            if (cateItems.Count() > 0)
+                            {
+                                queryResult.page_count += items.items.Count;
+                                queryResult.count += items.items.Count;
+                                queryResult.page_size = queryResult.page_size == 0 ? 20 : queryResult.page_size;
+                                queryResult.page = queryResult.page == 0 ? 1 : queryResult.page;
+                                foreach (var item in cateItems)
+                                {
+                                    Dictionary<string, object> oi = new Dictionary<string, object>();
+                                    foreach (var rsltClmn in resultPara)
+                                    {
+                                        if (rsltClmn.name == "id")
+                                            oi.Add("id", item.id);
+                                        else if (rsltClmn.name == "工作年限（月）")
+                                            oi.Add("工作年限（月）", item.eligibleMonths);
+                                        else if (rsltClmn.name == "每年假期时间（小时）")
+                                            oi.Add("每年假期时间（小时）", item.annualHours);
+                                        else if (rsltClmn.name == "滚存限额或累计增长限额")
+                                            oi.Add("滚存限额或累计增长限额", item.capHours);
+                                        else if (rsltClmn.name == "每周期假期时间（小时）")
+                                            oi.Add("每周期假期时间（小时）", item.hoursPerPeriod);
+                                        else
+                                            oi.Add(rsltClmn.name, "");
+                                    }
+                                    if (queryResult.result == null)
+                                        queryResult.result = new List<Dictionary<string, object>>();
+                                    queryResult.result.Add(oi);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -1067,6 +1152,43 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "DeleteServiceBundle()" });
                     contextMenu.Add(new PageContextMenuDto { text = "详情", click_function = "View()" });
+                    break;
+                case (long)QueryType.TimeoffPolicyResource:
+                    contextMenu.Add(new PageContextMenuDto { text = "取消关联", click_function = "Disassociate()" });
+					   break;
+                case (long)QueryType.MASTER_TICKET_SEARCH:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "InActive()", id = "InActTic" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActTic" });
+                    break;
+                case (long)QueryType.MASTER_SUB_TICKET_SEARCH:
+                    contextMenu.Add(new PageContextMenuDto { text = "实例详情", click_function = "ViewTicket()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑实例", click_function = "EditTicket()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除当前实例", click_function = "DeletSinge()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除已选实例", click_function = "DeleteChoose()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除所有未开始实例", click_function = "DeleteInFuture()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除所有实例，", click_function = "DeleteAll()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "转发/修改当前实例", click_function = "ForwardSingle()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "转发/修改已选实例", click_function = "Forward()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "转发/修改所有未开始实例", click_function = "ForwardFuture()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "转发/修改所有实例", click_function = "ForwardAll()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑服务预定", click_function = "EditService()" });
+                    break;
+                case (long)QueryType.SERVICE_CALL_TICKET:
+                    contextMenu.Add(new PageContextMenuDto { text = "为服务预定添加工时", click_function = "AddServiceLabour()",class_name="NeedSave" });
+                    contextMenu.Add(new PageContextMenuDto { text = "管理负责人", click_function = "ManageRes()", class_name = "NeedSave" });
+                    contextMenu.Add(new PageContextMenuDto { text = "移除", click_function = "RemoveTicket()", class_name = "NeedSave" });
+                    break; 
+                case (long)QueryType.SERVICE_CALL_SEARCH:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑服务预定", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewAccount()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "为调度条目添加备注", click_function = "AddItemNote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "转移/修改调度工单", click_function = "ModifyTicket()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "生成工作说明书", click_function = "GetWorkBook()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "完成服务预定", click_function = "DoneServiceCall()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "再次调度（复制）", click_function = "CopyCall()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除服务预定", click_function = "DeleteCall()" });
                     break;
                 default:
                     break;

@@ -82,6 +82,7 @@ namespace EMT.DoneNOW.DTO
         NOTE_PUBLISH_TYPE = 146,                 // 合同/项目等备注发布类型
         ATTACHMENT_PUBLISH_TYPE = 147,           // 附件发布类型
         TASK_LIBRARY_CATE  = 149,                 // 任务库种类
+        SERVICE_CALL_STATUS = 152,                // 服务请求状态
         ITEM_DESC_DISPLAY_TYPE = 155,               // 采购项描述信息显示内容类型
         KNOWLEDGE_BASE_CATE = 164,              // 知识库文章目录
         TICKET_CATE = 167,                       // 工单种类
@@ -267,18 +268,18 @@ namespace EMT.DoneNOW.DTO
             TASK_TIME_ENTRY_CREATED_EDITED=128,                   // 任务工时记录-创建或编辑
             TASK_NOTE_CREATED_EDITED =129,                        // 任务记录-创建或编辑
             ISSUE_CREATED_EDITED =130,                            // 问题 - 创建或编辑
-            TICKET_CREATED_EDITED=131,                         // 工单-创建或编辑
+            TICKET_CREATED_EDITED=131,                            // 工单-创建或编辑
             TICKET_FORWARDED=132,                                 // 工单-转发
             TICKET_ATTACHMENT_ADDED=133,                          // 工单附件-创建
-            TICKET_TIME_ENTRY_CREATED_EDITED = 134,              // 工单工时记录-创建或编辑
-            TICKET_NOTE_CREATED_EDITED=135,                    // 工单记录-创建或编辑
-            RECURRENCE_MASTER_CREATED_EDITED=136,              // 定期主工单-创建或编辑
-            //QUICK CALL - CREATED,                               // 
-            //SERVICE CALL - CREATED OR EDITED,                   // 
-            BLOCK_CONTRACT_RULE=139,                                  // 预付时间合同通知规则
-            PER_CONTRACT_RULE=140,                                    // 事件合同通知规则    
-            RETAINER_CONTRACT_RULE=141,                               // 预付费合同通知规则
-            EXPENSE_REPORT_ATTACHMENT_ADDED=142,                      // 报表附件新增
+            TICKET_TIME_ENTRY_CREATED_EDITED = 134,               // 工单工时记录-创建或编辑
+            TICKET_NOTE_CREATED_EDITED=135,                       // 工单记录-创建或编辑
+            RECURRENCE_MASTER_CREATED_EDITED=136,                 // 定期主工单-创建或编辑
+            QUICK_CALL_CREATED=137,                               // 快速服务预定-创建
+            SERVICE_CALL_CREATED_EDITED=138,                      // 服务预定-创建或编辑
+            BLOCK_CONTRACT_RULE =139,                             // 预付时间合同通知规则
+            PER_CONTRACT_RULE=140,                                // 事件合同通知规则    
+            RETAINER_CONTRACT_RULE=141,                           // 预付费合同通知规则
+            EXPENSE_REPORT_ATTACHMENT_ADDED=142,                  // 报表附件新增
             NONE =1972,                                       // 无
         }
 
@@ -454,6 +455,18 @@ namespace EMT.DoneNOW.DTO
             ALLOW_OUTSOURCE = 645,      // 允许外包
             ALLOW_PARTNER = 646,        // 允许合作伙伴管理
             ALL = 647,                  // 全部（管理员）
+        }
+
+        /// <summary>
+        /// 休假策略：累计增长周期 - 56
+        /// </summary>
+        public enum TIMEOFF_PERIOD_TYPE
+        {
+            DAY = 667,              // 天
+            WEEK = 668,             // 周
+            DOUBLE_WEEK = 669,      // 双周
+            HALF_MONTH = 670,       // 半月
+            MONTH = 671,            // 月
         }
 
         /// <summary>
@@ -647,6 +660,10 @@ namespace EMT.DoneNOW.DTO
             REPORT_OTHER_SYSTEM_OPERLOG = 1599,     // 报表-其他-系统-操作日志
             WORKFLOW_RULE = 1600,                   // 工作流规则查询
             KNOWLEDGEBASE_ARTICLE = 1604,           // 知识库文档管理-查询
+            MASTER_SUB_TICKET_SEARCH = 1601,        // 定期主工单管理-详情-子工单查询
+            SERVICE_CALL_SEARCH = 1602,             // 服务预定管理-服务预定查询
+            SERVICE_CALL_TICKET = 1603,             // 服务预定关联工单查询 
+            MASTER_TICKET_SEARCH = 1605,            // 定期主工单查询
             TICKET_MERGE = 1606 ,                   // 合并工单的查找带回
             TICKET_REQUEST = 1607,                  // 工单详情-变更请求工单
             TICKET_INCIDENT = 1608,                 // 工单详情-事故清单  
@@ -781,6 +798,13 @@ namespace EMT.DoneNOW.DTO
             CTT_CONTRACT_COST_PRODUCT_SN = 1401,        // 成本关联产品的串号
             PURCHASE_RECEIVE = 1402,                    // 采购接收
             PURCHASE_RECEIVE_SN = 1403,                 // 采购接收串号
+            TIMEOFF_POLICY = 1405,                      // 假期策略
+            TIMEOFF_ITEM = 1406,                        // 假期策略类别
+            TIMEOFF_ITEM_TIER = 1407,                   // 假期策略级别
+            TIMEOFF_RESOURCE = 1411,                    // 假期策略关联员工
+            SERVICE_CALL = 1415,                        // 服务预定
+            SERVICE_CALL_RESOURCE=1416,                 // 服务预定负责人
+            SERVICE_CALL_TICKET = 1417,                 // 服务预定关联工单
             PROJECT_TASK_INFORMATION = 1418,            // 任务的扩展信息（自定义信息）
             TICKET_CHECK_LIST = 1420,                   // 工单的检查单
             TICKET_SERVICE_REQUEST = 1421,              // 服务请求审批人信息
@@ -790,6 +814,7 @@ namespace EMT.DoneNOW.DTO
             WORKFLOW_RULE = 1425,                       // 工作流规则
             CHANGE_REQUEST = 1426,                      // 任务的其他信息（变更请求用）
             CHANGE_REQUEST_APPROL = 1427,               // 变更申请单审批人信息
+            MASTER_TICKET = 1428,                       // 定期主工单
             TICKET_SLA_EVENT,                        // 工单sla 事件
             
         }
@@ -1306,7 +1331,15 @@ namespace EMT.DoneNOW.DTO
             PENDING_DISTRIBUTION=2158,   // 待配送
             DISTRIBUTION=2159,           // 已配送
         }
-
+        /// <summary>
+        /// 服务请求状态-152
+        /// </summary>
+        public enum SERVICE_CALL_STATUS
+        {
+            NEW=2162,                    // 新建
+            DONE=2163,                   // 已完成
+            CANCEL=2164,                 // 已取消
+        }
         /// <summary>
         /// 工作类型计费方法-153
         /// </summary>
@@ -1366,6 +1399,16 @@ namespace EMT.DoneNOW.DTO
             APPROVAL_REFUSE = 2233,  // 审批拒绝
             PAYMENT = 2234,          // 支付
             RETURN_APPROVAL = 2235,  // 支付改回审批通过
+        }
+        /// <summary>
+        /// 定期工单频率类型 - 166
+        /// </summary>
+        public enum RECURRING_TICKET_FREQUENCY_TYPE
+        {
+            DAY = 2265,         // 天
+            WEEK = 2266,        // 周
+            MONTH = 2267,       // 月
+            YEAR = 2268,        // 年
         }
         /// <summary>
         /// 工单种类 - 167
@@ -1472,6 +1515,7 @@ namespace EMT.DoneNOW.DTO
         Prouduct = 51,                  //产品
 		InternalCost = 52,                // 合同内部成本
         ContractRate = 53,              // 合同费率
+        ResourceCallBack = 54,          // 员工查找带回
 		CONFIGITEM=55,                  //配置项
         Relation_ConfigItem = 56,       // 关联到该合同的配置项
         Norelation_ConfigItem = 57,     // 未关联到该合同的配置项
@@ -1577,13 +1621,19 @@ namespace EMT.DoneNOW.DTO
         WorkflowRule = 185,             // 工作流规则查询
         KnowledgebaseArticle = 189,     // 知识库文档管理-查询
         TICKET_REQUEST = 192,            // 工单详情-变更请求
+      
+        MASTER_SUB_TICKET_SEARCH=186,       // 定期主工单管理-详情-子工单查询 
+        SERVICE_CALL_SEARCH = 187,             // 服务预定管理-服务预定查询
+        SERVICE_CALL_TICKET = 188,             // 服务预定关联工单查询 
+        MASTER_TICKET_SEARCH = 190,         // 定期主工单查询
+     
         TICKET_INCIDENT = 193,                 // 工单详情-事故清单
         TICKET_PROBLEM = 194,                  // 工单详情-问题清单
-        TimeoffPolicy = 196,            // 休假策略查询
-        TimeoffPolicyResource = 197,    // 休假策略-关联员工查询
-        TimeoffPolicyTier = 198,        // 休假策略-级别查询
-        ACCOUNT_SERVICE_DETAILS = 199,   // 工单详情-客户服务详情
-        TICKET_INCLIDENT_RELATION=200,   // 工单详情-事故关联其他工单
+        TimeoffPolicy = 196,                // 休假策略查询
+        TimeoffPolicyResource = 197,        // 休假策略-关联员工查询
+        TimeoffPolicyTier = 198,            // 休假策略-级别查询
+        ACCOUNT_SERVICE_DETAILS = 199,       // 工单详情-客户服务详情
+        TICKET_INCLIDENT_RELATION=200,       // 工单详情-事故关联其他工单
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
         Line_Of_Business,              //系统管理：组织：业务条线

@@ -107,11 +107,12 @@
     <Compile Include="SYS\WorkflowRuleProcBLL.cs" />
     <Compile Include="TST\TimeOffPolicyBLL.cs" />
   </ItemGroup>
-  <ItemGroup>
+    <ItemGroup>
     <ProjectReference Include="..\EMT.DoneNOW.Core\EMT.DoneNOW.Core.csproj">
       <Project>{eb88bbf3-488c-466f-bf7c-02bd01530d18}</Project>
       <Name>EMT.DoneNOW.Core</Name>
     </ProjectReference>
+
     <ProjectReference Include="..\EMT.DoneNOW.DAL\EMT.DoneNOW.DAL.csproj">
       <Project>{adc67b7e-fe81-4832-b5b7-e0b931171f4f}</Project>
       <Name>EMT.DoneNOW.DAL</Name>

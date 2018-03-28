@@ -85,6 +85,27 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<sys_resource>($"SELECT sr.* from sys_resource sr INNER JOIN sdk_task_resource  str on sr.id = str.resource_id where str.task_id = {task_id} and sr.delete_time = 0 and str.delete_time = 0 ");
         }
+        /// <summary>
+        /// 根据时间查找出员工是否在该时间内
+        /// </summary>
+        public sys_resource GetResByTime(long resId,long start,long end)
+        {
+            return FindSignleBySql<sys_resource>($"SELECT ssctr.resource_id, sr.name FROM sdk_service_call ssc  INNER JOIN sdk_service_call_task ssct on ssc.id = ssct.service_call_id INNER JOIN sdk_service_call_task_resource ssctr on ssctr.service_call_task_id = ssct.id INNER JOIN sys_resource sr on sr.id = ssctr.resource_id where ssc.delete_time = 0 and ssct.delete_time = 0 and ssctr.delete_time = 0 and ssctr.resource_id = {resId} and {start} < ssc.end_time and {end} > ssc.start_time");
+        }
+        /// <summary>
+        /// 查询出服务预定的工单员工信息
+        /// </summary>
+        public List<sys_resource> GetResByCallTicketId(long callTicketId)
+        {
+            return FindListBySql<sys_resource>($"SELECT sr.id, sr.name from sdk_service_call_task_resource ssc INNER JOIN sys_resource sr on ssc.resource_id = sr.id where ssc.delete_time = 0 and sr.delete_time = 0 and ssc.service_call_task_id = {callTicketId}");
+        }
+
+        public List<sys_resource> GetResByTicket(long ticketId)
+        {
+            return FindListBySql<sys_resource>($"SELECT sr.id,sr.name from sdk_task_resource str INNER JOIN sys_resource sr on str.resource_id = sr.id where str.delete_time =0 and sr.delete_time = 0 and str.task_id = {ticketId}");
+        }
+
+        
 
     }
 }

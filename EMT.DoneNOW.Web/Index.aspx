@@ -325,9 +325,20 @@
                                                         <span class="Text">工单</span>
                                                     </a>
                                                 </div>
+<<<<<<< HEAD
                                                 <div class="Content">
                                                     <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.KNOWLEDGEBASE_ARTICLE %>" target="PageFrame">
                                                         <span class="Text">知识库</span>
+=======
+                                                 <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MASTER_TICKET_SEARCH %>" target="PageFrame">
+                                                        <span class="Text">定期主工单</span>
+                                                    </a>
+                                                </div>
+                                                 <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALL_SEARCH %>" target="PageFrame">
+                                                        <span class="Text">服务预定</span>
+>>>>>>> 5f7dde20416fe86de2a86ffb6e1e947a1b71acb3
                                                     </a>
                                                 </div>
                                             </div>

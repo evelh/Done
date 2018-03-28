@@ -147,6 +147,7 @@
     <Compile Include="SDK\sdk_kb_article_comment_dal.cs" />
     <Compile Include="SDK\sdk_kb_article_dal.cs" />
     <Compile Include="SDK\sdk_kb_article_ticket_dal.cs" />
+    <Compile Include="SDK\sdk_recurring_ticket_dal.cs" />
     <Compile Include="SDK\sdk_service_call_dal.cs" />
     <Compile Include="SDK\sdk_service_call_task_dal.cs" />
     <Compile Include="SDK\sdk_service_call_task_resource_dal.cs" />

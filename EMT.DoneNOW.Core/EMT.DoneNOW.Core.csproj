@@ -126,6 +126,7 @@
     <Compile Include="SDK\sdk_kb_article.cs" />
     <Compile Include="SDK\sdk_kb_article_comment.cs" />
     <Compile Include="SDK\sdk_kb_article_ticket.cs" />
+    <Compile Include="SDK\sdk_recurring_ticket.cs" />
     <Compile Include="SDK\sdk_service_call.cs" />
     <Compile Include="SDK\sdk_service_call_task.cs" />
     <Compile Include="SDK\sdk_service_call_task_resource.cs" />

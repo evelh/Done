@@ -43,10 +43,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EMT.DoneNOW.Core\EMT.DoneNOW.Core.csproj">
-      <Project>{eb88bbf3-488c-466f-bf7c-02bd01530d18}</Project>
-      <Name>EMT.DoneNOW.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EMT.DoneNOW.IDAL\EMT.DoneNOW.IDAL.csproj">
       <Project>{53e7b184-f169-470c-97c6-1674106db581}</Project>
       <Name>EMT.DoneNOW.IDAL</Name>

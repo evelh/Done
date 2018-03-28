@@ -11,7 +11,7 @@ namespace EMT.DoneNOW.Core
 	[Table("sdk_kb_article_ticket")]
     [Serializable]
 	[DataContract]
-    public partial class sdk_kb_article_ticket : SoftDeleteCore 
+    public partial class sdk_kb_article_ticket  
     {
 
 		[Key]

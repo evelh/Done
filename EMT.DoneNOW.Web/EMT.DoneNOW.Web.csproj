@@ -449,6 +449,8 @@
     <Content Include="Scripts\Search\HolidaySet.js" />
     <Content Include="Scripts\Search\expense_report.js" />
     <Content Include="Scripts\Search\KnowledgebaseArticle.js" />
+    <Content Include="Scripts\Search\master_sub_ticket_search.js" />
+    <Content Include="Scripts\Search\master_ticket_search.js" />
     <Content Include="Scripts\Search\myapprove_expense_report.js" />
     <Content Include="Scripts\Search\my_task_ticket.js" />
     <Content Include="Scripts\Search\project_search.js" />
@@ -460,6 +462,8 @@
     <Content Include="Scripts\Search\revoke_labour.js" />
     <Content Include="Scripts\Search\service.js" />
     <Content Include="Scripts\Search\service_bundle.js" />
+    <Content Include="Scripts\Search\service_call_search.js" />
+    <Content Include="Scripts\Search\service_call_ticket.js" />
     <Content Include="Scripts\Search\ShipedList.js" />
     <Content Include="Scripts\Search\ShippingList.js" />
     <Content Include="Scripts\Search\purchase_order_history.js" />
@@ -490,7 +494,11 @@
     <Content Include="ServiceDesk\ManageKnowledgebase.aspx" />
     <Content Include="ServiceDesk\MasterTicket.aspx" />
     <Content Include="ServiceDesk\Newsubcategory.aspx" />
+    <Content Include="ServiceDesk\DeleteMasterTicket.aspx" />
+    <Content Include="ServiceDesk\MasterTicket.aspx" />
+    <Content Include="ServiceDesk\ServiceCall.aspx" />
     <Content Include="ServiceDesk\TicketActivity.aspx" />
+    <Content Include="ServiceDesk\TicketCallResManage.aspx" />
     <Content Include="ServiceDesk\TicketHistory.aspx" />
     <Content Include="ServiceDesk\TicketLabour.aspx" />
     <Content Include="ServiceDesk\TicketModify.aspx" />
@@ -2002,6 +2010,13 @@
     <Compile Include="ServiceDesk\ManageKnowledgebase.aspx.designer.cs">
       <DependentUpon>ManageKnowledgebase.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ServiceDesk\DeleteMasterTicket.aspx.cs">
+      <DependentUpon>DeleteMasterTicket.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\DeleteMasterTicket.aspx.designer.cs">
+      <DependentUpon>DeleteMasterTicket.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ServiceDesk\MasterTicket.aspx.cs">
       <DependentUpon>MasterTicket.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2016,12 +2031,26 @@
     <Compile Include="ServiceDesk\Newsubcategory.aspx.designer.cs">
       <DependentUpon>Newsubcategory.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ServiceDesk\ServiceCall.aspx.cs">
+      <DependentUpon>ServiceCall.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\ServiceCall.aspx.designer.cs">
+      <DependentUpon>ServiceCall.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ServiceDesk\TicketActivity.aspx.cs">
       <DependentUpon>TicketActivity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ServiceDesk\TicketActivity.aspx.designer.cs">
       <DependentUpon>TicketActivity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\TicketCallResManage.aspx.cs">
+      <DependentUpon>TicketCallResManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\TicketCallResManage.aspx.designer.cs">
+      <DependentUpon>TicketCallResManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServiceDesk\TicketHistory.aspx.cs">
       <DependentUpon>TicketHistory.aspx</DependentUpon>
@@ -2470,9 +2499,6 @@
     <Compile Include="SysSetting\WorkType.aspx.designer.cs">
       <DependentUpon>WorkType.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Test.ashx.cs">
-      <DependentUpon>Test.ashx</DependentUpon>
-    </Compile>
     <Compile Include="Tools\AccountClassAjax.ashx.cs">
       <DependentUpon>AccountClassAjax.ashx</DependentUpon>
     </Compile>
@@ -2566,6 +2592,9 @@
     <Compile Include="Tools\TicketAjax.ashx.cs">
       <DependentUpon>TicketAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\TimeoffPolicyAjax.ashx.cs">
+      <DependentUpon>TimeoffPolicyAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\WorkflowRuleAjax.ashx.cs">
       <DependentUpon>WorkflowRuleAjax.ashx</DependentUpon>
     </Compile>
@@ -2584,7 +2613,6 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="Test.ashx" />
     <Content Include="Tools\AddressAjax.ashx" />
     <Content Include="Tools\CompanyAjax.ashx" />
     <Content Include="Tools\ContactAjax.ashx" />
@@ -2618,6 +2646,7 @@
     <Content Include="Tools\ExpenseAjax.ashx" />
     <Content Include="Tools\TicketAjax.ashx" />
     <Content Include="Tools\WorkflowRuleAjax.ashx" />
+    <Content Include="Tools\TimeoffPolicyAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
