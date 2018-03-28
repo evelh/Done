@@ -230,10 +230,6 @@
       <Project>{4cbd682d-bd97-4d4e-b552-a7e4d4dd6b09}</Project>
       <Name>EMT.DoneNOW.DTO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EMT.DoneNOW.IDAL\EMT.DoneNOW.IDAL.csproj">
-      <Project>{53e7b184-f169-470c-97c6-1674106db581}</Project>
-      <Name>EMT.DoneNOW.IDAL</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EMT.Tools\EMT.Tools.csproj">
       <Project>{6e53e20f-4b91-4489-a6d5-9d188ddc650d}</Project>
       <Name>EMT.Tools</Name>
