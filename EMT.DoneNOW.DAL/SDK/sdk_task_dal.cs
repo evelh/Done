@@ -185,6 +185,10 @@ namespace EMT.DoneNOW.DAL
             return FindListBySql<sdk_task>($"SELECT * from sdk_task where problem_ticket_id = {ticketId} and delete_time = 0");
         }
 
+        public List<sdk_task> GetSubTicket(long ticketId)
+        {
+            return FindListBySql<sdk_task>($"SELECT * from sdk_task where recurring_ticket_id = {ticketId} and delete_time = 0");
+        }
         #endregion
 
         #region 工作流处理工单对象

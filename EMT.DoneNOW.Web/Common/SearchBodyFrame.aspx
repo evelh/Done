@@ -318,7 +318,7 @@
                 <img src="../Images/dropdown.png" alt="" class="ButtonRightImg1" />
             </li>
                     <%}
-    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SERVICE_LIST)  
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SERVICE_LIST)
     { %>
                     <li onclick="AddServiceCall()">
                         <span class="Icon" style="width: 16px;margin-left: 5px;margin-top: 2px;background: url(../Images/Icons.png) no-repeat -294px -16px;height: 16px;display: -webkit-inline-box;"></span>
@@ -328,7 +328,8 @@
                         <span class="Icon" style="width: 16px;margin-left: 5px;margin-top: 2px;background: url(../Images/Icons.png) no-repeat -6px -32px;height: 16px;display: -webkit-inline-box;"></span>
                         <span class="Text">新增待办</span>
                     </li>
-                    <%} else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_COST_EXPENSE)
+                    <%}
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_COST_EXPENSE)
     { %>
                     <li onclick="AddCharge()">
                         <span class="Icon" style="width: 16px;margin-left: 5px;margin-top: 2px;background: url(../Images/Icons.png) no-repeat -214px -16px;height: 16px;display: -webkit-inline-box;"></span>
@@ -349,21 +350,35 @@
                     <li onclick="Add()"><i style="background-image: url(../Images/new.png);"></i><span>新增服务包</span></li>
                    <li onclick=""><i style="background-image: url(../Images/new.png);"></i><span>查看价格清单</span></li>
                     <%}
-                        else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_REQUEST)
-                        {%>
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_REQUEST)
+    {%>
                         <li onclick="Relation()" style="padding-left: 5px;"><span>关联</span></li>
                        <li onclick="Add()" style="padding-left: 5px;"><span>新增</span></li>
-                        <%}else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_PROBLEM) 
-                        {%>
+                        <%}
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_PROBLEM)
+    {%>
                         <li onclick="Relation()" style="padding-left: 5px;"><span>关联</span></li>
                        <li onclick="Add()" style="padding-left: 5px;"><span>新增</span></li>
-                        <%}else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_INCIDENT) 
-                        {%>
+                        <%}
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_INCIDENT)
+    {%>
                         <li onclick="Relation()" style="padding-left: 5px;"><span>关联</span></li>
                        <li onclick="Add()" style="padding-left: 5px;"><span>新增</span></li>
-                        <%}%>
-                    
-                    
+                        <%}
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MASTER_SUB_TICKET_SEARCH)
+    {%>
+                        <li onclick="Forward()" style="padding-left: 5px;"><span>转发/修改</span></li>
+                       <li onclick="DeleteChoose()" style="padding-left: 5px;"><span>删除</span></li>
+                        <%}
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALL_TICKET)
+    {%>
+                    <li onclick="ApplyTicket()" style="padding-left: 5px;"><span>关联工单</span></li>
+                       <li onclick="AddTicket()" style="padding-left: 5px;"><span>新增工单</span></li>
+                    <%}else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALL_SEARCH) 
+    {%>
+                    <li onclick="Add()" style="padding-left: 5px;"><span>新增</span></li>
+                       <li onclick="PrintView()" style="padding-left: 5px;"><span>打印预览</span></li>
+                    <%} %>
                     <li id="PrintLi" class="General"><i style="background-image: url(../Images/print.png);"></i></li>
                     <li id="SelectLi" class="General" onclick="javascript:window.open('../Common/ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
                     <li id="ExportLi" class="General"><i style="background-image: url(../Images/export.png);"></i></li>
@@ -384,32 +399,32 @@
                 <div class="DropDownMenu" id="D1" style=" background-color: #FFF;padding: 5px;border: 1px solid #BCBCBC;cursor: pointer;box-shadow: 1px 3px 4px rgba(0,0,0,0.33);position: fixed;top: 35px;border-top:white;display:none;">
                     <ul>
                         <%if (CheckAuth("SEARCH_PROJECT_EDIT_PROJECT"))
-                                                                                       { %> <li><span class='DropDownMenuItemText' onclick='EditProject()'>编辑项目</span></li> <%}%>
+    { %> <li><span class='DropDownMenuItemText' onclick='EditProject()'>编辑项目</span></li> <%}%>
                          <%if (CheckAuth("PRO_PROJECT_VIEW_CALENDAR_ADD"))
-                                                                                       { %>
+    { %>
                         <li><span class='DropDownMenuItemText' onclick='AddProCalendar()'>新增项目日历条目</span></li><%}%>
                           <%if (CheckAuth("PRO_PROJECT_VIEW_NOTE_ADD"))
-                                                                                       { %>
+    { %>
                         <li><span class='DropDownMenuItemText' onclick='AddProjectNote()'>新增项目备注</span></li><%}%>
                          <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_COMPLETE"))
-                                                                                       { %>
+    { %>
                         <li><span class='DropDownMenuItemText' onclick='CompleteProject()'>完成项目</span></li><%}%>
                         <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY_SAVE_TEMP"))
-                                                                                       { %>
+    { %>
                         <li><span class='DropDownMenuItemText' onclick='SaveAsTemp()'>保存为项目模板</span></li><%}%>
                         <%if (CheckAuth("PRO_PROJECT_DELETE"))
-                                                                                       { %>
+    { %>
                         <li><span class='DropDownMenuItemText' onclick='DeleteProject()'>删除项目</span></li><%}%>
 
                     </ul>
                 </div>
                 <div class="DropDownMenu" id="D2" style="background-color: #FFF;padding: 5px;border: 1px solid #BCBCBC;cursor: pointer;box-shadow: 1px 3px 4px rgba(0,0,0,0.33);position: fixed;top: 35px;border-top:white;display:none;margin-left: 84px;">
                      <ul>      <%if (CheckAuth("PRO_PROJECT_VIEW_UDF_COPY_OPPORTUNITY"))
-                                                                                       { %><li><span class='DropDownMenuItemText' onclick='CopyFromOppo()'>从商机复制</span></li><%}%></ul>
+    { %><li><span class='DropDownMenuItemText' onclick='CopyFromOppo()'>从商机复制</span></li><%}%></ul>
                 </div>
                 <%}
-               else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_ACCOUNT_LIST||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET)
-               { %>
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_ACCOUNT_LIST || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET)
+    { %>
                 <div class="DropDownMenu" id="D1" style=" background-color: #FFF;padding: 5px;border: 1px solid #BCBCBC;cursor: pointer;box-shadow: 1px 3px 4px rgba(0,0,0,0.33);position: fixed;top: 35px;border-top:white;display:none;">
                     <ul>
                         <li><span class='DropDownMenuItemText' onclick="AddTicket('<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.SERVICE_REQUEST %>')">工单</span></li> 
@@ -419,6 +434,21 @@
                         <li><span class='DropDownMenuItemText' onclick="AddTicket('')">非定期工单</span></li> 
                     </ul>
                 </div>
+                <%}
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MASTER_SUB_TICKET_SEARCH)
+    {
+        var holSet = new EMT.DoneNOW.DAL.sys_organization_location_dal().GetLocList();
+                        %>
+                <span style="font-size: 12px;color: #4F4F4F;margin-top: 13px;height: 22px;display: inline-block;"><span style="font-weight: bold;margin-top: 6px;">假期设置</span><select id="location" style="margin-left:6px;"><option></option><%if (holSet != null && holSet.Count > 0)
+    {
+        foreach (var set in holSet)
+        {%><option value="<%=set.id %>"><%=set.name %></option><%}
+    } %></select> </span>
+                <%}
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALL_TICKET)
+    { %>
+                <span style="font-size: 12px;color: #4F4F4F;margin-top: 13px;height: 22px;display: inline-block;margin-right:20px;margin-left:80px;"><span style="font-weight: bold;margin-top: 6px;">条目是否分配</span><select id="isFenPei" style="margin-left:6px;"><option value="0">未分配</option><option value="1">已分配</option></select></span>
+                <span style="font-size: 12px;color: #4F4F4F;margin-top: 13px;height: 22px;display: inline-block;margin-right:20px;"><span style="font-weight: bold;margin-top: 6px;">截止时间范围</span><select id="dueTime" style="margin-left:6px;"><option value="1">从今天开始+/-30天</option><option value=""></option></select></span>
                 <%} %>
 
               <div class="fl" id="addDiv" style="line-height:47px;margin-right:30px;">

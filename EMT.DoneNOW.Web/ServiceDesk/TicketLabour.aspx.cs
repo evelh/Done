@@ -155,7 +155,19 @@ namespace EMT.DoneNOW.Web.ServiceDesk
 
         protected void save_modify_Click(object sender, EventArgs e)
         {
-
+            var param = GetParam();
+            var faileReason = "";
+            var result = false;
+            if (isAdd)
+                result = new TicketBLL().AddTicketLabour(param, LoginUserId, ref faileReason);
+            else
+                result = new TicketBLL().EditTicketLabour(param, LoginUserId, ref faileReason);
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script>alert('保存" + (result ? "成功" : "失败") + "！');location.href='TicketModify?ticketIds=" + param.ticketId.ToString() + "';</script>");
+            var parFunc = Request.QueryString["noFunc"];
+            if (!string.IsNullOrEmpty(parFunc))
+                ClientScript.RegisterStartupScript(this.GetType(), "父窗口事件", $"<script>self.opener.location.{parFunc}();</script>");
+            else
+                ClientScript.RegisterStartupScript(this.GetType(), "父窗口事件", $"<script>self.opener.location.reload();</script>");
         }
         /// <summary>
         /// 获取相关参数

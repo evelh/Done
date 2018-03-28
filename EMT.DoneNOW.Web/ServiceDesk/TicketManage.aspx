@@ -147,7 +147,7 @@
                                     <div class="InputField">
                                         <input id="account_id" type="text" value="<%=thisAccount==null?"":thisAccount.name %>" />
                                         <input type="hidden" id="account_idHidden" name="account_id" value="<%=thisAccount==null?"":thisAccount.id.ToString() %>" />
-                                        <a class="Button ButtonIcon IconOnly New NormalState" id="" tabindex="0" style="display: inline-grid; width: 17px;" onclick="CallBackAccount()">
+                                        <a class="Button ButtonIcon IconOnly New NormalState" id="CalllAccA" tabindex="0" style="display: inline-grid; width: 17px;" onclick="CallBackAccount()">
                                             <span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -191px -44px;"></span>
                                             <span class="Text"></span>
                                         </a>
@@ -156,7 +156,7 @@
                                             <span class="Icon" style="background: url(../Images/Icons.png) no-repeat -149px -142px;"></span>
                                             <span class="Text"></span>
                                         </a>
-                                        <a class="Button ButtonIcon IconOnly New NormalState" id="" tabindex="0" style="display: inline-grid; width: 17px;" onclick="AddAccount()">
+                                        <a class="Button ButtonIcon IconOnly New NormalState" id="AddAccA" tabindex="0" style="display: inline-grid; width: 17px;" onclick="AddAccount()">
                                             <span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></span>
                                             <span class="Text"></span>
                                         </a>
@@ -2133,6 +2133,14 @@
         $("#ticket_type_id").val('<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_TYPE.INCIDENT %>');
         $("#ticket_type_id").prop("disabled", true)
         <% }%>
+        <%if (!string.IsNullOrEmpty(Request.QueryString["isServiceCall"])){ %>
+        var account_idHidden = $("#account_idHidden").val();
+        if (account_idHidden != "") {
+            $("#account_id").prop("readonly", true);
+            $("#CalllAccA").removeAttr("onclick");
+            $("#AddAccA").removeAttr("onclick");
+        }
+        <%} %>
 
     })
 

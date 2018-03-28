@@ -145,3 +145,108 @@ input[type=radio] {
     color: #333;
     font-weight: normal;
 }
+.content label {
+    width: 120px;
+}
+
+.CloseButton {
+    background-image: url(../Images/delete.png);
+    width: 16px;
+    height: 16px;
+    float: left;
+}
+
+.mytitle {
+    margin-left: -620px;
+}
+
+.grid thead tr td {
+    background-color: #cbd9e4;
+    border-color: #98b4ca;
+    color: #64727a;
+}
+
+.grid {
+    font-size: 12px;
+    background-color: #FFF;
+}
+
+    .grid thead td {
+        border-width: 1px;
+        border-style: solid;
+        font-size: 13px;
+        font-weight: bold;
+        height: 19px;
+        padding: 4px 4px 4px 4px;
+        word-wrap: break-word;
+        vertical-align: top;
+    }
+
+    .grid table {
+        border-collapse: collapse;
+        width: 100%;
+        border-bottom-width: 1px;
+        /*border-bottom-style: solid;*/
+    }
+
+    .grid tbody td {
+        border-width: 1px;
+        border-style: solid;
+        border-left-color: #F8F8F8;
+        border-right-color: #F8F8F8;
+        border-top-color: #e8e8e8;
+        border-bottom-width: 0;
+        padding: 4px 4px 4px 4px;
+        vertical-align: top;
+        word-wrap: break-word;
+        font-size: 12px;
+        color: #333;
+    }
+
+.CkTitle {
+    margin-left: 40px;
+    float: left;
+    margin-top: 5px;
+}
+
+.AddItemToTicketTopSection {
+    color: #4F4F4F;
+    padding: 10px;
+    background-repeat: no-repeat;
+    background-position: left;
+    padding-left: 40px;
+    border: none;
+}
+
+.AddNoteTitleImage {
+    background-image: url(../Images/TicketNoteIcon.png);
+}
+
+.Popup_TitleCell {
+    height: 30px;
+}
+
+.AddItemToTicketTopSection td[class="Popup_TitleCell"] span {
+    font-size: 16px;
+    font-weight: Bold;
+}
+
+.Popup_Title {
+    font-size: 19px;
+    color: #4F4F4F;
+}
+.DivSection, .DivSectionOnly {
+    border: 1px solid #d3d3d3;
+    margin: 0 10px 10px 10px;
+    padding: 12px 28px 4px 28px;
+}
+#pnlTab_7 label {
+    font-size: 12px;
+    text-align: left;
+    float: none;
+    font-weight: 500;
+    display: inherit;
+}
+#ChooseList {
+    background: #f0f5fb;
+}

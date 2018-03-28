@@ -214,6 +214,32 @@ function returnNumber(param) {
     }
     return param;
 }
+function DateDiff(sDate1, sDate2) {    //sDate1和sDate2是2002-12-18格式  
+    var aDate, oDate1, oDate2, iDays
+    aDate = sDate1.split("-")
+    oDate1 = new Date(aDate[1] + '-' + aDate[2] + '-' + aDate[0])    //转换为12-18-2002格式  
+    aDate = sDate2.split("-")
+    oDate2 = new Date(aDate[1] + '-' + aDate[2] + '-' + aDate[0])
+    iDays = parseInt(Math.abs(oDate1 - oDate2) / 1000 / 60 / 60 / 24)    //把相差的毫秒数转换为天数  
+    return iDays
+}
+function MonthDiff(date1, date2) {
+    debugger;
+    // 拆分年月日
+    date1 = date1.split('-');
+    // 得到月数
+    totalMonth1 = parseInt(date1[0]) * 12 + parseInt(date1[1]);
+    // 拆分年月日
+    date2 = date2.split('-');
+    // 得到月数
+    totalMonth2 = parseInt(date2[0]) * 12 + parseInt(date2[1]);
+    var m = Math.abs(totalMonth1 - totalMonth2);
+    if (parseInt(date2[2]) >= parseInt(date1[2])) {
+        m = m + 1;
+    }
+    return m;
+}
+
 
 var windowObj = {
     company: 'company',
@@ -251,6 +277,8 @@ var windowObj = {
     serviceBundle: "serviceBundle",
     workflow: "workflow",
     timeoffPolicy: "timeoffPolicy",
+    masterTicket: 'masterTicket',
+    serviceCall:"serviceCall",
 }
 var windowType = {
     blank: '_blank',

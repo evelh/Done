@@ -123,6 +123,10 @@
     <Compile Include="PRO\pro_project_team_role.cs" />
     <Compile Include="SDK\sdk_expense.cs" />
     <Compile Include="SDK\sdk_expense_report.cs" />
+    <Compile Include="SDK\sdk_kb_article.cs" />
+    <Compile Include="SDK\sdk_kb_article_comment.cs" />
+    <Compile Include="SDK\sdk_kb_article_ticket.cs" />
+    <Compile Include="SDK\sdk_recurring_ticket.cs" />
     <Compile Include="SDK\sdk_service_call.cs" />
     <Compile Include="SDK\sdk_service_call_task.cs" />
     <Compile Include="SDK\sdk_service_call_task_resource.cs" />

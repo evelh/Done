@@ -773,22 +773,7 @@
     }
 
 
-    function MonthDiff(date1, date2) {
-        debugger;
-        // 拆分年月日
-        date1 = date1.split('-');
-        // 得到月数
-        totalMonth1 = parseInt(date1[0]) * 12 + parseInt(date1[1]);
-        // 拆分年月日
-        date2 = date2.split('-');
-        // 得到月数
-        totalMonth2 = parseInt(date2[0]) * 12 + parseInt(date2[1]);
-        var m = Math.abs(totalMonth1 - totalMonth2);
-        if (parseInt(date2[2]) >= parseInt(date1[2])) {
-            m = m + 1;
-        }
-        return m;
-    }
+ 
 
 
 </script>
