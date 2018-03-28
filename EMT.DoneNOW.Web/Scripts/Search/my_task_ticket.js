@@ -39,10 +39,10 @@ function AddServiceLabour() {
 
 }
 function EditTicket() {
-
+    window.open("../ServiceDesk/TicketManage?id=" + entityid, windowObj.ticket + windowType.edit, 'left=200,top=200,width=1280,height=800', false);
 }
 function ViewTicket() {
-
+    window.open("../ServiceDesk/TicketView?id=" + entityid, windowType.blank, 'left=200,top=200,width=1280,height=800', false);
 }
 function ViewTicketHistory() {
 
@@ -188,7 +188,7 @@ function ViewProject() {
         type: "GET",
         async: false,
         //dataType: "json",
-        url: "../Tools/TicketAjax.ashx?act=property&project_id=" + entityid + "&property=status_id",
+        url: "../Tools/TicketAjax.ashx?act=property&ticket_id=" + entityid + "&property=project_id",
         success: function (data) {
             project_id = data;
         },

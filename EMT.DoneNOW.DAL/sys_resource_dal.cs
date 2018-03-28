@@ -99,7 +99,9 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<sys_resource>($"SELECT sr.id, sr.name from sdk_service_call_task_resource ssc INNER JOIN sys_resource sr on ssc.resource_id = sr.id where ssc.delete_time = 0 and sr.delete_time = 0 and ssc.service_call_task_id = {callTicketId}");
         }
-
+        /// <summary>
+        /// 获取工单的其他负责人信息
+        /// </summary>
         public List<sys_resource> GetResByTicket(long ticketId)
         {
             return FindListBySql<sys_resource>($"SELECT sr.id,sr.name from sdk_task_resource str INNER JOIN sys_resource sr on str.resource_id = sr.id where str.delete_time =0 and sr.delete_time = 0 and str.task_id = {ticketId}");

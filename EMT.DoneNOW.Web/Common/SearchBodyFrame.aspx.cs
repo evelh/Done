@@ -1168,8 +1168,21 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑服务预定", click_function = "EditService()" });
                     break;
                 case (long)QueryType.SERVICE_CALL_TICKET:
-                    contextMenu.Add(new PageContextMenuDto { text = "为服务预定添加工时", click_function = "AddServiceLabour()",class_name="NeedSave" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加工时", click_function = "AddLabour()", class_name = "NeedSave ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "为服务预定添加工时", click_function = "AddServiceLabour()",class_name= "NeedSave ticket" });
+
+                    contextMenu.Add(new PageContextMenuDto { text = "添加工时", click_function = "AddTaskLabour()", class_name = "NeedSave task" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加包含起止时间的工时", click_function = "AddTaskTimeLabour()", class_name = "NeedSave task" });
+                    contextMenu.Add(new PageContextMenuDto { text = "根据服务预定添加工时", click_function = "AddTaskServiceLabour()", class_name = "NeedSave task" });
+
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑工单", click_function = "EditTicket()", class_name = "NeedSave ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑任务", click_function = "EditTask()", class_name = "NeedSave task" });
+                    
                     contextMenu.Add(new PageContextMenuDto { text = "管理负责人", click_function = "ManageRes()", class_name = "NeedSave" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看工单详情", click_function = "ViewTicket()", class_name = "NeedSave ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加工单备注", click_function = "AddTicketNote()", class_name = "NeedSave ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看任务详情", click_function = "ViewTask()", class_name = "NeedSave task" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加任务备注", click_function = "AddTask()", class_name = "NeedSave task" });
                     contextMenu.Add(new PageContextMenuDto { text = "移除", click_function = "RemoveTicket()", class_name = "NeedSave" });
                     break; 
                 case (long)QueryType.SERVICE_CALL_SEARCH:
@@ -1181,6 +1194,53 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "完成服务预定", click_function = "DoneServiceCall()" });
                     contextMenu.Add(new PageContextMenuDto { text = "再次调度（复制）", click_function = "CopyCall()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除服务预定", click_function = "DeleteCall()" });
+                    break;
+                case (long)QueryType.TICKET_SERVICE_LIST:
+                    #region 待办相关
+                    var todoGeneral = new PageContextMenuDto { text = "常规", class_name = "ToDo" };
+                    todoGeneral.submenu = new List<PageContextMenuDto>() {
+                         new PageContextMenuDto(){text = "编辑待办", click_function = "EditToDo()", class_name = "ToDo" },
+                         new PageContextMenuDto(){text = "查看待办", click_function = "ViewToDo()", class_name = "ToDo" },
+                         new PageContextMenuDto(){text = "完成待办", click_function = "DoneToDo()" , class_name = "ToDo"},
+                    };
+                    contextMenu.Add(todoGeneral);
+                    var todoView = new PageContextMenuDto { text = "查看", class_name = "ToDo" };
+                    todoView.submenu = new List<PageContextMenuDto>() {
+                         new PageContextMenuDto(){text = "查看客户", click_function = "ViewAccountTo()", class_name = "ToDo" },
+                         new PageContextMenuDto(){text = "查看商机", click_function = "ViewOppo()", class_name = "ToDo" },
+                    };
+                    contextMenu.Add(todoView);
+                    var todoOther = new PageContextMenuDto { text = "其他", class_name = "ToDo" };
+                    todoOther.submenu = new List<PageContextMenuDto>() {
+                         new PageContextMenuDto(){text = "删除待办", click_function = "DeleteToDo()", class_name = "ToDo" },
+                    };
+                    contextMenu.Add(todoOther);
+                    #endregion
+
+                    #region 服务预定相关
+                    var callGeneral = new PageContextMenuDto { text = "常规", class_name = "Call" };
+                    callGeneral.submenu = new List<PageContextMenuDto>() {
+                         new PageContextMenuDto(){text = "编辑服务预定", click_function = "EditCall()", class_name = "Call" },
+                         new PageContextMenuDto(){text = "为服务预定添加工时", click_function = "AddLabourForCall()", class_name = "Call" },
+                         new PageContextMenuDto(){text = "完成服务预定", click_function = "DoneCall()" , class_name = "Call"},
+                         new PageContextMenuDto(){text = "再次完成（复制）", click_function = "CopyCall()" , class_name = "Call"},
+                         new PageContextMenuDto(){text = "查看客户", click_function = "ViewAccount()" , class_name = "Call"},
+                         new PageContextMenuDto(){text = "从服务预定中移除工单", click_function = "RemoveTicket()" , class_name = "Call"},
+                    };
+                    contextMenu.Add(callGeneral);
+                    var callItem = new PageContextMenuDto { text = "预定条目", class_name = "Call" };
+                    callItem.submenu = new List<PageContextMenuDto>() {
+                         new PageContextMenuDto(){text = "为预定条目添加备注", click_function = "AddNoteForItem()", class_name = "Call" },
+                         new PageContextMenuDto(){text = "转发/修改相关工单", click_function = "ForwardTicet()", class_name = "Call" },
+                    };
+                    contextMenu.Add(callItem);
+                    var callOther = new PageContextMenuDto { text = "其他", class_name = "Call" };
+                    callOther.submenu = new List<PageContextMenuDto>() {
+                         new PageContextMenuDto(){text = "生成说明书", click_function = "GetWorkBook()", class_name = "Call" },
+                         new PageContextMenuDto(){text = "删除预定", click_function = "DeleteCall()", class_name = "Call" },
+                    };
+                    contextMenu.Add(callOther);
+                    #endregion
                     break;
                 default:
                     break;

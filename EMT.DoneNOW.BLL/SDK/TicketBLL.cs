@@ -4052,33 +4052,26 @@ namespace EMT.DoneNOW.BLL
                     var resArr = resIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var resId in resArr)
                     {
-                        var firstTickCall = oldTicketCallResList.FirstOrDefault(_ => _.resource_id == long.Parse(resId));
-                        if (firstTickCall != null)
-                        {
-                            oldTicketCallResList.Remove(firstTickCall);
+                       
+                        var sysRes = srDal.FindNoDeleteById(long.Parse(resId));
+                        if (sysRes == null)
                             continue;
-                        }
-                        else
+                        var taskRes = ssctrDal.GetSingResCall(callTicketId, sysRes.id);
+                        if (taskRes != null)
+                            continue;
+                        var ssct = new sdk_service_call_task_resource()
                         {
-                            var sysRes = srDal.FindNoDeleteById(long.Parse(resId));
-                            if (sysRes == null)
-                                continue;
-                            var taskRes = ssctrDal.GetSingResCall(callTicketId, sysRes.id);
-                            if (taskRes != null)
-                                continue;
-                            var ssct = new sdk_service_call_task_resource()
-                            {
-                                id = ssctrDal.GetNextIdCom(),
-                                create_time = timeNow,
-                                create_user_id = userId,
-                                resource_id = sysRes.id,
-                                service_call_task_id = callTicketId,
-                                update_time = timeNow,
-                                update_user_id = userId,
-                            };
-                            ssctrDal.Insert(ssct);
-                            OperLogBLL.OperLogAdd<sdk_service_call_task_resource>(ssct, ssct.id, userId, OPER_LOG_OBJ_CATE.SERVICE_CALL_RESOURCE, "新增服务预定负责人");
-                        }
+                            id = ssctrDal.GetNextIdCom(),
+                            create_time = timeNow,
+                            create_user_id = userId,
+                            resource_id = sysRes.id,
+                            service_call_task_id = callTicketId,
+                            update_time = timeNow,
+                            update_user_id = userId,
+                        };
+                        ssctrDal.Insert(ssct);
+                        OperLogBLL.OperLogAdd<sdk_service_call_task_resource>(ssct, ssct.id, userId, OPER_LOG_OBJ_CATE.SERVICE_CALL_RESOURCE, "新增服务预定负责人");
+                        
                     }
                 }
             }
@@ -4115,6 +4108,248 @@ namespace EMT.DoneNOW.BLL
             sscDal.Update(thisCall);
             OperLogBLL.OperLogUpdate<sdk_service_call>(thisCall, oldCall, thisCall.id, userId, OPER_LOG_OBJ_CATE.SERVICE_CALL, "编辑服务预定");
             return true;
+        }
+        /// <summary>
+        /// 获取服务预定的工单的Id
+        /// </summary>
+        public string GetCallTicketIds(long callId)
+        {
+            var thisCall = new sdk_service_call_dal().FindNoDeleteById(callId);
+            if (thisCall == null)
+                return "";
+            var ticketList = _dal.GetTciketByCall(thisCall.id);
+            var ids = "";
+            if(ticketList!=null&& ticketList.Count > 0)
+                ticketList.ForEach(_ => {
+                    ids += _.id.ToString() + ',';
+                });
+            if (!string.IsNullOrEmpty(ids))
+                ids = ids.Substring(0, ids.Length-1);
+            return ids;
+        }
+        /// <summary>  
+        /// 新增服务预定
+        /// </summary>
+        public bool TaskCallAdd(TaskServiceCallDto param,long userId)
+        {
+            if (param.thisTicket == null)
+                return false;
+            if (param.isAddCall&&param.thisCall!=null)
+            {
+                var sscDal = new sdk_service_call_dal();
+                var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                param.thisCall.id = sscDal.GetNextIdCom();
+                param.thisCall.create_time = timeNow;
+                param.thisCall.update_time = timeNow;
+                param.thisCall.create_user_id = userId;
+                param.thisCall.update_user_id = userId;
+                sscDal.Insert(param.thisCall);
+                OperLogBLL.OperLogAdd<sdk_service_call>(param.thisCall, param.thisCall.id, userId, OPER_LOG_OBJ_CATE.SERVICE_CALL, "新增服务预定");
+                var ssctDal = new sdk_service_call_task_dal();
+                var taskRes = new sdk_service_call_task()
+                {
+                    id = ssctDal.GetNextIdCom(),
+                    create_time = timeNow,
+                    create_user_id = userId,
+                    service_call_id = param.thisCall.id,
+                    task_id = param.thisTicket.id,
+                    update_time = timeNow,
+                    update_user_id = userId,
+                };
+                ssctDal.Insert(taskRes);
+                OperLogBLL.OperLogAdd<sdk_service_call_task>(taskRes, taskRes.id, userId, OPER_LOG_OBJ_CATE.SERVICE_CALL_TICKET, "新增服务预定关联工单");
+                CallTicketResManage(taskRes.id,param.resIds,userId);
+            }
+            CallTaskManage(param.thisTicket.id,param.callIds,userId);
+            AddCallNotify(param,userId);
+            return true;
+        }
+        /// <summary>
+        /// 工单的 服务预定（ 新增--）
+        /// </summary>
+        public void CallTaskManage(long ticketId,string callIds,long userId)
+        {
+            var thisTicket = _dal.FindNoDeleteById(ticketId);
+            if (thisTicket == null)
+                return;
+            var ssctDal = new sdk_service_call_task_dal();
+            var sscDal = new sdk_service_call_dal();
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            #region  页面上获取的只是该客户下的服务预定，不能与所有服务预定进行比较
+            //var oldCallList = ssctDal.GetTaskCallByTask(ticketId);
+            //if(oldCallList!=null&& oldCallList.Count > 0)
+            //{
+            //    if (!string.IsNullOrEmpty(callIds))
+            //    {
+            //        var callArr = callIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            //        foreach (var callId in callArr)
+            //        {
+            //            var taskRes = oldCallList.FirstOrDefault(_=>_.task_id ==ticketId&&_.service_call_id.ToString()==callId);
+            //            if (taskRes != null)
+            //            {
+            //                oldCallList.Remove(taskRes);
+            //                continue;
+            //            }
+            //            var call = sscDal.FindNoDeleteById(long.Parse(callId));
+            //            if (call == null)
+            //                continue;
+            //            taskRes = new sdk_service_call_task()
+            //            {
+            //                id = ssctDal.GetNextIdCom(),
+            //                create_time = timeNow,
+            //                create_user_id = userId,
+            //                service_call_id = call.id,
+            //                task_id = ticketId,
+            //                update_time = timeNow,
+            //                update_user_id = userId,
+            //            };
+            //            ssctDal.Insert(taskRes);
+            //            OperLogBLL.OperLogAdd<sdk_service_call_task>(taskRes, taskRes.id, userId, OPER_LOG_OBJ_CATE.SERVICE_CALL_TICKET, "新增服务预定关联工单");
+            //        }
+            //    }
+            //    oldCallList.ForEach(_ => {
+            //        ssctDal.SoftDelete(_,userId);
+            //        OperLogBLL.OperLogDelete<sdk_service_call_task>(_, _.id, userId, OPER_LOG_OBJ_CATE.SERVICE_CALL_TICKET, "删除服务预定关联工单");
+            //    });
+            //}
+            //else
+            //{
+            //    if (!string.IsNullOrEmpty(callIds))
+            //    {
+            //        var callArr = callIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+            //        foreach (var callId in callArr)
+            //        {
+            //            var call = sscDal.FindNoDeleteById(long.Parse(callId));
+            //            if (call == null)
+            //                continue;
+            //            var taskRes = ssctDal.GetSingTaskCall(call.id,ticketId);
+            //            if (taskRes != null)
+            //                continue;
+            //            taskRes = new sdk_service_call_task()
+            //            {
+            //                id = ssctDal.GetNextIdCom(),
+            //                create_time = timeNow,
+            //                create_user_id = userId,
+            //                service_call_id = call.id,
+            //                task_id = ticketId,
+            //                update_time = timeNow,
+            //                update_user_id = userId,
+            //            };
+            //            ssctDal.Insert(taskRes);
+            //            OperLogBLL.OperLogAdd<sdk_service_call_task>(taskRes, taskRes.id, userId, OPER_LOG_OBJ_CATE.SERVICE_CALL_TICKET, "新增服务预定关联工单");
+            //        }
+            //    }
+            //}
+            #endregion
+            if (!string.IsNullOrEmpty(callIds))
+            {
+                var callArr = callIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var callId in callArr)
+                {
+                    var call = sscDal.FindNoDeleteById(long.Parse(callId));
+                    if (call == null)
+                        continue;
+                    var taskRes = ssctDal.GetSingTaskCall(call.id, ticketId);
+                    if (taskRes != null)
+                        continue;
+                    taskRes = new sdk_service_call_task()
+                    {
+                        id = ssctDal.GetNextIdCom(),
+                        create_time = timeNow,
+                        create_user_id = userId,
+                        service_call_id = call.id,
+                        task_id = ticketId,
+                        update_time = timeNow,
+                        update_user_id = userId,
+                    };
+                    ssctDal.Insert(taskRes);
+                    OperLogBLL.OperLogAdd<sdk_service_call_task>(taskRes, taskRes.id, userId, OPER_LOG_OBJ_CATE.SERVICE_CALL_TICKET, "新增服务预定关联工单");
+                }
+            }
+        }
+        /// <summary>
+        /// 编辑服务预定
+        /// </summary>
+        public bool TaskCallEdit(TaskServiceCallDto param, long userId)
+        {
+            if (param.thisTicket == null||param.thisCall==null)
+                return false;
+            var sscDal = new sdk_service_call_dal();
+            var oldCall = sscDal.FindNoDeleteById(param.thisCall.id);
+            if (oldCall == null)
+                return false;
+            param.thisCall.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            param.thisCall.update_user_id = userId;
+            sscDal.Update(param.thisCall);
+            OperLogBLL.OperLogUpdate<sdk_service_call>(param.thisCall, oldCall, param.thisCall.id, userId, OPER_LOG_OBJ_CATE.SERVICE_CALL, "编辑服务预定");
+            var thisCallTask = new sdk_service_call_task_dal().GetSingTaskCall(param.thisCall.id, param.thisTicket.id);
+            if (thisCallTask != null)
+                CallTicketResManage(thisCallTask.id, param.resIds, userId);
+            AddCallNotify(param, userId);
+            return true;
+        }
+        
+        /// <summary>
+        /// 新增服务预定的通知相关
+        /// </summary>
+        public void AddCallNotify(TaskServiceCallDto param,long userId)
+        {
+            if (param.notiTempId == 0)
+                return;
+            var thisTemp = new sys_notify_tmpl_dal().FindNoDeleteById(param.notiTempId);
+            if (thisTemp == null)
+                return;
+            var srDal = new sys_resource_dal();
+            var thisUser = srDal.FindNoDeleteById(userId);
+            if (thisUser == null)
+                return;
+           
+            var ccDal = new crm_contact_dal();
+            var tempEmail = new sys_notify_tmpl_email_dal().GetEmailByTempId(thisTemp.id);
+            StringBuilder emails = new StringBuilder();
+            if (!string.IsNullOrEmpty(param.notiResIds))
+            {
+                var resArr = param.notiResIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                foreach (var res in resArr)
+                {
+                    var thisRes = srDal.FindNoDeleteById(long.Parse(res));
+                    if (thisRes != null&&!string.IsNullOrEmpty(thisRes.email))
+                        emails.Append(thisRes.id.ToString()+';');
+                }
+            }
+            if (!string.IsNullOrEmpty(param.notiConIds))
+            {
+                var resArr = param.notiConIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var res in resArr)
+                {
+                    var thisCon = ccDal.FindNoDeleteById(long.Parse(res));
+                    if (thisCon != null && !string.IsNullOrEmpty(thisCon.email))
+                        emails.Append(thisCon.email.ToString() + ';');
+                }
+            }
+            if(!string.IsNullOrEmpty(param.otherEmail))
+                emails.Append(param.otherEmail);
+            var cneDal = new com_notify_email_dal();
+            var email = new com_notify_email()
+            {
+                id = cneDal.GetNextIdCom(),
+                cate_id = (int)NOTIFY_CATE.SERVICE_BOOK,
+                event_id = (int)NOTIFY_EVENT.SERVICE_CALL_CREATED_EDITED,
+                create_user_id = userId,
+                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                update_user_id = userId,
+                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                to_email = emails.ToString(),   
+                notify_tmpl_id = (int)param.notiTempId,  // 根据通知模板
+                from_email = param.sendBySys ?"": thisUser.email,
+                from_email_name = param.sendBySys ?"": thisUser.name,
+                body_text = (tempEmail!=null&& tempEmail.Count>0?tempEmail[0].body_text:"")+ param.appText,
+                //body_html = tempEmail[0].body_html,
+                subject = param.subject,
+
+            };
+            cneDal.Insert(email);
+            OperLogBLL.OperLogAdd<com_notify_email>(email, email.id, userId, OPER_LOG_OBJ_CATE.NOTIFY, "新增通知");
         }
         #endregion
 

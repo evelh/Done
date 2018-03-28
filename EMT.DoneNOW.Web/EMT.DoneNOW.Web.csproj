@@ -187,6 +187,7 @@
     <Content Include="Content\TicketLabour.css" />
     <Content Include="Images\ACheck50.gif" />
     <Content Include="Images\ico_charge.png" />
+    <Content Include="Images\ico_service_call.png" />
     <Content Include="Images\ico_stopwatch_pause.png" />
     <Content Include="Images\ico_stopwatch_play.png" />
     <Content Include="Images\ico_stopwatch_stop.png" />
@@ -483,6 +484,7 @@
     <Content Include="ServiceDesk\DeleteMasterTicket.aspx" />
     <Content Include="ServiceDesk\MasterTicket.aspx" />
     <Content Include="ServiceDesk\ServiceCall.aspx" />
+    <Content Include="ServiceDesk\TaskServiceCall.aspx" />
     <Content Include="ServiceDesk\TicketActivity.aspx" />
     <Content Include="ServiceDesk\TicketCallResManage.aspx" />
     <Content Include="ServiceDesk\TicketHistory.aspx" />
@@ -1968,6 +1970,13 @@
     <Compile Include="ServiceDesk\ServiceCall.aspx.designer.cs">
       <DependentUpon>ServiceCall.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ServiceDesk\TaskServiceCall.aspx.cs">
+      <DependentUpon>TaskServiceCall.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\TaskServiceCall.aspx.designer.cs">
+      <DependentUpon>TaskServiceCall.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ServiceDesk\TicketActivity.aspx.cs">
       <DependentUpon>TicketActivity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2516,6 +2525,9 @@
     <Compile Include="Tools\SubscriptionAjax.ashx.cs">
       <DependentUpon>SubscriptionAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\SysSettingAjax.ashx.cs">
+      <DependentUpon>SysSettingAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\TerritoryAjax.ashx.cs">
       <DependentUpon>TerritoryAjax.ashx</DependentUpon>
     </Compile>
@@ -2577,6 +2589,7 @@
     <Content Include="Tools\TicketAjax.ashx" />
     <Content Include="Tools\WorkflowRuleAjax.ashx" />
     <Content Include="Tools\TimeoffPolicyAjax.ashx" />
+    <Content Include="Tools\SysSettingAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

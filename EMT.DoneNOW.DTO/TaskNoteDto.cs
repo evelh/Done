@@ -18,7 +18,8 @@ namespace EMT.DoneNOW.DTO
         public List<AddFileDto> filtList;
         public string attIds="";         // 这个备注的附件 ，修改时使用
         public long account_id;
-        public sdk_task thisTicket; 
+        public sdk_task thisTicket;
+        public sdk_service_call thisCall;
 
         public bool incloNoteDes = false;  // 通知邮件中是否包含备注详情
         public bool incloNoteAtt = false;  // 通知邮件中是否包含备注附件

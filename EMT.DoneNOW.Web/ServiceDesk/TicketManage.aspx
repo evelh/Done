@@ -445,7 +445,7 @@
                         </div>
                     </div>
                     <div class="Content">
-                                      <table border="none" cellspacing="" cellpadding="" style="width: 400px;">
+                                      <table border="none" cellspacing="" cellpadding="" style="border: 0px;">
                             <%if (tickUdfList != null && tickUdfList.Count > 0)
                                 {
                                     foreach (var udf in tickUdfList)
@@ -454,7 +454,7 @@
                                         if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)    /* 单行文本*/
                                         {%>
                             <tr>
-                                <td>
+                                <td style="border:0px;">
                                     <div class="FieldLabels">
                                         <span class="filed"><%=udf.name %></span>
                                         <br />
@@ -467,7 +467,7 @@
                                 {
                             %>
                             <tr>
-                                <td>
+                                <td style="border:0px;">
                                     <div class="FieldLabels">
                                         <span class="filed"><%=udf.name %></span>
                                         <br />
@@ -480,7 +480,7 @@
                                 {
                             %>
                             <tr>
-                                <td>
+                                <td style="border:0px;">
                                     <div class="FieldLabels">
                                         <span class="filed"><%=udf.name %></span>
                                         <br />
@@ -503,7 +503,7 @@
                                 {
                             %>
                             <tr>
-                                <td>
+                                <td style="border:0px;">
                                     <div class="FieldLabels">
                                         <span class="filed"><%=udf.name %></span>
                                         <br />
@@ -526,7 +526,7 @@
                                 else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)
                                 {%>
                             <tr>
-                                <td>
+                                <td style="border:0px;">
                                     <div class="FieldLabels">
                                         <span class="filed"><%=udf.name %></span>
                                         <br />

@@ -184,11 +184,24 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<sdk_task>($"SELECT * from sdk_task where problem_ticket_id = {ticketId} and delete_time = 0");
         }
-
+        /// <summary>
+        /// 获取主工单下的工单
+        /// </summary>
         public List<sdk_task> GetSubTicket(long ticketId)
         {
             return FindListBySql<sdk_task>($"SELECT * from sdk_task where recurring_ticket_id = {ticketId} and delete_time = 0");
         }
+        /// <summary>
+        /// 获取服务预定下的所有相关工单信息
+        /// </summary>
+        public List<sdk_task> GetTciketByCall(long callId)
+        {
+            return FindListBySql<sdk_task>($"SELECT st.* from sdk_task st INNER JOIN sdk_service_call_task ssct on st.id = ssct.task_id where st.delete_time = 0 and ssct.delete_time = 0 and ssct.service_call_id = {callId}");
+        }
+
+
+
+        
         #endregion
 
         #region 工作流处理工单对象

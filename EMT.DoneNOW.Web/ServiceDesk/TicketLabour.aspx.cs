@@ -28,6 +28,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected bool isAllowAgentRes = false;  // 根据系统设置“允许代理输入工时”
         protected sys_resource createUser = null;
         protected long? parent_id = null;
+        protected sdk_service_call thisCall = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -41,6 +42,11 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 if (!string.IsNullOrEmpty(ticket_id))
                 {
                     thisTicket = new sdk_task_dal().FindNoDeleteById(long.Parse(ticket_id));
+                }
+                var service_id = Request.QueryString["service_id"];
+                if (!string.IsNullOrEmpty(service_id))
+                {
+                    thisCall = new sdk_service_call_dal().FindNoDeleteById(long.Parse(service_id));
                 }
                 var id = Request.QueryString["id"];
                 if (!string.IsNullOrEmpty(id))

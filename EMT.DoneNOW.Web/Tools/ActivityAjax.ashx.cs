@@ -53,6 +53,12 @@ namespace EMT.DoneNOW.Web
                         var attNoteId = context.Request.QueryString["note_id"];
                         GetNoteAtt(context,long.Parse(attNoteId));
                         break;
+                    case "IsTodo":
+                        IsTodo(context);
+                        break;
+                    case "GetActivity":
+                        GetActivity(context);
+                        break;
                     default:
                         break;
                 }
@@ -185,6 +191,37 @@ namespace EMT.DoneNOW.Web
             if (attList != null && attList.Count > 0)
             {
                 context.Response.Write(new Tools.Serialize().SerializeJson(attList));
+            }
+        }
+        /// <summary>
+        /// 判断是否是 待办
+        /// </summary>
+        private void IsTodo(HttpContext context)
+        {
+            var result = "";
+            var id = context.Request.QueryString["objetcId"];
+            if(!string.IsNullOrEmpty(id))
+            {
+                var todo = new com_activity_dal().FindNoDeleteById(long.Parse(id));
+                var call = new sdk_service_call_dal().FindNoDeleteById(long.Parse(id));
+                if (todo != null)
+                    result = "1";
+                else if (call != null)
+                    result = "2";
+            }
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 获取到相关信息
+        /// </summary>
+        private void GetActivity(HttpContext context)
+        {
+            var id = context.Request.QueryString["id"];
+            if (!string.IsNullOrEmpty(id))
+            {
+                var acti = new com_activity_dal().FindNoDeleteById(long.Parse(id));
+                if(acti!=null)
+                    context.Response.Write(new Tools.Serialize().SerializeJson(acti));
             }
         }
     }

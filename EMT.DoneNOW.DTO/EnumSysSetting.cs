@@ -32,5 +32,6 @@ namespace EMT.DoneNOW.DTO
         SDK_ENTRY_REQUIRED = 73,             // 工时的时间相关字段是否可以不显示
         SDK_WORKENTRY_BILL_ROUND = 74,       // 计费时长的取整方式
         SDK_WORKENTRY_WORK_ROUND = 75,       // 实际工作时长的取整
+        USE_KNOWLEDGE_BASE =77,              // 是否使用知识库
     }
 }
