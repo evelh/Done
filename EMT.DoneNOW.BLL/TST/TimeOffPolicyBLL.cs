@@ -24,6 +24,15 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 获取休假策略列表
+        /// </summary>
+        /// <returns></returns>
+        public List<tst_timeoff_policy> GetPolicyList()
+        {
+            return dal.FindListBySql($"select * from tst_timeoff_policy where delete_time=0");
+        }
+
+        /// <summary>
         /// 新增休假策略
         /// </summary>
         /// <param name="policy">休假策略</param>

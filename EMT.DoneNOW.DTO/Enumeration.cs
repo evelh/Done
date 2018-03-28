@@ -47,6 +47,8 @@ namespace EMT.DoneNOW.DTO
         SEX = 49,
         EMAILTYPE = 50,
         OUTSOURCE_SECURITY = 51,                  //外包权限
+        RESOURCE_TYPE = 52,                     // 员工类型
+        PAYROLL_TYPE = 53,                      // 薪资类型
         TIME_OFF_PERIOD_TYPE = 56,              // 休假策略：累计增长周期类型
         ATTACHMENT_TYPE = 62,                   // 附件类型
         DEPARTMENT_CATE = 64,                     //部门：类型
@@ -667,6 +669,15 @@ namespace EMT.DoneNOW.DTO
             TIMEOFF_POLICY_TIER = 1613,             // 休假策略-级别查询
             ACCOUNT_SERVICE_DETAILS = 1614,         // 工单详情-客户服务详情
             TICKET_INCLIDENT_RELATION = 1615,       // 工单详情-事故关联其他工单
+            RESOURCE_TIME_SHEET = 1623,             // 员工详情-工时表审批人
+            RESOURCE_EXPENSE_REPORT = 1624,         // 员工详情-费用审批人
+            RESOURCE_DEPARTMENT = 1625,             // 员工详情-员工部门
+            RESOURCE_SERVICE_DESK_QUEUES = 1626,    // 员工详情-员工队列
+            RESOURCE_SKILL = 1627,                  // 员工详情-员工技能
+            RESOURCE_CERTIFICATE = 1628,            // 员工详情-员工证书和培训
+            RESOURCE_DEGREE = 1629,                 // 员工详情-员工学位
+            RESOURCE_ATTACHMENT = 1630,             // 员工详情-员工附件
+
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -1598,6 +1609,15 @@ namespace EMT.DoneNOW.DTO
         TimeoffPolicyTier = 198,        // 休假策略-级别查询
         ACCOUNT_SERVICE_DETAILS = 199,   // 工单详情-客户服务详情
         TICKET_INCLIDENT_RELATION=200,   // 工单详情-事故关联其他工单
+        ResourceTimeSheet = 208,            // 员工详情-工时表审批人
+        ResourceExpense = 209,              // 员工详情-费用审批人
+        ResourceDepartment = 210,           // 员工详情-员工部门
+        ResourceServiceDeskQueue = 211,     // 员工详情-员工队列
+        ResourceSkill = 212,                // 员工详情-员工技能
+        ResourceCertificate = 213,          // 员工证书和培训
+        ResourceDegree = 214,               // 员工详情-员工学位
+        ResourceAttachment = 215,           // 员工详情-员工附件
+
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
         Line_Of_Business,              //系统管理：组织：业务条线

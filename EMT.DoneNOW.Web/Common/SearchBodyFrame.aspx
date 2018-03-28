@@ -495,7 +495,7 @@
                         order = strs[1].ToLower();
                       }
                 %>
-                <th title="点击按此列排序" width="<%=para.length*32 %>px" onclick="ChangeOrder('<%=para.name %>')" class="OrderTh">
+                <th <%if (para.id != 0) { %>title="点击按此列排序" onclick="ChangeOrder('<%=para.name %>')" <%} %> width="<%=para.length*32 %>px" class="OrderTh">
                     <%=para.name %>
                     <%if (orderby != null && para.name.Equals(orderby))
                         { %><img src="../Images/sort-<%=order %>.png" />
