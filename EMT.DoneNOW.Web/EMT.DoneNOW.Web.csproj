@@ -47,6 +47,10 @@
     <Reference Include="AspNet.ScriptManager.bootstrap, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AspNet.ScriptManager.bootstrap.3.0.0\lib\net45\AspNet.ScriptManager.bootstrap.dll</HintPath>
     </Reference>
+    <Reference Include="EMT.Tools, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Include\EMT.Tools.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -2679,10 +2683,6 @@
     <ProjectReference Include="..\EMT.DoneNOW.DTO\EMT.DoneNOW.DTO.csproj">
       <Project>{4cbd682d-bd97-4d4e-b552-a7e4d4dd6b09}</Project>
       <Name>EMT.DoneNOW.DTO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EMT.Tools\EMT.Tools.csproj">
-      <Project>{6e53e20f-4b91-4489-a6d5-9d188ddc650d}</Project>
-      <Name>EMT.Tools</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
