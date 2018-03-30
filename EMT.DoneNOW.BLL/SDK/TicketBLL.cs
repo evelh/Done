@@ -1070,7 +1070,7 @@ namespace EMT.DoneNOW.BLL
 
         #endregion
 
-
+        #region 工单查看
         /// <summary>
         /// 快速新增工单备注
         /// </summary>
@@ -2114,6 +2114,7 @@ namespace EMT.DoneNOW.BLL
                 OperLogBLL.OperLogUpdate<sdk_task_other>(thisOther, oldOther, thisOther.task_id, userId, OPER_LOG_OBJ_CATE.TICKET_RELATION, "编辑变更申请");
             }
         }
+        #endregion#
 
         #region 定期主工单 - 管理
         public bool AddMasterTicket(MasterTicketDto param, long userId)
@@ -3611,6 +3612,7 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
         #endregion
+
         /// <summary>
         /// 根据Ids 获取相应工单并删除
         /// </summary>
@@ -3740,6 +3742,44 @@ namespace EMT.DoneNOW.BLL
                 }
             }
             return 0;
+        }
+        /// <summary>
+        /// 获取工单相关数量
+        /// </summary>
+        public Dictionary<string,string> GetTicketTypeCount(long userId)
+        {
+            var dic = new Dictionary<string, string>();
+            var actCount = _dal.GetTicketCount(false, $"  and status_id <> {(int)DicEnum.TICKET_STATUS.DONE} and (owner_resource_id = {userId}||EXISTS(SELECT 1 from sdk_task_resource r where r.task_id = t.id and r.resource_id={userId}))");
+            var actRecCount = _dal.GetTicketCount(true, $" and status_id <> {(int)DicEnum.TICKET_STATUS.DONE} and (owner_resource_id = {userId}||EXISTS(SELECT 1 from sdk_task_resource r where r.task_id = t.id and r.resource_id={userId}))");
+            dic.Add("open", $"({actCount}+{actRecCount})");
+            var overCount = _dal.GetTicketCount(false, $" and estimated_end_time<(unix_timestamp(now()) *1000) and (owner_resource_id = {userId}||EXISTS(SELECT 1 from sdk_task_resource r where r.task_id = t.id and r.resource_id={userId}))");
+            var overRecCount = _dal.GetTicketCount(true, $" and estimated_end_time<(unix_timestamp(now()) *1000) and (owner_resource_id = {userId}||EXISTS(SELECT 1 from sdk_task_resource r where r.task_id = t.id and r.resource_id={userId}))");
+            dic.Add("over", $"({overCount}+{overRecCount})");
+            var myCount = _dal.GetTicketCount(false, $" and t.create_user_id = {userId}");
+            var myRecCount = _dal.GetTicketCount(true, $" and t.create_user_id = {userId}");
+            dic.Add("my", $"({myCount+ myRecCount})");
+            var completeCount = _dal.GetTicketCount(false, " and status_id = "+(int)DicEnum.TICKET_STATUS.DONE+ $" and (owner_resource_id = {userId}||EXISTS(SELECT 1 from sdk_task_resource r where r.task_id = t.id and r.resource_id={userId}))");
+            var completeRecCount = _dal.GetTicketCount(true, " and status_id = "+(int)DicEnum.TICKET_STATUS.DONE+ $" and (owner_resource_id = {userId}||EXISTS(SELECT 1 from sdk_task_resource r where r.task_id = t.id and r.resource_id={userId}))");
+            dic.Add("complete", $"({completeCount}+{completeRecCount})");
+
+            var changeCount = Convert.ToInt32(_dal.GetSingle("SELECT COUNT(DISTINCT st.id)  from sdk_task st INNER JOIN sdk_task_relation str on  st.id = str.parent_task_id where st.delete_time = 0 and str.delete_time = 0 "+ $" and (st.owner_resource_id = {userId}||EXISTS(SELECT 1 from sdk_task_resource r where r.task_id = st.id and r.resource_id={userId}))"));
+            dic.Add("change", $"({changeCount})");
+
+            var resDepList = new sys_resource_department_dal().GetRolesBySource(userId, DTO.DicEnum.DEPARTMENT_CATE.SERVICE_QUEUE);
+            if(resDepList!=null&& resDepList.Count > 0)
+            {
+                foreach (var resDep in resDepList)
+                {
+                    var depCount = _dal.GetTicketCount(false, " and department_id ="+ resDep.department_id);
+                    var depRecCount = _dal.GetTicketCount(true, " and department_id =" + resDep.department_id);
+                    dic.Add("dep_"+ resDep.department_id, $"({depCount}+{depRecCount})");
+
+                    var noResCount = _dal.GetTicketCount(false, " and department_id =" + resDep.department_id+ " and not EXISTS(SELECT 1 from sdk_task_resource r where t.id = r.task_id and r.delete_time = 0 and  r.resource_id is not null ) and owner_resource_id is null ");
+                    var noResRecCount = _dal.GetTicketCount(true, " and department_id =" + resDep.department_id + " and not EXISTS(SELECT 1 from sdk_task_resource r where t.id = r.task_id and r.delete_time = 0 and  r.resource_id is not null ) and owner_resource_id is null ");
+                    dic.Add("noRes_" + resDep.department_id, $"({noResCount}+{noResRecCount})");
+                }
+            }
+            return dic;
         }
 
         #region 服务预定相关

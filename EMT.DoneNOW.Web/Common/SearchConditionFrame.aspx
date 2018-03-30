@@ -76,7 +76,7 @@
      { %>
         <%} else {%>
     <div class="header">
-        <%if (currentQuery.page_query.Count == 1)
+        <%if (currentQuery.page_query.Count == 1||catId==(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE)
             { %>
         <%=currentQuery.page_name %>
        
@@ -455,6 +455,15 @@
             <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_ACCOUNT_LIST)
                 { %>
             <input name="1731" type="hidden" class="sl_cdt" value="<%=Request.QueryString["con1731"] %>" />
+            <%} %>
+
+            <% if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
+                { %>
+            <input name="<%=param1 %>" type="hidden" class="sl_cdt" value="<%=param2 %>" />
+            <%} %>
+             <% if (!string.IsNullOrEmpty(param3) && !string.IsNullOrEmpty(param4))
+                { %>
+            <input name="<%=param3 %>" type="hidden" class="sl_cdt" value="<%=param4 %>" />
             <%} %>
 		</div>
 	</div>

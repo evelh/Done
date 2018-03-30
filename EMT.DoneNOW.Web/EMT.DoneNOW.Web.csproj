@@ -172,6 +172,7 @@
     <Content Include="Content\MasterTicket.css" />
     <Content Include="Content\multiple-select.css" />
     <Content Include="Content\multipleList.css" />
+    <Content Include="Content\MyQueue.css" />
     <Content Include="Content\NewConfigurationItem.css" />
     <Content Include="Content\NewContact.css" />
     <Content Include="Content\NewQuoteItem.css" />
@@ -457,6 +458,7 @@
     <Content Include="Scripts\Search\master_sub_ticket_search.js" />
     <Content Include="Scripts\Search\master_ticket_search.js" />
     <Content Include="Scripts\Search\myapprove_expense_report.js" />
+    <Content Include="Scripts\Search\my_queue_active.js" />
     <Content Include="Scripts\Search\my_task_ticket.js" />
     <Content Include="Scripts\Search\project_search.js" />
     <Content Include="Scripts\Search\PurchaseFulfillment.js" />
@@ -489,19 +491,16 @@
     <Content Include="Scripts\treedom.js" />
     <Content Include="ServiceDesk\AccountServiceDetails.aspx" />
     <Content Include="ServiceDesk\AccountTicketList.aspx" />
-    <Content Include="ServiceDesk\AddFileAttachment.aspx" />
     <Content Include="ServiceDesk\AddRepository.aspx" />
     <Content Include="ServiceDesk\ChangeTicketApprove.aspx" />
     <Content Include="ServiceDesk\CopyToProject.aspx" />
-    <Content Include="ServiceDesk\EditRepository.aspx" />
-    <Content Include="ServiceDesk\Editsubcategory.aspx" />
     <Content Include="ServiceDesk\ImportKnowledgebase.aspx" />
     <Content Include="ServiceDesk\KnowledgebaseDetail.aspx" />
     <Content Include="ServiceDesk\ManageKnowledgebase.aspx" />
     <Content Include="ServiceDesk\MasterTicket.aspx" />
+    <Content Include="ServiceDesk\MyQueueList.aspx" />
     <Content Include="ServiceDesk\Newsubcategory.aspx" />
     <Content Include="ServiceDesk\DeleteMasterTicket.aspx" />
-    <Content Include="ServiceDesk\MasterTicket.aspx" />
     <Content Include="ServiceDesk\ServiceCall.aspx" />
     <Content Include="ServiceDesk\TaskServiceCall.aspx" />
     <Content Include="ServiceDesk\TicketActivity.aspx" />
@@ -1955,13 +1954,6 @@
     <Compile Include="ServiceDesk\AccountTicketList.aspx.designer.cs">
       <DependentUpon>AccountTicketList.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ServiceDesk\AddFileAttachment.aspx.cs">
-      <DependentUpon>AddFileAttachment.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ServiceDesk\AddFileAttachment.aspx.designer.cs">
-      <DependentUpon>AddFileAttachment.aspx</DependentUpon>
-    </Compile>
     <Compile Include="ServiceDesk\AddRepository.aspx.cs">
       <DependentUpon>AddRepository.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1982,20 +1974,6 @@
     </Compile>
     <Compile Include="ServiceDesk\CopyToProject.aspx.designer.cs">
       <DependentUpon>CopyToProject.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ServiceDesk\EditRepository.aspx.cs">
-      <DependentUpon>EditRepository.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ServiceDesk\EditRepository.aspx.designer.cs">
-      <DependentUpon>EditRepository.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ServiceDesk\Editsubcategory.aspx.cs">
-      <DependentUpon>Editsubcategory.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ServiceDesk\Editsubcategory.aspx.designer.cs">
-      <DependentUpon>Editsubcategory.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServiceDesk\ImportKnowledgebase.aspx.cs">
       <DependentUpon>ImportKnowledgebase.aspx</DependentUpon>
@@ -2031,6 +2009,13 @@
     </Compile>
     <Compile Include="ServiceDesk\MasterTicket.aspx.designer.cs">
       <DependentUpon>MasterTicket.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\MyQueueList.aspx.cs">
+      <DependentUpon>MyQueueList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\MyQueueList.aspx.designer.cs">
+      <DependentUpon>MyQueueList.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServiceDesk\Newsubcategory.aspx.cs">
       <DependentUpon>Newsubcategory.aspx</DependentUpon>
@@ -2181,6 +2166,9 @@
     </Compile>
     <Compile Include="Tools\ExpenseAjax.ashx.cs">
       <DependentUpon>ExpenseAjax.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\KnowledgeAjax.ashx.cs">
+      <DependentUpon>KnowledgeAjax.ashx</DependentUpon>
     </Compile>
     <Compile Include="Tools\PurchaseOrderAjax.ashx.cs">
       <DependentUpon>PurchaseOrderAjax.ashx</DependentUpon>
@@ -2673,6 +2661,7 @@
     <Content Include="Tools\WorkflowRuleAjax.ashx" />
     <Content Include="Tools\TimeoffPolicyAjax.ashx" />
     <Content Include="Tools\SysSettingAjax.ashx" />
+    <Content Include="Tools\KnowledgeAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2701,6 +2690,9 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

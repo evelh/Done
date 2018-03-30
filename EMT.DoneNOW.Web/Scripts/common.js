@@ -278,7 +278,8 @@ var windowObj = {
     workflow: "workflow",
     timeoffPolicy: "timeoffPolicy",
     masterTicket: 'masterTicket',
-    serviceCall:"serviceCall",
+    serviceCall: "serviceCall",
+    kbArticle:"kbArticle",
 }
 var windowType = {
     blank: '_blank',

@@ -350,17 +350,7 @@
                     <li onclick="Add()"><i style="background-image: url(../Images/new.png);"></i><span>新增服务包</span></li>
                    <li onclick=""><i style="background-image: url(../Images/new.png);"></i><span>查看价格清单</span></li>
                     <%}
-    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_REQUEST)
-    {%>
-                        <li onclick="Relation()" style="padding-left: 5px;"><span>关联</span></li>
-                       <li onclick="Add()" style="padding-left: 5px;"><span>新增</span></li>
-                        <%}
-    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_PROBLEM)
-    {%>
-                        <li onclick="Relation()" style="padding-left: 5px;"><span>关联</span></li>
-                       <li onclick="Add()" style="padding-left: 5px;"><span>新增</span></li>
-                        <%}
-    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_INCIDENT)
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_REQUEST || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_PROBLEM || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_INCIDENT)
     {%>
                         <li onclick="Relation()" style="padding-left: 5px;"><span>关联</span></li>
                        <li onclick="Add()" style="padding-left: 5px;"><span>新增</span></li>
@@ -374,10 +364,16 @@
     {%>
                     <li onclick="ApplyTicket()" style="padding-left: 5px;"><span>关联工单</span></li>
                        <li onclick="AddTicket()" style="padding-left: 5px;"><span>新增工单</span></li>
-                    <%}else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALL_SEARCH) 
+                    <%} else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALL_SEARCH)
     {%>
                     <li onclick="Add()" style="padding-left: 5px;"><span>新增</span></li>
                        <li onclick="PrintView()" style="padding-left: 5px;"><span>打印预览</span></li>
+                    <%} else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_MY_TICKET||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_VIEW) { %>
+                    <li class="Button ButtonIcon NormalState f1" id="options" tabindex="0">
+                <span class="Icon" style="width: 0; margin: 0;"></span>
+                <span class="Text">新增</span>
+                <img src="../Images/dropdown.png" alt="" class="ButtonRightImg1" />
+            </li>
                     <%} %>
                     <li id="PrintLi" class="General"><i style="background-image: url(../Images/print.png);"></i></li>
                     <li id="SelectLi" class="General" onclick="javascript:window.open('../Common/ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>

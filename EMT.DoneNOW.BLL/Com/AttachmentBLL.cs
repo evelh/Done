@@ -144,6 +144,13 @@ namespace EMT.DoneNOW.BLL
                     return false;
                 att.account_id = ticket.account_id;
             }
+            else if (att.object_type_id == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.KNOWLEDGE)
+            {
+                var thisArt = new sdk_kb_article_dal().FindNoDeleteById(att.object_id);
+                if (thisArt == null)
+                    return false;
+                att.account_id = thisArt.account_id;
+            }
             else
                 return false;
 

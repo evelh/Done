@@ -421,10 +421,32 @@ namespace EMT.DoneNOW.Web
                         queryPara.query_params.Add(pa);
                     }
                 }
+                #region 部分特殊处理添加的参数
                 if (queryTypeId == (int)QueryType.EXPENSE_REPORT)
-                {
                     queryPara.query_params.Add(new Para() { id=1236,value=LoginUserId.ToString()});
+                else if(queryTypeId == (int)QueryType.MY_QUEUE_ACTIVE)
+                {
+                    if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
+                        queryPara.query_params.Add(new Para() { id = long.Parse(param1), value = param2 });
+                    if (paraGroupId == 215)
+                        queryPara.query_params.Add(new Para() { id = 2626, value = LoginUserId.ToString() });
+                    else if(paraGroupId == 230)
+                        queryPara.query_params.Add(new Para() { id = 2730, value = LoginUserId.ToString() });
                 }
+                else if (queryTypeId == (int)QueryType.MY_QUEUE_MY_TICKET)
+                    queryPara.query_params.Add(new Para() { id = 2658, value = LoginUserId.ToString() });
+                else if (queryTypeId == (int)QueryType.MY_QUEUE_CHANGE_APPROVEL)
+                    queryPara.query_params.Add(new Para() { id = 2662, value = LoginUserId.ToString() });
+                else if (queryTypeId == (int)QueryType.MY_QUEUE_ACTIVE)
+                {
+                    if(!string.IsNullOrEmpty(param1)&& !string.IsNullOrEmpty(param2))
+                        queryPara.query_params.Add(new Para() { id = long.Parse(param1), value = param2 });
+                    var param3 = string.IsNullOrEmpty(Request.QueryString["param3"]) ? "" : Request.QueryString["param3"];
+                    var param4 = string.IsNullOrEmpty(Request.QueryString["param4"]) ? "" : Request.QueryString["param4"];
+                    if (!string.IsNullOrEmpty(param3) && !string.IsNullOrEmpty(param4))
+                        queryPara.query_params.Add(new Para() { id = long.Parse(param3), value = param4 });
+                }
+                #endregion
 
                 queryPara.query_type_id = queryTypeId;
                 queryPara.para_group_id = paraGroupId;
@@ -1205,14 +1227,11 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.SERVICE_CALL_TICKET:
                     contextMenu.Add(new PageContextMenuDto { text = "添加工时", click_function = "AddLabour()", class_name = "NeedSave ticket" });
                     contextMenu.Add(new PageContextMenuDto { text = "为服务预定添加工时", click_function = "AddServiceLabour()",class_name= "NeedSave ticket" });
-
                     contextMenu.Add(new PageContextMenuDto { text = "添加工时", click_function = "AddTaskLabour()", class_name = "NeedSave task" });
                     contextMenu.Add(new PageContextMenuDto { text = "添加包含起止时间的工时", click_function = "AddTaskTimeLabour()", class_name = "NeedSave task" });
                     contextMenu.Add(new PageContextMenuDto { text = "根据服务预定添加工时", click_function = "AddTaskServiceLabour()", class_name = "NeedSave task" });
-
                     contextMenu.Add(new PageContextMenuDto { text = "编辑工单", click_function = "EditTicket()", class_name = "NeedSave ticket" });
                     contextMenu.Add(new PageContextMenuDto { text = "编辑任务", click_function = "EditTask()", class_name = "NeedSave task" });
-                    
                     contextMenu.Add(new PageContextMenuDto { text = "管理负责人", click_function = "ManageRes()", class_name = "NeedSave" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看工单详情", click_function = "ViewTicket()", class_name = "NeedSave ticket" });
                     contextMenu.Add(new PageContextMenuDto { text = "添加工单备注", click_function = "AddTicketNote()", class_name = "NeedSave ticket" });
@@ -1276,6 +1295,31 @@ namespace EMT.DoneNOW.Web
                     };
                     contextMenu.Add(callOther);
                     #endregion
+                    break;
+                case (long)QueryType.MY_QUEUE_ACTIVE:
+                case (long)QueryType.MY_QUEUE_MY_TICKET:
+                case (long)QueryType.MY_QUEUE_CHANGE_APPROVEL:
+                case (long)QueryType.MY_QUEUE_VIEW:
+                    contextMenu.Add(new PageContextMenuDto { text = "添加工时", click_function = "AddLabour()",id="btnAddLab", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "为服务预定添加工时", click_function = "AddServiceLabour()", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑工单", click_function = "EditTicket()", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑定期服务主工单", click_function = "EditMasterTicket()",id="btnEditMaster", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看工单", click_function = "ViewTask()", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "工单历史", click_function = "ViewTaskHistory()", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "客户工单历史", click_function = "ViewAccountTaskHistory()", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看报表", click_function = "ViewReport()", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "CopyTask()", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制到项目", click_function = "CopyToProject()", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "合并到另一个工单", click_function = "MergeOtherTicket()", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "吸收合并其他工单", click_function = "AbsorbOther()", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加服务预定", click_function = "AddCall()", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加备注", click_function = "AddNote()", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "转发/修改", click_function = "TicketModify()", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除工单", click_function = "DeleteTicket()", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "加入到我的工作列表", click_function = "", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "加入到主负责人的工作列表", click_function = "", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "加入到其他负责人的工作列表", click_function = "", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "取消与项目管理关系", click_function = "RemoveProject()", class_name = "" });
                     break;
                 default:
                     break;

@@ -144,6 +144,9 @@ namespace EMT.DoneNOW.Web
                     case "GetCallTicket":
                         GetCallTicket(context);
                         break;
+                    case "GetTicketByNo":
+                        GetTicketByNo(context);
+                        break;
                     default:
                         break;
                 }
@@ -830,6 +833,17 @@ namespace EMT.DoneNOW.Web
                     context.Response.Write(new EMT.Tools.Serialize().SerializeJson(ticketCall));
                 }
             }
+        }
+        /// <summary>
+        /// 根据编号 获取相应工单
+        /// </summary>
+        /// <param name="context"></param>
+        private void GetTicketByNo(HttpContext context)
+        {
+            var no = context.Request.QueryString["no"];
+            var ticket = new sdk_task_dal().GetTicketByNo(no);
+            if(ticket!=null)
+                context.Response.Write(new EMT.Tools.Serialize().SerializeJson(ticket));
         }
     }
 }

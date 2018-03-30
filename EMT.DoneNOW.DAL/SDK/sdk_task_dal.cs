@@ -198,10 +198,21 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<sdk_task>($"SELECT st.* from sdk_task st INNER JOIN sdk_service_call_task ssct on st.id = ssct.task_id where st.delete_time = 0 and ssct.delete_time = 0 and ssct.service_call_id = {callId}");
         }
+        /// <summary>
+        /// 根据工单编号获取相应工单
+        /// </summary>
+        public sdk_task GetTicketByNo(string no)
+        {
+            return FindSignleBySql<sdk_task>($"SELECT * from sdk_task where delete_time = 0 and no = '{no}'");
+        }
+        /// <summary>
+        /// 根据条件查询定期/非定期工单的 数量  isRec 为 true 代表 是定期主工单
+        /// </summary>
+        public int GetTicketCount(bool isRec = true, string sql = "")
+        {
+            return Convert.ToInt32(GetSingle($"SELECT COUNT(1) from sdk_task t where t.delete_time =0 and t.type_id = 1809 and t.recurring_ticket_id is {(isRec? "not" : "")} NULL " + sql));
+        }
 
-
-
-        
         #endregion
 
         #region 工作流处理工单对象

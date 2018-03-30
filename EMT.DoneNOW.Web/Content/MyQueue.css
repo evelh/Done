@@ -1,0 +1,29 @@
+﻿body {
+}
+.LeftDiv{
+    float:left;
+    width:200px;
+    height:100%;
+}
+.RightDiv {
+    float: left;
+    height: 100%;
+    position: fixed;
+    left: 200px;
+    width: 85%;
+    min-width: 700px;
+    max-width: 1500px;
+}
+.Select {
+    background-color: #e4e4e4;
+}
+#serviceDeskSideBar a{
+    color:black;
+    text-decoration:none;
+}
+.MenuLink {
+    margin: 5px 0;
+    font-size: 12px;
+    color: #4F4F4F;
+    padding-left: 8px;
+}
