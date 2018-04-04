@@ -279,7 +279,9 @@ var windowObj = {
     timeoffPolicy: "timeoffPolicy",
     masterTicket: 'masterTicket',
     serviceCall: "serviceCall",
-    kbArticle:"kbArticle",
+    kbArticle: "kbArticle",
+    select: "select",
+    appointment:"appointment",
 }
 var windowType = {
     blank: '_blank',

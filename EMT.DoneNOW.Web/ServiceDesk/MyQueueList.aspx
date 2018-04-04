@@ -32,12 +32,12 @@
                     </div>
                     <div id="DIVMyWorkspace" style="position: relative; display: block; visibility: visible; top: 0px; left: 0px;margin-left:25px;">
                         <ul class="ButtonBarVert">
-                            <li class="MenuLink Select"  onclick="SearchTicket('open')"><a>活动工单<%=dic["open"] %></a></li>
-                            <li class="MenuLink" onclick="SearchTicket('over')"><a>过期工单<%=dic["over"] %></a></li>
-                            <li class="MenuLink" onclick="SearchTicket('my')"><a>我创建的的工单<%=dic["my"] %></a></li>
-                            <li class="MenuLink" onclick="SearchTicket('complete')"><a>完成工单<%=dic["complete"] %></a></li>
-                            <li class="MenuLink" onclick="SearchTicket('change')"><a>变更申请单<%=dic["change"] %></a></li>
-                            <li class="MenuLink" onclick="SearchTicket('call')"><a >服务预定</a></li>
+                            <li class="MenuLink Select" data-val="open"  onclick="SearchTicket('open')"><a>活动工单<%=dic["open"] %></a></li>
+                            <li class="MenuLink" data-val="over"  onclick="SearchTicket('over')"><a>过期工单<%=dic["over"] %></a></li>
+                            <li class="MenuLink" data-val="my"  onclick="SearchTicket('my')"><a>我创建的的工单<%=dic["my"] %></a></li>
+                            <li class="MenuLink" data-val="complete"  onclick="SearchTicket('complete')"><a>完成工单<%=dic["complete"] %></a></li>
+                            <li class="MenuLink" data-val="change"  onclick="SearchTicket('change')"><a>变更申请单<%=dic["change"] %></a></li>
+                            <li class="MenuLink" data-val="call"  onclick="SearchTicket('call')"><a >服务预定</a></li>
                         </ul>
                     </div>
                     <div class="relatedheard">
@@ -72,8 +72,32 @@
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
 <script src="../Scripts/common.js"></script>
 <script>
+    $(function () {
+        <%var type = Request.QueryString["type"];
+    if (!string.IsNullOrEmpty(type))
+    {%>
+        $(".MenuLink").each(function () {
+            var thisVal = $(this).data("val");
+            if (thisVal == '<%=type %>') {
+                $(this).trigger("click");
+                return false;
+            }
+        })
+    <%}
+    else
+    {%>
+        $(".MenuLink").eq(0).trigger("click");
+    <%}
+    %>
+    })
     function RefreshPage() {
-
+        var firstChoose = $(".MenuLink.Select").eq(0).data("val");
+        if (firstChoose != "" && firstChoose != null && firstChoose != undefined) {
+            location.href = "MyQueueList?type=" + firstChoose;
+        }
+        else {
+            location.href = "MyQueueList";
+        }
     }
 
     $(".toogle").click(function () {

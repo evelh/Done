@@ -162,6 +162,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\ClassificationIcons.css" />
+    <Content Include="Content\Dispatch.css" />
     <Content Include="Content\DynamicContent.css" />
     <Content Include="Content\EmailTempl.css" />
     <Content Include="Content\index.css" />
@@ -190,6 +191,13 @@
     <Content Include="Content\sysset_user.css" />
     <Content Include="Content\Ticket.css" />
     <Content Include="Content\TicketLabour.css" />
+    <Content Include="Scripts\Dispatch.js" />
+    <Content Include="ServiceDesk\AddQuickCall.aspx" />
+    <Content Include="ServiceDesk\AppointmentsManage.aspx" />
+    <Content Include="ServiceDesk\DispatchCalendar.aspx" />
+    <Content Include="ServiceDesk\DispatcherWorkshopTicketView.aspx" />
+    <Content Include="ServiceDesk\DispatcherWorkshopView.aspx" />
+    <Content Include="ServiceDesk\DispatchViewList.aspx" />
     <Content Include="Images\ACheck50.gif" />
     <Content Include="Images\ico_charge.png" />
     <Content Include="Images\ico_service_call.png" />
@@ -1361,6 +1369,48 @@
     <Compile Include="Contract\InteralCostAddOrEdit.aspx.designer.cs">
       <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ServiceDesk\AddQuickCall.aspx.cs">
+      <DependentUpon>AddQuickCall.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\AddQuickCall.aspx.designer.cs">
+      <DependentUpon>AddQuickCall.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\AppointmentsManage.aspx.cs">
+      <DependentUpon>AppointmentsManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\AppointmentsManage.aspx.designer.cs">
+      <DependentUpon>AppointmentsManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\DispatchCalendar.aspx.cs">
+      <DependentUpon>DispatchCalendar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\DispatchCalendar.aspx.designer.cs">
+      <DependentUpon>DispatchCalendar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\DispatcherWorkshopTicketView.aspx.cs">
+      <DependentUpon>DispatcherWorkshopTicketView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\DispatcherWorkshopTicketView.aspx.designer.cs">
+      <DependentUpon>DispatcherWorkshopTicketView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\DispatcherWorkshopView.aspx.cs">
+      <DependentUpon>DispatcherWorkshopView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\DispatcherWorkshopView.aspx.designer.cs">
+      <DependentUpon>DispatcherWorkshopView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\DispatchViewList.aspx.cs">
+      <DependentUpon>DispatchViewList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\DispatchViewList.aspx.designer.cs">
+      <DependentUpon>DispatchViewList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Inventory\AddPurchaseItem.aspx.cs">
       <DependentUpon>AddPurchaseItem.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2164,6 +2214,9 @@
     <Compile Include="TimeSheet\ReportView.aspx.designer.cs">
       <DependentUpon>ReportView.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\DispatchAjax.ashx.cs">
+      <DependentUpon>DispatchAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\ExpenseAjax.ashx.cs">
       <DependentUpon>ExpenseAjax.ashx</DependentUpon>
     </Compile>
@@ -2662,6 +2715,7 @@
     <Content Include="Tools\TimeoffPolicyAjax.ashx" />
     <Content Include="Tools\SysSettingAjax.ashx" />
     <Content Include="Tools\KnowledgeAjax.ashx" />
+    <Content Include="Tools\DispatchAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

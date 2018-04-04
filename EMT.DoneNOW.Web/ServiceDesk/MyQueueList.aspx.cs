@@ -27,7 +27,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 var thisDep = sdDal.FindNoDeleteById(long.Parse(thisDepArr[1]));
                 if (thisDep == null)
                     continue;
-                depStr.Append($"<li class='MenuLink' onclick='SearchTicket(\"{dep.Key}\")'><a>{thisDep.name} {dep.Value}</a></li>");
+                depStr.Append($"<li class='MenuLink' data-val='{dep.Key}' onclick='SearchTicket(\"{dep.Key}\")'><a>{thisDep.name} {dep.Value}</a></li>");
             }
             liAllTicket.Text = depStr.ToString();
 
@@ -41,7 +41,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 var thisDep = sdDal.FindNoDeleteById(long.Parse(thisNoResArr[1]));
                 if (thisDep == null)
                     continue;
-                noResStr.Append($"<li class='MenuLink' onclick='SearchTicket(\"{noRes.Key}\")'><a>{thisDep.name} {noRes.Value}</a></li>");
+                noResStr.Append($"<li class='MenuLink' data-val='{noRes.Key}' onclick='SearchTicket(\"{noRes.Key}\")'><a>{thisDep.name} {noRes.Value}</a></li>");
             }
             liNoResTicket.Text = noResStr.ToString();
         }

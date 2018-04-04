@@ -369,10 +369,14 @@
                     <li onclick="Add()" style="padding-left: 5px;"><span>新增</span></li>
                        <li onclick="PrintView()" style="padding-left: 5px;"><span>打印预览</span></li>
                     <%} else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_MY_TICKET||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_VIEW) { %>
-                    <li class="Button ButtonIcon NormalState f1" id="options" tabindex="0">
-                <span class="Icon" style="width: 0; margin: 0;"></span>
-                <span class="Text">新增</span>
-                <img src="../Images/dropdown.png" alt="" class="ButtonRightImg1" />
+                    <li class="Button ButtonIcon NormalState f1" id="options" tabindex="0"> 
+                    <span class="Icon" style="width: 0; margin: 0;"></span>
+                    <span class="Text">新增</span>
+                    <img src="../Images/dropdown.png" alt="" class="ButtonRightImg1" />  
+                        <input type="hidden" id="toTicketId" />
+                        <input type="hidden" id="toTicketIdHidden" />
+                        <input type="hidden" id="AbsorbTicketIds" />
+                        <input type="hidden" id="AbsorbTicketIdsHidden" />
             </li>
                     <%} %>
                     <li id="PrintLi" class="General"><i style="background-image: url(../Images/print.png);"></i></li>
@@ -419,7 +423,7 @@
     { %><li><span class='DropDownMenuItemText' onclick='CopyFromOppo()'>从商机复制</span></li><%}%></ul>
                 </div>
                 <%}
-    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_ACCOUNT_LIST || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET)
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_ACCOUNT_LIST || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_MY_TICKET||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_VIEW)
     { %>
                 <div class="DropDownMenu" id="D1" style=" background-color: #FFF;padding: 5px;border: 1px solid #BCBCBC;cursor: pointer;box-shadow: 1px 3px 4px rgba(0,0,0,0.33);position: fixed;top: 35px;border-top:white;display:none;">
                     <ul>
@@ -2679,5 +2683,9 @@
     </script>
   <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
   <script type="text/javascript" src="../Scripts/Search/<%=(EMT.DoneNOW.DTO.QueryType)queryTypeId %>.js"></script>
+    <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_MY_TICKET || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_VIEW||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_VIEW)
+        { %>
+    <script type="text/javascript" src="../Scripts/Search/my_queue_active.js"></script>
+    <%} %>
 </body>
 </html>

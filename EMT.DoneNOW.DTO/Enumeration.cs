@@ -819,10 +819,12 @@ namespace EMT.DoneNOW.DTO
             TIMEOFF_ITEM = 1406,                        // 假期策略类别
             TIMEOFF_ITEM_TIER = 1407,                   // 假期策略级别
             TIMEOFF_RESOURCE = 1411,                    // 假期策略关联员工
+            SERVICE_DISPATCHER_VIEW = 1412,             // 调度工作室视图
             SERVICE_CALL = 1415,                        // 服务预定
             SERVICE_CALL_RESOURCE=1416,                 // 服务预定负责人
             SERVICE_CALL_TICKET = 1417,                 // 服务预定关联工单
             PROJECT_TASK_INFORMATION = 1418,            // 任务的扩展信息（自定义信息）
+            SERVICE_APPOINTMENT = 1419,                 // 约会
             TICKET_CHECK_LIST = 1420,                   // 工单的检查单
             TICKET_SERVICE_REQUEST = 1421,              // 服务请求审批人信息
             TICKET_RELATION = 1422,                     // 工单关联关系
@@ -1456,6 +1458,16 @@ namespace EMT.DoneNOW.DTO
         {
             ALL_APPROVERS_MUST_APPROVE = 2277,   // 全部通过
             ONE_APPROVER_MUST_APPROVE = 2278,    // 任意一个通过
+        }
+        /// <summary>
+        /// 调度工作室：显示天数 - 169
+        /// </summary>
+        public enum DISPATCHER_MODE
+        {
+            ONE_DAY_VIEW=2281,                            // 当天
+            SEVEN_DAY_WORK_VIEW =2282,                    // 所在周工作日
+            FIVE_DAY_WORK_VIEW =2283,                     // 所在周
+            SEVEN_DAY_WORK_VIEW_FROM_SELECTED_DAY =2284,  // 当天起7天
         }
         /// <summary>
         /// 工作流对象 - 176

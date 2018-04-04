@@ -254,13 +254,9 @@ namespace EMT.DoneNOW.Web
                     var name = "队列";
                     if (!string.IsNullOrEmpty(thisDepId))
                     {
-                        var thisDepArr = thisDepId.Split('_');
-                        if (thisDepArr.Length > 2)
-                        {
-                            var dep = new DAL.sys_department_dal().FindNoDeleteById(long.Parse(thisDepArr[1]));
-                            if (dep != null)
+                        var dep = new DAL.sys_department_dal().FindNoDeleteById(long.Parse(thisDepId));
+                        if (dep != null)
                                 name = dep.name;
-                        }
                     }
                     currentQuery.page_name = name;
                     break;

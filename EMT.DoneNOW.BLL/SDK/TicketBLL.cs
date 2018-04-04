@@ -3770,12 +3770,12 @@ namespace EMT.DoneNOW.BLL
             {
                 foreach (var resDep in resDepList)
                 {
-                    var depCount = _dal.GetTicketCount(false, " and department_id ="+ resDep.department_id);
-                    var depRecCount = _dal.GetTicketCount(true, " and department_id =" + resDep.department_id);
+                    var depCount = _dal.GetTicketCount(false, "  and status_id<>1894  and department_id =" + resDep.department_id);
+                    var depRecCount = _dal.GetTicketCount(true, "  and status_id<>1894  and department_id =" + resDep.department_id);
                     dic.Add("dep_"+ resDep.department_id, $"({depCount}+{depRecCount})");
 
-                    var noResCount = _dal.GetTicketCount(false, " and department_id =" + resDep.department_id+ " and not EXISTS(SELECT 1 from sdk_task_resource r where t.id = r.task_id and r.delete_time = 0 and  r.resource_id is not null ) and owner_resource_id is null ");
-                    var noResRecCount = _dal.GetTicketCount(true, " and department_id =" + resDep.department_id + " and not EXISTS(SELECT 1 from sdk_task_resource r where t.id = r.task_id and r.delete_time = 0 and  r.resource_id is not null ) and owner_resource_id is null ");
+                    var noResCount = _dal.GetTicketCount(false, "  and status_id<>1894  and department_id =" + resDep.department_id+ " and not EXISTS(SELECT 1 from sdk_task_resource r where t.id = r.task_id and r.delete_time = 0 and  r.resource_id is not null ) and owner_resource_id is null ");
+                    var noResRecCount = _dal.GetTicketCount(true, "  and status_id<>1894  and department_id =" + resDep.department_id + " and not EXISTS(SELECT 1 from sdk_task_resource r where t.id = r.task_id and r.delete_time = 0 and  r.resource_id is not null ) and owner_resource_id is null ");
                     dic.Add("noRes_" + resDep.department_id, $"({noResCount}+{noResRecCount})");
                 }
             }
@@ -4205,6 +4205,23 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
         /// <summary>
+        /// 新增服务预定
+        /// </summary>
+        public bool AddCallOnly(sdk_service_call param,long userId)
+        {
+            var sscDal = new sdk_service_call_dal();
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            param.id = sscDal.GetNextIdCom();
+            param.create_time = timeNow;
+            param.update_time = timeNow;
+            param.create_user_id = userId;
+            param.update_user_id = userId;
+            sscDal.Insert(param);
+            OperLogBLL.OperLogAdd<sdk_service_call>(param, param.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SERVICE_CALL, "新增服务预定");
+            return true;
+        }
+
+        /// <summary>
         /// 工单的 服务预定（ 新增--）
         /// </summary>
         public void CallTaskManage(long ticketId,string callIds,long userId)
@@ -4307,6 +4324,7 @@ namespace EMT.DoneNOW.BLL
                 }
             }
         }
+
         /// <summary>
         /// 编辑服务预定
         /// </summary>
@@ -4390,6 +4408,13 @@ namespace EMT.DoneNOW.BLL
             };
             cneDal.Insert(email);
             OperLogBLL.OperLogAdd<com_notify_email>(email, email.id, userId, OPER_LOG_OBJ_CATE.NOTIFY, "新增通知");
+        }
+        /// <summary>
+        /// 获取员工在某一时间的服务预定
+        /// </summary>
+        public List<sdk_service_call> GetCallByResDate(long resId,DateTime date)
+        {
+            return _dal.FindListBySql<sdk_service_call>($"SELECT ssc.* from sdk_service_call ssc INNER JOIN sdk_service_call_task ssct on ssc.id = ssct.service_call_id INNER JOIN sdk_service_call_task_resource ssctr on ssct.id = ssctr.service_call_task_id where ssc.delete_time = 0 and ssct.delete_time = 0 and ssctr.delete_time = 0 and ssctr.resource_id = {resId} and FROM_UNIXTIME(ssc.start_time / 1000, '%Y-%m-%d') = '{date.ToString("yyyy-MM-dd")}'");
         }
         #endregion
 

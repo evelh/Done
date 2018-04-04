@@ -28,7 +28,7 @@ namespace EMT.DoneNOW.Web
                     break;
                 case "GetRoleList":
                     var source_id = context.Request.QueryString["source_id"];
-                    var showNull = context.Request.QueryString["showNull"];
+                    var showNull = context.Request.QueryString["showNull"];  // showNull 为空 多显示一行空
                     GetRoleList(context, long.Parse(source_id),string.IsNullOrEmpty(showNull));
                     break;
                 case "delete":

@@ -146,6 +146,8 @@
     <Compile Include="PRO\pro_project_dal.cs" />
     <Compile Include="PRO\pro_project_team_dal.cs" />
     <Compile Include="PRO\pro_project_team_role_dal.cs" />
+    <Compile Include="SDK\sdk_appointment_dal.cs" />
+    <Compile Include="SDK\sdk_dispatcher_view_dal.cs" />
     <Compile Include="SDK\sdk_expense_dal.cs" />
     <Compile Include="SDK\sdk_expense_report_dal.cs" />
     <Compile Include="SDK\sdk_kb_article_comment_dal.cs" />

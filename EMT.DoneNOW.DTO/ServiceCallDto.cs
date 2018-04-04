@@ -11,5 +11,8 @@ namespace EMT.DoneNOW.DTO
     {
         public sdk_service_call call;
         public string ticketIds;
+        public sdk_task thisTicket;
+        public List<UserDefinedFieldValue> udfList;
+        public string resIds;
     }
 }

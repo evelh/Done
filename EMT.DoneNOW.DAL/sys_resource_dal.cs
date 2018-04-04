@@ -40,9 +40,9 @@ namespace EMT.DoneNOW.DAL
             return FindListBySql<sys_resource>("select * from sys_resource where is_active = 1 and delete_time = 0");
         }
 
-        public List<sys_resource> GetListByIds(string ids)
+        public List<sys_resource> GetListByIds(string ids,bool isActive = true)
         {
-            return FindListBySql<sys_resource>($"select * from sys_resource where is_active = 1 and delete_time = 0 and id in ({ids})");
+            return FindListBySql<sys_resource>($"select * from sys_resource where {(isActive? " is_active = 1 and " : "")} delete_time = 0 and id in ({ids})");
         }
 
         /// 根据关系表ID 获取员工相关信息 

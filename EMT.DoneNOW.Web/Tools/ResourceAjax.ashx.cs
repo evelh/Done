@@ -520,14 +520,25 @@ namespace EMT.DoneNOW.Web
                 depResId = ClearRepeatRes(depResId);
             }
             var isDelete = !string.IsNullOrEmpty(context.Request.QueryString["isDelete"]);
-            if (!string.IsNullOrEmpty(depResId)&& !string.IsNullOrEmpty(priDepResId))
+            long? priResId = null;
+            var srdDal = new sys_resource_department_dal();
+            if (!string.IsNullOrEmpty(priDepResId))
             {
-                var srdDal = new sys_resource_department_dal();
                 var priDepRes = srdDal.FindById(long.Parse(priDepResId));
-                var resDepList = srdDal.GetListByIds(depResId);
-                if(priDepRes!=null&& resDepList!=null&& resDepList.Count > 0)
+                if (priDepRes != null)
                 {
-                    var repeatResList = resDepList.Where(_ => _.resource_id == priDepRes.resource_id).ToList();
+                    priResId = priDepRes.resource_id;
+                }
+            }
+            var priRes = context.Request.QueryString["priRes"];
+            if (!string.IsNullOrEmpty(priRes))
+                priResId = long.Parse(priRes);
+            if (!string.IsNullOrEmpty(depResId)&& priResId != null)
+            {
+                var resDepList = srdDal.GetListByIds(depResId);
+                if(resDepList!=null&& resDepList.Count > 0)
+                {
+                    var repeatResList = resDepList.Where(_ => _.resource_id == priResId).ToList();
                     if(repeatResList != null&& repeatResList.Count > 0)
                     {
                         isRepeatRes = true;
