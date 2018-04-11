@@ -30,6 +30,19 @@ function requestData(url, data, calBackFunction) {
 }
 
 /**
+ * 日期字符串转换为日期类型
+ * @param 日期时间（格式yyyy-MM-dd）
+ */
+function GetDateFromString(str) {
+    var strs = str.split('-');
+    var dt = new Date();
+    dt.setFullYear(strs[0]);
+    dt.setMonth(parseInt(strs[1]) - 1);
+    dt.setDate(strs[2]);
+    return dt;
+}
+
+/**
  * 比较两个日期时间（格式yyyy-MM-dd）
  * @param time1 时间1
  * @param time2 时间2
@@ -278,7 +291,8 @@ var windowObj = {
     workflow: "workflow",
     timeoffPolicy: "timeoffPolicy",
     masterTicket: 'masterTicket',
-    serviceCall:"serviceCall",
+    serviceCall: "serviceCall",
+    timeoffRequest: 'timeoffRequest',
 }
 var windowType = {
     blank: '_blank',

@@ -472,6 +472,15 @@ namespace EMT.DoneNOW.DTO
         }
 
         /// <summary>
+        /// 审批人的审批类型 - 57
+        /// </summary>
+        public enum APPROVE_TYPE
+        {
+            TIMESHEET_APPROVE = 673,    // 工时表审批人
+            EXPENSE_APPROVE = 674,      // 费用表审批人
+        }
+
+        /// <summary>
         /// 附件类型-62
         /// </summary>
         public enum ATTACHMENT_TYPE
@@ -684,6 +693,12 @@ namespace EMT.DoneNOW.DTO
             RESOURCE_CERTIFICATE = 1628,            // 员工详情-员工证书和培训
             RESOURCE_DEGREE = 1629,                 // 员工详情-员工学位
             RESOURCE_ATTACHMENT = 1630,             // 员工详情-员工附件
+            TIMEOFF_MY_CURRENT = 1631,              // 工时表管理-我的当前工时表
+            TIMEOFF_WAIT_APPROVE = 1632,            // 工时表管理-等待我审批的工时表
+            TIMEOFF_WAIT_APPROVE_DETAIL = 1633,     // 工时表管理-等待我审批的工时表-列表详情
+            TIMEOFF_SUBMITED = 1634,                // 工时表管理-已提交工时表
+            TIMEOFF_MY_REQUEST = 1635,              // 工时表管理-我的休假请求
+            TIMEOFF_REQUEST_WAIT_APPROVE = 1637,    // 工时表管理-等待我审批的休假请求
 
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
@@ -788,8 +803,8 @@ namespace EMT.DoneNOW.DTO
             PROJECT_TASK=1380,                          // 任务
             PROJECT_CALENDAR=1381,                      // 项目日历条目
             PROJECT_TASK_RESOURCE = 1382,               // 任务分配对象
-            SDK_WORK_RECORD=1383,                       // 工时记录
-            SDK_WORK_ENTRY=1384,                        // 工时
+            SDK_WORK_RECORD=1383,                       // 工时报表sdk_work_entry_report
+            SDK_WORK_ENTRY =1384,                        // 工时
             SDK_EXPENSE_REPORT = 1385,                  // 费用报表   
             SDK_EXPENSE = 1386,                         // 费用
             SDK_TASK_LIBARY = 1387,                     // 任务库
@@ -812,6 +827,9 @@ namespace EMT.DoneNOW.DTO
             TIMEOFF_POLICY = 1405,                      // 假期策略
             TIMEOFF_ITEM = 1406,                        // 假期策略类别
             TIMEOFF_ITEM_TIER = 1407,                   // 假期策略级别
+            TIMEOFF_REQUEST = 1408,                     // 休假请求tst_timeoff_request
+            TIMEOFF_REQUEST_LOG = 1409,                 // 休假请求审批tst_timeoff_request_log
+            WORK_ENTRY_REPORT_LOG = 1410,               // 工时表审批tst_work_entry_report_log
             TIMEOFF_RESOURCE = 1411,                    // 假期策略关联员工
             SERVICE_CALL = 1415,                        // 服务预定
             SERVICE_CALL_RESOURCE=1416,                 // 服务预定负责人
@@ -860,6 +878,7 @@ namespace EMT.DoneNOW.DTO
             UN_EQUAL = 818,         // 不等于
             DYNAMIC = 819,          // 动态参考
             CHANGED = 820,          // 变更
+            DATE_EQUAL = 2807,      // 日期(做等于判断)
         }
 
         /// <summary>
@@ -1390,15 +1409,51 @@ namespace EMT.DoneNOW.DTO
         {
             SYS_EMAIL=2185,        // 系统发送邮件邮箱地址
         }
+
+        /// <summary>
+        /// 工时报表状态 - 157
+        /// </summary>
+        public enum WORK_ENTRY_REPORT_STATUS
+        {
+            HAVE_IN_HAND = 2188,                // 进行中
+            WAITING_FOR_APPROVAL = 2189,        // 等待审批
+            PAYMENT_BEEN_APPROVED = 2190,       // 已审批
+            REJECTED = 2191,                    // 已拒绝
+            ALREADY_PAID = 2192,                // 已支付
+        }
+
         /// <summary>
         /// 休假审批状态 - 158
         /// </summary>
         public enum TIMEOFF_REQUEST_STATUS
         {
-            COMMIT=2195,        // 已提交
-            APPROVAL=2196,      // 已审批
-            REFUSE=2197,        // 已拒绝
+            COMMIT = 2195,          // 已提交
+            APPROVAL = 2196,        // 已审批
+            REFUSE = 2197,          // 已拒绝
+            CANCLE = 2198,          // 取消
         }
+
+        /// <summary>
+        /// 工时表操作类型 - 161
+        /// </summary>
+        public enum WORK_ENTRY_REPORT_OPER_TYPE
+        {
+            SUBMIT = 2219,          // 提交
+            CANCLE_SUBMIT = 2220,   // 取消提交
+            APPROVAL = 2221,        // 审批通过
+            REJECT = 2222,          // 审批拒绝
+        }
+
+        /// <summary>
+        /// 休假申请操作类型 - 162
+        /// </summary>
+        public enum TIMEOFF_REQUEST_OPER
+        {
+            CANCLE = 2225,      // 取消申请
+            PASS = 2226,        // 审批通过
+            REJECT = 2227,      // 审批拒绝
+        }
+
         /// <summary>
         /// 费用报表操作 - 163
         /// </summary>
@@ -1653,6 +1708,12 @@ namespace EMT.DoneNOW.DTO
         ResourceCertificate = 213,          // 员工证书和培训
         ResourceDegree = 214,               // 员工详情-员工学位
         ResourceAttachment = 215,           // 员工详情-员工附件
+        TimeoffMyCurrent = 217,             // 工时表管理-我的当前工时表
+        TimeoffWaitApprove = 218,           // 工时表管理-等待我审批的工时表
+        TimeoffWaitApproveDetail = 219,     // 工时表管理-等待我审批的工时表-列表详情
+        TimeoffSubmited = 220,              // 工时表管理-已提交工时表
+        TimeoffMyRequest = 221,             // 工时表管理-我的休假请求
+        TimeoffRequestWaitApprove = 223,    // 等待我审批的休假请求
 
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
@@ -1863,8 +1924,16 @@ namespace EMT.DoneNOW.DTO
         // 1159
         ENTERTAINMENT_EXPENSE=17,    // 娱乐费用（招待费用）
         MILEAGE=18,             // 总里程
+
+        // 1160-休假类别
+        Sick = 23,                  // 病假
+        Vacation = 25,              // 年休假
+        Floating = 27,              // 浮动假期
+        Holiday = 28,               // 节假日
+        Personal = 35,              // 私人时间
+
         // 1161
-        CHANGEORDER=36,           // 变更
+        CHANGEORDER =36,           // 变更
         NOTAXDISCOUNT=37,          // 不收税折扣
         DISCOUNT=43,               // 折扣
     }

@@ -615,8 +615,9 @@
                             }
                         }
                         %>
-              <%if (url == null) { %>
-                <td><%=rslt[para.name] %></td>
+              <%if (url == null) {
+                      if (para.id == 0 && para.name == "操作") { %><td><input type="button" value="删除" onclick="Delete(<%=id%>)" /></td><%} else { %>
+                <td><%=rslt[para.name] %></td><%} %>
               <%} else { %>
               <td><span><a onclick="javascript:OpenWindow('<%=url %>','_blank')" ><%=rslt[para.name] %></a></span> </td>
               <%} %>
@@ -633,7 +634,7 @@
          if (queryResult.count == 0)
          {
             %>
-                <div style="color: red;text-align:center;padding:10px 0;font-size:14px;font-weight:bold;">选定的条件未查找到结果</div>
+                <div id="noData" style="color: red;text-align:center;padding:10px 0;font-size:14px;font-weight:bold;">选定的条件未查找到结果</div>
             <%}%>
     <%} %>
 

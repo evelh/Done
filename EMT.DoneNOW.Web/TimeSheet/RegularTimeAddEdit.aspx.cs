@@ -41,7 +41,7 @@ namespace EMT.DoneNOW.Web.TimeSheet
                 if (startDate.DayOfWeek == DayOfWeek.Sunday)
                     startDate = startDate.AddDays(-6);
                 else
-                    startDate = startDate.AddDays((int)startDate.DayOfWeek - (int)DayOfWeek.Monday);
+                    startDate = startDate.AddDays((int)DayOfWeek.Monday - (int)startDate.DayOfWeek);
             }
 
             var costCodeList = bll.GetTimeCostCodeList();
@@ -98,6 +98,8 @@ namespace EMT.DoneNOW.Web.TimeSheet
                     else
                         we.batch_id = batchId;
                     we.resource_id = resourceId;
+                    we.start_time = Tools.Date.DateHelper.ToUniversalTimeStamp(startDate.AddDays(i));
+                    we.end_time = we.start_time;
                     we.hours_worked = hours_worked;
                     we.hours_billed = hours_worked;
                     we.offset_hours = 0;
@@ -116,7 +118,7 @@ namespace EMT.DoneNOW.Web.TimeSheet
                     return;
                 }
 
-                if (Request.Form["subAct"] == "SaveNew")
+                if (Request.Form["subAct"] == "SaveClose")
                 {
                     Response.Write("<script>window.close();self.opener.location.reload();</script>");
                     Response.End();

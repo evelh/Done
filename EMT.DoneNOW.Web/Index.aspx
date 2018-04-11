@@ -354,7 +354,21 @@
                                                 <div class="Heading">
                                                     <div class="Text">我的</div>
                                                 </div>
-                                              
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_MY_CURRENT %>&con2735=<%=LoginUserId %>" target="PageFrame">
+                                                        <span class="Text">当前工时表</span>
+                                                    </a>
+                                                </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_MY_REQUEST %>&con2743=<%=LoginUserId %>" target="PageFrame">
+                                                        <span class="Text">休假请求</span>
+                                                    </a>
+                                                </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="TimeSheet/MyTimeSummary" target="PageFrame">
+                                                        <span class="Text">休假汇总</span>
+                                                    </a>
+                                                </div>
                                                 <%if (CheckAuth("MENU_INVENTORY_PRODUCT")) { %>
                                                 <div class="Content">
                                                     <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.EXPENSE_REPORT %>" target="PageFrame">
@@ -368,6 +382,16 @@
                                                     <div class="Text">等待我审批的</div>
                                                 </div>
                                                 <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_WAIT_APPROVE %>&isCheck=1" target="PageFrame">
+                                                        <span class="Text">工时表</span>
+                                                    </a>
+                                                </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_REQUEST_WAIT_APPROVE %>&isCheck=1" target="PageFrame">
+                                                        <span class="Text">休假请求</span>
+                                                    </a>
+                                                </div>
+                                                <div class="Content">
                                                     <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MYAPPROVE_EXPENSE_REPORT %>&isCheck=1" target="PageFrame">
                                                         <span class="Text">费用报表</span>
                                                     </a>
@@ -378,6 +402,11 @@
                                                     <div class="Text">历史</div>
                                                 </div>
                                                 <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_SUBMITED %>" target="PageFrame">
+                                                        <span class="Text">已提交工时表</span>
+                                                    </a>
+                                                </div>
+                                                <div class="Content">
                                                     <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVED_REPORT %>" target="PageFrame">
                                                         <span class="Text">已审批费用报表</span>
                                                     </a>
@@ -385,7 +414,7 @@
                                             </div>
                                             <div class="Group">
                                                 <div class="Heading">
-                                                    <div class="Text">工具</div>
+                                                    <div class="Text">报表</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -567,6 +596,11 @@
                                             <div class="Group">
                                                 <div class="Heading">
                                                     <div class="Text">常用</div>
+                                                </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE %>" target="PageFrame">
+                                                        <span class="Text">员工(用户)</span>
+                                                    </a>
                                                 </div>
                                                 <div class="Content">
                                                     <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.WORKFLOW_RULE %>" target="PageFrame">

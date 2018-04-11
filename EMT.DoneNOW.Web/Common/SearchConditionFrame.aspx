@@ -272,7 +272,9 @@
                                     });
                                 });
                             </script>
-                        <%}%>
+                        <%} else if(condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATE_EQUAL){%>
+							<input type="text" name="<%=condition[i].id %>" class="sl_cdt" value="<%=condition[i].defaultValue %>" onclick="WdatePicker()"/>
+                            <%}%>
 						</div>
 					</td>
 				</tr>
@@ -359,7 +361,9 @@
                                     });
                                 });
                             </script>
-                        <%}%>
+                        <%} else if(condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATE_EQUAL){%>
+							<input type="text" name="<%=condition[i].id %>" class="sl_cdt" value="<%=condition[i].defaultValue %>" onclick="WdatePicker()"/>
+                            <%}%>
 						</div>
 					</td>
 				</tr>
@@ -446,7 +450,9 @@
                                     });
                                 });
                             </script>
-                        <%}%>
+                        <%} else if(condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DATE_EQUAL){%>
+							<input type="text" name="<%=condition[i].id %>" class="sl_cdt" value="<%=condition[i].defaultValue %>" onclick="WdatePicker()"/>
+                            <%}%>
 						</div>
 					</td>
 				</tr>

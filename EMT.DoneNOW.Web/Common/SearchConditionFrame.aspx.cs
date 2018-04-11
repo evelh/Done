@@ -228,6 +228,21 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SERVICE_CALL_SEARCH:
                     currentQuery.page_name = "服务预定管理";
                     break;
+                case (int)DicEnum.QUERY_CATE.TIMEOFF_MY_CURRENT:
+                    currentQuery.page_name = "工时表";
+                    break;
+                case (int)DicEnum.QUERY_CATE.TIMEOFF_WAIT_APPROVE:
+                    currentQuery.page_name = "等待我审批的工时";
+                    break;
+                case (int)DicEnum.QUERY_CATE.TIMEOFF_SUBMITED:
+                    currentQuery.page_name = "已提交工时表";
+                    break;
+                case (int)DicEnum.QUERY_CATE.TIMEOFF_MY_REQUEST:
+                    currentQuery.page_name = "我的休假请求";
+                    break;
+                case (int)DicEnum.QUERY_CATE.TIMEOFF_REQUEST_WAIT_APPROVE:
+                    currentQuery.page_name = "等待我审批的休假请求";
+                    break;
                 default:
                     currentQuery.page_name = "";
                     break;

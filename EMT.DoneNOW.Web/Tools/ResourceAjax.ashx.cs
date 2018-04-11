@@ -72,6 +72,30 @@ namespace EMT.DoneNOW.Web
                     case "DeleteResInternalCost":
                         DeleteResInternalCost(context);
                         break;
+                    case "AddTimesheetApporver":
+                        AddTimesheetApporver(context);
+                        break;
+                    case "AddExpenseApporver":
+                        AddExpenseApporver(context);
+                        break;
+                    case "DeleteApprover":
+                        DeleteApprover(context);
+                        break;
+                    case "GetDepartmentList":
+                        GetDepartmentList(context);
+                        break;
+                    case "GetRoleList":
+                        GetRoleList(context);
+                        break;
+                    case "AddDepartment":
+                        AddDepartment(context);
+                        break;
+                    case "DeleteDepartment":
+                        DeleteDepartment(context);
+                        break;
+                    case "DeleteAttachment":
+                        DeleteAttachment(context);
+                        break;
                     default:
                         break;
                 }
@@ -645,6 +669,94 @@ namespace EMT.DoneNOW.Web
                     context.Response.Write(new Tools.Serialize().SerializeJson(resList));
                 }
             }
+        }
+
+
+        /// <summary>
+        /// 添加员工工时表审批人
+        /// </summary>
+        /// <param name="context"></param>
+        private void AddTimesheetApporver(HttpContext context)
+        {
+            long resId = long.Parse(context.Request.QueryString["resId"]);
+            long approver = long.Parse(context.Request.QueryString["approver"]);
+            int tier = int.Parse(context.Request.QueryString["tier"]);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().AddApprover(approver, tier, resId, DTO.DicEnum.APPROVE_TYPE.TIMESHEET_APPROVE)));
+        }
+
+        /// <summary>
+        /// 添加员工费用报表审批人
+        /// </summary>
+        /// <param name="context"></param>
+        private void AddExpenseApporver(HttpContext context)
+        {
+            long resId = long.Parse(context.Request.QueryString["resId"]);
+            long approver = long.Parse(context.Request.QueryString["approver"]);
+            int tier = int.Parse(context.Request.QueryString["tier"]);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().AddApprover(approver, tier, resId, DTO.DicEnum.APPROVE_TYPE.EXPENSE_APPROVE)));
+        }
+
+        /// <summary>
+        /// 删除员工审批人
+        /// </summary>
+        /// <param name="context"></param>
+        private void DeleteApprover(HttpContext context)
+        {
+            long id = long.Parse(context.Request.QueryString["id"]);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().DeleteApprover(id)));
+        }
+
+        /// <summary>
+        /// 获取部门列表
+        /// </summary>
+        /// <param name="context"></param>
+        private void GetDepartmentList(HttpContext context)
+        {
+            context.Response.Write(new Tools.Serialize().SerializeJson(new sys_department_dal().GetDepartment()));
+        }
+
+        /// <summary>
+        /// 获取角色列表
+        /// </summary>
+        /// <param name="context"></param>
+        private void GetRoleList(HttpContext context)
+        {
+            context.Response.Write(new Tools.Serialize().SerializeJson(new sys_role_dal().GetList()));
+        }
+
+        /// <summary>
+        /// 添加员工部门
+        /// </summary>
+        /// <param name="context"></param>
+        private void AddDepartment(HttpContext context)
+        {
+            long resId = long.Parse(context.Request.QueryString["resId"]);
+            //long approver = long.Parse(context.Request.QueryString["approver"]);
+            //int tier = int.Parse(context.Request.QueryString["tier"]);
+            //context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().AddApprover(approver, tier, resId, DTO.DicEnum.APPROVE_TYPE.EXPENSE_APPROVE)));
+        }
+
+        /// <summary>
+        /// 删除员工部门
+        /// </summary>
+        /// <param name="context"></param>
+        private void DeleteDepartment(HttpContext context)
+        {
+            long id = long.Parse(context.Request.QueryString["id"]);
+            //long approver = long.Parse(context.Request.QueryString["approver"]);
+            //int tier = int.Parse(context.Request.QueryString["tier"]);
+            //context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().AddApprover(approver, tier, resId, DTO.DicEnum.APPROVE_TYPE.EXPENSE_APPROVE)));
+        }
+
+        /// <summary>
+        /// 删除员工附件
+        /// </summary>
+        /// <param name="context"></param>
+        private void DeleteAttachment(HttpContext context)
+        {
+            long id = long.Parse(context.Request.QueryString["id"]);
+            new BLL.AttachmentBLL().DeleteAttachment(id, LoginUserId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(true));
         }
     }
    
