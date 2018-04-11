@@ -142,6 +142,7 @@
     <Compile Include="SDK\sdk_task_resource.cs" />
     <Compile Include="SDK\sdk_task_sla_event.cs" />
     <Compile Include="SDK\sdk_work_entry.cs" />
+    <Compile Include="SDK\sdk_work_entry_report.cs" />
     <Compile Include="SDK\sdk_work_record.cs" />
     <Compile Include="SDK\v_task_all.cs" />
     <Compile Include="SYS\sys_department.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="SYS\sys_workflow.cs" />
     <Compile Include="SYS\sys_workflow_log.cs" />
     <Compile Include="SYS\sys_workgroup.cs" />
+    <Compile Include="SYS\v_timeoff_activity_request.cs" />
     <Compile Include="sys_resource.cs" />
     <Compile Include="TST\tst_timeoff_activity.cs" />
     <Compile Include="TST\tst_timeoff_balance.cs" />
@@ -195,6 +197,7 @@
     <Compile Include="TST\tst_timeoff_request.cs" />
     <Compile Include="TST\tst_timeoff_request_log.cs" />
     <Compile Include="TST\tst_work_entry_report_log.cs" />
+    <Compile Include="TST\v_timeoff_total.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

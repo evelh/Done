@@ -260,5 +260,49 @@ namespace EMT.DoneNOW.BLL
                 new sys_oper_log_dal().Insert(add_account_log);
             }
         }
+
+
+        #region 编辑新增员工属性
+        /// <summary>
+        /// 新增员工审批人
+        /// </summary>
+        /// <param name="approverId"></param>
+        /// <param name="tier"></param>
+        /// <param name="resId"></param>
+        /// <param name="type">审批类型</param>
+        /// <returns></returns>
+        public bool AddApprover(long approverId, int tier, long resId, DicEnum.APPROVE_TYPE type)
+        {
+            sys_resource_approver appr = new sys_resource_approver();
+            sys_resource_approver_dal appDal = new sys_resource_approver_dal();
+
+            int count = appDal.FindSignleBySql<int>($"select count(0) from sys_resource_approver where resource_id={resId} and approver_resource_id={approverId} and approve_type_id={(int)type} and tier={tier}");
+            if (count > 0)
+                return false;
+
+            appr.id = appDal.GetNextIdCom();
+            appr.resource_id = resId;
+            appr.approver_resource_id = approverId;
+            appr.approve_type_id = (int)type;
+            appr.tier = tier;
+            appDal.Insert(appr);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 删除员工审批人
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteApprover(long id)
+        {
+            sys_resource_approver_dal appDal = new sys_resource_approver_dal();
+            int count = appDal.ExecuteSQL($"delete from sys_resource_approver where id={id}");
+            if (count > 0)
+                return true;
+            return false;
+        }
+        #endregion
     }
 }

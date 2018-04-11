@@ -32,7 +32,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Decimal? saturday { get; set; }
         [DataMember]
-        public Decimal? tatal { get; set; }
+        public Decimal? total { get; set; }
         [DataMember]
         public Decimal? goal { get; set; }
         [DataMember]

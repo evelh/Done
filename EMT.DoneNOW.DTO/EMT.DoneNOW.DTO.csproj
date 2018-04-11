@@ -96,6 +96,7 @@
     <Compile Include="TicketManageDto.cs" />
     <Compile Include="TicketRecurrDto.cs" />
     <Compile Include="TimeoffAssociateResourceDto.cs" />
+    <Compile Include="TimeoffInfoDto.cs" />
     <Compile Include="TimeoffPolicyTierListDto.cs" />
     <Compile Include="VendorDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -117,7 +118,7 @@
     <Compile Include="UserInfoDto.cs" />
     <Compile Include="WorkflowRuleDto.cs" />
   </ItemGroup>
-   <ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\EMT.DoneNOW.Core\EMT.DoneNOW.Core.csproj">
       <Project>{EB88BBF3-488C-466F-BF7C-02BD01530D18}</Project>
       <Name>EMT.DoneNOW.Core</Name>

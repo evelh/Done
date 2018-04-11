@@ -167,6 +167,7 @@
     <Compile Include="SDK\sdk_task_resource_dal.cs" />
     <Compile Include="SDK\sdk_task_sla_event_dal.cs" />
     <Compile Include="SDK\sdk_work_entry_dal.cs" />
+    <Compile Include="SDK\sdk_work_entry_report_dal.cs" />
     <Compile Include="SDK\sdk_work_record_dal.cs" />
     <Compile Include="SDK\v_task_all_dal.cs" />
     <Compile Include="SYS\sys_department_dal.cs" />
@@ -220,6 +221,7 @@
     <Compile Include="TST\tst_timeoff_request_dal.cs" />
     <Compile Include="TST\tst_timeoff_request_log_dal.cs" />
     <Compile Include="TST\tst_work_entry_report_log_dal.cs" />
+    <Compile Include="TST\v_timeoff_total_dal.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
