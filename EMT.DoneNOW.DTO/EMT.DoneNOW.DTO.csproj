@@ -77,6 +77,7 @@
     <Compile Include="InvioceTempDto.cs" />
     <Compile Include="InvoiceDeductionDto.cs" />
     <Compile Include="KnowledgeCateDto.cs" />
+    <Compile Include="KnowledgeManageDto.cs" />
     <Compile Include="LoseOpportunityDto.cs" />
     <Compile Include="MasterTicketDto.cs" />
     <Compile Include="OpportunityAddOrUpdateDto.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="ServiceCallDto.cs" />
     <Compile Include="TaskNoteDto.cs" />
     <Compile Include="TaskSaveDto.cs" />
+    <Compile Include="TaskServiceCallDto.cs" />
     <Compile Include="TicketManageDto.cs" />
     <Compile Include="TicketRecurrDto.cs" />
     <Compile Include="TimeoffAssociateResourceDto.cs" />

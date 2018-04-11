@@ -23,6 +23,7 @@ namespace EMT.DoneNOW.Web.Project
         protected sys_resource thisUser = null;
         protected List<sdk_work_entry> entryList = null;
         protected Dictionary<string, object> dic = new ProjectBLL().GetField();
+        protected sdk_service_call thisCall = null;
         protected bool noTime = false;      // 可以不输入开始结束时间（根据系统设置进行判断）
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -39,7 +40,9 @@ namespace EMT.DoneNOW.Web.Project
                     }
                     
                 }
-
+                var callId = Request.QueryString["callId"];
+                if (!string.IsNullOrEmpty(callId))
+                    thisCall = new sdk_service_call_dal().FindNoDeleteById(long.Parse(callId));
                 thisUser = new sys_resource_dal().FindNoDeleteById(GetLoginUserId());
                 var resList = dic.FirstOrDefault(_ => _.Key == "sys_resource").Value as List<DictionaryEntryDto>;
                 if (!IsPostBack)

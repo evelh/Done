@@ -37,5 +37,12 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql($"SELECT * from sys_role where id not in (SELECT role_id FROM ctt_contract_exclusion_role WHERE contract_id={contract_id} AND delete_time=0) and delete_time = 0 ");
         }
+        /// <summary>
+        /// 获取员工角色表中 激活的队列角色
+        /// </summary>
+        public List<sys_role> GetRoleByResId(long resId)
+        {
+            return FindListBySql($"SELECT DISTINCT(sr.id), sr.* from sys_role sr INNER JOIN sys_resource_department srd on sr.id = srd.role_id INNER JOIN sys_department sd on sd.id = srd.department_id where sr.delete_time = 0 and srd.resource_id = {resId} and sr.is_active = 1 and sd.cate_id = {(int)DTO.DicEnum.DEPARTMENT_CATE.SERVICE_QUEUE}");
+        }
     }
 }

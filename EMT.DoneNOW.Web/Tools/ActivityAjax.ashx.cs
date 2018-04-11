@@ -53,6 +53,15 @@ namespace EMT.DoneNOW.Web
                         var attNoteId = context.Request.QueryString["note_id"];
                         GetNoteAtt(context,long.Parse(attNoteId));
                         break;
+                    case "IsTodo":
+                        IsTodo(context);
+                        break;
+                    case "GetActivity":
+                        GetActivity(context);
+                        break;
+                    case "GetActicityInfo":
+                        GetActicityInfo(context);
+                        break;
                     default:
                         break;
                 }
@@ -185,6 +194,63 @@ namespace EMT.DoneNOW.Web
             if (attList != null && attList.Count > 0)
             {
                 context.Response.Write(new Tools.Serialize().SerializeJson(attList));
+            }
+        }
+        /// <summary>
+        /// 判断是否是 待办
+        /// </summary>
+        private void IsTodo(HttpContext context)
+        {
+            var result = "";
+            var id = context.Request.QueryString["objetcId"];
+            if(!string.IsNullOrEmpty(id))
+            {
+                var todo = new com_activity_dal().FindNoDeleteById(long.Parse(id));
+                var call = new sdk_service_call_dal().FindNoDeleteById(long.Parse(id));
+                if (todo != null)
+                    result = "1";
+                else if (call != null)
+                    result = "2";
+            }
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 获取到相关信息
+        /// </summary>
+        private void GetActivity(HttpContext context)
+        {
+            var id = context.Request.QueryString["id"];
+            if (!string.IsNullOrEmpty(id))
+            {
+                var acti = new com_activity_dal().FindNoDeleteById(long.Parse(id));
+                if(acti!=null)
+                    context.Response.Write(new Tools.Serialize().SerializeJson(acti));
+            }
+        }
+
+        private void GetActicityInfo(HttpContext context)
+        {
+            var id = context.Request.QueryString["id"];
+            if (!string.IsNullOrEmpty(id))
+            {
+                var acti = new com_activity_dal().FindNoDeleteById(long.Parse(id));
+                if (acti != null)
+                {
+                    string accountName = "";
+                    string actiType = "";
+                    if (acti.account_id != null)
+                    {
+                        var thisAcc = new CompanyBLL().GetCompany((long)acti.account_id);
+                        accountName = thisAcc != null ? thisAcc.name : "";
+                    }
+                    var thisDic = new d_general_dal().FindNoDeleteById(acti.action_type_id);
+                    var startDate = Tools.Date.DateHelper.ConvertStringToDateTime(acti.start_date);
+                    var endDate = Tools.Date.DateHelper.ConvertStringToDateTime(acti.end_date);
+                    var durHours = ((decimal)acti.end_date - (decimal)acti.start_date) / 1000 / 60 / 60;
+                    actiType = thisDic != null ? thisDic.name : "";
+                    context.Response.Write(new Tools.Serialize().SerializeJson(new {accName = accountName, actiType = actiType, startDateString = startDate.ToString("yyyy-MM-dd"), startTimeString = startDate.ToString("HH:mm"), endDateString = endDate.ToString("yyyy-MM-dd"), endTimeString = endDate.ToString("HH:mm"), durHours = durHours.ToString("#0.00") }));
+                }
+                    
             }
         }
     }

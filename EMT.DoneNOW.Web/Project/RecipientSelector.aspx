@@ -57,7 +57,7 @@
                         </td>
                         <td width="30%" class="FieldLabels">工作组
                         <div style="padding-bottom: 6px;">
-                            <input type="text" style="width: 300px;">
+                            <input type="text" style="width: 300px;" />
                             <a>
                                 <img src="../Images/data-selector.png" />
                             </a>

@@ -122,23 +122,24 @@ function AddServiceLabour() {
                     if (Number(hours) >= 24) {
                         isMore = "1";
                     }
-                    
                 }
             },
         });
         
         if (isMore == "") {
-            window.open("../ServiceDesk/TicketLabour?ticket_id=" + entityid, windowType.workEntry + windowType.add, 'left=200,top=200,width=1280,height=800', false);
-            }
-            else {
-                LayerMsg("服务预定总时长等于或超出24小时，超出了工时的最长实现，不能创建。");
-            }
-        
-       
+            window.open("../ServiceDesk/TicketLabour?ticket_id=" + entityid + "&service_id=" + serviceId, windowType.workEntry + windowType.add, 'left=200,top=200,width=1280,height=800', false);
+        }
+        else {
+            LayerMsg("服务预定总时长等于或超出24小时，超出了工时的最长实现，不能创建。");
+        }
     }
     else {
         LayerMsg("请先保存服务预定信息");
     }
+}
+
+function AddLabour() {
+    window.open("../ServiceDesk/TicketLabour?ticket_id=" + entityid , windowType.workEntry + windowType.add, 'left=200,top=200,width=1280,height=800', false);
 }
 
 function ManageRes() {
@@ -150,6 +151,7 @@ function ManageRes() {
     window.open("../ServiceDesk/TicketCallResManage?callId=" + serviceId + "&ticketId=" + entityid,'_blank', 'left=200,top=200,width=1280,height=800', false);
 
 }
+
 function RightClickFunc() {
 
     // 获取状态-是否激活 控制显示隐藏
@@ -158,8 +160,34 @@ function RightClickFunc() {
         $(".NeedSave").hide();
     }
 
+    $.ajax({
+        type: "GET",
+        async: false,
+        //dataType: "json",
+        url: "../Tools/TicketAjax.ashx?act=IsTicket&ticket_id=" + entityid,
+        success: function (data) {
+            if (data == "1") {
+                $(".ticket").show();
+                $(".task").hide();
+            }
+            else if (data == "2") {
+                $(".ticket").hide();
+                $(".task").show();
+            }
+            else {
+                $(".ticket").hide();
+                $(".task").hide();
+            }
+        },
+        error: function () {
+            $(".ticket").hide();
+            $(".task").hide();
+        },
+    });
+
     ShowContextMenu();
 }
+
 function RemoveTicket() {
     var serviceId = parent.$("#SerivceCallId").val();
     if (serviceId == "") {
@@ -183,3 +211,47 @@ function RemoveTicket() {
     });
 
 }
+
+function EditTicket() {
+    window.open("../ServiceDesk/TicketManage?id=" + entityid, windowObj.ticket + windowType.edit, 'left=200,top=200,width=1280,height=800', false);
+}
+
+function ViewTicket(){
+    window.open("../ServiceDesk/TicketView?id=" + entityid, windowType.blank, 'left=200,top=200,width=1280,height=800', false);
+}
+
+
+function AddTicketNote() {
+    window.open("../Project/TaskNote.aspx?ticket_id=" + entityid, windowObj.notes + windowType.add, 'left=200,top=200,width=1080,height=800', false);
+}
+
+function ViewTask() {
+    window.open("../Project/TaskView.aspx?id=" + entityid, windowType.blank, 'left=200,top=200,width=1080,height=800', false);
+}
+
+
+function AddTask(){
+    window.open("../Project/TaskNote.aspx?task_id=" + entityid, windowObj.notes + windowType.add, 'left=200,top=200,width=1080,height=800', false);
+}
+function EditTask() {
+    window.open("../Project/TaskAddOrEdit.aspx?id=" + entityid, windowObj.task + windowType.edit, 'left=200,top=200,width=1080,height=800', false);
+}
+
+function AddTaskLabour() {
+    window.open("../Project/WorkEntry.aspx?task_id=" + entityid + "&NoTime=1", windowObj.workEntry + windowType.add, 'left=200,top=200,width=1080,height=800', false);
+}
+
+function AddTaskTimeLabour() {
+    window.open("../Project/WorkEntry.aspx?task_id=" + entityid , windowObj.workEntry + windowType.add, 'left=200,top=200,width=1080,height=800', false);
+}
+
+function AddTaskServiceLabour() {
+    var serviceId = parent.$("#SerivceCallId").val();
+    if (serviceId != "") {
+        window.open("../Project/WorkEntry.aspx?task_id=" + entityid + "&callId=" + serviceId, windowObj.workEntry + windowType.add, 'left=200,top=200,width=1080,height=800', false);
+    }
+    else {
+        LayerMsg("未获取到服务预定信息！");
+    }
+    
+} 

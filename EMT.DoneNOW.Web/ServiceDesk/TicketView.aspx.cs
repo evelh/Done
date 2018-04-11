@@ -62,13 +62,9 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                         ticketUdfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.TASK, thisTicket.id, tickUdfList);
                         thisAccount = new CompanyBLL().GetCompany(thisTicket.account_id);
                         if (thisTicket.contact_id != null)
-                        {
                             thisContact = new crm_contact_dal().FindNoDeleteById((long)thisTicket.contact_id);
-                        }
-
                         if (thisTicket.owner_resource_id != null && thisTicket.role_id != null)
                         {
-
                             var resDepList = new sys_resource_department_dal().GetResDepByResAndRole((long)thisTicket.owner_resource_id, (long)thisTicket.role_id);
                             if (resDepList != null && resDepList.Count > 0)
                             {
@@ -78,24 +74,14 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                         }
 
                         if (thisTicket.installed_product_id != null)
-                        {
                             insPro = new crm_installed_product_dal().FindNoDeleteById((long)thisTicket.installed_product_id);
-                        }
-
                         if (thisTicket.contract_id != null)
-                        {
                             thisContract = new ctt_contract_dal().FindNoDeleteById((long)thisTicket.contract_id);
-                        }
-
                         if (thisTicket.cost_code_id != null)
-                        {
                             thisCostCode = new d_cost_code_dal().FindNoDeleteById((long)thisTicket.cost_code_id);
-                        }
                         ticketCheckList = new sdk_task_checklist_dal().GetCheckByTask(thisTicket.id);
                         if (ticketCheckList != null && ticketCheckList.Count > 0)
-                        {
                             ticketCheckList = ticketCheckList.OrderBy(_ => _.sort_order).ToList();
-                        }
                         entryList = new sdk_work_entry_dal().GetList(thisTicket.id);
 
                         var otherResList = new sdk_task_resource_dal().GetTaskResByTaskId(thisTicket.id);
@@ -137,7 +123,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                         var actList = new d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.ACTION_TYPE);
                         if (actList != null && actList.Count > 0)
                         {
-                            ticketNoteTypeList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TICKET_NOTE).ToString()).ToList();
+                            ticketNoteTypeList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
                         }
                         ticketOther = new sdk_task_other_dal().GetTicketOther(thisTicket.id);
                         ticketOtherList = new sdk_task_other_person_dal().GetTicketOther(thisTicket.id);

@@ -14,6 +14,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
     public partial class ServiceCall : BasePage
     {
         protected bool isAdd = true;
+        protected bool isCop = false;
         protected sdk_service_call thisCall = null;
         protected List<sdk_service_call_task> taskSerList = null;
         protected string ticketIds = "";
@@ -23,11 +24,15 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected void Page_Load(object sender, EventArgs e)
         {
             var id = Request.QueryString["id"];
+            var isCopy = Request.QueryString["copy"];
             if (!string.IsNullOrEmpty(id))
                 thisCall = new sdk_service_call_dal().FindNoDeleteById(long.Parse(id));
             if (thisCall != null)
             {
-                isAdd = false;
+                if (!string.IsNullOrEmpty(isCopy))
+                    isCop = true;
+                else
+                    isAdd = false;
                 thisAccount = new CompanyBLL().GetCompany(thisCall.account_id);
                 taskSerList = new sdk_service_call_task_dal().GetTaskCall(thisCall.id);
                 if(taskSerList!=null&& taskSerList.Count > 0)

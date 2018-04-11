@@ -18,6 +18,12 @@ namespace EMT.DoneNOW.Web
         protected long queryTypeId;     // 查询页id
         protected long paraGroupId;     // 查询条件分组id
         protected List<QueryConditionParaDto> condition;    // 根据不同页面类型获取的查询条件列表
+
+        // 额外的参数(带入页面供js使用)
+        protected string param1;
+        protected string param2;
+        protected string param3;
+        protected string param4;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!int.TryParse(Request.QueryString["cat"], out catId))
@@ -31,7 +37,10 @@ namespace EMT.DoneNOW.Web
                 Response.Close();
                 return;
             }
-
+            param1 = string.IsNullOrEmpty(Request.QueryString["param1"]) ? "" : Request.QueryString["param1"];
+            param2 = string.IsNullOrEmpty(Request.QueryString["param2"]) ? "" : Request.QueryString["param2"];
+            param3 = string.IsNullOrEmpty(Request.QueryString["param3"]) ? "" : Request.QueryString["param3"];
+            param4 = string.IsNullOrEmpty(Request.QueryString["param4"]) ? "" : Request.QueryString["param4"];
             InitData();
             condition = bll.GetConditionParaVisiable(GetLoginUserId(), paraGroupId);
         }
@@ -242,6 +251,29 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (int)DicEnum.QUERY_CATE.TIMEOFF_REQUEST_WAIT_APPROVE:
                     currentQuery.page_name = "等待我审批的休假请求";
+					break;
+                case (int)DicEnum.QUERY_CATE.KNOWLEDGEBASE_ARTICLE:
+                    currentQuery.page_name = "知识库";
+                    break;
+                case (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE:
+                    currentQuery.page_name = "我的工作区";
+                    break;
+                case (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_CHANGE_APPROVEL:
+                    currentQuery.page_name = "变更申请单";
+                    break;
+                case (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_MY_TICKET:
+                    currentQuery.page_name = "我创建的工单";
+                    break;
+                case (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_VIEW:
+                    var thisDepId = Request.QueryString["param2"];
+                    var name = "队列";
+                    if (!string.IsNullOrEmpty(thisDepId))
+                    {
+                        var dep = new DAL.sys_department_dal().FindNoDeleteById(long.Parse(thisDepId));
+                        if (dep != null)
+                                name = dep.name;
+                    }
+                    currentQuery.page_name = name;
                     break;
                 default:
                     currentQuery.page_name = "";

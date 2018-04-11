@@ -86,7 +86,9 @@ namespace EMT.DoneNOW.DTO
         TASK_LIBRARY_CATE  = 149,                 // 任务库种类
         SERVICE_CALL_STATUS = 152,                // 服务请求状态
         ITEM_DESC_DISPLAY_TYPE = 155,               // 采购项描述信息显示内容类型
+        TIMEOFF_REQUEST_STATUS=158,                // 休假申请状态
         KNOWLEDGE_BASE_CATE = 164,              // 知识库文章目录
+        KB_PUBLISH_TO_TYPE=165,                  // 知识库：发布对象类型
         TICKET_CATE = 167,                       // 工单种类
     }
 
@@ -507,6 +509,7 @@ namespace EMT.DoneNOW.DTO
             COMPANY = 716,          // 客户
             EXPENSE_REPORT = 717,   // 费用报表
             LABOUR = 718,           // 工时
+            KNOWLEDGE = 719,        // 知识库
         }
 
         /// <summary>
@@ -685,6 +688,11 @@ namespace EMT.DoneNOW.DTO
             TIMEOFF_POLICY_TIER = 1613,             // 休假策略-级别查询
             ACCOUNT_SERVICE_DETAILS = 1614,         // 工单详情-客户服务详情
             TICKET_INCLIDENT_RELATION = 1615,       // 工单详情-事故关联其他工单
+            DISPATCH_TICKET_SEARCH = 1616,          // 调度工作室-工单查询
+            MY_QUEUE_ACTIVE = 1617,                 // 服务台-我的工作区-活动工单 
+            MY_QUEUE_MY_TICKET = 1618,              // 服务台-我的工作区-我创建的工单
+            MY_QUEUE_CHANGE_APPROVEL = 1619,        // 服务台-我的工作区-变更申请审批 
+            MY_QUEUE_VIEW = 1620,                   // 服务台-我的工作区-队列视图 
             RESOURCE_TIME_SHEET = 1623,             // 员工详情-工时表审批人
             RESOURCE_EXPENSE_REPORT = 1624,         // 员工详情-费用审批人
             RESOURCE_DEPARTMENT = 1625,             // 员工详情-员工部门
@@ -699,6 +707,7 @@ namespace EMT.DoneNOW.DTO
             TIMEOFF_SUBMITED = 1634,                // 工时表管理-已提交工时表
             TIMEOFF_MY_REQUEST = 1635,              // 工时表管理-我的休假请求
             TIMEOFF_REQUEST_WAIT_APPROVE = 1637,    // 工时表管理-等待我审批的休假请求
+            WORKGROUP_CALLBACK = 1638,              // 工作组-查找带回
 
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
@@ -831,10 +840,12 @@ namespace EMT.DoneNOW.DTO
             TIMEOFF_REQUEST_LOG = 1409,                 // 休假请求审批tst_timeoff_request_log
             WORK_ENTRY_REPORT_LOG = 1410,               // 工时表审批tst_work_entry_report_log
             TIMEOFF_RESOURCE = 1411,                    // 假期策略关联员工
+            SERVICE_DISPATCHER_VIEW = 1412,             // 调度工作室视图
             SERVICE_CALL = 1415,                        // 服务预定
             SERVICE_CALL_RESOURCE=1416,                 // 服务预定负责人
             SERVICE_CALL_TICKET = 1417,                 // 服务预定关联工单
             PROJECT_TASK_INFORMATION = 1418,            // 任务的扩展信息（自定义信息）
+            SERVICE_APPOINTMENT = 1419,                 // 约会
             TICKET_CHECK_LIST = 1420,                   // 工单的检查单
             TICKET_SERVICE_REQUEST = 1421,              // 服务请求审批人信息
             TICKET_RELATION = 1422,                     // 工单关联关系
@@ -844,7 +855,10 @@ namespace EMT.DoneNOW.DTO
             CHANGE_REQUEST = 1426,                      // 任务的其他信息（变更请求用）
             CHANGE_REQUEST_APPROL = 1427,               // 变更申请单审批人信息
             MASTER_TICKET = 1428,                       // 定期主工单
-            TICKET_SLA_EVENT,                        // 工单sla 事件
+            SDK_KONWLEDGE = 1429,                       // 知识库
+            SDK_KONWLEDGE_COMMENT = 1430,               // 知识库评论
+            SDK_KONWLEDGE_TICKET = 1431,                // 知识库关联工单
+            TICKET_SLA_EVENT,                           // 工单sla 事件
             
         }
 
@@ -1467,6 +1481,17 @@ namespace EMT.DoneNOW.DTO
             RETURN_APPROVAL = 2235,  // 支付改回审批通过
         }
         /// <summary>
+        /// 知识库发布对象类型 - 165
+        /// </summary>
+        public enum KB_PUBLISH_TYPE
+        {
+            ALL_USER=2255,              // 所有用户
+            INTER_USER=2256,            // 内部用户
+            INTER_USER_ACCOUNT=2257,    // 内部用户和指定客户
+            INTER_USER_CLASS=2258,      // 内部用户和指定客户类别
+            INTER_USER_TERR = 2259,     // 内部用户和指定客户地域
+        }
+        /// <summary>
         /// 定期工单频率类型 - 166
         /// </summary>
         public enum RECURRING_TICKET_FREQUENCY_TYPE
@@ -1491,6 +1516,16 @@ namespace EMT.DoneNOW.DTO
         {
             ALL_APPROVERS_MUST_APPROVE = 2277,   // 全部通过
             ONE_APPROVER_MUST_APPROVE = 2278,    // 任意一个通过
+        }
+        /// <summary>
+        /// 调度工作室：显示天数 - 169
+        /// </summary>
+        public enum DISPATCHER_MODE
+        {
+            ONE_DAY_VIEW=2281,                            // 当天
+            SEVEN_DAY_WORK_VIEW =2282,                    // 所在周工作日
+            FIVE_DAY_WORK_VIEW =2283,                     // 所在周
+            SEVEN_DAY_WORK_VIEW_FROM_SELECTED_DAY =2284,  // 当天起7天
         }
         /// <summary>
         /// 工作流对象 - 176
@@ -1685,14 +1720,12 @@ namespace EMT.DoneNOW.DTO
         REPORT_SERVICEDESK_TICKETBYACCOUNT = 179, // 报表--服务台常规-工单和任务按客户
         REPORT_CONTRACT_BILLED = 180,          // 报表-CRM配置项-已计费信息
         WorkflowRule = 185,             // 工作流规则查询
-        KnowledgebaseArticle = 189,     // 知识库文档管理-查询
-        TICKET_REQUEST = 192,            // 工单详情-变更请求
-      
-        MASTER_SUB_TICKET_SEARCH=186,       // 定期主工单管理-详情-子工单查询 
+        MASTER_SUB_TICKET_SEARCH = 186,       // 定期主工单管理-详情-子工单查询 
         SERVICE_CALL_SEARCH = 187,             // 服务预定管理-服务预定查询
         SERVICE_CALL_TICKET = 188,             // 服务预定关联工单查询 
+        KnowledgebaseArticle = 189,     // 知识库文档管理-查询
         MASTER_TICKET_SEARCH = 190,         // 定期主工单查询
-     
+        TICKET_REQUEST = 192,            // 工单详情-变更请求
         TICKET_INCIDENT = 193,                 // 工单详情-事故清单
         TICKET_PROBLEM = 194,                  // 工单详情-问题清单
         TimeoffPolicy = 196,            // 休假策略查询
@@ -1700,6 +1733,11 @@ namespace EMT.DoneNOW.DTO
         TimeoffPolicyTier = 198,        // 休假策略-级别查询
         ACCOUNT_SERVICE_DETAILS = 199,   // 工单详情-客户服务详情
         TICKET_INCLIDENT_RELATION=200,   // 工单详情-事故关联其他工单
+        DISPATCH_TICKET_SEARCH = 201,          // 调度工作室-工单查询
+        MY_QUEUE_ACTIVE = 202,                 // 服务台-我的工作区-活动工单 
+        MY_QUEUE_MY_TICKET = 203,              // 服务台-我的工作区-我创建的工单
+        MY_QUEUE_CHANGE_APPROVEL = 204,        // 服务台-我的工作区-变更申请审批 
+        MY_QUEUE_VIEW = 205,                   // 服务台-我的工作区-队列视图 
         ResourceTimeSheet = 208,            // 员工详情-工时表审批人
         ResourceExpense = 209,              // 员工详情-费用审批人
         ResourceDepartment = 210,           // 员工详情-员工部门
@@ -1914,6 +1952,7 @@ namespace EMT.DoneNOW.DTO
         ADD_TICKET_ATTACH,     // 新增工单附件
         ADD_TICKET_EXPENSE,    // 新增工单费用
         SHOW_TICKET_HISTORY,   // 工单历史查看
+        DISPATCH_CALENDAR,     // 调度工作室
 
     }
     /// <summary>

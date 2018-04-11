@@ -121,6 +121,8 @@
     <Compile Include="PRO\pro_project_calendar.cs" />
     <Compile Include="PRO\pro_project_team.cs" />
     <Compile Include="PRO\pro_project_team_role.cs" />
+    <Compile Include="SDK\sdk_appointment.cs" />
+    <Compile Include="SDK\sdk_dispatcher_view.cs" />
     <Compile Include="SDK\sdk_expense.cs" />
     <Compile Include="SDK\sdk_expense_report.cs" />
     <Compile Include="SDK\sdk_kb_article.cs" />

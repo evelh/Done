@@ -35,5 +35,21 @@ namespace EMT.DoneNOW.BLL
         {
             return dal.FindById((long)id);
         }
+        /// <summary>
+        /// 改变系统设置的值
+        /// </summary>
+        public void ChangeSetValue(long setId,string setValue,long userId)
+        {
+            var thisSet = dal.FindById(setId);
+            if (thisSet == null)
+                return;
+            if (thisSet.setting_value != setValue)
+            {
+                var oldSet = dal.FindById(setId);
+                thisSet.setting_value = setValue;
+                dal.Update(thisSet);
+                OperLogBLL.OperLogUpdate<sys_system_setting>(thisSet, oldSet, thisSet.id, userId,DicEnum.OPER_LOG_OBJ_CATE.SERVICE_CALL, "编辑系统设置");
+            }
+        }
     }
 }

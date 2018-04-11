@@ -34,6 +34,12 @@ namespace EMT.DoneNOW.Web.Project
         protected bool isTicket = false;    // 是否是工单
         protected bool isHasIncident = false;  // 工单使用 ，工单是否关联事故 
         protected pro_project thisProject = null;
+        protected bool isCall = false;      // 是否时服务预定  -- 为服务预定下的工单批量添加备注
+        protected sdk_service_call thisCall = null;  // 服务预定
+        protected List<sdk_task> callTicketList = null;  // 服务预定下的工单
+        protected bool isMantStatus = false;   // 工单是否具有多个状态
+        protected bool isManyAccount = false;
+        protected bool isManyTitle = false;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -93,6 +99,7 @@ namespace EMT.DoneNOW.Web.Project
                 var project_id = Request.QueryString["project_id"];
                 var contract_id = Request.QueryString["contract_id"];
                 var ticket_id = Request.QueryString["ticket_id"];
+                var call_id = Request.QueryString["call_id"];
                 if (!string.IsNullOrEmpty(taskId))
                 {
                     thisTask = stDal.FindNoDeleteById(long.Parse(taskId));
@@ -121,6 +128,31 @@ namespace EMT.DoneNOW.Web.Project
                 {
                     thisTicket = stDal.FindNoDeleteById(long.Parse(ticket_id));
                 }
+                else if (!string.IsNullOrEmpty(call_id))
+                {
+                    thisCall = new sdk_service_call_dal().FindNoDeleteById(long.Parse(call_id));
+                    if (thisCall != null)
+                    {
+                        isCall = true;
+                        thisAccount = new CompanyBLL().GetCompany(thisCall.account_id);
+                        callTicketList = stDal.GetTciketByCall(thisCall.id);
+                        if(callTicketList!=null&& callTicketList.Count > 0)
+                        {
+                            thisTask = callTicketList[0];
+                            if (callTicketList.Any(_ => _.id != thisTask.id && _.status_id != thisTask.status_id))
+                                isMantStatus = true;
+                            if (callTicketList.Any(_ => _.id != thisTask.id && _.account_id != thisTask.account_id))
+                                isManyAccount = true;
+                            if (callTicketList.Any(_ => _.id != thisTask.id && _.title != thisTask.title))
+                                isManyTitle = true;
+                        }
+                        else
+                        {
+                            Response.Write("<script>alert('服务预定下暂无工单！');window.close();</script>");
+                            return;
+                        }
+                    }
+                }
 
 
                 if (thisTask != null)
@@ -131,13 +163,7 @@ namespace EMT.DoneNOW.Web.Project
                     {
                         isPhase = true;
                     }
-
                     task_creator = new sys_resource_dal().FindNoDeleteById(thisTask.create_user_id);
-                    if (!IsPostBack)
-                    {
-                        status_id.SelectedValue = thisTask.status_id.ToString();
-                    }
-                    
                     if (thisTask.project_id != null)
                     {
                         thisProject = ppDal.FindNoDeleteById((long)thisTask.project_id);
@@ -152,16 +178,11 @@ namespace EMT.DoneNOW.Web.Project
                     isTicket = true;
                     object_id = thisTicket.id;
                     task_creator = new sys_resource_dal().FindNoDeleteById(thisTicket.create_user_id);
-                    if (!IsPostBack)
-                    {
-                        status_id.SelectedValue = thisTicket.status_id.ToString();
-                    }
                     thisAccount = accDal.FindNoDeleteById(thisTicket.account_id);
                     if (thisTicket.contact_id != null)
                     {
                         thisContact = new crm_contact_dal().FindNoDeleteById((long)thisTicket.contact_id);
                     }
-                     
                 }
                 if (thisAccount == null)
                 {
@@ -174,7 +195,6 @@ namespace EMT.DoneNOW.Web.Project
                         thisAccManger = new sys_resource_dal().FindNoDeleteById((long)thisAccount.resource_id);
                     }
                 }
-
                 if (!IsPostBack)
                 {
                     publish_type_id.DataTextField = "name";
@@ -183,53 +203,43 @@ namespace EMT.DoneNOW.Web.Project
                     if (pushList != null && pushList.Count > 0)
                     {
                         if (isProject)
-                        {
                             pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.PROJECT_NOTE).ToString()).ToList();
-                        }
                         else if (isContract)
-                        {
                             pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.CONTRACT_NOTE).ToString()).ToList();
-                        }
                         else if (isTicket)
-                        {
                             pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
-                        }
                         else
-                        {
                             pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
-                        }
-                        
                     }
                     publish_type_id.DataSource = pushList;
                     publish_type_id.DataBind();
 
                     status_id.DataTextField = "show";
                     status_id.DataValueField = "val";
-                    status_id.DataSource = dic.FirstOrDefault(_ => _.Key == "ticket_status").Value;
+                    var statusList = dic.FirstOrDefault(_ => _.Key == "ticket_status").Value as List<DictionaryEntryDto>;
+                    if (isMantStatus)
+                        statusList.Add(new DictionaryEntryDto() {val="0",show="多个值，保持不变" });
+                    status_id.DataSource = statusList;
                     status_id.DataBind();
-
+                    if (isMantStatus)
+                        status_id.SelectedValue = "0";
+                    else if (thisTask != null)
+                        status_id.SelectedValue = thisTask.status_id.ToString();
+                    else if (thisTicket != null)
+                        status_id.SelectedValue = thisTicket.status_id.ToString();
                     action_type_id.DataTextField = "name";
                     action_type_id.DataValueField = "id";
                     var actList = new d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.ACTION_TYPE);
                     if (actList != null && actList.Count > 0)
                     {
                         if (isProject)
-                        {
                             actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.PROJECT_NOTE).ToString()).ToList();
-                        }
                         else if (isContract)
-                        {
                             actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.CONTRACT_NOTE).ToString()).ToList();
-                        }
                         else if (isTicket)
-                        {
                             actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
-                        }
                         else
-                        {
                             actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
-                        }
-                        
                     }
                     action_type_id.DataSource = actList;
                     action_type_id.DataBind();
@@ -274,12 +284,13 @@ namespace EMT.DoneNOW.Web.Project
             var result = false;
             if (isAdd)
             {
-                result = new TaskBLL().AddTaskNote(param, GetLoginUserId());
+                if (isCall)
+                    result = new TaskBLL().AddCallTaskNote(param, LoginUserId); 
+                else
+                    result = new TaskBLL().AddTaskNote(param, LoginUserId);
             }
             else
-            {
                 result =  new TaskBLL().EditTaskNote(param, GetLoginUserId());
-            }
            
             // 操作完成，清除session暂存
             Session.Remove(object_id + "_Att");
@@ -310,13 +321,14 @@ namespace EMT.DoneNOW.Web.Project
             {
                 //    pageTaskNote.resource_id = thisContract.res;
                 pageTaskNote.contract_id = thisContract.id;
+            }else if (thisCall != null)
+            {
+                param.thisCall = thisCall;
             }
 
 
             if (isProject)
-            {
                 pageTaskNote.announce = (sbyte)(isAnnounce.Checked ? 1 : 0);
-            }
             if (isAdd)
             {
 
@@ -329,9 +341,7 @@ namespace EMT.DoneNOW.Web.Project
                 thisNote.name = pageTaskNote.name;
                 thisNote.description = pageTaskNote.description;
                 if (isProject)
-                {
                     thisNote.announce = pageTaskNote.announce;
-                }
             }
             var status_id = Request.Form["status_id"];
             if (!string.IsNullOrEmpty(status_id))
@@ -478,12 +488,13 @@ namespace EMT.DoneNOW.Web.Project
             var result = false;
             if (isAdd)
             {
-                result = new TaskBLL().AddTaskNote(param, GetLoginUserId());
+                if (isCall)
+                    result = new TaskBLL().AddCallTaskNote(param, LoginUserId);
+                else
+                    result = new TaskBLL().AddTaskNote(param, LoginUserId);
             }
             else
-            {
                 result = new TaskBLL().EditTaskNote(param, GetLoginUserId());
-            }
             Session.Remove(object_id + "_Att");
             if (thisTicket != null)
             {

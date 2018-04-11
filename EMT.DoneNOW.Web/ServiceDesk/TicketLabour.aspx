@@ -174,13 +174,37 @@
                                     <tbody>
                                         <tr>
                                             <td valign="bottom" style="width: 113px; padding-top: 6px;"><span class="lblNormalClass" style="font-weight: bold; display: block;">日期<font style="color: Red;"> *</font></span><span>
-                                                <input name="LabourDate" type="text" id="LabourDate" class="txtBlack8Class" onclick="WdatePicker()" style="width: 70px;" tabindex="0" value="<%=ticketLabour!=null&&ticketLabour.end_time!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)ticketLabour.end_time).ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" />
+                                                <% if (thisCall != null && isAdd)
+                                                    { %>
+                                                 <input name="LabourDate" type="text" id="LabourDate" class="txtBlack8Class" onclick="WdatePicker()" style="width: 70px;" tabindex="0" value="<%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisCall.start_time).ToString("yyyy-MM-dd") %>" />
+                                                <%}
+                                                else
+                                                { %>
+                                                 <input name="LabourDate" type="text" id="LabourDate" class="txtBlack8Class" onclick="WdatePicker()" style="width: 70px;" tabindex="0" value="<%=ticketLabour!=null&&ticketLabour.end_time!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)ticketLabour.end_time).ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" />
+                                                <%} %>
+                                               
                                             </span></td>
                                             <td valign="bottom" style="width: 110px; padding-top: 6px;"><span class="lblNormalClass" style="font-weight: bold; display: block;">开始时间<font style="color: Red;"> *</font></span><span>
-                                                <input type="text" size="8" name="startTime" id="startTime" class="txtBlack8Class" style="width: 70px;" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=ticketLabour!=null&&ticketLabour.end_time!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)ticketLabour.start_time).ToString("HH:mm"):DateTime.Now.ToString("HH:mm") %>" />&nbsp;<img src="../Images/time.png" border="0" style="vertical-align: middle; margin-bottom: 2px;" />
+                                                <% if (thisCall != null && isAdd)
+                                                    { %>
+                                                <input type="text" size="8" name="startTime" id="startTime" class="txtBlack8Class" style="width: 70px;" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisCall.start_time).ToString("HH:mm") %>" />
+                                                 <%}
+                                                else
+                                                { %>  
+                                                <input type="text" size="8" name="startTime" id="startTime" class="txtBlack8Class" style="width: 70px;" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=ticketLabour!=null&&ticketLabour.end_time!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)ticketLabour.start_time).ToString("HH:mm"):DateTime.Now.ToString("HH:mm") %>" />
+                                                <%} %>
+                                                &nbsp;<img src="../Images/time.png" border="0" style="vertical-align: middle; margin-bottom: 2px;" />
                                             </span></td>
                                             <td valign="bottom" style="width: 114px; padding-top: 6px;"><span class="lblNormalClass" style="font-weight: bold; display: block;">结束时间<font style="color: Red;"> *</font></span><span>
-                                                <input type="text" name="endTime" id="endTime" size="8" class="txtBlack8Class" style="width: 70px;" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=ticketLabour!=null&&ticketLabour.end_time!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)ticketLabour.end_time).ToString("HH:mm"):DateTime.Now.ToString("HH:mm") %>" />&nbsp;<img src="../Images/time.png" border="0" style="vertical-align: middle; margin-bottom: 2px;" />
+                                                 <% if (thisCall != null && isAdd)
+                                                    { %>
+                                                <input type="text" name="endTime" id="endTime" size="8" class="txtBlack8Class" style="width: 70px;" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisCall.end_time).ToString("HH:mm") %>" />
+                                                <%}
+                                                else
+                                                { %>  
+                                                <input type="text" name="endTime" id="endTime" size="8" class="txtBlack8Class" style="width: 70px;" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=ticketLabour!=null&&ticketLabour.end_time!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime((long)ticketLabour.end_time).ToString("HH:mm"):DateTime.Now.ToString("HH:mm") %>" />
+                                                   <%} %>
+                                                &nbsp;<img src="../Images/time.png" border="0" style="vertical-align: middle; margin-bottom: 2px;" />
                                             </span></td>
                                             <td valign="bottom" style="width: 120px; padding-top: 6px;"><span class="lblNormalClass" style="font-weight: bold; display: block;">工作时间<font style="color: Red;"> *</font></span><span id="TE_hours">
                                                 <input name="hours_worked" type="text" value="<%=ticketLabour==null?"0.00":(ticketLabour.hours_worked??0).ToString("#0.00") %>" id="hours_worked" class="txtBlack8Class" style="width: 100px; text-align: right;" tabindex="0"  />

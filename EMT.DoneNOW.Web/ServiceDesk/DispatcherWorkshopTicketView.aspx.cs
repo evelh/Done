@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace EMT.DoneNOW.Web.ServiceDesk
 {
-    public partial class EditRepository : System.Web.UI.Page
+    public partial class DispatcherWorkshopTicketView : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

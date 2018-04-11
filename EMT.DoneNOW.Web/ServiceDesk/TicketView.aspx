@@ -136,7 +136,7 @@
                                     <span class="Icon"></span>
                                     <span class="Text">吸收合并其他工单</span>
                                 </div>
-                                <div class="Button1" id="" tabindex="0" onclick="">
+                                <div class="Button1" id="" tabindex="0" onclick="CopyToProject()">
                                     <span class="Icon"></span>
                                     <span class="Text">复制到项目</span>
                                 </div>
@@ -2046,6 +2046,9 @@
 </script>
 <%--// 工具中的事件处理--%>
 <script>
+    function TicketModify() {
+        window.open("../Project/TicketModify.aspx?ticketIds=<%=thisTicket.id %>", windowObj.ticket + windowType.manage, 'left=200,top=200,width=1080,height=800', false);
+    }
     function MergeOtherTicketCallBack() {
         window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_MERGE %>&field=toTicketId&callBack=MergeTicket&con2252=<%=thisTicket.account_id %>&con2253=<%=thisTicket.id %>&con2262=1", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>", 'left=200,top=200,width=600,height=800', false);
     }
@@ -2544,6 +2547,13 @@
             return;
         }
 
+    }
+    function CopyToProject() {
+        var ticketId = $("#ticket_id").val();
+        if (ticketId == "")
+            return;
+        window.open("../ServiceDesk/CopyToProject.aspx?ticketIds=" + ticketId, _blank, 'left=200,top=200,width=600,height=800', false);
+          
     }
 
     function AddIndId(IndId) {

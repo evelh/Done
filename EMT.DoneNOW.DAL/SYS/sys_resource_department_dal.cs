@@ -34,9 +34,9 @@ namespace EMT.DoneNOW.DAL
         /// <summary>
         /// 根据id集合获取相关信息
         /// </summary>
-        public List<sys_resource_department> GetListByIds(string ids)
+        public List<sys_resource_department> GetListByIds(string ids,bool isActive = true)
         {
-            return FindListBySql<sys_resource_department>($"SELECT * from sys_resource_department where is_active = 1 and id in({ids})");
+            return FindListBySql<sys_resource_department>($"SELECT * from sys_resource_department where {(isActive? "is_active = 1 and" : "")} id in({ids})");
         }
         public sys_department GetDepByRes(long res_id)
         {

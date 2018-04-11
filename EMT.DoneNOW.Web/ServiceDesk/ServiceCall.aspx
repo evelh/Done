@@ -41,7 +41,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <input type="hidden"  id="SerivceCallId" name="SerivceCallId" value="<%=!isAdd&&thisCall!=null?thisCall.id.ToString():"" %>"/>
+        <input type="hidden"  id="SerivceCallId" name="SerivceCallId" value="<%=thisCall!=null?thisCall.id.ToString():"" %>"/>
         <input type="hidden"  id="SaveType" name="SaveType" value=">"/>
         <input type="hidden" id="AppTicketIds" name="AppTicketIds"  />
         <input type="hidden" id="AppTicketIdsHidden" name="AppTicketIdsHidden" />
@@ -56,10 +56,13 @@
                     <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                     <asp:Button ID="save_new" runat="server" Text="保存并新增" OnClick="save_new_Click" />
                 </li>
+                <% if (false)  /* 说明书，优先级较低，暂时不做 */
+                    {%>
                 <li id="WorkBook">
                     <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
                     <asp:Button ID="work_book" runat="server" Text="生成工作说明书" OnClick="work_book_Click" />
                 </li>
+                <%} %>
                 <li id="Close">
                     <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                     <input type="button" id="CloseButton" value="取消" />
@@ -305,10 +308,15 @@
                                                             </td>
                                                             <td>
                                                                 <span id="" style="display: inline-block;">
-                                                                    <select name="notifyTempId" id="notifyTempId" class="txtBlack8Class"  style="width: 524px;">
-                                                                        <option selected="selected" value="124">Service Call - Created or Edited</option>
-
-                                                                    </select></span>
+                                                                    <select name="notifyTempId" id="notifyTempId" class="txtBlack8Class" style="width: 524px;">
+                                                                        <%if (tempList != null && tempList.Count > 0)
+                                                                            {foreach (var temp in tempList)
+                                                                                {  %>
+                                                                        <option value="<%=temp.id %>"><%=temp.name %></option>
+                                                                        <%
+                                                                                } } %>
+                                                                    </select>
+                                                                </span>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -371,11 +379,15 @@
         <%if (isAdd)
     { %>
         GetTicketByAccountId();
-        <%}
-    else
-    {%>
+        <%}%>
+    <%if(thisAccount!=null){ %>
         GetDataByAccount();
         <% }%>
+
+        <%if (isCop)
+    { %>
+        $("#status_id").val("<%=(int)EMT.DoneNOW.DTO.DicEnum.SERVICE_CALL_STATUS.NEW %>");
+        <%} %>
     })
     function LoadRes() {
         $.ajax({

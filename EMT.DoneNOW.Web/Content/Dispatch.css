@@ -1,0 +1,985 @@
+﻿/*heard*/
+* {
+    margin: 0;
+    padding: 0;
+    font-family: '微软雅黑';
+    font-size: 12px;
+    list-style: none;
+}
+
+body {
+    min-width: 1000px;
+}
+
+.heard-title {
+    font-size: 15px;
+    font-weight: bold;
+    height: 36px;
+    text-align: left;
+    width: 100%;
+    background-color: #346a95;
+    color: #fff;
+    position: relative;
+}
+
+.TitleContainer {
+    font-weight: bold;
+    top: 8px;
+    left: 10px;
+    display: block;
+    width: 85%;
+    position: absolute;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+}
+
+.SecondaryTitle {
+    display: inline;
+    text-transform: none;
+    font-weight: 100;
+}
+
+.UpperPart, .help {
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: absolute;
+    right: 40px;
+    width: 16px;
+    top: 10px;
+    background: red;
+    background: url('../Images/help.png');
+}
+
+.help {
+    right: 10px;
+}
+
+
+/*ButtonCollectionBase*/
+.ButtonCollectionBase {
+    height: 28px;
+    background-color: #Fff;
+    padding: 0 10px 10px 10px;
+    margin-top: 20px;
+}
+
+.Buttonleft {
+    float: left;
+    width: auto;
+    height: auto;
+}
+
+    .Buttonleft .newbtn {
+        float: left;
+        cursor: pointer;
+        width: auto;
+        height: 24px;
+        border: 1px solid #BCBCBC;
+        background: #d7d7d7;
+        background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+        text-decoration: none;
+        color: #4F4F4F;
+        padding-top: 1px;
+        padding-bottom: 0px;
+        padding-left: 5px;
+        padding-right: 5px;
+        line-height: 24px;
+        font-weight: 700;
+        position: relative;
+        z-index: 999;
+    }
+
+        .Buttonleft .newbtn img {
+            display: block;
+            margin-top: 4px;
+            float: left;
+        }
+
+        .Buttonleft .newbtn span {
+            float: left;
+            margin-left: 8px;
+        }
+
+        .Buttonleft .newbtn img:nth-of-type(2) {
+            float: left;
+            margin-left: 8px;
+        }
+
+    .Buttonleft .btntext {
+        float: left;
+        cursor: pointer;
+        width: auto;
+        height: 24px;
+        border: 1px solid #BCBCBC;
+        background: #d7d7d7;
+        background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+        text-decoration: none;
+        color: #4F4F4F;
+        padding-top: 1px;
+        padding-bottom: 0px;
+        padding-left: 5px;
+        padding-right: 5px;
+        font-weight: 700;
+        line-height: 24px;
+        margin-left: 10px;
+    }
+
+        .Buttonleft .btntext:hover {
+            background: #e7e7e7;
+        }
+
+    .Buttonleft .newbtn:hover {
+        background: #fff;
+        border-bottom: none;
+    }
+
+.SelectBox {
+    position: absolute;
+    top: 100%;
+    left: -1px;
+    ;
+    width: 220px;
+    ;
+    height: auto;
+    background: #fff;
+    border: 1px solid #BCBCBC;
+    display: none;
+    box-shadow: 0px 0 2px #eee, /*左边阴影*/
+    2px 0 2px #eee, /*右边阴影*/
+    0px 0px 0px white, /*顶部阴影*/
+    0 2px 2px #eee;
+    padding: 15px;
+}
+
+.SelectBox-Whiteline {
+    position: absolute;
+    width: 85px;
+    height: 4px;
+    background: #fff;
+    top: -2px;
+    left: 0;
+    z-index: 999
+}
+
+.SelectBox p {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 30px;
+    width: 100%;
+    height: auto;
+}
+
+.Buttonleft .newbtn:hover .SelectBox {
+    display: block;
+}
+
+.SelectBox p:hover {
+    background: #E8F1F6;
+}
+
+
+.ButtonRight {
+    float: right;
+    width: auto;
+    height: auto;
+}
+
+select {
+    height: 24px;
+    padding: 0;
+}
+
+.txtBlack8Class {
+    font-size: 12px;
+    color: #333;
+    font-weight: normal;
+}
+
+input[type=text], select, textarea, input[type=password] {
+    border: solid 1px #D7D7D7;
+    font-size: 12px;
+    color: #333;
+    margin: 0;
+}
+
+option {
+    font-weight: normal;
+    display: block;
+    white-space: pre;
+    min-height: 1.2em;
+    padding: 0px 2px 1px;
+}
+
+.ButtonRight .vivews {
+    font-weight: bold;
+    float: left;
+}
+
+.ButtonRight .daysElm {
+    float: left;
+    width: auto;
+    height: auto;
+    margin-left: 10px;
+}
+
+    .ButtonRight .daysElm ul {
+        width: auto;
+        height: auto;
+        overflow: hidden;
+    }
+
+    .ButtonRight .daysElm li {
+        background: #d7d7d7;
+        cursor: pointer;
+        background: -webkit-linear-gradient(top,#fff 0,#d7d7d7 100%);
+        border: 1px solid #BCBCBC;
+        color: #4F4F4F;
+        height: 24px;
+        width: 35px;
+        line-height: 24px;
+        text-align: center;
+        float: left;
+        font-size: 12px;
+        border-right: none;
+        font-weight: 600;
+    }
+
+        .ButtonRight .daysElm li:last-child {
+            border: 1px solid #BCBCBC;
+        }
+
+.ShowdatsElm {
+    background: -webkit-linear-gradient(top,#d7d7d7 0,#fff 100%) !important;
+}
+
+.ButtonRight .dateElm {
+    float: left;
+    width: auto;
+    height: auto;
+    margin-left: 10px;
+    height: 26px;
+    line-height: 26px;
+    cursor: pointer
+}
+
+.dateElm input {
+    height: 24px;
+    padding: 0 6px;
+    width: 84px;
+    float: left;
+}
+
+.ButtonRight a {
+    font-size: 12px;
+    color: #333;
+    font-weight: normal;
+    cursor: pointer;
+    margin-right: 5px;
+    float: left;
+}
+
+.ButtonRight img {
+    display: block;
+    float: left;
+    margin-top: 5px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.ButtonRight a:nth-of-type(2) {
+    margin-left: 5px;
+}
+
+
+/*FilterDiv*/
+.FilterDiv {
+    margin: 0px 10px 10px 10px;
+    background-color: #F0F5FB;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    overflow: hidden;
+}
+
+#pnlWorkgroupSelector, #pnlResourceSelector {
+    width: 280px;
+    ;
+    height: auto;
+    overflow: hidden;
+    float: left;
+}
+
+    #pnlWorkgroupSelector span, #pnlResourceSelector span {
+        display: block;
+        float: left;
+        margin-left: 10px;
+    }
+
+    #pnlWorkgroupSelector select, #pnlResourceSelector select {
+        display: block;
+        float: left;
+    }
+
+#pnlResourceSelector {
+    margin-left: 30px;
+}
+
+#checkSelector {
+    float: left;
+}
+
+    #checkSelector span {
+        line-height: 20px;
+        margin-left: 20px;
+    }
+
+    #checkSelector input {
+        display: block;
+        float: left;
+        margin-top: 4px;
+    }
+
+
+
+/*Grid1_Container*/
+
+
+
+/*menu*/
+#menu {
+    position: absolute;
+    width: auto;
+    height: auto;
+    display: none;
+    cursor: pointer;
+    z-index: 10011;
+}
+#OtherMenu {
+    z-index: 10011;
+}
+.WzTtDiV {
+    display: none;
+    position: absolute;
+    overflow: hidden;
+    padding: 10px;
+    z-index: 10010;
+    background: white;
+    border: 2px solid #E8E8E8;
+    /*transform: rotate(-3deg);*/
+    box-shadow: 2px 2px 6px #E8E8E8;
+}
+
+.loading {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    z-index: 999999;
+    display: none;
+}
+
+.loadimg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 170px;
+    height: 100px;
+    margin-left: -85px;
+    margin-top: -50px;
+    text-align: center;
+    border: 5px solid #BCBCBC;
+    background: #E4E4E4;
+    padding: 10px;
+}
+
+    .loadimg img {
+        display: block;
+        margin: 0 auto;
+    }
+
+.Grid1_Container {
+    width: 100%;
+    height: 550px;
+    border: 1px solid #ccc;
+}
+
+.ContainerLeft {
+    float: left;
+    width: 10%;
+    height: 100%;
+    min-width: 188px;
+}
+
+.ContainerRight {
+    float: left;
+    width: 90%;
+    height: 100%;
+    border-collapse: collapse;
+}
+
+.R-ContainerUser-Total {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow-y: scroll;
+    overflow-x: scroll;
+}
+
+.R-ContainerDays-Total {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+.ContainerLeft .ContainerDays {
+    width: 100%;
+    height: auto;
+}
+
+.ContainerDays .Days-1 {
+    width: 99%;
+    height: 40px;
+    background: #79a6d2;
+}
+
+.ContainerDays .Days-2 {
+    width: 100%;
+    height: 5px;
+    background-color: #BCBCBC;
+}
+
+.ContainerDays .Days-3 {
+    background-color: #D8D8D8;
+    padding-left: 8px;
+    height: 20px;
+    color: #000;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 20px;
+}
+
+.ContainerUserScroll {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+.ContainerUser {
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+    .ContainerUser li {
+        width: 100%;
+        height: auto;
+    }
+
+        .ContainerUser li .name {
+            padding-left: 8px;
+            height: 22px;
+            background-color: #F4F4F4;
+            border-bottom: 1px solid #E8E8E8;
+            line-height: 22px;
+            font-weight: 600;
+            box-sizing: border-box;
+        }
+
+        .ContainerUser li .icon {
+            padding-left: 8px;
+            min-height: 67px;
+            border-bottom: 1px solid #E8E8E8;
+            box-sizing: border-box;
+        }
+
+            .ContainerUser li .icon img {
+                width: 50px;
+                height: 50px;
+            }
+
+.R-ContainerDays {
+    width: 101%;
+    height: auto;
+    min-width: 1400px;
+    overflow: hidden;
+    position: relative;
+}
+
+    .R-ContainerDays li {
+        width: 14.28%;
+        height: auto;
+        float: left;
+    }
+
+        .R-ContainerDays li:last-child .Days-1 {
+            width: 100%;
+        }
+
+        .R-ContainerDays li .Days-1 {
+            width: 99%;
+            height: 40px;
+            background: #79a6d2;
+        }
+
+        .R-ContainerDays li .Days-2 {
+            width: 100%;
+            height: 5px;
+            background-color: #BCBCBC;
+        }
+
+        .R-ContainerDays li .Days-3 {
+            background-color: #D8D8D8;
+            height: 20px;
+            color: #000;
+            font-size: 10px;
+            font-weight: bold;
+            line-height: 20px;
+        }
+
+        .R-ContainerDays li .Days-1 .Day-1-border1 {
+            width: 7px;
+            height: 100%;
+            float: left;
+            background-color: #FF4863;
+            border: solid 1px #999;
+            border-collapse: collapse;
+            box-sizing: border-box;
+        }
+
+        .R-ContainerDays li .Days-1 .Day-1-border2 {
+            float: left;
+            width: 13px;
+            height: 100%;
+            background-color: #FFF;
+            border: solid 1px #999;
+            border-collapse: collapse;
+            box-sizing: border-box;
+            margin-left: 6px;
+        }
+
+        .R-ContainerDays li .Days-1 .Day-1-text3 {
+            color: #fff;
+            float: left;
+            text-align: center;
+            height: 100%;
+            height: auto;
+            width: 80%;
+        }
+
+            .R-ContainerDays li .Days-1 .Day-1-text3 p {
+                font-weight: bold;
+                font-size: 12px;
+                text-transform: uppercase;
+                width: 100%;
+                height: auto;
+                white-space: nowrap;
+                line-height: 20px;
+            }
+
+                .R-ContainerDays li .Days-1 .Day-1-text3 p:nth-of-type(1) {
+                    cursor: pointer;
+                }
+
+                .R-ContainerDays li .Days-1 .Day-1-text3 p:nth-of-type(2) a {
+                    display: block;
+                    float: left;
+                    width: 50%;
+                    font-size: 10px;
+                    text-indent: 20px;
+                    font-weight: 500;
+                }
+
+        .R-ContainerDays li .Days-3 .Days3-border1 {
+            width: 7px;
+            height: 100%;
+            float: left;
+            background-color: #FF4863;
+            border: solid 1px #999;
+            border-collapse: collapse;
+            box-sizing: border-box;
+        }
+
+        .R-ContainerDays li .Days-3 .Days3-text2 {
+            margin-left: 18px;
+            float: left;
+            overflow: hidden;
+            width: 80%;
+            height: auto;
+        }
+
+            .R-ContainerDays li .Days-3 .Days3-text2 p {
+                width: 100%;
+                height: auto;
+                white-space: nowrap;
+                line-height: 20px;
+            }
+
+                .R-ContainerDays li .Days-3 .Days3-text2 p a {
+                    display: block;
+                    float: left;
+                    width: 50%;
+                    font-size: 10px;
+                    text-indent: 20px;
+                    font-weight: normal;
+                }
+
+.R-ContainerUser {
+    width: 101%;
+    height: auto;
+    min-width: 1400px;
+    /*overflow: hidden;*/
+    clear: both;
+}
+
+    .R-ContainerUser li {
+        width: 14.28%;
+        height: auto;
+        float: left;
+    }
+
+        .R-ContainerUser li .UserTime {
+            background-color: #F4F4F4;
+            height: 22px;
+            color: #000;
+            font-size: 10px;
+            font-weight: bold;
+            line-height: 22px;
+            border: 1px solid #fff;
+            box-sizing: border-box;
+            border-left: none;
+        }
+
+
+            .R-ContainerUser li .UserTime .UserTime-border1 {
+                width: 7px;
+                height: 100%;
+                float: left;
+                background-color: #FF4863;
+                border: solid 1px #999;
+                border-collapse: collapse;
+                box-sizing: border-box;
+            }
+
+            .R-ContainerUser li .UserTime .UserTime-text2 {
+                margin-left: 18px;
+                float: left;
+                overflow: hidden;
+                width: 80%;
+                height: auto;
+            }
+
+                .R-ContainerUser li .UserTime .UserTime-text2 p {
+                    width: 100%;
+                    height: auto;
+                    white-space: nowrap;
+                    line-height: 20px;
+                }
+
+                    .R-ContainerUser li .UserTime .UserTime-text2 p a {
+                        display: block;
+                        float: left;
+                        width: 50%;
+                        font-size: 10px;
+                        text-indent: 20px;
+                        font-weight: normal;
+                    }
+
+        .R-ContainerUser li .UserContainer {
+            width: 100%;
+            height: auto;
+            border: 1px solid #E8E8E8;
+            box-sizing: border-box;
+            min-height: 66px;
+            border-right: none;
+        }
+
+            .R-ContainerUser li .UserContainer p {
+                font-size: 10px;
+                padding-left: 2px;
+                color: #999;
+                cursor: default;
+            }
+
+            .R-ContainerUser li .UserContainer .hovertask {
+                width: 100%;
+                min-height: 24px;
+                border-top: 1px solid #DBDBDB;
+                background-color: #FFAEB9;
+                cursor: default;
+                font-size: 10px;
+            }
+
+                .R-ContainerUser li .UserContainer .hovertask:nth-of-type(1) {
+                    border-top: none;
+                }
+
+                .R-ContainerUser li .UserContainer .hovertask p {
+                    white-space: nowrap;
+                    cursor: default;
+                    font-size: 8px;
+                    padding-left: 6px;
+                    color: #333;
+                    line-height: 10px;
+                }
+
+
+
+
+
+/*Grid2_Container*/
+.Grid2_Container {
+    width: 100%;
+    border: 1px solid #ccc;
+}
+
+.ContainerTop {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+.ContainerTop-One {
+    float: left;
+    width: 3.5%;
+    height: 100%;
+    min-width: 66px;
+}
+    /*.ContainerTop-Two{float: left;min-width: 95%;height: 100%;border-collapse: collapse;position: relative;
+}*/
+    .ContainerTop-One .ContainerDays {
+        width: 100%;
+        height: auto;
+    }
+
+        .ContainerTop-One .ContainerDays .Days-1 {
+            background-color: #F0F5FB;
+            height: 25px;
+            border-bottom: 1px solid #E8E8E8;
+            width: 100%;
+        }
+
+        .ContainerTop-One .ContainerDays .Days-2 {
+            background-color: #F0F5FB;
+            height: 25px;
+            border-top: 1px solid #C7C7C7;
+        }
+
+        .ContainerTop-One .ContainerDays .Days-3 {
+            height: 25px;
+            background-color: #79a6d2;
+            border-top: solid 1px #C7C7C7;
+            box-sizing: border-box;
+            padding: 0;
+        }
+
+        .ContainerTop-One .ContainerDays .Days-4 {
+            width: 100%;
+            height: 5px;
+            background-color: #BCBCBC;
+        }
+
+.ContainerTop-Two .border {
+    float: left;
+    width: 9px;
+    height: 100%;
+    background-color: #FF4863;
+    border: solid 1px #999;
+    border-collapse: collapse;
+    box-sizing: border-box;
+}
+
+.ContainerTop-Two {
+    overflow: hidden;
+    width: 96.5%;
+    height: auto;
+    float: left;
+}
+
+    .ContainerTop-Two .Days-1 {
+        background-color: #F0F5FB;
+        height: 25px;
+        border-bottom: 1px solid #E8E8E8;
+        width: 100%;
+        text-align: center;
+        line-height: 25px;
+        color: #333;
+        font-size: 12px;
+        font-weight: bold;
+        position: relative;
+    }
+    .ContainerTop-Two .DaysList{
+        height:auto;position:relative;
+    }
+    .ContainerTop-Two .Days-2 {
+        width:50%;
+        float:left;
+        background-color: #F0F5FB;
+        height: 25px;
+        border-top: 1px solid #C7C7C7;
+        color: #333;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 25px;
+        text-indent: 10px;
+    }
+
+.ContainerTop-User {
+    position: relative;
+    width: 150%;
+    height: 25px;
+    color: #FFF;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+    .ContainerTop-User li {
+        width: 50%;
+        height: 100%;
+        float: left;
+        border-right: 1px solid #C7C7C7;
+        background-color: #79a6d2;
+        line-height: 25px;
+        box-sizing: border-box;
+    }
+
+.ContainerTop-UserLine {
+    width: 100%;
+    height: 5px;
+    background-color: #BCBCBC;
+}
+
+.ContainerBottom {
+    width: 100%;
+    height: auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+    .ContainerBottom .ContainerBottom-One {
+        float: left;
+        width: 3.5%;
+        min-width: 66px;
+        height: auto;
+    }
+
+.Hover-t {
+    height: 27px;
+    width: 100%;
+    border-bottom: 1px solid #D8D8D8;
+    BACKGROUND-COLOR: #F4F4F4;
+    border-right: 1px solid #E8E8E8;
+}
+
+.Hover {
+    width: 100%;
+    height: auto;
+}
+
+    .Hover li {
+        width: 100%;
+        height: 54px;
+        border-bottom: 1px solid #D8D8D8;
+        BACKGROUND-COLOR: #F4F4F4;
+        border-right: 1px solid #E8E8E8;
+        font-size: 10px;
+        font-weight: bold;
+    }
+
+        .Hover li a {
+            display: block;
+            float: left;
+            width: 50%;
+            height: 100%;
+        }
+
+            .Hover li a:nth-of-type(1) {
+                text-align: right;
+                color: #333;
+                font-size: 20px;
+                font-weight: normal;
+            }
+
+            .Hover li a:nth-of-type(2) {
+                text-align: left;
+                color: #333;
+                font-size: 12px;
+                font-weight: normal;
+                line-height: 20px;
+            }
+
+.ContainerBottom-Two {
+    width: 96.5%;
+    height: auto;
+    overflow: hidden;
+    overflow-y: hidden;
+    overflow-x: scroll;
+}
+
+    .ContainerBottom-Two .Hover-t {
+        width: 150%;
+        height: 27px;
+        border-bottom: 1px solid #D8D8D8;
+        BACKGROUND-COLOR: #F4F4F4;
+        border-right: 1px solid #E8E8E8;
+    }
+.HouverTaskA{
+    height:auto;
+    overflow:hidden;
+} 
+.HouverTask {
+    width: 50%;
+    height: auto;
+    /*overflow: hidden;*/
+    float: left;
+    box-sizing: border-box;
+}
+
+    .HouverTask li {
+        box-sizing: border-box;
+        width: 100%;
+        height: 61px;
+        float: left;
+        border-bottom: 1px solid #D8D8D8;
+        BACKGROUND-COLOR: #F4F4F4;
+        border-right: 1px solid #E8E8E8;
+        font-size: 10px;
+        font-weight: bold;
+        box-sizing: border-box;
+    }
+.HouverTaskItem{
+    float:left;
+    width:300px;
+    height:auto;
+} 
+.HouverTask li .border {
+    float: left;
+    width: 9px;
+    height: 100%;
+    background-color: white;
+    border: solid 1px white;
+    border-collapse: collapse;
+    box-sizing: border-box;
+}
+
+        .HouverTask li .TaskConter .t1 {
+            width: 100%;
+            height: 27px;
+            border-bottom: 1px solid #E8E8E8;
+        }
+
+.stockstask {
+    background: #FFFEC4 !important;
+    cursor: move !important;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+

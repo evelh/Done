@@ -293,6 +293,9 @@ var windowObj = {
     masterTicket: 'masterTicket',
     serviceCall: "serviceCall",
     timeoffRequest: 'timeoffRequest',
+    kbArticle: "kbArticle",
+    select: "select",
+    appointment:"appointment",
 }
 var windowType = {
     blank: '_blank',

@@ -181,5 +181,8 @@
             }
             return obj.value;
         }
-    } 
+    }
+    $("#Close").click(function () {
+        window.close();
+    })
 </script>

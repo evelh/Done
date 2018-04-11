@@ -95,6 +95,12 @@ namespace EMT.DoneNOW.Web
                         break;
                     case "DeleteAttachment":
                         DeleteAttachment(context);
+						break;
+                    case "GetResList":
+                        GetResList(context);
+                        break;
+                    case "GetWorkList":
+                        GetWorkList(context);
                         break;
                     default:
                         break;
@@ -297,6 +303,33 @@ namespace EMT.DoneNOW.Web
                 }
             }
         }
+        /// <summary>
+        /// 获取员工列表
+        /// </summary>
+        private void GetResList(HttpContext context)
+        {
+            var ids = context.Request.QueryString["ids"];
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var resList = new sys_resource_dal().GetListByIds(ids);
+                if (resList != null && resList.Count > 0)
+                    context.Response.Write(new Tools.Serialize().SerializeJson(resList));
+            }
+        }
+        /// <summary>
+        ///  获取联系人列表
+        /// </summary>
+        private void GetWorkList(HttpContext context)
+        {
+            var ids = context.Request.QueryString["ids"];
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var workList = new sys_workgroup_dal().GetList($" and id in ({ids})");
+                if (workList != null && workList.Count > 0)
+                    context.Response.Write(new Tools.Serialize().SerializeJson(workList));
+            }
+        }
+
         /// <summary>
         /// 获取所有可用的员工信息
         /// </summary>
@@ -544,14 +577,25 @@ namespace EMT.DoneNOW.Web
                 depResId = ClearRepeatRes(depResId);
             }
             var isDelete = !string.IsNullOrEmpty(context.Request.QueryString["isDelete"]);
-            if (!string.IsNullOrEmpty(depResId)&& !string.IsNullOrEmpty(priDepResId))
+            long? priResId = null;
+            var srdDal = new sys_resource_department_dal();
+            if (!string.IsNullOrEmpty(priDepResId))
             {
-                var srdDal = new sys_resource_department_dal();
                 var priDepRes = srdDal.FindById(long.Parse(priDepResId));
-                var resDepList = srdDal.GetListByIds(depResId);
-                if(priDepRes!=null&& resDepList!=null&& resDepList.Count > 0)
+                if (priDepRes != null)
                 {
-                    var repeatResList = resDepList.Where(_ => _.resource_id == priDepRes.resource_id).ToList();
+                    priResId = priDepRes.resource_id;
+                }
+            }
+            var priRes = context.Request.QueryString["priRes"];
+            if (!string.IsNullOrEmpty(priRes))
+                priResId = long.Parse(priRes);
+            if (!string.IsNullOrEmpty(depResId)&& priResId != null)
+            {
+                var resDepList = srdDal.GetListByIds(depResId);
+                if(resDepList!=null&& resDepList.Count > 0)
+                {
+                    var repeatResList = resDepList.Where(_ => _.resource_id == priResId).ToList();
                     if(repeatResList != null&& repeatResList.Count > 0)
                     {
                         isRepeatRes = true;
@@ -581,27 +625,7 @@ namespace EMT.DoneNOW.Web
             }
             context.Response.Write(new Tools.Serialize().SerializeJson(new { isRepeat= isRepeatRes, newDepResIds = depResId }));
         }
-        /// <summary>
-        ///  检查是否有重复的员工存在(其他负责人查找带回时使用，与主负责人员工重复)
-        /// </summary>
-        /// <param name="context"></param>
-        private void ChedkRepeatRes(HttpContext context)
-        {
-            
-            var depResId = context.Request.QueryString["resDepIds"];
-            var priDepResId = context.Request.QueryString["resDepId"];
-            var isRepeatRes = false;
-            if (!string.IsNullOrEmpty(depResId) && !string.IsNullOrEmpty(priDepResId))
-            {
-                var srdDal = new sys_resource_department_dal();
-                var priDepRes = srdDal.FindNoDeleteById(long.Parse(priDepResId));
-                var resDepList = srdDal.GetListByIds(depResId);
-                if (priDepRes != null && resDepList != null && resDepList.Count > 0)
-                {
 
-                }
-            }
-        }
         /// <summary>
         /// 剔除掉选择的重复的员工
         /// </summary>
@@ -624,10 +648,7 @@ namespace EMT.DoneNOW.Web
                         }
                         resDepArr = resDepList.ToArray();
                     }
-                   
                 }
-               
-                
                 if(resDepList!=null&& resDepList.Count > 0)
                 {
                     newResDepIds = "";

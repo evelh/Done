@@ -888,5 +888,14 @@ namespace EMT.DoneNOW.BLL
             return list;
         }
         #endregion
+
+		/// <summary>
+        /// 根据员工和日期获取相关的休假时长
+        /// </summary>
+        public List<tst_timeoff_request> GetTimeOffByResDate(long resId, DateTime date)
+        {
+            return dal.FindListBySql<tst_timeoff_request>($"SELECT * from tst_timeoff_request where delete_time = 0 and resource_id = {resId} and request_date = '{date.ToString("yyyy-MM-dd")}'");
+        }
+
     }
 }

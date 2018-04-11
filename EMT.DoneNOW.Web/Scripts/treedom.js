@@ -1,39 +1,39 @@
  function getStyle(el, attr) {
      return getComputedStyle(el)[attr];
  }
- var data = [{
-     text: "家用电器",
-     child: [{
-         text: "电视",
-         child: [{
-             text: "曲面电视",
-             child: [{
-                     text: "4k屏"
-                 },
-                 {
-                     text: "1080P"
-                 }
-             ]
-         }, {
-             text: "超薄电视"
-         }]
-     }, {
-         text: "空调",
-         child: [{
-             text: "壁挂式空调"
-         }, {
-             text: "柜式空调"
-         }, {
-             text: "中央空调"
-         }]
-     }, {
-         text: "洗衣机"
-     }, {
-         text: "冰箱"
-     }, {
-         text: "进口电器"
-     }]
- }];
+ //var data = [{
+ //    text: "家用电器",
+ //    child: [{
+ //        text: "电视",
+ //        child: [{
+ //            text: "曲面电视",
+ //            child: [{
+ //                    text: "4k屏"
+ //                },
+ //                {
+ //                    text: "1080P"
+ //                }
+ //            ]
+ //        }, {
+ //            text: "超薄电视"
+ //        }]
+ //    }, {
+ //        text: "空调",
+ //        child: [{
+ //            text: "壁挂式空调"
+ //        }, {
+ //            text: "柜式空调"
+ //        }, {
+ //            text: "中央空调"
+ //        }]
+ //    }, {
+ //        text: "洗衣机"
+ //    }, {
+ //        text: "冰箱"
+ //    }, {
+ //        text: "进口电器"
+ //    }]
+ //}];
  (function () {
      var list = document.createElement("ul");
      list.classList.add('treeul');
@@ -48,15 +48,15 @@
              li.classList.add('treeli');             
              var p = document.createElement("p");
              p.classList.add('treep');                     
-             p.innerHTML = data[i].text+"&nbsp;&nbsp;<a onclick='Edit()'>编辑</a>&nbsp;&nbsp;<a onclick='Delete()'>删除</a>&nbsp;&nbsp;<a onclick='Add()'>新增子目录</a>";
+             p.innerHTML = data[i].name + "&nbsp;&nbsp;<a onclick='Edit(\'" + data[i].id + "\')'>编辑</a>&nbsp;&nbsp;<a onclick='Delete(\'" + data[i].id + "\')'>删除</a>&nbsp;&nbsp;<a onclick='AddSub(\'" + data[i].id + "\')'>新增子目录</a>";
              
              li.appendChild(p);
              console.log(p.firstChild)
-             if (data[i].child) { //如果还有子项
+             if (data[i].nodes) { //如果还有子项
                  var ul = document.createElement("ul"); //生成ul
-                 create(ul, data[i].child); //传入ul，以及子项的数组，生成子项的li
+                 create(ul, data[i].nodes); //传入ul，以及子项的数组，生成子项的li
                  li.appendChild(ul);
-                 p.innerHTML = "<span><img src = '../Images/imgMinus.gif'></span>" + data[i].text+"&nbsp;&nbsp;<a onclick='Edit()'>编辑</a>&nbsp;&nbsp;<a  onclick='Delete()'>删除</a>&nbsp;&nbsp;<a  onclick='Add()'>新增子目录</a>";
+                 p.innerHTML = "<span><img src = '../Images/imgMinus.gif'></span>" + data[i].name + "&nbsp;&nbsp;<a onclick='Edit(\"" + data[i].id + "\")'>编辑</a>&nbsp;&nbsp;<a  onclick='Delete(\"" + data[i].id + "\")'>删除</a>&nbsp;&nbsp;<a  onclick='AddSub(\"" + data[i].id + "\")'>新增子目录</a>";
              }
              list.appendChild(li);
          }

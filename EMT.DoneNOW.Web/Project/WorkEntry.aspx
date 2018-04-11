@@ -482,7 +482,7 @@
                                                                 <tr>
                                                                     <td style="min-width: 15px;"></td>
                                                                     <td style="min-width: 50px;"> 
-                                                                        <input type="text" id="AddNewEntryDate" value="" onclick="WdatePicker()"  style="width:80px;"/></td>
+                                                                        <input type="text" id="AddNewEntryDate" value="<%=thisCall!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisCall.start_time).ToString("yyyy-MM-dd"):"" %>" onclick="WdatePicker()"  style="width:80px;"/></td>
                                                                     <%if (noTime)
                                                                         { %>
                                                                     <td style="min-width: 50px;">
@@ -491,10 +491,12 @@
                                                                     else
                                                                     {%>
                                                                     <td style="min-width: 50px;">
-                                                                         <input type="text" size="8" id="AddNewEntryStartTime" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=DateTime.Now.ToString("HH:mm") %>" />&nbsp;<img src="../Images/time.png" border="0" style="vertical-align: middle; margin-bottom: 2px;" />
+                                                                        
+                                                                         <input type="text" size="8" id="AddNewEntryStartTime" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=thisCall!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisCall.start_time).ToString("HH:mm"):DateTime.Now.ToString("HH:mm") %>" />
+                                                                        &nbsp;<img src="../Images/time.png" border="0" style="vertical-align: middle; margin-bottom: 2px;" />
                                                                     </td>
                                                                     <td style="min-width: 50px;">
-                                                                    <input type="text"  id="AddNewEntryEndTime" size="8" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=DateTime.Now.ToString("HH:mm") %>" />&nbsp;<img src="../Images/time.png" border="0" style="vertical-align: middle; margin-bottom: 2px;" />  </td>
+                                                                    <input type="text"  id="AddNewEntryEndTime" size="8" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=thisCall!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisCall.end_time).ToString("HH:mm"):DateTime.Now.ToString("HH:mm") %>" />&nbsp;<img src="../Images/time.png" border="0" style="vertical-align: middle; margin-bottom: 2px;" />  </td>
                                                                     <td>
                                                                         <input style="text-align: right; color: #6d6d6d; background-color: #dbdbdb;" type="text"  id="AddNewEntryHoursWorked" readonly="" value="<%="0.00" %>" />
                                                                     </td>
@@ -602,7 +604,7 @@
                                                                                             </div>
 
                                                                                             <div class="checkbox" style="padding-bottom: 0px;">
-                                                                                                <input type="CHECKBOX" name="chkResAssigned" id="chkResAssigned" origchecked="true">&nbsp;<span style="cursor: default;" onclick="document.form1.chkResAssigned.checked=!document.form1.chkResAssigned.checked">任务员工</span>
+                                                                                                <input type="checkbox" name="chkResAssigned" id="chkResAssigned" />&nbsp;<span style="cursor: default;" >任务员工</span>
                                                                                             </div>
                                                                                             <div class="checkbox" style="padding-bottom: 0px;">
                                                                                                 <asp:CheckBox ID="CCProRes" runat="server" />
@@ -616,13 +618,13 @@
                                                                                         <div class="CheckBoxList">
 
                                                                                             <div class="checkbox" style="padding-bottom: 0px;display: none;">
-                                                                                                <input type="checkbox" name="ccDetail" id="ccDetail" checked="" origchecked="true">&nbsp;<span style="cursor: default;" onclick="document.form1.ccDetail.checked=!document.form1.ccDetail.checked">Include  Details from Summary tab</span>
+                                                                                                <input type="checkbox" name="ccDetail" id="ccDetail" checked="" origchecked="true">&nbsp;<span style="cursor: default;">Include  Details from Summary tab</span>
                                                                                             </div>
                                                                                             <div class="checkbox" style="padding-bottom: 0px;">
-                                                                                                <input type="checkbox" name="ccNext" id="ccNext" checked="" origchecked="true">&nbsp;<span style="cursor: default;" onclick="document.form1.ccNext.checked=!document.form1.ccNext.checked">任务负责人</span>
+                                                                                                <input type="checkbox" name="ccNext" id="ccNext" checked="" />&nbsp;<span style="cursor: default;">任务负责人</span>
                                                                                             </div>
                                                                                             <div class="checkbox" style="padding-bottom: 0px;display: none;">
-                                                                                                <input type="checkbox" name="ccForResource" id="ccForResource" style="visibility: visible;" disabled="" origchecked="true">&nbsp;<span style="cursor: default;" id="ForResourceName" onclick="if(!this.disabled) document.form1.ccForResource.checked=!document.form1.ccForResource.checked">li, li</span>
+                                                                                                <input type="checkbox" name="ccForResource" id="ccForResource" style="visibility: visible;" disabled="" />&nbsp;<span style="cursor: default;" id="ForResourceName">li, li</span>
                                                                                             </div>
 
                                                                                         </div>
@@ -691,7 +693,7 @@
                                                                 <tr>
                                                                     <td class="FieldLabels" width="369px">附加信息</td>
                                                                     <td width="357px" style="text-align: right; padding-right: 1px;"><span title="Click to Expand" style="cursor: pointer;">
-                                                                        <img style="vertical-align: middle" src="/graphics/icons/content/zoom-in.png?v=41154"></span></td>
+                                                                    </span></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="2" class="FieldLabels">
@@ -775,7 +777,10 @@
 
      <%}%>
         GetRoleByRes();
-
+        <%if (thisCall != null)
+    { %>
+        JiSuanWorkHours();
+        <%} %>
        <% if (!isAdd)
     {
         if (thisWorkEntry.role_id != null)

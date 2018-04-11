@@ -138,6 +138,15 @@ namespace EMT.DoneNOW.Web
                     case "DeleteCall":
                         DeleteCall(context);
                         break;
+                    case "GetCallTicketIds":
+                        GetCallTicketIds(context);
+                        break;
+                    case "GetCallTicket":
+                        GetCallTicket(context);
+                        break;
+                    case "GetTicketByNo":
+                        GetTicketByNo(context);
+                        break;
                     default:
                         break;
                 }
@@ -796,6 +805,45 @@ namespace EMT.DoneNOW.Web
             if (!string.IsNullOrEmpty(callId))
                 result = new TicketBLL().DeleteCall(long.Parse(callId), LoginUserId);
             context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 获取到该服务预定下的工单Id
+        /// </summary>
+        private void GetCallTicketIds(HttpContext context)
+        {
+            var callId = context.Request.QueryString["callId"];
+            var ids = "";
+            if(!string.IsNullOrEmpty(callId))
+                ids = new TicketBLL().GetCallTicketIds(long.Parse(callId));
+            context.Response.Write(ids);
+
+        }
+        /// <summary>
+        /// 根据工单Id 和服务预定Id 获取 服务预定关联工单ID  
+        /// </summary>
+        private void GetCallTicket(HttpContext context)
+        {
+            var callId = context.Request.QueryString["callId"];
+            var ticketId = context.Request.QueryString["ticketId"];
+            if(!string.IsNullOrEmpty(callId)&& !string.IsNullOrEmpty(ticketId))
+            {
+                var ticketCall = new sdk_service_call_task_dal().GetSingTaskCall(long.Parse(callId),long.Parse(ticketId));
+                if (ticketCall != null)
+                {
+                    context.Response.Write(new EMT.Tools.Serialize().SerializeJson(ticketCall));
+                }
+            }
+        }
+        /// <summary>
+        /// 根据编号 获取相应工单
+        /// </summary>
+        /// <param name="context"></param>
+        private void GetTicketByNo(HttpContext context)
+        {
+            var no = context.Request.QueryString["no"];
+            var ticket = new sdk_task_dal().GetTicketByNo(no);
+            if(ticket!=null)
+                context.Response.Write(new EMT.Tools.Serialize().SerializeJson(ticket));
         }
     }
 }

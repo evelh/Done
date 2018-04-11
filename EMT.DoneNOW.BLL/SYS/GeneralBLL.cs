@@ -661,5 +661,19 @@ namespace EMT.DoneNOW.BLL
         public Dictionary<long, string> GetCodeList() {
           return new d_cost_code_dal().FindListBySql<d_cost_code>($"select * from d_cost_code where cate_id={(int)COST_CODE_CATE.MATERIAL_COST_CODE} and delete_time=0").ToDictionary(_ => _.id, _ =>_.name);
         }
+
+        public bool EditGeneral(d_general data,long userId)
+        {
+            if (data == null)
+                return false;
+            var oldData = _dal.FindNoDeleteById(data.id);
+            if (oldData == null)
+                return false;
+            data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            data.update_user_id = userId;
+            _dal.Update(data);
+            OperLogBLL.OperLogUpdate<d_general>(data, oldData, data.id, userId, OPER_LOG_OBJ_CATE.General_Code, "编辑字典项");
+            return true;
+        }
     }
 }

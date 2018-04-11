@@ -2046,5 +2046,15 @@ namespace EMT.DoneNOW.BLL
                 return false;
         }
         #endregion
+        /// <summary>
+        /// 获取员工在指定时间的待办
+        /// </summary>
+        public List<com_activity> GetToListByResDate(long resId,DateTime date)
+        {
+            var thisTimeStamp = Tools.Date.DateHelper.ToUniversalTimeStamp(date);
+            return dal.FindListBySql($"SELECT * from com_activity where delete_time = 0 and cate_id = {(int)DicEnum.ACTIVITY_CATE.TODO} and resource_id ={resId.ToString()} and (FROM_UNIXTIME(start_date/1000,'%Y-%m-%d') = '{date.ToString("yyyy-MM-dd")}' or (start_date<={thisTimeStamp} and end_date>={thisTimeStamp}))");
+        }
+            
+            //
     }
 }

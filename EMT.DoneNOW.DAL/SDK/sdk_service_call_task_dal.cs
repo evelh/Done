@@ -18,6 +18,10 @@ namespace EMT.DoneNOW.DAL
             return FindSignleBySql<sdk_service_call_task>($"SELECT * from sdk_service_call_task where service_call_id = {callId} and task_id={ticketId} and delete_time = 0");
         }
 
+        public List<sdk_service_call_task> GetTaskCallByTask(long taskId)
+        {
+            return FindListBySql<sdk_service_call_task>($"SELECT * from sdk_service_call_task where task_id = {taskId} and delete_time = 0");
+        }
 
 
     }

@@ -144,7 +144,7 @@
                     <table cellspacing="0" cellpadding="0" border="0" style="height: 44px; border-collapse: collapse;">
                         <tbody>
                             <tr>
-                                <td class="Popup_TitleCell" style="text-align: left;"><span title="T20170812.0001 - ticket title01" class="Popup_Title" style="width: 750px;"><%=thisTicket==null?"":thisTicket.no+" - "+thisTicket.title %></span></td>
+                                <td class="Popup_TitleCell" style="text-align: left;"><span class="Popup_Title" style="width: 750px;"><%=thisTicket==null?"":thisTicket.no+" - "+thisTicket.title %></span></td>
                             </tr>
                             <tr>
                                 <td class="Popup_SubtitleCell" style="text-align: left;"><span title="<%=thisAccount==null?"":thisAccount.name %>" class="Popup_Subtitle" style="width: 765px;"><%=thisAccount==null?"":thisAccount.name %></span></td>
@@ -176,7 +176,14 @@
                                 <td>
                                     <div class="clear">
                                         <label>客户名称</label>
+                                        <%if (isManyAccount)
+                                            { %>
+                                        <span>多个值</span>
+                                        <%}
+                                        else
+                                        { %>
                                         <span><%=thisAccount.name %></span>
+                                        <%} %>
                                     </div>
                                 </td>
                             </tr>
@@ -184,7 +191,14 @@
                                 <td>
                                     <div class="clear">
                                         <label>任务标题</label>
-                                        <span><%=thisTask.title + "-" + thisTask.title %></span>
+                                        <%if (isManyTitle)
+                                            { %>
+                                        <span>多个值</span>
+                                        <%}
+                                        else
+                                        { %>
+                                       <span><%=thisTask.title + "-" + thisTask.no %></span>
+                                        <%} %>
                                     </div>
                                 </td>
                             </tr>
@@ -560,8 +574,6 @@
     <%}
     
     }
-    // 
-
     %>
     })
 

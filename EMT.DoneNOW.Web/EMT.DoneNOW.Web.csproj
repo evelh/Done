@@ -162,6 +162,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\ClassificationIcons.css" />
+    <Content Include="Content\Dispatch.css" />
     <Content Include="Content\DynamicContent.css" />
     <Content Include="Content\EmailTempl.css" />
     <Content Include="Content\index.css" />
@@ -172,6 +173,7 @@
     <Content Include="Content\MasterTicket.css" />
     <Content Include="Content\multiple-select.css" />
     <Content Include="Content\multipleList.css" />
+    <Content Include="Content\MyQueue.css" />
     <Content Include="Content\NewConfigurationItem.css" />
     <Content Include="Content\NewContact.css" />
     <Content Include="Content\NewQuoteItem.css" />
@@ -189,8 +191,17 @@
     <Content Include="Content\sysset_user.css" />
     <Content Include="Content\Ticket.css" />
     <Content Include="Content\TicketLabour.css" />
+    <Content Include="Scripts\Dispatch.js" />
+    <Content Include="Scripts\Search\dispatch_ticket_search.js" />
+    <Content Include="ServiceDesk\AddQuickCall.aspx" />
+    <Content Include="ServiceDesk\AppointmentsManage.aspx" />
+    <Content Include="ServiceDesk\DispatchCalendar.aspx" />
+    <Content Include="ServiceDesk\DispatcherWorkshopTicketView.aspx" />
+    <Content Include="ServiceDesk\DispatcherWorkshopView.aspx" />
+    <Content Include="ServiceDesk\DispatchViewList.aspx" />
     <Content Include="Images\ACheck50.gif" />
     <Content Include="Images\ico_charge.png" />
+    <Content Include="Images\ico_service_call.png" />
     <Content Include="Images\ico_stopwatch_pause.png" />
     <Content Include="Images\ico_stopwatch_play.png" />
     <Content Include="Images\ico_stopwatch_stop.png" />
@@ -456,6 +467,7 @@
     <Content Include="Scripts\Search\master_sub_ticket_search.js" />
     <Content Include="Scripts\Search\master_ticket_search.js" />
     <Content Include="Scripts\Search\myapprove_expense_report.js" />
+    <Content Include="Scripts\Search\my_queue_active.js" />
     <Content Include="Scripts\Search\my_task_ticket.js" />
     <Content Include="Scripts\Search\project_search.js" />
     <Content Include="Scripts\Search\PurchaseFulfillment.js" />
@@ -499,20 +511,18 @@
     <Content Include="Scripts\treedom.js" />
     <Content Include="ServiceDesk\AccountServiceDetails.aspx" />
     <Content Include="ServiceDesk\AccountTicketList.aspx" />
-    <Content Include="ServiceDesk\AddFileAttachment.aspx" />
     <Content Include="ServiceDesk\AddRepository.aspx" />
     <Content Include="ServiceDesk\ChangeTicketApprove.aspx" />
     <Content Include="ServiceDesk\CopyToProject.aspx" />
-    <Content Include="ServiceDesk\EditRepository.aspx" />
-    <Content Include="ServiceDesk\Editsubcategory.aspx" />
     <Content Include="ServiceDesk\ImportKnowledgebase.aspx" />
     <Content Include="ServiceDesk\KnowledgebaseDetail.aspx" />
     <Content Include="ServiceDesk\ManageKnowledgebase.aspx" />
     <Content Include="ServiceDesk\MasterTicket.aspx" />
+    <Content Include="ServiceDesk\MyQueueList.aspx" />
     <Content Include="ServiceDesk\Newsubcategory.aspx" />
     <Content Include="ServiceDesk\DeleteMasterTicket.aspx" />
-    <Content Include="ServiceDesk\MasterTicket.aspx" />
     <Content Include="ServiceDesk\ServiceCall.aspx" />
+    <Content Include="ServiceDesk\TaskServiceCall.aspx" />
     <Content Include="ServiceDesk\TicketActivity.aspx" />
     <Content Include="ServiceDesk\TicketCallResManage.aspx" />
     <Content Include="ServiceDesk\TicketHistory.aspx" />
@@ -1373,6 +1383,48 @@
     <Compile Include="Contract\InteralCostAddOrEdit.aspx.designer.cs">
       <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ServiceDesk\AddQuickCall.aspx.cs">
+      <DependentUpon>AddQuickCall.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\AddQuickCall.aspx.designer.cs">
+      <DependentUpon>AddQuickCall.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\AppointmentsManage.aspx.cs">
+      <DependentUpon>AppointmentsManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\AppointmentsManage.aspx.designer.cs">
+      <DependentUpon>AppointmentsManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\DispatchCalendar.aspx.cs">
+      <DependentUpon>DispatchCalendar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\DispatchCalendar.aspx.designer.cs">
+      <DependentUpon>DispatchCalendar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\DispatcherWorkshopTicketView.aspx.cs">
+      <DependentUpon>DispatcherWorkshopTicketView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\DispatcherWorkshopTicketView.aspx.designer.cs">
+      <DependentUpon>DispatcherWorkshopTicketView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\DispatcherWorkshopView.aspx.cs">
+      <DependentUpon>DispatcherWorkshopView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\DispatcherWorkshopView.aspx.designer.cs">
+      <DependentUpon>DispatcherWorkshopView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\DispatchViewList.aspx.cs">
+      <DependentUpon>DispatchViewList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\DispatchViewList.aspx.designer.cs">
+      <DependentUpon>DispatchViewList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Inventory\AddPurchaseItem.aspx.cs">
       <DependentUpon>AddPurchaseItem.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1966,13 +2018,6 @@
     <Compile Include="ServiceDesk\AccountTicketList.aspx.designer.cs">
       <DependentUpon>AccountTicketList.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ServiceDesk\AddFileAttachment.aspx.cs">
-      <DependentUpon>AddFileAttachment.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ServiceDesk\AddFileAttachment.aspx.designer.cs">
-      <DependentUpon>AddFileAttachment.aspx</DependentUpon>
-    </Compile>
     <Compile Include="ServiceDesk\AddRepository.aspx.cs">
       <DependentUpon>AddRepository.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1993,20 +2038,6 @@
     </Compile>
     <Compile Include="ServiceDesk\CopyToProject.aspx.designer.cs">
       <DependentUpon>CopyToProject.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ServiceDesk\EditRepository.aspx.cs">
-      <DependentUpon>EditRepository.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ServiceDesk\EditRepository.aspx.designer.cs">
-      <DependentUpon>EditRepository.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ServiceDesk\Editsubcategory.aspx.cs">
-      <DependentUpon>Editsubcategory.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ServiceDesk\Editsubcategory.aspx.designer.cs">
-      <DependentUpon>Editsubcategory.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServiceDesk\ImportKnowledgebase.aspx.cs">
       <DependentUpon>ImportKnowledgebase.aspx</DependentUpon>
@@ -2043,6 +2074,13 @@
     <Compile Include="ServiceDesk\MasterTicket.aspx.designer.cs">
       <DependentUpon>MasterTicket.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ServiceDesk\MyQueueList.aspx.cs">
+      <DependentUpon>MyQueueList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\MyQueueList.aspx.designer.cs">
+      <DependentUpon>MyQueueList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ServiceDesk\Newsubcategory.aspx.cs">
       <DependentUpon>Newsubcategory.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2056,6 +2094,13 @@
     </Compile>
     <Compile Include="ServiceDesk\ServiceCall.aspx.designer.cs">
       <DependentUpon>ServiceCall.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\TaskServiceCall.aspx.cs">
+      <DependentUpon>TaskServiceCall.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\TaskServiceCall.aspx.designer.cs">
+      <DependentUpon>TaskServiceCall.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServiceDesk\TicketActivity.aspx.cs">
       <DependentUpon>TicketActivity.aspx</DependentUpon>
@@ -2196,9 +2241,15 @@
     </Compile>
     <Compile Include="TimeSheet\TimeoffRequestAdd.aspx.designer.cs">
       <DependentUpon>TimeoffRequestAdd.aspx</DependentUpon>
+	</Compile>
+    <Compile Include="Tools\DispatchAjax.ashx.cs">
+      <DependentUpon>DispatchAjax.ashx</DependentUpon>
     </Compile>
     <Compile Include="Tools\ExpenseAjax.ashx.cs">
       <DependentUpon>ExpenseAjax.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\KnowledgeAjax.ashx.cs">
+      <DependentUpon>KnowledgeAjax.ashx</DependentUpon>
     </Compile>
     <Compile Include="Tools\PurchaseOrderAjax.ashx.cs">
       <DependentUpon>PurchaseOrderAjax.ashx</DependentUpon>
@@ -2623,8 +2674,14 @@
     <Compile Include="Tools\ServiceAjax.ashx.cs">
       <DependentUpon>ServiceAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\ServiceCallAjax.ashx.cs">
+      <DependentUpon>ServiceCallAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\SubscriptionAjax.ashx.cs">
       <DependentUpon>SubscriptionAjax.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\SysSettingAjax.ashx.cs">
+      <DependentUpon>SysSettingAjax.ashx</DependentUpon>
     </Compile>
     <Compile Include="Tools\TerritoryAjax.ashx.cs">
       <DependentUpon>TerritoryAjax.ashx</DependentUpon>
@@ -2691,6 +2748,10 @@
     <Content Include="Tools\WorkflowRuleAjax.ashx" />
     <Content Include="Tools\TimeoffPolicyAjax.ashx" />
     <Content Include="Tools\TimesheetAjax.ashx" />
+    <Content Include="Tools\SysSettingAjax.ashx" />
+    <Content Include="Tools\KnowledgeAjax.ashx" />
+    <Content Include="Tools\DispatchAjax.ashx" />
+    <Content Include="Tools\ServiceCallAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2719,6 +2780,9 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
