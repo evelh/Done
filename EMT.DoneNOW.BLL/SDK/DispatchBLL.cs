@@ -73,16 +73,51 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         public List<sdk_appointment> GetAppByResDate(long resId,DateTime date)
         {
-            return saDal.FindListBySql($"SELECT * from sdk_appointment where delete_time = 0 and resource_id = {resId} and FROM_UNIXTIME(start_time/1000,'%Y-%m-%d') = '{date.ToString("yyyy-MM-dd")}'");
+            var thisTimeStamp = Tools.Date.DateHelper.ToUniversalTimeStamp(date);
+            return saDal.FindListBySql($"SELECT * from sdk_appointment where delete_time = 0 and resource_id = {resId} and (FROM_UNIXTIME(start_time/1000,'%Y-%m-%d') = '{date.ToString("yyyy-MM-dd")}' or (start_time<={thisTimeStamp} and end_time>={thisTimeStamp}))");
+        }
+        /// <summary>
+        /// 编辑约会
+        /// </summary>
+        public bool EditAppointment(long appId,string startTime,decimal duraHours,long resId,long userId)
+        {
+            var thisApp = saDal.FindNoDeleteById(appId);
+            if (thisApp == null)
+                return false;
+            var startDate = DateTime.Parse(startTime);
+            thisApp.start_time = Tools.Date.DateHelper.ToUniversalTimeStamp(startDate);
+            thisApp.end_time = thisApp.start_time + (long)(duraHours * 60 * 60 * 1000);
+            thisApp.resource_id = resId;
+            return EditAppointment(thisApp,userId);
         }
         #endregion
 
-
-        #region 调度试图相关 增删改
         /// <summary>
-        /// 新增约会
+        /// 编辑约会
         /// </summary>
-        public bool AddDispatchView(sdk_dispatcher_view disView, long userId)
+        public bool EditTodo(long tId, string startTime, decimal duraHours, long resId, long userId)
+        {
+            var caDal = new com_activity_dal();
+            var thisTodo = caDal.FindNoDeleteById(tId);
+            if (thisTodo == null)
+                return false;
+            var startDate = DateTime.Parse(startTime);
+            thisTodo.start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(startDate);
+            thisTodo.end_date = thisTodo.start_date + (long)(duraHours * 60 * 60 * 1000);
+            thisTodo.resource_id = resId;
+            thisTodo.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            thisTodo.update_user_id = userId;
+            var oldTodo = caDal.FindNoDeleteById(tId);
+            caDal.Update(thisTodo);
+            OperLogBLL.OperLogUpdate<com_activity>(thisTodo, oldTodo, thisTodo.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ACTIVITY, "编辑待办");
+            return true;
+        }
+
+            #region 调度视图相关 增删改
+            /// <summary>
+            /// 新增约会
+            /// </summary>
+            public bool AddDispatchView(sdk_dispatcher_view disView, long userId)
         {
             if (disView == null)
                 return false;
@@ -200,6 +235,93 @@ namespace EMT.DoneNOW.BLL
             return resIds;
         }
         #endregion
+        /// <summary>
+        /// 拖拽后修改服务预定
+        /// </summary>
+        public bool EditServiceCall(long callId,long? oldResId,long newResId,long? roleId, string startTime,decimal duraHours,long userId)
+        {
+            var tBLL = new TicketBLL();
+            var sscDal = new sdk_service_call_dal();
+            var thisCall = sscDal.FindNoDeleteById(callId);
+            if (thisCall == null)
+                return false;
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            var oldStartDate = Tools.Date.DateHelper.ConvertStringToDateTime(thisCall.start_time);
+            var newStartDate = DateTime.Parse(startTime);
+            thisCall.start_time = Tools.Date.DateHelper.ToUniversalTimeStamp(newStartDate);
+            thisCall.end_time = thisCall.start_time + (long)(duraHours * 60 * 60 * 1000);
+            thisCall.update_time = timeNow;
+            thisCall.update_user_id = userId;
+            var oldSer = sscDal.FindNoDeleteById(callId);
+            sscDal.Update(thisCall);
+            OperLogBLL.OperLogUpdate<sdk_service_call>(thisCall, oldSer, thisCall.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SERVICE_CALL, "编辑服务预定");
+            if (oldResId != newResId && roleId == null)
+                return false;
+            var ssctrDal = new sdk_service_call_task_resource_dal();
+            var ssctDal = new sdk_service_call_task_dal();
+            if (oldResId != newResId)
+            {
+                var thisDep = new sys_resource_department_dal().GetResDepByResAndRole(newResId, (long)roleId);
+                if (thisDep == null || thisDep.Count == 0)
+                    return false;
+                if (oldResId != null)
+                {
+                    var oldResList = ssctrDal.GetResByCallRes(callId, (long)oldResId);
+                    oldResList.ForEach(_ => {
+                        ssctrDal.SoftDelete(_, userId);
+                        OperLogBLL.OperLogDelete<sdk_service_call_task_resource>(_, _.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SERVICE_CALL_RESOURCE, "删除服务预定负责人");
+                    });
+                }
+                var thisCallTicket = stDal.GetTciketByCall(callId);
+                if (thisCallTicket != null && thisCallTicket.Count > 0)
+                {
+                    var strDal = new sdk_task_resource_dal();
+                    thisCallTicket.ForEach(_ => {
+                        // 为服务预定添加该负责人
+                        var thisCallTask = ssctDal.GetSingTaskCall(callId,_.id);
+                        if (thisCallTask != null)
+                        {
+                            var resList = ssctrDal.GetTaskResList(thisCallTask.id);
+                            if(!resList.Any(r=>r.resource_id== newResId))
+                            {
+                                var ssct = new sdk_service_call_task_resource()
+                                {
+                                    id = ssctrDal.GetNextIdCom(),
+                                    create_time = timeNow,
+                                    create_user_id = userId,
+                                    resource_id = newResId,
+                                    service_call_task_id = thisCallTask.id,
+                                    update_time = timeNow,
+                                    update_user_id = userId,
+                                };
+                                ssctrDal.Insert(ssct);
+                                OperLogBLL.OperLogAdd<sdk_service_call_task_resource>(ssct, ssct.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SERVICE_CALL_RESOURCE, "新增服务预定负责人");
+                            }
+                        }
+
+                        // 为工单团队添加负责人
+                        if (!tBLL.IsHasRes(_.id, newResId))
+                        {
+                            var item = new sdk_task_resource()
+                            {
+                                id = strDal.GetNextIdCom(),
+                                task_id = _.id,
+                                role_id = roleId,
+                                resource_id = newResId,
+                                department_id = (int)thisDep[0].department_id,
+                                create_user_id = userId,
+                                update_user_id = userId,
+                                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            };
+                            strDal.Insert(item);
+                            OperLogBLL.OperLogAdd<sdk_task_resource>(item, item.id, userId, DicEnum.OPER_LOG_OBJ_CATE.PROJECT_TASK_RESOURCE, "新增工单分配对象");
+                        }
+                    });
+                }
+            }
+            return true;
+        }
 
     }
 }

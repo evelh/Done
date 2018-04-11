@@ -20,7 +20,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64 oid { get; set; }
         [DataMember]
-        public Int64 request_resource_id { get; set; }
+        public Int64 resource_id { get; set; }
         [DataMember]
         public Int32 status_id { get; set; }
         [DataMember]
@@ -33,6 +33,10 @@ namespace EMT.DoneNOW.Core
         public Int64? approved_resource_id { get; set; }
         [DataMember]
         public String reject_reason { get; set; }
+        [DataMember]
+        public DateTime? request_date { get; set; }
+        [DataMember]
+        public Int64? batch_id { get; set; }
 
 
     }

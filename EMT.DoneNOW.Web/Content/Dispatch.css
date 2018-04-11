@@ -349,28 +349,92 @@ option {
 /*Grid1_Container*/
 
 
+
+/*menu*/
+#menu {
+    position: absolute;
+    width: auto;
+    height: auto;
+    display: none;
+    cursor: pointer;
+    z-index: 10011;
+}
+#OtherMenu {
+    z-index: 10011;
+}
+.WzTtDiV {
+    display: none;
+    position: absolute;
+    overflow: hidden;
+    padding: 10px;
+    z-index: 10010;
+    background: white;
+    border: 2px solid #E8E8E8;
+    /*transform: rotate(-3deg);*/
+    box-shadow: 2px 2px 6px #E8E8E8;
+}
+
+.loading {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    z-index: 999999;
+    display: none;
+}
+
+.loadimg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 170px;
+    height: 100px;
+    margin-left: -85px;
+    margin-top: -50px;
+    text-align: center;
+    border: 5px solid #BCBCBC;
+    background: #E4E4E4;
+    padding: 10px;
+}
+
+    .loadimg img {
+        display: block;
+        margin: 0 auto;
+    }
+
 .Grid1_Container {
     width: 100%;
     height: 550px;
     border: 1px solid #ccc;
-    overflow-y: scroll;
-    overflow-x: hidden;
 }
 
 .ContainerLeft {
     float: left;
     width: 10%;
     height: 100%;
+    min-width: 188px;
 }
 
 .ContainerRight {
     float: left;
-    min-width: 90%;
+    width: 90%;
     height: 100%;
     border-collapse: collapse;
-    overflow-y: hidden;
-    overflow-x: scroll;
+}
+
+.R-ContainerUser-Total {
+    width: 100%;
+    height: 100%;
     position: relative;
+    overflow-y: scroll;
+    overflow-x: scroll;
+}
+
+.R-ContainerDays-Total {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
 }
 
 .ContainerLeft .ContainerDays {
@@ -400,9 +464,16 @@ option {
     line-height: 20px;
 }
 
+.ContainerUserScroll {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
 .ContainerUser {
     width: 100%;
     height: auto;
+    position: relative;
 }
 
     .ContainerUser li {
@@ -435,7 +506,9 @@ option {
 .R-ContainerDays {
     width: 101%;
     height: auto;
+    min-width: 1400px;
     overflow: hidden;
+    position: relative;
 }
 
     .R-ContainerDays li {
@@ -559,6 +632,7 @@ option {
 .R-ContainerUser {
     width: 101%;
     height: auto;
+    min-width: 1400px;
     /*overflow: hidden;*/
     clear: both;
 }
@@ -640,19 +714,10 @@ option {
                 cursor: default;
                 font-size: 10px;
             }
-            .R-ContainerUser li .UserContainer .hoverAppoint {
-                background-color: #FFE3E7;
-            }
-            .R-ContainerUser li .UserContainer .hoverTodo {
-                background-color: #D1EBFF;
-            }
-            .R-ContainerUser li .UserContainer .hoverCall {
-                background-color: #FFFEC4;
-            }
 
- .R-ContainerUser li .UserContainer .hovertask:nth-of-type(1) {
-    border-top: none;
-}
+                .R-ContainerUser li .UserContainer .hovertask:nth-of-type(1) {
+                    border-top: none;
+                }
 
                 .R-ContainerUser li .UserContainer .hovertask p {
                     white-space: nowrap;
@@ -683,46 +748,41 @@ option {
     float: left;
     width: 3.5%;
     height: 100%;
+    min-width: 66px;
 }
-
-.ContainerRight-Two {
-    float: left;
-    min-width: 95%;
-    height: 100%;
-    border-collapse: collapse;
-}
-
-.ContainerTop-One .ContainerDays {
-    width: 100%;
-    height: auto;
-}
-
-    .ContainerTop-One .ContainerDays .Days-1 {
-        background-color: #F0F5FB;
-        height: 25px;
-        border-bottom: 1px solid #E8E8E8;
+    /*.ContainerTop-Two{float: left;min-width: 95%;height: 100%;border-collapse: collapse;position: relative;
+}*/
+    .ContainerTop-One .ContainerDays {
         width: 100%;
+        height: auto;
     }
 
-    .ContainerTop-One .ContainerDays .Days-2 {
-        background-color: #F0F5FB;
-        height: 25px;
-        border-top: 1px solid #C7C7C7;
-    }
+        .ContainerTop-One .ContainerDays .Days-1 {
+            background-color: #F0F5FB;
+            height: 25px;
+            border-bottom: 1px solid #E8E8E8;
+            width: 100%;
+        }
 
-    .ContainerTop-One .ContainerDays .Days-3 {
-        height: 25px;
-        background-color: #79a6d2;
-        border-top: solid 1px #C7C7C7;
-        box-sizing: border-box;
-        padding: 0;
-    }
+        .ContainerTop-One .ContainerDays .Days-2 {
+            background-color: #F0F5FB;
+            height: 25px;
+            border-top: 1px solid #C7C7C7;
+        }
 
-    .ContainerTop-One .ContainerDays .Days-4 {
-        width: 100%;
-        height: 5px;
-        background-color: #BCBCBC;
-    }
+        .ContainerTop-One .ContainerDays .Days-3 {
+            height: 25px;
+            background-color: #79a6d2;
+            border-top: solid 1px #C7C7C7;
+            box-sizing: border-box;
+            padding: 0;
+        }
+
+        .ContainerTop-One .ContainerDays .Days-4 {
+            width: 100%;
+            height: 5px;
+            background-color: #BCBCBC;
+        }
 
 .ContainerTop-Two .border {
     float: left;
@@ -735,10 +795,10 @@ option {
 }
 
 .ContainerTop-Two {
+    overflow: hidden;
     width: 96.5%;
     height: auto;
     float: left;
-    padding-right: 17px;
 }
 
     .ContainerTop-Two .Days-1 {
@@ -751,9 +811,14 @@ option {
         color: #333;
         font-size: 12px;
         font-weight: bold;
+        position: relative;
     }
-
+    .ContainerTop-Two .DaysList{
+        height:auto;position:relative;
+    }
     .ContainerTop-Two .Days-2 {
+        width:50%;
+        float:left;
         background-color: #F0F5FB;
         height: 25px;
         border-top: 1px solid #C7C7C7;
@@ -765,13 +830,13 @@ option {
     }
 
 .ContainerTop-User {
-    width: 100%;
+    position: relative;
+    width: 150%;
     height: 25px;
     color: #FFF;
     text-align: center;
     font-size: 12px;
     font-weight: bold;
-    overflow: hidden;
 }
 
     .ContainerTop-User li {
@@ -800,6 +865,7 @@ option {
     .ContainerBottom .ContainerBottom-One {
         float: left;
         width: 3.5%;
+        min-width: 66px;
         height: auto;
     }
 
@@ -857,22 +923,28 @@ option {
 }
 
     .ContainerBottom-Two .Hover-t {
-        width: 100%;
+        width: 150%;
         height: 27px;
         border-bottom: 1px solid #D8D8D8;
         BACKGROUND-COLOR: #F4F4F4;
         border-right: 1px solid #E8E8E8;
     }
-
+.HouverTaskA{
+    height:auto;
+    overflow:hidden;
+} 
 .HouverTask {
-    width: 100%;
+    width: 50%;
     height: auto;
-    overflow: hidden;
+    /*overflow: hidden;*/
+    float: left;
+    box-sizing: border-box;
 }
 
     .HouverTask li {
-        width: 50%;
-        height: 55px;
+        box-sizing: border-box;
+        width: 100%;
+        height: 61px;
         float: left;
         border-bottom: 1px solid #D8D8D8;
         BACKGROUND-COLOR: #F4F4F4;
@@ -881,16 +953,20 @@ option {
         font-weight: bold;
         box-sizing: border-box;
     }
-
-        .HouverTask li .border {
-            float: left;
-            width: 9px;
-            height: 100%;
-            background-color: white;
-            border: solid 1px white;
-            border-collapse: collapse;
-            box-sizing: border-box;
-        }
+.HouverTaskItem{
+    float:left;
+    width:300px;
+    height:auto;
+} 
+.HouverTask li .border {
+    float: left;
+    width: 9px;
+    height: 100%;
+    background-color: white;
+    border: solid 1px white;
+    border-collapse: collapse;
+    box-sizing: border-box;
+}
 
         .HouverTask li .TaskConter .t1 {
             width: 100%;
@@ -907,52 +983,3 @@ option {
     z-index: 9999;
 }
 
-/*menu*/
-#menu {
-    position: absolute;
-    width: auto;
-    height: auto;
-    display: none;
-    cursor: pointer;
-}
-
-.WzTtDiV {
-    display: none;
-    position: absolute;
-    overflow: hidden;
-    padding: 10px;
-    z-index: 1010;
-    background: white;
-    border: 2px solid #E8E8E8;
-    /*transform: rotate(-3deg);*/
-    box-shadow: 2px 2px 6px #E8E8E8;
-}
-
-.loading {
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    position: fixed;
-    top: 0;
-    z-index: 999999;
-    display: none;
-}
-
-.loadimg {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 170px;
-    height: 100px;
-    margin-left: -85px;
-    margin-top: -50px;
-    text-align: center;
-    border: 5px solid #BCBCBC;
-    background: #E4E4E4;
-    padding: 10px;
-}
-
-    .loadimg img {
-        display: block;
-        margin: 0 auto;
-    }

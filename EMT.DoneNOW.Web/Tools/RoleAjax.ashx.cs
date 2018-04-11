@@ -47,6 +47,9 @@ namespace EMT.DoneNOW.Web
                     var resDepIds = context.Request.QueryString["resDepIds"];
                     GetResDepList(context, resDepIds);
                     break;
+                case "GetRoleByResId":
+                    GetRoleByResId(context);
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     break;
@@ -174,7 +177,9 @@ namespace EMT.DoneNOW.Web
 
 
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public void GetResDepList(HttpContext context, string ids)
         {
             if (!string.IsNullOrEmpty(ids))
@@ -188,6 +193,19 @@ namespace EMT.DoneNOW.Web
                         resDepString.Append($"<option value='{item.id}'>{item.resName}({item.roleName})</option>");
                     }
                     context.Response.Write(resDepString.ToString());
+                }
+            }
+        }
+
+        private void GetRoleByResId(HttpContext context)
+        {
+            var resId = context.Request.QueryString["resId"];
+            if (resId != null)
+            {
+                var roleList = new sys_role_dal().GetRoleByResId(long.Parse(resId));
+                if(roleList!=null&& roleList.Count > 0)
+                {
+                    context.Response.Write(new EMT.Tools.Serialize().SerializeJson(roleList));
                 }
             }
         }

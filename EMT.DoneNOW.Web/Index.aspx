@@ -315,7 +315,16 @@
                                 <div class="Module">
                                     <div class="Normal ContextOverlayColumn">
                                         <div>
-                                            
+                                              <div class="Group">
+                                                  <div class="Heading">
+                                                    <div class="Text">视图</div>
+                                                </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" onclick="window.open('../ServiceDesk/DispatchCalendar.aspx','<%=(int)EMT.DoneNOW.DTO.OpenWindow.DISPATCH_CALENDAR %>','left=0,top=0,width=1800,height=950', false);" >
+                                                        <span class="Text">调度工作室</span>
+                                                    </a>
+                                                </div>
+                                            </div>
                                             <div class="Group">
                                                   <div class="Heading">
                                                     <div class="Text">查询</div>

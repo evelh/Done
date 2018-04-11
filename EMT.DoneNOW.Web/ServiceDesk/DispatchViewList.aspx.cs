@@ -18,6 +18,7 @@ namespace EMT.DoneNOW.Web
         protected bool isAdd = false;
         protected long modeId;
         protected List<sdk_dispatcher_view> viewList = new DispatchBLL().GetDisViewList();
+        protected sdk_dispatcher_view editView = null;
         protected void Page_Load(object sender, EventArgs e)
         {
             workIds = Request.QueryString["workIds"];
@@ -28,6 +29,8 @@ namespace EMT.DoneNOW.Web
                 modeId = long.Parse(Request.QueryString["modeId"]);
             if (!string.IsNullOrEmpty(Request.QueryString["isAdd"]))
                 isAdd = true;
+            if (!string.IsNullOrEmpty(Request.QueryString["viewId"]))
+                editView = new DAL.sdk_dispatcher_view_dal().FindNoDeleteById(long.Parse(Request.QueryString["viewId"]));
         }
     }
 }

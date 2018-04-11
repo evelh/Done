@@ -270,5 +270,13 @@ namespace EMT.DoneNOW.BLL
             OperLogBLL.OperLogDelete<tst_timeoff_policy_item_tier>(tier, id, userId, DicEnum.OPER_LOG_OBJ_CATE.TIMEOFF_ITEM_TIER, "删除假期策略级别");
             return true;
         }
+
+        /// <summary>
+        /// 根据员工和日期获取相关的休假时长
+        /// </summary>
+        public List<tst_timeoff_request> GetTimeOffByResDate(long resId, DateTime date)
+        {
+            return dal.FindListBySql<tst_timeoff_request>($"SELECT * from tst_timeoff_request where delete_time = 0 and resource_id = {resId} and request_date = '{date.ToString("yyyy-MM-dd")}'");
+        }
     }
 }

@@ -25,7 +25,7 @@
     <form id="form1" runat="server">
         <!-- 上方 标题 按钮等 -->
          <input id="ticket_id" type="hidden" value="<%=thisTicket!=null&&!isCopy?thisTicket.id.ToString():"" %>" />
-        <div class="PageHeadingContainer" style="z-index: 2;">
+        <div class="PageHeadingContainer" style="z-index: 26;">
             <div class="HeaderRow">
                 <table>
                     <tbody>
@@ -1699,7 +1699,7 @@
 
 
         <!--工单状态更改为完成 -->
-        <div class="Dialog Large" style="margin-left: 400px; margin-top: -1100px; z-index: 100; height: 350px; width: 350px; display: none;" id="CompletionReasonDialog">
+        <div class="Dialog Large" style="margin-left: 400px; margin-top: -1600px; z-index: 100; height: 350px; width: 350px; display: none;" id="CompletionReasonDialog">
             <div>
                 <div class="CancelDialogButton" id="CloseStatusReson"></div>
                 <div class="Active ThemePrimaryColor TitleBar">
@@ -1741,7 +1741,7 @@
                                     </div>
                                     <div class="Editor TextArea">
                                         <div class="InputField">
-                                            <textarea class="Medium" id="reason" name="reason" placeholder="" style="width: 200px; height: 100px;"></textarea>
+                                            <textarea class="Medium" id="reason" name="reason" placeholder="" style="width: 200px; height: 100px;min-width:200px;"></textarea>
                                         </div>
                                         <div>
                                             <input type="checkbox" id="AddSoule" name="AddSoule" /><span>追加到解决方案</span>
@@ -1756,7 +1756,7 @@
         </div>
         <input type="hidden" id="SaveType" name="SaveType" value="" />
         <!--工单状态更改为重新打开 -->
-        <div class="Dialog Large" style="margin-left: 400px; margin-top: -1100px; z-index: 100; height: 350px; width: 350px; display: none;" id="ReopenDialog">
+        <div class="Dialog Large" style="margin-left: 400px; margin-top: -1600px; z-index: 100; height: 350px; width: 350px; display: none;" id="ReopenDialog">
             <div>
                 <div class="CancelDialogButton" id="CloseRepeatReson"></div>
                 <div class="Active ThemePrimaryColor TitleBar">
@@ -2998,7 +2998,7 @@
 
         var oldStatus = '<%=thisTicket!=null?thisTicket.status_id.ToString():"" %>';
         if (status_id == '<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE %>') {
-            <%if (!isAdd)
+            <%if (!isAdd&&thisTicket.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE)
     { %>
             $("#BackgroundOverLay").show();
             $("#CompletionReasonDialog").show();

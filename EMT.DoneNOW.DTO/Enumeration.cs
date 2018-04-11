@@ -86,6 +86,7 @@ namespace EMT.DoneNOW.DTO
         TASK_LIBRARY_CATE  = 149,                 // 任务库种类
         SERVICE_CALL_STATUS = 152,                // 服务请求状态
         ITEM_DESC_DISPLAY_TYPE = 155,               // 采购项描述信息显示内容类型
+        TIMEOFF_REQUEST_STATUS=158,                // 休假申请状态
         KNOWLEDGE_BASE_CATE = 164,              // 知识库文章目录
         KB_PUBLISH_TO_TYPE=165,                  // 知识库：发布对象类型
         TICKET_CATE = 167,                       // 工单种类
@@ -678,6 +679,7 @@ namespace EMT.DoneNOW.DTO
             TIMEOFF_POLICY_TIER = 1613,             // 休假策略-级别查询
             ACCOUNT_SERVICE_DETAILS = 1614,         // 工单详情-客户服务详情
             TICKET_INCLIDENT_RELATION = 1615,       // 工单详情-事故关联其他工单
+            DISPATCH_TICKET_SEARCH = 1616,          // 调度工作室-工单查询
             MY_QUEUE_ACTIVE = 1617,                 // 服务台-我的工作区-活动工单 
             MY_QUEUE_MY_TICKET = 1618,              // 服务台-我的工作区-我创建的工单
             MY_QUEUE_CHANGE_APPROVEL = 1619,        // 服务台-我的工作区-变更申请审批 
@@ -690,7 +692,7 @@ namespace EMT.DoneNOW.DTO
             RESOURCE_CERTIFICATE = 1628,            // 员工详情-员工证书和培训
             RESOURCE_DEGREE = 1629,                 // 员工详情-员工学位
             RESOURCE_ATTACHMENT = 1630,             // 员工详情-员工附件
-
+            WORKGROUP_CALLBACK = 1638,              // 工作组-查找带回
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -1409,6 +1411,7 @@ namespace EMT.DoneNOW.DTO
             COMMIT=2195,        // 已提交
             APPROVAL=2196,      // 已审批
             REFUSE=2197,        // 已拒绝
+            CANCEL=2198,        // 已取消
         }
         /// <summary>
         /// 费用报表操作 - 163
@@ -1675,6 +1678,7 @@ namespace EMT.DoneNOW.DTO
         TimeoffPolicyTier = 198,        // 休假策略-级别查询
         ACCOUNT_SERVICE_DETAILS = 199,   // 工单详情-客户服务详情
         TICKET_INCLIDENT_RELATION=200,   // 工单详情-事故关联其他工单
+        DISPATCH_TICKET_SEARCH = 201,          // 调度工作室-工单查询
         MY_QUEUE_ACTIVE = 202,                 // 服务台-我的工作区-活动工单 
         MY_QUEUE_MY_TICKET = 203,              // 服务台-我的工作区-我创建的工单
         MY_QUEUE_CHANGE_APPROVEL = 204,        // 服务台-我的工作区-变更申请审批 
@@ -1887,6 +1891,7 @@ namespace EMT.DoneNOW.DTO
         ADD_TICKET_ATTACH,     // 新增工单附件
         ADD_TICKET_EXPENSE,    // 新增工单费用
         SHOW_TICKET_HISTORY,   // 工单历史查看
+        DISPATCH_CALENDAR,     // 调度工作室
 
     }
     /// <summary>

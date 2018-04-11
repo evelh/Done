@@ -3998,6 +3998,26 @@ namespace EMT.DoneNOW.BLL
             }
         }
         /// <summary>
+        /// 是否有指定的负责人
+        /// </summary>
+        public bool IsHasRes(long ticketId,long resId)
+        {
+            var thisTicket = _dal.FindNoDeleteById(ticketId);
+            if (thisTicket == null)
+                return false;
+            if (thisTicket.owner_resource_id == resId)
+                return true;
+            else
+            {
+                var resList = new sdk_task_resource_dal().GetResByTaskId(thisTicket.id);
+                if (resList != null && resList.Count > 0 && resList.Any(_ => _.resource_id == resId))
+                    return true;
+                else
+                    return false;
+
+            }
+        }
+        /// <summary>
         /// 获取指定时间内有服务预定的负责人名称
         /// </summary>
         public List<sys_resource> GetResNameByTime(long ticketId,long start,long end)
@@ -4027,6 +4047,39 @@ namespace EMT.DoneNOW.BLL
                 }
             }
             return resStringList;
+        }
+        /// <summary>
+        /// 获取工单负责人的相关名称
+        /// </summary>
+        public string GetResName(long ticketId)
+        {
+            string name = "";
+            var srDal = new sys_resource_dal();  // GetResByTime
+            var thisTicket = _dal.FindNoDeleteById(ticketId);
+            if (thisTicket != null)
+            {
+                if (thisTicket.owner_resource_id != null)
+                {
+                    var res = srDal.FindNoDeleteById((long)thisTicket.owner_resource_id);
+                    if (res != null)
+                        name += res.name + ',';
+                }
+                var resList = new sdk_task_resource_dal().GetResByTaskId(thisTicket.id);
+                if (resList != null && resList.Count > 0)
+                {
+                    foreach (var thisRes in resList)
+                    {
+                        if (thisRes.resource_id == null)
+                            continue;
+                        var res = srDal.FindNoDeleteById((long)thisRes.resource_id);
+                        if (res != null)
+                            name += res.name + ',';
+                    }
+                }
+            }
+            if (!string.IsNullOrEmpty(name))
+                name = name.Substring(0,name.Length-1);
+            return name;
         }
         /// <summary>
         /// 服务预定工单联系人管理
@@ -4414,7 +4467,16 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         public List<sdk_service_call> GetCallByResDate(long resId,DateTime date)
         {
-            return _dal.FindListBySql<sdk_service_call>($"SELECT ssc.* from sdk_service_call ssc INNER JOIN sdk_service_call_task ssct on ssc.id = ssct.service_call_id INNER JOIN sdk_service_call_task_resource ssctr on ssct.id = ssctr.service_call_task_id where ssc.delete_time = 0 and ssct.delete_time = 0 and ssctr.delete_time = 0 and ssctr.resource_id = {resId} and FROM_UNIXTIME(ssc.start_time / 1000, '%Y-%m-%d') = '{date.ToString("yyyy-MM-dd")}'");
+            var thisTimeStamp = Tools.Date.DateHelper.ToUniversalTimeStamp(date);
+            return _dal.FindListBySql<sdk_service_call>($"SELECT ssc.* from sdk_service_call ssc INNER JOIN sdk_service_call_task ssct on ssc.id = ssct.service_call_id INNER JOIN sdk_service_call_task_resource ssctr on ssct.id = ssctr.service_call_task_id where ssc.delete_time = 0 and ssct.delete_time = 0 and ssctr.delete_time = 0 and ssctr.resource_id = {resId} and (FROM_UNIXTIME(ssc.start_time / 1000, '%Y-%m-%d') = '{date.ToString("yyyy-MM-dd")}' or (start_time<={thisTimeStamp} and end_time>={thisTimeStamp}))");
+        }
+        /// <summary>
+        /// 获取某一时间无负责人的 服务预定
+        /// </summary>
+        public List<sdk_service_call> GetNoResCallByDate(DateTime date)
+        {
+            var thisTimeStamp = Tools.Date.DateHelper.ToUniversalTimeStamp(date);
+            return _dal.FindListBySql<sdk_service_call>($"SELECT ssc.* from sdk_service_call ssc where not EXISTS (SELECT 1 from sdk_service_call_task ssct , sdk_service_call_task_resource ssctr where  ssct.id = ssctr.service_call_task_id and ssc.id = ssct.service_call_id and ssct.delete_time = 0 and ssctr.delete_time = 0) and delete_time = 0 and (FROM_UNIXTIME(ssc.start_time / 1000, '%Y-%m-%d') = '{date.ToString("yyyy-MM-dd")}' or (start_time<={thisTimeStamp} and end_time>={thisTimeStamp}))");
         }
         #endregion
 

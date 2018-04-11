@@ -192,6 +192,7 @@
     <Content Include="Content\Ticket.css" />
     <Content Include="Content\TicketLabour.css" />
     <Content Include="Scripts\Dispatch.js" />
+    <Content Include="Scripts\Search\dispatch_ticket_search.js" />
     <Content Include="ServiceDesk\AddQuickCall.aspx" />
     <Content Include="ServiceDesk\AppointmentsManage.aspx" />
     <Content Include="ServiceDesk\DispatchCalendar.aspx" />
@@ -2646,6 +2647,9 @@
     <Compile Include="Tools\ServiceAjax.ashx.cs">
       <DependentUpon>ServiceAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\ServiceCallAjax.ashx.cs">
+      <DependentUpon>ServiceCallAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\SubscriptionAjax.ashx.cs">
       <DependentUpon>SubscriptionAjax.ashx</DependentUpon>
     </Compile>
@@ -2716,6 +2720,7 @@
     <Content Include="Tools\SysSettingAjax.ashx" />
     <Content Include="Tools\KnowledgeAjax.ashx" />
     <Content Include="Tools\DispatchAjax.ashx" />
+    <Content Include="Tools\ServiceCallAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
