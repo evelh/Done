@@ -447,8 +447,8 @@
                 <%}
     else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALL_TICKET)
     { %>
-                <span style="font-size: 12px;color: #4F4F4F;margin-top: 13px;height: 22px;display: inline-block;margin-right:20px;margin-left:80px;"><span style="font-weight: bold;margin-top: 6px;">条目是否分配</span><select id="isFenPei" style="margin-left:6px;"><option value="0">未分配</option><option value="1">已分配</option></select></span>
-                <span style="font-size: 12px;color: #4F4F4F;margin-top: 13px;height: 22px;display: inline-block;margin-right:20px;"><span style="font-weight: bold;margin-top: 6px;">截止时间范围</span><select id="dueTime" style="margin-left:6px;"><option value="1">从今天开始+/-30天</option><option value=""></option></select></span>
+                <%--<span style="font-size: 12px;color: #4F4F4F;margin-top: 13px;height: 22px;display: inline-block;margin-right:20px;margin-left:80px;"><span style="font-weight: bold;margin-top: 6px;">条目是否分配</span><select id="isFenPei" style="margin-left:6px;"><option value="0">未分配</option><option value="1">已分配</option></select></span>
+                <span style="font-size: 12px;color: #4F4F4F;margin-top: 13px;height: 22px;display: inline-block;margin-right:20px;"><span style="font-weight: bold;margin-top: 6px;">截止时间范围</span><select id="dueTime" style="margin-left:6px;"><option value="1">从今天开始+/-30天</option><option value=""></option></select></span>--%>
                 <%} %>
 
               <div class="fl" id="addDiv" style="line-height:47px;margin-right:30px;">

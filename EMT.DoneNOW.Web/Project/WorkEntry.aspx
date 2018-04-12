@@ -780,6 +780,7 @@
         <%if (thisCall != null)
     { %>
         JiSuanWorkHours();
+        AddEntry();
         <%} %>
        <% if (!isAdd)
     {

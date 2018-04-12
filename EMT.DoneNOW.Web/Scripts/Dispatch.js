@@ -32,7 +32,7 @@ function MenuBind() {
 
             if ($(_this).eq(j).children('.UserContainer').height() > x) {
                 x = $(_this).eq(j).children('.UserContainer').height();
-                console.log(x)
+                //console.log(x)
             }
             if (i == 1 && j == 1) {
                 // console.log($(_this).eq(1).children('.UserContainer').height())
@@ -67,17 +67,38 @@ $(window).resize(function () {
 
 
 //
-console.log($('.ContainerTop-One').width())
+//console.log($('.ContainerTop-One').width())
 $('.ContainerBottom-Two').css('width', $(window).width() - $('.ContainerBottom-One').width() - 38)
 $('.ContainerTop-Two').css('width', $(window).width() - $('.ContainerTop-One').width() - 38)
-$('.ContainerTop-Two').children().css('width', '150%')
-$('.HouverTaskA').css('width','150%')
-$('.ContainerTop-Two').children('.ContainerTop-User').css('width', '150%')
+
+$.each($('.ContainerTop-User li'), function (i) {
+    var ob = $('.HouverTask').eq(i).children('li').eq(1).find('.HouverTaskItem');
+    console.log(ob.length)
+    var x = $('.HouverTask').length;
+    var xE = 0;
+    if (ob.length > 1) {
+        x += ob.length;
+        xE = x;
+        console.log(xE)
+        $('.HouverTask').eq(i).css('width',100/ x * ob.length+'%' )
+        ob.css('width', ob.width() / ob.length)
+    } 
+
+})
+
+//var useritemW = $('.HouverTask').find('.HouverTaskItem').width() * $('.HouverTask').length;
+var useritemW = '100%'
+
+// $('.ContainerTop-User').css('width', useritemW)
+console.log($('.HouverTask').find('.HouverTaskItem').width() * $('.HouverTask').length)
+$('.ContainerTop-Two').children().css('width', useritemW)
+$('.HouverTaskA').css('width', useritemW)
+$('.ContainerTop-Two').children('.ContainerTop-User').css('width', useritemW)
 $(window).resize(function () {
     $('.ContainerBottom-Two').css('width', $(window).width() - $('.ContainerBottom-One').width() - 38)
     $('.ContainerTop-Two').css('width', $(window).width() - $('.ContainerTop-One').width() - 38)
     $('.ContainerTop-Two').children().css('width', $('.ContainerTop-User').width())
-    $('.ContainerTop-Two').children('.ContainerTop-User').css('width', '150%')
+    $('.ContainerTop-Two').children('.ContainerTop-User').css('width', useritemW)
 
 })
 function RunDaysDom(a) {

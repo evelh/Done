@@ -78,7 +78,7 @@
         }
 
         .Grid2_Container .hovertask {
-            width: 300px;
+            width:100%;
             min-width: 200px;
             background-color: #FFAEB9;
         }
@@ -259,29 +259,8 @@
                         <div class="border"></div>
                         <%=weekArr[(int)chooseDate.DayOfWeek] %>- <%=chooseDate.ToString("yyyy-MM-dd") %>
                     </div>
-                    <div style="display:none"><asp:Literal ID="liSingUserShow" runat="server"></asp:Literal></div>
-                     <div class="DaysList"> 
-
-                         <div class="Days-2">
-                        <div class="border"></div>                            
-                            Individual
-                        </div>
-                         <div class="Days-2">
-                        <div class="border"></div>                            
-                            Individual
-                        </div>
-                     </div>  
-                     
-                    <ul class="ContainerTop-User">
-                        <li style="">
-                            <div class="border"></div>
-                            Li, Hong (CST)                            
-                        </li>
-                         <li>
-                            <div class="border"></div>
-                            li, li (CST)                           
-                        </li>
-                    </ul>
+                     <asp:Literal ID="liSingUserShow" runat="server"></asp:Literal>
+                  
                     <div class="ContainerTop-UserLine" style="clear: both;"></div>
                 </div>
             </div>
@@ -299,44 +278,10 @@
                     </ul>
                 </div>
                 <div class="ContainerBottom-Two"  onscroll="OnScrollH(this)">
-                    <div class="Hover-t"></div>
-                    <div class="HouverTaskA">
-                    <ul class="HouverTask">
-                        <li>
-                            <div class="border"></div>
-                            <div class="TaskConter">
-                                <div class="t1">
-                                     <asp:Literal ID="liSingUserContent" runat="server"></asp:Literal>
-                                </div>
-                                <div class="t2"> </div> 
-                            </div>
-                        </li>
-                          <% for (int i = 0; i < 23; i++)
-                            {   %>
-                        <li>
-                            <div class="border"></div>
-                            <div class="TaskConter">
-                                <div class="t1"></div>
-                                <div class="t2"></div>
-                            </div>
-                        </li>
-                             <%} %>
-                    </ul>
-                    <ul class="HouverTask">
-                        <li>
-                            <div class="HouverTaskItem">
-                                <div class="border"></div>
-                                <div class="TaskConter">
-                                    <div class="t1"></div>
-                                    <div class="t2"></div>
-                                </div>
-                            </div>
-                        </li>
-                        
-                    </ul>
-                    </div>
-                    <div style="display:none"></div>
                     
+                    <div class="HouverTaskA">   
+                        <asp:Literal ID="liSingUserContent" runat="server"></asp:Literal>
+                    </div>
                 </div>
             </div>
         </div>
@@ -623,6 +568,7 @@
     { %>
         $(".Grid1_Container").hide();
         $(".Grid2_Container").show();
+        $("body").trigger("resize");
         <%}
     else
     { %>

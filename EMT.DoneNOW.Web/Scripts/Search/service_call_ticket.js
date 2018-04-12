@@ -3,17 +3,17 @@
     $("#SelectLi").show();
     var serviceId = parent.$("#SerivceCallId").val();
     if (serviceId != "") {
-        $("#isFenPei").val("1");
+        //$("#isFenPei").val("1");
     }
     //$(".page.fl").hide();
     if ($("input[name = 'con2125']").val() != undefined) {
-        $("#isFenPei").val($("input[name = 'con2125']").eq(0).val());
+        //$("#isFenPei").val($("input[name = 'con2125']").eq(0).val());
     }
     if ($("input[name = 'con2126']").val() != undefined) {
-        $("#dueTime").val($("input[name = 'con2126']").eq(0).val());
+        //$("#dueTime").val($("input[name = 'con2126']").eq(0).val());
     }
     else {
-        $("#dueTime").val("");
+        //$("#dueTime").val("");
     }
     parent.CheckTicket();
 })
@@ -201,12 +201,12 @@ function RemoveTicket() {
         dataType: "json",
         success: function (data) {
             if (data) {
-                LayerMsg("保存成功！");
+                LayerMsg("移除成功！");
             }
             else {
-                LayerMsg("保存失败！");
+                LayerMsg("移除失败！");
             }
-            setTimeout(function () { self.opener.location.reload(); history.go(0); }, 800);
+            setTimeout(function () {  history.go(0); }, 800);
         },
     });
 

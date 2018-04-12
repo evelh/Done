@@ -907,8 +907,8 @@
         if (dayDto != null)
         {%>
         $("#day_eve_day").val('<%=dayDto.every %>');
-        $("#ckNotInSat").prop("checked",<%=dayDto.no_sat==1 %>);
-        $("#ckNotInSun").prop("checked",<%=dayDto.no_sun==1 %>);
+        $("#ckNotInSat").prop("checked",<%=dayDto.no_sat==1?"true":"false" %>);
+        $("#ckNotInSun").prop("checked",<%=dayDto.no_sun==1?"true":"false" %>);
         <%}
         %>
         $("#rdoFreq_0").trigger("click");

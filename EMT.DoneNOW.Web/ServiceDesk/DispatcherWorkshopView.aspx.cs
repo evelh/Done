@@ -308,7 +308,6 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     var singContentHtml = new System.Text.StringBuilder();
                     if (resList != null && resList.Count > 0)
                     {
-                     
                         foreach (var res in resList)
                         {
                             var thisDay = chooseDate;
@@ -327,9 +326,16 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                             var callHtml = GetSingResDateCall(res.id, thisDay, out callHours);
                             var allUserHours = appiontHours + todoHours + callHours;
                             var allRemainHours = ((thisDay.DayOfWeek == DayOfWeek.Sunday || thisDay.DayOfWeek == DayOfWeek.Saturday) ? 0 : 8) - timeHours;
-                            
-                            singContentHtml.Append( appHtml + todoHtml + callHtml);
-                            
+                            singContentHtml.Append($"<ul class='HouverTask'><li style='height:27px;margin-bottom: 1px;'><div class='border'></div><div class='Hover-t'></div></li><li><div class='border'></div><div class='TaskConter'><div class='t1'>{appHtml + todoHtml + callHtml}</div><div class='t2'></div></div></li>"); 
+                           for (int i = 0; i< 23; i++)
+                            {
+                                singContentHtml.Append($"<li {(i>=8&&i<=18? "style = 'background-color:white;'" : "")}><div class='border'></div><div class='TaskConter'><div class='t1'></div><div class='t2'></div></div></li>");
+                            }
+                            singContentHtml.Append("</ul>");
+                        
+                            //singContentHtml.Append( appHtml + todoHtml + callHtml);
+                            //if (string.IsNullOrEmpty(appHtml) && string.IsNullOrEmpty(todoHtml) && string.IsNullOrEmpty(callHtml))
+                                //singContentHtml.Append("<div class='HouverTaskItem' style='margin-top:0px; height: 0.1px;'></div>");
 
                             if (!userTimeDic[thisKey].ContainsKey("UserHours"))
                                 userTimeDic[thisKey].Add("UserHours", allUserHours);
@@ -366,9 +372,13 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                                     var callHtml = GetSingResDateCall(res.id, thisDay, out callHours);
                                     var allUserHours = appiontHours + todoHours + callHours;
                                     var allRemainHours = ((thisDay.DayOfWeek == DayOfWeek.Sunday || thisDay.DayOfWeek == DayOfWeek.Saturday) ? 0 : 8) - timeHours;
-
-                                    singContentHtml.Append(appHtml + todoHtml + callHtml);
-
+                                    singContentHtml.Append($"<ul class='HouverTask'><li style='height:27px;margin-bottom: 1px;'><div class='border'></div><div class='Hover-t'></div></li><li><div class='border'></div><div class='TaskConter'><div class='t1'>{appHtml + todoHtml + callHtml}</div><div class='t2'></div></div></li>");
+                                    for (int i = 0; i < 23; i++)
+                                    {
+                                        singContentHtml.Append($"<li {(i>=8&&i<=18? "style='background-color:white;'" : "")}><div class='border'></div><div class='TaskConter'><div class='t1'></div><div class='t2'></div></div></li>");
+                                    }
+                                    singContentHtml.Append("</ul>");
+                                    //singContentHtml.Append(appHtml + todoHtml + callHtml);
 
                                     if (!userTimeDic[thisKey].ContainsKey("UserHours"))
                                         userTimeDic[thisKey].Add("UserHours", allUserHours);
@@ -385,17 +395,26 @@ namespace EMT.DoneNOW.Web.ServiceDesk
 
                     #region 用户标题
                     var singTitleHtml = new System.Text.StringBuilder();
+                    singTitleHtml.Append("<div class='DaysList'>");
                     if (resList != null && resList.Count > 0)
                     {
-                        singTitleHtml.Append("<div class='SingUserDiv'>");
-                        singTitleHtml.Append("<div class='Days-2'><div class='border'></div>个人</div>");
-                        singTitleHtml.Append("<ul class='ContainerTop-User'>");
+                        singTitleHtml.Append($"<div class='Days-2'><div class='border'></div>个人</div>");
+                    }
+                    if (workList != null && workList.Count > 0)
+                    {
+                        foreach (var work in workList)
+                        {
+                            singTitleHtml.Append($"<div class='Days-2'><div class='border'></div>{work.name}</div>");
+                        }
+                    }
+                    singTitleHtml.Append("</div>");
+                    singTitleHtml.Append("<ul class='ContainerTop-User'>");
+                    if (resList != null && resList.Count > 0)
+                    {
                         foreach (var res in resList)
                         {
                             singTitleHtml.Append($"<li><div class='border'></div>{res.name}</li>");
                         }
-                        singTitleHtml.Append("</ul>");
-                        singTitleHtml.Append("</div>");
                     }
                     if (workList != null && workList.Count > 0)
                     {
@@ -404,21 +423,16 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                             var thisResList = new DAL.sys_workgroup_dal().GetResouListByWorkIds(thisWork.id.ToString());
                             if (thisResList != null && thisResList.Count > 0)
                             {
-                                singTitleHtml.Append("<div class='SingUserDiv'>");
-                                singTitleHtml.Append($"<div class='Days-2'><div class='border'></div>{thisWork.name}</div>");
-                                singTitleHtml.Append("<ul class='ContainerTop-User'>");
                                 foreach (var res in thisResList)
                                 {
                                     singTitleHtml.Append($"<li><div class='border'></div>{res.name}</li>");
                                 }
-                                singTitleHtml.Append("</ul>");
-                                singTitleHtml.Append("</div>");
                             }
                         }
                     }
                     singTitleHtml.Append("</ul>");
 
-                    liSingUserShow.Text = "";//singTitleHtml.ToString();
+                    liSingUserShow.Text = singTitleHtml.ToString();
                     #endregion
                 }
             }
@@ -661,7 +675,8 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     }
                     toolTipHtml += $"<p>负责人:{ticketBll.GetResName(ticket.id)}</p>";
                     toolTipHtml += $"<p>工单状态：{ticStaList.First(_ => _.id == ticket.status_id).name}</p>";
-                    toolTipHtml += $"<p>工单优先级：{priorityList.First(_ => _.id == ticket.priority_type_id).name}</p>";
+                    if(ticket.priority_type_id!=null)
+                        toolTipHtml += $"<p>工单优先级：{priorityList.First(_ => _.id == ticket.priority_type_id).name}</p>";
                     toolTipHtml += $"<p>工单描述：{ticket.description}</p>";
                 }
 

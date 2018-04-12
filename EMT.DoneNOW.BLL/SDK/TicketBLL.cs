@@ -3361,7 +3361,7 @@ namespace EMT.DoneNOW.BLL
             var thisSubTicket = _dal.FindNoDeleteById(parTicketId);
             if (thisSubTicket == null)
                 return false;
-            thisSubTicket.no = thisSubTicket.no + "." + num.ToString("#000");
+            thisSubTicket.no = thisSubTicket.no.Substring(0, thisSubTicket.no.LastIndexOf('.'))+'.'+ num.ToString("#000");
             lastNo = thisSubTicket.no;
             thisSubTicket.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(dueTime);
             thisSubTicket.ticket_type_id = (int)DicEnum.TICKET_TYPE.SERVICE_REQUEST;

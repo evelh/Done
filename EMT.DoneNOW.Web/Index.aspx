@@ -324,6 +324,11 @@
                                                         <span class="Text">调度工作室</span>
                                                     </a>
                                                 </div>
+                                                    <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="ServiceDesk/MyQueueList.aspx" target="PageFrame">
+                                                        <span class="Text">我的工作组和队列</span>
+                                                    </a>
+                                                </div>
                                             </div>
                                             <div class="Group">
                                                   <div class="Heading">

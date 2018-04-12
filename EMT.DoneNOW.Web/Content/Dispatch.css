@@ -840,7 +840,7 @@ option {
 }
 
     .ContainerTop-User li {
-        width: 50%;
+        width: 20%;
         height: 100%;
         float: left;
         border-right: 1px solid #C7C7C7;
@@ -926,15 +926,16 @@ option {
         width: 150%;
         height: 27px;
         border-bottom: 1px solid #D8D8D8;
-        BACKGROUND-COLOR: #F4F4F4;
+        background-color: #F4F4F4;
         border-right: 1px solid #E8E8E8;
+        
     }
 .HouverTaskA{
     height:auto;
     overflow:hidden;
 } 
 .HouverTask {
-    width: 50%;
+    width: 20%;
     height: auto;
     /*overflow: hidden;*/
     float: left;
@@ -955,7 +956,8 @@ option {
     }
 .HouverTaskItem{
     float:left;
-    width:300px;
+    width:100%;
+    min-width:200px;
     height:auto;
 } 
 .HouverTask li .border {
