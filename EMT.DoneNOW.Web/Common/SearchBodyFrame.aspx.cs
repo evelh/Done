@@ -286,6 +286,15 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.KNOWLEDGEBASE_ARTICLE:
                     addBtn = "新增文章";
                     break;
+                case (int)DicEnum.QUERY_CATE.TIMEOFF_MY_CURRENT:
+                    addBtn = "新增常规工时";
+                    break;
+                case (int)DicEnum.QUERY_CATE.TIMEOFF_REQUEST_WAIT_APPROVE:
+                    addBtn = "批准";
+                    break;
+                case (int)DicEnum.QUERY_CATE.TIMEOFF_MY_REQUEST:
+                    addBtn = "新增休假请求";
+                    break;
                 default:
                     addBtn = "";
                     break;
@@ -1249,6 +1258,12 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "再次调度（复制）", click_function = "CopyCall()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除服务预定", click_function = "DeleteCall()" });
                     break;
+                case (long)QueryType.TimeoffMyRequest:
+                    contextMenu.Add(new PageContextMenuDto { text = "取消休假请求", click_function = "Cancle()" });
+                    break;
+                case (long)QueryType.TimeoffWaitApprove:
+                    contextMenu.Add(new PageContextMenuDto { text = "详情", click_function = "Detail()" });
+					break;
                 case (long)QueryType.TICKET_SERVICE_LIST:
                     #region 待办相关
                     var todoGeneral = new PageContextMenuDto { text = "常规", class_name = "ToDo" };

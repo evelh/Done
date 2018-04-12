@@ -474,6 +474,12 @@
     <Content Include="Scripts\Search\PurchaseItem.js" />
     <Content Include="Scripts\Search\PurchaseOrder.js" />
     <Content Include="Scripts\Search\PurchaseReceive.js" />
+    <Content Include="Scripts\Search\ResourceAttachment.js" />
+    <Content Include="Scripts\Search\ResourceCertificate.js" />
+    <Content Include="Scripts\Search\ResourceDegree.js" />
+    <Content Include="Scripts\Search\ResourceDepartment.js" />
+    <Content Include="Scripts\Search\ResourceExpense.js" />
+    <Content Include="Scripts\Search\ResourceSkill.js" />
     <Content Include="Scripts\Search\ResourceTimeSheet.js" />
     <Content Include="Scripts\Search\revoke_expense.js" />
     <Content Include="Scripts\Search\revoke_labour.js" />
@@ -487,9 +493,14 @@
     <Content Include="Scripts\Search\ticket_incident.js" />
     <Content Include="Scripts\Search\ticket_problem.js" />
     <Content Include="Scripts\Search\ticket_request.js" />
+    <Content Include="Scripts\Search\TimeoffMyCurrent.js" />
+    <Content Include="Scripts\Search\TimeoffMyRequest.js" />
     <Content Include="Scripts\Search\TimeoffPolicy.js" />
     <Content Include="Scripts\Search\TimeoffPolicyResource.js" />
     <Content Include="Scripts\Search\TimeoffPolicyTier.js" />
+    <Content Include="Scripts\Search\TimeoffRequestWaitApprove.js" />
+    <Content Include="Scripts\Search\TimeoffWaitApprove.js" />
+    <Content Include="Scripts\Search\TimeoffWaitApproveDetail.js" />
     <Content Include="Scripts\Search\WorkflowRule.js" />
     <Content Include="Scripts\Search\ticket_account_list.js" />
     <Content Include="Scripts\Search\ticket_cost_expense.js" />
@@ -526,10 +537,12 @@
     <Content Include="SysSetting\ServiceBundle.aspx" />
     <Content Include="SysSetting\WorkflowRule.aspx" />
     <Content Include="TimeSheet\ExpenseReportDetail.aspx" />
+    <Content Include="TimeSheet\MyTimeSummary.aspx" />
     <Content Include="TimeSheet\RefuseReportReason.aspx" />
     <Content Include="TimeSheet\RegularTimeAddEdit.aspx" />
     <Content Include="TimeSheet\ReportOperation.aspx" />
     <Content Include="TimeSheet\ReportView.aspx" />
+    <Content Include="TimeSheet\TimeoffRequestAdd.aspx" />
     <Content Include="Tools\PurchaseOrderAjax.ashx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\alert.png" />
@@ -2187,6 +2200,13 @@
     <Compile Include="TimeSheet\ExpenseReportDetail.aspx.designer.cs">
       <DependentUpon>ExpenseReportDetail.aspx</DependentUpon>
     </Compile>
+    <Compile Include="TimeSheet\MyTimeSummary.aspx.cs">
+      <DependentUpon>MyTimeSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TimeSheet\MyTimeSummary.aspx.designer.cs">
+      <DependentUpon>MyTimeSummary.aspx</DependentUpon>
+    </Compile>
     <Compile Include="TimeSheet\RefuseReportReason.aspx.cs">
       <DependentUpon>RefuseReportReason.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2215,6 +2235,13 @@
     <Compile Include="TimeSheet\ReportView.aspx.designer.cs">
       <DependentUpon>ReportView.aspx</DependentUpon>
     </Compile>
+    <Compile Include="TimeSheet\TimeoffRequestAdd.aspx.cs">
+      <DependentUpon>TimeoffRequestAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TimeSheet\TimeoffRequestAdd.aspx.designer.cs">
+      <DependentUpon>TimeoffRequestAdd.aspx</DependentUpon>
+	</Compile>
     <Compile Include="Tools\DispatchAjax.ashx.cs">
       <DependentUpon>DispatchAjax.ashx</DependentUpon>
     </Compile>
@@ -2665,6 +2692,9 @@
     <Compile Include="Tools\TimeoffPolicyAjax.ashx.cs">
       <DependentUpon>TimeoffPolicyAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\TimesheetAjax.ashx.cs">
+      <DependentUpon>TimesheetAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\WorkflowRuleAjax.ashx.cs">
       <DependentUpon>WorkflowRuleAjax.ashx</DependentUpon>
     </Compile>
@@ -2717,6 +2747,7 @@
     <Content Include="Tools\TicketAjax.ashx" />
     <Content Include="Tools\WorkflowRuleAjax.ashx" />
     <Content Include="Tools\TimeoffPolicyAjax.ashx" />
+    <Content Include="Tools\TimesheetAjax.ashx" />
     <Content Include="Tools\SysSettingAjax.ashx" />
     <Content Include="Tools\KnowledgeAjax.ashx" />
     <Content Include="Tools\DispatchAjax.ashx" />

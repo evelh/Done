@@ -50,12 +50,6 @@
                 <div class="content clear">
                     <div class="information clear">
                         <p class="informationTitle">常规信息</p>
-                        <input type="hidden" id="ckids0" name="ckids0" />
-                        <input type="hidden" id="ckids1" name="ckids1" />
-                        <input type="hidden" id="ckids2" name="ckids2" />
-                        <input type="hidden" id="ckids3" name="ckids3" />
-                        <input type="hidden" id="ckids4" name="ckids4" />
-                        <input type="hidden" id="ckids5" name="ckids5" />
                         <input type="hidden" id="action" name="action" />
                         <div>
                             <table border="none" cellspacing="" cellpadding="" style="width: 800px;">

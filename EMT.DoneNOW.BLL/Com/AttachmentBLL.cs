@@ -151,6 +151,9 @@ namespace EMT.DoneNOW.BLL
                     return false;
                 att.account_id = thisArt.account_id;
             }
+            else if (att.object_type_id == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.RESOURCE)
+            {
+            }
             else
                 return false;
 

@@ -100,6 +100,26 @@ namespace EMT.DoneNOW.BLL
                     is_not_null = col.isnot_null,
                 };
 
+                if (para.defaultValue != null)
+                {
+                    if (para.defaultValue.Contains("**login_user_id**"))
+                    {
+                        para.defaultValue = para.defaultValue.Replace("**login_user_id**", $"{userId}");
+                    }
+                    if (para.defaultValue.Contains("select"))
+                    {
+                        try
+                        {
+                            var dt = new d_query_para_dal().ExecuteDataTable(para.defaultValue);
+                            if (dt != null && dt.Rows.Count > 0)
+                            {
+                                para.defaultValue = dt.Rows[0][0].ToString();
+                            }
+                        }
+                        catch { }
+                    }
+                }
+
                 // 下拉框和多选下拉框，获取列表值
                 if (col.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.DROPDOWN
                     || col.data_type_id == (int)DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN
@@ -109,6 +129,10 @@ namespace EMT.DoneNOW.BLL
                     {
                         col.ref_sql = col.ref_sql.Replace("##col1242##", $"{userId}");
 
+                    }
+                    if(col.ref_sql.Contains("**login_user_id**"))
+                    {
+                        col.ref_sql = col.ref_sql.Replace("**login_user_id**", $"{userId}");
                     }
                     var dt = new d_query_para_dal().ExecuteDataTable(col.ref_sql);
                     if (dt != null)

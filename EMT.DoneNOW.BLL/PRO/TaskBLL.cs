@@ -2651,7 +2651,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     thisContract = new ctt_contract_dal().FindNoDeleteById((long)para.workEntry.contract_id);
                 }
-                var thisBatchId = _dal.GetEntryBat();
+                var thisBatchId = _dal.GetNextId("seq_entry_batch");
                 var newEntry = para.workEntry;
                 newEntry.id = _dal.GetNextIdCom();
                 newEntry.batch_id = thisBatchId;

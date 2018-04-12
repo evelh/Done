@@ -27,6 +27,10 @@ namespace EMT.DoneNOW.DTO
         SDK_TICKET_STATUS_LABOUR = 44,       // 添加工时的时候是否 必须将工单状态改为非“new”
         SDK_TICKET_COMPLETE_REASON = 45,     // 关闭工单或者重新打开工单需要输入原因
         SDK_ALLOW_CROSS_NIGHT = 59,          // 是否允许跨夜
+        TIMEOFF_ALLOW_FLOAT = 64,            // 支持浮动假期
+        TIMEOFF_ALLOW_PERSONAL = 65,         // 支持私人时间
+        TIMEOFF_ALLOW_SICK = 66,             // 支持病假
+        TIMEOFF_ALLOW_VACATION = 67,         // 支持年休假
         SDK_ENTRY_PROXY = 70,                // 工时是否允许代理操作
         SDK_REQUIRED_SUMMAY_NOTE = 72,       // 工时说明是否必填
         SDK_ENTRY_REQUIRED = 73,             // 工时的时间相关字段是否可以不显示

@@ -33,11 +33,21 @@ namespace EMT.DoneNOW.Web
                 case "deleteItemTier":
                     DeletePolicyTier(context);
                     break;
+                case "cancleRequest":
+                    CancleTimeoffRequest(context);
+                    break;
+                case "approveRequest":
+                    ApproveTimeoffRequest(context);
+                    break;
+                case "rejectRequest":
+                    RejectTimeoffRequest(context);
+                    break;
                 default:
                     break;
             }
         }
 
+        #region 休假策略
         /// <summary>
         /// 删除休假策略
         /// </summary>
@@ -168,5 +178,41 @@ namespace EMT.DoneNOW.Web
                 }
             }
         }
+        #endregion
+
+
+        #region 休假请求
+        /// <summary>
+        /// 取消休假请求
+        /// </summary>
+        /// <param name="context"></param>
+        private void CancleTimeoffRequest(HttpContext context)
+        {
+            long id = long.Parse(context.Request.QueryString["id"]);
+            context.Response.Write(new Tools.Serialize().SerializeJson(bll.CancleTimeoffRequest(id, LoginUserId)));
+        }
+
+        /// <summary>
+        /// 审批批准休假请求
+        /// </summary>
+        /// <param name="context"></param>
+        private void ApproveTimeoffRequest(HttpContext context)
+        {
+            string ids = context.Request.QueryString["ids"];
+            context.Response.Write(new Tools.Serialize().SerializeJson(bll.ApproveTimeoffRequest(ids, LoginUserId)));
+        }
+
+        /// <summary>
+        /// 审批拒绝休假请求
+        /// </summary>
+        /// <param name="context"></param>
+        private void RejectTimeoffRequest(HttpContext context)
+        {
+            string ids = context.Request.QueryString["ids"];
+            string reason = context.Request.QueryString["reason"];
+            context.Response.Write(new Tools.Serialize().SerializeJson(bll.RejectTimeoffRequest(ids, reason, LoginUserId)));
+        }
+
+        #endregion
     }
 }

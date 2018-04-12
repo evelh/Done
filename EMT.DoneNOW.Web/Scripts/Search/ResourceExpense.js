@@ -1,5 +1,5 @@
 ﻿$("#noData").hide();
-$("#SearchTable").append("<tr id='addData'><td><select id='selRes'></select></td><td><select id='selTier'><option value='1'>第一级</option><option value='2'>第二级</option><option value='3'>第三级</option></select></td><td><input type='button' value='保存' onclick='SaveNew()' /></td></tr>");
+$("#SearchTable").append("<tr id='addData'><td><select id='selRes'></select></td><td><input type='button' value='保存' onclick='SaveNew()' /></td></tr>");
 $("#addData").hide();
 requestData("/Tools/ResourceAjax.ashx?act=GetActiveRes", null, function (data) {
     var opt = "";
@@ -19,7 +19,7 @@ function Delete(id) {
     })
 }
 function SaveNew() {
-    requestData("/Tools/ResourceAjax.ashx?act=AddTimesheetApporver&resId=" + $("input[name='con2673']").val() + "&approver=" + $("#selRes").val() + "&tier=" + $("#selTier").val(), null, function (data) {
+    requestData("/Tools/ResourceAjax.ashx?act=AddExpenseApporver&resId=" + $("input[name='con2674']").val() + "&approver=" + $("#selRes").val() + "&tier=1", null, function (data) {
         if (data == true) {
             window.location.reload();
         } else {
