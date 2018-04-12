@@ -48,9 +48,9 @@
                         || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.NUMBER_EQUAL
                         || condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.UN_EQUAL)
                         { %>
-						<input type="text" name="con<%=condition[i].id %>" <%if (!string.IsNullOrEmpty(condition[i].defaultValue)){ %> value="<%=condition[i].defaultValue %>" <%} %> class="sl_cdt" />
+						<input type="text" id="con<%=condition[i].id %>" name="con<%=condition[i].id %>" <%if (!string.IsNullOrEmpty(condition[i].defaultValue)){ %> value="<%=condition[i].defaultValue %>" <%} %> class="sl_cdt" />
                     <%} else if (condition[i].data_type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_PARA_TYPE.DROPDOWN) { %>
-                        <select name="con<%=condition[i].id %>" class="sl_cdt">
+                        <select name="con<%=condition[i].id %>" id="con<%=condition[i].id %>" class="sl_cdt">
                                 <option value=""></option>
                                 <%foreach (var item in condition[i].values) {
                                       if (!string.IsNullOrEmpty(condition[i].defaultValue) && condition[i].defaultValue.Equals(item.val)) { %>
@@ -366,3 +366,8 @@
     </script>
 </body>
 </html>
+<script>
+        $(function () {
+            eval("<%=jqueryString %>");
+        })
+</script>

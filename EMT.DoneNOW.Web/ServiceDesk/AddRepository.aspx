@@ -99,7 +99,7 @@
                 </li>
                 <li onclick="AddAttch()">添加附件
                 </li>
-                <li>
+                <li onclick="javascript:window.close();">
                     <img src="../Images/cancel.png" alt="" />
                     取消
                 </li>
@@ -195,7 +195,7 @@
                             <p>详情<span>*</span></p>
                             <input value="" type="hidden"  id="article_body" name="article_body"/>
                             <input value="" type="hidden"  id="article_body_no_markup" name="article_body_no_markup"/>
-                            <div class="Content">
+                            <div class="Content" style="margin-left:-30px;">
                                 <script id="containerHead" name="content" type="text/plain"></script>
                             </div>
                         </div>
