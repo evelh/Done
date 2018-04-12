@@ -48,7 +48,7 @@
                     <table>
                         <tr style="border:1px solid #838383;">
                             <th></th>
-                            <%if (timeoffSummary.Exists(_ => _.task_id == (int)EMT.DoneNOW.DTO.CostCode.Vacation)) { %><th style="width:140px;text-align:center;">年假</th><%} %>
+                            <%if (timeoffSummary.Exists(_ => _.task_id == (int)EMT.DoneNOW.DTO.CostCode.Vacation)) { %><th style="width:140px;text-align:center;">带薪休假</th><%} %>
                             <%if (timeoffSummary.Exists(_ => _.task_id == (int)EMT.DoneNOW.DTO.CostCode.Personal)) { %><th style="width:140px;text-align:center;">私人时间</th><%} %>
                             <%if (timeoffSummary.Exists(_ => _.task_id == (int)EMT.DoneNOW.DTO.CostCode.Sick)) { %><th style="width:140px;text-align:center;">病假</th><%} %>
                             <%if (timeoffSummary.Exists(_ => _.task_id == (int)EMT.DoneNOW.DTO.CostCode.Floating)) { %><th style="width:140px;text-align:center;">浮动假期</th><%} %>
@@ -167,11 +167,19 @@
                                     <label>类型<span style="color: red;position:absolute;">*</span></label>
                                     <select id="task_id" name="task_id" class="requestText">
                                         <option></option>
-                                        <option value="25">年休假</option>
+                                        <%if (tmoffYear != null) { %>
+                                        <option value="25">带薪休假</option>
+                                        <%}%>
+                                        <%if (tmoffSick != null) { %>
                                         <option value="23">病假</option>
+                                        <%}%>
+                                        <%if (tmoffPerson != null) { %>
                                         <option value="35">私人时间</option>
+                                        <%}%>
                                         <option value="28">节假日</option>
+                                        <%if (tmoffFloat != null) { %>
                                         <option value="27">浮动假期</option>
+                                        <%}%>
                                     </select>
                                 </div>
                             </td>
@@ -303,10 +311,10 @@
             var dayAll = GetDayCnt(startDate, endDate);
             var cnt = Math.floor(dayAll / 7) * 5;
             for (var i = 0; i < dayAll % 7; i++) {
-                startDate.setDate(startDate.getDate() + 1);
                 if (startDate.getDay() % 6 != 0) {
                     cnt++;
                 }
+                startDate.setDate(startDate.getDate() + 1);
             }
             return cnt;
         }

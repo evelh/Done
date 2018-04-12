@@ -31,6 +31,9 @@ namespace EMT.DoneNOW.Web
                 case "cancleSubmit":
                     CancleSubmitTimesheet(context);
                     break;
+                case "getStatus":
+                    GetTimesheetSubmitStatus(context);
+                    break;
                 case "delete":
                     DeleteTimesheet(context);
                     break;
@@ -58,6 +61,17 @@ namespace EMT.DoneNOW.Web
             string ids = context.Request.QueryString["ids"];
             string reason = context.Request.QueryString["reason"];
             context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.WorkEntryBLL().RejectWorkEntryReport(ids, reason, LoginUserId)));
+        }
+
+        /// <summary>
+        /// 查询工时表是否可以提交、取消提交
+        /// </summary>
+        /// <param name="context">1:可以提交;2:可以取消提交;0:其他</param>
+        private void GetTimesheetSubmitStatus(HttpContext context)
+        {
+            DateTime start = DateTime.Parse(context.Request.QueryString["startDate"]);
+            long resId = long.Parse(context.Request.QueryString["resId"]);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.WorkEntryBLL().GetTimesheetSubmitStatus(start, resId)));
         }
 
         /// <summary>
@@ -98,8 +112,9 @@ namespace EMT.DoneNOW.Web
         /// <param name="context"></param>
         private void DeleteTimesheet(HttpContext context)
         {
-            long id = long.Parse(context.Request.QueryString["id"]);
-            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.WorkEntryBLL().GetWorkEntryReportById(id)));
+            DateTime start = DateTime.Parse(context.Request.QueryString["startDate"]);
+            long resId = long.Parse(context.Request.QueryString["resId"]);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.WorkEntryBLL().DeleteWorkEntryReport(start, resId, LoginUserId)));
         }
     }
 }

@@ -148,20 +148,72 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public List<tst_timeoff_policy_item> GetPolicyItemByPolicyId(long policyId)
         {
-            if (policyId == 0)      // 新增休假策略
+            List<tst_timeoff_policy_item> items = new List<tst_timeoff_policy_item>();
+            if (policyId != 0)
             {
-                List<tst_timeoff_policy_item> items = new List<tst_timeoff_policy_item>();
-                items.Add(new tst_timeoff_policy_item { cate_id = 35 });
-                items.Add(new tst_timeoff_policy_item { cate_id = 25 });
-                items.Add(new tst_timeoff_policy_item { cate_id = 23 });
-                items.Add(new tst_timeoff_policy_item { cate_id = 27 });
+                items = dal.FindListBySql<tst_timeoff_policy_item>($"select * from tst_timeoff_policy_item where timeoff_policy_id={policyId} and delete_time=0 order by cate_id asc");
+            }
 
-                return items;
-            }
-            else
+            List<tst_timeoff_policy_item> rtn = new List<tst_timeoff_policy_item>();
+            SysSettingBLL setBll = new SysSettingBLL();
+            if (setBll.GetValueById(SysSettingEnum.TIMEOFF_ALLOW_FLOAT) == "1")
             {
-                return dal.FindListBySql<tst_timeoff_policy_item>($"select * from tst_timeoff_policy_item where timeoff_policy_id={policyId} and delete_time=0 order by cate_id asc");
+                var find = items.Find(_ => _.cate_id == (int)CostCode.Floating);
+                if (find == null)
+                {
+                    rtn.Add(new tst_timeoff_policy_item
+                    {
+                        id = 0,
+                        cate_id = (int)CostCode.Floating
+                    });
+                }
+                else
+                    rtn.Add(find);
             }
+            if (setBll.GetValueById(SysSettingEnum.TIMEOFF_ALLOW_PERSONAL) == "1")
+            {
+                var find = items.Find(_ => _.cate_id == (int)CostCode.Personal);
+                if (find == null)
+                {
+                    rtn.Add(new tst_timeoff_policy_item
+                    {
+                        id = 0,
+                        cate_id = (int)CostCode.Personal
+                    });
+                }
+                else
+                    rtn.Add(find);
+            }
+            if (setBll.GetValueById(SysSettingEnum.TIMEOFF_ALLOW_SICK) == "1")
+            {
+                var find = items.Find(_ => _.cate_id == (int)CostCode.Sick);
+                if (find == null)
+                {
+                    rtn.Add(new tst_timeoff_policy_item
+                    {
+                        id = 0,
+                        cate_id = (int)CostCode.Sick
+                    });
+                }
+                else
+                    rtn.Add(find);
+            }
+            if (setBll.GetValueById(SysSettingEnum.TIMEOFF_ALLOW_VACATION) == "1")
+            {
+                var find = items.Find(_ => _.cate_id == (int)CostCode.Vacation);
+                if (find == null)
+                {
+                    rtn.Add(new tst_timeoff_policy_item
+                    {
+                        id = 0,
+                        cate_id = (int)CostCode.Vacation
+                    });
+                }
+                else
+                    rtn.Add(find);
+            }
+
+            return rtn;
         }
 
         /// <summary>
@@ -320,7 +372,7 @@ namespace EMT.DoneNOW.BLL
                 ids += id + ",";
             }
             if (!string.IsNullOrEmpty(ids))
-                ids.Remove(ids.Length - 1, 1);
+                ids = ids.Remove(ids.Length - 1, 1);
 
             return ids;
         }
@@ -858,7 +910,64 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public List<v_timeoff_total> GetResourceTimeoffTotal(long resourceId, int year)
         {
-            return new v_timeoff_total_dal().GetResourceTimeoffTotal(resourceId, year);
+            var list = new v_timeoff_total_dal().GetResourceTimeoffTotal(resourceId, year);
+
+            var rtn = new List<v_timeoff_total>();
+            SysSettingBLL setBll = new SysSettingBLL();
+            if (setBll.GetValueById(SysSettingEnum.TIMEOFF_ALLOW_FLOAT) == "1")
+            {
+                var find = list.Find(_ => _.task_id == (long)CostCode.Floating);
+                if (find == null)
+                {
+                    rtn.Add(new v_timeoff_total
+                    {
+                        task_id = (long)CostCode.Floating
+                    });
+                }
+                else
+                    rtn.Add(find);
+            }
+            if (setBll.GetValueById(SysSettingEnum.TIMEOFF_ALLOW_PERSONAL) == "1")
+            {
+                var find = list.Find(_ => _.task_id == (long)CostCode.Personal);
+                if (find == null)
+                {
+                    rtn.Add(new v_timeoff_total
+                    {
+                        task_id = (long)CostCode.Personal
+                    });
+                }
+                else
+                    rtn.Add(find);
+            }
+            if (setBll.GetValueById(SysSettingEnum.TIMEOFF_ALLOW_SICK) == "1")
+            {
+                var find = list.Find(_ => _.task_id == (long)CostCode.Sick);
+                if (find == null)
+                {
+                    rtn.Add(new v_timeoff_total
+                    {
+                        task_id = (long)CostCode.Sick
+                    });
+                }
+                else
+                    rtn.Add(find);
+            }
+            if (setBll.GetValueById(SysSettingEnum.TIMEOFF_ALLOW_VACATION) == "1")
+            {
+                var find = list.Find(_ => _.task_id == (long)CostCode.Vacation);
+                if (find == null)
+                {
+                    rtn.Add(new v_timeoff_total
+                    {
+                        task_id = (long)CostCode.Vacation
+                    });
+                }
+                else
+                    rtn.Add(find);
+            }
+            
+            return rtn;
         }
 
         /// <summary>

@@ -94,12 +94,13 @@ namespace EMT.DoneNOW.BLL
 
                 if (we.task_id == (long)CostCode.Sick)  // 病假需要在假期余额表添加记录
                 {
-                    var balance = bll.UpdateTimeoffBalance((long)we.resource_id, Tools.Date.DateHelper.TimeStampToDateTime((long)we.start_time), (decimal)we.hours_billed);
+                    var balance = bll.UpdateTimeoffBalance((long)we.resource_id, Tools.Date.DateHelper.TimeStampToDateTime((long)we.start_time), 0 - (decimal)we.hours_billed);
                     tst_timeoff_balance bal = new tst_timeoff_balance();
                     bal.object_id = we.id;
                     bal.object_type_id = 2214;
                     bal.task_id = we.task_id;
-                    bal.balance = balance + (decimal)we.hours_billed;
+                    bal.resource_id = (long)we.resource_id;
+                    bal.balance = balance - (decimal)we.hours_billed;
                     balDal.Insert(bal);
                 }
             }
@@ -195,20 +196,30 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
-        /// 删除工时
+        /// 删除工时表
         /// </summary>
-        /// <param name="batchId"></param>
+        /// <param name="startDate"></param>
+        /// <param name="resourceId"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public bool DeleteWorkEntry(long batchId, long userId)
+        public bool DeleteWorkEntryReport(DateTime startDate, long resourceId, long userId)
         {
+            sdk_work_entry_report_dal rptDal = new sdk_work_entry_report_dal();
+            var find = rptDal.FindSignleBySql<sdk_work_entry_report>($"select * from sdk_work_entry_report where resource_id={resourceId} and start_date='{startDate}' and delete_time=0");
+            if (find != null && find.status_id != (int)DicEnum.WORK_ENTRY_REPORT_STATUS.HAVE_IN_HAND)
+                return false;
+
+            var weList = GetWorkEntryListByStartDate(startDate, resourceId);
+            if (weList.Count == 0)
+                return false;
+
             var bll = new TimeOffPolicyBLL();
             tst_timeoff_balance_dal balDal = new tst_timeoff_balance_dal();
-            var weList = GetWorkEntryByBatchId(batchId);
-            if (weList.Count == 0)
-                return true;
-            if (weList[0].approve_and_post_user_id != null) // 已审批提交不能删除
-                return false;
+            //var weList = GetWorkEntryByBatchId(batchId);
+            //if (weList.Count == 0)
+            //    return true;
+            //if (weList[0].approve_and_post_user_id != null) // 已审批提交不能删除
+            //    return false;
 
             foreach (var we in weList)
             {
@@ -223,7 +234,33 @@ namespace EMT.DoneNOW.BLL
                     balDal.ExecuteSQL($"delete from tst_timeoff_balance where object_id={we.id}");
                 }
             }
+
+            if (find != null)
+            {
+                find.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                find.delete_user_id = userId;
+                rptDal.Update(find);
+                OperLogBLL.OperLogDelete<sdk_work_entry_report>(find, find.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SDK_WORK_RECORD, "删除工时表");
+            }
             return true;
+        }
+
+        /// <summary>
+        /// 查询工时表是否可以提交、取消提交
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="resourceId"></param>
+        /// <returns>1:可以提交;2:可以取消提交;0:其他</returns>
+        public int GetTimesheetSubmitStatus(DateTime startDate, long resourceId)
+        {
+            sdk_work_entry_report_dal rptDal = new sdk_work_entry_report_dal();
+            var find = rptDal.FindSignleBySql<sdk_work_entry_report>($"select * from sdk_work_entry_report where resource_id={resourceId} and start_date='{startDate}' and delete_time=0");
+
+            if (find == null)
+                return 1;
+            if (find.status_id == (int)DicEnum.WORK_ENTRY_REPORT_STATUS.WAITING_FOR_APPROVAL)
+                return 2;
+            return 0;
         }
 
         /// <summary>
@@ -465,7 +502,7 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public List<sdk_work_entry_report> GetTenWorkEntryReportList(long resourceId)
         {
-            return dal.FindListBySql<sdk_work_entry_report>($"select * from sdk_work_entry_report where resource_id={resourceId} order by start_date desc limit 10");
+            return dal.FindListBySql<sdk_work_entry_report>($"select * from sdk_work_entry_report where resource_id={resourceId} and delete_time=0 order by start_date desc limit 10");
         }
         #endregion
     }
