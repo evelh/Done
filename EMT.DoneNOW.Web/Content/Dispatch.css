@@ -710,7 +710,7 @@ option {
                 width: 100%;
                 min-height: 24px;
                 border-top: 1px solid #DBDBDB;
-                background-color: #FFAEB9;
+                /*background-color: #FFAEB9;*/
                 cursor: default;
                 font-size: 10px;
             }
@@ -813,8 +813,10 @@ option {
         font-weight: bold;
         position: relative;
     }
-    .ContainerTop-Two .DaysList{
-        height:auto;position:relative;
+    .ContainerTop-Two .DaysList {
+        height: 26px;
+        position: relative;
+        overflow: hidden;
     }
     .ContainerTop-Two .Days-2 {
         width:50%;
@@ -923,7 +925,7 @@ option {
 }
 
     .ContainerBottom-Two .Hover-t {
-        width: 150%;
+        /*width: 150%;*/
         height: 27px;
         border-bottom: 1px solid #D8D8D8;
         background-color: #F4F4F4;
@@ -954,11 +956,11 @@ option {
         font-weight: bold;
         box-sizing: border-box;
     }
-.HouverTaskItem{
-    float:left;
-    width:100%;
-    min-width:200px;
-    height:auto;
+.HouverTaskItem {
+    float: left;
+    width: -webkit-calc(100% - 9px);
+    min-width: 200px;
+    height: auto;
 } 
 .HouverTask li .border {
     float: left;
@@ -969,19 +971,39 @@ option {
     border-collapse: collapse;
     box-sizing: border-box;
 }
-
-        .HouverTask li .TaskConter .t1 {
-            width: 100%;
-            height: 27px;
-            border-bottom: 1px solid #E8E8E8;
-        }
+.HouverTask li .TaskConter .t1 {
+    width: 100%;
+    height: 27px;
+    border-bottom: 1px solid #E8E8E8;
+}
 
 .stockstask {
-    background: #FFFEC4 !important;
+    background-color: #FFFEC4;
+    /*background: #FFFEC4 !important;*/
     cursor: move !important;
     position: relative;
     top: 0;
     left: 0;
     z-index: 9999;
+}
+.Grid2_Container .hovertask {
+    width: 100%;
+    min-width: 200px;
+    background-color: #FFAEB9;
+}
+
+ .hoverCall {
+    background-color: #FFFEC4;
+}
+
+.hoverAppoint {
+    background-color: #FFE3E7;
+}
+
+ .hoverTodo {
+    background-color: #D1EBFF;
+}
+.hoverTime {
+    background-color: #FFAEB9;
 }
 

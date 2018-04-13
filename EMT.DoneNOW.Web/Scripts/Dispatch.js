@@ -5,25 +5,6 @@ $(window).resize(function () {
     $('.Grid2_Container .ContainerBottom').css('height', $(window).height() - $('.Grid2_Container .ContainerBottom').offset().top - 50)
 })
 function MenuBind() {
-    //高度
-    //$.each($('.R-ContainerUser'), function (i) {
-    //    var _this = $('.R-ContainerUser').eq(i).children('li');
-
-    //    $.each(_this, function (j) {
-    //        var x = $(_this).eq(0).children('.UserContainer').height();
-    //        if ($(_this).eq(j).children('.UserContainer').height() > x) {
-    //            x = $(_this).eq(j).children('.UserContainer').height();
-    //        }
-    //        $(_this).eq(j).children('.UserContainer').css('height', x)
-    //        $('.ContainerUser li').eq(i).children('.icon').css('height', x + 2)
-    //        //右击
-    //        $(_this).eq(j).children('.UserContainer').children(".hovertask").bind("contextmenu", ShowContextAppMenu)
-    //        $(_this).eq(j).children('.UserContainer').bind("contextmenu", ShowContextMenu);
-
-
-    //    })
-    //})
-
     $.each($('.R-ContainerUser'), function (i) {
         var _this = $('.R-ContainerUser').eq(i).children('li');
         var x = $(_this).eq(0).children('.UserContainer').height();
@@ -67,10 +48,74 @@ $(window).resize(function () {
 
 
 //
+
+//$.each($('.ContainerTop-User li'), function (i) {
+//    var ob = $('.HouverTask').eq(i).children('li').eq(1).find('.HouverTaskItem');
+//    var x = $('.HouverTask').length;
+//    if (ob.length > 1) {
+//        x += ob.length;
+//        localStorage.setItem('xE', x)
+//        $('.HouverTask').eq(i).css('width', 100 / x * ob.length + '%')
+//        $('.ContainerTop-User li').eq(i).css('width', 100 / x * ob.length + '%')
+//        ob.css('width', 98 / ob.length + '%')
+//        console.log($('.ContainerBottom-Two').width() / x)
+
+//    } else {
+//        var xE = localStorage.getItem('xE');
+//        $('.HouverTask').eq(i).css('width', 100 / xE + '%')
+//        $('.ContainerTop-User li').eq(i).css('width', 100 / xE + '%')
+
+
+//    }
+//    var xE = localStorage.getItem('xE');
+//    if ($('.ContainerBottom-Two').width() / xE < 220) {
+//        $('.ContainerBottom-Two .HouverTaskA').css('width', (200 + x * 9) * xE)
+//        $('.ContainerTop-User').css('width', (200 + xE * 9) * xE)
+//    } else {
+//        $('.ContainerBottom-Two .HouverTaskA').css('width', '100%')
+//        //$('.ContainerTop-User').css('width', '100%')
+
+
+//    }
+//    $(window).resize(function () {
+//        var xE = localStorage.getItem('xE');
+//        if ($('.ContainerBottom-Two').width() / xE < 220) {
+//            $('.ContainerBottom-Two .HouverTaskA').css('width', (200 + xE * 9) * xE)
+//            $('.ContainerTop-User').css('width', (200 + xE * 9) * xE)
+
+//        } else {
+//            $('.ContainerBottom-Two .HouverTaskA').css('width', '100%')
+//            //$('.ContainerTop-User').css('width', '100%')
+
+
+//        }
+//    })
+
+//})
+
+
+//var useritemW = $('.HouverTask').find('.HouverTaskItem').width() * $('.HouverTask').length;
+var useritemW = '100%'
+
+// $('.ContainerTop-User').css('width', useritemW)
+//console.log($('.HouverTask').find('.HouverTaskItem').width() * $('.HouverTask').length)
+$('.ContainerTop-Two').children().css('width', useritemW)
+$('.HouverTaskA').css('width', useritemW)
+$('.ContainerTop-Two').children('.ContainerTop-User').css('width', useritemW)
+$(window).resize(function () {
+    $('.ContainerBottom-Two').css('width', $(window).width() - $('.ContainerBottom-One').width() - 38)
+    $('.ContainerTop-Two').css('width', $(window).width() - $('.ContainerTop-One').width() - 38)
+    $('.ContainerTop-Two').children().css('width', $('.ContainerTop-User').width())
+    $('.ContainerTop-Two').children('.ContainerTop-User').css('width', useritemW)
+
+})
+
+
 //console.log($('.ContainerTop-One').width())
 $('.ContainerBottom-Two').css('width', $(window).width() - $('.ContainerBottom-One').width() - 38)
 $('.ContainerTop-Two').css('width', $(window).width() - $('.ContainerTop-One').width() - 38)
-
+var groupArr = new Array;
+var SetgroupArr;
 $.each($('.ContainerTop-User li'), function (i) {
     var ob = $('.HouverTask').eq(i).children('li').eq(1).find('.HouverTaskItem');
     var x = $('.HouverTask').length;
@@ -80,7 +125,7 @@ $.each($('.ContainerTop-User li'), function (i) {
         $('.HouverTask').eq(i).css('width', 100 / x * ob.length + '%')
         $('.ContainerTop-User li').eq(i).css('width', 100 / x * ob.length + '%')
         ob.css('width', 98 / ob.length + '%')
-        console.log($('.ContainerBottom-Two').width() / x)
+        //console.log($('.ContainerBottom-Two').width() / x)
 
     } else {
         var xE = localStorage.getItem('xE');
@@ -90,12 +135,16 @@ $.each($('.ContainerTop-User li'), function (i) {
 
     }
     var xE = localStorage.getItem('xE');
+
+    groupArr.push($('.ContainerTop-User li').eq(i).data('group'));
+    SetgroupArr = Array.from(new Set(groupArr))
+   
     if ($('.ContainerBottom-Two').width() / xE < 220) {
         $('.ContainerBottom-Two .HouverTaskA').css('width', (200 + x * 9) * xE)
         $('.ContainerTop-User').css('width', (200 + xE * 9) * xE)
     } else {
         $('.ContainerBottom-Two .HouverTaskA').css('width', '100%')
-        //$('.ContainerTop-User').css('width', '100%')
+        $('.ContainerTop-User').css('width', '100%')
 
 
     }
@@ -107,29 +156,41 @@ $.each($('.ContainerTop-User li'), function (i) {
 
         } else {
             $('.ContainerBottom-Two .HouverTaskA').css('width', '100%')
-            //$('.ContainerTop-User').css('width', '100%')
-
-
+            $('.ContainerTop-User').css('width', '100%')
         }
     })
 
 })
-
-//var useritemW = $('.HouverTask').find('.HouverTaskItem').width() * $('.HouverTask').length;
-var useritemW = '100%'
-
-// $('.ContainerTop-User').css('width', useritemW)
-console.log($('.HouverTask').find('.HouverTaskItem').width() * $('.HouverTask').length)
-$('.ContainerTop-Two').children().css('width', useritemW)
-$('.HouverTaskA').css('width', useritemW)
-$('.ContainerTop-Two').children('.ContainerTop-User').css('width', useritemW)
-$(window).resize(function () {
-    $('.ContainerBottom-Two').css('width', $(window).width() - $('.ContainerBottom-One').width() - 38)
-    $('.ContainerTop-Two').css('width', $(window).width() - $('.ContainerTop-One').width() - 38)
-    $('.ContainerTop-Two').children().css('width', $('.ContainerTop-User').width())
-    $('.ContainerTop-Two').children('.ContainerTop-User').css('width', useritemW)
-
+// 更改休假Div 高度
+var maxHouverHeight = 27;
+$(".HouverTask").each(function () {
+    var thisHeight = 0;
+    var obj = $(this).children("li").eq(0).children(".Hover-t");
+    thisHeight = obj.children(".hovertask").length * 16;
+    if (maxHouverHeight < thisHeight) {
+        maxHouverHeight = thisHeight
+    }
+    //console.log(thisHeight);
 })
+$(".Hover-t").css("height", maxHouverHeight);
+$(".HouverTask").each(function () {
+    $(this).children("li").eq(0).children(".border").eq(0).css("height", maxHouverHeight);
+})
+
+$.each($('.DaysList .Days-2'), function (i) {
+    var w = 0;
+    for (var j = 0; j < groupArr.length; j++) {
+        if (groupArr[j] == SetgroupArr[i]) {
+            w += $('.ContainerTop-User li').eq(j).width();
+            $('.DaysList .Days-2').eq(i).css('width', w + '%')
+            $(window).resize(function () {
+                $('.DaysList .Days-2').eq(i).css('width', w + '%')
+            })
+        }
+    }
+   
+
+});
 function RunDaysDom(a) {
     if (a == 1) {
         $('.Grid1_Container').hide()
@@ -278,6 +339,8 @@ $('.daysElm ul li').each(function (i) {
     })
 })
 
+
+
 //function RunDaysDom(a) {
 //    if (a == 1) {
 //        $('.Grid1_Container').hide()
@@ -354,7 +417,6 @@ function Suspension(domList, showBox) {
 
 //引用
 Suspension($('.hovertask'), $('.WzTtDiV'))
-
 var startId = "";
 var startType = "";
 var startDate = "";
@@ -363,10 +425,89 @@ var endDate = "";
 var endResId = "";
 var endId = "";
 function drag(obj) {
+    debugger;
+    var dayType = $(".ShowdatsElm").eq(0).text();
     obj.bind('mousedown', start);
     var ol = obj.offset().left;
     var ot = obj.offset().top;
-    function start(e) {
+        function start(e) {
+            if (e.button != 0) {
+                return false
+            }
+            // deltaX = e.pageX - ol;
+            // deltaY = e.pageY - ot;
+            startId = obj.data("val");
+            startType = obj.data("type");
+            startDate = obj.data("date");
+            startResId = obj.data("res");
+            obj.css({ 'left': e.pageX - ol + 10, 'top': e.pageY - ot, 'border': '1px solid #8F8D98' })
+            $(document).bind({
+                'mousemove': move,
+                'mouseup': stop
+            });
+            obj.parent().css('cursor', 'move')
+            obj.parents('.R-ContainerUser').siblings('.R-ContainerUser').find('.UserContainer').css('cursor', 'move')
+            return false;
+        };
+        function move(e) {
+            obj.css({ 'left': e.pageX - ol + 10, 'top': e.pageY - ot })
+            // var objWith =obj.parent().width();
+            // var objHeight = obj.parent().height();
+            // //判断指针到某个盒子的位置
+            // if(e.pageX >=  ol && e.pageX < e.pageX+ objWith && e.pageY >= ot && e.pageY < e.pageY+ objHeight ){
+            //     obj.parent().css('background','#FFF8DC')
+            // }else{
+            //     obj.parent().css('background','none')                    
+            // }
+            function moeent() {
+                $.each($('.UserContainer'), function (i) {
+                    $('.UserContainer').eq(i).mouseover(function () {
+                        //if ($('.UserContainer').eq(i).find('div').length == 0) {
+                        $('.UserContainer').eq(i).css('background', '#FFF8DC')
+                        localStorage.setItem('MoveD', i)
+                        //}
+                    })
+                    $('.UserContainer').eq(i).mouseout(function () {
+                        $('.UserContainer').eq(i).css('background', 'none')
+                        localStorage.setItem('MoveD', '')
+                    })
+                })
+                return false
+            }
+            moeent()
+
+        };
+        function stop() {
+            $(document).unbind({
+                'mousemove': move,
+                'mouseup': stop,
+            });
+            obj.css({ 'left': 0, 'top': 0, 'border': 'none' })
+            obj.parent().css('cursor', 'pointer')
+            obj.parents('.R-ContainerUser').siblings('.R-ContainerUser').find('.UserContainer').css('cursor', 'pointer')
+            if (localStorage.getItem('MoveD') == '') {
+                // alert('移动失败')                    
+            } else {
+                // alert('移到了第'+localStorage.getItem('MoveD')+'个类')                                                          
+            }
+            $.each($('.UserContainer'), function (i) {
+                $('.UserContainer').eq(i).css('background', 'none')
+                $('.UserContainer').eq(i).unbind();
+                //拖拽完成处理
+                var endObj = $('.UserContainer').eq(localStorage.getItem('MoveD'));
+                endDate = endObj.data("date");
+                endResId = endObj.data("res");
+                endId = endObj.data("val");
+            })
+            MenuBind();
+            ShowDialog();
+        }
+}
+function DragSingle(obj) {
+    obj.bind('mousedown', startSingle);
+    var ol = obj.offset().left;
+    var ot = obj.offset().top;
+    function startSingle(e) {
         if (e.button != 0) {
             return false
         }
@@ -378,14 +519,14 @@ function drag(obj) {
         startResId = obj.data("res");
         obj.css({ 'left': e.pageX - ol + 10, 'top': e.pageY - ot, 'border': '1px solid #8F8D98' })
         $(document).bind({
-            'mousemove': move,
-            'mouseup': stop
+            'mousemove': moveSingle,
+            'mouseup': stopSingle
         });
-        obj.parent().css('cursor', 'move')
-        obj.parents('.R-ContainerUser').siblings('.R-ContainerUser').find('.UserContainer').css('cursor', 'move')
+        obj.parent().css('cursor', 'moveSingle')
+        obj.parents('.HouverTask').siblings('.HouverTask').find('.UserContainer').css('cursor', 'moveSingle')
         return false;
     };
-    function move(e) {
+    function moveSingle(e) {
         obj.css({ 'left': e.pageX - ol + 10, 'top': e.pageY - ot })
         // var objWith =obj.parent().width();
         // var objHeight = obj.parent().height();
@@ -395,28 +536,28 @@ function drag(obj) {
         // }else{
         //     obj.parent().css('background','none')                    
         // }
-        function moeent() {
-            $.each($('.UserContainer'), function (i) {
-                $('.UserContainer').eq(i).mouseover(function () {
+        function moeentSingle() {
+            $.each($('.HouverTask li'), function (i) {
+                $('.HouverTask li').eq(i).mouseover(function () {
                     //if ($('.UserContainer').eq(i).find('div').length == 0) {
-                        $('.UserContainer').eq(i).css('background', '#FFF8DC')
-                        localStorage.setItem('MoveD', i)
+                    $('.HouverTask li').eq(i).css('background', '#FFF8DC')
+                    localStorage.setItem('MoveD', i)
                     //}
                 })
-                $('.UserContainer').eq(i).mouseout(function () {
-                    $('.UserContainer').eq(i).css('background', 'none')
+                $('.HouverTask li').eq(i).mouseout(function () {
+                    $('.HouverTask li').eq(i).css('background', 'none')
                     localStorage.setItem('MoveD', '')
                 })
             })
             return false
         }
-        moeent()
+        moeentSingle()
 
     };
-    function stop() {
+    function stopSingle() {
         $(document).unbind({
-            'mousemove': move,
-            'mouseup': stop,
+            'mousemove': moveSingle,
+            'mouseup': stopSingle,
         });
         obj.css({ 'left': 0, 'top': 0, 'border': 'none' })
         obj.parent().css('cursor', 'pointer')
@@ -426,11 +567,11 @@ function drag(obj) {
         } else {
             // alert('移到了第'+localStorage.getItem('MoveD')+'个类')                                                          
         }
-        $.each($('.UserContainer'), function (i) {
-            $('.UserContainer').eq(i).css('background', 'none')
-            $('.UserContainer').eq(i).unbind();
+        $.each($('.HouverTask li'), function (i) {
+            $('.HouverTask li').eq(i).css('background', 'none')
+            $('.HouverTask li').eq(i).unbind();
             //拖拽完成处理
-            var endObj = $('.UserContainer').eq(localStorage.getItem('MoveD'));
+            var endObj = $('.HouverTask li').eq(localStorage.getItem('MoveD'));
             endDate = endObj.data("date");
             endResId = endObj.data("res");
             endId = endObj.data("val");
@@ -439,7 +580,9 @@ function drag(obj) {
         ShowDialog();
 
     }
+
 }
+
 
 function ShowDialog() {
     debugger;
@@ -540,10 +683,17 @@ function CanCallRoleDialog() {
     $("#BackgroundOverLay").hide();
     ClearTempId();
 }
+
 function ShowNav2() {
     $("#BackgroundOverLay").show();
     $("#Nav2").show();
-    $("#CallStartDate").text(endDate);
+    var endDateArr = endDate.split(' ');
+    if (endDateArr.length == 1) {
+        $("#CallStartDate").text(endDate);
+    } else {
+        $("#CallStartDate").text(endDateArr[0]);
+    }
+    //$("#CallStartDate").text(endDate);
     // 根据服务预定 获取客户信息
     $.ajax({
         type: "GET",
@@ -554,7 +704,13 @@ function ShowNav2() {
             if (data != "") {
                 $("#accountName").text(data.accountName);
                 $("#callDescption").text(data.description);
-                $("#CallStartTime").val(data.startTimeString);
+                if (endDateArr.length == 1) {
+                    $("#CallStartTime").val(data.startTimeString);
+                }
+                else {
+                    $("#CallStartTime").val(endDateArr[1]);
+                }
+                
                 //$("#CallStartDate").text(data.startDateString);
                 $("#CallDurationTime").val(data.durHours);
                 $("#CallEndTimeSpan").text(data.endTimeString);
@@ -574,8 +730,14 @@ function ShowNav3() {
     }
     $("#BackgroundOverLay").show();
     $("#Nav3").show();
-    $("#AppiontStartDate").text(endDate);
 
+    var endDateArr = endDate.split(' ');
+    if (endDateArr.length == 1) {
+        $("#AppiontStartDate").text(endDate);
+    } else {
+        $("#AppiontStartDate").text(endDateArr[0]);
+    }
+  
     $.ajax({
         type: "GET",
         async: false,
@@ -585,7 +747,11 @@ function ShowNav3() {
             if (data != "") {
                 $("#AppiontTitle").text(data.name);
                 $("#AppiontDescption").text(data.description);
-                $("#AppiontStartTime").val(data.startTimeString);
+                if (endDateArr.length == 1) {
+                    $("#AppiontStartTime").val(data.startTimeString);
+                } else {
+                    $("#AppiontStartTime").val(endDateArr[1]);
+                }
                 $("#AppiontDurationTime").val(data.durHours);
                 ChangeAppiontEndDate();
             } else {
@@ -600,7 +766,13 @@ function ShowNav4() {
     debugger;
     $("#BackgroundOverLay").show();
     $("#Nav4").show();
-    $("#TodoStartDate").text(endDate);
+    var endDateArr = endDate.split(' ');
+    if (endDateArr.length == 1) {
+        $("#TodoStartDate").text(endDate)
+    } else {
+        $("#TodoStartDate").text(endDateArr[0]);
+    }
+    ;
     $.ajax({
         type: "GET",
         async: false,
@@ -610,7 +782,12 @@ function ShowNav4() {
             if (data != "") {
                 $("#TodoAccount").text(data.accName);
                 $("#TodoActicity").text(data.actiType);
-                $("#TodoStartTime").val(data.startTimeString);
+                if (endDateArr.length == 1) {
+                    $("#TodoStartTime").val(data.startTimeString);
+                }
+                else {
+                    $("#TodoStartTime").val(endDateArr[0]);
+                }
                 $("#TodoDurationTime").val(data.durHours);
                 ChangeTodoEndDate();
             } else {
@@ -803,7 +980,14 @@ function ClearTempId() {
 }
 
 $.each($('.stockstask'), function (i) {
-    drag($('.stockstask').eq(i));
+    var dayType = $(".ShowdatsElm").eq(0).text();
+    if (dayType == "1") {
+        DragSingle($('.stockstask').eq(i)); 
+    }
+    else {
+        drag($('.stockstask').eq(i));
+    }
+    
 })
 
 
@@ -1011,7 +1195,11 @@ function AddCall() {
     window.open("../ServiceDesk/ServiceCall", windowType.serviceCall + windowType.add, 'left=200,top=200,width=1280,height=800', false);
 }
 function AddAppiont() {
-    window.open("../ServiceDesk/AppointmentsManage.aspx?chooseDate=" + objectDate, windowObj.appointment + windowType.add, 'left=200,top=200,width=600,height=800', false);
+    var url = "../ServiceDesk/AppointmentsManage.aspx?a=1";
+    if (objectDate != "" && objectDate != null && objectDate != undefined) {
+        url += "&chooseDate=" + objectDate;
+    } 
+    window.open(url, windowObj.appointment + windowType.add, 'left=200,top=200,width=600,height=800', false);
 }
 function AddTodo() {
     window.open("../Activity/Todos.aspx", windowObj.todos + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);

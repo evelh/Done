@@ -308,6 +308,19 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 {
                     #region 用户和工作组的展示
                     var singContentHtml = new System.Text.StringBuilder();
+                    if (isShowNoRes)
+                    {
+                        var thisDay = chooseDate;
+                        decimal callHours;
+                        var callHtml  = GetNoResDateCall(thisDay, out callHours,true);
+                        var allRemainHours = ((thisDay.DayOfWeek == DayOfWeek.Sunday || thisDay.DayOfWeek == DayOfWeek.Saturday) ? 0 : 8) ;
+                        singContentHtml.Append($"<ul class='HouverTask'><li style='min-height:27px;margin-bottom: 1px;height:auto;border-width: 0px;'><div class='border'></div><div class='Hover-t'></div></li><li data-res='' data-date='{chooseDate.ToString("yyyy-MM-dd HH:mm")}'><div class='border'></div><div class='TaskConter'><div class='t1'>{callHtml}</div><div class='t2'></div></div></li>");
+                        for (int i = 0; i < 23; i++)
+                        {
+                            singContentHtml.Append($"<li {(i >= 7 && i <= 18 ? "style = 'background-color:white;'" : "")} data-res='' data-date='{chooseDate.AddHours(i).ToString("yyyy-MM-dd HH:mm")}'><div class='border'></div><div class='TaskConter'><div class='t1'></div><div class='t2'></div></div></li>");
+                        }
+                        singContentHtml.Append("</ul>");
+                    }
                     if (resList != null && resList.Count > 0)
                     {
                         foreach (var res in resList)
@@ -328,10 +341,10 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                             var callHtml = GetSingResDateCall(res.id, thisDay, out callHours);
                             var allUserHours = appiontHours + todoHours + callHours;
                             var allRemainHours = ((thisDay.DayOfWeek == DayOfWeek.Sunday || thisDay.DayOfWeek == DayOfWeek.Saturday) ? 0 : 8) - timeHours;
-                            singContentHtml.Append($"<ul class='HouverTask'><li style='height:27px;margin-bottom: 1px;'><div class='border'></div><div class='Hover-t'></div></li><li><div class='border'></div><div class='TaskConter'><div class='t1'>{appHtml + todoHtml + callHtml}</div><div class='t2'></div></div></li>"); 
+                            singContentHtml.Append($"<ul class='HouverTask'><li style='min-height:27px;margin-bottom: 1px;height:auto;border-width: 0px;'><div class='border'></div><div class='Hover-t'>{timeHtml}</div></li><li data-res='{res.id.ToString()}' data-date='{chooseDate.ToString("yyyy-MM-dd HH:mm")}'><div class='border'></div><div class='TaskConter'><div class='t1'>{appHtml + todoHtml + callHtml}</div><div class='t2'></div></div></li>"); 
                            for (int i = 0; i< 23; i++)
                             {
-                                singContentHtml.Append($"<li {(i>=8&&i<=18? "style = 'background-color:white;'" : "")}><div class='border'></div><div class='TaskConter'><div class='t1'></div><div class='t2'></div></div></li>");
+                                singContentHtml.Append($"<li {(i>=7&&i<=18? "style = 'background-color:white;'" : "")} data-res='{res.id.ToString()}' data-date='{chooseDate.AddHours(i+1).ToString("yyyy-MM-dd HH:mm")}'><div class='border'></div><div class='TaskConter'><div class='t1'></div><div class='t2'></div></div></li>");
                             }
                             singContentHtml.Append("</ul>");
                         
@@ -374,10 +387,10 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                                     var callHtml = GetSingResDateCall(res.id, thisDay, out callHours);
                                     var allUserHours = appiontHours + todoHours + callHours;
                                     var allRemainHours = ((thisDay.DayOfWeek == DayOfWeek.Sunday || thisDay.DayOfWeek == DayOfWeek.Saturday) ? 0 : 8) - timeHours;
-                                    singContentHtml.Append($"<ul class='HouverTask'><li style='height:27px;margin-bottom: 1px;'><div class='border'></div><div class='Hover-t'></div></li><li><div class='border'></div><div class='TaskConter'><div class='t1'>{appHtml + todoHtml + callHtml}</div><div class='t2'></div></div></li>");
+                                    singContentHtml.Append($"<ul class='HouverTask'><li style='min-height:27px;margin-bottom: 1px;height:auto;border-width: 0px;'><div class='border'></div><div class='Hover-t'>{timeHtml}</div></li><li data-res='{res.id.ToString()}' data-date='{chooseDate.ToString("yyyy-MM-dd HH:mm")}'><div class='border'></div><div class='TaskConter'><div class='t1'>{appHtml + todoHtml + callHtml}</div><div class='t2'></div></div></li>");
                                     for (int i = 0; i < 23; i++)
                                     {
-                                        singContentHtml.Append($"<li {(i>=8&&i<=18? "style='background-color:white;'" : "")}><div class='border'></div><div class='TaskConter'><div class='t1'></div><div class='t2'></div></div></li>");
+                                        singContentHtml.Append($"<li {(i>=7&&i<=18? "style='background-color:white;'" : "")} data-res='{res.id.ToString()}' data-date='{chooseDate.AddHours(i+1).ToString("yyyy-MM-dd HH:mm")}'><div class='border'></div><div class='TaskConter'><div class='t1'></div><div class='t2'></div></div></li>");
                                     }
                                     singContentHtml.Append("</ul>");
                                     //singContentHtml.Append(appHtml + todoHtml + callHtml);
@@ -399,9 +412,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     var singTitleHtml = new System.Text.StringBuilder();
                     singTitleHtml.Append("<div class='DaysList'>");
                     if (resList != null && resList.Count > 0)
-                    {
                         singTitleHtml.Append($"<div class='Days-2'><div class='border'></div>个人</div>");
-                    }
                     if (workList != null && workList.Count > 0)
                     {
                         foreach (var work in workList)
@@ -412,6 +423,8 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     singTitleHtml.Append("</div>");
                     singTitleHtml.Append("<ul class='ContainerTop-User'>");
                     var groupNum = 0;
+                    if(isShowNoRes)
+                        singTitleHtml.Append($"<li data-Group='Group{groupNum}'><div class='border'></div>无负责人</li>");
                     if (resList != null && resList.Count > 0)
                     {
                         foreach (var res in resList)
@@ -517,7 +530,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
             {
                 foreach (var _ in thisList)
                 {
-                    appHtml += $"<div class='HouverTaskItem' style='margin-top:{(ReturnDiffTime(_.start_time, date) * 31)}px'><div class='UserContainer' data-date='{date.ToString("yyyy-MM-dd")}' data-res='{resId}' ><div class='hovertask hoverAppoint stockstask' data-val='{_.id.ToString()}' data-date='{date.ToString("yyyy-MM-dd")}' data-res='{resId}' data-type='AppiontDiv'  style='height:{(ReturnDiffHeight(_.start_time, _.end_time, date) * 30)}px;'><p>{_.name}</p><p>{_.description}</p><div class='HiddenToolTip'><p>{Tools.Date.DateHelper.ConvertStringToDateTime(_.start_time).ToString("yyyy-MM-dd")}-{Tools.Date.DateHelper.ConvertStringToDateTime(_.end_time).ToString("yyyy-MM-dd")}</p><p>{_.name}</p><p>{_.description}</p></div></div></div></div>";
+                    appHtml += $"<div class='HouverTaskItem' style='margin-top:{(ReturnDiffTime(_.start_time, date) * 30.5)}px'><div class='UserContainer' data-date='{date.ToString("yyyy-MM-dd")}' data-res='{resId}' ><div class='hovertask hoverAppoint stockstask' data-val='{_.id.ToString()}' data-date='{date.ToString("yyyy-MM-dd")}' data-res='{resId}' data-type='AppiontDiv'  style='height:{(ReturnDiffHeight(_.start_time, _.end_time, date) * 30.5)}px;'><p>{_.name}</p><p>{_.description}</p><div class='HiddenToolTip'><p>{Tools.Date.DateHelper.ConvertStringToDateTime(_.start_time).ToString("yyyy-MM-dd")}-{Tools.Date.DateHelper.ConvertStringToDateTime(_.end_time).ToString("yyyy-MM-dd")}</p><p>{_.name}</p><p>{_.description}</p></div></div></div></div>";
                     var endDate = Tools.Date.DateHelper.ToUniversalTimeStamp(date.AddDays(1));
                     var thisTimeStamp = Tools.Date.DateHelper.ToUniversalTimeStamp(date);
                     if (endDate < _.end_time)
@@ -580,7 +593,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     if (_.account_id != null)
                         thisAccount = acccBll.GetCompany((long)_.account_id);
                     var thisAct = todiAction.FirstOrDefault(t => t.id == _.action_type_id);
-                    appHtml += $"<div class='HouverTaskItem' style='margin-top:{(ReturnDiffTime(_.start_date, date) * 31)}px'><div class='UserContainer' data-date='{date.ToString("yyyy-MM-dd")}' data-res='{resId}'><div class='hovertask hoverTodo stockstask' data-val='{_.id.ToString()}' data-date='{date.ToString("yyyy-MM-dd")}' data-res='{resId}' data-type='ToDoDiv'  style='height:{(ReturnDiffHeight(_.start_date, _.end_date, date) * 30)}px;'><p>{(thisAccount != null ? thisAccount.name : "")}</p><p>{_.description}</p><div class='HiddenToolTip'>{(thisAccount == null ? "" : "<p>" + thisAccount.name + "</p>")}<p>{Tools.Date.DateHelper.ConvertStringToDateTime(_.start_date).ToString("yyyy-MM-dd")}-{Tools.Date.DateHelper.ConvertStringToDateTime(_.end_date).ToString("yyyy-MM-dd")}</p><p>{(thisAct != null ? thisAct.name : "")}</p><p>{_.description}</p></div></div></div></div>";
+                    appHtml += $"<div class='HouverTaskItem' style='margin-top:{(ReturnDiffTime(_.start_date, date) * 30.5)}px'><div class='UserContainer' data-date='{date.ToString("yyyy-MM-dd")}' data-res='{resId}'><div class='hovertask hoverTodo stockstask' data-val='{_.id.ToString()}' data-date='{date.ToString("yyyy-MM-dd")}' data-res='{resId}' data-type='ToDoDiv'  style='height:{(ReturnDiffHeight(_.start_date, _.end_date, date) * 30.5)}px;'><p>{(thisAccount != null ? thisAccount.name : "")}</p><p>{_.description}</p><div class='HiddenToolTip'>{(thisAccount == null ? "" : "<p>" + thisAccount.name + "</p>")}<p>{Tools.Date.DateHelper.ConvertStringToDateTime(_.start_date).ToString("yyyy-MM-dd")}-{Tools.Date.DateHelper.ConvertStringToDateTime(_.end_date).ToString("yyyy-MM-dd")}</p><p>{(thisAct != null ? thisAct.name : "")}</p><p>{_.description}</p></div></div></div></div>";
                     var endDate = Tools.Date.DateHelper.ToUniversalTimeStamp(date.AddDays(1));// Tools.Date.DateHelper.ConvertStringToDateTime(_.end_time);
                     var thisTimeStamp = Tools.Date.DateHelper.ToUniversalTimeStamp(date);
                     if (endDate < _.end_date)
@@ -641,7 +654,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     if ((!isShowCanCall) && _.status_id == (int)DTO.DicEnum.SERVICE_CALL_STATUS.CANCEL)
                         continue;
                     var thisAccount = acccBll.GetCompany(_.account_id);
-                    appHtml += $"<div class='HouverTaskItem' style='margin-top:{(ReturnDiffTime(_.start_time, date) *31)}px'><div class='UserContainer' data-date='{date.ToString("yyyy-MM-dd")}' data-res='{resId}'><div class='hovertask hoverCall {(_.status_id != (int)DTO.DicEnum.SERVICE_CALL_STATUS.DONE ? "stockstask" : "")}' data-val='{_.id.ToString()}' data-date='{date.ToString("yyyy-MM-dd")}'  data-res='{resId}' data-type='CallDiv' style='height:{(ReturnDiffHeight(_.start_time,_.end_time, date) *30)}px;'><p>{(thisAccount != null ? thisAccount.name : "")}</p><p>{_.description}</p><div class='HiddenToolTip'><p>客户名称：{(thisAccount != null ? thisAccount.name : "")}</p><p>客户电话：{(thisAccount != null ? thisAccount.phone : "")}</p><p>起止日期：{Tools.Date.DateHelper.ConvertStringToDateTime(_.start_time).ToString("yyyy-MM-dd")}-{Tools.Date.DateHelper.ConvertStringToDateTime(_.end_time).ToString("yyyy-MM-dd")}</p>{GetTicketToolTip(_.id)}</div></div></div></div> ";
+                    appHtml += $"<div class='HouverTaskItem' style='margin-top:{(ReturnDiffTime(_.start_time, date) *30.5)}px'><div class='UserContainer' data-date='{date.ToString("yyyy-MM-dd")}' data-res='{resId}'><div class='hovertask hoverCall {(_.status_id != (int)DTO.DicEnum.SERVICE_CALL_STATUS.DONE ? "stockstask" : "")}' data-val='{_.id.ToString()}' data-date='{date.ToString("yyyy-MM-dd")}'  data-res='{resId}' data-type='CallDiv' style='height:{(ReturnDiffHeight(_.start_time,_.end_time, date) *30.5)}px;'><p>{(thisAccount != null ? thisAccount.name : "")}</p><p>{_.description}</p><div class='HiddenToolTip'><p>客户名称：{(thisAccount != null ? thisAccount.name : "")}</p><p>客户电话：{(thisAccount != null ? thisAccount.phone : "")}</p><p>起止日期：{Tools.Date.DateHelper.ConvertStringToDateTime(_.start_time).ToString("yyyy-MM-dd")}-{Tools.Date.DateHelper.ConvertStringToDateTime(_.end_time).ToString("yyyy-MM-dd")}</p>{GetTicketToolTip(_.id)}</div></div></div></div> ";
                     var endDate = Tools.Date.DateHelper.ToUniversalTimeStamp(date.AddDays(1));// Tools.Date.DateHelper.ConvertStringToDateTime(_.end_time);
                     var thisTimeStamp = Tools.Date.DateHelper.ToUniversalTimeStamp(date);
                     if (endDate < _.end_time)
@@ -691,7 +704,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         /// <summary>
         /// 没有负责人的服务预定
         /// </summary>
-        protected string GetNoResDateCall(DateTime date, out decimal callHours)
+        protected string GetNoResDateCall(DateTime date, out decimal callHours, bool isSingel = false)
         {
             callHours = 0;
             date = DateTime.Parse(date.ToString("yyyy-MM-dd") + " 00:00:00");
@@ -701,8 +714,12 @@ namespace EMT.DoneNOW.Web.ServiceDesk
             {
                 foreach (var _ in thisList)
                 {
+                    if (isSingel)
+                        appHtml += $"<div class='HouverTaskItem' style='margin-top:{(ReturnDiffTime(_.start_time, date) * 30.5)}px;position: relative;'><div class='UserContainer' data-date='{date.ToString("yyyy-MM-dd")}' data-res=''>";
                     var thisAccount = acccBll.GetCompany(_.account_id);
-                    appHtml += $"<div class='hovertask hoverCall' data-val='{_.id.ToString()}' data-date='{date.ToString("yyyy-MM-dd")}'><p>{(thisAccount != null ? thisAccount.name : "")}</p><p>{_.description}</p><div class='HiddenToolTip'><p>客户名称：{(thisAccount != null ? thisAccount.name : "")}</p><p>客户电话：{(thisAccount != null ? thisAccount.phone : "")}</p><p>起止日期：{Tools.Date.DateHelper.ConvertStringToDateTime(_.start_time).ToString("yyyy-MM-dd")}-{Tools.Date.DateHelper.ConvertStringToDateTime(_.end_time).ToString("yyyy-MM-dd")}</p>{GetTicketToolTip(_.id)}</div></div>";
+                    appHtml += $"<div class='hovertask hoverCall' data-val='{_.id.ToString()}' data-date='{date.ToString("yyyy-MM-dd")}' {(isSingel? "style='height: "+ (ReturnDiffHeight(_.start_time, _.end_time, date) * 30.5) + "px;'":"")}><p>{(thisAccount != null ? thisAccount.name : "")}</p><p>{_.description}</p><div class='HiddenToolTip'><p>客户名称：{(thisAccount != null ? thisAccount.name : "")}</p><p>客户电话：{(thisAccount != null ? thisAccount.phone : "")}</p><p>起止日期：{Tools.Date.DateHelper.ConvertStringToDateTime(_.start_time).ToString("yyyy-MM-dd")}-{Tools.Date.DateHelper.ConvertStringToDateTime(_.end_time).ToString("yyyy-MM-dd")}</p>{GetTicketToolTip(_.id)}</div></div>";
+                    if (isSingel)
+                        appHtml += "</div></div>";
                     var endDate = Tools.Date.DateHelper.ToUniversalTimeStamp(date.AddDays(1));// Tools.Date.DateHelper.ConvertStringToDateTime(_.end_time);
                     var thisTimeStamp = Tools.Date.DateHelper.ToUniversalTimeStamp(date);
                     if (endDate < _.end_time)

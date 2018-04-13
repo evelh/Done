@@ -63,7 +63,7 @@
         #Nav3 .FieldLabel {
             padding-left: 0px;
         }
-
+      
         #Nav4 .FieldLabel {
             padding-left: 0px;
         }
@@ -550,7 +550,6 @@
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
-<script src="../Scripts/Dispatch.js"></script>
 <script>
     $(function () {
         GetRes();
@@ -569,12 +568,28 @@
         $(".Grid1_Container").hide();
         $(".Grid2_Container").show();
         $("body").trigger("resize");
+        $('.UserContainer').bind("contextmenu", ShowContextMenu);
+        $('.UserContainer').children(".hovertask").bind("contextmenu", ShowContextAppMenu);
+       
         <%}
     else
     { %>
         $(".Grid1_Container").show();
         $(".Grid2_Container").hide();
+      
+       
         <%} %>
+    })
+
+    
+ 
+
+  
+</script>
+<script src="../Scripts/Dispatch.js"></script>
+<script>
+    $(function () {
+     
 
     })
     var oldDatevalue = '<%=chooseDate.ToString("yyyy-MM-dd") %>';
@@ -689,10 +704,14 @@
         var isNoRes = "";
         if ($("#ckNoRes").is(":checked")) {
             isNoRes = "1";
+        } else {
+            isNoRes = "0";
         }
         var ckShowCancel = "";
         if ($("#ckShowCancel").is(":checked")) {
             ckShowCancel = "1";
+        } else {
+            ckShowCancel = "0";
         }
         var modeId = $(".ShowdatsElm").eq(0).text();
         if (modeId == "1") {
