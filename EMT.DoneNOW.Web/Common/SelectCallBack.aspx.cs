@@ -22,6 +22,7 @@ namespace EMT.DoneNOW.Web
         protected List<QueryResultParaDto> resultPara = null;   // 查询结果列信息
         protected List<DictionaryEntryDto> queryParaValue = new List<DictionaryEntryDto>();  // 查询条件和条件值
         protected List<QueryConditionParaDto> condition;    // 根据不同页面类型获取的查询条件列表
+        protected string jqueryString;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(Request.QueryString["callBack"]))
@@ -97,6 +98,7 @@ namespace EMT.DoneNOW.Web
                 foreach (var p in para)
                 {
                     Para pa = new Para();
+                    jqueryString += $"$('#con{p.id.ToString()}').val('{(!string.IsNullOrEmpty(keys["con" + p.id.ToString()])? keys["con" + p.id.ToString()] : "")}');";
                     if (p.data_type == (int)DicEnum.QUERY_PARA_TYPE.NUMBER
                         || p.data_type == (int)DicEnum.QUERY_PARA_TYPE.DATE
                         || p.data_type == (int)DicEnum.QUERY_PARA_TYPE.DATETIME)    // 数值和日期类型是范围值
