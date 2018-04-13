@@ -1336,6 +1336,12 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "加入到其他负责人的工作列表", click_function = "", class_name = "" });
                     contextMenu.Add(new PageContextMenuDto { text = "取消与项目管理关系", click_function = "RemoveProject()", class_name = "" });
                     break;
+                case (long)QueryType.DISPATCH_TICKET_SEARCH:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑工单", click_function = "EditTicket()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看工单", click_function = "ViewTicket()"});
+                    contextMenu.Add(new PageContextMenuDto { text = "加入到新的服务预定", click_function = "AddNewCall()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "加入到已存在的服务预定", click_function = "AddAlreadyCall()" });
+                    break;
                 default:
                     break;
             }

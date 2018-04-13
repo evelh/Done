@@ -392,7 +392,14 @@
 		<option value="2">未支付</option>
 	 </select>
 	</li>
-                    <%}  %>
+                    <%}
+                    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.DISPATCH_TICKET_SEARCH)
+                    {  %>
+                    <li style="background: white;border: 0px solid;">
+                     <span style="font-size: 12px;color: #4F4F4F;"><span style="font-weight: bold;margin-top: 6px;">已调度</span><select id="isDiaodu" name="con2545" style="margin-left:6px;width:60px;"><option value=""></option><option value="1">是</option><option value="0">否</option></select></span>
+                <span style="font-size: 12px;color: #4F4F4F;"><span style="font-weight: bold;margin-top: 6px;">工单编号/标题/客户名称/合同/项目</span><input type="text" name="con2745" id="con2745" style="height:20px;" /></span></li>
+                    <li><input type="button" value="搜索" onclick="SearchTicket()" style="width:50px;"/></li>
+                    <%} %>
                 </ul>
                 <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_UDF)
                     { %>
