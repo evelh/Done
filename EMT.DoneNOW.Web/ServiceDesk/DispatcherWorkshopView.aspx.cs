@@ -34,6 +34,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
             try
             {
                 var viewId = Request.QueryString["viewId"];
+                viewId = "17700";
                 if (!string.IsNullOrEmpty(viewId))
                 {
                     chooseView = new DAL.sdk_dispatcher_view_dal().FindNoDeleteById(long.Parse(viewId));
@@ -67,6 +68,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 if (!string.IsNullOrEmpty(Request.QueryString["modeId"]))
                     dateType = long.Parse(Request.QueryString["modeId"]);
                 var chooseDateString = Request.QueryString["chooseDate"];
+                chooseDateString = "2018-04-03";
                 if (!string.IsNullOrEmpty(chooseDateString))
                     chooseDate = DateTime.Parse(chooseDateString);
 
@@ -409,23 +411,25 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     }
                     singTitleHtml.Append("</div>");
                     singTitleHtml.Append("<ul class='ContainerTop-User'>");
+                    var groupNum = 0;
                     if (resList != null && resList.Count > 0)
                     {
                         foreach (var res in resList)
                         {
-                            singTitleHtml.Append($"<li><div class='border'></div>{res.name}</li>");
+                            singTitleHtml.Append($"<li data-Group='Group{groupNum}'><div class='border'></div>{res.name}</li>");
                         }
                     }
                     if (workList != null && workList.Count > 0)
                     {
                         foreach (var thisWork in workList)
                         {
+                            groupNum++;
                             var thisResList = new DAL.sys_workgroup_dal().GetResouListByWorkIds(thisWork.id.ToString());
                             if (thisResList != null && thisResList.Count > 0)
                             {
                                 foreach (var res in thisResList)
                                 {
-                                    singTitleHtml.Append($"<li><div class='border'></div>{res.name}</li>");
+                                    singTitleHtml.Append($"<li data-Group='Group{groupNum}'><div class='border'></div>{res.name}</li>");
                                 }
                             }
                         }

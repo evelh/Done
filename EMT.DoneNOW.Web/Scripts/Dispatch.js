@@ -67,24 +67,7 @@ $(window).resize(function () {
 
 
 //
-//console.log($('.ContainerTop-One').width())
-$('.ContainerBottom-Two').css('width', $(window).width() - $('.ContainerBottom-One').width() - 38)
-$('.ContainerTop-Two').css('width', $(window).width() - $('.ContainerTop-One').width() - 38)
 
-$.each($('.ContainerTop-User li'), function (i) {
-    var ob = $('.HouverTask').eq(i).children('li').eq(1).find('.HouverTaskItem');
-    console.log(ob.length)
-    var x = $('.HouverTask').length;
-    var xE = 0;
-    if (ob.length > 1) {
-        x += ob.length;
-        xE = x;
-        console.log(xE)
-        $('.HouverTask').eq(i).css('width',100/ x * ob.length+'%' )
-        ob.css('width', ob.width() / ob.length)
-    } 
-
-})
 
 //var useritemW = $('.HouverTask').find('.HouverTaskItem').width() * $('.HouverTask').length;
 var useritemW = '100%'
@@ -101,6 +84,76 @@ $(window).resize(function () {
     $('.ContainerTop-Two').children('.ContainerTop-User').css('width', useritemW)
 
 })
+
+
+//console.log($('.ContainerTop-One').width())
+$('.ContainerBottom-Two').css('width', $(window).width() - $('.ContainerBottom-One').width() - 38)
+$('.ContainerTop-Two').css('width', $(window).width() - $('.ContainerTop-One').width() - 38)
+var groupArr = new Array;
+var SetgroupArr;
+$.each($('.ContainerTop-User li'), function (i) {
+    var ob = $('.HouverTask').eq(i).children('li').eq(1).find('.HouverTaskItem');
+    var x = $('.HouverTask').length;
+    if (ob.length > 1) {
+        x += ob.length;
+        localStorage.setItem('xE', x)
+        $('.HouverTask').eq(i).css('width', 100 / x * ob.length + '%')
+        $('.ContainerTop-User li').eq(i).css('width', 100 / x * ob.length + '%')
+        ob.css('width', 98 / ob.length + '%')
+        console.log($('.ContainerBottom-Two').width() / x)
+
+    } else {
+        var xE = localStorage.getItem('xE');
+        $('.HouverTask').eq(i).css('width', 100 / xE + '%')
+        $('.ContainerTop-User li').eq(i).css('width', 100 / xE + '%')
+
+
+    }
+    var xE = localStorage.getItem('xE');
+
+    groupArr.push($('.ContainerTop-User li').eq(i).data('group'));
+    SetgroupArr = Array.from(new Set(groupArr))
+   
+    if ($('.ContainerBottom-Two').width() / xE < 220) {
+        $('.ContainerBottom-Two .HouverTaskA').css('width', (200 + x * 9) * xE)
+        $('.ContainerTop-User').css('width', (200 + xE * 9) * xE)
+    } else {
+        $('.ContainerBottom-Two .HouverTaskA').css('width', '100%')
+        $('.ContainerTop-User').css('width', '100%')
+
+
+    }
+    $(window).resize(function () {
+        var xE = localStorage.getItem('xE');
+        if ($('.ContainerBottom-Two').width() / xE < 220) {
+            $('.ContainerBottom-Two .HouverTaskA').css('width', (200 + xE * 9) * xE)
+            $('.ContainerTop-User').css('width', (200 + xE * 9) * xE)
+
+        } else {
+            $('.ContainerBottom-Two .HouverTaskA').css('width', '100%')
+            $('.ContainerTop-User').css('width', '100%')
+
+
+        }
+    })
+
+})
+
+
+$.each($('.DaysList .Days-2'), function (i) {
+    var w = 0;
+    for (var j = 0; j < groupArr.length; j++) {
+        if (groupArr[j] == SetgroupArr[i]) {
+            w += $('.ContainerTop-User li').eq(j).width();
+            $('.DaysList .Days-2').eq(i).css('width', w + '%')
+            $(window).resize(function () {
+                $('.DaysList .Days-2').eq(i).css('width', w + '%')
+            })
+        }
+    }
+   
+
+});
 function RunDaysDom(a) {
     if (a == 1) {
         $('.Grid1_Container').hide()

@@ -813,8 +813,10 @@ option {
         font-weight: bold;
         position: relative;
     }
-    .ContainerTop-Two .DaysList{
-        height:auto;position:relative;
+    .ContainerTop-Two .DaysList {
+        height: 26px;
+        position: relative;
+        overflow: hidden;
     }
     .ContainerTop-Two .Days-2 {
         width:50%;
@@ -969,12 +971,11 @@ option {
     border-collapse: collapse;
     box-sizing: border-box;
 }
-
-        .HouverTask li .TaskConter .t1 {
-            width: 100%;
-            height: 27px;
-            border-bottom: 1px solid #E8E8E8;
-        }
+.HouverTask li .TaskConter .t1 {
+    width: 100%;
+    height: 27px;
+    border-bottom: 1px solid #E8E8E8;
+}
 
 .stockstask {
     background: #FFFEC4 !important;
