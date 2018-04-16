@@ -115,6 +115,7 @@
         <div class="UpperPart"></div>
         <div class="help"></div>
     </div>
+    <input type="hidden" id="isSingle" value="<%=isSingResPage?"1":"" %>" />
     <div class="ButtonCollectionBase">
         <div class="Buttonleft">
             <div class="newbtn">
@@ -132,29 +133,32 @@
             <div class="btntext">Workload Report</div>
         </div>
         <div class="ButtonRight">
+            <% if (!isSingResPage)
+                     { %>
             <div class="vivews">
                 <span>视图</span>
                 <select class="txtBlack8Class" name="" id="SelectView">
                     <option selected="selected" value=""></option>
                     <% if (viewList != null && viewList.Count > 0)
-                        {
-                            foreach (var view in viewList)
-                            {%>
+                     {
+                         foreach (var view in viewList)
+                         {%>
                     <option value="<%=view.id %>" <%if (chooseView != null && chooseView.id == view.id)
-                        { %>
+                     { %>
                         selected="selected" <%} %>><%=view.name %></option>
                     <%
-                            }
-                        } %>
+                         }
+                     } %>
                     <option value="">---------------------------</option>
                     <%if (chooseView != null)
-                        { %>
+                     { %>
                     <option value="SaveThis">保存当前视图</option>
                     <%} %>
                     <option value="New">保存为新的视图</option>
                     <option value="Manage">管理已保存的视图</option>
                 </select>
             </div>
+            <%} %>
             <div class="daysElm">
                 <ul>
                     <li <%if (dateType == (int)EMT.DoneNOW.DTO.DicEnum.DISPATCHER_MODE.ONE_DAY_VIEW)
@@ -179,6 +183,8 @@
         </div>
     </div>
     <div class="FilterDiv">
+        <% if (!isSingResPage)
+            { %>
         <div id="pnlWorkgroupSelector">
             <span style="font-weight: bold; padding-right: 4px;">工作组</span>
             <select size="4" name="" id="WorksSelect" class="" style="height: 34px; width: 148px; padding: 0px 0px 0px 3px;">
@@ -187,7 +193,7 @@
             <input type="hidden" id="workIdsHidden" value="<%=workIds %>" />
             <img style="margin-left: 5px; cursor: pointer;" src="../Images/data-selector.png" alt="" onclick="ChooseGroup()" />
         </div>
-
+      
         <div id="pnlResourceSelector">
             <span style="font-weight: bold; padding-right: 4px;">员工</span>
             <select size="4" name="" id="ResSelect" class="" style="height: 34px; width: 148px; padding: 0px 0px 0px 3px;">
@@ -196,11 +202,25 @@
             <input type="hidden" id="resIdsHidden" value="<%=resIds %>" />
             <img style="margin-left: 5px; cursor: pointer;" src="../Images/data-selector.png" alt="" onclick="ChooseRes()" />
         </div>
-
-        <div id="checkSelector">
+           <%}else{%>
+         <div id="pnlResourceSelector">
+            <span style="font-weight: bold; padding-right: 4px;">员工</span>
+            <select name="" id="resource_id" class="" style="height: 20px; width: 148px; padding: 0px 0px 0px 3px;">
+                <%if (AllResList != null && AllResList.Count > 0)
+                    {foreach (var thisRes in AllResList)
+                        { %>
+                <option value="<%=thisRes.id %>" <% if(resList!=null&&resList.Any(_=>_.id==thisRes.id)){ %> selected="selected" <%} %> ><%=thisRes.name %></option>
+                <% }
+                  } %>
+            </select>
+        </div>
+        <%} %>
+        <div id="checkSelector"> <% if (!isSingResPage)
+                                     { %>
             <p>
                 <input id="ckNoRes" type="checkbox" name="" /><span>显示无负责人的服务预定</span>
             </p>
+            <%} %>
             <p>
                 <input id="ckShowCancel" type="checkbox" name="" /><span>显示已取消服务预定</span>
             </p>
@@ -246,19 +266,21 @@
                     <div class="ContainerDays">
                         <div class="Days-1">
                         </div>
-
+                        <%if (!isSingResPage)
+                            { %>
                         <div class="Days-2">
                         </div>
                         <div class="Days-3">
                         </div>
+                        <%} %>
                         <div class="Days-4"></div>
                     </div>
                 </div>
                 <div class="ContainerTop-Two">
-                    <div class="Days-1">
+                    <%--<div class="Days-1">
                         <div class="border"></div>
                         <%=weekArr[(int)chooseDate.DayOfWeek] %>- <%=chooseDate.ToString("yyyy-MM-dd") %>
-                    </div>
+                    </div>--%>
                      <asp:Literal ID="liSingUserShow" runat="server"></asp:Literal>
                   
                     <div class="ContainerTop-UserLine" style="clear: both;"></div>
@@ -550,6 +572,7 @@
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
+<script src="../Scripts/Dispatch.js"></script>
 <script>
     $(function () {
         GetRes();
@@ -563,30 +586,55 @@
         $("#ckShowCancel").prop("checked", true);
         <%} %>
 
-        <%if (dateType == (int)EMT.DoneNOW.DTO.DicEnum.DISPATCHER_MODE.ONE_DAY_VIEW)
+        <%if (dateType == (int)EMT.DoneNOW.DTO.DicEnum.DISPATCHER_MODE.ONE_DAY_VIEW||isSingResPage)
     { %>
         $(".Grid1_Container").hide();
         $(".Grid2_Container").show();
         $("body").trigger("resize");
         $('.UserContainer').bind("contextmenu", ShowContextMenu);
         $('.UserContainer').children(".hovertask").bind("contextmenu", ShowContextAppMenu);
-       
+
         <%}
     else
     { %>
         $(".Grid1_Container").show();
         $(".Grid2_Container").hide();
-      
-       
+
+
+        <%} %>
+
+        <%if (isSingResPage)
+    { %>
+        console.log($(".HouverTaskA").eq(0).width());
+        $(".ContainerTop-User").hide();
+        $(".DaysList").eq(1).hide();
+        $(".DaysList").eq(0).css('width', $(".HouverTaskA").eq(0).width());
+        // $('.ContainerTop-Two').children().css('width', $(".HouverTaskA").width())
+        $.each($('.DaysList .Days-1'), function (i) {
+            var ob = $('.HouverTask').eq(i).children('li').eq(1).find('.HouverTaskItem');
+            var x = $('.HouverTask').length;
+            if (ob.length > 1) {
+                x += ob.length;
+                localStorage.setItem('xE', x)
+                $('.HouverTask').eq(i).css('width', 100 / x * ob.length + '%')
+                $('.DaysList .Days-1').eq(i).css('width', 100 / x * ob.length + '%')
+                ob.css('width', 98 / ob.length + '%')
+                //console.log($('.ContainerBottom-Two').width() / x)
+
+            } else {
+                var xE = localStorage.getItem('xE');
+                $('.HouverTask').eq(i).css('width', 100 / xE + '%')
+                $('.DaysList .Days-1').eq(i).css('width', 100 / xE + '%')
+            }
+        })
         <%} %>
     })
 
-    
- 
 
-  
+
+
+
 </script>
-<script src="../Scripts/Dispatch.js"></script>
 <script>
     $(function () {
      
@@ -734,9 +782,19 @@
         if (chooseDate != "" && chooseDate != null && chooseDate != undefined) {
             ShowDate = chooseDate;
         }
+        <%if (isSingResPage)
+    { %>
+        var resource_id = $("#resource_id").val();
+        location.href = "../ServiceDesk/DispatcherWorkshopView?resIds=" + resource_id + "&showCanCall=" + ckShowCancel + "&modeId=" + modeId + "&chooseDate=" + ShowDate +"&isSingResPage=1";
+        <%}
+    else
+    { %>
         location.href = "../ServiceDesk/DispatcherWorkshopView?viewId=" + SelectView + "&resIds=" + resIds + "&workIds=" + workIds + "&showNoRes=" + isNoRes + "&showCanCall=" + ckShowCancel + "&modeId=" + modeId + "&chooseDate=" + ShowDate;
+        <%} %>
     }
-
+    $("#resource_id").change(function () {
+        ChangeFilter('');
+    })
 
     $("#SelectView").change(function () {
         var thisValue = $(this).val();

@@ -1949,6 +1949,7 @@ namespace EMT.DoneNOW.DTO
         EXPENSE_REPORT_VIEW,   // 费用报表查看
         ADD_TICKET_LABOUR,     // 新增工单工时
         ADD_TICKET_NOTE,       // 新增工单备注
+        ADD_TICKET_SERVICECALL,       // 新增工单服务预定
         ADD_TICKET_ATTACH,     // 新增工单附件
         ADD_TICKET_EXPENSE,    // 新增工单费用
         SHOW_TICKET_HISTORY,   // 工单历史查看

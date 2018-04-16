@@ -161,6 +161,9 @@ $.each($('.ContainerTop-User li'), function (i) {
     })
 
 })
+
+
+
 // 更改休假Div 高度
 var maxHouverHeight = 27;
 $(".HouverTask").each(function () {
@@ -195,7 +198,7 @@ function RunDaysDom(a) {
     if (a == 1) {
         $('.Grid1_Container').hide()
         $('.Grid2_Container').show()
-        debugger
+        
         $('.ContainerTop-Two').css('width', $(window).width() - $('.ContainerTop-One').width() - 38)
         $('.ContainerBottom-Two').css('width', $(window).width() - $('.ContainerBottom-One').width() - 38)
         $('.ContainerTop-Two').children().css('width', $('.ContainerTop-User').width())
@@ -425,7 +428,7 @@ var endDate = "";
 var endResId = "";
 var endId = "";
 function drag(obj) {
-    debugger;
+    
     var dayType = $(".ShowdatsElm").eq(0).text();
     obj.bind('mousedown', start);
     var ol = obj.offset().left;
@@ -585,7 +588,7 @@ function DragSingle(obj) {
 
 
 function ShowDialog() {
-    debugger;
+    
     if (startId == "" || endDate == "") {
         ClearTempId();
         return;
@@ -730,7 +733,8 @@ function ShowNav3() {
     }
     $("#BackgroundOverLay").show();
     $("#Nav3").show();
-
+    console.log(endDate); 
+    console.log(endResId);
     var endDateArr = endDate.split(' ');
     if (endDateArr.length == 1) {
         $("#AppiontStartDate").text(endDate);
@@ -763,7 +767,7 @@ function ShowNav3() {
 }
 
 function ShowNav4() {
-    debugger;
+    
     $("#BackgroundOverLay").show();
     $("#Nav4").show();
     var endDateArr = endDate.split(' ');
@@ -980,8 +984,9 @@ function ClearTempId() {
 }
 
 $.each($('.stockstask'), function (i) {
+    var isSingle = $("#isSingle").val();
     var dayType = $(".ShowdatsElm").eq(0).text();
-    if (dayType == "1") {
+    if (dayType == "1" || isSingle=="1") {
         DragSingle($('.stockstask').eq(i)); 
     }
     else {

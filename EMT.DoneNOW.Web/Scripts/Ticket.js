@@ -292,11 +292,11 @@ $(".IconContainer").on('click', function () {
 });
 
 $(".CopyTextButton").click(function () {
-    $(this).children().first().next().focus();
-    $(this).children().first().next().select();
-    if (document.execCommand('copy', false, null)) {
+    //$(this).children().first().next().focus();
+    //$(this).children().first().next().select();
+    //if (document.execCommand('copy', false, null)) {
 
-    }
+    //}
 })
 
 $(".Dot").mouseover(function (event) {

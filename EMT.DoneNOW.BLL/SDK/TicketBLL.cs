@@ -3752,8 +3752,8 @@ namespace EMT.DoneNOW.BLL
             var actCount = _dal.GetTicketCount(false, $"  and status_id <> {(int)DicEnum.TICKET_STATUS.DONE} and (owner_resource_id = {userId}||EXISTS(SELECT 1 from sdk_task_resource r where r.task_id = t.id and r.resource_id={userId}))");
             var actRecCount = _dal.GetTicketCount(true, $" and status_id <> {(int)DicEnum.TICKET_STATUS.DONE} and (owner_resource_id = {userId}||EXISTS(SELECT 1 from sdk_task_resource r where r.task_id = t.id and r.resource_id={userId}))");
             dic.Add("open", $"({actCount}+{actRecCount})");
-            var overCount = _dal.GetTicketCount(false, $" and estimated_end_time<(unix_timestamp(now()) *1000) and (owner_resource_id = {userId}||EXISTS(SELECT 1 from sdk_task_resource r where r.task_id = t.id and r.resource_id={userId}))");
-            var overRecCount = _dal.GetTicketCount(true, $" and estimated_end_time<(unix_timestamp(now()) *1000) and (owner_resource_id = {userId}||EXISTS(SELECT 1 from sdk_task_resource r where r.task_id = t.id and r.resource_id={userId}))");
+            var overCount = _dal.GetTicketCount(false, $"  and status_id <> {(int)DicEnum.TICKET_STATUS.DONE} and estimated_end_time<(unix_timestamp(now()) *1000) and (owner_resource_id = {userId}||EXISTS(SELECT 1 from sdk_task_resource r where r.task_id = t.id and r.resource_id={userId}))");
+            var overRecCount = _dal.GetTicketCount(true, $"  and status_id <> {(int)DicEnum.TICKET_STATUS.DONE} and estimated_end_time<(unix_timestamp(now()) *1000) and (owner_resource_id = {userId}||EXISTS(SELECT 1 from sdk_task_resource r where r.task_id = t.id and r.resource_id={userId}))");
             dic.Add("over", $"({overCount}+{overRecCount})");
             var myCount = _dal.GetTicketCount(false, $" and t.create_user_id = {userId}");
             var myRecCount = _dal.GetTicketCount(true, $" and t.create_user_id = {userId}");
