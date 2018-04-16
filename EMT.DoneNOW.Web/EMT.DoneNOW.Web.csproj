@@ -191,6 +191,8 @@
     <Content Include="Content\sysset_user.css" />
     <Content Include="Content\Ticket.css" />
     <Content Include="Content\TicketLabour.css" />
+    <Content Include="Scripts\clipboard.js" />
+    <Content Include="Scripts\clipboard.min.js" />
     <Content Include="Scripts\Dispatch.js" />
     <Content Include="Scripts\Search\dispatch_ticket_search.js" />
     <Content Include="ServiceDesk\AddQuickCall.aspx" />

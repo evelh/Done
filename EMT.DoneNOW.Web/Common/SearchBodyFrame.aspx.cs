@@ -1339,8 +1339,8 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.DISPATCH_TICKET_SEARCH:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑工单", click_function = "EditTicket()" ,id="MenuEditTicket"});
                     contextMenu.Add(new PageContextMenuDto { text = "查看工单", click_function = "ViewTicket()", id = "MenuViewTicket" });
-                    contextMenu.Add(new PageContextMenuDto { text = "加入到新的服务预定", click_function = "AddNewCall()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "加入到已存在的服务预定", click_function = "AddAlreadyCall()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "加入到新的服务预定", click_function = "AddNewCall()", id = "MenuAddNewCall" });
+                    contextMenu.Add(new PageContextMenuDto { text = "加入到已存在的服务预定", click_function = "AddAlreadyCall()", id = "MenuAddAlreadyCall" });
                     break;
                 default:
                     break;

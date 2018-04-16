@@ -22,6 +22,8 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected string workIds;
         protected bool isShowNoRes = false;
         protected bool isShowCanCall = false;
+
+        protected bool isSingResPage = false;    // 是否是只可以选择一个员工的页面
         protected DispatchBLL dBll = new DispatchBLL();
         protected TicketBLL ticketBll = new TicketBLL();
         protected CompanyBLL acccBll = new CompanyBLL();
@@ -29,6 +31,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected List<d_general> priorityList = new DAL.d_general_dal().GetGeneralByTableId((long)DTO.GeneralTableEnum.TASK_PRIORITY_TYPE);   // 工单优先级集合
         protected List<d_general> ticStaList = new DAL.d_general_dal().GetGeneralByTableId((long)DTO.GeneralTableEnum.TICKET_STATUS);          // 工单状态集合
         protected List<d_general> todiAction = new DAL.d_general_dal().GetGeneralByTableId((long)DTO.GeneralTableEnum.ACTION_TYPE);
+        protected List<sys_resource> AllResList = new DAL.sys_resource_dal().GetSourceList();
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -41,10 +44,6 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     if (chooseView != null)
                     {
                         dateType = chooseView.mode_id;
-                        if (!string.IsNullOrEmpty(chooseView.resource_ids))
-                            resList = new DAL.sys_resource_dal().GetListByIds(chooseView.resource_ids, false);
-                        if (!string.IsNullOrEmpty(chooseView.workgroup_ids))
-                            workList = new DAL.sys_workgroup_dal().GetList($" and id in({chooseView.workgroup_ids})");
                         resIds = chooseView.resource_ids;
                         workIds = chooseView.workgroup_ids;
                         if (chooseView.show_unassigned == 1)
@@ -53,11 +52,11 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                             isShowCanCall = true;
                     }
                 }
-                if (!string.IsNullOrEmpty(Request.QueryString["resIds"]))
+                if (Request.QueryString["resIds"] != null)
                     resIds = Request.QueryString["resIds"];
                 if (!string.IsNullOrEmpty(resIds))
                     resList = new DAL.sys_resource_dal().GetListByIds(resIds, false);
-                if (!string.IsNullOrEmpty(Request.QueryString["workIds"]))
+                if (Request.QueryString["workIds"] != null)
                     workIds = Request.QueryString["workIds"];
                 if (!string.IsNullOrEmpty(workIds))
                     workList = new DAL.sys_workgroup_dal().GetList($" and id in({workIds})");
@@ -71,6 +70,9 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 //  chooseDateString = "2018-04-03";
                 if (!string.IsNullOrEmpty(chooseDateString))
                     chooseDate = DateTime.Parse(chooseDateString);
+                var isSingle = Request.QueryString["isSingResPage"];
+                if (!string.IsNullOrEmpty(isSingle) && isSingle == "1")
+                    isSingResPage = true;
 
                 // 记录员工的每天使用时间
                 Dictionary<string, Dictionary<string, decimal>> userTimeDic = new Dictionary<string, Dictionary<string, decimal>>();
@@ -94,7 +96,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                         showDate = GetMonday(chooseDate);
                         break;
                 }
-                if (limitDays != 1)
+                if (limitDays != 1 && !isSingResPage)
                 {
                     #region 获取用户相关
                     var liUserHtml = new System.Text.StringBuilder();
@@ -312,8 +314,8 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     {
                         var thisDay = chooseDate;
                         decimal callHours;
-                        var callHtml  = GetNoResDateCall(thisDay, out callHours,true);
-                        var allRemainHours = ((thisDay.DayOfWeek == DayOfWeek.Sunday || thisDay.DayOfWeek == DayOfWeek.Saturday) ? 0 : 8) ;
+                        var callHtml = GetNoResDateCall(thisDay, out callHours, true);
+                        var allRemainHours = ((thisDay.DayOfWeek == DayOfWeek.Sunday || thisDay.DayOfWeek == DayOfWeek.Saturday) ? 0 : 8);
                         singContentHtml.Append($"<ul class='HouverTask'><li style='min-height:27px;margin-bottom: 1px;height:auto;border-width: 0px;'><div class='border'></div><div class='Hover-t'></div></li><li data-res='' data-date='{chooseDate.ToString("yyyy-MM-dd HH:mm")}'><div class='border'></div><div class='TaskConter'><div class='t1'>{callHtml}</div><div class='t2'></div></div></li>");
                         for (int i = 0; i < 23; i++)
                         {
@@ -321,47 +323,53 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                         }
                         singContentHtml.Append("</ul>");
                     }
-                    if (resList != null && resList.Count > 0)
+                    if(isSingResPage&& resList!=null&& resList.Count > 0) // 
+                        resList = new List<sys_resource>() { resList[0] }; 
+                    for (int i = 0; i < limitDays; i++)
                     {
-                        foreach (var res in resList)
+                        if (resList != null && resList.Count > 0)
                         {
-                            var thisDay = chooseDate;
-                            var thisKey = res.id.ToString() + res.name + "_" + (chooseDate.ToString("yyyy-MM-dd"));
-                            if (!userTimeDic.Any(_ => _.Key == thisKey))
-                                userTimeDic.Add(thisKey, new Dictionary<string, decimal>());
-                            // todo 获取员工的可用时间，剩余时间
-                            decimal timeHours;
-                            decimal appiontHours;
-                            decimal todoHours;
-                            decimal callHours;
-
-                            var timeHtml = GetResDateTime(res.id, thisDay, out timeHours);  // 休假单独显示
-                            var appHtml = GetResSingDateApp(res.id, thisDay, out appiontHours);
-                            var todoHtml = GetResSingDateTodo(res.id, thisDay, out todoHours);
-                            var callHtml = GetSingResDateCall(res.id, thisDay, out callHours);
-                            var allUserHours = appiontHours + todoHours + callHours;
-                            var allRemainHours = ((thisDay.DayOfWeek == DayOfWeek.Sunday || thisDay.DayOfWeek == DayOfWeek.Saturday) ? 0 : 8) - timeHours;
-                            singContentHtml.Append($"<ul class='HouverTask'><li style='min-height:27px;margin-bottom: 1px;height:auto;border-width: 0px;'><div class='border'></div><div class='Hover-t'>{timeHtml}</div></li><li data-res='{res.id.ToString()}' data-date='{chooseDate.ToString("yyyy-MM-dd HH:mm")}'><div class='border'></div><div class='TaskConter'><div class='t1'>{appHtml + todoHtml + callHtml}</div><div class='t2'></div></div></li>"); 
-                           for (int i = 0; i< 23; i++)
+                            foreach (var res in resList)
                             {
-                                singContentHtml.Append($"<li {(i>=7&&i<=18? "style = 'background-color:white;'" : "")} data-res='{res.id.ToString()}' data-date='{chooseDate.AddHours(i+1).ToString("yyyy-MM-dd HH:mm")}'><div class='border'></div><div class='TaskConter'><div class='t1'></div><div class='t2'></div></div></li>");
-                            }
-                            singContentHtml.Append("</ul>");
-                        
-                            //singContentHtml.Append( appHtml + todoHtml + callHtml);
-                            //if (string.IsNullOrEmpty(appHtml) && string.IsNullOrEmpty(todoHtml) && string.IsNullOrEmpty(callHtml))
+                                var thisDay = showDate.AddDays(i);
+                                var thisKey = res.id.ToString() + res.name + "_" + (chooseDate.ToString("yyyy-MM-dd"));
+                                if (!userTimeDic.Any(_ => _.Key == thisKey))
+                                    userTimeDic.Add(thisKey, new Dictionary<string, decimal>());
+                                // todo 获取员工的可用时间，剩余时间
+                                decimal timeHours;
+                                decimal appiontHours;
+                                decimal todoHours;
+                                decimal callHours;
+
+                                var timeHtml = GetResDateTime(res.id, thisDay, out timeHours);  // 休假单独显示
+                                var appHtml = GetResSingDateApp(res.id, thisDay, out appiontHours);
+                                var todoHtml = GetResSingDateTodo(res.id, thisDay, out todoHours);
+                                var callHtml = GetSingResDateCall(res.id, thisDay, out callHours);
+                                var allUserHours = appiontHours + todoHours + callHours;
+                                var allRemainHours = ((thisDay.DayOfWeek == DayOfWeek.Sunday || thisDay.DayOfWeek == DayOfWeek.Saturday) ? 0 : 8) - timeHours;
+                                singContentHtml.Append($"<ul class='HouverTask'><li style='min-height:27px;margin-bottom: 1px;height:auto;border-width: 0px;'><div class='border'></div><div class='Hover-t'>{timeHtml}</div></li><li data-res='{res.id.ToString()}' data-date='{chooseDate.ToString("yyyy-MM-dd HH:mm")}'><div class='border'></div><div class='TaskConter'><div class='t1'>{appHtml + todoHtml + callHtml}</div><div class='t2'></div></div></li>");
+                                for (int j = 0; j < 23; j++)
+                                {
+                                    singContentHtml.Append($"<li {(j >= 7 && j <= 18 ? "style = 'background-color:white;'" : "")} data-res='{res.id.ToString()}' data-date='{chooseDate.AddHours(j + 1).ToString("yyyy-MM-dd HH:mm")}'><div class='border'></div><div class='TaskConter'><div class='t1'></div><div class='t2'></div></div></li>");
+                                }
+                                singContentHtml.Append("</ul>");
+
+                                //singContentHtml.Append( appHtml + todoHtml + callHtml);
+                                //if (string.IsNullOrEmpty(appHtml) && string.IsNullOrEmpty(todoHtml) && string.IsNullOrEmpty(callHtml))
                                 //singContentHtml.Append("<div class='HouverTaskItem' style='margin-top:0px; height: 0.1px;'></div>");
 
-                            if (!userTimeDic[thisKey].ContainsKey("UserHours"))
-                                userTimeDic[thisKey].Add("UserHours", allUserHours);
-                            // userTimeDic[thisKey]["UserHours"] += ;
+                                if (!userTimeDic[thisKey].ContainsKey("UserHours"))
+                                    userTimeDic[thisKey].Add("UserHours", allUserHours);
+                                // userTimeDic[thisKey]["UserHours"] += ;
 
-                            if (!userTimeDic[thisKey].ContainsKey("RemainHours"))
-                                userTimeDic[thisKey].Add("RemainHours", allRemainHours);
+                                if (!userTimeDic[thisKey].ContainsKey("RemainHours"))
+                                    userTimeDic[thisKey].Add("RemainHours", allRemainHours);
+                            }
+
+
                         }
-                       
-
                     }
+
                     if (workList != null && workList.Count > 0)
                     {
                         foreach (var thisWork in workList)
@@ -390,7 +398,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                                     singContentHtml.Append($"<ul class='HouverTask'><li style='min-height:27px;margin-bottom: 1px;height:auto;border-width: 0px;'><div class='border'></div><div class='Hover-t'>{timeHtml}</div></li><li data-res='{res.id.ToString()}' data-date='{chooseDate.ToString("yyyy-MM-dd HH:mm")}'><div class='border'></div><div class='TaskConter'><div class='t1'>{appHtml + todoHtml + callHtml}</div><div class='t2'></div></div></li>");
                                     for (int i = 0; i < 23; i++)
                                     {
-                                        singContentHtml.Append($"<li {(i>=7&&i<=18? "style='background-color:white;'" : "")} data-res='{res.id.ToString()}' data-date='{chooseDate.AddHours(i+1).ToString("yyyy-MM-dd HH:mm")}'><div class='border'></div><div class='TaskConter'><div class='t1'></div><div class='t2'></div></div></li>");
+                                        singContentHtml.Append($"<li {(i >= 7 && i <= 18 ? "style='background-color:white;'" : "")} data-res='{res.id.ToString()}' data-date='{chooseDate.AddHours(i + 1).ToString("yyyy-MM-dd HH:mm")}'><div class='border'></div><div class='TaskConter'><div class='t1'></div><div class='t2'></div></div></li>");
                                     }
                                     singContentHtml.Append("</ul>");
                                     //singContentHtml.Append(appHtml + todoHtml + callHtml);
@@ -405,11 +413,20 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                             }
                         }
                     }
-                    liSingUserContent.Text =  singContentHtml.ToString();
+                    liSingUserContent.Text = singContentHtml.ToString();
                     #endregion
 
                     #region 用户标题
                     var singTitleHtml = new System.Text.StringBuilder();
+                    singTitleHtml.Append("<div class='DaysList'>");
+                    for (int i = 0; i < limitDays; i++)
+                    {
+                        var thisDay = showDate.AddDays(i);
+                        singTitleHtml.Append($"<div class='Days-1'><div class='border'></div>{weekArr[(int)thisDay.DayOfWeek] }- {thisDay.ToString("yyyy-MM-dd") }</div>");
+                    }
+                    singTitleHtml.Append("</div>");
+                    //if (!isSingResPage)
+                    //{
                     singTitleHtml.Append("<div class='DaysList'>");
                     if (resList != null && resList.Count > 0)
                         singTitleHtml.Append($"<div class='Days-2'><div class='border'></div>个人</div>");
@@ -421,15 +438,19 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                         }
                     }
                     singTitleHtml.Append("</div>");
+
                     singTitleHtml.Append("<ul class='ContainerTop-User'>");
                     var groupNum = 0;
-                    if(isShowNoRes)
+                    if (isShowNoRes)
                         singTitleHtml.Append($"<li data-Group='Group{groupNum}'><div class='border'></div>无负责人</li>");
-                    if (resList != null && resList.Count > 0)
+                    for (int i = 0; i < limitDays; i++)
                     {
-                        foreach (var res in resList)
+                        if (resList != null && resList.Count > 0)
                         {
-                            singTitleHtml.Append($"<li data-Group='Group{groupNum}'><div class='border'></div>{res.name}</li>");
+                            foreach (var res in resList)
+                            {
+                                singTitleHtml.Append($"<li data-Group='Group{groupNum}'><div class='border'></div>{res.name}</li>");
+                            }
                         }
                     }
                     if (workList != null && workList.Count > 0)
@@ -448,7 +469,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                         }
                     }
                     singTitleHtml.Append("</ul>");
-
+                    //}
                     liSingUserShow.Text = singTitleHtml.ToString();
                     #endregion
                 }
@@ -654,7 +675,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     if ((!isShowCanCall) && _.status_id == (int)DTO.DicEnum.SERVICE_CALL_STATUS.CANCEL)
                         continue;
                     var thisAccount = acccBll.GetCompany(_.account_id);
-                    appHtml += $"<div class='HouverTaskItem' style='margin-top:{(ReturnDiffTime(_.start_time, date) *30.5)}px'><div class='UserContainer' data-date='{date.ToString("yyyy-MM-dd")}' data-res='{resId}'><div class='hovertask hoverCall {(_.status_id != (int)DTO.DicEnum.SERVICE_CALL_STATUS.DONE ? "stockstask" : "")}' data-val='{_.id.ToString()}' data-date='{date.ToString("yyyy-MM-dd")}'  data-res='{resId}' data-type='CallDiv' style='height:{(ReturnDiffHeight(_.start_time,_.end_time, date) *30.5)}px;'><p>{(thisAccount != null ? thisAccount.name : "")}</p><p>{_.description}</p><div class='HiddenToolTip'><p>客户名称：{(thisAccount != null ? thisAccount.name : "")}</p><p>客户电话：{(thisAccount != null ? thisAccount.phone : "")}</p><p>起止日期：{Tools.Date.DateHelper.ConvertStringToDateTime(_.start_time).ToString("yyyy-MM-dd")}-{Tools.Date.DateHelper.ConvertStringToDateTime(_.end_time).ToString("yyyy-MM-dd")}</p>{GetTicketToolTip(_.id)}</div></div></div></div> ";
+                    appHtml += $"<div class='HouverTaskItem' style='margin-top:{(ReturnDiffTime(_.start_time, date) * 30.5)}px'><div class='UserContainer' data-date='{date.ToString("yyyy-MM-dd")}' data-res='{resId}'><div class='hovertask hoverCall {(_.status_id != (int)DTO.DicEnum.SERVICE_CALL_STATUS.DONE ? "stockstask" : "")}' data-val='{_.id.ToString()}' data-date='{date.ToString("yyyy-MM-dd")}'  data-res='{resId}' data-type='CallDiv' style='height:{(ReturnDiffHeight(_.start_time, _.end_time, date) * 30.5)}px;'><p>{(thisAccount != null ? thisAccount.name : "")}</p><p>{_.description}</p><div class='HiddenToolTip'><p>客户名称：{(thisAccount != null ? thisAccount.name : "")}</p><p>客户电话：{(thisAccount != null ? thisAccount.phone : "")}</p><p>起止日期：{Tools.Date.DateHelper.ConvertStringToDateTime(_.start_time).ToString("yyyy-MM-dd")}-{Tools.Date.DateHelper.ConvertStringToDateTime(_.end_time).ToString("yyyy-MM-dd")}</p>{GetTicketToolTip(_.id)}</div></div></div></div> ";
                     var endDate = Tools.Date.DateHelper.ToUniversalTimeStamp(date.AddDays(1));// Tools.Date.DateHelper.ConvertStringToDateTime(_.end_time);
                     var thisTimeStamp = Tools.Date.DateHelper.ToUniversalTimeStamp(date);
                     if (endDate < _.end_time)
@@ -692,7 +713,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     }
                     toolTipHtml += $"<p>负责人:{ticketBll.GetResName(ticket.id)}</p>";
                     toolTipHtml += $"<p>工单状态：{ticStaList.First(_ => _.id == ticket.status_id).name}</p>";
-                    if(ticket.priority_type_id!=null)
+                    if (ticket.priority_type_id != null)
                         toolTipHtml += $"<p>工单优先级：{priorityList.First(_ => _.id == ticket.priority_type_id).name}</p>";
                     toolTipHtml += $"<p>工单描述：{ticket.description}</p>";
                 }
@@ -717,7 +738,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     if (isSingel)
                         appHtml += $"<div class='HouverTaskItem' style='margin-top:{(ReturnDiffTime(_.start_time, date) * 30.5)}px;position: relative;'><div class='UserContainer' data-date='{date.ToString("yyyy-MM-dd")}' data-res=''>";
                     var thisAccount = acccBll.GetCompany(_.account_id);
-                    appHtml += $"<div class='hovertask hoverCall' data-val='{_.id.ToString()}' data-date='{date.ToString("yyyy-MM-dd")}' {(isSingel? "style='height: "+ (ReturnDiffHeight(_.start_time, _.end_time, date) * 30.5) + "px;'":"")}><p>{(thisAccount != null ? thisAccount.name : "")}</p><p>{_.description}</p><div class='HiddenToolTip'><p>客户名称：{(thisAccount != null ? thisAccount.name : "")}</p><p>客户电话：{(thisAccount != null ? thisAccount.phone : "")}</p><p>起止日期：{Tools.Date.DateHelper.ConvertStringToDateTime(_.start_time).ToString("yyyy-MM-dd")}-{Tools.Date.DateHelper.ConvertStringToDateTime(_.end_time).ToString("yyyy-MM-dd")}</p>{GetTicketToolTip(_.id)}</div></div>";
+                    appHtml += $"<div class='hovertask hoverCall' data-val='{_.id.ToString()}' data-date='{date.ToString("yyyy-MM-dd")}' {(isSingel ? "style='height: " + (ReturnDiffHeight(_.start_time, _.end_time, date) * 30.5) + "px;'" : "")}><p>{(thisAccount != null ? thisAccount.name : "")}</p><p>{_.description}</p><div class='HiddenToolTip'><p>客户名称：{(thisAccount != null ? thisAccount.name : "")}</p><p>客户电话：{(thisAccount != null ? thisAccount.phone : "")}</p><p>起止日期：{Tools.Date.DateHelper.ConvertStringToDateTime(_.start_time).ToString("yyyy-MM-dd")}-{Tools.Date.DateHelper.ConvertStringToDateTime(_.end_time).ToString("yyyy-MM-dd")}</p>{GetTicketToolTip(_.id)}</div></div>";
                     if (isSingel)
                         appHtml += "</div></div>";
                     var endDate = Tools.Date.DateHelper.ToUniversalTimeStamp(date.AddDays(1));// Tools.Date.DateHelper.ConvertStringToDateTime(_.end_time);
@@ -771,14 +792,14 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         /// <summary>
         /// 获取临近的半刻钟的时间
         /// </summary>
-        protected DateTime ReturnNearDate(DateTime date,bool isStart = true)
+        protected DateTime ReturnNearDate(DateTime date, bool isStart = true)
         {
-            if(date.Minute>=0&& date.Minute < 30)
+            if (date.Minute >= 0 && date.Minute < 30)
             {
                 if (isStart)
-                    return date.AddMinutes( date.Minute-30);
-                else 
-                    return date.AddMinutes( 30 - date.Minute);
+                    return date.AddMinutes(date.Minute - 30);
+                else
+                    return date.AddMinutes(30 - date.Minute);
             }
             else
             {
@@ -791,21 +812,21 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         /// <summary>
         /// 返回开始时间相差多少个半小时
         /// </summary>
-        protected int ReturnDiffTime(long startDate,DateTime date)
+        protected int ReturnDiffTime(long startDate, DateTime date)
         {
             var dateTemp = Tools.Date.DateHelper.ToUniversalTimeStamp(date);
             if (startDate <= dateTemp)
                 return 0;
             var diff = startDate - dateTemp;
-            return (int)((diff)/1000/60/30);
+            return (int)((diff) / 1000 / 60 / 30);
         }
-        protected int ReturnDiffHeight(long startDate,long endDate, DateTime date)
+        protected int ReturnDiffHeight(long startDate, long endDate, DateTime date)
         {
             var dateTemp = Tools.Date.DateHelper.ToUniversalTimeStamp(date);
             var tomTemp = Tools.Date.DateHelper.ToUniversalTimeStamp(date.AddDays(1));
             if (startDate < dateTemp)
                 startDate = dateTemp;
-            else if(endDate> tomTemp)
+            else if (endDate > tomTemp)
                 endDate = tomTemp;
             if (startDate == endDate)
                 return 1;

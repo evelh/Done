@@ -84,7 +84,6 @@
                         </td>
                         <%} %>
                         <td align="right" class="helpLink"><a class="HelperLinkIcon" title=""></a></td>
-                        <!--todo 上一工单，下一工单的显示 跳转 --->
                     </tr>
                 </tbody>
             </table>
@@ -238,7 +237,7 @@
             <div class="Text">费用<span class="KeyCode"></span></div>
             <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -212px;"></div>
         </div>
-        <div class="QuickLaunchButton ServiceCall DisabledState">
+        <div class="QuickLaunchButton ServiceCall DisabledState" onclick="AddTicketServiceCall()">
             <div class="Text">服务<span class="KeyCode"></span></div>
             <div class="Icon" style="background: url(../Images/TicketIcon.png) no-repeat -14px -260px;"></div>
         </div>
@@ -248,7 +247,7 @@
         </div>
     </div>
 
-    <div class="MessageBarContainer" style="margin-left: 45px; margin-top: 66px;">
+    <div class="MessageBarContainer" style="margin-left: 45px; margin-top: 66px;padding-top: 6px;">
         <div class="MessageBar Alert" id="AccountAlert">
             <div class="IconContainer">
                 <div class="MessageBarIcon Alert" style="background-position: -1px -1px;"></div>
@@ -283,7 +282,10 @@
                     <div class="ReadOnlyData QuickEditEnabled">
                         <div class="LabelContainer"><span class="Label">联系人</span></div>
                         <div class="Value">
-                            <a class="Button ButtonIcon Link NormalState" style="float: left;" tabindex="0" onclick="OpenContact('<%=thisContact == null ? "" : thisContact.id.ToString() %>')"><%=thisContact == null ? "" : thisContact.name %></a><div class="InlineIconButton InlineIcon Note NormalState AddNoteIcon" onclick="AddTicketNote('ckContact')"></div>
+                            <a class="Button ButtonIcon Link NormalState" style="float: left;" tabindex="0" onclick="OpenContact('<%=thisContact == null ? "" : thisContact.id.ToString() %>')"><%=thisContact == null ? "" : thisContact.name %></a>
+                            <%if (thisContact != null) { %>
+                            <div class="InlineIconButton InlineIcon Note NormalState AddNoteIcon" onclick="AddTicketNote('ckContact')"></div>
+                            <%} %>
                         </div>
                     </div>
                     <div class="ReadOnlyData QuickEditEnabled">
@@ -406,7 +408,9 @@
                                 </div>
                                 <div class="Right">
                                     <div class="Name"><a class="Button ButtonIcon Link NormalState" style="float: left;" tabindex="0"><%=priRes == null ? "" : priRes.name %></a></div>
+                                    <% if (priRes != null){ %>
                                     <div class="InlineIconButton InlineIcon Note NormalState AddNoteIcon" onclick="AddTicketNote('priRes')"></div>
+                                    <%} %>
                                     <% EMT.DoneNOW.Core.sys_role ticketRole = null;
                                         if (thisTicket.role_id != null)
                                         {
@@ -563,14 +567,12 @@
                             <div class="IdentificationTextContainer">
                                 <div class="IdentificationText"><%=thisTicket.no %></div>
                                 <div class="CopyTextButton ButtonIcon CopyToClipboard NormalState CopyText">
-                                    <div class="Icon" style="background: url(../Images/Icons.png) no-repeat -22px -145px;"></div>
+                                    <div class="Icon btn" style="background: url(../Images/Icons.png) no-repeat -22px -145px;" data-clipboard-text="<%=thisTicket.no %>" onclick="CopyText('<%=thisTicket.no %>')"></div>
                                     <div class="SourceText"><%=thisTicket.no %></div>
                                 </div>
                                 <div class="CopyTextButton ButtonIcon CopyLinkToClipboard NormalState">
-                                    <div class="Icon" style="background: url(../Images/Icons.png) no-repeat -6px -145px;"></div>
-                                    <div class="SourceText">
-                                        <!--需要复制的链接 -->
-                                    </div>
+                                    <div class="Icon btn" style="background: url(../Images/Icons.png) no-repeat -6px -145px;" onclick="CopyText('<%=Request.Url %>')"></div>
+                                    <div class="SourceText"><%=Request.Url %></div>
                                 </div>
                             </div>
                         </div>
@@ -585,8 +587,8 @@
                     </div>
                     <div class="Title">
                         <div class="Text"><%=thisTicket.title %></div>
-                        <div class="CopyTextButton ButtonIcon CopyToClipboard NormalState" id="zc9d87df7327f4372b4b2fb9cf512f940" title="Copy “ticket number – ticket title” to clipboard">
-                            <div class="Icon" style="background: url(../Images/Icons.png) no-repeat -22px -145px;"></div>
+                        <div class="CopyTextButton ButtonIcon CopyToClipboard NormalState" id="" title="复制工单编号和标题">
+                            <div class="Icon btn" style="background: url(../Images/Icons.png) no-repeat -22px -145px;" onclick="CopyText('<%=thisTicket.no %>-<%=thisTicket.title %>')"></div>
                             <div class="SourceText"><%=thisTicket.no %>-<%=thisTicket.title %></div>
                         </div>
                     </div>
@@ -1451,8 +1453,8 @@
                             <div class="Text ShowContactInfo" id="ContactPhone"></div>
                             <div class="LinkButton ShowContactInfo"><a class="Button Mailto Link" href="mailto:"></a></div>
                             <div class="NormalSpacer"></div>
-                            <div class="LinkButton ShowContactInfo"><a class="Button ButtonIcon Link NormalState" id="TranContactTicket" tabindex="0">All Open Tickets (11)</a></div>
-                            <div class="LinkButton ShowContactInfo"><a class="Button ButtonIcon Link NormalState" id="z5e2301fad3194aebac208b89873bb85d" tabindex="0">Last 30 Days (2)</a></div>
+                            <div class="LinkButton ShowContactInfo"><a class="Button ButtonIcon Link NormalState" id="TranContactTicket" tabindex="0"></a></div>
+                            <div class="LinkButton ShowContactInfo"><a class="Button ButtonIcon Link NormalState" id="" tabindex="0"></a></div>
                         </div>
                     </div>
                 </div>
@@ -1480,13 +1482,11 @@
                                     <tr class="TableRow">
                                         <td>
                                             <div class="Text HighImportance">
-                                                <%
-                                                    decimal entryHours = 0;
+                                                <%  decimal entryHours = 0;
                                                     if (entryList != null && entryList.Count > 0)
                                                     {
                                                         entryHours = entryList.Sum(_ => _.hours_worked ?? 0);
-                                                    }
-                                                %>
+                                                    } %>
                                                 <%=entryHours.ToString("#0.00")+"h" %>
                                             </div>
                                         </td>
@@ -1641,6 +1641,7 @@
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/Ticket.js"></script>
+<script src="../Scripts/clipboard.min.js"></script>
 <!--页面常规信息js操作 -->
 <script>
 
@@ -1915,6 +1916,10 @@
     // 新增工单费用
     function AddTicketExpense() {
         window.open("../Project/ExpenseManage.aspx?ticket_id=<%=thisTicket.id %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_EXPENSE %>", 'left=200,top=200,width=600,height=800', false);
+    }
+    // 新增工单服务预定 
+    function AddTicketServiceCall() {
+        window.open("../ServiceDesk/TaskServiceCall.aspx?ticketId=<%=thisTicket.id %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ADD_TICKET_SERVICECALL %>", 'left=200,top=200,width=600,height=800', false);
     }
     // 添加工单成本
     function AddTicketCharge() {
@@ -2736,5 +2741,17 @@
                 }
             }
         })
+    }
+
+    function CopyText(text) {
+        var clipboard = new ClipboardJS('.btn', {
+            text: function () {
+                return text;
+            }
+        });
+
+        clipboard.on('success', function (e) {
+            console.log(e);
+        });
     }
 </script>

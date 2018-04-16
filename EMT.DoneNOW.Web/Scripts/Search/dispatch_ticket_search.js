@@ -72,7 +72,7 @@ function AddNewCall() {
 }
 
 function AddAlreadyCall() {
-
+    window.open("../ServiceDesk/TaskServiceCall?ticketId=" + entityid, windowType.blank, 'left=200,top=200,width=1280,height=800', false);
 }
 
 function RightClickFunc() {
@@ -90,10 +90,9 @@ function RightClickFunc() {
                 $("#MenuEditTicket").text("编辑任务");
                 $("#MenuViewTicket").text("查看任务");
             }
-            else {
-                
-            }
         }
     });
+    $("#MenuAddNewCall").text("加入到新的服务预定");
+    $("#MenuAddAlreadyCall").text("加入到已存在的服务预定");
     ShowContextMenu();
 }

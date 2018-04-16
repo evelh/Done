@@ -758,7 +758,7 @@ option {
     }
 
         .ContainerTop-One .ContainerDays .Days-1 {
-            background-color: #F0F5FB;
+            /*background-color: #F0F5FB;*/
             height: 25px;
             border-bottom: 1px solid #E8E8E8;
             width: 100%;
@@ -802,7 +802,7 @@ option {
 }
 
     .ContainerTop-Two .Days-1 {
-        background-color: #F0F5FB;
+        background-color: #79a6d2;
         height: 25px;
         border-bottom: 1px solid #E8E8E8;
         width: 100%;
@@ -812,6 +812,8 @@ option {
         font-size: 12px;
         font-weight: bold;
         position: relative;
+        float: left;
+        color:white;
     }
     .ContainerTop-Two .DaysList {
         height: 26px;

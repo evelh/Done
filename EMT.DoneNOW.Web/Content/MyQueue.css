@@ -10,9 +10,9 @@
     height: 100%;
     position: fixed;
     left: 200px;
-    width: 85%;
-    min-width: 700px;
-    max-width: 1500px;
+    width: -webkit-calc(100% - 200px);
+    /*min-width: 700px;
+    max-width: 1500px;*/
 }
 .Select {
     background-color: #e4e4e4;
