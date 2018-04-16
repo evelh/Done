@@ -82,22 +82,6 @@
                                         <span style="color: red;">*</span>
                                     </span>
                                 </td>
-                                <td style="height: 100%; cursor: pointer;">
-                                    <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">审批人
-                                    </span>
-                                </td>
-                                <td style="height: 100%; cursor: pointer;">
-                                    <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">隶属
-                                    </span>
-                                </td>
-                                <td style="height: 100%; cursor: pointer;">
-                                    <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">技能
-                                    </span>
-                                </td>
-                                <td style="height: 100%; cursor: pointer;">
-                                    <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">附件
-                                    </span>
-                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -603,7 +587,7 @@
                                         <span class="lblNormalClass">星期一</span>
                                         <div>
                                             <span style="display: inline-block">
-                                                <asp:TextBox ID="monday" runat="server" class="txtBlack8Class" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
+                                                <asp:TextBox ID="monday" runat="server" class="txtBlack8Class weekday" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
                                             </span>
                                         </div>
                                     </td>
@@ -611,7 +595,7 @@
                                         <span class="lblNormalClass">星期二</span>
                                         <div>
                                             <span style="display: inline-block">
-                                                <asp:TextBox ID="tuesday" runat="server" class="txtBlack8Class" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
+                                                <asp:TextBox ID="tuesday" runat="server" class="txtBlack8Class weekday" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
                                             </span>
                                         </div>
                                     </td>
@@ -619,7 +603,7 @@
                                         <span class="lblNormalClass">星期三</span>
                                         <div>
                                             <span style="display: inline-block">
-                                                <asp:TextBox ID="wednesday" runat="server" class="txtBlack8Class" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
+                                                <asp:TextBox ID="wednesday" runat="server" class="txtBlack8Class weekday" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
                                             </span>
                                         </div>
                                     </td>
@@ -627,7 +611,7 @@
                                         <span class="lblNormalClass">星期四</span>
                                         <div>
                                             <span style="display: inline-block">
-                                                <asp:TextBox ID="thursday" runat="server" class="txtBlack8Class" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
+                                                <asp:TextBox ID="thursday" runat="server" class="txtBlack8Class weekday" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
                                             </span>
                                         </div>
                                     </td>
@@ -635,7 +619,7 @@
                                         <span class="lblNormalClass">星期五</span>
                                         <div>
                                             <span style="display: inline-block">
-                                                <asp:TextBox ID="friday" runat="server" class="txtBlack8Class" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
+                                                <asp:TextBox ID="friday" runat="server" class="txtBlack8Class weekday" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
                                             </span>
                                         </div>
                                     </td>
@@ -643,7 +627,7 @@
                                         <span class="lblNormalClass">星期六</span>
                                         <div>
                                             <span style="display: inline-block">
-                                                <asp:TextBox ID="saturday" runat="server" class="txtBlack8Class" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
+                                                <asp:TextBox ID="saturday" runat="server" class="txtBlack8Class weekday" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
                                             </span>
                                         </div>
                                     </td>
@@ -651,13 +635,13 @@
                                         <span class="lblNormalClass">星期日</span>
                                         <div>
                                             <span style="display: inline-block">
-                                                <asp:TextBox ID="sunday" runat="server" class="txtBlack8Class" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
+                                                <asp:TextBox ID="sunday" runat="server" class="txtBlack8Class weekday" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
                                             </span>
                                         </div>
                                     </td>
                                     <td style="width:48px;">
-                                        <span class="lblNormalClass">总计</span>
-                                        <div style="padding-bottom:24px;"><span class="lblNormalClass" id="total">0.00</span></div>
+                                        <span class="lblNormalClass">总计</span><input type="hidden" id="total" name="total" value="0.00" />
+                                        <div style="padding-bottom:24px;"><label class="lblNormalClass" id="ttl">0.00</label></div>
                                     </td>
                                 </tr>
                             </table>
@@ -780,7 +764,7 @@
                         </div>
                         <div class="DivSection" style="margin-top:10px;margin-bottom: 8px;height:240px;">
                             <div>
-                                <label class="lblNormalClass" style="font-size:15px;">休假</label>
+                                <label class="lblNormalClass" style="font-size:15px;">内部成本</label>
                                 <input type="button" value="新增" onclick="AddInterCost()" style="margin-left:20px;width:54px;height:22px;" />
                             </div>
                             <div style="width:100%;height:180px;margin-top:3px;border:1px solid #e8e8fa">
@@ -802,10 +786,6 @@
                         </div>
                     </div>
                 </div>
-                <div style="height: 100%; width: 100%; display: none;" class="C"></div>
-                <div style="height: 100%; width: 100%; display: none;" class="C"></div>
-                <div style="height: 100%; width: 100%; display: none;" class="C"></div>
-                <div style="height: 100%; width: 100%; display: none;" class="C"></div>
             </div>
         </div>
         <script src="../Scripts/jquery-3.1.0.min.js"></script>
@@ -1006,6 +986,18 @@
                 }
                 document.getElementById("interCostTable").innerHTML = str;
             }
+            $(".weekday").change(function () {
+                var total = 0;
+                var weeks = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+                for (var i = 0; i < weeks.length; i++) {
+                    var wd = toDecimal2($("#" + weeks[i]).val());
+                    if (wd != "") {
+                        total += parseFloat(wd);
+                    }
+                }
+                $("#ttl").text(total);
+                $("#total").val(total);
+            })
         </script>
     </form>
 </body>

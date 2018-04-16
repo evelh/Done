@@ -96,6 +96,43 @@ namespace EMT.DoneNOW.Web
                         this.IsRequiredtosubmittimesheets.Checked = true;
                     if (resourcedata.outsource_security_role_type_id != null && !string.IsNullOrEmpty(resourcedata.outsource_security_role_type_id.ToString()))//外部权限
                         this.Outsource_Security.SelectedValue = resourcedata.outsource_security_role_type_id.ToString();
+
+
+
+                    if (resourcedata.type_id != null)
+                        type_id.SelectedValue = resourcedata.type_id.Value.ToString();
+                    if (resourcedata.payroll_type_id != null)
+                        payroll_type_id.SelectedValue = resourcedata.payroll_type_id.Value.ToString();
+                    if (resourcedata.hire_date != null)
+                        hire_date.Text = resourcedata.hire_date.Value.ToString("yyyy-MM-dd");
+                    time_sheet_start_date.Text = resourcedata.time_sheet_start_date.ToString("yyyy-MM-dd");
+                    if (resourcedata.payroll_identifier != null)
+                        payroll_identifier.Text = resourcedata.payroll_identifier;
+                    if (resourcedata.accounting_reference_id != null)
+                        accounting_reference_id.Text = resourcedata.accounting_reference_id;
+                    var resAvlb = urbll.GetResourceAvailability(id);
+                    if (resAvlb != null)
+                    {
+                        monday.Text = resAvlb.monday == null ? "0.00" : resAvlb.monday.Value.ToString();
+                        tuesday.Text = resAvlb.tuesday == null ? "0.00" : resAvlb.tuesday.Value.ToString();
+                        wednesday.Text = resAvlb.wednesday == null ? "0.00" : resAvlb.wednesday.Value.ToString();
+                        thursday.Text = resAvlb.thursday == null ? "0.00" : resAvlb.thursday.Value.ToString();
+                        friday.Text = resAvlb.friday == null ? "0.00" : resAvlb.friday.Value.ToString();
+                        saturday.Text = resAvlb.saturday == null ? "0.00" : resAvlb.saturday.Value.ToString();
+                        sunday.Text = resAvlb.sunday == null ? "0.00" : resAvlb.sunday.Value.ToString();
+                        total.Value = resAvlb.total == null ? "0.00" : resAvlb.total.Value.ToString();
+                        goal.Text = resAvlb.goal == null ? "0.00" : resAvlb.goal.Value.ToString();
+                        if (resAvlb.travel_restrictions_id != null)
+                            travel_restrictions_id.SelectedValue = resAvlb.travel_restrictions_id.Value.ToString();
+                    }
+                    var policy = urbll.GetResourceTimeoffPolicy(id);
+                    if (policy != null)
+                    {
+                        timeoff_policy_id.SelectedValue = policy.timeoff_policy_id.ToString();
+                        effective_date.Text = policy.effective_date.ToString("yyyy-MM-dd");
+                        timeoff_policy_id.Enabled = false;
+                        effective_date.ReadOnly = true;
+                    }
                 }
             }
             else {
@@ -182,6 +219,39 @@ namespace EMT.DoneNOW.Web
             this.Outsource_Security.DataSource = dic.FirstOrDefault(_ => _.Key == "Outsource_Security").Value;
             Outsource_Security.DataBind();
             Outsource_Security.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
+
+            //员工类型
+            var genBll = new GeneralBLL();
+            var resType = genBll.GetDicValues(GeneralTableEnum.RESOURCE_TYPE);
+            type_id.DataTextField = "show";
+            type_id.DataValueField = "val";
+            type_id.DataSource = resType;
+            type_id.DataBind();
+
+            //薪资类型
+            var payType = genBll.GetDicValues(GeneralTableEnum.PAYROLL_TYPE);
+            payroll_type_id.DataTextField = "show";
+            payroll_type_id.DataValueField = "val";
+            payroll_type_id.DataSource = payType;
+            payroll_type_id.DataBind();
+
+            hire_date.Text = DateTime.Now.ToString("yyyy-MM-dd");
+            time_sheet_start_date.Text = DateTime.Now.ToString("yyyy-MM-dd");
+
+            // 休假方案
+            var policyList = new TimeOffPolicyBLL().GetPolicyList();
+            timeoff_policy_id.DataTextField = "name";
+            timeoff_policy_id.DataValueField = "id";
+            timeoff_policy_id.DataSource = policyList;
+            timeoff_policy_id.DataBind();
+            timeoff_policy_id.Items.Insert(0, new ListItem() { Value = "0", Text = "", Selected = true });
+
+            // 出差限度
+            var travelRest = genBll.GetDicValues(GeneralTableEnum.TRAVEL_RESTRICTIONS);
+            travel_restrictions_id.DataTextField = "show";
+            travel_restrictions_id.DataValueField = "val";
+            travel_restrictions_id.DataSource = travelRest;
+            travel_restrictions_id.DataBind();
         }
         //protected void Avatar(object sender, ImageClickEventArgs e)
         //{
@@ -355,6 +425,14 @@ namespace EMT.DoneNOW.Web
             param.sys_user.mobile_phone = this.mobile_phone.Text.Trim().ToString();
             param.sys_user.name = this.name.Text.Trim().ToString();
 
+            var res = AssembleModel<sys_resource>();
+            param.sys_res.type_id = res.type_id;
+            param.sys_res.payroll_type_id = res.payroll_type_id;
+            param.sys_res.hire_date = res.hire_date;
+            param.sys_res.payroll_identifier = res.payroll_identifier;
+            param.sys_res.time_sheet_start_date = res.time_sheet_start_date;
+            param.sys_res.accounting_reference_id = res.accounting_reference_id;
+            param.availability = AssembleModel<sys_resource_availability>();
 
             param.sys_res.avatar = SavePic();//保存头像
             if (this.CanEditSkills.Checked)

@@ -49,6 +49,7 @@ namespace EMT.DoneNOW.DTO
         OUTSOURCE_SECURITY = 51,                  //外包权限
         RESOURCE_TYPE = 52,                     // 员工类型
         PAYROLL_TYPE = 53,                      // 薪资类型
+        TRAVEL_RESTRICTIONS = 54,               // 员工出差限度
         TIME_OFF_PERIOD_TYPE = 56,              // 休假策略：累计增长周期类型
         ATTACHMENT_TYPE = 62,                   // 附件类型
         DEPARTMENT_CATE = 64,                     //部门：类型
@@ -56,6 +57,7 @@ namespace EMT.DoneNOW.DTO
         LIMIT_TYPE = 76,                         //系统权限：类型 取值 有无、全部部分 等
         LIMIT_TYPE_VALUE = 77,                    //系统权限：类型详情 取值 有无（有、无）、全部部分（全部、我的、无）等
         MATERIAL_CODE_TO_USE = 80,              // 系统管理：系统配置：配送报价项转为账单时使用的物料代码
+        HOLIDAY_SET = 94,                       // 节假日设置
         LINE_OF_BUSINESS=95,                    //系统管理：组织：业务条线
         COST_CODE_CATE=106,                     //产品：成本种类
         INSTALLED_PRODUCT_CATE = 108,           // 配置项种类
@@ -90,6 +92,7 @@ namespace EMT.DoneNOW.DTO
         KNOWLEDGE_BASE_CATE = 164,              // 知识库文章目录
         KB_PUBLISH_TO_TYPE=165,                  // 知识库：发布对象类型
         TICKET_CATE = 167,                       // 工单种类
+        SKILLS_CATE = 175,                      // 技能类别
     }
 
     /// <summary>
@@ -483,6 +486,16 @@ namespace EMT.DoneNOW.DTO
         }
 
         /// <summary>
+        /// 技能类别的类型 - 58
+        /// </summary>
+        public enum SKILLS_CATE_TYPE
+        {
+            SKILLS = 676,               // 技能
+            CERTIFICATION = 677,        // 证书培训
+            DEGREE = 678,               // 学位
+        }
+
+        /// <summary>
         /// 附件类型-62
         /// </summary>
         public enum ATTACHMENT_TYPE
@@ -833,6 +846,7 @@ namespace EMT.DoneNOW.DTO
             CTT_CONTRACT_COST_PRODUCT_SN = 1401,        // 成本关联产品的串号
             PURCHASE_RECEIVE = 1402,                    // 采购接收
             PURCHASE_RECEIVE_SN = 1403,                 // 采购接收串号
+            HOLIDAY = 1404,                             // 节假日假期日
             TIMEOFF_POLICY = 1405,                      // 假期策略
             TIMEOFF_ITEM = 1406,                        // 假期策略类别
             TIMEOFF_ITEM_TIER = 1407,                   // 假期策略级别

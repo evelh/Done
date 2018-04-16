@@ -28,6 +28,28 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 根据tableId获取字典值列表
+        /// </summary>
+        /// <param name="tableId"></param>
+        /// <returns></returns>
+        public List<DictionaryEntryDto> GetDicValues(long tableId)
+        {
+            var table = new d_general_table_dal().GetById((int)tableId);
+            return new d_general_dal().GetDictionary(table);
+        }
+
+        /// <summary>
+        /// 根据tableId和parent_id获取字典值列表
+        /// </summary>
+        /// <param name="tableId"></param>
+        /// <param name="parentId"></param>
+        /// <returns></returns>
+        public List<DictionaryEntryDto> GetDicValues(GeneralTableEnum tableId, long parentId)
+        {
+            return new d_general_dal().FindListBySql<DictionaryEntryDto>($"SELECT id as val,`name` as `show` FROM d_general WHERE general_table_id={(long)tableId} AND parent_id={parentId} AND delete_time=0 AND is_active=1");
+        }
+
+        /// <summary>
         /// 根据字典项的table name和字典项name获取字典项id
         /// </summary>
         /// <param name="tableName"></param>
@@ -675,5 +697,157 @@ namespace EMT.DoneNOW.BLL
             OperLogBLL.OperLogUpdate<d_general>(data, oldData, data.id, userId, OPER_LOG_OBJ_CATE.General_Code, "编辑字典项");
             return true;
         }
+
+        #region 节假日设置
+        /// <summary>
+        /// 新增节假日
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="desc"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool AddHolidaySet(string name, string desc, long userId)
+        {
+            d_general holiday = new d_general();
+            holiday.id = (int)_dal.GetNextIdCom();
+            holiday.name = name;
+            holiday.remark = desc;
+            holiday.is_active = 1;
+            holiday.is_system = 0;
+            holiday.general_table_id = (int)GeneralTableEnum.HOLIDAY_SET;
+            holiday.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            holiday.update_time = holiday.create_time;
+            holiday.create_user_id = userId;
+            holiday.update_user_id = userId;
+            _dal.Insert(holiday);
+            OperLogBLL.OperLogAdd<d_general>(holiday, holiday.id, userId, OPER_LOG_OBJ_CATE.General_Code, "新增节假日");
+
+            return true;
+        }
+
+        /// <summary>
+        /// 编辑节假日
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="desc"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool EditHolidaySet(long id, string name, string desc, long userId)
+        {
+            d_general holiday = _dal.FindById(id);
+            d_general holidayOld = _dal.FindById(id);
+            holiday.name = name;
+            holiday.remark = desc;
+            var dsc = OperLogBLL.CompareValue<d_general>(holidayOld, holiday);
+            if (!string.IsNullOrEmpty(dsc))
+            {
+                holiday.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                holiday.update_user_id = userId;
+                _dal.Update(holiday);
+                OperLogBLL.OperLogUpdate(dsc, holiday.id, userId, OPER_LOG_OBJ_CATE.General_Code, "编辑节假日");
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 删除节假日
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool DeleteHolidaySet(long id, long userId)
+        {
+            var holidayCnt = _dal.FindSignleBySql<int>($"select count(0) from d_holiday where holiday_set_id={id}");
+            if (holidayCnt > 0)
+                return false;
+
+            var holiday = _dal.FindById(id);
+            holiday.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            holiday.delete_user_id = userId;
+            _dal.Update(holiday);
+            OperLogBLL.OperLogDelete<d_general>(holiday, holiday.id, userId, OPER_LOG_OBJ_CATE.General_Code, "删除节假日");
+
+            return true;
+        }
+
+        /// <summary>
+        /// 获取节假日详情
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public d_holiday GetHoliday(long id)
+        {
+            return new d_holiday_dal().FindById(id);
+        }
+
+        /// <summary>
+        /// 新增节假日详情
+        /// </summary>
+        /// <param name="holiday"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool AddHoliday(d_holiday holiday, long userId)
+        {
+            var dal = new d_holiday_dal();
+            var find = dal.FindSignleBySql<int>($"select count(0) from d_holiday where holiday_set_id={holiday.holiday_set_id} and hd='{holiday.hd}'");
+            if (find > 0)
+                return false;
+
+            dal.Insert(holiday);
+            OperLogBLL.OperLogAdd<d_holiday>(holiday, 0, userId, OPER_LOG_OBJ_CATE.HOLIDAY, "新增假期日");
+            return true;
+        }
+
+        /// <summary>
+        /// 编辑节假日详情
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="date"></param>
+        /// <param name="type"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool EditHoliday(long id, string name, DateTime date, int type, long userId)
+        {
+            var dal = new d_holiday_dal();
+            var holiday = dal.FindById(id);
+            var find = dal.FindSignleBySql<int>($"select count(0) from d_holiday where id<>{id} holiday_set_id={holiday.holiday_set_id} and hd='{holiday.hd}'");
+            if (find > 0)
+                return false;
+
+            var holidayOld = dal.FindById(id);
+            holiday.description = name;
+            holiday.hd = date;
+            holiday.hd_type = type;
+            var desc = OperLogBLL.CompareValue<d_holiday>(holidayOld, holiday);
+            if (!string.IsNullOrEmpty(desc))
+            {
+                dal.Update(holiday);
+                OperLogBLL.OperLogUpdate(desc, holiday.id, userId, OPER_LOG_OBJ_CATE.HOLIDAY, "编辑假期日");
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 删除节假日详情
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool DeleteHoliday(long id, long userId)
+        {
+            var dal = new d_holiday_dal();
+            var holiday = dal.FindById(id);
+            if (holiday == null)
+                return false;
+
+            dal.Delete(holiday);
+            OperLogBLL.OperLogDelete<d_holiday>(holiday, holiday.id, userId, OPER_LOG_OBJ_CATE.HOLIDAY, "删除假期日");
+
+            return true;
+        }
+        #endregion
     }
 }

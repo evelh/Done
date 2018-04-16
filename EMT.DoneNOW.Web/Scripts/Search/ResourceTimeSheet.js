@@ -1,4 +1,4 @@
-﻿$("#noData").hide();
+﻿$("#noData").hide(); $("#SelectLi").hide();
 $("#SearchTable").append("<tr id='addData'><td><select id='selRes'></select></td><td><select id='selTier'><option value='1'>第一级</option><option value='2'>第二级</option><option value='3'>第三级</option></select></td><td><input type='button' value='保存' onclick='SaveNew()' /></td></tr>");
 $("#addData").hide();
 requestData("/Tools/ResourceAjax.ashx?act=GetActiveRes", null, function (data) {

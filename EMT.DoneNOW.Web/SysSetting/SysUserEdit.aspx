@@ -79,6 +79,7 @@
                                 </td>
                                 <td style="height: 100%; cursor: pointer;">
                                     <span class="ATTabControlTabLabel" style="position: relative; z-index: 900;">人力资源
+                                        <span style="color: red;">*</span>
                                     </span>
                                 </td>
                                 <td style="height: 100%; cursor: pointer;">
@@ -540,7 +541,273 @@
                         </div>
                     </div>
                 </div>
-                <div style="height: 100%; width: 100%; display: none;" class="C"></div>
+                <div style="height: 100%; width: 100%; display: none;" class="C">
+                    <div class="DivScrollingContainer Tab">
+                        <div class="DivSection" style="margin-top:10px;margin-bottom: 8px;">
+                            <table cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="width:320px;">
+                                        <span class="lblNormalClass">员工类型<span style="color: red;">*</span></span>
+                                        <div>
+                                            <span style="display: inline-block">
+                                                <asp:DropDownList ID="type_id" runat="server" Width="160"></asp:DropDownList>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td style="width:320px;">
+                                        <span class="lblNormalClass">薪资类型<span style="color: red;">*</span></span>
+                                        <div>
+                                            <span style="display: inline-block">
+                                                <asp:DropDownList ID="payroll_type_id" runat="server" Width="160"></asp:DropDownList>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="lblNormalClass">入职日期<span style="color: red;">*</span></span>
+                                        <div>
+                                            <span style="display: inline-block">
+                                                <asp:TextBox ID="hire_date" runat="server" class="txtBlack8Class Wdate" type="text" maxlength="50" style="width: 158px;" onclick="WdatePicker()" ></asp:TextBox>                                                                     
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="lblNormalClass">薪资标识符</span>
+                                        <div>
+                                            <span style="display: inline-block">
+                                                <asp:TextBox ID="payroll_identifier" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width: 158px;" ></asp:TextBox>                                                                     
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="lblNormalClass">工时表开始时间<span style="color: red;">*</span></span>
+                                        <div>
+                                            <span style="display: inline-block">
+                                                <asp:TextBox ID="time_sheet_start_date" runat="server" class="txtBlack8Class Wdate" type="text" maxlength="50" style="width: 158px;" onclick="WdatePicker()" ></asp:TextBox>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="lblNormalClass">会计设置编号</span>
+                                        <div>
+                                            <span style="display: inline-block">
+                                                <asp:TextBox ID="accounting_reference_id" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width: 158px;" ></asp:TextBox>                                                                     
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="DivSection" style="margin-top:10px;margin-bottom: 8px;">
+                            <div><label class="lblNormalClass" style="font-size:15px;">每天工作时间</label></div>
+                            <table cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="width:48px;">
+                                        <span class="lblNormalClass">星期一</span>
+                                        <div>
+                                            <span style="display: inline-block">
+                                                <asp:TextBox ID="monday" runat="server" class="txtBlack8Class weekday" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td style="width:48px;">
+                                        <span class="lblNormalClass">星期二</span>
+                                        <div>
+                                            <span style="display: inline-block">
+                                                <asp:TextBox ID="tuesday" runat="server" class="txtBlack8Class weekday" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td style="width:48px;">
+                                        <span class="lblNormalClass">星期三</span>
+                                        <div>
+                                            <span style="display: inline-block">
+                                                <asp:TextBox ID="wednesday" runat="server" class="txtBlack8Class weekday" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td style="width:48px;">
+                                        <span class="lblNormalClass">星期四</span>
+                                        <div>
+                                            <span style="display: inline-block">
+                                                <asp:TextBox ID="thursday" runat="server" class="txtBlack8Class weekday" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td style="width:48px;">
+                                        <span class="lblNormalClass">星期五</span>
+                                        <div>
+                                            <span style="display: inline-block">
+                                                <asp:TextBox ID="friday" runat="server" class="txtBlack8Class weekday" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td style="width:48px;">
+                                        <span class="lblNormalClass">星期六</span>
+                                        <div>
+                                            <span style="display: inline-block">
+                                                <asp:TextBox ID="saturday" runat="server" class="txtBlack8Class weekday" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td style="width:48px;">
+                                        <span class="lblNormalClass">星期日</span>
+                                        <div>
+                                            <span style="display: inline-block">
+                                                <asp:TextBox ID="sunday" runat="server" class="txtBlack8Class weekday" type="text" maxlength="5" style="width: 40px;" Text="0.00" ></asp:TextBox>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td style="width:48px;">
+                                        <span class="lblNormalClass">总计</span><asp:HiddenField ID="total" runat="server" />
+                                        <div style="padding-bottom:24px;"><label class="lblNormalClass" id="ttl">0.00</label></div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="width:320px;">
+                                        <span class="lblNormalClass">每周计费时间目标</span>
+                                        <div>
+                                            <span style="display: inline-block">
+                                                <asp:TextBox ID="goal" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width: 158px;" Text="0.00" ></asp:TextBox>                                                                     
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td style="width:320px;">
+                                        <span class="lblNormalClass">出差限度</span>
+                                        <div>
+                                            <span style="display: inline-block">
+                                                <asp:DropDownList ID="travel_restrictions_id" runat="server" Width="160"></asp:DropDownList>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="DivSection" style="margin-top:10px;margin-bottom: 8px;">
+                            <div><label class="lblNormalClass" style="font-size:15px;">休假</label></div>
+                            <table cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td style="width:320px;">
+                                        <span class="lblNormalClass">休假方案</span>
+                                        <div>
+                                            <span style="display: inline-block">
+                                                <asp:DropDownList ID="timeoff_policy_id" runat="server" Width="160"></asp:DropDownList>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td style="width:320px;">
+                                        <span class="lblNormalClass">生效日期<span style="color: red;">*</span></span>
+                                        <div>
+                                            <span style="display: inline-block">
+                                                <asp:TextBox ID="effective_date" runat="server" class="txtBlack8Class Wdate" type="text" maxlength="50" style="width: 158px;" onclick="WdatePicker()" ></asp:TextBox>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="background-color:#F0F5FB;border:1px solid #d3d3d3;">
+                                            <div><span style="margin-left:5px;"><%=DateTime.Now.Year %></span></div>
+                                            <div>
+                                                <table>
+                                                    <tr>
+                                                        <td style="width:140px;"></td>
+                                                        <td style="width:140px;"><span>额外时间</span></td>
+                                                        <td><span>年度</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="lblNormalClass" style="margin-left:5px;">年假</span></td>
+                                                        <td><asp:TextBox ID="TextBox1" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width:76px;" Text="0.000" ></asp:TextBox></td>
+                                                        <td><span class="lblNormalClass">0.000</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="lblNormalClass" style="margin-left:5px;">私人时间</span></td>
+                                                        <td><asp:TextBox ID="TextBox2" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width:76px;" Text="0.000" ></asp:TextBox></td>
+                                                        <td><span class="lblNormalClass">0.000</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="lblNormalClass" style="margin-left:5px;">病假</span></td>
+                                                        <td><asp:TextBox ID="TextBox3" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width:76px;" Text="0.000" ></asp:TextBox></td>
+                                                        <td><span class="lblNormalClass">0.000</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="lblNormalClass" style="margin-left:5px;">浮动假期</span></td>
+                                                        <td><asp:TextBox ID="TextBox4" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width:76px;" Text="0.000" ></asp:TextBox></td>
+                                                        <td><span class="lblNormalClass">0.000</span></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div style="border:1px solid #d3d3d3;">
+                                            <div><span style="margin-left:5px;"><%=(DateTime.Now.Year + 1) %></span></div>
+                                            <div>
+                                                <table>
+                                                    <tr>
+                                                        <td style="width:140px;"></td>
+                                                        <td style="width:140px;"><span>额外时间</span></td>
+                                                        <td><span>年度</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="lblNormalClass" style="margin-left:5px;">年假</span></td>
+                                                        <td><asp:TextBox ID="TextBox5" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width:76px;" Text="0.000" ></asp:TextBox></td>
+                                                        <td><span class="lblNormalClass">0.000</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="lblNormalClass" style="margin-left:5px;">私人时间</span></td>
+                                                        <td><asp:TextBox ID="TextBox6" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width:76px;" Text="0.000" ></asp:TextBox></td>
+                                                        <td><span class="lblNormalClass">0.000</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="lblNormalClass" style="margin-left:5px;">病假</span></td>
+                                                        <td><asp:TextBox ID="TextBox7" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width:76px;" Text="0.000" ></asp:TextBox></td>
+                                                        <td><span class="lblNormalClass">0.000</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="lblNormalClass" style="margin-left:5px;">浮动假期</span></td>
+                                                        <td><asp:TextBox ID="TextBox8" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width:76px;" Text="0.000" ></asp:TextBox></td>
+                                                        <td><span class="lblNormalClass">0.000</span></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><div style="padding-top:6px;"><span>年小时数代表客户全年累计增长的时间或在1月1日获得的时间。</span></div></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="DivSection" style="margin-top:10px;margin-bottom: 8px;height:240px;">
+                            <div>
+                                <label class="lblNormalClass" style="font-size:15px;">内部成本</label>
+                                <input type="button" value="新增" onclick="AddInterCost()" style="margin-left:20px;width:54px;height:22px;" />
+                            </div>
+                            <div style="width:100%;height:180px;margin-top:3px;border:1px solid #e8e8fa">
+                                <table id="interCostTable" style="width:560px;">
+                                    <tr>
+                                        <th style="width:160px;">开始时间</th>
+                                        <th style="width:160px;">结束时间</th>
+                                        <th style="width:180px;">计费小时费率</th>
+                                        <th style="width:50px;">操作</th>
+                                    </tr>
+                                    <tr id="addInterCostTr" style="display:none;">
+                                        <td><input type="text" class="Wdate" onclick="WdatePicker()" style="display:none;" id="addInterCostDate" /></td>
+                                        <td></td>
+                                        <td><input type="text" id="addInterCostRate" /></td>
+                                        <td><input type="button" value="确定" onclick="SaveInterCost()" /></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div style="height: 100%; width: 100%; display: none;" class="C">
                     <div style="height:320px;width:100%;border:1px solid #e8e8fa;">
                         <span style="font-weight:bold;color:#666;font-size:12px;padding-left:10px;">工时表审批人</span>
@@ -586,7 +853,7 @@
                 <div style="height: 100%; width: 100%; display: none;" class="C">
                     <div style="height:520px;width:100%;border:1px solid #e8e8fa;">
                         <span style="font-weight:bold;color:#666;font-size:12px;padding-left:10px;">附件</span>
-                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;">
+                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;height:100%;">
                             <iframe src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE_ATTACHMENT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.ResourceAttachment %>&con2680=<%=id %>" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
                         </div>
                     </div>
@@ -596,6 +863,8 @@
         
         <script src="../Scripts/jquery-3.1.0.min.js"></script>
         <script src="../Scripts/sysset_users.js"></script>
+        <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
+        <script type="text/javascript" src="../Scripts/common.js"></script>
         <script type="text/javascript">
             $("#first_name").change(function () {
                 $("#resource_name").val($("#first_name").val() + $("#last_name").val());
@@ -716,6 +985,84 @@
                     }
                 }
             });
+        </script>
+        <script>
+            var costCnt = 0;
+            function AddInterCost() {
+                $("#addInterCostDate").val("");
+                $("#addInterCostRate").val("");
+                $("#addInterCostTr").show();
+            }
+            function SaveInterCost() {
+                if (costCnt != 0) {
+                    if ($("#addInterCostDate").val() == "") {
+                        LayerMsg("请输入生效开始时间！");
+                        return;
+                    }
+                }
+                if ($("#addInterCostRate").val() == "") {
+                    LayerMsg("请输入计费小时费率！");
+                    return;
+                }
+                requestData("/Tools/ResourceAjax.ashx?act=AddResInternalCost&userId=<%=id%>&date=" + $("#addInterCostDate").val() + "&rate=" + $("#addInterCostRate").val(), null, function (data) {
+                    if (data == false) {
+                        LayerMsg("生效开始时间不能重复！");
+                        return;
+                    } else {
+                        SetInterCost(data);
+                    }
+                })
+            }
+            function DeleteInterCost(id) {
+                requestData("/Tools/ResourceAjax.ashx?act=DeleteResInternalCost&userId=<%=id%>&id=" + id, null, function (data) {
+                    if (data == false) {
+                        LayerMsg("至少需要保留一条内部成本！");
+                        return;
+                    } else {
+                        SetInterCost(data);
+                    }
+                })
+            }
+            window.onload = function () {
+                requestData("/Tools/ResourceAjax.ashx?act=AddResInternalCost&userId=<%=id%>&add=1", null, function (data) {
+                    if (data != false) {
+                        SetInterCost(data);
+                    }
+                })
+                if ($("#total").val() != "")
+                    $("#ttl").text($("#total").val());
+                else
+                    $("#ttl").text("0.00");
+                weekdayChange();
+            }
+            function SetInterCost(data) {
+                var str = '<tr><th style="width:160px;">开始时间</th><th style="width:160px;">结束时间</th><th style="width:180px;">计费小时费率</th><th style="width:50px;">操作</th></tr>';
+                if (data.length > 0) {
+                    costCnt = 1;
+                    str += '<tr id="addInterCostTr" style="display:none;"><td><input type="text" class="Wdate" onclick="WdatePicker()" id="addInterCostDate" /></td><td></td><td><input type="text" id="addInterCostRate" /></td><td><input type="button" value="确定" onclick="SaveInterCost()" /></td></tr>';
+                }
+                else
+                    str += '<tr id="addInterCostTr" style="display:none;"><td><input type="text" class="Wdate" onclick="WdatePicker()" style="display:none;" id="addInterCostDate" /></td><td></td><td><input type="text" id="addInterCostRate" /></td><td><input type="button" value="确定" onclick="SaveInterCost()" /></td></tr>';
+                for (var i = 0; i < data.length; i++) {
+                    str += '<tr style="height:24px;"><td style="text-align:center;">' + (data[i].start_date == null ? "" : data[i].start_date.substring(0, 10)) + '</td><td style="text-align:center;">' + (data[i].end_date == null ? "" : data[i].end_date.substring(0, 10)) + '</td><td style="text-align:center;">' + data[i].hourly_rate + '</td><td><input type="button" value="删除" onclick="DeleteInterCost(' + data[i].id + ')" /></td></tr>';
+                }
+                document.getElementById("interCostTable").innerHTML = str;
+            }
+            $(".weekday").change(function () {
+                weekdayChange();
+            })
+            function weekdayChange() {
+                var total = 0;
+                var weeks = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+                for (var i = 0; i < weeks.length; i++) {
+                    var wd = toDecimal2($("#" + weeks[i]).val());
+                    if (wd != "") {
+                        total += parseFloat(wd);
+                    }
+                }
+                $("#ttl").text(total);
+                $("#total").val(total);
+            }
         </script>
     </form>
 </body>

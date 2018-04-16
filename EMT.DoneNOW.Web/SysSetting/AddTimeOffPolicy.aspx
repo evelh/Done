@@ -66,10 +66,10 @@
                             <tr>
                                 <td>
                                     <div class="clear">
-                                        <label>名称</label>
+                                        <label>名称<span style="color: red;">*</span></label>
                                         <input type="hidden" id="subAct" name="subAct" />
                                         <input type="text" id="policyName" name="policyName" <%if (!isAdd)
-                                            { %> value="" <%} %> />
+                                            { %> value="<%=policy.name %>" <%} %> />
                                     </div>
                                 </td>
                             </tr>
@@ -78,7 +78,7 @@
                                     <div class="clear">
                                         <label>描述</label>
                                         <input type="text" id="description" name="description" <%if (!isAdd)
-                                            { %> value="" <%} %> />
+                                            { %> value="<%=policy.description %>" <%} %> />
                                     </div>
                                 </td>
                             </tr>
@@ -86,7 +86,7 @@
                                 <td>
                                     <div class="clear">
                                         <label for="active">激活</label>
-                                        <input type="checkbox" checked="checked" id="active" name="active" />
+                                        <input type="checkbox" id="active" <%if (isAdd || policy.is_active == 1) { %> checked="checked" <%} %> name="active" />
                                     </div>
                                 </td>
                             </tr>
@@ -94,7 +94,7 @@
                                 <td>
                                     <div class="clear">
                                         <label for="setDft">默认（针对新员工）</label>
-                                        <input type="checkbox" id="setDft" name="setDft" />
+                                        <input type="checkbox" <%if (!isAdd && policy.is_default == 1) { %> checked="checked" <%} %> id="setDft" name="setDft" />
                                     </div>
                                 </td>
                             </tr>
@@ -127,7 +127,7 @@
                                 <td>
                                     <div class="clear">
                                         <label style="font-weight:normal;">分配类型</label>
-                                        <input type="radio" value="1" checked="checked" name="periodType<%=item.cate_id %>" onclick="ChangeType(<%=item.cate_id %>,1);" style="width:16px;height:16px;" />统一分配
+                                        <input type="radio" value="1" <%if (isAdd || item.accrual_period_type_id == null) { %> checked="checked" <%} %> name="periodType<%=item.cate_id %>" onclick="ChangeType(<%=item.cate_id %>,1);" style="width:16px;height:16px;" />统一分配
                                     </div>
                                 </td>
                             </tr>
@@ -135,7 +135,7 @@
                                 <td>
                                     <div class="clear">
                                         <label></label>
-                                        <input type="radio" value="2" name="periodType<%=item.cate_id %>" onclick="ChangeType(<%=item.cate_id %>,2);" style="width:16px;height:16px;" />累计分配
+                                        <input type="radio" value="2" <%if (!isAdd && item.accrual_period_type_id != null) { %> checked="checked" <%} %> name="periodType<%=item.cate_id %>" onclick="ChangeType(<%=item.cate_id %>,2);" style="width:16px;height:16px;" />累计分配
                                     </div>
                                 </td>
                             </tr>
@@ -145,9 +145,9 @@
                                 <td>
                                     <div class="clear">
                                         <label style="font-weight:normal;">增长周期</label>
-                                        <select id="period<%=item.cate_id %>" name="period<%=item.cate_id %>" disabled="disabled">
+                                        <select id="period<%=item.cate_id %>" name="period<%=item.cate_id %>" <%if (isAdd || item.accrual_period_type_id == null) { %> disabled="disabled" <%} %>>
                                             <%foreach (var period in periodList) { %>
-                                            <option value="<%=period.val %>" <%if (period.show.Equals("半月")) { %> selected="selected" <%} %> ><%=period.show %></option>
+                                            <option value="<%=period.val %>" <%if ((isAdd&&period.show.Equals("半月"))||(!isAdd&&item.accrual_period_type_id!=null&&item.accrual_period_type_id.Value.ToString()==period.val)) { %> selected="selected" <%} %> ><%=period.show %></option>
                                             <%} %>
                                         </select>
                                     </div>
@@ -157,8 +157,7 @@
                     </div>
                 </div>
                 <div class="information clear" style="height:460px;">
-                    <p class="informationTitle">关联员工</p>
-                    <div class="text">请调整员工的生效开始日期，编辑关联。不能编辑生效截止日期。</div>
+                    <p class="informationTitle">休假策略级别</p>
                     <div class="text clear">
                         <input type="button" value="新增" style="margin-left:0;" onclick="AddPolicyTier(<%=item.cate_id %>)" />
                     </div>
@@ -212,9 +211,9 @@
             <label>年度时间和限额</label>
             <label style="font-weight: normal;margin-bottom:12px;">指定资源在1月1日可能收到的总数小时数或全年累计的小时数。 另外，可以为应计“累计限额”或将“滚存限额”延续到下一年的小时指定一个上限。</label><br />
             <label style="font-weight: normal;width:100px;">每年假期时间</label>
-            <input type="text" style="width:80px;" id="annualHours" />
+            <input type="text" style="width:80px;" id="annualHours" onchange="ChangeHours()" />
             <label style="font-weight: normal;width:36px;">小时</label>
-            <select id="annualMinutes" style="width:80px;">
+            <select id="annualMinutes" onchange="ChangeHours()" style="width:80px;">
                 <option value="0">00</option>
                 <option value="0.25">15</option>
                 <option value="0.5">30</option>
@@ -222,9 +221,9 @@
             </select>
             <label style="font-weight: normal;width:36px;">分钟</label>
             <label style="font-weight: normal;width:120px;text-align:right;" id="prdRateLabel">每周期假期时间</label>
-            <label style="font-weight: normal;margin-left:6px;" id="prdRate">0.000小时</label>
+            <label style="font-weight: normal;margin-left:6px;" id="prdRate">0.0000小时</label>
             <br />
-            <label style="font-weight: normal;width:100px;">滚存限额</label>
+            <label style="font-weight: normal;width:100px;" id="capName">滚存限额</label>
             <input type="text" style="width:80px;" id="accrualHours" />
             <label style="font-weight: normal;width:36px;">小时</label>
             <select id="accrualMinutes" style="width:80px;">
@@ -373,6 +372,14 @@
             $("#accrualHours").val("");
             $("#accrualMinutes").val("0");
             $("#minMonths").val("");
+            if ($("input[name='periodType" + idx + "']:checked").val() == 1) {
+                $("#prdRateLabel").hide();
+                $("#prdRate").hide();
+            } else {
+                $("#prdRateLabel").show();
+                $("#prdRate").show();
+                $("#prdRate").text("0.0000小时");
+            }
             $("#background").show();
             $("#newTier").show();
         }
@@ -381,13 +388,35 @@
                 $("#period" + cate).attr("disabled", "disabled");
                 $("#prdRateLabel").hide();
                 $("#prdRate").hide();
+                $("#capName").text("滚存限额");
                 $("#tierFrame" + cate).attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_POLICY_TIER %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TimeoffPolicyTier %>&con2468=" + $("#itemid" + cate).val() + "&cate=" + cate + "&cateType=" + idx);
             } else {
                 $("#period" + cate).removeAttr("disabled");
                 $("#prdRateLabel").show();
                 $("#prdRate").show();
+                $("#capName").text("累计增长限额");
                 $("#tierFrame" + cate).attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_POLICY_TIER %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TimeoffPolicyTier %>&con2468=" + $("#itemid" + cate).val() + "&cate=" + cate + "&cateType=" + idx);
             }
+        }
+        function ChangeHours() {
+            if ($("input[name='periodType" + $("#tierCate").val() + "']:checked").val() == 1) { return; }
+            var hours = parseFloat($("#annualMinutes").val());
+            if ($("#annualHours").val() != "" && parseFloat($("#annualHours").val()) != NaN) {
+                hours = parseFloat($("#annualHours").val()) + hours;
+            }
+            var prdType = $("#period" + $("#tierCate").val()).val();
+            if (prdType == 667) {
+                hours = toDecimal4(hours / 365);
+            } else if (prdType == 668) {
+                hours = toDecimal4(hours / 52);
+            } else if (prdType == 669) {
+                hours = toDecimal4(hours / 26);
+            } else if (prdType == 670) {
+                hours = toDecimal4(hours / 24);
+            } else if (prdType == 671) {
+                hours = toDecimal4(hours / 12);
+            }
+            $("#prdRate").text(hours + "小时"); 
         }
     </script>
 </body>

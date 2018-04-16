@@ -113,8 +113,29 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
 
-        public bool EditPolicy(tst_timeoff_policy policy, long userId)
+        /// <summary>
+        /// 编辑休假策略
+        /// </summary>
+        /// <param name="policy"></param>
+        /// <param name="items"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool EditPolicy(tst_timeoff_policy policy, List<tst_timeoff_policy_item> items, long userId)
         {
+            var plcy = dal.FindById(policy.id);
+            var plcyOld = dal.FindById(policy.id);
+            plcy.name = policy.name;
+            plcy.description = policy.description;
+            plcy.is_active = policy.is_active;
+            plcy.is_default = policy.is_default;
+
+            var desc = OperLogBLL.CompareValue<tst_timeoff_policy>(plcyOld, plcy);
+            if (!string.IsNullOrEmpty(desc))
+            {
+                dal.Update(plcy);
+                OperLogBLL.OperLogUpdate(desc, plcy.id, userId, DicEnum.OPER_LOG_OBJ_CATE.TIMEOFF_POLICY, "编辑休假策略");
+            }
+
             return false;
         }
 

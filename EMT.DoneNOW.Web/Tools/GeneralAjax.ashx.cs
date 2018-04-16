@@ -53,6 +53,12 @@ namespace EMT.DoneNOW.Web
                     case "GetSysSetting":
                         GetSysSetting(context);
                         break;
+                    case "DeleteHolidaySet":
+                        DeleteHolidaySet(context);
+                        break;
+                    case "DeleteHoliday":
+                        DeleteHoliday(context);
+                        break;
                     default:
                         break;
                 }
@@ -184,6 +190,26 @@ namespace EMT.DoneNOW.Web
                     context.Response.Write(new Tools.Serialize().SerializeJson(thisSet));
                 }
             }
+        }
+
+        /// <summary>
+        /// 删除节假日设置
+        /// </summary>
+        /// <param name="context"></param>
+        private void DeleteHolidaySet(HttpContext context)
+        {
+            long id = long.Parse(context.Request.QueryString["id"]);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new GeneralBLL().DeleteHolidaySet(id,LoginUserId)));
+        }
+
+        /// <summary>
+        /// 删除节假日详情
+        /// </summary>
+        /// <param name="context"></param>
+        private void DeleteHoliday(HttpContext context)
+        {
+            long id = long.Parse(context.Request.QueryString["id"]);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new GeneralBLL().DeleteHoliday(id, LoginUserId)));
         }
     }
 }

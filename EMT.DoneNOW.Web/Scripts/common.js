@@ -127,6 +127,23 @@ function toDecimal2(x) {
     }
     return s;
 }
+function toDecimal4(x) {
+    var f = parseFloat(x);
+    if (isNaN(f)) {
+        return "";
+    }
+    var f = Math.round(x * 10000) / 10000;
+    var s = f.toString();
+    var rs = s.indexOf('.');
+    if (rs < 0) {
+        rs = s.length;
+        s += '.';
+    }
+    while (s.length <= rs + 4) {
+        s += '0';
+    }
+    return s;
+}
 
 document.write("<script src='../Scripts/layer/layer.js' type='text/javascript'></script>");
 // 加载弹层
@@ -269,6 +286,8 @@ var windowObj = {
     notes: 'notes',
     todos: 'todos',
     attachment: 'attachment',
+    holiday: 'holiday',
+    holidaySet: 'holidaySet',
     invoice: 'invoice',
     inventoryLocation: 'inventoryLocation',
     inventoryOrder: 'inventoryOrder',

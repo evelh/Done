@@ -533,6 +533,8 @@
     <Content Include="SysSetting\AddTimeOffPolicy.aspx" />
     <Content Include="ServiceDesk\TicketManage.aspx" />
     <Content Include="SysSetting\EditServiceAlert.aspx" />
+    <Content Include="SysSetting\Holiday.aspx" />
+    <Content Include="SysSetting\HolidaySet.aspx" />
     <Content Include="SysSetting\Service.aspx" />
     <Content Include="SysSetting\ServiceBundle.aspx" />
     <Content Include="SysSetting\WorkflowRule.aspx" />
@@ -2172,6 +2174,20 @@
     <Compile Include="SysSetting\EditServiceAlert.aspx.designer.cs">
       <DependentUpon>EditServiceAlert.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\Holiday.aspx.cs">
+      <DependentUpon>Holiday.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\Holiday.aspx.designer.cs">
+      <DependentUpon>Holiday.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\HolidaySet.aspx.cs">
+      <DependentUpon>HolidaySet.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\HolidaySet.aspx.designer.cs">
+      <DependentUpon>HolidaySet.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SysSetting\Service.aspx.cs">
       <DependentUpon>Service.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2241,7 +2257,7 @@
     </Compile>
     <Compile Include="TimeSheet\TimeoffRequestAdd.aspx.designer.cs">
       <DependentUpon>TimeoffRequestAdd.aspx</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="Tools\DispatchAjax.ashx.cs">
       <DependentUpon>DispatchAjax.ashx</DependentUpon>
     </Compile>

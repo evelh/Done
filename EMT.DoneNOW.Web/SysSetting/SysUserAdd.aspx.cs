@@ -141,6 +141,13 @@ namespace EMT.DoneNOW.Web.SysSetting
             timeoff_policy_id.DataSource = policyList;
             timeoff_policy_id.DataBind();
             timeoff_policy_id.Items.Insert(0, new ListItem() { Value = "0", Text = "", Selected = true });
+
+            // 出差限度
+            var travelRest = genBll.GetDicValues(GeneralTableEnum.TRAVEL_RESTRICTIONS);
+            travel_restrictions_id.DataTextField = "show";
+            travel_restrictions_id.DataValueField = "val";
+            travel_restrictions_id.DataSource = travelRest;
+            travel_restrictions_id.DataBind();
         }
         //protected void Avatar(object sender, ImageClickEventArgs e)
         //{
@@ -260,6 +267,7 @@ namespace EMT.DoneNOW.Web.SysSetting
         private void Save_Contact()
         {
             param.sys_res = AssembleModel<sys_resource>();
+            param.availability = AssembleModel<sys_resource_availability>();
             param.sys_res.name = param.sys_res.first_name + param.sys_res.last_name;
             param.sys_res.avatar = SavePic();//保存头像
             if (timeoff_policy_id.SelectedValue != "0" && (!string.IsNullOrEmpty(effective_date.Text)))

@@ -140,9 +140,20 @@ namespace EMT.DoneNOW.BLL
                 var costDal = new sys_resource_internal_cost_dal();
                 foreach (var cost in data.internalCost)
                 {
+                    cost.resource_id = id;
                     cost.id = costDal.GetNextIdCom();
                     costDal.Insert(cost);
                 }
+            }
+            if (data.availability != null)
+            {
+                data.availability.id = _dal.GetNextIdCom();
+                data.availability.resource_id = id;
+                data.availability.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                data.availability.update_time = data.availability.create_time;
+                data.availability.create_user_id = user_id;
+                data.availability.update_user_id = user_id;
+                new sys_resource_availability_dal().Insert(data.availability);
             }
 
             return ERROR_CODE.SUCCESS;
@@ -212,6 +223,29 @@ namespace EMT.DoneNOW.BLL
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_account_log);
 
+            var dal = new sys_resource_availability_dal();
+            var ava = dal.FindSignleBySql<sys_resource_availability>($"select * from sys_resource_availability where resource_id={id} and delete_time=0");
+            if (ava == null)
+            {
+                data.availability.id = dal.GetNextIdCom();
+                data.availability.resource_id = id;
+                data.availability.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                data.availability.update_time = data.availability.create_time;
+                data.availability.create_user_id = user_id;
+                data.availability.update_user_id = user_id;
+                dal.Insert(data.availability);
+            }
+            else
+            {
+                data.availability.id = ava.id;
+                data.availability.resource_id = id;
+                data.availability.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                data.availability.update_user_id = user_id;
+                data.availability.create_time = ava.create_time;
+                data.availability.create_user_id = ava.create_user_id;
+                dal.Update(data.availability);
+            }
+
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -260,9 +294,153 @@ namespace EMT.DoneNOW.BLL
                 new sys_oper_log_dal().Insert(add_account_log);
             }
         }
-
+        /// <summary>
+        /// 获取员工每天工作时间
+        /// </summary>
+        /// <param name="resId"></param>
+        /// <returns></returns>
+        public sys_resource_availability GetResourceAvailability(long resId)
+        {
+            return _dal.FindSignleBySql<sys_resource_availability>($"select * from sys_resource_availability where resource_id={resId} and delete_time=0");
+        }
+        /// <summary>
+        /// 获取员工休假策略
+        /// </summary>
+        /// <param name="resId"></param>
+        /// <returns></returns>
+        public tst_timeoff_policy_resource GetResourceTimeoffPolicy(long resId)
+        {
+            return _dal.FindSignleBySql<tst_timeoff_policy_resource>($"select * from tst_timeoff_policy_resource where resource_id={resId} and delete_time=0 ");
+        }
 
         #region 编辑新增员工属性
+        /// <summary>
+        /// 获取员工内部成本列表
+        /// </summary>
+        /// <param name="resId"></param>
+        /// <returns></returns>
+        public List<sys_resource_internal_cost> GetInternalCostList(long resId)
+        {
+            var dal = new sys_resource_internal_cost_dal();
+            var costList = dal.FindListBySql($"select * from sys_resource_internal_cost where resource_id={resId} order by start_date asc");
+            return costList;
+        }
+        /// <summary>
+        /// 新增员工内部成本
+        /// </summary>
+        /// <param name="resId"></param>
+        /// <param name="start"></param>
+        /// <param name="rate"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<sys_resource_internal_cost> AddInternalCost(long resId, DateTime start, decimal rate, long userId)
+        {
+            var dal = new sys_resource_internal_cost_dal();
+            var costList = GetInternalCostList(resId);
+            if (costList.Count == 0)    // 第一条
+            {
+                sys_resource_internal_cost cost = new sys_resource_internal_cost
+                {
+                    id = dal.GetNextIdCom(),
+                    resource_id = resId,
+                    hourly_rate = rate
+                };
+                dal.Insert(cost);
+                costList.Add(cost);
+            }
+            else
+            {
+                var fd = costList.Find(_ => _.start_date == start);
+                if (fd != null)     // 开始时间不能重复
+                {
+                    return null;
+                }
+                sys_resource_internal_cost cost = new sys_resource_internal_cost();
+                cost.id = dal.GetNextIdCom();
+                cost.start_date = start;
+                cost.hourly_rate = rate;
+                cost.resource_id = resId;
+                if (costList[0].end_date != null && costList[0].end_date.Value >= start)    // 生效时间最前，作为第二条
+                {
+                    costList[0].end_date = start.AddDays(-1);
+                    cost.end_date = costList[1].start_date.Value.AddDays(-1);
+                    dal.Update(costList[0]);    // 更新第一条的结束时间
+                    costList.Insert(1, cost);
+                }
+                else if (costList[0].end_date == null)      // 当前只有一条，作为第二条
+                {
+                    costList[0].end_date = cost.start_date.Value.AddDays(-1);
+                    dal.Update(costList[0]);    // 更新第一条的结束时间
+                    costList.Insert(1, cost);
+                }
+                else if (cost.start_date.Value > costList[costList.Count - 1].start_date.Value)     // 生效时间最后，最后一条
+                {
+                    costList[costList.Count - 1].end_date = cost.start_date.Value.AddDays(-1);
+                    dal.Update(costList[costList.Count - 1]);    // 更新最后一条的结束时间
+                    costList.Add(cost);
+                }
+                else    // 生效时间在中间
+                {
+                    for (int i = 1; i < costList.Count - 2; i++)
+                    {
+                        if (costList[i].start_date.Value < cost.start_date.Value && costList[i + 1].start_date.Value > cost.start_date.Value)   // 找到按顺序的时间前后项
+                        {
+                            costList[i].end_date = cost.start_date.Value.AddDays(-1);
+                            cost.end_date = costList[i + 1].start_date.Value.AddDays(-1);
+                            dal.Update(costList[i]);        // 更新前一条的结束时间
+                            dal.Update(costList[i + 1]);    // 更新后一条的开始时间
+                            costList.Insert(i + 1, cost);
+                        }
+                    }
+                }
+                dal.Insert(cost);
+            }
+            return costList;
+        }
+
+        /// <summary>
+        /// 删除员工内部成本
+        /// </summary>
+        /// <param name="resId"></param>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<sys_resource_internal_cost> DeleteInternalCost(long resId, long id, long userId)
+        {
+            var dal = new sys_resource_internal_cost_dal();
+            var costList = GetInternalCostList(resId);
+            if (costList == null || costList.Count == 1)
+            {
+                return null;
+            }
+
+            int idx = costList.FindIndex(_ => _.id == id);
+            if (idx == -1)
+            {
+                return costList;
+            }
+
+            if (idx == 0)   // 第一个
+            {
+                costList[1].start_date = null;
+                dal.Update(costList[1]);
+            }
+            else if (idx == costList.Count - 1)  // 最后一个
+            {
+                costList[idx - 1].end_date = null;
+                dal.Update(costList[idx - 1]);
+            }
+            else
+            {
+                costList[idx - 1].end_date = costList[idx].end_date;
+                dal.Update(costList[idx - 1]);
+            }
+            costList.RemoveAt(idx);
+            dal.Delete(costList[idx]);
+
+            return costList;
+        }
+
         /// <summary>
         /// 新增员工审批人
         /// </summary>
@@ -302,6 +480,85 @@ namespace EMT.DoneNOW.BLL
             if (count > 0)
                 return true;
             return false;
+        }
+
+        /// <summary>
+        /// 新增员工技能
+        /// </summary>
+        /// <param name="resId"></param>
+        /// <param name="cate"></param>
+        /// <param name="level"></param>
+        /// <param name="desc"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool AddSkill(long resId, int cate, int level, string desc, long userId)
+        {
+            sys_resource_skill skill = new sys_resource_skill();
+            sys_resource_skill_dal skillDal = new sys_resource_skill_dal();
+            skill.id = skillDal.GetNextIdCom();
+            skill.resource_id = resId;
+            skill.skill_type_id = cate;
+            skill.skill_level_id = level;
+            skill.description = desc;
+            skillDal.Insert(skill);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 删除员工技能
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteSkill(long id)
+        {
+            sys_resource_skill_dal skillDal = new sys_resource_skill_dal();
+            var skill = skillDal.FindById(id);
+            if (skill == null)
+                return false;
+
+            skillDal.Delete(skill);
+            return true;
+        }
+
+        /// <summary>
+        /// 新增员工部门
+        /// </summary>
+        /// <param name="resDpt"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool AddDepartment(sys_resource_department resDpt, long userId)
+        {
+            sys_resource_department_dal dptDal = new sys_resource_department_dal();
+            if (resDpt.is_default == 1)     // 新增默认部门，查找是否已有默认，有则更改为非默认
+            {
+                var dft = dptDal.FindSignleBySql<sys_resource_department>($"select * from sys_resource_department where resource_id={resDpt.resource_id} and is_default=1");
+                if (dft != null)
+                {
+                    dft.is_default = 0;
+                    dptDal.Update(dft);
+                }
+            }
+            resDpt.id = dptDal.GetNextIdCom();
+            dptDal.Insert(resDpt);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 删除员工部门
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteDepartment(long id)
+        {
+            sys_resource_department_dal dptDal = new sys_resource_department_dal();
+            var dpt = dptDal.FindById(id);
+            if (dpt == null)
+                return false;
+
+            dptDal.Delete(dpt);
+            return true;
         }
         #endregion
     }

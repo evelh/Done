@@ -93,6 +93,12 @@ namespace EMT.DoneNOW.Web
                     case "DeleteDepartment":
                         DeleteDepartment(context);
                         break;
+                    case "AddSkills":
+                        AddSkills(context);
+                        break;
+                    case "DeleteSkill":
+                        DeleteSkill(context);
+                        break;
                     case "DeleteAttachment":
                         DeleteAttachment(context);
 						break;
@@ -198,10 +204,24 @@ namespace EMT.DoneNOW.Web
                     cost.id = 1;
                 else
                     cost.id = costList.Max(_ => _.id) + 1;
-                
+
                 context.Session["ResInternalCost"] = costList;
                 context.Response.Write(new Tools.Serialize().SerializeJson(costList));
                 return;
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(context.Request.QueryString["add"]))
+                {
+                    context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().GetInternalCostList(userId)));
+                    return;
+                }
+                DateTime dt = DateTime.MinValue;
+                if (!string.IsNullOrEmpty(context.Request.QueryString["date"]))
+                    dt = DateTime.Parse(context.Request.QueryString["date"]);
+                var rtn = new BLL.UserResourceBLL().AddInternalCost(userId, dt, decimal.Parse(context.Request.QueryString["rate"]), LoginUserId);
+
+                context.Response.Write(new Tools.Serialize().SerializeJson(rtn));
             }
         }
 
@@ -221,7 +241,7 @@ namespace EMT.DoneNOW.Web
                     return;
                 }
                 long id = long.Parse(context.Request.QueryString["id"]);
-                
+
                 int idx = costList.FindIndex(_ => _.id == id);
                 if (idx == -1)
                 {
@@ -244,6 +264,20 @@ namespace EMT.DoneNOW.Web
                 context.Session["ResInternalCost"] = costList;
                 context.Response.Write(new Tools.Serialize().SerializeJson(costList));
                 return;
+            }
+            else
+            {
+                var rtn = new BLL.UserResourceBLL().DeleteInternalCost(userId, long.Parse(context.Request.QueryString["id"]), LoginUserId);
+                if (rtn == null)
+                {
+                    context.Response.Write(new Tools.Serialize().SerializeJson(false));
+                    return;
+                }
+                else
+                {
+                    context.Response.Write(new Tools.Serialize().SerializeJson(rtn));
+                    return;
+                }
             }
         }
 
@@ -746,15 +780,50 @@ namespace EMT.DoneNOW.Web
         }
 
         /// <summary>
+        /// 新增员工技能
+        /// </summary>
+        /// <param name="context"></param>
+        private void AddSkills(HttpContext context)
+        {
+            long resId = long.Parse(context.Request.QueryString["resId"]);
+            int cate = int.Parse(context.Request.QueryString["cate"]);
+            int level = int.Parse(context.Request.QueryString["level"]);
+            string desc = context.Request.QueryString["desc"];
+            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().AddSkill(resId, cate, level, desc, LoginUserId)));
+        }
+
+        /// <summary>
+        /// 删除员工技能
+        /// </summary>
+        /// <param name="context"></param>
+        private void DeleteSkill(HttpContext context)
+        {
+            long id = long.Parse(context.Request.QueryString["id"]);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().DeleteSkill(id)));
+        }
+
+        /// <summary>
         /// 添加员工部门
         /// </summary>
         /// <param name="context"></param>
         private void AddDepartment(HttpContext context)
         {
             long resId = long.Parse(context.Request.QueryString["resId"]);
-            //long approver = long.Parse(context.Request.QueryString["approver"]);
-            //int tier = int.Parse(context.Request.QueryString["tier"]);
-            //context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().AddApprover(approver, tier, resId, DTO.DicEnum.APPROVE_TYPE.EXPENSE_APPROVE)));
+            long dptId = long.Parse(context.Request.QueryString["dptId"]);
+            long role = long.Parse(context.Request.QueryString["role"]);
+            sbyte dft = sbyte.Parse(context.Request.QueryString["dft"]);
+            sbyte dpt = sbyte.Parse(context.Request.QueryString["dpt"]);
+            sbyte act = sbyte.Parse(context.Request.QueryString["act"]);
+            sys_resource_department department = new sys_resource_department
+            {
+                department_id = dptId,
+                is_active = act,
+                is_default = dft,
+                is_lead = dpt,
+                resource_id = resId,
+                role_id = role
+            };
+            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().AddDepartment(department, LoginUserId)));
         }
 
         /// <summary>
@@ -764,9 +833,7 @@ namespace EMT.DoneNOW.Web
         private void DeleteDepartment(HttpContext context)
         {
             long id = long.Parse(context.Request.QueryString["id"]);
-            //long approver = long.Parse(context.Request.QueryString["approver"]);
-            //int tier = int.Parse(context.Request.QueryString["tier"]);
-            //context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().AddApprover(approver, tier, resId, DTO.DicEnum.APPROVE_TYPE.EXPENSE_APPROVE)));
+            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().DeleteDepartment(id)));
         }
 
         /// <summary>

@@ -74,7 +74,10 @@ namespace EMT.DoneNOW.Web.SysSetting
                 if (string.IsNullOrEmpty(id))
                     bll.AddPolicy(policy, resAss, plcItemList, policyTier, LoginUserId);
                 else
-                    bll.EditPolicy(policy, LoginUserId);
+                {
+                    policy.id = long.Parse(id);
+                    bll.EditPolicy(policy, plcItemList, LoginUserId);
+                }
 
                 Session["TimeoffPolicyTier"] = null;
                 Session["TimeoffAssRes"] = null;
