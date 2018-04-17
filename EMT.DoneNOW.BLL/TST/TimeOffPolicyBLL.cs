@@ -33,6 +33,16 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 获取一个休假策略关联的员工个数
+        /// </summary>
+        /// <param name="timeoffPolicyId"></param>
+        /// <returns></returns>
+        public int GetTierResourceCnt(long timeoffPolicyId)
+        {
+            return dal.FindSignleBySql<int>($"select count(0) from tst_timeoff_policy_resource where timeoff_policy_id={timeoffPolicyId} and delete_time=0");
+        }
+
+        /// <summary>
         /// 新增休假策略
         /// </summary>
         /// <param name="policy">休假策略</param>
@@ -269,11 +279,12 @@ namespace EMT.DoneNOW.BLL
                     OperLogBLL.OperLogAdd<tst_timeoff_policy_resource>(policyRes, policyRes.id, userId, DicEnum.OPER_LOG_OBJ_CATE.TIMEOFF_RESOURCE, "新增休假策略关联员工");
                     addUpdate = true;
 
-                    CalcResTimeoffActivity(long.Parse(resId), userId);
+                    RecalcResTimeoffActBalance(policyRes.resource_id, effDate, userId);
+                    //CalcResTimeoffActivity(long.Parse(resId), userId);
                 }
                 else    // 该员工已关联当前休假策略，判断生效日期，生效日期提前则更新
                 {
-                    if (effDate > policyRes.effective_date)
+                    if (effDate < policyRes.effective_date)
                     {
                         tst_timeoff_policy_resource policyResOld = plcResDal.FindById(policyRes.id);
                         policyRes.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
@@ -283,7 +294,8 @@ namespace EMT.DoneNOW.BLL
                         OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<tst_timeoff_policy_resource>(policyResOld, policyRes), policyRes.id, userId, DicEnum.OPER_LOG_OBJ_CATE.TIMEOFF_RESOURCE, "编辑休假策略关联员工");
                         addUpdate = true;
 
-                        CalcResTimeoffActivity(long.Parse(resId), userId);
+                        RecalcResTimeoffActBalance(policyRes.resource_id, effDate, userId);
+                        //CalcResTimeoffActivity(long.Parse(resId), userId);
                     }
                 }
             }
@@ -330,6 +342,34 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 编辑假期策略级别
+        /// </summary>
+        /// <param name="tier"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool EditTimeoffItemTier(tst_timeoff_policy_item_tier tier, long userId)
+        {
+            tst_timeoff_policy_item_tier_dal tierDal = new tst_timeoff_policy_item_tier_dal();
+            tst_timeoff_policy_item_tier tr = tierDal.FindById(tier.id);
+            tst_timeoff_policy_item_tier trOld = tierDal.FindById(tier.id);
+
+            tr.annual_hours = tier.annual_hours;
+            tr.cap_hours = tier.cap_hours;
+            tr.hours_accrued_per_period = tier.hours_accrued_per_period;
+            tr.eligible_starting_months = tier.eligible_starting_months;
+            tr.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            tr.update_user_id = userId;
+
+            var desc = OperLogBLL.CompareValue<tst_timeoff_policy_item_tier>(trOld, tr);
+            if (!string.IsNullOrEmpty(desc))
+            {
+                tierDal.Update(tr);
+                OperLogBLL.OperLogUpdate(desc, tr.id, userId, DicEnum.OPER_LOG_OBJ_CATE.TIMEOFF_ITEM_TIER, "编辑假期策略级别");
+            }
+            return true;
+        }
+
+        /// <summary>
         /// 删除假期策略级别
         /// </summary>
         /// <param name="id"></param>
@@ -346,6 +386,26 @@ namespace EMT.DoneNOW.BLL
             tierDal.Update(tier);
             OperLogBLL.OperLogDelete<tst_timeoff_policy_item_tier>(tier, id, userId, DicEnum.OPER_LOG_OBJ_CATE.TIMEOFF_ITEM_TIER, "删除假期策略级别");
             return true;
+        }
+
+        /// <summary>
+        /// 获取假期策略级别
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public tst_timeoff_policy_item_tier GetTimeoffItemTier(long id)
+        {
+            return new tst_timeoff_policy_item_tier_dal().FindById(id);
+        }
+
+        /// <summary>
+        /// 获取休假策略类别
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public tst_timeoff_policy_item GetTimeoffItem(long id)
+        {
+            return new tst_timeoff_policy_item_dal().FindById(id);
         }
 
         /// <summary>
@@ -396,6 +456,17 @@ namespace EMT.DoneNOW.BLL
                 ids = ids.Remove(ids.Length - 1, 1);
 
             return ids;
+        }
+
+        /// <summary>
+        /// 重新计算用户的假期分配和余额
+        /// </summary>
+        /// <param name="resId"></param>
+        /// <param name="effDate">重新计算的生效日期</param>
+        /// <param name="userId"></param>
+        public void RecalcResTimeoffActBalance(long resId, DateTime effDate, long userId)
+        {
+            dal.ReCalcResourceTimeoffActivityBalance(resId, effDate);
         }
 
         /// <summary>

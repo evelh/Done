@@ -58,8 +58,79 @@ namespace EMT.DoneNOW.Web.TimeSheet
                 }
                 else
                 {
-                    cost_code_id.Visible = false;
+                    workEntryList = bll.GetWorkEntryByBatchId(batchId);
+                    if (workEntryList.Count > 0)
+                    {
+                        cost_code_id.Visible = false;
+                        costCodeName.Visible = true;
+                        costCodeName.Text = costCodeList.Find(_ => _.id == workEntryList[0].task_id).name;
 
+                        startDate = Tools.Date.DateHelper.TimeStampToUniversalDateTime(workEntryList[0].start_time.Value);
+                        if (startDate.DayOfWeek != DayOfWeek.Monday)
+                        {
+                            if (startDate.DayOfWeek == DayOfWeek.Sunday)
+                                startDate = startDate.AddDays(-6);
+                            else
+                                startDate = startDate.AddDays((int)DayOfWeek.Monday - (int)startDate.DayOfWeek);
+                        }
+                    }
+
+                    DateTime dt = new DateTime(startDate.Ticks);
+                    var find = workEntryList.Find(_ => _.start_time == Tools.Date.DateHelper.ToUniversalTimeStamp(dt));
+                    if (find != null)
+                    {
+                        monday.Text = find.hours_billed.Value.ToString();
+                        mondayInter.Value = find.internal_notes;
+                        mondayNodes.Value = find.summary_notes;
+                    }
+                    dt = dt.AddDays(1);
+                    find = workEntryList.Find(_ => _.start_time == Tools.Date.DateHelper.ToUniversalTimeStamp(dt));
+                    if (find != null)
+                    {
+                        tuesday.Text = find.hours_billed.Value.ToString();
+                        tuesdayInter.Value = find.internal_notes;
+                        tuesdayNodes.Value = find.summary_notes;
+                    }
+                    dt = dt.AddDays(1);
+                    find = workEntryList.Find(_ => _.start_time == Tools.Date.DateHelper.ToUniversalTimeStamp(dt));
+                    if (find != null)
+                    {
+                        wednesday.Text = find.hours_billed.Value.ToString();
+                        wednesdayInter.Value = find.internal_notes;
+                        wednesdayNodes.Value = find.summary_notes;
+                    }
+                    dt = dt.AddDays(1);
+                    find = workEntryList.Find(_ => _.start_time == Tools.Date.DateHelper.ToUniversalTimeStamp(dt));
+                    if (find != null)
+                    {
+                        tuesday.Text = find.hours_billed.Value.ToString();
+                        tuesdayInter.Value = find.internal_notes;
+                        tuesdayNodes.Value = find.summary_notes;
+                    }
+                    dt = dt.AddDays(1);
+                    find = workEntryList.Find(_ => _.start_time == Tools.Date.DateHelper.ToUniversalTimeStamp(dt));
+                    if (find != null)
+                    {
+                        friday.Text = find.hours_billed.Value.ToString();
+                        fridayInter.Value = find.internal_notes;
+                        fridayNodes.Value = find.summary_notes;
+                    }
+                    dt = dt.AddDays(1);
+                    find = workEntryList.Find(_ => _.start_time == Tools.Date.DateHelper.ToUniversalTimeStamp(dt));
+                    if (find != null)
+                    {
+                        saturday.Text = find.hours_billed.Value.ToString();
+                        saturdayInter.Value = find.internal_notes;
+                        saturdayNodes.Value = find.summary_notes;
+                    }
+                    dt = dt.AddDays(1);
+                    find = workEntryList.Find(_ => _.start_time == Tools.Date.DateHelper.ToUniversalTimeStamp(dt));
+                    if (find != null)
+                    {
+                        sunday.Text = find.hours_billed.Value.ToString();
+                        sundayInter.Value = find.internal_notes;
+                        sundayNodes.Value = find.summary_notes;
+                    }
                 }
                 if (showResource)
                 {

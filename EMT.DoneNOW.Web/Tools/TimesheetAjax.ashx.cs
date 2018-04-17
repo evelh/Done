@@ -34,9 +34,15 @@ namespace EMT.DoneNOW.Web
                 case "getStatus":
                     GetTimesheetSubmitStatus(context);
                     break;
-                case "delete":
-                    DeleteTimesheet(context);
+                case "getType":
+                    GetWorkEntryType(context);
                     break;
+                case "deleteWorkEntry":
+                    DeleteWorkEntry(context);
+                    break;
+                //case "delete":
+                //    DeleteTimesheet(context);
+                //    break;
                 default:
                     break;
             }
@@ -75,13 +81,28 @@ namespace EMT.DoneNOW.Web
         }
 
         /// <summary>
+        /// 获取工时类型
+        /// </summary>
+        /// <param name="context"></param>
+        private void GetWorkEntryType(HttpContext context)
+        {
+            long batchId = long.Parse(context.Request.QueryString["id"]);
+            long id = 0;
+            bool rtn = new BLL.WorkEntryBLL().GetTimesheetIsRegural(batchId, out id);
+            object[] data = new object[] { rtn, id };
+            context.Response.Write(new Tools.Serialize().SerializeJson(data));
+        }
+
+        /// <summary>
         /// 获取工时表信息
         /// </summary>
         /// <param name="context"></param>
         private void GetTimesheetInfo(HttpContext context)
         {
             long id = long.Parse(context.Request.QueryString["id"]);
-            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.WorkEntryBLL().GetWorkEntryReportById(id)));
+            var weReport = new BLL.WorkEntryBLL().GetWorkEntryReportById(id);
+            object[] data = new object[] { weReport.resource_id, weReport.start_date.Value.ToString("yyyy-MM-dd"), weReport.id };
+            context.Response.Write(new Tools.Serialize().SerializeJson(data));
         }
 
         /// <summary>
@@ -104,6 +125,16 @@ namespace EMT.DoneNOW.Web
             DateTime start = DateTime.Parse(context.Request.QueryString["startDate"]);
             long resId = long.Parse(context.Request.QueryString["resId"]);
             context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.WorkEntryBLL().CancleSubmitWorkEntry(start, resId, LoginUserId)));
+        }
+
+        /// <summary>
+        /// 删除工时
+        /// </summary>
+        /// <param name="context"></param>
+        private void DeleteWorkEntry(HttpContext context)
+        {
+            long batchId = long.Parse(context.Request.QueryString["id"]);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.WorkEntryBLL().DeleteWorkEntry(batchId, LoginUserId)));
         }
 
         /// <summary>

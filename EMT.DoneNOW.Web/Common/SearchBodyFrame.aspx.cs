@@ -1206,6 +1206,10 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
+                case (long)QueryType.TimeoffPolicyTier:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
                 case (long)QueryType.KnowledgebaseArticle:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "DeleteServiceBundle()" });
@@ -1264,6 +1268,10 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.TimeoffWaitApprove:
                     contextMenu.Add(new PageContextMenuDto { text = "详情", click_function = "Detail()" });
 					break;
+                case (long)QueryType.TimeoffMyCurrent:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
                 case (long)QueryType.TICKET_SERVICE_LIST:
                     #region 待办相关
                     var todoGeneral = new PageContextMenuDto { text = "常规", class_name = "ToDo" };

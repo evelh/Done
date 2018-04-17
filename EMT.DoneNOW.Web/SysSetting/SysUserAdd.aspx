@@ -876,6 +876,7 @@
                     alert("请输入权限等级");
                     return false;
                 }
+                LayerLoad();
             }
             $("#email").change(function () {
                 if (!$("#email").val().match(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/)) {

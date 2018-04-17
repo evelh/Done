@@ -83,6 +83,6 @@ function RejectSelect() {
 }
 function Detail() {
     requestData("../Tools/TimesheetAjax.ashx?act=timesheetInfo&id=" + entityid, null, function (data) {
-        window.location.href = "SearchFrameSet.aspx?cat=1633&con2738=" + data.resource_id + "&con2739=" + data.start_date + "&isCheck=1";
+        window.location.href = "SearchBodyFrame.aspx?cat=1633&type=219&con2738=" + data[0] + "&con2739=" + data[1] + "&param1=" + data[2];
     })
 }

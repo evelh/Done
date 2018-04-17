@@ -491,7 +491,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="desc"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public bool AddSkill(long resId, int cate, int level, string desc, long userId)
+        public bool AddSkill(long resId, int cate, int? level, string desc, sbyte? complete, long userId)
         {
             sys_resource_skill skill = new sys_resource_skill();
             sys_resource_skill_dal skillDal = new sys_resource_skill_dal();
@@ -500,6 +500,7 @@ namespace EMT.DoneNOW.BLL
             skill.skill_type_id = cate;
             skill.skill_level_id = level;
             skill.description = desc;
+            skill.is_completed = complete;
             skillDal.Insert(skill);
 
             return true;

@@ -159,9 +159,9 @@
                 <div class="information clear" style="height:460px;">
                     <p class="informationTitle">休假策略级别</p>
                     <div class="text clear">
-                        <input type="button" value="新增" style="margin-left:0;" onclick="AddPolicyTier(<%=item.cate_id %>)" />
+                        <input type="button" value="新增" style="margin-left:0;" name="addCateTier" <%if (tierResCnt > 0) { %> disabled="disabled" <%} %> onclick="AddPolicyTier(<%=item.cate_id %>)" />
                     </div>
-                    <div id="showTier" style="width:100%;margin-top:3px;border-top:1px solid #e8e8fa">
+                    <div id="showTier" style="width:100%;margin-top:3px;border-top:1px solid #e8e8fa;height:390px;">
                         <iframe id="tierFrame<%=item.cate_id %>" src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_POLICY_TIER %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TimeoffPolicyTier %>&con2468=<%=item.id==0?0:item.id %>&cate=<%=item.cate_id %>&cateType=1" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
                     </div>
                 </div>
@@ -228,9 +228,9 @@
             <label style="font-weight: normal;width:36px;">小时</label>
             <select id="accrualMinutes" style="width:80px;">
                 <option value="0">00</option>
-                <option value="15">15</option>
-                <option value="30">30</option>
-                <option value="45">45</option>
+                <option value="0.25">15</option>
+                <option value="0.5">30</option>
+                <option value="0.75">45</option>
             </select>
             <label style="font-weight: normal;width:36px;">分钟</label>
         </div>
@@ -258,6 +258,9 @@
                 LayerMsg("请输入名称");
                 return;
             }
+            <%if (isAdd) { %>
+            LayerLoad();
+        <%}%>
             $("#form1").submit();
         })
         $("#Cancle").click(function () {
@@ -269,6 +272,9 @@
                 LayerMsg("请输入名称");
                 return;
             }
+            <%if (isAdd) { %>
+            LayerLoad();
+        <%}%>
             $("#form1").submit();
         })
         $("#active").change(function () {
@@ -314,10 +320,17 @@
                 LayerMsg("请选择生效日期");
                 return;
             }
+            <%if (!isAdd) { %>
+            LayerLoad();
+        <%}%>
             requestData("/Tools/TimeoffPolicyAjax.ashx?act=associateResource&resIds=" + $("#resourceSelectHidden").val() + "&resNames=" + $("#resourceSelect").val() + "&beginDate=" + $("#effectDate").val() + "&policyId=<%=isAdd?0:policy.id %>", null, function (data) {
                 if (data == true) {
+                    $("input[name='addCateTier']").attr("disabled", "disabled");
                     $("#resourceFrame").attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_POLICY_RESOURCE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TimeoffPolicyResource %>&con2467=<%=isAdd?0:policy.id %>");
                 }
+                <%if (!isAdd) { %>
+                LayerLoadClose();
+            <%}%>
                 $("#background").hide();
                 $("#memo").hide();
             })
@@ -336,6 +349,7 @@
         })
     </script>
     <script>
+        var itemId = 0;
         $("#CancleTier").click(function () {
             $("#background").hide();
             $("#newTier").hide();
@@ -357,15 +371,22 @@
             var annual = parseInt($("#annualHours").val()) + parseFloat($("#annualMinutes").val());
             var cap = parseInt($("#accrualHours").val()) + parseFloat($("#accrualMinutes").val());
             var cateType = $('input:radio[name="periodType' + cate + '"]:checked').val();
-            requestData("/Tools/TimeoffPolicyAjax.ashx?act=addPolicyTier&cate=" + cate + "&itemid=" + $("#itemid" + cate).val() + "&annual=" + annual + "&cap=" + cap + "&months=" + $("#minMonths").val() + "&policyId=<%=isAdd?0:policy.id %>", null, function (data) {
+            <%if (!isAdd) { %>
+            LayerLoad();
+        <%}%>
+            requestData("/Tools/TimeoffPolicyAjax.ashx?act=editPolicyTier&tierId=" + itemId + "&cate=" + cate + "&itemid=" + $("#itemid" + cate).val() + "&annual=" + annual + "&cap=" + cap + "&months=" + $("#minMonths").val() + "&policyId=<%=isAdd?0:policy.id %>", null, function (data) {
                 if (data == true) {
                     $("#tierFrame" + cate).attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_POLICY_TIER %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TimeoffPolicyTier %>&con2468=" + $("#itemid" + cate).val() + "&cate=" + cate + "&cateType=" + cateType);
                 }
+                <%if (!isAdd) { %>
+                LayerLoadClose();
+            <%}%>
                 $("#background").hide();
                 $("#newTier").hide();
             })
         })
         function AddPolicyTier(idx) {
+            itemId = 0;
             $("#tierCate").val(idx);
             $("#annualHours").val("");
             $("#annualMinutes").val("0");
@@ -417,6 +438,29 @@
                 hours = toDecimal4(hours / 12);
             }
             $("#prdRate").text(hours + "小时"); 
+        }
+        function editTier(id) {
+            itemId = id;
+            requestData("/Tools/TimeoffPolicyAjax.ashx?act=getItemTierInfo&id=" + id, null, function (data) {
+                if (data != null) {
+                    $("#tierCate").val(data.cate);
+                    $("#annualHours").val(parseInt(data.annualHours));
+                    $("#annualMinutes").val(parseFloat(data.annualHours) - parseInt(data.annualHours));
+                    $("#accrualHours").val(parseInt(data.capHours));
+                    $("#accrualMinutes").val(parseFloat(data.capHours) - parseInt(data.capHours));
+                    $("#minMonths").val(data.eligibleMonths);
+                    if ($("input[name='periodType" + data.cate + "']:checked").val() == 1) {
+                        $("#prdRateLabel").hide();
+                        $("#prdRate").hide();
+                    } else {
+                        $("#prdRateLabel").show();
+                        $("#prdRate").show();
+                        $("#prdRate").text(data.hoursPerPeriod + "小时");
+                    }
+                    $("#background").show();
+                    $("#newTier").show();
+                }
+            })
         }
     </script>
 </body>
