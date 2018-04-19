@@ -173,7 +173,10 @@ namespace EMT.DoneNOW.Web.Project
                         queryPara.query_params.Add(pa);
                     }
                 }
-
+                var param1 = Request.QueryString["param1"];
+                var param2 = Request.QueryString["param2"];
+                if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
+                        queryPara.query_params.Add(new Para() { id = long.Parse(param1), value = param2 });
                 queryPara.query_type_id = queryTypeId;
                 queryPara.para_group_id = paraGroupId;
                 queryPara.page = page;

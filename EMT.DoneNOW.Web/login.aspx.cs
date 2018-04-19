@@ -49,6 +49,7 @@ namespace EMT.DoneNOW.Web
             if (result == ERROR_CODE.SUCCESS)
             {
                 Common.WriteCookie("Token", "DoneNOW", token.token);
+                Application["isFromLogin"] = "1";
                 Response.Redirect("index.aspx");
             }
             else

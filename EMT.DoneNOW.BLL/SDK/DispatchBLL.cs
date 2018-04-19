@@ -322,6 +322,27 @@ namespace EMT.DoneNOW.BLL
             }
             return true;
         }
+        /// <summary>
+        /// 修改查询条件
+        /// </summary>
+        public bool ManageSearch(sys_recent_search search,long userId)
+        {
+            var srsDal = new sys_recent_search_dal();
+            var oldSearch = srsDal.FindById(search.id);
+            if (oldSearch == null)
+            {
+                search.id = srsDal.GetNextIdCom();
+                search.create_user_id = userId;
+                search.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                srsDal.Insert(search);
+            }
+            else
+            {
+                search.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                srsDal.Update(search);
+            }
+            return true;
 
+        }
     }
 }

@@ -212,6 +212,20 @@ namespace EMT.DoneNOW.DAL
         {
             return Convert.ToInt32(GetSingle($"SELECT COUNT(1) from sdk_task t where t.delete_time =0 and t.type_id = 1809 and t.recurring_ticket_id is {(isRec? "not" : "")} NULL " + sql));
         }
+        /// <summary>
+        /// 根据条件查询工单数量 
+        /// </summary>
+        public int GetTicketCount(string sql)
+        {
+            return Convert.ToInt32(GetSingle($"SELECT COUNT(1) from sdk_task t where t.delete_time =0 and t.type_id = 1809 " + sql));
+        }
+        /// <summary>
+        /// 根据查询条件获得相应数量
+        /// </summary>
+        public int GetCount(string sql)
+        {
+            return Convert.ToInt32(GetSingle(sql));
+        }
 
         #endregion
 

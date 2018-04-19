@@ -18,6 +18,12 @@
 });
 
 function OpenQuery(catId, typeId, groupId) {
+    var param1 = $("#param1").val();
+    var param2 = $("#param2").val();
+    if (param1 != "" && param1 != null && param1 != undefined && param2 != "" && param2 != null && param2 != undefined) {
+        window.parent.parent.document.getElementById("PageFrame").src = "Common/SearchFrameSet.aspx?cat=" + catId + "&type=" + typeId + "&group=" + groupId + "&param1=" + param1 + "&param2=" + param2;
+        return;
+    }
     window.parent.parent.document.getElementById("PageFrame").src = "Common/SearchFrameSet.aspx?cat=" + catId + "&type=" + typeId + "&group=" + groupId;
     /*
     var formbody = window.parent.frames["SearchBody"];

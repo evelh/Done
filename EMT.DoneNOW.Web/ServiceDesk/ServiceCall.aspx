@@ -14,6 +14,7 @@
         #pnlTab_1 td {
             text-align: left;
         }
+
         #pnlTab_2 td {
             text-align: left;
         }
@@ -29,21 +30,22 @@
             color: #f00;
             margin-left: 3px;
         }
-        label{
+
+        label {
             font-weight: 500;
-            
         }
-        .content label{
-            width:200px;
-            text-align:left;
+
+        .content label {
+            width: 200px;
+            text-align: left;
         }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
-        <input type="hidden"  id="SerivceCallId" name="SerivceCallId" value="<%=thisCall!=null?thisCall.id.ToString():"" %>"/>
-        <input type="hidden"  id="SaveType" name="SaveType" value=">"/>
-        <input type="hidden" id="AppTicketIds" name="AppTicketIds"  />
+        <input type="hidden" id="SerivceCallId" name="SerivceCallId" value="<%=thisCall!=null?thisCall.id.ToString():"" %>" />
+        <input type="hidden" id="SaveType" name="SaveType" value=">" />
+        <input type="hidden" id="AppTicketIds" name="AppTicketIds" />
         <input type="hidden" id="AppTicketIdsHidden" name="AppTicketIdsHidden" />
         <div class="header"><%=isAdd?"新增":"编辑" %>服务预定</div>
         <div class="header-title">
@@ -171,9 +173,10 @@
                                                                                 {
                                                                                     foreach (var status in statusList)
                                                                                     { %>
-                                                                            <option value="<%=status.id %>"  <%if (thisCall != null && thisCall.status_id == status.id){ %> selected="selected" <%} %> ><%=status.name %></option>
+                                                                            <option value="<%=status.id %>" <%if (thisCall != null && thisCall.status_id == status.id)
+                                                                                { %> selected="selected" <%} %>><%=status.name %></option>
                                                                             <%}
-                                                                            } %>
+                                                                                } %>
                                                                         </select>
                                                                     </span>
                                                                 </td>
@@ -209,16 +212,16 @@
                     <div id="notificationTab" style="position: static;">
                         <div class="Tab" id="NotificationDiv" style="width: 100%; overflow: auto;">
                             <div id="ServiceControlNotification_mainPanel">
-                                <table id="ServiceControlNotification_notificationCheckboxTable" cellspacing="0" cellpadding="10" border="0" style="border-collapse: collapse;max-width:500px;">
+                                <table id="ServiceControlNotification_notificationCheckboxTable" cellspacing="0" cellpadding="10" border="0" style="border-collapse: collapse; max-width: 500px;">
                                     <tbody>
                                         <tr>
                                             <td class="checkboxPadding"><span><span class="txtBlack8Class">
-                                                <input id="ckAccMan" type="checkbox" name="ckAccMan" style="vertical-align: middle;" /><label  style="vertical-align: middle;">客户经理</label></span></span></td>
+                                                <input id="ckAccMan" type="checkbox" name="ckAccMan" style="vertical-align: middle;" /><label style="vertical-align: middle;">客户经理</label></span></span></td>
                                             <td class="checkboxPadding"><span id=""><span class="txtBlack8Class">
                                                 <input id="ckCreater" type="checkbox" name="ckCreater" style="vertical-align: middle;" /><label style="vertical-align: middle;">服务预定创建人</label></span></span></td>
                                         </tr>
                                         <tr>
-                                            <td class="checkboxPadding"><span ><span class="txtBlack8Class">
+                                            <td class="checkboxPadding"><span><span class="txtBlack8Class">
                                                 <input id="CkCCMe" type="checkbox" name="CkCCMe" style="vertical-align: middle;" /><label style="vertical-align: middle;">抄送给我</label></span></span></td>
                                             <td class="checkboxPadding"><span><span class="txtBlack8Class">
                                                 <input id="ckTicketCon" type="checkbox" name="ckTicketCon" style="vertical-align: middle;" /><label style="vertical-align: middle;">工单联系人</label></span></span></td>
@@ -247,10 +250,10 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                                <div class="InnerGrid" style="background-color: White; height: 180px;border: 1px solid #D7D7D7; margin-bottom: 10px;">
+                                                <div class="InnerGrid" style="background-color: White; height: 180px; border: 1px solid #D7D7D7; margin-bottom: 10px;">
                                                     <span id="" style="display: inline-block; height: 112px; width: 382px;">
                                                         <div id="" class="GridContainer">
-                                                            
+
                                                             <div id="" style="height: 154px; width: 100%; overflow: auto; z-index: 0;">
                                                                 <div class='grid' style='overflow: auto; height: 147px;'>
                                                                     <table width='100%' border='0' cellspacing='0' cellpadding='3'>
@@ -290,7 +293,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td  colspan="2" style="padding-left: 10px;">
+                                            <td colspan="2" style="padding-left: 10px;">
                                                 <table cellspacing="0" cellpadding="0" width="100%" style="padding-top: 3px;" class="PaddingBottomForTd">
                                                     <tbody>
                                                         <tr id="" style="padding-top: 8px;">
@@ -310,11 +313,13 @@
                                                                 <span id="" style="display: inline-block;">
                                                                     <select name="notifyTempId" id="notifyTempId" class="txtBlack8Class" style="width: 524px;">
                                                                         <%if (tempList != null && tempList.Count > 0)
-                                                                            {foreach (var temp in tempList)
+                                                                            {
+                                                                                foreach (var temp in tempList)
                                                                                 {  %>
                                                                         <option value="<%=temp.id %>"><%=temp.name %></option>
                                                                         <%
-                                                                                } } %>
+                                                                                }
+                                                                            } %>
                                                                     </select>
                                                                 </span>
                                                             </td>
@@ -349,7 +354,7 @@
                                                     <tbody>
                                                         <tr>
                                                             <td id="ServiceControlNotification_editNotifyDefaultSettingLinkCell" valign="top" colspan="2" style="text-align: left; padding-top: 10px; padding-bottom: 10px;">
-                                                                <span style="text-align: left; padding-left: 520px;"><a href="#" id="" class="txtBlack8Class" >Edit Default Settings</a></span>
+                                                                <span style="text-align: left; padding-left: 520px;"><a href="#" id="" class="txtBlack8Class">Edit Default Settings</a></span>
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -380,7 +385,8 @@
     { %>
         GetTicketByAccountId();
         <%}%>
-    <%if(thisAccount!=null){ %>
+    <%if (thisAccount != null)
+    { %>
         GetDataByAccount();
         <% }%>
 
@@ -468,7 +474,7 @@
             ids = ids.substring(0, ids.length - 1);
         }
         $("#notifyResIds").val(ids);
-    } 
+    }
 
     function GetTicketByAccountId() {
         var serviceId = $("#SerivceCallId").val();
@@ -477,20 +483,22 @@
             url += "&con2127=" + serviceId;
         }
         else {
+            url += "&show=1";
             var accountId = $("#accountIdHidden").val();
             if (accountId != "") {
                 url += "&con2681=" + accountId;
             } else {
-            <%if (isAdd){ %>
-            $("#TicketSearch").attr("src", "");
-            return;
+            <%if (isAdd)
+    { %>
+                $("#TicketSearch").attr("src", "");
+                return;
             <% }%>
+            }
         }
-        }
-        
-       
+
+
         $("#TicketSearch").attr("src", url);
-        
+
     }
 
     function CallBackAccount() {
@@ -529,11 +537,11 @@
                 },
             });
 
-            
+
         } else {
             $("#accountAddress").html("");
         }
-        
+
 
         GetTicketByAccountId();
     }
@@ -541,10 +549,10 @@
     // 查找带回工单 - 带回的工单关联 服务预定
     function ApplyChooseTicket() {
         var SerivceCallId = $("#SerivceCallId").val();
-        if (SerivceCallId == "") {
-            LayerMsg("请先保存当前服务预定！");
-            return;
-        }
+        //if (SerivceCallId == "") {
+        //    LayerMsg("请先保存当前服务预定！");
+        //    return;
+        //}
 
         //  SerivceCallId 服务预定Id
         var accountIdHidden = $("#accountIdHidden").val();
@@ -567,18 +575,31 @@
             LayerMsg("请选择状态");
             return;
         }
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALL_TICKET %>&field=AppTicketIds&callBack=GetDataByChooseIds&con2127=" + SerivceCallId +"&con2700=2&muilt=1", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>", 'left=200,top=200,width=600,height=800', false);
-        
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALL_TICKET %>&field=AppTicketIds&callBack=GetDataByChooseIds&con2127=" + SerivceCallId + "&con2700=2&muilt=1", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>", 'left=200,top=200,width=600,height=800', false);
+
     }
 
     function GetDataByChooseIds() {
         var SerivceCallId = $("#SerivceCallId").val();
         var AppTicketIds = $("#AppTicketIdsHidden").val();
         if (AppTicketIds != "") {
-            if (SubmitCheck()) {
-                $("#form1").submit();
-            }
-            
+                <%if (isAdd)
+    { %>
+            LayerConfirm("关联选择的工单/任务将会保存服务预定，是否继续？", "是", "否", function () {
+                if (SubmitCheck()) {
+                    $("#form1").submit();
+                }
+
+            }, );
+                <%}
+    else
+    { %>
+                if (SubmitCheck()) {
+                    $("#form1").submit();
+                }
+                <%} %>
+
+
         }
 
     }
@@ -614,7 +635,7 @@
         if (endTime == "") {
             LayerMsg("请填写结束时间");
             return false;
-        } 
+        }
         var status_id = $("#status_id").val();
         if (status_id == "") {
             LayerMsg("请选择状态");
@@ -622,7 +643,7 @@
         }
         var ChooseIds = $("#ChooseIds").val();
         var AppTicketIds = $("#AppTicketIdsHidden").val();
-        if (ChooseIds == "" && AppTicketIds=="") {
+        if (ChooseIds == "" && AppTicketIds == "") {
             LayerConfirm("当前服务预定无关联工单，在调度工作室中，选中“显示无负责人的服务预定”，才能看到该服务预定信息，是否继续？", "是", "否", function () {
                 $("#form1").submit();
             }, function () { });
@@ -641,7 +662,7 @@
         if (!CheckTickRes()) {
             return false;
         }
-         
+
         return true;
     }
     // 对工单负责人进行校验
@@ -663,22 +684,22 @@
             type: "GET",
             async: false,
             url: "../Tools/TicketAjax.ashx?act=CheckTicketResTime&ids=" + ChooseIds + "&start=" + startTime + "&end=" + endTime,
-            dataType:"json",
+            dataType: "json",
             success: function (data) {
                 if (data != "") {
                     if (data.hasRes) {
                         if (data.resList.length != undefind && data.resList.length > 1) {
                             var resName = "";
                             for (var i = 0; i < data.resList.length; i++) {
-                                resName += data.resList[i].name+',';
+                                resName += data.resList[i].name + ',';
                             }
                             if (resName != "") {
                                 result = "1";
-                                LayerConfirm("以下负责人在同时段有其他任务：" + resName+"是否继续？", "是", "否", function () {
+                                LayerConfirm("以下负责人在同时段有其他任务：" + resName + "是否继续？", "是", "否", function () {
                                     $("#form1").submit();
                                 }, function () { });
-                            } 
-                        } 
+                            }
+                        }
                     }
                     else {
                         LayerConfirm("当前服务预定无负责人，在调度工作室中，选中“显示无负责人的服务预定”，才能看到该服务预定信息，是否继续？", "是", "否", function () {

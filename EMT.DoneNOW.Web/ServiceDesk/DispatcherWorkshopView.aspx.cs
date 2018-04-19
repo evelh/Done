@@ -36,6 +36,27 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         {
             try
             {
+                // 填入默认查询条件
+                var defaultSearch = new DAL.sys_recent_search_dal().GetByUrl("/ServiceDesk/DispatcherWorkshopView");
+                var url = Request.QueryString[""];
+                sdk_dispatcher_view searDefault = null;
+                if (defaultSearch != null&&!string.IsNullOrEmpty(defaultSearch.conditions))
+                {
+                    searDefault = new Tools.Serialize().DeserializeJson<sdk_dispatcher_view>(defaultSearch.conditions);
+                    if (searDefault != null)
+                    {
+                        workIds = searDefault.workgroup_ids;
+                        resIds = searDefault.resource_ids;
+                        if (searDefault.show_unassigned == 1)
+                            isShowNoRes = true;
+                        if (searDefault.show_canceled == 1)
+                            isShowCanCall = true;
+                        if(searDefault.mode_id!=0)
+                            dateType = searDefault.mode_id;
+                    }
+                }
+
+                // 页面传入查询条件
                 var viewId = Request.QueryString["viewId"];
                 // viewId = "17700";
                 if (!string.IsNullOrEmpty(viewId))
@@ -73,6 +94,15 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 var isSingle = Request.QueryString["isSingResPage"];
                 if (!string.IsNullOrEmpty(isSingle) && isSingle == "1")
                     isSingResPage = true;
+                
+                // 查询之后保存默认的查询条件
+                searDefault.workgroup_ids = workIds;
+                searDefault.resource_ids = resIds;
+                searDefault.show_canceled = (sbyte)(isShowCanCall ? 1 : 0);
+                searDefault.show_unassigned = (sbyte)(isShowNoRes?1:0);
+                searDefault.mode_id = (int)dateType;
+                defaultSearch.conditions = new Tools.Serialize().SerializeJson(searDefault);
+                new DispatchBLL().ManageSearch(defaultSearch,LoginUserId);
 
                 // 记录员工的每天使用时间
                 Dictionary<string, Dictionary<string, decimal>> userTimeDic = new Dictionary<string, Dictionary<string, decimal>>();

@@ -482,7 +482,7 @@
                                                                 <tr>
                                                                     <td style="min-width: 15px;"></td>
                                                                     <td style="min-width: 50px;"> 
-                                                                        <input type="text" id="AddNewEntryDate" value="<%=thisCall!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisCall.start_time).ToString("yyyy-MM-dd"):"" %>" onclick="WdatePicker()"  style="width:80px;"/></td>
+                                                                        <input type="text" id="AddNewEntryDate" value="<%=showStartDate.ToString("yyyy-MM-dd") %>" onclick="WdatePicker()"  style="width:80px;"/></td>
                                                                     <%if (noTime)
                                                                         { %>
                                                                     <td style="min-width: 50px;">
@@ -492,11 +492,11 @@
                                                                     {%>
                                                                     <td style="min-width: 50px;">
                                                                         
-                                                                         <input type="text" size="8" id="AddNewEntryStartTime" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=thisCall!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisCall.start_time).ToString("HH:mm"):DateTime.Now.ToString("HH:mm") %>" />
+                                                                         <input type="text" size="8" id="AddNewEntryStartTime" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=showStartDate.ToString("HH:mm") %>" />
                                                                         &nbsp;<img src="../Images/time.png" border="0" style="vertical-align: middle; margin-bottom: 2px;" />
                                                                     </td>
                                                                     <td style="min-width: 50px;">
-                                                                    <input type="text"  id="AddNewEntryEndTime" size="8" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=thisCall!=null?EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisCall.end_time).ToString("HH:mm"):DateTime.Now.ToString("HH:mm") %>" />&nbsp;<img src="../Images/time.png" border="0" style="vertical-align: middle; margin-bottom: 2px;" />  </td>
+                                                                    <input type="text"  id="AddNewEntryEndTime" size="8" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=showEndDate.ToString("HH:mm") %>" />&nbsp;<img src="../Images/time.png" border="0" style="vertical-align: middle; margin-bottom: 2px;" />  </td>
                                                                     <td>
                                                                         <input style="text-align: right; color: #6d6d6d; background-color: #dbdbdb;" type="text"  id="AddNewEntryHoursWorked" readonly="" value="<%="0.00" %>" />
                                                                     </td>

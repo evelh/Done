@@ -99,6 +99,7 @@
     <Compile Include="SYS\FormTemplateBLL.cs" />
     <Compile Include="SYS\GeneralBLL.cs" />
     <Compile Include="SYS\DepartmentBLL.cs" />
+    <Compile Include="SYS\IndexBLL.cs" />
     <Compile Include="SYS\OperLogBLL.cs" />
     <Compile Include="SYS\QuoteAndInvoiceEmailTempBLL.cs" />
     <Compile Include="SYS\ReverseBLL.cs" />

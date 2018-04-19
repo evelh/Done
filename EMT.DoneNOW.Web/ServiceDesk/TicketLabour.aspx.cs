@@ -29,10 +29,13 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected sys_resource createUser = null;
         protected long? parent_id = null;
         protected sdk_service_call thisCall = null;
+        protected List<sys_resource> showResList;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+                showResList = new UserResourceBLL().GetAgentUser(LoginUserId,out isAllowAgentRes);
+                
                 isComplete = !string.IsNullOrEmpty(Request.QueryString["is_complete"]);
                 if (!IsPostBack)
                 {
@@ -94,9 +97,9 @@ namespace EMT.DoneNOW.Web.ServiceDesk
 
         private void GetPageDataBind()
         {
-            resource_id.DataValueField = "val";
-            resource_id.DataTextField = "show";
-            resource_id.DataSource = resList;
+            resource_id.DataValueField = "id";
+            resource_id.DataTextField = "name";
+            resource_id.DataSource = showResList;
             resource_id.DataBind();
             // resource_id.Items.Insert(0, new ListItem() { Value = "", Text = "   ", Selected = true });
 
@@ -246,14 +249,16 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     else if(parentType =="entry")
                         pageEntry.parent_id = int.Parse(parentobjId);
                 }
+                if (!string.IsNullOrEmpty(Request.Form["resource_id"]))
+                    pageEntry.resource_id = LoginUserId;
+                else
+                    pageEntry.resource_id = long.Parse(Request.Form["resource_id"]);
                 param.workEntry = pageEntry;
             }
             else
             {
                 if (isAllowAgentRes)
-                {
-                    ticketLabour.resource_id = pageEntry.resource_id;
-                }
+                    //ticketLabour.resource_id = pageEntry.resource_id;
                 ticketLabour.contract_id = pageEntry.contract_id;
                 ticketLabour.service_id = pageEntry.service_id;
                 ticketLabour.cost_code_id = pageEntry.cost_code_id;

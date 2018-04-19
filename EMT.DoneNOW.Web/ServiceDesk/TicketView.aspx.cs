@@ -139,7 +139,14 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 if (thisTicket == null)
                 {
                     Response.Write("<script>alert('未查询到该工单信息！');window.close();</script>");
+                    return;
                 }
+                var history = new sys_windows_history()
+                {
+                    title = "工单:" + thisTicket.no+":" + thisTicket.title,
+                    url = Request.RawUrl,
+                };
+                new IndexBLL().BrowseHistory(history, LoginUserId);
             }
             catch (Exception msg)
             {

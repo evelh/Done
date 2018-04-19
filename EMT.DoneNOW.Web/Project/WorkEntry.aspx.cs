@@ -24,6 +24,8 @@ namespace EMT.DoneNOW.Web.Project
         protected List<sdk_work_entry> entryList = null;
         protected Dictionary<string, object> dic = new ProjectBLL().GetField();
         protected sdk_service_call thisCall = null;
+        protected DateTime showStartDate = DateTime.Now;
+        protected DateTime showEndDate = DateTime.Now;
         protected bool noTime = false;      // 可以不输入开始结束时间（根据系统设置进行判断）
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -50,12 +52,22 @@ namespace EMT.DoneNOW.Web.Project
                     resource_id.DataTextField = "show";
                     resource_id.DataValueField = "val";
                     var entryProxySet = new SysSettingBLL().GetValueById(SysSettingEnum.SDK_ENTRY_PROXY);
+                    bool isAgent = false;
                     if(entryProxySet == ((int)DicEnum.PROXY_TIME_ENTRY.DISABLED).ToString())
                     {
                         if(resList!=null&& resList.Count > 0)
                         {
                             resList = resList.Where(_ => _.val == LoginUserId.ToString()).ToList();
                         }
+                    }else
+                    {
+                        var agentResList = new UserResourceBLL().GetAgentUser(LoginUserId, out isAgent);
+                        if(agentResList!=null&& agentResList.Count > 0)
+                        {
+                            resList = (from a in agentResList
+                                        select new DictionaryEntryDto() { val=a.id.ToString(),show = a.name}).ToList();
+                        }
+                        
                     }
                     resource_id.DataSource = resList;
 
@@ -139,6 +151,57 @@ namespace EMT.DoneNOW.Web.Project
                         Response.End();
                     }
                 }
+                #region 根据批次获取相关工时
+                //var batchId = Request.QueryString["batchId"];
+                //if (!string.IsNullOrEmpty(batchId))
+                //{
+                //    entryList = new sdk_work_entry_dal().GetBatchList(long.Parse(batchId));
+                //    if(entryList!=null&& entryList.Count > 0)
+                //    {
+                //        thisWorkEntry = entryList[0];
+                //        if (thisWorkEntry.approve_and_post_date != null || thisWorkEntry.approve_and_post_user_id != null)
+                //        {
+                //            Response.Write("<script>alert('审批提交的工时不可以更改！');window.close();</script>");
+                //            Response.End();
+                //        }
+
+                //        if (!resList.Any(_ => _.val == thisWorkEntry.create_user_id.ToString()))
+                //        {
+                //            Response.Write("<script>alert('系统设置不能代理操作！')window.close();</script>");
+                //            Response.End();
+                //        }
+                //        if (thisWorkEntry.end_time == null && noTimeSet != null && noTimeSet.setting_value == "0")
+                //        {
+                //            noTime = true;
+                //        }
+                //        entryList = new sdk_work_entry_dal().GetBatchList(thisWorkEntry.batch_id);
+                //        isAdd = false;
+                //        thisTask = new sdk_task_dal().FindNoDeleteById(thisWorkEntry.task_id);
+                //        if (!IsPostBack)
+                //        {
+                //            resource_id.SelectedValue = ((long)thisWorkEntry.resource_id).ToString();
+                //            cost_code_id.SelectedValue = ((long)thisWorkEntry.cost_code_id).ToString();
+                //            // status_id.SelectedValue = ((long)thisWorkEntry.)
+                //            // thisTask  = new crm_account_dal().FindNoDeleteById(thisWorkEntry.);
+
+                //        }
+
+                //        if (thisWorkEntry.contract_id != null)
+                //        {
+                //            thisContract = new ctt_contract_dal().FindNoDeleteById((long)thisWorkEntry.contract_id);
+                //        }
+                //        if (!IsPostBack)
+                //        {
+                //            isBilled.Checked = thisWorkEntry.is_billable == 0;
+                //            ShowOnInv.Checked = thisWorkEntry.show_on_invoice == 1;
+                //            if (isBilled.Checked)
+                //            {
+                //                ShowOnInv.Enabled = true;
+                //            }
+                //        }
+                //    }
+                //}
+                #endregion
                 if (thisTask != null)
                 {
                     v_task = new v_task_all_dal().FindById(thisTask.id);
@@ -165,6 +228,17 @@ namespace EMT.DoneNOW.Web.Project
                     }
                 }
 
+                if (thisCall != null)
+                {
+                    showStartDate = EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisCall.start_time);
+                    showEndDate = EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisCall.end_time);
+                }
+                if (!string.IsNullOrEmpty(Request.QueryString["chooseDate"]))
+                {
+                    showStartDate = DateTime.Parse(Request.QueryString["chooseDate"]);
+                    showEndDate = DateTime.Parse(Request.QueryString["chooseDate"]);
+                }
+                    
 
             }
             catch (Exception msg)

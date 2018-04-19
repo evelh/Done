@@ -87,6 +87,7 @@
     <Compile Include="PreferencesInvoiceDto.cs" />
     <Compile Include="ProcessInvoiceDto.cs" />
     <Compile Include="ProjectDto.cs" />
+    <Compile Include="QuickSearchDto.cs" />
     <Compile Include="QuoteConfigItemDto.cs" />
     <Compile Include="QuoteItemWareHouseDto.cs" />
     <Compile Include="PurchaseOrderItemManageDto.cs" />
