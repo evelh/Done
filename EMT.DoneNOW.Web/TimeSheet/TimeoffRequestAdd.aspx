@@ -22,7 +22,7 @@
     </style>
 </head>
 <body>
-    <div class="header">新增休假请求</div>
+    <div class="header">新增休假请求--<%=resourceName %></div>
     <div class="header-title" style="min-width: 700px;">
         <ul>
             <li id="SaveClose">

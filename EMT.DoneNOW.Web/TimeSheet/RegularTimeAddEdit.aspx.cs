@@ -15,6 +15,7 @@ namespace EMT.DoneNOW.Web.TimeSheet
         protected bool isAdd = true;
         protected bool showResource = false;
         protected long resourceId;
+        protected string resourceName;
         protected DateTime startDate;
         protected List<sdk_work_entry> workEntryList;
         private WorkEntryBLL bll = new WorkEntryBLL();
@@ -43,6 +44,7 @@ namespace EMT.DoneNOW.Web.TimeSheet
                 else
                     startDate = startDate.AddDays((int)DayOfWeek.Monday - (int)startDate.DayOfWeek);
             }
+            resourceName = new UserResourceBLL().GetResourceById(resourceId).name;
 
             var costCodeList = bll.GetTimeCostCodeList();
             if (!IsPostBack)

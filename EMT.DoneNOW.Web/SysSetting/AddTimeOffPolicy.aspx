@@ -336,6 +336,17 @@
                 LayerMsg("请选择生效日期");
                 return;
             }
+            requestData("/Tools/TimeoffPolicyAjax.ashx?act=checkResourceAss&resIds=" + $("#resourceSelectHidden").val() + "&beginDate=" + $("#effectDate").val(), null, function (data) {
+                if (data == "") {
+                    SaveRes();
+                } else {
+                    LayerConfirmOk(data, "确定", "取消关联", function () {
+                        SaveRes();
+                    })
+                }
+            })
+        })
+        function SaveRes() {
             <%if (!isAdd) { %>
             LayerLoad();
         <%}%>
@@ -353,7 +364,7 @@
                 $("#background").hide();
                 $("#memo").hide();
             })
-        })
+        }
         $("#CancleMemo").click(function () {
             $("#background").hide();
             $("#memo").hide();

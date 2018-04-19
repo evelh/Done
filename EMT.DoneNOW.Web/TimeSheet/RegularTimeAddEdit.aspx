@@ -16,7 +16,7 @@
 </head>
 <body>
     <div class="header">
-        <%if (isAdd) { %>新增<%} else { %>编辑<%} %>常规工时
+        <%if (isAdd) { %>新增<%} else { %>编辑<%} %>常规工时--<%=resourceName %>
     </div>
     <div class="header-title" style="min-width: 700px;">
         <ul>

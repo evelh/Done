@@ -25,12 +25,16 @@ namespace EMT.DoneNOW.Web
         private bool saveop=false;//保存状态
        protected void Page_Load(object sender, EventArgs e)
         {
-            id = Convert.ToInt32(Request.QueryString["id"]);
+            if (!long.TryParse(Request.QueryString["id"], out id))
+            {
+                Response.End();
+                return;
+            }
             if (Request.QueryString["op"]!=null)
             op = Request.QueryString["op"].ToString();
             if (!IsPostBack)
             {
-                var user = UserInfoBLL.GetUserInfo(GetLoginUserId());
+                var user = UserInfoBLL.GetUserInfo(id);
                 this.username.Text = user.name;
                 //常规tab页
                 //下拉框
@@ -461,7 +465,7 @@ namespace EMT.DoneNOW.Web
             param.sys_res.email1 = this.email1.Text.Trim().ToString();
             param.sys_res.email2 = this.email2.Text.Trim().ToString();
             param.sys_user.mobile_phone = this.mobile_phone.Text.Trim().ToString();
-            param.sys_user.name = this.name.Text.Trim().ToString();
+            param.sys_user.name = param.sys_res.name;
 
             var res = AssembleModel<sys_resource>();
             param.sys_res.type_id = res.type_id;
@@ -560,7 +564,7 @@ namespace EMT.DoneNOW.Web
             {
                 param.sys_user.password = this.pass_word.Text.ToString();
             }
-            param.sys_user.status_id = (int)USER_STATUS.NORMAL;
+            //param.sys_user.status_id = (int)USER_STATUS.NORMAL;
             param.sys_user.email = param.sys_res.email;
             param.sys_user.mobile_phone = param.sys_res.mobile_phone;
             param.sys_user.cate_id = 1;//员工种类

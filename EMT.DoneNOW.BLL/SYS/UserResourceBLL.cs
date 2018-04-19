@@ -176,15 +176,12 @@ namespace EMT.DoneNOW.BLL
         /// 更新员工信息
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="user_id"></param>
-        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        /// <param name="resourceId"></param>
         /// <returns></returns>
-        public ERROR_CODE Update(SysUserAddDto data, long user_id,long id)
+        public ERROR_CODE Update(SysUserAddDto data, long userId,long resourceId)
         {
-            var user = UserInfoBLL.GetUserInfo(user_id);
-            if (user == null)
-                return ERROR_CODE.USER_NOT_FIND;
-
+            // 检查邮箱和手机号是否重复
             sys_resource findRes;
             if (string.IsNullOrEmpty(data.sys_res.mobile_phone))
                 findRes = _dal.FindSignleBySql<sys_resource>($"select * from sys_resource where email='{data.sys_res.email}' and id<>{data.sys_res.id} and delete_time=0");
@@ -194,80 +191,62 @@ namespace EMT.DoneNOW.BLL
             {
                 return ERROR_CODE.SYS_NAME_EXIST;
             }
-            
-            var old = GetSysResourceSingle(id);
-            data.sys_res.id = id;
-            data.sys_res.update_user_id = user_id;
-            data.sys_res.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            _dal.Update(data.sys_res);
-            //操作日志新增一条日志,操作对象种类：员工            
-            var add_account_log = new sys_oper_log()
-            {
-                user_cate = "用户",
-                user_id = (int)user.id,
-                name = user.name,
-                phone = user.mobile == null ? "" : user.mobile,
-                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,//员工
-                oper_object_id = data.sys_res.id,// 操作对象id
-                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.CompareValue(old,data.sys_res),
-                remark = "更新员工信息"
 
-            };          // 创建日志
-            new sys_oper_log_dal().Insert(add_account_log);       // 插入日志
-            var userdata = GetSysUserSingle(id);
-            data.sys_user.id = id;
-            if (userdata.password!=data.sys_user.password)
+            var resOld = GetResourceById(resourceId);
+            data.sys_res.update_user_id = userId;
+            data.sys_res.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            var desc = OperLogBLL.CompareValue<sys_resource>(resOld, data.sys_res);
+            if (!string.IsNullOrEmpty(desc))
+            {
+                _dal.Update(data.sys_res);
+                OperLogBLL.OperLogUpdate(desc, data.sys_res.id, userId, OPER_LOG_OBJ_CATE.RESOURCE, "编辑员工");
+            }
+
+            var userDal = new sys_user_dal();
+            var userOld = userDal.FindById(resourceId);
+            if (userOld.password != data.sys_user.password)
                 data.sys_user.password = new Tools.Cryptographys().SHA1Encrypt(data.sys_user.password);
-            new sys_user_dal().Update(data.sys_user);
-            add_account_log = new sys_oper_log()
+            desc = OperLogBLL.CompareValue<sys_user>(userOld, data.sys_user);
+            if (!string.IsNullOrEmpty(desc))
             {
-                user_cate = "用户",
-                user_id = (int)user.id,
-                name = user.name,
-                phone = user.mobile == null ? "" : user.mobile,
-                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
-                oper_object_id = data.sys_user.id,// 操作对象id
-                oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = new sys_user_dal().CompareValue(userdata,data.sys_user),
-                remark = "更新员工信息"
+                userDal.Update(data.sys_user);
+                OperLogBLL.OperLogUpdate(desc, data.sys_user.id, userId, OPER_LOG_OBJ_CATE.RESOURCE, "编辑员工");
+            }
+            
 
-            };          // 创建日志
-            new sys_oper_log_dal().Insert(add_account_log);
-
+            // 员工每天工作时间
             var dal = new sys_resource_availability_dal();
-            var ava = dal.FindSignleBySql<sys_resource_availability>($"select * from sys_resource_availability where resource_id={id} and delete_time=0");
+            var ava = dal.FindSignleBySql<sys_resource_availability>($"select * from sys_resource_availability where resource_id={resourceId} and delete_time=0");
             if (ava == null)
             {
                 data.availability.id = dal.GetNextIdCom();
-                data.availability.resource_id = id;
+                data.availability.resource_id = resourceId;
                 data.availability.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
                 data.availability.update_time = data.availability.create_time;
-                data.availability.create_user_id = user_id;
-                data.availability.update_user_id = user_id;
+                data.availability.create_user_id = userId;
+                data.availability.update_user_id = userId;
                 dal.Insert(data.availability);
             }
             else
             {
                 data.availability.id = ava.id;
-                data.availability.resource_id = id;
+                data.availability.resource_id = resourceId;
                 data.availability.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
-                data.availability.update_user_id = user_id;
+                data.availability.update_user_id = userId;
                 data.availability.create_time = ava.create_time;
                 data.availability.create_user_id = ava.create_user_id;
                 dal.Update(data.availability);
             }
 
+            // 员工休假-额外时间
             sys_resource_additional_time_dal timeDal = new sys_resource_additional_time_dal();
             if (data.addTime1 != null)
             {
-                var time1 = timeDal.FindSignleBySql<sys_resource_additional_time>($"select * from sys_resource_additional_time where resource_id={id} and period_year={data.addTime1.period_year.Value}");
+                var time1 = timeDal.FindSignleBySql<sys_resource_additional_time>($"select * from sys_resource_additional_time where resource_id={resourceId} and period_year={data.addTime1.period_year.Value}");
                 if (time1 == null)
                 {
                     data.addTime1.id = timeDal.GetNextIdCom();
-                    data.addTime1.resource_id = id;
+                    data.addTime1.resource_id = resourceId;
                     timeDal.Insert(data.addTime1);
                 }
                 else
@@ -281,11 +260,11 @@ namespace EMT.DoneNOW.BLL
             }
             if (data.addTime2 != null)
             {
-                var time2 = timeDal.FindSignleBySql<sys_resource_additional_time>($"select * from sys_resource_additional_time where resource_id={id} and period_year={data.addTime2.period_year.Value}");
+                var time2 = timeDal.FindSignleBySql<sys_resource_additional_time>($"select * from sys_resource_additional_time where resource_id={resourceId} and period_year={data.addTime2.period_year.Value}");
                 if (time2 == null)
                 {
                     data.addTime2.id = timeDal.GetNextIdCom();
-                    data.addTime2.resource_id = id;
+                    data.addTime2.resource_id = resourceId;
                     timeDal.Insert(data.addTime2);
                 }
                 else

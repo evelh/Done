@@ -30,6 +30,9 @@ namespace EMT.DoneNOW.Web
                 case "associateResource":   // 关联员工
                     AssociateResource(context);
                     break;
+                case "checkResourceAss":
+                    CheckResourceAss(context);
+                    break;
                 case "disassociateResource":
                     DisassociateResource(context);
                     break;
@@ -221,6 +224,20 @@ namespace EMT.DoneNOW.Web
                 };
             }
             context.Response.Write(new Tools.Serialize().SerializeJson(dto));
+        }
+
+        /// <summary>
+        /// 检查用户关联的休假策略是否有日期重复
+        /// </summary>
+        /// <param name="context"></param>
+        private void CheckResourceAss(HttpContext context)
+        {
+            string resIds = context.Request.QueryString["resIds"];
+            DateTime effDate = DateTime.Parse(context.Request.QueryString["beginDate"]);
+
+            string rtn = bll.AddTimeoffResourceCheck(resIds, effDate);
+
+            context.Response.Write(new Tools.Serialize().SerializeJson(rtn));
         }
 
         /// <summary>

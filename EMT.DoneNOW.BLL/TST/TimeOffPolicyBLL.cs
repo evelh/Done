@@ -313,6 +313,36 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 检查用户关联的休假策略是否有日期重复
+        /// </summary>
+        /// <param name="resIds"></param>
+        /// <param name="effDate"></param>
+        /// <returns></returns>
+        public string AddTimeoffResourceCheck(string resIds, DateTime effDate)
+        {
+            tst_timeoff_policy_resource_dal plcResDal = new tst_timeoff_policy_resource_dal();
+            var policyResList = plcResDal.FindListBySql($"select * from tst_timeoff_policy_resource where resource_id in({resIds}) and delete_time=0");
+            var resList = resIds.Split(',');
+            string names = "";
+            foreach (var resId in resList)
+            {
+                var policyRes = policyResList.Find(_ => _.resource_id.ToString().Equals(resId) && _.effective_date == effDate);
+                if (policyRes != null)
+                {
+                    var name = new UserResourceBLL().GetResourceById(policyRes.resource_id).name;
+                    if (names == "")
+                        names = name;
+                    else
+                        names += "," + name;
+                }
+            }
+            if (names != "")
+                names = "员工" + names + "已在该日期关联休假策略，此关联将不会生效";
+
+            return names;
+        }
+
+        /// <summary>
         /// 新增休假策略关联员工
         /// </summary>
         /// <param name="resIds">员工id列表</param>
@@ -324,11 +354,15 @@ namespace EMT.DoneNOW.BLL
         {
             tst_timeoff_policy_resource_dal plcResDal = new tst_timeoff_policy_resource_dal();
             bool addUpdate = false; // 是否有新增/更新操作
-            var policyResList = plcResDal.FindListBySql($"select * from tst_timeoff_policy_resource where timeoff_policy_id={policyId} and delete_time=0 and resource_id in({resIds})");
+            var policyResList = plcResDal.FindListBySql($"select * from tst_timeoff_policy_resource where resource_id in({resIds}) and delete_time=0");
             var resList = resIds.Split(',');
             foreach (var resId in resList)
             {
-                var policyRes = policyResList.Find(_ => _.resource_id.ToString().Equals(resId));
+                var policyRes = policyResList.Find(_ => _.resource_id.ToString().Equals(resId) && _.effective_date == effDate);
+                if (policyRes != null)  // 该员工该日期已关联休假策略
+                    continue;
+
+                policyRes = policyResList.Find(_ => _.resource_id.ToString().Equals(resId) && _.timeoff_policy_id == policyId);
                 if (policyRes == null)  
                 {
                     policyRes = new tst_timeoff_policy_resource();
