@@ -586,9 +586,21 @@
     $(function () {
         start();
         GetServiceByContract();
+        <%if (ticketLabour != null && ticketLabour.resource_id != null)
+    { %>
+        $("#resource_id").val('<%=ticketLabour.resource_id.ToString() %>');
+        <%} %>
+
+        GetRoleByRes();
+       
         <%if (ticketLabour != null)
         { %>
 
+
+        <%if (ticketLabour.role_id != null)
+    { %>
+        $("#role_id").val('<%=ticketLabour.role_id.ToString() %>');
+        <%} %>
         <%if (ticketLabour.service_id != null){ %>
         $("#service_id").val('<%=ticketLabour.service_id.ToString() %>');
         <%}%>
@@ -821,4 +833,29 @@
     $("#ClosePage").click(function () {
         window.close();
     })
+    $("#resource_id").change(function () {
+        GetRoleByRes();
+        
+    })
+    function GetRoleByRes() {
+        var roleHtml = "<option value=''> </option>";
+        var resId = $("#owner_resource_id").val();
+        if (resId != "" && resId != null && resId != undefined) {
+
+        } else {
+            resId = '<%=LoginUserId %>';
+        }
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/RoleAjax.ashx?act=GetRoleList&source_id=" + resId + "&showNull=1",
+            //dataType: "json",
+            success: function (data) {
+                if (data != "") {
+                    roleHtml += data;
+                }
+            },
+        });
+        $("#role_id").html(roleHtml);
+    }
 </script>

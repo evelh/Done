@@ -455,6 +455,20 @@ namespace EMT.DoneNOW.Web
                     if (!string.IsNullOrEmpty(param3) && !string.IsNullOrEmpty(param4))
                         queryPara.query_params.Add(new Para() { id = long.Parse(param3), value = param4 });
                 }
+                else if (queryTypeId == (int)QueryType.PROJECT_SEARCH|| queryTypeId == (int)QueryType.InstalledProductView || queryTypeId == (int)QueryType.KnowledgebaseArticle || queryTypeId == (int)QueryType.Invoice_History )
+                {
+                    if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
+                        queryPara.query_params.Add(new Para() { id = long.Parse(param1), value = param2 });
+                }
+                else if(queryTypeId == (int)QueryType.Contact|| queryTypeId == (int)QueryType.Opportunity || queryTypeId == (int)QueryType.SaleOrder || queryTypeId == (int)QueryType.Quote || queryTypeId == (int)QueryType.CRMNote || queryTypeId == (int)QueryType.Todos)
+                {
+                    var id = keys["conparam1"];
+                    string val = keys["conparam2"];
+                    if(!string.IsNullOrEmpty(val)&&!string.IsNullOrEmpty(id))
+                        queryPara.query_params.Add(new Para() { id = long.Parse(id), value = val });
+
+                }
+               
                 #endregion
 
                 queryPara.query_type_id = queryTypeId;
@@ -1124,17 +1138,17 @@ namespace EMT.DoneNOW.Web
                     var ticketManage = new PageContextMenuDto { text = "工单操作" };
                     ticketManage.submenu = new List<PageContextMenuDto>() {
                          new PageContextMenuDto(){text = "编辑工单", click_function = "EditTicket()" },
-                         new PageContextMenuDto(){text = "转发/修改", click_function = "" },
-                         new PageContextMenuDto(){text = "接受", click_function = "" },
+                         new PageContextMenuDto(){text = "转发/修改", click_function = "ModifyTicket()" },
+                         new PageContextMenuDto(){text = "接受", click_function = "Accept()" },
                          new PageContextMenuDto(){text = "接受并添加工时", click_function = "" },
-                         new PageContextMenuDto(){text = "复制", click_function = "" },
-                         new PageContextMenuDto(){text = "复制到项目", click_function = "" },
-                         new PageContextMenuDto(){text = "合并到另一个工单", click_function = "" },
-                         new PageContextMenuDto(){text = "吸收合并其他工单", click_function = "" },
+                         new PageContextMenuDto(){text = "复制", click_function = "Copy()" },
+                         new PageContextMenuDto(){text = "复制到项目", click_function = "CopyToProject()" },
+                         new PageContextMenuDto(){text = "合并到另一个工单", click_function = "MergeTicket()" },
+                         new PageContextMenuDto(){text = "吸收合并其他工单", click_function = "AbsorbTicket()" },
                          new PageContextMenuDto(){text = "加入到我的工作列表", click_function = "" },
                          new PageContextMenuDto(){text = "加入到主负责人的工作列表", click_function = "" },
                          new PageContextMenuDto(){text = "加入到其他负责人的工作列表", click_function = "" },
-                         new PageContextMenuDto(){text = "取消与项目管理关系", click_function = "" },
+                         new PageContextMenuDto(){text = "取消与项目管理关系", click_function = "CancelProject()" },
                          new PageContextMenuDto(){text = "删除工单", click_function = "DeleteTicket()" },
                     };
                     if (queryTypeId == (long)QueryType.TICKET_REQUEST|| queryTypeId == (long)QueryType.TICKET_INCIDENT || queryTypeId == (long)QueryType.TICKET_PROBLEM)

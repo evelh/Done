@@ -130,7 +130,7 @@
                     <p onclick="AddTodo()">待办</p>
                 </div>
             </div>
-            <div class="btntext">Workload Report</div>
+            <div class="btntext" style="display:none;">Workload Report</div>
         </div>
         <div class="ButtonRight">
             <% if (!isSingResPage)

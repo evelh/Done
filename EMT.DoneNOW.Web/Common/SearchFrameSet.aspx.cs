@@ -15,7 +15,7 @@ namespace EMT.DoneNOW.Web
         protected long paraGroupId = 0;
         protected int conditionHeight = 0;
         protected string isCheck = "";  // 用于检测是否显示checkBox框
-
+        protected string isShow = "1";
         // 额外的参数(带入页面供js使用)
         protected string param1;
         protected string param2;
@@ -55,6 +55,8 @@ namespace EMT.DoneNOW.Web
             param2 = string.IsNullOrEmpty(Request.QueryString["param2"]) ? "" : Request.QueryString["param2"];
             param3 = string.IsNullOrEmpty(Request.QueryString["param3"]) ? "" : Request.QueryString["param3"];
             param4 = string.IsNullOrEmpty(Request.QueryString["param4"]) ? "" : Request.QueryString["param4"];
+            if (Request.QueryString["isShow"] == "Search")
+                isShow = "";
             var condition = bll.GetConditionParaVisiable(GetLoginUserId(), paraGroupId);
             if (condition.Count == 0)
                 conditionHeight = 0;

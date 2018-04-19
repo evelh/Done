@@ -155,12 +155,24 @@
     <%} %>
       <%--合同管理--审批（结束）--%>
     <%--我的工单等 相关--%>
-      <% if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET)
+      <% if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET||(catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TODOS&&!string.IsNullOrEmpty(param1))||(catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALL_SEARCH&&!string.IsNullOrEmpty(param1))||(catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_CHANGE_APPROVEL&&!string.IsNullOrEmpty(param1)))
                  {%>
       <div class="TabBar" style="margin-top:5px;">
                 <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET)
                     { %>SelectedState <%} %>" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET %>" target="PageFrame" id="MyTaskTicket">
                     <span class="Text">我的任务和工单</span>
+                </a>
+          <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TODOS)
+                    { %>SelectedState <%} %>" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TODOS %>&param1=662&param2=<%=LoginUserId %>" target="PageFrame" id="MyTodo">
+                    <span class="Text">我的待办</span>
+                </a>
+          <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALL_SEARCH)
+                    { %>SelectedState <%} %>" href="../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALL_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SERVICE_CALL_SEARCH %>&param1=<%=param1 %>" target="PageFrame" id="MyServiceCall">
+                    <span class="Text">我的服务预定</span>
+                </a>
+          <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_CHANGE_APPROVEL)
+                    { %>SelectedState <%} %>" href="../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_CHANGE_APPROVEL %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.MY_QUEUE_CHANGE_APPROVEL %>&param1=<%=param1 %>" target="PageFrame" id="MyChangeApproal">
+                    <span class="Text">我的变更请求</span>
                 </a>
              <%--   <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES)
                     { %>SelectedState <%} %>" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES %>" target="PageFrame" id="tab2">
@@ -465,12 +477,24 @@
 
             <% if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
                 { %>
-            <input name="<%=param1 %>" type="hidden" class="sl_cdt" value="<%=param2 %>" />
+         
+            <input name="param1" id="param1" type="hidden" class="sl_cdt" value="<%=param1 %>" />
+            <input name="param2" id="param2" type="hidden" class="sl_cdt" value="<%=param2 %>" />
             <%} %>
              <% if (!string.IsNullOrEmpty(param3) && !string.IsNullOrEmpty(param4))
                 { %>
-            <input name="<%=param3 %>" type="hidden" class="sl_cdt" value="<%=param4 %>" />
+            <%--<input name="<%=param3 %>" type="hidden" class="sl_cdt" value="<%=param4 %>" />--%>
             <%} %>
+               <% if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INSTALLEDPRODUCT||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SALEORDER||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.QUOTE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CRM_NOTE_SEARCH||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TODOS)
+                { %>
+                        <% if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
+                { %>
+         
+                <input name="con<%=param1 %>" type="hidden" class="sl_cdt" value="<%=param2 %>" />
+            <%} %>
+            <%} %>
+            
+
 		</div>
 	</div>
     <script src="../Scripts/jquery-3.1.0.min.js"  type="text/javascript" charset="utf-8"></script>
@@ -539,5 +563,63 @@
         if ($("select[name = '1793']").val() != undefined) {
             $("select[name = '1793']").val('<%=LoginUserId %>');
         }
-    <%}%>
+    <%}
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH)
+    {
+        if (param3 == "SearchNow")
+        {
+            if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
+            {%>
+        if ($("input[name = '<%=param1 %>']").val() != undefined) {
+            $("input[name = '<%=param1 %>']").val("<%=param2 %>");
+        }
+        else if ($("input[name = '<%=param1 %>_l']").val() != undefined) {
+            $("input[name = '<%=param1 %>_l']").val("<%=param2 %>");
+        }
+        <%}%>
+            $("#SearchBtn").trigger("click");
+        <%
+        }
+    }
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INSTALLEDPRODUCT)
+    {
+        if (param3 == "SearchNow")
+        {
+              %>
+            $("#SearchBtn").trigger("click");
+    <%
+        }
+    }
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CRM_NOTE_SEARCH)
+    {  %>
+            var obj = $("select[name = '649']").eq(0);
+            if (obj != undefined)
+            {
+                <% if (param1 == "649" && !string.IsNullOrEmpty(param2))
+    {%>
+                obj.val('<%=param2 %>');
+                obj.prop("disabled", true);
+                obj.removeClass("sl_cdt");
+                <%} %>
+
+            }
+
+           
+    <%   
+      }  else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TODOS)
+    {  %>
+            var obj = $("select[name = '662']").eq(0);
+            if (obj != undefined) {
+                <% if (param1 == "662" && !string.IsNullOrEmpty(param2))
+    {%>
+                obj.val('<%=param2 %>');
+                obj.prop("disabled", true);
+                obj.removeClass("sl_cdt");
+                <%} %>
+
+            }
+
+
+    <%   
+      }%>
 </script>
