@@ -1,5 +1,9 @@
 ﻿function Add() {
-    window.open('../TimeSheet/TimeoffRequestAdd?resourceId=' + $("input[name='con2743']").val(), windowObj.timeoffRequest + windowType.add, 'left=0,top=0,location=no,status=no,width=825,height=679', false);
+    if ($("input[name='con2743']").val() != "" && $("input[name='con2743']").val() != undefined) {
+        window.open('../TimeSheet/TimeoffRequestAdd?resourceId=' + $("input[name='con2743']").val(), windowObj.timeoffRequest + windowType.add, 'left=0,top=0,location=no,status=no,width=825,height=679', false);
+    } else {
+        window.open('../TimeSheet/TimeoffRequestAdd', windowObj.timeoffRequest + windowType.add, 'left=0,top=0,location=no,status=no,width=825,height=679', false);
+    }
 }
 function Cancle() {
     LayerConfirm("取消不可恢复，请确认", "确定", "取消", function () {

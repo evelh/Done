@@ -329,7 +329,7 @@ namespace EMT.DoneNOW.BLL
         public bool GetTimesheetIsRegural(long batchId, out long workEntryId)
         {
             workEntryId = 0;
-            var list = dal.FindListBySql($"select * from sdk_work_entry where batch_id={batchId} and task_id in(select id from d_cost_code where cate_id<>{(int)DicEnum.COST_CODE_CATE.INTERNAL_ALLOCATION_CODE}) and delete_time=0");
+            var list = dal.FindListBySql($"select * from sdk_work_entry where batch_id={batchId} and cost_code_id in(select id from d_cost_code where cate_id<>{(int)DicEnum.COST_CODE_CATE.INTERNAL_ALLOCATION_CODE}) and delete_time=0");
             if (list.Count == 0)
                 return true;
 
@@ -503,9 +503,8 @@ namespace EMT.DoneNOW.BLL
                     OperLogBLL.OperLogAdd<tst_work_entry_report_log>(log, log.id, userId, DicEnum.OPER_LOG_OBJ_CATE.WORK_ENTRY_REPORT_LOG, "工时表审批");
 
                     appCnt++;
-
-                    int maxTier = aprvResList.Max(_ => _.tier);
-                    if (maxTier == tier)    // 是最后一级审批人
+                    
+                    if (aprvResList.Count == 0 || aprvResList.Max(_ => _.tier) == tier)    // 是最后一级审批人
                     {
                         var rptOld = rptDal.FindById(report.id);
                         report.status_id = (int)DicEnum.WORK_ENTRY_REPORT_STATUS.PAYMENT_BEEN_APPROVED;

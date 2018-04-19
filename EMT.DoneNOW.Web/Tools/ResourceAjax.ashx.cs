@@ -90,6 +90,9 @@ namespace EMT.DoneNOW.Web
                     case "AddDepartment":
                         AddDepartment(context);
                         break;
+                    case "AddQueue":
+                        AddQueue(context);
+                        break;
                     case "DeleteDepartment":
                         DeleteDepartment(context);
                         break;
@@ -770,7 +773,10 @@ namespace EMT.DoneNOW.Web
         /// <param name="context"></param>
         private void GetDepartmentList(HttpContext context)
         {
-            context.Response.Write(new Tools.Serialize().SerializeJson(new sys_department_dal().GetDepartment()));
+            if (string.IsNullOrEmpty(context.Request.QueryString["dptType"]))
+                context.Response.Write(new Tools.Serialize().SerializeJson(new sys_department_dal().GetDepartment()));
+            else
+                context.Response.Write(new Tools.Serialize().SerializeJson(new sys_department_dal().GetDepartment("", (int)DTO.DicEnum.DEPARTMENT_CATE.SERVICE_QUEUE)));
         }
 
         /// <summary>
@@ -835,7 +841,30 @@ namespace EMT.DoneNOW.Web
                 resource_id = resId,
                 role_id = role
             };
-            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().AddDepartment(department, LoginUserId)));
+            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().AddDepartment(department, 1, LoginUserId)));
+        }
+
+        /// <summary>
+        /// 新增员工服务队列
+        /// </summary>
+        /// <param name="context"></param>
+        private void AddQueue(HttpContext context)
+        {
+            long resId = long.Parse(context.Request.QueryString["resId"]);
+            long queId = long.Parse(context.Request.QueryString["queId"]);
+            long role = long.Parse(context.Request.QueryString["role"]);
+            sbyte dft = sbyte.Parse(context.Request.QueryString["dft"]);
+            sbyte isact = sbyte.Parse(context.Request.QueryString["isact"]);
+            sys_resource_department department = new sys_resource_department
+            {
+                department_id = queId,
+                is_active = isact,
+                is_default = dft,
+                is_lead = null,
+                resource_id = resId,
+                role_id = role
+            };
+            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().AddDepartment(department, 2, LoginUserId)));
         }
 
         /// <summary>

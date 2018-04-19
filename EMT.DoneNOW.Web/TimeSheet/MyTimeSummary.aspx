@@ -269,7 +269,10 @@
     <script src="../Scripts/common.js"></script>
     <script>
         $("#NewRequest").click(function () {
-            window.open('../TimeSheet/TimeoffRequestAdd', windowObj.timeoffRequest + windowType.add, 'left=0,top=0,location=no,status=no,width=825,height=679', false);
+            if ($("#resource").val() != "" && $("#resource").val() != undefined)
+                window.open('../TimeSheet/TimeoffRequestAdd?resourceId=' + $("#resource").val(), windowObj.timeoffRequest + windowType.add, 'left=0,top=0,location=no,status=no,width=825,height=679', false);
+            else
+                window.open('../TimeSheet/TimeoffRequestAdd', windowObj.timeoffRequest + windowType.add, 'left=0,top=0,location=no,status=no,width=825,height=679', false);
         })
         $("#year").change(function () {
             window.location.href = "MyTimeSummary?year=" + $("#year").val() + "&resId=" + $("#resource").val();

@@ -1035,16 +1035,18 @@ namespace EMT.DoneNOW.BLL
         /// <param name="ids">,号分割的多个休假请求id</param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public bool ApproveTimeoffRequest(string ids, long userId)
+        public int ApproveTimeoffRequest(string ids, long userId)
         {
+            int appCnt = 0;
             var rqstDal = new tst_timeoff_request_dal();
             var logDal = new tst_timeoff_request_log_dal();
             var weDal = new sdk_work_entry_dal();
             var bll = new WorkEntryBLL();
             var requests = rqstDal.FindListBySql($"select * from tst_timeoff_request where id in({ids}) and status_id={(int)DicEnum.TIMEOFF_REQUEST_STATUS.COMMIT} and delete_time=0");
             if (requests == null || requests.Count == 0)
-                return false;
+                return appCnt;
 
+            var user = new UserResourceBLL().GetResourceById(userId);
             foreach (var request in requests)
             {
                 var reportList = bll.GetWorkEntryReportListByDate(request.request_date.Value, request.request_date.Value, userId);
@@ -1057,7 +1059,7 @@ namespace EMT.DoneNOW.BLL
                     continue;
                 var aprvResList = bll.GetApproverList((long)request.resource_id);
                 tier++;
-                if (aprvResList.Exists(_ => _.tier == tier && _.approver_resource_id == userId)) // 用户可以审批下一级
+                if (user.security_level_id == 1 || aprvResList.Exists(_ => _.tier == tier && _.approver_resource_id == userId)) // 用户可以审批下一级
                 {
                     tst_timeoff_request_log log = new tst_timeoff_request_log();
                     log.id = logDal.GetNextIdCom();
@@ -1070,45 +1072,47 @@ namespace EMT.DoneNOW.BLL
                     logDal.Insert(log);
                     OperLogBLL.OperLogAdd<tst_timeoff_request_log>(log, log.id, userId, DicEnum.OPER_LOG_OBJ_CATE.TIMEOFF_REQUEST_LOG, "休假请求审批");
 
-                    int maxTier = aprvResList.Max(_ => _.tier);
-                    if (maxTier != tier)    
-                        continue;
-
-                    // 是最后一级审批人
-                    var requestOld = rqstDal.FindById(request.id);
-                    request.status_id = (int)DicEnum.TIMEOFF_REQUEST_STATUS.APPROVAL;
-                    request.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
-                    request.update_user_id = userId;
-                    request.approved_resource_id = userId;
-                    rqstDal.Update(request);
-                    OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<tst_timeoff_request>(requestOld, request), request.id, userId, DicEnum.OPER_LOG_OBJ_CATE.TIMEOFF_REQUEST, "休假请求审批");
+                    appCnt++;
                     
+                    if (aprvResList.Count == 0 || aprvResList.Max(_ => _.tier) == tier)
+                    {
 
-                    if (request.task_id == (long)CostCode.Holiday)  // 其他休假不进行其他处理
-                        continue;
+                        // 是最后一级审批人
+                        var requestOld = rqstDal.FindById(request.id);
+                        request.status_id = (int)DicEnum.TIMEOFF_REQUEST_STATUS.APPROVAL;
+                        request.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                        request.update_user_id = userId;
+                        request.approved_resource_id = userId;
+                        rqstDal.Update(request);
+                        OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<tst_timeoff_request>(requestOld, request), request.id, userId, DicEnum.OPER_LOG_OBJ_CATE.TIMEOFF_REQUEST, "休假请求审批");
 
-                    sdk_work_entry we = new sdk_work_entry();
-                    we.id = weDal.GetNextIdCom();
-                    we.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
-                    we.update_time = we.create_time;
-                    we.create_user_id = userId;
-                    we.update_user_id = userId;
-                    we.task_id = request.task_id;
-                    we.resource_id = request.resource_id;
-                    we.cost_code_id = request.task_id;
-                    we.hours_worked = request.request_hours;
-                    we.hours_billed = request.request_hours;
-                    we.offset_hours = 0;
-                    we.is_billable = 0;
-                    we.show_on_invoice = 0;
-                    we.batch_id = (long)request.batch_id;
-                    we.timeoff_request_id = request.id;
-                    weDal.Insert(we);
-                    OperLogBLL.OperLogAdd<sdk_work_entry>(we, we.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "审批休假请求创建工时");
+
+                        if (request.task_id == (long)CostCode.Holiday)  // 其他休假不进行其他处理
+                            continue;
+
+                        sdk_work_entry we = new sdk_work_entry();
+                        we.id = weDal.GetNextIdCom();
+                        we.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                        we.update_time = we.create_time;
+                        we.create_user_id = userId;
+                        we.update_user_id = userId;
+                        we.task_id = request.task_id;
+                        we.resource_id = request.resource_id;
+                        we.cost_code_id = request.task_id;
+                        we.hours_worked = request.request_hours;
+                        we.hours_billed = request.request_hours;
+                        we.offset_hours = 0;
+                        we.is_billable = 0;
+                        we.show_on_invoice = 0;
+                        we.batch_id = (long)request.batch_id;
+                        we.timeoff_request_id = request.id;
+                        weDal.Insert(we);
+                        OperLogBLL.OperLogAdd<sdk_work_entry>(we, we.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "审批休假请求创建工时");
+                    }
                 }
             }
 
-            return true;
+            return appCnt;
         }
 
         /// <summary>
@@ -1129,6 +1133,7 @@ namespace EMT.DoneNOW.BLL
             if (requests == null || requests.Count == 0)
                 return false;
 
+            var user = new UserResourceBLL().GetResourceById(userId);
             foreach (var request in requests)
             {
                 // 判断用户是否在当前可以审批休假请求
@@ -1137,7 +1142,7 @@ namespace EMT.DoneNOW.BLL
                     continue;
                 var aprvResList = bll.GetApproverList((long)request.resource_id);
                 tier++;
-                if (aprvResList.Exists(_ => _.tier == tier && _.approver_resource_id == userId)) // 用户可以审批下一级
+                if (user.security_level_id == 1 || aprvResList.Exists(_ => _.tier == tier && _.approver_resource_id == userId)) // 用户可以审批下一级
                 {
                     var requestOld = rqstDal.FindById(request.id);
                     request.status_id = (int)DicEnum.TIMEOFF_REQUEST_STATUS.REFUSE;

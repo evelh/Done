@@ -19,7 +19,7 @@ function Add() {
     if (ids != "") {
         ids = ids.substring(0, ids.length - 1);
         requestData("../Tools/TimeoffPolicyAjax.ashx?act=approveRequest&ids=" + ids, null, function (data) {
-            if (data == true) {
+            if (data != 0) {
                 window.location.reload();
             } else {
                 LayerMsg("审批失败！");

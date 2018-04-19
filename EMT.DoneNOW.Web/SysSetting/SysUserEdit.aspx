@@ -823,51 +823,57 @@
                     </div>
                 </div>
                 <div style="height: 100%; width: 100%; display: none;" class="C">
-                    <div style="height:320px;width:100%;border:1px solid #e8e8fa;">
+                    <div style="height:308px;width:100%;border:1px solid #e8e8fa;">
                         <span style="font-weight:bold;color:#666;font-size:12px;padding-left:10px;">工时表审批人</span>
-                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;">
+                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;height:274px;">
                             <iframe src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE_TIME_SHEET %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.ResourceTimeSheet %>&con2673=<%=id %>" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
                         </div>
                     </div>
-                    <div style="height:320px;width:100%;border:1px solid #e8e8fa;">
+                    <div style="height:308px;width:100%;border:1px solid #e8e8fa;">
                         <span style="font-weight:bold;color:#666;font-size:12px;padding-left:10px;">费用报表审批人</span>
-                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;">
+                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;height:274px;">
                             <iframe src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE_EXPENSE_REPORT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.ResourceExpense %>&con2674=<%=id %>" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
                         </div>
                     </div>
                 </div>
                 <div style="height: 100%; width: 100%; display: none;" class="C">
-                    <div style="height:520px;width:100%;border:1px solid #e8e8fa;">
+                    <div style="height:308px;width:100%;border:1px solid #e8e8fa;">
                         <span style="font-weight:bold;color:#666;font-size:12px;padding-left:10px;">部门</span>
-                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;height:100%;">
+                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;height:274px;">
                             <iframe src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE_DEPARTMENT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.ResourceDepartment %>&con2675=<%=id %>" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
+                        </div>
+                    </div>
+                    <div style="height:308px;width:100%;border:1px solid #e8e8fa;">
+                        <span style="font-weight:bold;color:#666;font-size:12px;padding-left:10px;">服务台队列</span>
+                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;height:274px;">
+                            <iframe src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE_SERVICE_DESK_QUEUES %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.ResourceServiceDeskQueue %>&con2676=<%=id %>" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
                         </div>
                     </div>
                 </div>
                 <div style="height: 100%; width: 100%; display: none;" class="C">
                     <div style="height:220px;width:100%;border:1px solid #e8e8fa;">
                         <span style="font-weight:bold;color:#666;font-size:12px;padding-left:10px;">技能</span>
-                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;">
+                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;height:188px;">
                             <iframe src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE_SKILL %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.ResourceSkill %>&con2677=<%=id %>" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
                         </div>
                     </div>
                     <div style="height:220px;width:100%;border:1px solid #e8e8fa;">
                         <span style="font-weight:bold;color:#666;font-size:12px;padding-left:10px;">证书和培训</span>
-                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;">
+                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;height:188px;">
                             <iframe src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE_CERTIFICATE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.ResourceCertificate %>&con2678=<%=id %>" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
                         </div>
                     </div>
                     <div style="height:220px;width:100%;border:1px solid #e8e8fa;">
                         <span style="font-weight:bold;color:#666;font-size:12px;padding-left:10px;">学位</span>
-                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;">
+                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;height:188px;">
                             <iframe src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE_DEGREE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.ResourceDegree %>&con2679=<%=id %>" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
                         </div>
                     </div>
                 </div>
                 <div style="height: 100%; width: 100%; display: none;" class="C">
-                    <div style="height:520px;width:100%;border:1px solid #e8e8fa;">
+                    <div style="height:622px;width:100%;border:1px solid #e8e8fa;">
                         <span style="font-weight:bold;color:#666;font-size:12px;padding-left:10px;">附件</span>
-                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;height:100%;">
+                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;height:588px;">
                             <iframe src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE_ATTACHMENT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.ResourceAttachment %>&con2680=<%=id %>" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
                         </div>
                     </div>

@@ -569,14 +569,18 @@ namespace EMT.DoneNOW.BLL
         /// 新增员工部门
         /// </summary>
         /// <param name="resDpt"></param>
+        /// <param name="type">1:部门;2:队列</param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public bool AddDepartment(sys_resource_department resDpt, long userId)
+        public bool AddDepartment(sys_resource_department resDpt, int type, long userId)
         {
             sys_resource_department_dal dptDal = new sys_resource_department_dal();
             if (resDpt.is_default == 1)     // 新增默认部门，查找是否已有默认，有则更改为非默认
             {
-                var dft = dptDal.FindSignleBySql<sys_resource_department>($"select * from sys_resource_department where resource_id={resDpt.resource_id} and is_default=1");
+                string sql = $"select * from sys_resource_department where resource_id={resDpt.resource_id} and is_default=1 and department_id in(select id from sys_department where cate_id={(int)DTO.DicEnum.DEPARTMENT_CATE.DEPARTMENT} and is_active =1 and delete_time = 0)";
+                if (type == 2)
+                    sql = $"select * from sys_resource_department where resource_id={resDpt.resource_id} and is_default=1 and department_id in(select id from sys_department where cate_id={(int)DTO.DicEnum.DEPARTMENT_CATE.SERVICE_QUEUE} and is_active =1 and delete_time = 0)";
+                var dft = dptDal.FindSignleBySql<sys_resource_department>(sql);
                 if (dft != null)
                 {
                     dft.is_default = 0;

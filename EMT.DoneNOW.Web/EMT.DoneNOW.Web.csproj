@@ -196,6 +196,7 @@
     <Content Include="Scripts\Dispatch.js" />
     <Content Include="Scripts\Search\dispatch_ticket_search.js" />
     <Content Include="Scripts\Search\ResourcePolicyAssignment.js" />
+    <Content Include="Scripts\Search\ResourceServiceDeskQueue.js" />
     <Content Include="Scripts\Search\TimeoffMyBalance.js" />
     <Content Include="ServiceDesk\AddQuickCall.aspx" />
     <Content Include="ServiceDesk\AppointmentsManage.aspx" />
