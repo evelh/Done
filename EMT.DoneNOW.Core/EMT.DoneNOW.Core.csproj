@@ -176,6 +176,7 @@
     <Compile Include="SYS\sys_oper_log.cs" />
     <Compile Include="SYS\sys_query_type_user.cs" />
     <Compile Include="SYS\sys_recent_search.cs" />
+    <Compile Include="SYS\sys_resource_additional_time.cs" />
     <Compile Include="SYS\sys_resource_approver.cs" />
     <Compile Include="SYS\sys_resource_availability.cs" />
     <Compile Include="SYS\sys_resource_department.cs" />

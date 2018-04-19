@@ -12,18 +12,24 @@ $("#CheckAll").click(function () {
 })
 function Approve(){
     var ids = "";
+    var cnt = 0;
     $(".IsChecked").each(function () {
         if ($(this).is(":checked")) {
             ids += $(this).val() + ',';
+            cnt++;
         }
     });
     if (ids != "") {
         ids = ids.substring(0, ids.length - 1);
         requestData("../Tools/TimesheetAjax.ashx?act=approve&ids=" + ids, null, function (data) {
-            if (data == true) {
+            if (data == cnt) {
                 window.location.reload();
+                LayerMsg("审批成功！");
+            } else if (data == 0) {
+                LayerMsg("审批失败，请重新查看待审批数据！");
             } else {
-                LayerMsg("审批失败！");
+                window.location.reload();
+                LayerMsg("部分审批成功！");
             }
         })
     } else {
@@ -83,6 +89,6 @@ function RejectSelect() {
 }
 function Detail() {
     requestData("../Tools/TimesheetAjax.ashx?act=timesheetInfo&id=" + entityid, null, function (data) {
-        window.location.href = "SearchFrameSet.aspx?cat=1633&con2738=" + data.resource_id + "&con2739=" + data.start_date + "&isCheck=1";
+        window.location.href = "SearchBodyFrame.aspx?cat=1633&type=219&con2738=" + data[0] + "&con2739=" + data[1] + "&param1=" + data[2];
     })
 }

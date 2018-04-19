@@ -195,6 +195,8 @@
     <Content Include="Scripts\clipboard.min.js" />
     <Content Include="Scripts\Dispatch.js" />
     <Content Include="Scripts\Search\dispatch_ticket_search.js" />
+    <Content Include="Scripts\Search\ResourcePolicyAssignment.js" />
+    <Content Include="Scripts\Search\TimeoffMyBalance.js" />
     <Content Include="ServiceDesk\AddQuickCall.aspx" />
     <Content Include="ServiceDesk\AppointmentsManage.aspx" />
     <Content Include="ServiceDesk\DispatchCalendar.aspx" />
@@ -537,10 +539,13 @@
     <Content Include="SysSetting\EditServiceAlert.aspx" />
     <Content Include="SysSetting\Holiday.aspx" />
     <Content Include="SysSetting\HolidaySet.aspx" />
+    <Content Include="SysSetting\ResourceAssPolicy.aspx" />
+    <Content Include="SysSetting\ResourceAssPolicyEdit.aspx" />
     <Content Include="SysSetting\Service.aspx" />
     <Content Include="SysSetting\ServiceBundle.aspx" />
     <Content Include="SysSetting\WorkflowRule.aspx" />
     <Content Include="TimeSheet\ExpenseReportDetail.aspx" />
+    <Content Include="TimeSheet\MyTimeoffBalance.aspx" />
     <Content Include="TimeSheet\MyTimeSummary.aspx" />
     <Content Include="TimeSheet\RefuseReportReason.aspx" />
     <Content Include="TimeSheet\RegularTimeAddEdit.aspx" />
@@ -2190,6 +2195,20 @@
     <Compile Include="SysSetting\HolidaySet.aspx.designer.cs">
       <DependentUpon>HolidaySet.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\ResourceAssPolicy.aspx.cs">
+      <DependentUpon>ResourceAssPolicy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\ResourceAssPolicy.aspx.designer.cs">
+      <DependentUpon>ResourceAssPolicy.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\ResourceAssPolicyEdit.aspx.cs">
+      <DependentUpon>ResourceAssPolicyEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\ResourceAssPolicyEdit.aspx.designer.cs">
+      <DependentUpon>ResourceAssPolicyEdit.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SysSetting\Service.aspx.cs">
       <DependentUpon>Service.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2217,6 +2236,13 @@
     </Compile>
     <Compile Include="TimeSheet\ExpenseReportDetail.aspx.designer.cs">
       <DependentUpon>ExpenseReportDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TimeSheet\MyTimeoffBalance.aspx.cs">
+      <DependentUpon>MyTimeoffBalance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TimeSheet\MyTimeoffBalance.aspx.designer.cs">
+      <DependentUpon>MyTimeoffBalance.aspx</DependentUpon>
     </Compile>
     <Compile Include="TimeSheet\MyTimeSummary.aspx.cs">
       <DependentUpon>MyTimeSummary.aspx</DependentUpon>

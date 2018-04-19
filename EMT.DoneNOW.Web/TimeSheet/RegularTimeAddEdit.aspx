@@ -16,7 +16,7 @@
 </head>
 <body>
     <div class="header">
-        <%if (isAdd) { %>新增<%} else { %>编辑<%} %>常规工时
+        <%if (isAdd) { %>新增<%} else { %>编辑<%} %>常规工时--<%=resourceName %>
     </div>
     <div class="header-title" style="min-width: 700px;">
         <ul>
@@ -57,9 +57,8 @@
                     <tr>
                         <td>
                             <div class="clear">
-                                <label style="text-align:left;width:120px;">种类<span style="color: red;">*</span></label>
+                                <label style="text-align:left;width:320px;">种类<span style="color: red;">*</span><asp:Label ID="costCodeName" style="color:#333;margin-left:12px;font-weight:500;" runat="server"></asp:Label></label>
                                 <input type="hidden" id="subAct" name="subAct" />
-                                <asp:Label ID="costCodeName" runat="server"></asp:Label>
                                 <asp:DropDownList ID="cost_code_id" runat="server" Width="160"></asp:DropDownList>
                             </div>
                         </td>

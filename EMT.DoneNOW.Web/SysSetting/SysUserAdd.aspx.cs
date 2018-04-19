@@ -14,6 +14,8 @@ namespace EMT.DoneNOW.Web.SysSetting
 {
     public partial class SysUserAdd : BasePage
     {
+        protected List<v_timeoff_total> timeoffYear1;
+        protected List<v_timeoff_total> timeoffYear2;
         protected string avatarPath = "/Images/pop.jpg";
         private long id = 0;
         private SysUserAddDto param = new SysUserAddDto();
@@ -277,6 +279,21 @@ namespace EMT.DoneNOW.Web.SysSetting
                 param.timeoffPolicy.effective_date = DateTime.Parse(effective_date.Text);
             }
             param.internalCost = Session["ResInternalCost"] as List<sys_resource_internal_cost>;
+
+            sys_resource_additional_time time1 = new sys_resource_additional_time();
+            time1.period_year = DateTime.Now.Year;
+            time1.time_vacation = decimal.Parse(TextBox1.Text);
+            time1.time_personal = decimal.Parse(TextBox2.Text);
+            time1.time_sick = decimal.Parse(TextBox3.Text);
+            time1.time_float = decimal.Parse(TextBox4.Text);
+            sys_resource_additional_time time2 = new sys_resource_additional_time();
+            time2.period_year = DateTime.Now.Year + 1;
+            time2.time_vacation = decimal.Parse(TextBox5.Text);
+            time2.time_personal = decimal.Parse(TextBox6.Text);
+            time2.time_sick = decimal.Parse(TextBox7.Text);
+            time2.time_float = decimal.Parse(TextBox8.Text);
+            param.addTime1 = time1;
+            param.addTime2 = time2;
 
             if (this.CanEditSkills.Checked)
             {

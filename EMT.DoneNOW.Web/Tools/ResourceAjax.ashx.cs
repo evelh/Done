@@ -96,6 +96,9 @@ namespace EMT.DoneNOW.Web
                     case "AddSkills":
                         AddSkills(context);
                         break;
+                    case "AddCert":
+                        AddCert(context);
+                        break;
                     case "DeleteSkill":
                         DeleteSkill(context);
                         break;
@@ -789,7 +792,7 @@ namespace EMT.DoneNOW.Web
             int cate = int.Parse(context.Request.QueryString["cate"]);
             int level = int.Parse(context.Request.QueryString["level"]);
             string desc = context.Request.QueryString["desc"];
-            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().AddSkill(resId, cate, level, desc, LoginUserId)));
+            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().AddSkill(resId, cate, level, desc, null, LoginUserId)));
         }
 
         /// <summary>
@@ -800,6 +803,15 @@ namespace EMT.DoneNOW.Web
         {
             long id = long.Parse(context.Request.QueryString["id"]);
             context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().DeleteSkill(id)));
+        }
+
+        private void AddCert(HttpContext context)
+        {
+            long resId = long.Parse(context.Request.QueryString["resId"]);
+            int cate = int.Parse(context.Request.QueryString["cate"]);
+            string desc = context.Request.QueryString["desc"];
+            sbyte complete = sbyte.Parse(context.Request.QueryString["complete"]);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.UserResourceBLL().AddSkill(resId, cate, null, desc, complete, LoginUserId)));
         }
 
         /// <summary>
@@ -813,7 +825,7 @@ namespace EMT.DoneNOW.Web
             long role = long.Parse(context.Request.QueryString["role"]);
             sbyte dft = sbyte.Parse(context.Request.QueryString["dft"]);
             sbyte dpt = sbyte.Parse(context.Request.QueryString["dpt"]);
-            sbyte act = sbyte.Parse(context.Request.QueryString["act"]);
+            sbyte act = sbyte.Parse(context.Request.QueryString["isact"]);
             sys_resource_department department = new sys_resource_department
             {
                 department_id = dptId,

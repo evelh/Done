@@ -690,7 +690,7 @@
                         </div>
                         <div class="DivSection" style="margin-top:10px;margin-bottom: 8px;">
                             <div><label class="lblNormalClass" style="font-size:15px;">休假</label></div>
-                            <table cellpadding="0" cellspacing="0">
+                            <table cellpadding="0" cellspacing="0" style="min-width:720px;">
                                 <tr>
                                     <td style="width:320px;">
                                         <span class="lblNormalClass">休假方案</span>
@@ -706,6 +706,7 @@
                                             <span style="display: inline-block">
                                                 <asp:TextBox ID="effective_date" runat="server" class="txtBlack8Class Wdate" type="text" maxlength="50" style="width: 158px;" onclick="WdatePicker()" ></asp:TextBox>
                                             </span>
+                                            <span style="margin-left:26px;color:#376597;cursor:pointer;" onclick="ViewAssign()">查看/编辑所有相关休假方案</span>
                                         </div>
                                     </td>
                                 </tr>
@@ -720,25 +721,32 @@
                                                         <td style="width:140px;"><span>额外时间</span></td>
                                                         <td><span>年度</span></td>
                                                     </tr>
+                                                    <%
+                                                        EMT.DoneNOW.Core.v_timeoff_total tmoffYear,tmoffPerson,tmoffSick,tmoffFloat;
+                                                        tmoffYear = timeoffYear1.Find(_ => _.task_id == (int)EMT.DoneNOW.DTO.CostCode.Vacation);
+                                                        tmoffPerson = timeoffYear1.Find(_ => _.task_id == (int)EMT.DoneNOW.DTO.CostCode.Personal);
+                                                        tmoffSick = timeoffYear1.Find(_ => _.task_id == (int)EMT.DoneNOW.DTO.CostCode.Sick);
+                                                        tmoffFloat = timeoffYear1.Find(_ => _.task_id == (int)EMT.DoneNOW.DTO.CostCode.Floating);
+                                                        %>
                                                     <tr>
                                                         <td><span class="lblNormalClass" style="margin-left:5px;">年假</span></td>
                                                         <td><asp:TextBox ID="TextBox1" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width:76px;" Text="0.000" ></asp:TextBox></td>
-                                                        <td><span class="lblNormalClass">0.000</span></td>
+                                                        <td><span class="lblNormalClass"><%=tmoffYear==null?0:tmoffYear.annual_hours %></span></td>
                                                     </tr>
                                                     <tr>
                                                         <td><span class="lblNormalClass" style="margin-left:5px;">私人时间</span></td>
                                                         <td><asp:TextBox ID="TextBox2" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width:76px;" Text="0.000" ></asp:TextBox></td>
-                                                        <td><span class="lblNormalClass">0.000</span></td>
+                                                        <td><span class="lblNormalClass"><%=tmoffPerson==null?0:tmoffPerson.annual_hours %></span></td>
                                                     </tr>
                                                     <tr>
                                                         <td><span class="lblNormalClass" style="margin-left:5px;">病假</span></td>
                                                         <td><asp:TextBox ID="TextBox3" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width:76px;" Text="0.000" ></asp:TextBox></td>
-                                                        <td><span class="lblNormalClass">0.000</span></td>
+                                                        <td><span class="lblNormalClass"><%=tmoffSick==null?0:tmoffSick.annual_hours %></span></td>
                                                     </tr>
                                                     <tr>
                                                         <td><span class="lblNormalClass" style="margin-left:5px;">浮动假期</span></td>
                                                         <td><asp:TextBox ID="TextBox4" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width:76px;" Text="0.000" ></asp:TextBox></td>
-                                                        <td><span class="lblNormalClass">0.000</span></td>
+                                                        <td><span class="lblNormalClass"><%=tmoffFloat==null?0:tmoffFloat.annual_hours %></span></td>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -754,25 +762,31 @@
                                                         <td style="width:140px;"><span>额外时间</span></td>
                                                         <td><span>年度</span></td>
                                                     </tr>
+                                                    <%
+                                                        tmoffYear = timeoffYear2.Find(_ => _.task_id == (int)EMT.DoneNOW.DTO.CostCode.Vacation);
+                                                        tmoffPerson = timeoffYear2.Find(_ => _.task_id == (int)EMT.DoneNOW.DTO.CostCode.Personal);
+                                                        tmoffSick = timeoffYear2.Find(_ => _.task_id == (int)EMT.DoneNOW.DTO.CostCode.Sick);
+                                                        tmoffFloat = timeoffYear2.Find(_ => _.task_id == (int)EMT.DoneNOW.DTO.CostCode.Floating);
+                                                        %>
                                                     <tr>
                                                         <td><span class="lblNormalClass" style="margin-left:5px;">年假</span></td>
                                                         <td><asp:TextBox ID="TextBox5" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width:76px;" Text="0.000" ></asp:TextBox></td>
-                                                        <td><span class="lblNormalClass">0.000</span></td>
+                                                        <td><span class="lblNormalClass"><%=tmoffYear==null?0:tmoffYear.annual_hours %></span></td>
                                                     </tr>
                                                     <tr>
                                                         <td><span class="lblNormalClass" style="margin-left:5px;">私人时间</span></td>
                                                         <td><asp:TextBox ID="TextBox6" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width:76px;" Text="0.000" ></asp:TextBox></td>
-                                                        <td><span class="lblNormalClass">0.000</span></td>
+                                                        <td><span class="lblNormalClass"><%=tmoffPerson==null?0:tmoffPerson.annual_hours %></span></td>
                                                     </tr>
                                                     <tr>
                                                         <td><span class="lblNormalClass" style="margin-left:5px;">病假</span></td>
                                                         <td><asp:TextBox ID="TextBox7" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width:76px;" Text="0.000" ></asp:TextBox></td>
-                                                        <td><span class="lblNormalClass">0.000</span></td>
+                                                        <td><span class="lblNormalClass"><%=tmoffSick==null?0:tmoffSick.annual_hours %></span></td>
                                                     </tr>
                                                     <tr>
                                                         <td><span class="lblNormalClass" style="margin-left:5px;">浮动假期</span></td>
                                                         <td><asp:TextBox ID="TextBox8" runat="server" class="txtBlack8Class" type="text" maxlength="50" style="width:76px;" Text="0.000" ></asp:TextBox></td>
-                                                        <td><span class="lblNormalClass">0.000</span></td>
+                                                        <td><span class="lblNormalClass"><%=tmoffFloat==null?0:tmoffFloat.annual_hours %></span></td>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -825,7 +839,7 @@
                 <div style="height: 100%; width: 100%; display: none;" class="C">
                     <div style="height:520px;width:100%;border:1px solid #e8e8fa;">
                         <span style="font-weight:bold;color:#666;font-size:12px;padding-left:10px;">部门</span>
-                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;">
+                        <div style="width:100%;margin-top:3px;padding:5px 10px 10px 10px;height:100%;">
                             <iframe src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE_DEPARTMENT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.ResourceDepartment %>&con2675=<%=id %>" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
                         </div>
                     </div>
@@ -1062,6 +1076,9 @@
                 }
                 $("#ttl").text(total);
                 $("#total").val(total);
+            }
+            function ViewAssign() {
+                window.open("../SysSetting/ResourceAssPolicy.aspx?id=<%=id%>", windowObj.resource + windowType.manage, 'left=0,top=0,location=no,status=no,width=680,height=450', false);
             }
         </script>
     </form>

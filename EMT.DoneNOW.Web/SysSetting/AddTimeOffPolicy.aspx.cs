@@ -13,6 +13,7 @@ namespace EMT.DoneNOW.Web.SysSetting
     public partial class AddTimeOffPolicy : BasePage
     {
         protected bool isAdd;
+        protected int tierResCnt = 0;   // 关联此休假策略的员工数量
         protected tst_timeoff_policy policy;
         protected List<tst_timeoff_policy_item> policyItems;
         protected List<DictionaryEntryDto> periodList;
@@ -38,6 +39,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                 {
                     policy = bll.GetPolicyById(long.Parse(id));
                     policyItems = bll.GetPolicyItemByPolicyId(long.Parse(id));
+                    tierResCnt = bll.GetTierResourceCnt(policy.id);
                 }
             }
             else

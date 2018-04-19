@@ -192,6 +192,19 @@ function LayerConfirm(msg, btn1, btn2, btn1Func, btn2Func) {
             layer.close(index);
         });
 }
+// 弹层两个按钮，一个关闭
+function LayerConfirmOk(msg, btn1, btn2, btn1Func) {
+    layer.confirm(msg, {
+        btn: [btn1, btn2]
+    },
+        function (index) {
+            btn1Func();
+            layer.close(index);
+        },
+        function (index) {
+            layer.close(index);
+        });
+}
 
 
 //检测用户浏览器    不符合浏览器则跳转错误页面
@@ -314,7 +327,9 @@ var windowObj = {
     timeoffRequest: 'timeoffRequest',
     kbArticle: "kbArticle",
     select: "select",
-    appointment:"appointment",
+    appointment: "appointment",
+    resource: "resource",
+    resourcePolicy: "resourcePolicy",
 }
 var windowType = {
     blank: '_blank',

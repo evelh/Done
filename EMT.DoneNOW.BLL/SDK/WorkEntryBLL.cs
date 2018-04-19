@@ -60,13 +60,13 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
-        /// 按批号获取工时列表
+        /// 按批号获取常规工时列表
         /// </summary>
         /// <param name="batchId"></param>
         /// <returns></returns>
         public List<sdk_work_entry> GetWorkEntryByBatchId(long batchId)
         {
-            return dal.FindListBySql($"select * from sdk_work_entry where batch_id={batchId} and delete_time=0");
+            return dal.FindListBySql($"select * from sdk_work_entry where batch_id={batchId} and task_id in(select id from d_cost_code where cate_id={(int)DicEnum.COST_CODE_CATE.INTERNAL_ALLOCATION_CODE}) and delete_time=0");
         }
 
         /// <summary>
@@ -196,6 +196,60 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 删除工时
+        /// </summary>
+        /// <param name="batchId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool DeleteWorkEntry(long batchId, long userId)
+        {
+            var weList = dal.FindListBySql($"select * from sdk_work_entry where batch_id={batchId} and delete_time=0");
+            if (weList.Count == 0)
+                return false;
+
+            bool rtn = true;
+            var costcode = new d_cost_code_dal().FindById(weList[0].task_id);
+            if (costcode.cate_id != (int)DicEnum.COST_CODE_CATE.INTERNAL_ALLOCATION_CODE)   // 任务工时
+            {
+                string reason;
+                var taskbll = new TaskBLL();
+                foreach (var we in weList)
+                {
+                    if (!taskbll.DeleteEntry(we.id, userId, out reason))
+                        rtn = false;
+                }
+            }
+            else
+            {
+                var bll = new TimeOffPolicyBLL();
+                tst_timeoff_balance_dal balDal = new tst_timeoff_balance_dal();
+
+                foreach (var we in weList)
+                {
+                    if (we.timeoff_request_id != null)  // 休假请求生成的工时
+                    {
+                        bll.CancleTimeoffRequest(we.timeoff_request_id.Value, userId);
+                    }
+                    else    // 常规工时
+                    {
+                        we.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                        we.delete_user_id = userId;
+                        dal.Update(we);
+                        OperLogBLL.OperLogDelete<sdk_work_entry>(we, we.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "删除工时");
+
+                        if (we.task_id == (long)CostCode.Sick)  // 病假需要在假期余额表删除记录
+                        {
+                            var balance = bll.UpdateTimeoffBalance((long)we.resource_id, Tools.Date.DateHelper.TimeStampToDateTime((long)we.start_time), 0 - (decimal)we.hours_billed);
+                            balDal.ExecuteSQL($"delete from tst_timeoff_balance where object_id={we.id}");
+                        }
+                    }
+                }
+            }
+
+            return rtn;
+        }
+
+        /// <summary>
         /// 删除工时表
         /// </summary>
         /// <param name="startDate"></param>
@@ -260,7 +314,27 @@ namespace EMT.DoneNOW.BLL
                 return 1;
             if (find.status_id == (int)DicEnum.WORK_ENTRY_REPORT_STATUS.WAITING_FOR_APPROVAL)
                 return 2;
+            if (find.status_id == (int)DicEnum.WORK_ENTRY_REPORT_STATUS.HAVE_IN_HAND
+                || find.status_id == (int)DicEnum.WORK_ENTRY_REPORT_STATUS.REJECTED)
+                return 1;
             return 0;
+        }
+
+        /// <summary>
+        /// 获取本批次工时是否常规工时
+        /// </summary>
+        /// <param name="batchId"></param>
+        /// <param name="workEntryId"></param>
+        /// <returns></returns>
+        public bool GetTimesheetIsRegural(long batchId, out long workEntryId)
+        {
+            workEntryId = 0;
+            var list = dal.FindListBySql($"select * from sdk_work_entry where batch_id={batchId} and task_id in(select id from d_cost_code where cate_id<>{(int)DicEnum.COST_CODE_CATE.INTERNAL_ALLOCATION_CODE}) and delete_time=0");
+            if (list.Count == 0)
+                return true;
+
+            workEntryId = list[0].id;
+            return false;
         }
 
         /// <summary>
@@ -280,7 +354,7 @@ namespace EMT.DoneNOW.BLL
             sdk_work_entry_report_dal rptDal = new sdk_work_entry_report_dal();
 
             var find = rptDal.FindSignleBySql<sdk_work_entry_report>($"select * from sdk_work_entry_report where resource_id={resourceId} and start_date='{startDate}' and delete_time=0");
-            if (find != null && find.status_id != (int)DicEnum.WORK_ENTRY_REPORT_STATUS.HAVE_IN_HAND)
+            if (find != null && find.status_id != (int)DicEnum.WORK_ENTRY_REPORT_STATUS.HAVE_IN_HAND && find.status_id != (int)DicEnum.WORK_ENTRY_REPORT_STATUS.REJECTED)
                 return false;
 
             if (find == null)
@@ -397,14 +471,16 @@ namespace EMT.DoneNOW.BLL
         /// <param name="ids">,号分割的多个工时表id</param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public bool ApproveWorkEntryReport(string ids, long userId)
+        public int ApproveWorkEntryReport(string ids, long userId)
         {
+            int appCnt = 0;
             var rptDal = new sdk_work_entry_report_dal();
             var logDal = new tst_work_entry_report_log_dal();
             var reports = rptDal.FindListBySql($"select * from sdk_work_entry_report where id in({ids}) and status_id={(int)DicEnum.WORK_ENTRY_REPORT_STATUS.WAITING_FOR_APPROVAL} and delete_time=0");
             if (reports == null || reports.Count == 0)
-                return false;
-            
+                return appCnt;
+
+            var user = new UserResourceBLL().GetResourceById(userId);
             foreach (var report in reports)
             {
                 // 判断用户是否在当前可以审批工时表
@@ -413,7 +489,7 @@ namespace EMT.DoneNOW.BLL
                     continue;
                 var aprvResList = GetApproverList((long)report.resource_id);
                 tier++;
-                if (aprvResList.Exists(_ => _.tier == tier && _.approver_resource_id == userId)) // 用户可以审批下一级
+                if (user.security_level_id == 1 || aprvResList.Exists(_ => _.tier == tier && _.approver_resource_id == userId)) // 用户是管理员或用户可以审批下一级
                 {
                     tst_work_entry_report_log log = new tst_work_entry_report_log();
                     log.id = logDal.GetNextIdCom();
@@ -426,6 +502,8 @@ namespace EMT.DoneNOW.BLL
                     logDal.Insert(log);
                     OperLogBLL.OperLogAdd<tst_work_entry_report_log>(log, log.id, userId, DicEnum.OPER_LOG_OBJ_CATE.WORK_ENTRY_REPORT_LOG, "工时表审批");
 
+                    appCnt++;
+
                     int maxTier = aprvResList.Max(_ => _.tier);
                     if (maxTier == tier)    // 是最后一级审批人
                     {
@@ -433,7 +511,7 @@ namespace EMT.DoneNOW.BLL
                         report.status_id = (int)DicEnum.WORK_ENTRY_REPORT_STATUS.PAYMENT_BEEN_APPROVED;
                         report.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
                         report.update_user_id = userId;
-                        report.approve_time = DateTime.Now;
+                        report.approve_time = report.update_time;
                         report.approve_user_id = userId;
                         rptDal.Update(report);
                         OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<sdk_work_entry_report>(rptOld, report), report.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SDK_WORK_RECORD, "工时表审批");
@@ -441,7 +519,7 @@ namespace EMT.DoneNOW.BLL
                 }
             }
 
-            return true;
+            return appCnt;
         }
 
         /// <summary>
@@ -459,6 +537,7 @@ namespace EMT.DoneNOW.BLL
             if (reports == null || reports.Count == 0)
                 return false;
 
+            var user = new UserResourceBLL().GetResourceById(userId);
             foreach (var report in reports)
             {
                 // 判断用户是否在当前可以审批工时表
@@ -467,7 +546,7 @@ namespace EMT.DoneNOW.BLL
                     continue;
                 var aprvResList = GetApproverList((long)report.resource_id);
                 tier++;
-                if (aprvResList.Exists(_ => _.tier == tier && _.approver_resource_id == userId)) // 用户可以审批下一级
+                if (user.security_level_id == 1 || aprvResList.Exists(_ => _.tier == tier && _.approver_resource_id == userId)) // 用户可以审批下一级
                 {
                     tst_work_entry_report_log log = new tst_work_entry_report_log();
                     log.id = logDal.GetNextIdCom();
@@ -485,7 +564,7 @@ namespace EMT.DoneNOW.BLL
                     report.status_id = (int)DicEnum.WORK_ENTRY_REPORT_STATUS.REJECTED;
                     report.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
                     report.update_user_id = userId;
-                    report.approve_time = DateTime.Now;
+                    report.approve_time = report.update_time;
                     report.approve_user_id = userId;
                     rptDal.Update(report);
                     OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<sdk_work_entry_report>(rptOld, report), report.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SDK_WORK_RECORD, "工时表审批拒绝");

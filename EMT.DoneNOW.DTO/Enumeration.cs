@@ -706,6 +706,7 @@ namespace EMT.DoneNOW.DTO
             MY_QUEUE_MY_TICKET = 1618,              // 服务台-我的工作区-我创建的工单
             MY_QUEUE_CHANGE_APPROVEL = 1619,        // 服务台-我的工作区-变更申请审批 
             MY_QUEUE_VIEW = 1620,                   // 服务台-我的工作区-队列视图 
+            RESOURCE_POLICY_ASSIGNMENT = 1622,      // 员工详情-休假策略
             RESOURCE_TIME_SHEET = 1623,             // 员工详情-工时表审批人
             RESOURCE_EXPENSE_REPORT = 1624,         // 员工详情-费用审批人
             RESOURCE_DEPARTMENT = 1625,             // 员工详情-员工部门
@@ -719,6 +720,7 @@ namespace EMT.DoneNOW.DTO
             TIMEOFF_WAIT_APPROVE_DETAIL = 1633,     // 工时表管理-等待我审批的工时表-列表详情
             TIMEOFF_SUBMITED = 1634,                // 工时表管理-已提交工时表
             TIMEOFF_MY_REQUEST = 1635,              // 工时表管理-我的休假请求
+            TIMEOFF_MY_BALANCE = 1636,              // 工时表管理-休假余额详情
             TIMEOFF_REQUEST_WAIT_APPROVE = 1637,    // 工时表管理-等待我审批的休假请求
             WORKGROUP_CALLBACK = 1638,              // 工作组-查找带回
             TASK_SEARCH_NO = 1639,                  // 系统管理-快捷搜索-任务编号
@@ -1753,6 +1755,7 @@ namespace EMT.DoneNOW.DTO
         MY_QUEUE_MY_TICKET = 203,              // 服务台-我的工作区-我创建的工单
         MY_QUEUE_CHANGE_APPROVEL = 204,        // 服务台-我的工作区-变更申请审批 
         MY_QUEUE_VIEW = 205,                   // 服务台-我的工作区-队列视图 
+        ResourcePolicyAssignment = 207,     // 员工详情-休假策略
         ResourceTimeSheet = 208,            // 员工详情-工时表审批人
         ResourceExpense = 209,              // 员工详情-费用审批人
         ResourceDepartment = 210,           // 员工详情-员工部门
@@ -1766,6 +1769,7 @@ namespace EMT.DoneNOW.DTO
         TimeoffWaitApproveDetail = 219,     // 工时表管理-等待我审批的工时表-列表详情
         TimeoffSubmited = 220,              // 工时表管理-已提交工时表
         TimeoffMyRequest = 221,             // 工时表管理-我的休假请求
+        TimeoffMyBalance = 222,             // 工时表管理-休假余额详情
         TimeoffRequestWaitApprove = 223,    // 等待我审批的休假请求
         TASK_SEARCH_NO = 225,               // 系统管理-快捷搜索-任务编号
 

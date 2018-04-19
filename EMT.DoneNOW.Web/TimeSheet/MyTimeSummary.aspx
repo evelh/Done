@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>我的工时汇总</title>
+    <title>我的休假汇总</title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link href="../Content/index.css" rel="stylesheet" />
@@ -66,7 +66,7 @@
     </style>
 </head>
 <body style="overflow:auto;">
-    <div class="header">我的工时汇总</div>
+    <div class="header">我的休假汇总</div>
     <div class="header-title" style="min-width: 400px;">
         <ul>
             <li id="NewRequest">
@@ -233,16 +233,16 @@
                                 <tr style="height:32px;font-weight:bold;">
                                     <td>可用时间</td>
                                     <%if (tmoffYear!=null) { %>
-                                    <td><%=tmoffYear.current_balance %></td>
+                                    <td style="color:#376597;cursor:pointer;" onclick="MyBalance(25)"><%=tmoffYear.current_balance %></td>
                                     <%} %>
                                     <%if (tmoffPerson!=null) { %>
-                                    <td><%=tmoffPerson.current_balance %></td>
+                                    <td style="color:#376597;cursor:pointer;" onclick="MyBalance(35)"><%=tmoffPerson.current_balance %></td>
                                     <%} %>
                                     <%if (tmoffSick!=null) { %>
-                                    <td><%=tmoffSick.current_balance %></td>
+                                    <td style="color:#376597;cursor:pointer;" onclick="MyBalance(23)"><%=tmoffSick.current_balance %></td>
                                     <%} %>
                                     <%if (tmoffFloat!=null) { %>
-                                    <td><%=tmoffFloat.current_balance %></td>
+                                    <td style="color:#376597;cursor:pointer;" onclick="MyBalance(27)"><%=tmoffFloat.current_balance %></td>
                                     <%} %>
                                 </tr>
                             </table>
@@ -360,6 +360,9 @@
         $("#<%=tf.timeoffDate.ToString("Mdd")%>").css({ background: statusList.<%="i"+tf.status_id.ToString()%> });
         $("#<%=tf.timeoffDate.ToString("Mdd")%>").attr('title','<%=tf.tooltip.Replace("<br />", "\\r")%>');
         <%}%>
+        function MyBalance(cate) {
+            window.open('../TimeSheet/MyTimeoffBalance?resId=<%=resourceId%>&cateId=' + cate, windowType.blank, 'left=0,top=0,location=no,status=no,width=825,height=679', false);
+        }
     </script>
 </body>
 </html>

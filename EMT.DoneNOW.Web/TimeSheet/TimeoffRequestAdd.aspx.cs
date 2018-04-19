@@ -12,8 +12,16 @@ namespace EMT.DoneNOW.Web.TimeSheet
     public partial class TimeoffRequestAdd : BasePage
     {
         protected List<v_timeoff_total> timeoffSummary;
+        protected string resourceName;
         protected void Page_Load(object sender, EventArgs e)
         {
+            long resourceId;
+            if (!string.IsNullOrEmpty(Request.QueryString["resourceId"]))
+                resourceId = long.Parse(Request.QueryString["resourceId"]);
+            else
+                resourceId = LoginUserId;
+            resourceName = new UserResourceBLL().GetResourceById(resourceId).name;
+
             if (IsPostBack)
             {
                 tst_timeoff_request rqst = AssembleModel<tst_timeoff_request>();
@@ -27,13 +35,13 @@ namespace EMT.DoneNOW.Web.TimeSheet
                 else
                     end = DateTime.Parse(Request.Form["endDate"]);
 
-                new TimeOffPolicyBLL().AddTimeoffRequest(rqst, start, end, onlyWorkday, LoginUserId);
+                new TimeOffPolicyBLL().AddTimeoffRequest(rqst, start, end, onlyWorkday, resourceId);
                 Response.Write("<script>window.close();self.opener.location.reload();</script>");
                 Response.End();
             }
             else
             {
-                timeoffSummary = new TimeOffPolicyBLL().GetResourceTimeoffTotal(LoginUserId, DateTime.Now.Year);
+                timeoffSummary = new TimeOffPolicyBLL().GetResourceTimeoffTotal(resourceId, DateTime.Now.Year);
             }
         }
     }

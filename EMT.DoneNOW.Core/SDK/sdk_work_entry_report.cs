@@ -33,7 +33,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? approve_user_id { get; set; }
         [DataMember]
-        public DateTime? approve_time { get; set; }
+        public Int64? approve_time { get; set; }
         [DataMember]
         public String rejection_reason { get; set; }
 
