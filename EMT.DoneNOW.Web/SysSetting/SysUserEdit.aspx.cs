@@ -14,6 +14,8 @@ namespace EMT.DoneNOW.Web
 {
     public partial class SysUserEdit : BasePage
     {
+        protected List<v_timeoff_total> timeoffYear1;
+        protected List<v_timeoff_total> timeoffYear2;
         protected string avatarPath = "/Images/pop.jpg";
         protected long id = 0;
         protected string op = string.Empty;
@@ -133,12 +135,31 @@ namespace EMT.DoneNOW.Web
                         timeoff_policy_id.Enabled = false;
                         effective_date.ReadOnly = true;
                     }
+                    var time1 = urbll.GetResAdddtionalTime(id, DateTime.Now.Year);
+                    if (time1 != null)
+                    {
+                        TextBox1.Text = time1.time_vacation == null ? "0.000" : time1.time_vacation.Value.ToString();
+                        TextBox2.Text = time1.time_personal == null ? "0.000" : time1.time_personal.Value.ToString();
+                        TextBox3.Text = time1.time_sick == null ? "0.000" : time1.time_sick.Value.ToString();
+                        TextBox4.Text = time1.time_float == null ? "0.000" : time1.time_float.Value.ToString();
+                    }
+                    var time2 = urbll.GetResAdddtionalTime(id, DateTime.Now.Year + 1);
+                    if (time2 != null)
+                    {
+                        TextBox5.Text = time2.time_vacation == null ? "0.000" : time2.time_vacation.Value.ToString();
+                        TextBox6.Text = time2.time_personal == null ? "0.000" : time2.time_personal.Value.ToString();
+                        TextBox7.Text = time2.time_sick == null ? "0.000" : time2.time_sick.Value.ToString();
+                        TextBox8.Text = time2.time_float == null ? "0.000" : time2.time_float.Value.ToString();
+                    }
                 }
             }
             else {
                 avatarPath=SavePic();//保存头像
             }
 
+            var tmoffBll = new TimeOffPolicyBLL();
+            timeoffYear1 = tmoffBll.GetResourceTimeoffTotal(id, DateTime.Now.Year);
+            timeoffYear2 = tmoffBll.GetResourceTimeoffTotal(id, DateTime.Now.Year + 1);
         }
 
         private void Bind()
@@ -238,8 +259,9 @@ namespace EMT.DoneNOW.Web
             hire_date.Text = DateTime.Now.ToString("yyyy-MM-dd");
             time_sheet_start_date.Text = DateTime.Now.ToString("yyyy-MM-dd");
 
+            var tmoffBll = new TimeOffPolicyBLL();
             // 休假方案
-            var policyList = new TimeOffPolicyBLL().GetPolicyList();
+            var policyList = tmoffBll.GetPolicyList();
             timeoff_policy_id.DataTextField = "name";
             timeoff_policy_id.DataValueField = "id";
             timeoff_policy_id.DataSource = policyList;
@@ -411,6 +433,22 @@ namespace EMT.DoneNOW.Web
                 param.sys_res = urbll.GetSysResourceSingle(id);
                 param.sys_user = urbll.GetSysUserSingle(id);
             }
+
+            sys_resource_additional_time time1 = new sys_resource_additional_time();
+            time1.period_year = DateTime.Now.Year;
+            time1.time_vacation = decimal.Parse(TextBox1.Text);
+            time1.time_personal = decimal.Parse(TextBox2.Text);
+            time1.time_sick = decimal.Parse(TextBox3.Text);
+            time1.time_float = decimal.Parse(TextBox4.Text);
+            sys_resource_additional_time time2 = new sys_resource_additional_time();
+            time2.period_year = DateTime.Now.Year + 1;
+            time2.time_vacation = decimal.Parse(TextBox5.Text);
+            time2.time_personal = decimal.Parse(TextBox6.Text);
+            time2.time_sick = decimal.Parse(TextBox7.Text);
+            time2.time_float = decimal.Parse(TextBox8.Text);
+            param.addTime1 = time1;
+            param.addTime2 = time2;
+
             param.sys_res.first_name = this.first_name.Text.Trim().ToString();
             param.sys_res.last_name = this.last_name.Text.Trim().ToString();
             param.sys_res.name = param.sys_res.first_name + param.sys_res.last_name;

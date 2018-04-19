@@ -32,7 +32,7 @@ function SaveNew() {
     if ($("#default").is(':checked')) { dft = 1; }
     if ($("#depart").is(':checked')) { dpt = 1; }
     if ($("#active").is(':checked')) { act = 1; }
-    requestData("/Tools/ResourceAjax.ashx?act=AddDepartment&resId=" + $("input[name='con2675']").val() + "&dptId=" + $("#selDpt").val() + "&role=" + $("#selRole").val() + "&dft=" + dft + "&dpt=" + dpt + "&act=" + act, null, function (data) {
+    requestData("/Tools/ResourceAjax.ashx?act=AddDepartment&resId=" + $("input[name='con2675']").val() + "&dptId=" + $("#selDpt").val() + "&role=" + $("#selRole").val() + "&dft=" + dft + "&dpt=" + dpt + "&isact=" + act, null, function (data) {
         if (data == true) {
             window.location.reload();
         } else {

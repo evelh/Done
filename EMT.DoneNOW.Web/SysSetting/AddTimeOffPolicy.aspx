@@ -127,7 +127,7 @@
                                 <td>
                                     <div class="clear">
                                         <label style="font-weight:normal;">分配类型</label>
-                                        <input type="radio" value="1" <%if (isAdd || item.accrual_period_type_id == null) { %> checked="checked" <%} %> name="periodType<%=item.cate_id %>" onclick="ChangeType(<%=item.cate_id %>,1);" style="width:16px;height:16px;" />统一分配
+                                        <input type="radio" value="1" class="itemTierCheck" <%if (isAdd || item.accrual_period_type_id == null) { %> checked="checked" <%} %> name="periodType<%=item.cate_id %>" onclick="ChangeType(<%=item.cate_id %>,1);" style="width:16px;height:16px;" />统一分配
                                     </div>
                                 </td>
                             </tr>
@@ -135,7 +135,7 @@
                                 <td>
                                     <div class="clear">
                                         <label></label>
-                                        <input type="radio" value="2" <%if (!isAdd && item.accrual_period_type_id != null) { %> checked="checked" <%} %> name="periodType<%=item.cate_id %>" onclick="ChangeType(<%=item.cate_id %>,2);" style="width:16px;height:16px;" />累计分配
+                                        <input type="radio" value="2" class="itemTierCheck" <%if (!isAdd && item.accrual_period_type_id != null) { %> checked="checked" <%} %> name="periodType<%=item.cate_id %>" onclick="ChangeType(<%=item.cate_id %>,2);" style="width:16px;height:16px;" />累计分配
                                     </div>
                                 </td>
                             </tr>
@@ -145,7 +145,7 @@
                                 <td>
                                     <div class="clear">
                                         <label style="font-weight:normal;">增长周期</label>
-                                        <select id="period<%=item.cate_id %>" name="period<%=item.cate_id %>" <%if (isAdd || item.accrual_period_type_id == null) { %> disabled="disabled" <%} %>>
+                                        <select id="period<%=item.cate_id %>" name="period<%=item.cate_id %>" class="itemTierCheck" <%if (isAdd || item.accrual_period_type_id == null) { %> disabled="disabled" <%} %>>
                                             <%foreach (var period in periodList) { %>
                                             <option value="<%=period.val %>" <%if ((isAdd&&period.show.Equals("半月"))||(!isAdd&&item.accrual_period_type_id!=null&&item.accrual_period_type_id.Value.ToString()==period.val)) { %> selected="selected" <%} %> ><%=period.show %></option>
                                             <%} %>
@@ -159,10 +159,10 @@
                 <div class="information clear" style="height:460px;">
                     <p class="informationTitle">休假策略级别</p>
                     <div class="text clear">
-                        <input type="button" value="新增" style="margin-left:0;" name="addCateTier" <%if (tierResCnt > 0) { %> disabled="disabled" <%} %> onclick="AddPolicyTier(<%=item.cate_id %>)" />
+                        <input type="button" value="新增" style="margin-left:0;" onclick="AddPolicyTier(<%=item.cate_id %>)" />
                     </div>
                     <div id="showTier" style="width:100%;margin-top:3px;border-top:1px solid #e8e8fa;height:390px;">
-                        <iframe id="tierFrame<%=item.cate_id %>" src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_POLICY_TIER %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TimeoffPolicyTier %>&con2468=<%=item.id==0?0:item.id %>&cate=<%=item.cate_id %>&cateType=1" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
+                        <iframe id="tierFrame<%=item.cate_id %>" src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_POLICY_TIER %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TimeoffPolicyTier %>&con2468=<%=item.id==0?0:item.id %>&cate=<%=item.cate_id %>&cateType=<%=(isAdd || item.accrual_period_type_id == null) ? 1 : 2 %>" style="overflow: scroll;width:100%;height:100%;border:0px;"></iframe>
                     </div>
                 </div>
 
@@ -210,7 +210,7 @@
         <div style="width:650px;border:1px solid #d3d3d3;margin:0 10px 10px 10px;padding:10px;">
             <label>年度时间和限额</label>
             <label style="font-weight: normal;margin-bottom:12px;">指定资源在1月1日可能收到的总数小时数或全年累计的小时数。 另外，可以为应计“累计限额”或将“滚存限额”延续到下一年的小时指定一个上限。</label><br />
-            <label style="font-weight: normal;width:100px;">每年假期时间</label>
+            <label style="font-weight: normal;width:100px;">每年假期时间<span style="color: red;">*</span></label>
             <input type="text" style="width:80px;" id="annualHours" onchange="ChangeHours()" />
             <label style="font-weight: normal;width:36px;">小时</label>
             <select id="annualMinutes" onchange="ChangeHours()" style="width:80px;">
@@ -227,6 +227,7 @@
             <input type="text" style="width:80px;" id="accrualHours" />
             <label style="font-weight: normal;width:36px;">小时</label>
             <select id="accrualMinutes" style="width:80px;">
+                <option value=""></option>
                 <option value="0">00</option>
                 <option value="0.25">15</option>
                 <option value="0.5">30</option>
@@ -261,6 +262,9 @@
             <%if (isAdd) { %>
             LayerLoad();
         <%}%>
+            $(".itemTierCheck").each(function () {
+                $(this).removeAttr("disabled");
+            });
             $("#form1").submit();
         })
         $("#Cancle").click(function () {
@@ -275,6 +279,9 @@
             <%if (isAdd) { %>
             LayerLoad();
         <%}%>
+            $(".itemTierCheck").each(function () {
+                $(this).removeAttr("disabled");
+            });
             $("#form1").submit();
         })
         $("#active").change(function () {
@@ -295,6 +302,15 @@
         })
     </script>
     <script>
+        <%if (tierResCnt > 0) { %> 
+        var tierCnt = 1;
+        $(".itemTierCheck").each(function () {
+            $(this).attr("disabled", "disabled");
+        });
+        <%} else { %> var tierCnt = 0; <%} %>
+        function GetTierCnt() {
+            return tierCnt;
+        }
         function SelectResource() {
             window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE_CALLBACK %>&muilt=1&field=resourceSelect&callBack=GetResource", windowType.blank, 'left=200,top=200,width=600,height=800', false);
         }
@@ -325,7 +341,10 @@
         <%}%>
             requestData("/Tools/TimeoffPolicyAjax.ashx?act=associateResource&resIds=" + $("#resourceSelectHidden").val() + "&resNames=" + $("#resourceSelect").val() + "&beginDate=" + $("#effectDate").val() + "&policyId=<%=isAdd?0:policy.id %>", null, function (data) {
                 if (data == true) {
-                    $("input[name='addCateTier']").attr("disabled", "disabled");
+                    tierCnt = 1;
+                    $(".itemTierCheck").each(function () {
+                        $(this).attr("disabled", "disabled");
+                    });
                     $("#resourceFrame").attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_POLICY_RESOURCE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TimeoffPolicyResource %>&con2467=<%=isAdd?0:policy.id %>");
                 }
                 <%if (!isAdd) { %>
@@ -347,6 +366,17 @@
             $("#background").show();
             $("#memo").show();
         })
+        function DisAssResource(id) {
+            LayerConfirm("您确定要解除此策略的员工吗？\r将此员工与该策略分离将导致系统重新计算员工姓名目前的假期余额（根据参加工作时间计算）。 你确定你要这么做吗？", "确定", "取消", function () {
+                LayerLoad();
+                requestData("/Tools/TimeoffPolicyAjax.ashx?act=disassociateResource&id=" + id, null, function (data) {
+                    LayerLoadClose();
+                    if (data == true) {
+                        window.location.reload();
+                    }
+                })
+            }, function () { })
+        }
     </script>
     <script>
         var itemId = 0;
@@ -359,39 +389,40 @@
                 LayerMsg("请输入每年假期时间");
                 return;
             }
-            if ($("#accrualHours").val() == "") {
-                LayerMsg("请输入滚存限额");
-                return;
-            }
             if ($("#minMonths").val() == "") {
                 LayerMsg("请输入最低工作年限");
                 return;
             }
             var cate = $("#tierCate").val();
             var annual = parseInt($("#annualHours").val()) + parseFloat($("#annualMinutes").val());
-            var cap = parseInt($("#accrualHours").val()) + parseFloat($("#accrualMinutes").val());
+            var cap = "";
+            if ($("#accrualHours").val() != "" && $("#accrualMinutes").val() != "") {
+                cap = parseInt($("#accrualHours").val()) + parseFloat($("#accrualMinutes").val());
+            } else if ($("#accrualHours").val() != "") {
+                cap = parseInt($("#accrualHours").val());
+            } else if ($("#accrualMinutes").val() != "") {
+                cap = parseFloat($("#accrualMinutes").val());
+            }
             var cateType = $('input:radio[name="periodType' + cate + '"]:checked').val();
-            <%if (!isAdd) { %>
-            LayerLoad();
-        <%}%>
             requestData("/Tools/TimeoffPolicyAjax.ashx?act=editPolicyTier&tierId=" + itemId + "&cate=" + cate + "&itemid=" + $("#itemid" + cate).val() + "&annual=" + annual + "&cap=" + cap + "&months=" + $("#minMonths").val() + "&policyId=<%=isAdd?0:policy.id %>", null, function (data) {
                 if (data == true) {
                     $("#tierFrame" + cate).attr("src", "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_POLICY_TIER %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TimeoffPolicyTier %>&con2468=" + $("#itemid" + cate).val() + "&cate=" + cate + "&cateType=" + cateType);
                 }
-                <%if (!isAdd) { %>
-                LayerLoadClose();
-            <%}%>
                 $("#background").hide();
                 $("#newTier").hide();
             })
         })
         function AddPolicyTier(idx) {
+            if (tierCnt > 0) {
+                LayerMsg("关联员工后不能修改休假策略级别");
+                return;
+            }
             itemId = 0;
             $("#tierCate").val(idx);
             $("#annualHours").val("");
             $("#annualMinutes").val("0");
             $("#accrualHours").val("");
-            $("#accrualMinutes").val("0");
+            $("#accrualMinutes").val("");
             $("#minMonths").val("");
             if ($("input[name='periodType" + idx + "']:checked").val() == 1) {
                 $("#prdRateLabel").hide();
@@ -440,14 +471,23 @@
             $("#prdRate").text(hours + "小时"); 
         }
         function editTier(id) {
+            if (tierCnt > 0) {
+                LayerMsg("关联员工后不能修改休假策略级别");
+                return;
+            }
             itemId = id;
             requestData("/Tools/TimeoffPolicyAjax.ashx?act=getItemTierInfo&id=" + id, null, function (data) {
                 if (data != null) {
                     $("#tierCate").val(data.cate);
                     $("#annualHours").val(parseInt(data.annualHours));
                     $("#annualMinutes").val(parseFloat(data.annualHours) - parseInt(data.annualHours));
-                    $("#accrualHours").val(parseInt(data.capHours));
-                    $("#accrualMinutes").val(parseFloat(data.capHours) - parseInt(data.capHours));
+                    if (data.capHours != null) {
+                        $("#accrualHours").val(parseInt(data.capHours));
+                        $("#accrualMinutes").val(parseFloat(data.capHours) - parseInt(data.capHours));
+                    } else {
+                        $("#accrualHours").val("");
+                        $("#accrualMinutes").val("");
+                    }
                     $("#minMonths").val(data.eligibleMonths);
                     if ($("input[name='periodType" + data.cate + "']:checked").val() == 1) {
                         $("#prdRateLabel").hide();

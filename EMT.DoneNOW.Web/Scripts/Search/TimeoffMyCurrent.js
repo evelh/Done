@@ -1,5 +1,7 @@
 ﻿var startDate;
 var status = 0;
+$('.contenttitle ul li').eq(0).after('<li style="text-align:center;padding:0 8px;" onclick="AddProjectEntry(\'\')"><i style="background-image: url(../Images/new.png);"></i>项目工时(起止时间)</li>');
+$('.contenttitle ul li').eq(0).after('<li style="text-align:center;padding:0 8px;" onclick="AddProjectEntry(\'1\')"><i style="background-image: url(../Images/new.png);"></i>项目工时</li>');
 window.onload = function () {
     var dt = $("input[name='con2734']").val();
     var date; var endDate;
@@ -21,9 +23,9 @@ window.onload = function () {
     if ($("input[name='con2735']").val() != undefined) {
         requestData("/Tools/TimesheetAjax.ashx?act=getStatus&startDate=" + startDate + "&resId=" + $("input[name='con2735']").val(), null, function (data) {
             if (data == 1) {
-                $('.contenttitle ul li').eq(0).after('<li style="text-align:center;padding:0 8px;" onclick="Submit()">提交</li>');
+                $('.contenttitle ul li').eq(2).after('<li style="text-align:center;padding:0 8px;" onclick="Submit()">提交</li>');
             } else if (data == 2) {
-                $('.contenttitle ul li').eq(0).after('<li style="text-align:center;padding:0 8px;" onclick="CancleSubmit()">取消提交</li>');
+                $('.contenttitle ul li').eq(2).after('<li style="text-align:center;padding:0 8px;" onclick="CancleSubmit()">取消提交</li>');
             }
             status = data;
         })
@@ -34,9 +36,12 @@ function RightClickFunc() {
         ShowContextMenu();
     }
 }
+function AddProjectEntry(type) {
+    window.open("../Project/WorkEntry.aspx?NoTime=" + type + "&chooseDate=" + startDate, windowType.add, 'left=200,top=200,width=1080,height=800', false);
+}
 function Add() {
     if (status == 1) {
-        window.open('../TimeSheet/RegularTimeAddEdit', windowObj.timeoffRequest + windowType.manage, 'left=0,top=0,location=no,status=no,width=925,height=755', false);
+        window.open('../TimeSheet/RegularTimeAddEdit?startDate=' + startDate + '&resourceId=' + $("input[name='con2735']").val(), windowObj.timeoffRequest + windowType.manage, 'left=0,top=0,location=no,status=no,width=925,height=755', false);
     } else {
         LayerMsg("工时表提交后不能新增");
     }

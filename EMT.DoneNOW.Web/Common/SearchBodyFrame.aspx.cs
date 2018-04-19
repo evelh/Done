@@ -1269,6 +1269,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "详情", click_function = "Detail()" });
 					break;
                 case (long)QueryType.TimeoffMyCurrent:
+                case (long)QueryType.ResourcePolicyAssignment:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;

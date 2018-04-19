@@ -20,7 +20,7 @@ namespace EMT.DoneNOW.DTO
         public long id;                 // id
         public int cate;                // 假期类别
         public decimal annualHours;     // 年假小时数
-        public decimal capHours;        // 滚存限额
+        public decimal? capHours;       // 滚存限额
         public decimal? hoursPerPeriod; // 每周期时长
         public int eligibleMonths;      // 起始月数
     }

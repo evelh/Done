@@ -22,10 +22,11 @@ window.onload = function () {
 }
 function Approve() {
     requestData("../Tools/TimesheetAjax.ashx?act=approve&ids=" + $("#param1").val(), null, function (data) {
-        if (data == true) {
-            window.location.href = "Common/SearchFrameSet.aspx?cat=1632&isCheck=1";
-        } else {
-            LayerMsg("审批失败！");
+        if (data == 1) {
+            window.location.href = "../Common/SearchFrameSet.aspx?cat=1632&isCheck=1";
+            LayerMsg("审批成功！");
+        } else if (data == 0) {
+            LayerMsg("审批失败，请重新查看待审批数据！");
         }
     })
 }

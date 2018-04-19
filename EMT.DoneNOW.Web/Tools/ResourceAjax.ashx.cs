@@ -825,7 +825,7 @@ namespace EMT.DoneNOW.Web
             long role = long.Parse(context.Request.QueryString["role"]);
             sbyte dft = sbyte.Parse(context.Request.QueryString["dft"]);
             sbyte dpt = sbyte.Parse(context.Request.QueryString["dpt"]);
-            sbyte act = sbyte.Parse(context.Request.QueryString["act"]);
+            sbyte act = sbyte.Parse(context.Request.QueryString["isact"]);
             sys_resource_department department = new sys_resource_department
             {
                 department_id = dptId,

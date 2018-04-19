@@ -13,6 +13,7 @@ namespace EMT.DoneNOW.Core
     public partial class sys_resource_availability : SoftDeleteCore
     {
 
+        [Key]
         [DataMember]
         public Int64 id { get; set; }
         [DataMember]

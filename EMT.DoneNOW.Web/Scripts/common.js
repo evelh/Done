@@ -327,7 +327,9 @@ var windowObj = {
     timeoffRequest: 'timeoffRequest',
     kbArticle: "kbArticle",
     select: "select",
-    appointment:"appointment",
+    appointment: "appointment",
+    resource: "resource",
+    resourcePolicy: "resourcePolicy",
 }
 var windowType = {
     blank: '_blank',

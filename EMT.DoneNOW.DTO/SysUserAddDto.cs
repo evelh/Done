@@ -14,5 +14,7 @@ namespace EMT.DoneNOW.DTO
         public tst_timeoff_policy_resource timeoffPolicy;   // 休假策略
         public sys_resource_availability availability;      // 每天工作时间
         public List<sys_resource_internal_cost> internalCost;   // 内部成本列表
+        public sys_resource_additional_time addTime1;       // 员工休假-额外时间当年
+        public sys_resource_additional_time addTime2;       // 员工休假-额外时间第二年
     }
 }

@@ -156,6 +156,20 @@ namespace EMT.DoneNOW.BLL
                 new sys_resource_availability_dal().Insert(data.availability);
             }
 
+            sys_resource_additional_time_dal timeDal = new sys_resource_additional_time_dal();
+            if (data.addTime1 != null)
+            {
+                data.addTime1.id = timeDal.GetNextIdCom();
+                data.addTime1.resource_id = id;
+                timeDal.Insert(data.addTime1);
+            }
+            if (data.addTime2 != null)
+            {
+                data.addTime2.id = timeDal.GetNextIdCom();
+                data.addTime2.resource_id = id;
+                timeDal.Insert(data.addTime2);
+            }
+
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -246,8 +260,58 @@ namespace EMT.DoneNOW.BLL
                 dal.Update(data.availability);
             }
 
+            sys_resource_additional_time_dal timeDal = new sys_resource_additional_time_dal();
+            if (data.addTime1 != null)
+            {
+                var time1 = timeDal.FindSignleBySql<sys_resource_additional_time>($"select * from sys_resource_additional_time where resource_id={id} and period_year={data.addTime1.period_year.Value}");
+                if (time1 == null)
+                {
+                    data.addTime1.id = timeDal.GetNextIdCom();
+                    data.addTime1.resource_id = id;
+                    timeDal.Insert(data.addTime1);
+                }
+                else
+                {
+                    time1.time_vacation = data.addTime1.time_vacation;
+                    time1.time_personal = data.addTime1.time_personal;
+                    time1.time_sick = data.addTime1.time_sick;
+                    time1.time_float = data.addTime1.time_float;
+                    timeDal.Update(time1);
+                }
+            }
+            if (data.addTime2 != null)
+            {
+                var time2 = timeDal.FindSignleBySql<sys_resource_additional_time>($"select * from sys_resource_additional_time where resource_id={id} and period_year={data.addTime2.period_year.Value}");
+                if (time2 == null)
+                {
+                    data.addTime2.id = timeDal.GetNextIdCom();
+                    data.addTime2.resource_id = id;
+                    timeDal.Insert(data.addTime2);
+                }
+                else
+                {
+                    time2.time_vacation = data.addTime2.time_vacation;
+                    time2.time_personal = data.addTime2.time_personal;
+                    time2.time_sick = data.addTime2.time_sick;
+                    time2.time_float = data.addTime2.time_float;
+                    timeDal.Update(time2);
+                }
+            }
+
             return ERROR_CODE.SUCCESS;
         }
+
+        /// <summary>
+        /// 获取员工休假额外时间
+        /// </summary>
+        /// <param name="resId"></param>
+        /// <param name="year"></param>
+        /// <returns></returns>
+        public sys_resource_additional_time GetResAdddtionalTime(long resId, int year)
+        {
+            return _dal.FindSignleBySql<sys_resource_additional_time>($"select * from sys_resource_additional_time where resource_id={resId} and period_year={year}");
+        }
+
         /// <summary>
         /// 通过id获得员工资源信息
         /// </summary>

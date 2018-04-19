@@ -471,13 +471,14 @@ namespace EMT.DoneNOW.BLL
         /// <param name="ids">,号分割的多个工时表id</param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public bool ApproveWorkEntryReport(string ids, long userId)
+        public int ApproveWorkEntryReport(string ids, long userId)
         {
+            int appCnt = 0;
             var rptDal = new sdk_work_entry_report_dal();
             var logDal = new tst_work_entry_report_log_dal();
             var reports = rptDal.FindListBySql($"select * from sdk_work_entry_report where id in({ids}) and status_id={(int)DicEnum.WORK_ENTRY_REPORT_STATUS.WAITING_FOR_APPROVAL} and delete_time=0");
             if (reports == null || reports.Count == 0)
-                return false;
+                return appCnt;
 
             var user = new UserResourceBLL().GetResourceById(userId);
             foreach (var report in reports)
@@ -501,6 +502,8 @@ namespace EMT.DoneNOW.BLL
                     logDal.Insert(log);
                     OperLogBLL.OperLogAdd<tst_work_entry_report_log>(log, log.id, userId, DicEnum.OPER_LOG_OBJ_CATE.WORK_ENTRY_REPORT_LOG, "工时表审批");
 
+                    appCnt++;
+
                     int maxTier = aprvResList.Max(_ => _.tier);
                     if (maxTier == tier)    // 是最后一级审批人
                     {
@@ -508,7 +511,7 @@ namespace EMT.DoneNOW.BLL
                         report.status_id = (int)DicEnum.WORK_ENTRY_REPORT_STATUS.PAYMENT_BEEN_APPROVED;
                         report.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
                         report.update_user_id = userId;
-                        report.approve_time = DateTime.Now;
+                        report.approve_time = report.update_time;
                         report.approve_user_id = userId;
                         rptDal.Update(report);
                         OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<sdk_work_entry_report>(rptOld, report), report.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SDK_WORK_RECORD, "工时表审批");
@@ -516,7 +519,7 @@ namespace EMT.DoneNOW.BLL
                 }
             }
 
-            return true;
+            return appCnt;
         }
 
         /// <summary>
@@ -561,7 +564,7 @@ namespace EMT.DoneNOW.BLL
                     report.status_id = (int)DicEnum.WORK_ENTRY_REPORT_STATUS.REJECTED;
                     report.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
                     report.update_user_id = userId;
-                    report.approve_time = DateTime.Now;
+                    report.approve_time = report.update_time;
                     report.approve_user_id = userId;
                     rptDal.Update(report);
                     OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<sdk_work_entry_report>(rptOld, report), report.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SDK_WORK_RECORD, "工时表审批拒绝");

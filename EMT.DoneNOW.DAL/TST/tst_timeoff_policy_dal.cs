@@ -17,14 +17,21 @@ namespace EMT.DoneNOW.DAL
         /// <param name="effDate">重新计算的生效日期</param>
         public void ReCalcResourceTimeoffActivityBalance(long resourceId, DateTime effDate)
         {
-            using (IDbConnection conn = DapperHelper.BuildConnection())
+            try
             {
-                var p = new DynamicParameters();
-                string funcName = "p_ins_timeoff_activity";
-                p.Add("in_resource", resourceId);
-                p.Add("in_begin", effDate);
-                conn.Query(funcName, p, null, true, null, CommandType.StoredProcedure);
-                
+                using (IDbConnection conn = DapperHelper.BuildConnection())
+                {
+                    var p = new DynamicParameters();
+                    string funcName = "p_ins_timeoff_activity";
+                    p.Add("in_resource", resourceId);
+                    p.Add("in_begin", effDate);
+                    conn.Query(funcName, p, null, true, null, CommandType.StoredProcedure);
+
+                }
+            }
+            catch (Exception e)     // 可能超时，超时返回
+            {
+                return;
             }
         }
     }

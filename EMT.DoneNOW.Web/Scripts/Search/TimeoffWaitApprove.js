@@ -12,18 +12,24 @@ $("#CheckAll").click(function () {
 })
 function Approve(){
     var ids = "";
+    var cnt = 0;
     $(".IsChecked").each(function () {
         if ($(this).is(":checked")) {
             ids += $(this).val() + ',';
+            cnt++;
         }
     });
     if (ids != "") {
         ids = ids.substring(0, ids.length - 1);
         requestData("../Tools/TimesheetAjax.ashx?act=approve&ids=" + ids, null, function (data) {
-            if (data == true) {
+            if (data == cnt) {
                 window.location.reload();
+                LayerMsg("审批成功！");
+            } else if (data == 0) {
+                LayerMsg("审批失败，请重新查看待审批数据！");
             } else {
-                LayerMsg("审批失败！");
+                window.location.reload();
+                LayerMsg("部分审批成功！");
             }
         })
     } else {

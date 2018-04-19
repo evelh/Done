@@ -71,7 +71,9 @@ namespace EMT.DoneNOW.Web
         private void AddPolicyTier(HttpContext context)
         {
             decimal annualHours = decimal.Parse(context.Request.QueryString["annual"]);
-            decimal capHours = decimal.Parse(context.Request.QueryString["cap"]);
+            decimal? capHours = null;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["cap"]))
+                capHours = decimal.Parse(context.Request.QueryString["cap"]);
             decimal? hoursPerPeriod = null;
             if (!string.IsNullOrEmpty(context.Request.QueryString["hoursPerPeriod"]))
                 hoursPerPeriod = decimal.Parse(context.Request.QueryString["hoursPerPeriod"]);
@@ -120,7 +122,9 @@ namespace EMT.DoneNOW.Web
 
             long tierId = long.Parse(context.Request.QueryString["tierId"]);
             decimal annualHours = decimal.Parse(context.Request.QueryString["annual"]);
-            decimal capHours = decimal.Parse(context.Request.QueryString["cap"]);
+            decimal? capHours = null;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["cap"]))
+                capHours = decimal.Parse(context.Request.QueryString["cap"]);
             decimal? hoursPerPeriod = null;
             if (!string.IsNullOrEmpty(context.Request.QueryString["hoursPerPeriod"]))
                 hoursPerPeriod = decimal.Parse(context.Request.QueryString["hoursPerPeriod"]);
@@ -209,7 +213,7 @@ namespace EMT.DoneNOW.Web
                 dto = new TimeoffPolicyTierDto
                 {
                     annualHours = tier.annual_hours.Value,
-                    capHours = tier.cap_hours.Value,
+                    capHours = tier.cap_hours,
                     eligibleMonths = tier.eligible_starting_months,
                     hoursPerPeriod = tier.hours_accrued_per_period,
                     id = tier.id,
