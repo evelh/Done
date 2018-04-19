@@ -7,6 +7,55 @@
     <title>DoneNOW</title>
     <link rel="stylesheet" type="text/css" href="Content/base.css" />
     <link rel="stylesheet" type="text/css" href="Content/index.css" />
+    <style>
+           /*黑色幕布*/
+        #BackgroundOverLay {
+            width: 100%;
+            height: 100%;
+            background: black;
+            opacity: 0.6;
+            z-index: 99;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+        /*弹框*/
+        .Dialog.Large {
+            width: 876px;
+            height: 450px;
+            left: 50%;
+            position: fixed;
+            top: 50%;
+            background-color: white;
+            border: solid 4px #b9b9b9;
+            display: none;
+        }
+         .CancelDialogButton {
+            background-image: url(../Images/cancel1.png);
+            background-position: 0 -32px;
+            border-radius: 50%;
+            cursor: pointer;
+            height: 32px;
+            position: absolute;
+            right: -14px;
+            top: -14px;
+            width: 32px;
+            z-index: 1;
+        }
+         .heard-title {
+    font-size: 15px;
+    font-weight: bold;
+    height: 36px;
+    text-align: left;
+    width: 97%;
+    background-color: #346a95;
+    color: #fff;
+    position: relative;
+    padding-left: 10px;
+    padding-top: 5px;
+}
+    </style>
 </head>
 <body>
     <!--导航栏-->
@@ -17,9 +66,9 @@
                 <div class="Icon"></div>
             </div>
             <div class="Search">
-                <input type="text" placeholder="搜索" maxlength="100">
+                <input type="text" placeholder="搜索" maxlength="100" id="SearchText">
             </div>
-            <div class="ButtonGroup ExecuteSearch">
+            <div class="ButtonGroup ExecuteSearch" id="QuickSearchPage">
                 <div class="Search Button ButtonIcon">
                     <div class="Icon"></div>
                 </div>
@@ -331,7 +380,7 @@
                                                 </div>
                                             </div>
                                             <div class="Group">
-                                                  <div class="Heading">
+                                                <div class="Heading">
                                                     <div class="Text">查询</div>
                                                 </div>
                                                 <div class="Content">
@@ -641,24 +690,68 @@
                                     <div class="Group">
                                         <div class="Content">
                                             <div class="SearchRadioButton">
-                                                <input checked="checked" type="radio" name="SearchTypeRadioButton">
-                                                <label>Company</label>
+                                                <input checked="checked" type="radio" class="QuickSearch" name="SearchTypeRadioButton" style="margin-top:5px;" value="Company" />
+                                                <label>客户</label>
                                             </div>
                                             <div class="SearchRadioButton">
-                                                <input checked="checked" type="radio" name="SearchTypeRadioButton">
-                                                <label>Contact (Last Name)</label>
+                                                <input type="radio" class="QuickSearch" name="SearchTypeRadioButton" style="margin-top:5px;" value="ContactName" />
+                                                <label>联系人姓名</label>
                                             </div>
                                             <div class="SearchRadioButton">
-                                                <input checked="checked" type="radio" name="SearchTypeRadioButton">
-                                                <label>Contact (First Name)</label>
+                                                <input type="radio" class="QuickSearch" name="SearchTypeRadioButton" style="margin-top:5px;" value="ContactEmail" />
+                                                <label>联系人邮箱</label>
                                             </div>
                                             <div class="SearchRadioButton">
-                                                <input checked="checked" type="radio" name="SearchTypeRadioButton">
-                                                <label>Contact (Email)</label>
+                                                <input type="radio" class="QuickSearch" name="SearchTypeRadioButton" style="margin-top:5px;" value="TicketNo" />
+                                                <label>工单编号</label>
                                             </div>
-                                            <div class="SearchRadioButton">
-                                                <input checked="checked" type="radio" name="SearchTypeRadioButton">
-                                                <label>Co-worker</label>
+                                             <div class="SearchRadioButton">
+                                                <input type="radio" class="QuickSearch" name="SearchTypeRadioButton" style="margin-top:5px;" value="TicketIn24" />
+                                                <label>工单(24个月内创建)</label>
+                                            </div>
+                                             <div class="SearchRadioButton">
+                                                <input type="radio" class="QuickSearch" name="SearchTypeRadioButton" style="margin-top:5px;" value="Project" />
+                                                <label>项目</label>
+                                            </div>
+                                             <div class="SearchRadioButton">
+                                                <input type="radio" class="QuickSearch" name="SearchTypeRadioButton" style="margin-top:5px;" value="TaskNo" />
+                                                <label>任务编号</label>
+                                            </div>
+                                             <div class="SearchRadioButton">
+                                                <input type="radio" class="QuickSearch" name="SearchTypeRadioButton" style="margin-top:5px;" value="InsPro" />
+                                                <label>配置项</label>
+                                            </div>
+                                             <div class="SearchRadioButton">
+                                                <input type="radio" class="QuickSearch" name="SearchTypeRadioButton" style="margin-top:5px;" value="InsProUdf" />
+                                                <label>配置项（包括自定义字段）</label>
+                                            </div>
+                                             <div class="SearchRadioButton">
+                                                <input type="radio" class="QuickSearch" name="SearchTypeRadioButton" style="margin-top:5px;" value="OpportunityName" />
+                                                <label>商机名称</label>
+                                            </div>
+                                             <div class="SearchRadioButton">
+                                                <input type="radio" class="QuickSearch" name="SearchTypeRadioButton" style="margin-top:5px;" value="QuoteName" />
+                                                <label>报价名称</label>
+                                            </div>
+                                            <%-- <div class="SearchRadioButton">
+                                                <input type="radio" class="QuickSearch" name="SearchTypeRadioButton" style="margin-top:5px;" value="HelpOnLine" />
+                                                <label>在线帮助</label>
+                                            </div>--%>
+                                             <div class="SearchRadioButton">
+                                                <input type="radio" class="QuickSearch" name="SearchTypeRadioButton" style="margin-top:5px;" value="Knowledge" />
+                                                <label>知识库</label>
+                                            </div>
+                                             <div class="SearchRadioButton">
+                                                <input type="radio" class="QuickSearch" name="SearchTypeRadioButton" style="margin-top:5px;" value="Community" />
+                                                <label>社区</label>
+                                            </div>
+                                             <div class="SearchRadioButton">
+                                                <input type="radio" class="QuickSearch" name="SearchTypeRadioButton" style="margin-top:5px;" value="InvoiceNo" />
+                                                <label>发票编号</label>
+                                            </div>
+                                             <div class="SearchRadioButton">
+                                                <input type="radio" class="QuickSearch" name="SearchTypeRadioButton" style="margin-top:5px;" value="InvoiceId" />
+                                                <label>发票ID</label>
                                             </div>
                                         </div>
                                     </div>
@@ -668,24 +761,10 @@
                                 <div class="Normal ContextOverlayColumn">
                                     <div>
                                         <div class="Group">
-                                            <div class="Heading">
+                                            <div class="Heading" id="SearchHisDiv">
                                                 <div class="Text">历史纪录搜索</div>
                                             </div>
-                                            <div class="Content">
-                                                <a class="Button ButtonIcon NormalState">
-                                                    <span class="Text">My Home Page</span>
-                                                </a>
-                                            </div>
-                                            <div class="Content">
-                                                <a class="Button ButtonIcon NormalState">
-                                                    <span class="Text">My Home Page</span>
-                                                </a>
-                                            </div>
-                                            <div class="Content">
-                                                <a class="Button ButtonIcon NormalState">
-                                                    <span class="Text">My Home Page</span>
-                                                </a>
-                                            </div>
+                                         
                                         </div>
                                     </div>
                                 </div>
@@ -704,41 +783,66 @@
                                 <div>
                                     <div class="Group">
                                         <div class="Heading">
-                                            <div class="Text">Service Desk</div>
+                                            <div class="Text">服务台</div>
                                         </div>
                                         <div class="Content">
-                                            <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('ticket')">
+                                                <span class="Text">工单</span>
                                             </a>
                                         </div>
                                         <div class="Content">
-                                            <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('masterTicket')">
+                                                <span class="Text">定期服务工单</span>
                                             </a>
                                         </div>
                                         <div class="Content">
-                                            <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('serviceCall')">
+                                                <span class="Text">服务预定</span>
+                                            </a>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('knowledge')">
+                                                <span class="Text">知识库文档</span>
                                             </a>
                                         </div>
                                     </div>
                                     <div class="Group">
                                         <div class="Heading">
-                                            <div class="Text">Service Desk</div>
+                                            <div class="Text">CRM</div>
                                         </div>
                                         <div class="Content">
-                                            <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('account')">
+                                                <span class="Text">客户</span>
                                             </a>
                                         </div>
                                         <div class="Content">
-                                            <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('contact')">
+                                                <span class="Text">联系人</span>
                                             </a>
                                         </div>
                                         <div class="Content">
-                                            <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('opportunity')">
+                                                <span class="Text">商机</span>
+                                            </a>
+                                        </div>
+                                         <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('quote')">
+                                                <span class="Text">报价</span>
+                                            </a>
+                                        </div>
+                                         <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('todo')">
+                                                <span class="Text">待办</span>
+                                            </a>
+                                        </div>
+                                         <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('appoint')">
+                                                <span class="Text">约会</span>
+                                            </a>
+                                        </div>
+                                         <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('note')">
+                                                <span class="Text">备注</span>
                                             </a>
                                         </div>
                                     </div>
@@ -748,36 +852,86 @@
                                 <div>
                                     <div class="Group">
                                         <div class="Heading">
-                                            <div class="Text">Service Desk</div>
+                                            <div class="Text">工时表</div>
                                         </div>
                                         <div class="Content">
-                                            <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('taskLabour')">
+                                                <span class="Text">项目任务工时</span>
+                                            </a>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('generalLabour')">
+                                                <span class="Text">常规工时</span>
+                                            </a>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('leaveRequest')">
+                                                <span class="Text">请假申请</span>
+                                            </a>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('costReport')">
+                                                <span class="Text">费用报表</span>
                                             </a>
                                         </div>
                                     </div>
                                     <div class="Group">
                                         <div class="Heading">
-                                            <div class="Text">Service Desk</div>
+                                            <div class="Text">合同</div>
                                         </div>
                                         <div class="Content">
-                                            <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('serviceContract')">
+                                                <span class="Text">定期服务合同</span>
                                             </a>
                                         </div>
                                         <div class="Content">
-                                            <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('timeMaterialsContract')">
+                                                <span class="Text">工时和物料合同</span>
+                                            </a>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('fixedPriceContract')">
+                                                <span class="Text">固定价格合同</span>
+                                            </a>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('retainerContract')">
+                                                <span class="Text">预付费用合同</span>
+                                            </a>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('blockHoursContract')">
+                                                <span class="Text">预付时间合同</span>
+                                            </a>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('perTicketContract')">
+                                                <span class="Text">预付工单合同</span>
                                             </a>
                                         </div>
                                     </div>
                                     <div class="Group">
                                         <div class="Heading">
-                                            <div class="Text">Service Desk</div>
+                                            <div class="Text">项目</div>
                                         </div>
                                         <div class="Content">
-                                            <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('project')">
+                                                <span class="Text">项目</span>
+                                            </a>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('projectFromTemp')">
+                                                <span class="Text">从模板中新增项目</span>
+                                            </a>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('yuan')">
+                                                <span class="Text">预案</span>
+                                            </a>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" onclick="AddObject('projectTemp')">
+                                                <span class="Text">项目模板</span>
                                             </a>
                                         </div>
                                     </div>
@@ -801,32 +955,112 @@
                                         </div>
                                         <div class="Content">
                                             <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET %>" target="PageFrame">
-                                                <span class="Text">任务和工单</span>
+                                                <span class="Text">任务和工单(<%=searchCountDic["myTaskTicket"] %>)</span>
                                             </a>
                                         </div>
                                         <div class="Content">
-                                            <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
+                                            <a class="Button ButtonIcon NormalState" href="ServiceDesk/MyQueueList.aspx" target="PageFrame">
+                                                <span class="Text">我的工作区和队列</span>
+                                            </a>
+                                        </div>
+                                          <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.MY_QUEUE_ACTIVE %>&group=215&isCheck=1" target="PageFrame">
+                                                <span class="Text">我的处理中工单(<%=searchCountDic["activeTicket"] %>)</span>
+                                            </a>
+                                        </div>
+                                          <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.MY_QUEUE_ACTIVE %>&group=230&param1=2733&param2=2&isCheck=1" target="PageFrame">
+                                                <span class="Text">我的过期工单(<%=searchCountDic["overTicket"] %>)</span>
+                                            </a>
+                                        </div>
+                                          <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_MY_TICKET %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.MY_QUEUE_MY_TICKET %>&isCheck=1" target="PageFrame">
+                                                <span class="Text">我创建的工单(<%=searchCountDic["myTicket"] %>)</span>
+                                            </a>
+                                        </div>
+                                          <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET %>" target="PageFrame">
+                                                <span class="Text">我的客户的工单</span>
+                                            </a>
+                                        </div>
+                                          <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.MY_QUEUE_ACTIVE %>&group=230&param1=2733&param2=3&isCheck=1&" target="PageFrame">
+                                                <span class="Text">我的已关闭工单</span>
+                                            </a>
+                                        </div>
+                                          <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALL_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SERVICE_CALL_SEARCH %>&param1=1" target="PageFrame">
+                                                <span class="Text">我的服务预定(<%=searchCountDic["myCall"] %>)</span>
                                             </a>
                                         </div>
                                     </div>
                                     <div class="Group">
                                         <div class="Heading">
-                                            <div class="Text">Service Desk</div>
+                                            <div class="Text">CRM</div>
                                         </div>
                                         <div class="Content">
-                                            <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
+                                            <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY %>" target="PageFrame">
+                                                <span class="Text">我的客户(<%=searchCountDic["MyAccount"] %>)</span>
                                             </a>
                                         </div>
                                         <div class="Content">
-                                            <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
+                                            <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT %>&param1=2755&param2=<%=LoginUserId %>" target="PageFrame">
+                                                <span class="Text">我的联系人(<%=searchCountDic["MyContact"] %>)</span>
                                             </a>
                                         </div>
                                         <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY %>&param1=274&param2=<%=LoginUserId %>" target="PageFrame">
+                                                <span class="Text">我的商机(<%=searchCountDic["MyOpportunity"] %>)</span>
+                                            </a>
+                                        </div>
+                                         <div class="Content">
                                             <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
+                                                <span class="Text">我的过期商机</span>
+                                            </a>
+                                        </div>
+                                         <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SALEORDER %>&param1=2756&param2=<%=LoginUserId %>" target="PageFrame">
+                                                <span class="Text">我的销售订单(<%=searchCountDic["MySale"] %>)</span>
+                                            </a>
+                                        </div>
+                                         <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.QUOTE %>&param1=2759&param2=<%=LoginUserId %>" target="PageFrame">
+                                                <span class="Text">我的报价(<%=searchCountDic["MyQuote"] %>)</span>
+                                            </a>
+                                        </div>
+                                         <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CRM_NOTE_SEARCH %>&param1=649&param2=<%=LoginUserId %>" target="PageFrame">
+                                                <span class="Text">我的备注(<%=searchCountDic["MyNote"] %>)</span>
+                                            </a>
+                                        </div>
+                                         <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TODOS %>&param1=662&param2=<%=LoginUserId %>" target="PageFrame">
+                                                <span class="Text">我的待办(<%=searchCountDic["MyTodo"] %>)</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                     <div class="Group">
+                                        <div class="Heading">
+                                            <div class="Text">工时表</div>
+                                        </div>
+                                        <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_MY_CURRENT %>&con2735=<%=LoginUserId %>" target="PageFrame">
+                                                <span class="Text">我的当前工时表</span>
+                                            </a>
+                                        </div>
+                                          <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_MY_REQUEST %>&con2743=<%=LoginUserId %>" target="PageFrame">
+                                                <span class="Text">我的休假申请(<%=searchCountDic["RequestCount"] %>)</span>
+                                            </a>
+                                        </div>
+                                          <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="TimeSheet/MyTimeSummary" target="PageFrame">
+                                                <span class="Text">我的休假汇总</span>
+                                            </a>
+                                        </div>
+                                          <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.EXPENSE_REPORT %>" target="PageFrame">
+                                                <span class="Text">我的费用报表</span>
                                             </a>
                                         </div>
                                     </div>
@@ -836,36 +1070,51 @@
                                 <div>
                                     <div class="Group">
                                         <div class="Heading">
-                                            <div class="Text">Service Desk</div>
+                                            <div class="Text">等待我审批</div>
                                         </div>
                                         <div class="Content">
-                                            <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
+                                            <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_WAIT_APPROVE %>&isCheck=1" target="PageFrame">
+                                                <span class="Text">工时表(<%=searchCountDic["waitLabour"] %>)</span>
+                                            </a>
+                                        </div>
+                                         <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_REQUEST_WAIT_APPROVE %>&isCheck=1" target="PageFrame">
+                                                <span class="Text">休假申请(<%=searchCountDic["waitRequest"] %>)</span>
+                                            </a>
+                                        </div>
+                                         <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MYAPPROVE_EXPENSE_REPORT %>&isCheck=1" target="PageFrame">
+                                                <span class="Text">费用报表(<%=searchCountDic["waitExpense"] %>)</span>
+                                            </a>
+                                        </div>
+                                         <div class="Content">
+                                            <a class="Button ButtonIcon NormalState" href="../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_CHANGE_APPROVEL %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.MY_QUEUE_CHANGE_APPROVEL %>&param1=1" target="PageFrame">
+                                                <span class="Text">变更申请(<%=searchCountDic["waitChange"] %>)</span>
                                             </a>
                                         </div>
                                     </div>
                                     <div class="Group">
                                         <div class="Heading">
-                                            <div class="Text">Service Desk</div>
+                                            <div class="Text">其他</div>
                                         </div>
                                         <div class="Content">
                                             <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
+                                                <span class="Text">项目</span>
                                             </a>
                                         </div>
                                         <div class="Content">
                                             <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
+                                                <span class="Text">日历</span>
                                             </a>
                                         </div>
-                                    </div>
-                                    <div class="Group">
-                                        <div class="Heading">
-                                            <div class="Text">Service Desk</div>
-                                        </div>
-                                        <div class="Content">
+                                         <div class="Content">
                                             <a class="Button ButtonIcon NormalState">
-                                                <span class="Text">My Home Page</span>
+                                                <span class="Text">自定义模板</span>
+                                            </a>
+                                        </div>
+                                         <div class="Content">
+                                            <a class="Button ButtonIcon NormalState">
+                                                <span class="Text">个人信息</span>
                                             </a>
                                         </div>
                                     </div>
@@ -884,27 +1133,21 @@
                             <div class="ColumnSet">
                                 <div class="Large ContextOverlayColumn">
                                     <div>
-                                        <div class="Group">
-                                            <div class="Content">
-                                                <a class="Button ButtonIcon NormalState">
-                                                    <span class="Text">My Home Page</span>
+                                        <div class="Group" id="BrowerHistoryDiv">
+                                            <% if (hisList != null && hisList.Count > 0)
+                                                {
+                                                    foreach (var history in hisList.Take(20))
+                                                    {   %>
+                                             <div class="Content">
+                                                <a class="Button ButtonIcon NormalState" onclick="window.open(<%=history.url %>, '_blank', 'left=0,top=0,location=no,status=no,width=900,height=750', false)">
+                                                    <span class="Text"><%=history.title %></span>
                                                 </a>
                                             </div>
-                                            <div class="Content">
-                                                <a class="Button ButtonIcon NormalState">
-                                                    <span class="Text">My Home Page</span>
-                                                </a>
-                                            </div>
-                                            <div class="Content">
-                                                <a class="Button ButtonIcon NormalState">
-                                                    <span class="Text">My Home Page</span>
-                                                </a>
-                                            </div>
-                                            <div class="Content">
-                                                <a class="Button ButtonIcon NormalState">
-                                                    <span class="Text">My Home Page</span>
-                                                </a>
-                                            </div>
+                                            <%
+                                                    }
+                                              } %>
+                                           
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -915,14 +1158,16 @@
                                     <div>
                                         <div class="Group">
                                             <div class="Content">
-                                                <a class="Button ButtonIcon Link NormalState">Clear
+                                                <a class="Button ButtonIcon Link NormalState" onclick="ClearBrowerHistory()">清除
                                                 </a>
                                             </div>
-
+                                            <%if (hisList != null && hisList.Count > 20)
+                                                { %>
                                             <div class="Content">
-                                                <a class="Button ButtonIcon Link NormalState">View More
+                                                <a class="Button ButtonIcon Link NormalState" onclick="ShowMoreHistory()">查看更多
                                                 </a>
                                             </div>
+                                            <%} %>
                                         </div>
                                     </div>
                                 </div>
@@ -958,6 +1203,41 @@
             </div>
         </div>
     </div>
+
+     <div id="BackgroundOverLay"></div>
+    <% if (isFromLogin && notList != null && notList.Count > 0)
+        {
+            var noUrlNotList = notList.Where(_ => string.IsNullOrEmpty(_.url)).ToList();
+            var urlNotList = notList.Where(_ => !string.IsNullOrEmpty(_.url)).ToList();
+            int navNum = 1;
+            foreach (var notice in noUrlNotList)
+            {
+                navNum++;
+                %>
+     <div class="Dialog Notice Large" style="margin-left: -442px; margin-top: -229px; z-index: 100; width: 400px; height: 400px;" id="Nav<%=navNum %>">
+        <div class="CancelDialogButton" onclick="CancelDialog('Nav<%=navNum %>')"></div>
+        <div class="heard-title" style="height: 30px;"><%=notice.title %></div>
+        <div style="margin:10px;height:300px;"><%=notice.description %></div>
+         <div style="margin-left:10px;">
+             <p><span style="display:inline-block;"><input type="checkbox" class="AlertNext" value="<%=notice.id %>"/></span><span>下次提醒我</span></p>
+         </div>
+    </div>
+    <%
+        }
+        foreach (var notice in urlNotList)
+        {
+            navNum++;
+                %>
+     <div class="Dialog Notice Large" style="margin-left: -442px; margin-top: -229px; z-index: 100; width: 400px; height: 400px;" id="Nav<%=navNum %>">
+        <div class="CancelDialogButton" onclick="CancelDialog('Nav<%=navNum %>')"></div>
+        <div class="heard-title" style="height: 30px;"><%=notice.title %></div>
+        <div style="margin:10px;height:300px;"><iframe id="NavFrame<%=navNum %>" name="NavFrame<%=navNum %>" style="width: 100%;" src="<%=notice.url+((notice.url.Contains('?')?"":"?")+$"&Nav=Nav"+navNum.ToString()) %>"></iframe></div>
+         <div style="margin-left:10px;">
+             <p><span style="display:inline-block;"><input type="checkbox" class="AlertNext" value="<%=notice.id %>"/></span><span>下次提醒我</span></p>
+         </div>
+    </div>
+    <% }
+            } %>
     <!--背景布-->
     <div id="WorkspaceContainer">
         <div id="yibiaopan" >
@@ -992,12 +1272,15 @@
             </div>
         </div>
     </div>
+    
     <div class="cont" style="display: none;">
+        <div class="header" id="SearchTitle" style="display:none;height: 40px;line-height: 40px;background: #346A95;padding: 0 10px;font-size: 18px;color: #FFFFFF;"></div>
         <iframe id="PageFrame" name="PageFrame" style="width: 100%;"></iframe>
     </div>
 </body>
 <script src="Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="Scripts/index.js" type="text/javascript" charset="utf-8"></script>
+<script src="Scripts/common.js"></script>
 <script>
     $(window).resize(function () {
         var Height = $(window).height() - 66 + "px";
@@ -1005,5 +1288,309 @@
     })
     var Height = $(window).height() - 66 + "px";
     $("#PageFrame").css("height", Height);
+    LoadHistory();
+    // 搜索相关
+    $("#QuickSearchPage").click(function () {
+        var searchText = $("#SearchText").val();
+        if (searchText == "" || $.trim(searchText) == "") {
+            alert("请输入搜索内容！");
+            return;
+        }
+        var searchType = $('input[type=radio]:checked').eq(0).val();
+        var searchTypeName = $('input[type=radio]:checked').eq(0).next().text();
+        // todo 新增查询历史
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/IndexAjax.ashx?act=SearchHistoryManage&searchText=" + searchText + "&searchType=" + searchType + "&searchTypeName=" + searchTypeName + "&url=<%=Request.Url.LocalPath %>",
+            dataType: "json",
+            success: function (data) {
+               
+               
+            },
+        });
+        
+        SearchByNameType(searchText, searchType);
+    })
+    function SearchByHistory(historyId, text, type) {
+        if (historyId == "") {
+            return;
+        }
+        // todo 更新查询的 update_time
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/IndexAjax.ashx?act=SearchHistoryManage&id=" + historyId ,
+            dataType: "json",
+            success: function (data) {
+
+
+            },
+        });
+        $("#SearchText").val(text);
+        // todo radio 赋值
+        $("input[name='SearchTypeRadioButton'][value=" + type + "]").prop("checked", true); 
+        SearchByNameType(text, type);
+    }
+
+    function LoadHistory()
+    {
+        var url = '<%=Request.Url.LocalPath %>';
+        $("#SearchHisDiv").nextAll().remove();
+        var html = "";
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/IndexAjax.ashx?act=LoadSearchHistory&url=" + url,
+            dataType: "json",
+            success: function (data) {
+                if (data != null) {
+                    for (var i = 0; i < data.length; i++) {
+                        //var obj = data[i].conditions.parseJSON();
+                        var obj = JSON.parse(data[i].conditions);
+                        html += "<div class='Content'><a class='Button ButtonIcon NormalState' onclick=\"SearchByHistory('" + data[i].id + "','" + obj.Condition + "','" + obj.SearchType + "')\"><span class='Text'>" + obj.Condition + "(" + obj.Name+")</span></a></div>";
+                    }
+                }
+            },
+        });
+        $("#SearchHisDiv").after(html);
+    }
+
+    function SearchByNameType(text, type) {
+        setTimeout(function () { LoadHistory(); }, 300);
+       
+        if (text == "" || type == "") {
+            return;
+        }
+        
+        $("#SearchTitle").show();
+        $("#SearchTitle").text("");
+        setTimeout(function () {
+            $(".cont").show();
+            $(".SearchOverlay").hide();
+        }, 300);
+        setTimeout(function () {
+            $("#yibiaopan").hide();
+        }, 100);
+        var url = "";
+        var title = "";
+        if (type == "Company")
+        {
+            title = "客户";
+            url = "Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Company %>&group=4&con5=" + text;
+        }
+        else if (type == "ContactName")
+        {
+            title = "联系人";
+            url = "Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Contact %>&group=5&con30=" + text;
+        }
+        else if (type == "ContactEmail")
+        {
+            title = "联系人";
+            url = "Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Contact %>&group=5&con33=" + text;
+        }
+        else if (type == "TicketNo")
+        {
+            $("#SearchTitle").hide();
+            url = "Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1611&param2=" + text + "&param3=SearchNow";
+        }
+        else if (type == "TicketIn24")
+        {
+            $("#SearchTitle").hide();
+            url = "Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1630&param2=<%=DateTime.Now.AddYears(-2).ToString("yyyy-MM-dd") %>&param3=SearchNow";
+        }
+        else if (type == "Project")
+        {
+            title = "项目";
+            url = "Project/ProjectSearchResult.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_SEARCH %>&param1=2749&param2=" + text;
+        }
+        else if (type == "TaskNo")
+        {
+            title = "任务编号";
+            url = "Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TASK_SEARCH_NO %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TASK_SEARCH_NO %>&con2754=" + text;
+        }
+        else if (type == "InsPro")
+        {
+            $("#SearchTitle").hide();
+            url = "Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INSTALLEDPRODUCT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.InstalledProductView %>&param1=2750&param2=" + text +"&isShow=Search";
+        }
+        else if (type == "InsProUdf")
+        {
+            $("#SearchTitle").hide();
+            url = "Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INSTALLEDPRODUCT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.InstalledProductView %>&param1=2750&param2=" + text + "&isShow=Search";
+        }
+        else if (type == "OpportunityName")
+        {
+            $("#SearchTitle").hide();
+            url = "Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Opportunity %>&group=9&con261=" + text;
+        }
+        else if (type == "QuoteName")
+        {
+            title = "报价名称";
+            url = "Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Company %>&group=4&con5=" + text;
+        }
+      
+        else if (type == "Knowledge")
+        {
+            title = "知识库";
+            url = "Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.KNOWLEDGEBASE_ARTICLE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.KnowledgebaseArticle %>&param1=2751&param2=" + text ;
+        }
+        else if (type == "Community")
+        {
+            title = "社区";
+            url = "";
+        }
+        else if (type == "InvoiceNo")
+        {
+            $("#SearchTitle").hide();
+            url = "Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVOICE_HISTORY %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Invoice_History %>&param1=2752&param2=" + text;
+        }
+        else if (type == "InvoiceId")
+        {
+            $("#SearchTitle").hide();
+            url = "Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVOICE_HISTORY %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Invoice_History %>&param1=2753&param2=" + text;
+        }
+        else {
+            return;
+        } 
+        $("#SearchTitle").text(title);
+        $("#PageFrame").attr("src", url);
+    }
+    <%if (isFromLogin && notList != null && notList.Count > 0)
+    { %>
+    $(".Dialog").show();
+    $("#BackgroundOverLay").show();
+    <%}%>
+
+    // 关闭弹窗
+    function CancelDialog(navId) {
+        $("#" + navId).hide();
+        var allLength = $(".Dialog").length;
+        var hiddenLength = $(".Dialog:hidden").length;
+        if (allLength == hiddenLength) {
+            $("#BackgroundOverLay").hide();
+        }
+    }
+    // 下次提醒我
+    $(".AlertNext").click(function () {
+        var isAlert = "";
+        var thisValue = $(this).val();
+        if ($(this).is(":checked")) {
+            isAlert = "1";
+        }
+        else {
+            isAlert = "0";
+        }
+        if (thisValue != "") {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/IndexAjax.ashx?act=ChangeNoticeNext&id=" + thisValue + "&isAlert=" + isAlert,
+                dataType: "json",
+                success: function (data) {
+                    
+                },
+            });
+        }
+
+    })
+
+    function AddObject(objectType) {
+        if (objectType == "ticket") {
+            window.open('../ServiceDesk/TicketManage', windowType.ticket + windowType.add, 'left=200,top=200,width=1280,height=800', false);
+        }
+        else if (objectType == "masterTicket") {
+            window.open("../ServiceDesk/MasterTicket", windowType.masterTicket + windowType.add, 'left=200,top=200,width=1280,height=800', false);
+        }
+        else if (objectType == "serviceCall") {
+            window.open("../ServiceDesk/ServiceCall", windowType.serviceCall + windowType.add, 'left=200,top=200,width=1280,height=800', false);
+        }
+        else if (objectType == "knowledge") {
+            window.open("../ServiceDesk/AddRepository.aspx", "_blank", "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=800,height=700");
+        }
+        else if (objectType == "account") {
+            window.open("../Company/AddCompany.aspx", windowObj.company + windowType.add, 'left=0,top=0,width=900,height=750,resizable=yes', false);
+        }
+        else if (objectType == "contact") {
+            window.open("../Contact/AddContact.aspx", windowObj.contact + windowType.add, 'left=0,top=0,width=900,height=750,resizable=yes', false);
+        }
+        else if (objectType == "opportunity") {
+            window.open("../Opportunity/OpportunityAddAndEdit.aspx", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>', 'left=0,top=0,width=900,height=750,resizable=yes', false);
+        }
+        else if (objectType == "quote") {
+            window.open("../Quote/QuoteAddAndUpdate.aspx", windowObj.quote + windowType.add, 'left=0,top=0,width=900,height=750,resizable=yes', false);
+        }
+        else if (objectType == "todo") {
+            window.open("../Activity/Todos.aspx", windowObj.todos + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+        }
+        else if (objectType == "appoint") {
+            window.open("../ServiceDesk/AppointmentsManage.aspx", windowObj.appointment + windowType.add, 'left=200,top=200,width=600,height=800', false);
+        }
+        else if (objectType == "note") {
+            window.open("../Activity/Notes.aspx", windowObj.notes + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+        }
+        else if (objectType == "taskLabour") {
+            window.open("../Project/WorkEntry.aspx", windowObj.workEntry + windowType.add, 'left=200,top=200,width=1080,height=800', false);
+        }
+        else if (objectType == "generalLabour") {
+            window.open("../TimeSheet/RegularTimeAddEdit.aspx", windowObj.workEntry + windowType.add, 'left=0,top=0,location=no,status=no,width=1080,height=750', false);
+        }
+        else if (objectType == "leaveRequest") {
+            window.open("../TimeSheet/TimeoffRequestAdd.aspx", windowObj.timeoffRequest + windowType.add, 'left=0,top=0,location=no,status=no,width=850,height=750', false);
+        }
+        else if (objectType == "costReport") {
+            window.open("../Project/ExpenseReportManage.aspx", windowObj.expenseReport + windowType.add, 'left=0,top=0,location=no,status=no,width=400,height=250', false);
+        }
+        else if (objectType == "serviceContract") {
+            window.open("../Contract/ContractAdd.aspx?type=<%=(int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE %>", windowObj.contract + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        else if (objectType == "timeMaterialsContract") {
+            window.open("../Contract/ContractAdd.aspx?type=<%=(int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.TIME_MATERIALS %>", windowObj.contract + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        else if (objectType == "fixedPriceContract") {
+            window.open("../Contract/ContractAdd.aspx?type=<%=(int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.FIXED_PRICE %>", windowObj.contract + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        else if (objectType == "retainerContract") {
+            window.open("../Contract/ContractAdd.aspx?type=<%=(int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER %>", windowObj.contract + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        else if (objectType == "blockHoursContract") {
+            window.open("../Contract/ContractAdd.aspx?type=<%=(int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS %>", windowObj.contract + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        else if (objectType == "perTicketContract") {
+            window.open("../Contract/ContractAdd.aspx?type=<%=(int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET %>", windowObj.contract + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        else if (objectType == "project") {
+            window.open("../Project/ProjectAddOrEdit?type_id=<%=(int)EMT.DoneNOW.DTO.DicEnum.PROJECT_TYPE.ACCOUNT_PROJECT %>", windowObj.project + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        else if (objectType == "projectFromTemp") {
+            window.open("../Project/ProjectAddOrEdit?type_id=<%=(int)EMT.DoneNOW.DTO.DicEnum.PROJECT_TYPE.ACCOUNT_PROJECT %>&isFromTemp=1" , windowObj.project + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        else if (objectType == "yuan") {
+            window.open("../Project/ProjectAddOrEdit?type_id=<%=(int)EMT.DoneNOW.DTO.DicEnum.PROJECT_TYPE.PROJECT_DAY %>", windowObj.project + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        else if (objectType == "projectTemp") {
+            window.open("../Project/ProjectAddOrEdit?isTemp=1", windowObj.project + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+        }
+        // 
+    }
+
+    function ClearBrowerHistory() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/IndexAjax.ashx?act=ClearHistory",
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    $("#BrowerHistoryDiv").html("");
+                }
+            },
+        });
+    }
+
+    function ShowMoreHistory() {
+
+    }
 </script>
 </html>
+

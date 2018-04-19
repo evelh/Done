@@ -561,5 +561,34 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
         #endregion
+
+        /// <summary>
+        /// 根据系统设置获取自己可以审批的员工信息
+        /// </summary>
+        public List<sys_resource> GetAgentUser(long userId,out bool isAgent)
+        {
+            isAgent = false;
+            List<sys_resource> resList = null;
+            var entryProxySet = new SysSettingBLL().GetValueById(SysSettingEnum.SDK_ENTRY_PROXY);
+            if (entryProxySet == ((int)DicEnum.PROXY_TIME_ENTRY.DISABLED).ToString())
+                isAgent = false;
+            else
+            {
+                isAgent = true;
+                if (entryProxySet == ((int)DicEnum.PROXY_TIME_ENTRY.ENABLED_TIMESHEET_APPROVERS).ToString())
+                    resList =  new sys_resource_dal().FindListBySql($"select sr.* from sys_resource_approver srp INNER JOIN sys_resource sr on srp.resource_id = sr.id where srp.approve_type_id=673 and srp.approver_resource_id={userId} union SELECT * from sys_resource where id = {userId} and delete_time = 0 ");
+                else if(entryProxySet == ((int)DicEnum.PROXY_TIME_ENTRY.ENABLED_TIMESHEET_APPROVERS_ADMINISTRATORS).ToString())
+                {
+                    var powerRes = new sys_resource_dal().FindListBySql("select *  from sys_resource where  security_level_id=1");
+                    if(powerRes!=null&& powerRes.Count > 0)
+                    {
+                        if (powerRes.Any(_ => _.id == userId))
+                            return new sys_resource_dal().GetSourceList();
+                    }
+                    resList = new sys_resource_dal().FindListBySql($"select sr.* from sys_resource_approver srp INNER JOIN sys_resource sr on srp.resource_id = sr.id where srp.approve_type_id=673 and srp.approver_resource_id={userId} union SELECT * from sys_resource where id = {userId} and delete_time = 0 ");
+                }
+            }
+            return resList;
+        }
     }
 }

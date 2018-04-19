@@ -91,6 +91,7 @@ $(".Content").on("mouseout", function () {
 $(".ModuleContainer").find(".Content").on("click", function () {
     setTimeout(function () {
         $(".cont").show();
+        $("#SearchTitle").hide();
     }, 300);
     setTimeout(function () {
         $("#yibiaopan").hide();
@@ -105,6 +106,7 @@ $(".Logo").on("click", function () {
 $(".MyOverlay").on("click", function () {
     setTimeout(function () {
         $(".cont").show();
+        $("#SearchTitle").hide();
     }, 300);
     setTimeout(function () {
         $("#yibiaopan").hide();
@@ -207,3 +209,4 @@ $.each($(".SelectDashboardTab"), function (i) {
         $(this).addClass("SelectedState").siblings("div").removeClass("SelectedState");
     });
 });
+

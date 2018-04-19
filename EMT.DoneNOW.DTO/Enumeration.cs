@@ -721,6 +721,7 @@ namespace EMT.DoneNOW.DTO
             TIMEOFF_MY_REQUEST = 1635,              // 工时表管理-我的休假请求
             TIMEOFF_REQUEST_WAIT_APPROVE = 1637,    // 工时表管理-等待我审批的休假请求
             WORKGROUP_CALLBACK = 1638,              // 工作组-查找带回
+            TASK_SEARCH_NO = 1639,                  // 系统管理-快捷搜索-任务编号
 
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
@@ -1587,7 +1588,7 @@ namespace EMT.DoneNOW.DTO
             REJECTED = 2462,             // 已拒绝
         }
         /// <summary>
-        /// 审批人员审批变更单
+        /// 审批人员审批变更单 - 183
         /// </summary>
         public enum CHANGE_APPROVE_STATUS_PERSON
         {
@@ -1766,6 +1767,7 @@ namespace EMT.DoneNOW.DTO
         TimeoffSubmited = 220,              // 工时表管理-已提交工时表
         TimeoffMyRequest = 221,             // 工时表管理-我的休假请求
         TimeoffRequestWaitApprove = 223,    // 等待我审批的休假请求
+        TASK_SEARCH_NO = 225,               // 系统管理-快捷搜索-任务编号
 
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理

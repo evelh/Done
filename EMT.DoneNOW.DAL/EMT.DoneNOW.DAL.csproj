@@ -173,6 +173,8 @@
     <Compile Include="SDK\sdk_work_record_dal.cs" />
     <Compile Include="SDK\v_task_all_dal.cs" />
     <Compile Include="SYS\sys_department_dal.cs" />
+    <Compile Include="SYS\sys_notice_dal.cs" />
+    <Compile Include="SYS\sys_notice_resource_dal.cs" />
     <Compile Include="SYS\sys_notify_tmpl_email_dal.cs" />
     <Compile Include="SYS\sys_organization_location_dal.cs" />
     <Compile Include="SYS\sys_quote_email_tmpl_dal.cs" />
@@ -198,6 +200,7 @@
     <Compile Include="SYS\sys_notify_tmpl_dal.cs" />
     <Compile Include="SYS\sys_oper_log_dal.cs" />
     <Compile Include="SYS\sys_query_type_user_dal.cs" />
+    <Compile Include="SYS\sys_recent_search_dal.cs" />
     <Compile Include="SYS\sys_resource_approver_dal.cs" />
     <Compile Include="SYS\sys_resource_availability_dal.cs" />
     <Compile Include="SYS\sys_resource_department_dal.cs" />
@@ -209,6 +212,7 @@
     <Compile Include="SYS\sys_udf_field_dal.cs" />
     <Compile Include="SYS\sys_udf_group_field_dal.cs" />
     <Compile Include="SYS\sys_udf_list_dal.cs" />
+    <Compile Include="SYS\sys_windows_history_dal.cs" />
     <Compile Include="SYS\sys_workflow_dal.cs" />
     <Compile Include="SYS\sys_workflow_log_dal.cs" />
     <Compile Include="SYS\sys_workgroup_dal.cs" />

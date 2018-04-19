@@ -47,6 +47,12 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 ticList = new DAL.sdk_kb_article_ticket_dal().GetArtTicket(thisArt.id);
                 thisNoteAtt = new DAL.com_attachment_dal().GetAttListByOid(thisArt.id);
                 commList = new DAL.sdk_kb_article_comment_dal().GetCommByArt(thisArt.id);
+
+                var history = new sys_windows_history() {
+                    title = "知识库文档:"+ thisArt.title,
+                    url = Request.RawUrl,
+                };
+                new IndexBLL().BrowseHistory(history,LoginUserId);
             }
             catch (Exception msg)
             {

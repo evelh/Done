@@ -2266,6 +2266,9 @@
     <Compile Include="Tools\ExpenseAjax.ashx.cs">
       <DependentUpon>ExpenseAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\IndexAjax.ashx.cs">
+      <DependentUpon>IndexAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\KnowledgeAjax.ashx.cs">
       <DependentUpon>KnowledgeAjax.ashx</DependentUpon>
     </Compile>
@@ -2770,6 +2773,7 @@
     <Content Include="Tools\KnowledgeAjax.ashx" />
     <Content Include="Tools\DispatchAjax.ashx" />
     <Content Include="Tools\ServiceCallAjax.ashx" />
+    <Content Include="Tools\IndexAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
