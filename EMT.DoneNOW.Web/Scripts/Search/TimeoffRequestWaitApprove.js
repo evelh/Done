@@ -10,19 +10,25 @@ $("#CheckAll").click(function () {
     }
 })
 function Add() {
+    var cnt = 0;
     var ids = "";
     $(".IsChecked").each(function () {
         if ($(this).is(":checked")) {
             ids += $(this).val() + ',';
+            cnt++;
         }
     });
     if (ids != "") {
         ids = ids.substring(0, ids.length - 1);
         requestData("../Tools/TimeoffPolicyAjax.ashx?act=approveRequest&ids=" + ids, null, function (data) {
-            if (data != 0) {
+            if (data == 0) {
+                LayerMsg("审批失败！其他人已审批或已生成工时表且提交，不能审批休假请求！");
+            } else if (data == cnt) {
                 window.location.reload();
+                LayerMsg("审批成功！");
             } else {
-                LayerMsg("审批失败！");
+                window.location.reload();
+                LayerMsg("审批部分成功！其他人已审批或已生成工时表且提交，不能审批休假请求！");
             }
         })
     } else {

@@ -25,6 +25,7 @@ namespace EMT.DoneNOW.DAL
                     string funcName = "p_ins_timeoff_activity";
                     p.Add("in_resource", resourceId);
                     p.Add("in_begin", effDate);
+                    p.Add("in_cate", null);
                     conn.Query(funcName, p, null, true, null, CommandType.StoredProcedure);
 
                 }

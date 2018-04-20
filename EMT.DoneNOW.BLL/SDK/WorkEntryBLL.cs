@@ -94,14 +94,15 @@ namespace EMT.DoneNOW.BLL
 
                 if (we.task_id == (long)CostCode.Sick)  // 病假需要在假期余额表添加记录
                 {
-                    var balance = bll.UpdateTimeoffBalance((long)we.resource_id, Tools.Date.DateHelper.TimeStampToDateTime((long)we.start_time), 0 - (decimal)we.hours_billed);
-                    tst_timeoff_balance bal = new tst_timeoff_balance();
-                    bal.object_id = we.id;
-                    bal.object_type_id = 2214;
-                    bal.task_id = we.task_id;
-                    bal.resource_id = (long)we.resource_id;
-                    bal.balance = balance - (decimal)we.hours_billed;
-                    balDal.Insert(bal);
+                    bll.UpdateTimeoffBalance(we.resource_id.Value, Tools.Date.DateHelper.TimeStampToUniversalDateTime(we.start_time.Value), (CostCode)we.task_id);
+                    //var balance = bll.UpdateTimeoffBalance((long)we.resource_id, Tools.Date.DateHelper.TimeStampToDateTime((long)we.start_time), 0 - (decimal)we.hours_billed);
+                    //tst_timeoff_balance bal = new tst_timeoff_balance();
+                    //bal.object_id = we.id;
+                    //bal.object_type_id = 2214;
+                    //bal.task_id = we.task_id;
+                    //bal.resource_id = (long)we.resource_id;
+                    //bal.balance = balance - (decimal)we.hours_billed;
+                    //balDal.Insert(bal);
                 }
             }
 
@@ -141,12 +142,13 @@ namespace EMT.DoneNOW.BLL
                         dal.Update(we);
                         OperLogBLL.OperLogUpdate(desc, we.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "编辑工时");
 
-                        if (we.task_id == (long)CostCode.Sick)  // 病假需要在假期余额表修改记录
+                        if (we.task_id == (long)CostCode.Sick && we.hours_worked != weOld.hours_worked)  // 病假需要在假期余额表修改记录
                         {
-                            var balance = bll.UpdateTimeoffBalance((long)we.resource_id, Tools.Date.DateHelper.TimeStampToDateTime((long)we.start_time), (decimal)we.hours_billed - (decimal)weOld.hours_billed);
-                            var bal = balDal.FindSignleBySql<tst_timeoff_balance>($"select * from tst_timeoff_balance where object_id={we.id}");
-                            bal.balance = bal.balance + ((decimal)we.hours_billed - (decimal)weOld.hours_billed);
-                            balDal.Update(bal);
+                            bll.UpdateTimeoffBalance(we.resource_id.Value, Tools.Date.DateHelper.TimeStampToUniversalDateTime(we.start_time.Value), (CostCode)we.task_id);
+                            //var balance = bll.UpdateTimeoffBalance((long)we.resource_id, Tools.Date.DateHelper.TimeStampToDateTime((long)we.start_time), (decimal)weOld.hours_billed - (decimal)we.hours_billed);
+                            //var bal = balDal.FindSignleBySql<tst_timeoff_balance>($"select * from tst_timeoff_balance where object_id={we.id}");
+                            //bal.balance = bal.balance + ((decimal)we.hours_billed - (decimal)weOld.hours_billed);
+                            //balDal.Update(bal);
                         }
                     }
                     weList.Remove(weEdit);
@@ -160,8 +162,9 @@ namespace EMT.DoneNOW.BLL
 
                     if (we.task_id == (long)CostCode.Sick)  // 病假需要在假期余额表删除记录
                     {
-                        var balance = bll.UpdateTimeoffBalance((long)we.resource_id, Tools.Date.DateHelper.TimeStampToDateTime((long)we.start_time), 0 - (decimal)we.hours_billed);
-                        balDal.ExecuteSQL($"delete from tst_timeoff_balance where object_id={we.id}");
+                        bll.UpdateTimeoffBalance(we.resource_id.Value, Tools.Date.DateHelper.TimeStampToUniversalDateTime(we.start_time.Value), (CostCode)we.task_id);
+                        //var balance = bll.UpdateTimeoffBalance((long)we.resource_id, Tools.Date.DateHelper.TimeStampToDateTime((long)we.start_time), (decimal)we.hours_billed);
+                        //balDal.ExecuteSQL($"delete from tst_timeoff_balance where object_id={we.id}");
                     }
                 }
             }
@@ -182,13 +185,14 @@ namespace EMT.DoneNOW.BLL
 
                 if (we.task_id == (long)CostCode.Sick)  // 病假需要在假期余额表添加记录
                 {
-                    var balance = bll.UpdateTimeoffBalance((long)we.resource_id, Tools.Date.DateHelper.TimeStampToDateTime((long)we.start_time), (decimal)we.hours_billed);
-                    tst_timeoff_balance bal = new tst_timeoff_balance();
-                    bal.object_id = we.id;
-                    bal.object_type_id = 2214;
-                    bal.task_id = we.task_id;
-                    bal.balance = balance + (decimal)we.hours_billed;
-                    balDal.Insert(bal);
+                    bll.UpdateTimeoffBalance(we.resource_id.Value, Tools.Date.DateHelper.TimeStampToUniversalDateTime(we.start_time.Value), (CostCode)we.task_id);
+                    //var balance = bll.UpdateTimeoffBalance((long)we.resource_id, Tools.Date.DateHelper.TimeStampToDateTime((long)we.start_time), 0 - (decimal)we.hours_billed);
+                    //tst_timeoff_balance bal = new tst_timeoff_balance();
+                    //bal.object_id = we.id;
+                    //bal.object_type_id = 2214;
+                    //bal.task_id = we.task_id;
+                    //bal.balance = balance + (decimal)we.hours_billed;
+                    //balDal.Insert(bal);
                 }
             }
 
@@ -207,45 +211,43 @@ namespace EMT.DoneNOW.BLL
             if (weList.Count == 0)
                 return false;
 
+            int type;
+            long id;
+            if (!GetWorkEntryType(batchId, out type, out id))
+                return false;
+
             bool rtn = true;
-            var costcode = new d_cost_code_dal().FindById(weList[0].task_id);
-            if (costcode.cate_id != (int)DicEnum.COST_CODE_CATE.INTERNAL_ALLOCATION_CODE)   // 任务工时
+            var bll = new TimeOffPolicyBLL();
+            var taskbll = new TaskBLL();
+            tst_timeoff_balance_dal balDal = new tst_timeoff_balance_dal();
+            string reason;
+            foreach (var we in weList)
             {
-                string reason;
-                var taskbll = new TaskBLL();
-                foreach (var we in weList)
+                if (type == 1)  // 常规工时
+                {
+                    we.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                    we.delete_user_id = userId;
+                    dal.Update(we);
+                    OperLogBLL.OperLogDelete<sdk_work_entry>(we, we.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "删除工时");
+
+                    if (we.task_id == (long)CostCode.Sick)  // 病假需要在假期余额表删除记录
+                    {
+                        bll.UpdateTimeoffBalance(we.resource_id.Value, Tools.Date.DateHelper.TimeStampToUniversalDateTime(we.start_time.Value), (CostCode)we.task_id);
+                        //var balance = bll.UpdateTimeoffBalance((long)we.resource_id, Tools.Date.DateHelper.TimeStampToDateTime((long)we.start_time), (decimal)we.hours_billed);
+                        //balDal.ExecuteSQL($"delete from tst_timeoff_balance where object_id={we.id}");
+                    }
+                }
+                else if (type == 2) // 休假请求
+                {
+                    bll.CancleTimeoffRequest(we.timeoff_request_id.Value, userId);
+                }
+                else    // 任务工时和工单工时
                 {
                     if (!taskbll.DeleteEntry(we.id, userId, out reason))
                         rtn = false;
                 }
             }
-            else
-            {
-                var bll = new TimeOffPolicyBLL();
-                tst_timeoff_balance_dal balDal = new tst_timeoff_balance_dal();
-
-                foreach (var we in weList)
-                {
-                    if (we.timeoff_request_id != null)  // 休假请求生成的工时
-                    {
-                        bll.CancleTimeoffRequest(we.timeoff_request_id.Value, userId);
-                    }
-                    else    // 常规工时
-                    {
-                        we.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
-                        we.delete_user_id = userId;
-                        dal.Update(we);
-                        OperLogBLL.OperLogDelete<sdk_work_entry>(we, we.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SDK_WORK_ENTRY, "删除工时");
-
-                        if (we.task_id == (long)CostCode.Sick)  // 病假需要在假期余额表删除记录
-                        {
-                            var balance = bll.UpdateTimeoffBalance((long)we.resource_id, Tools.Date.DateHelper.TimeStampToDateTime((long)we.start_time), 0 - (decimal)we.hours_billed);
-                            balDal.ExecuteSQL($"delete from tst_timeoff_balance where object_id={we.id}");
-                        }
-                    }
-                }
-            }
-
+            
             return rtn;
         }
 
@@ -284,8 +286,9 @@ namespace EMT.DoneNOW.BLL
 
                 if (we.task_id == (long)CostCode.Sick)  // 病假需要在假期余额表删除记录
                 {
-                    var balance = bll.UpdateTimeoffBalance((long)we.resource_id, Tools.Date.DateHelper.TimeStampToDateTime((long)we.start_time), 0 - (decimal)we.hours_billed);
-                    balDal.ExecuteSQL($"delete from tst_timeoff_balance where object_id={we.id}");
+                    bll.UpdateTimeoffBalance(we.resource_id.Value, Tools.Date.DateHelper.TimeStampToUniversalDateTime(we.start_time.Value), (CostCode)we.task_id);
+                    //var balance = bll.UpdateTimeoffBalance((long)we.resource_id, Tools.Date.DateHelper.TimeStampToDateTime((long)we.start_time), (decimal)we.hours_billed);
+                    //balDal.ExecuteSQL($"delete from tst_timeoff_balance where object_id={we.id}");
                 }
             }
 
@@ -321,20 +324,79 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
-        /// 获取本批次工时是否常规工时
+        /// 获取本批次工时的工时类型，并返回工时类型和第一个工时id
         /// </summary>
         /// <param name="batchId"></param>
+        /// <param name="type">1:常规工时;2:休假请求;3:任务工时;4:工单工时</param>
         /// <param name="workEntryId"></param>
         /// <returns></returns>
-        public bool GetTimesheetIsRegural(long batchId, out long workEntryId)
+        public bool GetWorkEntryType(long batchId, out int type, out long workEntryId)
         {
             workEntryId = 0;
-            var list = dal.FindListBySql($"select * from sdk_work_entry where batch_id={batchId} and cost_code_id in(select id from d_cost_code where cate_id<>{(int)DicEnum.COST_CODE_CATE.INTERNAL_ALLOCATION_CODE}) and delete_time=0");
-            if (list.Count == 0)
-                return true;
+            type = 0;
+            var workEntry = dal.FindSignleBySql<sdk_work_entry>($"select * from sdk_work_entry where batch_id={batchId} and delete_time=0");
+            if (workEntry == null)
+                return false;
 
-            workEntryId = list[0].id;
+            workEntryId = workEntry.id;
+
+            if (workEntry.cost_code_id == (long)CostCode.Sick
+                || workEntry.cost_code_id == (long)CostCode.Holiday)
+            {
+                type = 1;
+                return true;
+            }
+
+            if(workEntry.timeoff_request_id!=null)
+            {
+                type = 2;
+                return true;
+            }
+
+            if (workEntry.cost_code_id != null)
+            {
+                var regularTimeCodeList = GetTimeCostCodeList();
+                if (regularTimeCodeList.Exists(_ => _.id == workEntry.cost_code_id.Value))
+                {
+                    type = 1;
+                    return true;
+                }
+            }
+
+            var task = new sdk_task_dal().FindById(workEntry.task_id);
+            if (task.type_id == (int)DicEnum.TASK_TYPE.PROJECT_TASK)
+            {
+                type = 3;
+                return true;
+            }
+            if (task.type_id == (int)DicEnum.TASK_TYPE.SERVICE_DESK_TICKET)
+            {
+                type = 4;
+                return true;
+            }
+
             return false;
+        }
+
+        /// <summary>
+        /// 工时表提交检查
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="resourceId"></param>
+        /// <returns>0:OK;1:工时表为空:2:工时表不为可提交状态</returns>
+        public int SubmitWorkEntryCheck(DateTime startDate, long resourceId)
+        {
+            var weList = GetWorkEntryListByStartDate(startDate, resourceId);
+            if (weList.Count == 0)
+                return 1;
+
+            sdk_work_entry_report_dal rptDal = new sdk_work_entry_report_dal();
+
+            var find = rptDal.FindSignleBySql<sdk_work_entry_report>($"select * from sdk_work_entry_report where resource_id={resourceId} and start_date='{startDate}' and delete_time=0");
+            if (find != null && find.status_id != (int)DicEnum.WORK_ENTRY_REPORT_STATUS.HAVE_IN_HAND && find.status_id != (int)DicEnum.WORK_ENTRY_REPORT_STATUS.REJECTED)
+                return 2;
+
+            return 0;
         }
 
         /// <summary>
@@ -347,8 +409,8 @@ namespace EMT.DoneNOW.BLL
         public bool SubmitWorkEntry(DateTime startDate, long resourceId, long userId)
         {
             var weList = GetWorkEntryListByStartDate(startDate, resourceId);
-            if (weList.Count == 0)
-                return false;
+            //if (weList.Count == 0)
+            //    return false;
 
             sdk_work_entry_report report = new sdk_work_entry_report();
             sdk_work_entry_report_dal rptDal = new sdk_work_entry_report_dal();

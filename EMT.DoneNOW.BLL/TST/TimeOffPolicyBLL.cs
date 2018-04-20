@@ -598,21 +598,27 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
-        /// 更新假期余额表的余额
+        /// 更新指定员工指定日期（包含）之后的假期余额表的余额
         /// </summary>
         /// <param name="resId"></param>
         /// <param name="date"></param>
-        /// <param name="changeHour">增减的假期余额小时数</param>
+        /// <param name="cate">请假类型</param>
         /// <returns></returns>
-        public decimal UpdateTimeoffBalance(long resId, DateTime date, decimal changeHour)
+        public void UpdateTimeoffBalance(long resId, DateTime date, CostCode cate)
         {
-            tst_timeoff_balance_dal balDal = new tst_timeoff_balance_dal();
-            decimal balance = GetBalanceHour(resId, date);
-            string ids = GetUpdateBalanceActIds(resId, date);
-            if (!string.IsNullOrEmpty(ids))
-                dal.ExecuteSQL($"update tst_timeoff_balance set balance=balance+{changeHour} where object_id in({ids})");
+            new tst_timeoff_balance_dal().ReCalcResourceTimeoffBalance(resId, cate, date);
+            //tst_timeoff_balance_dal balDal = new tst_timeoff_balance_dal();
+            //decimal balance = GetBalanceHour(resId, date);
+            //string ids = GetUpdateBalanceActIds(resId, date);
+            //if (!string.IsNullOrEmpty(ids))
+            //{
+            //    if (changeHour > 0)
+            //        dal.ExecuteSQL($"update tst_timeoff_balance set balance=balance+{changeHour} where object_id in({ids})");
+            //    else
+            //        dal.ExecuteSQL($"update tst_timeoff_balance set balance=balance-{0 - changeHour} where object_id in({ids})");
+            //}
 
-            return balance;
+            //return balance;
         }
 
         /// <summary>
@@ -623,8 +629,13 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         private decimal GetBalanceHour(long resId, DateTime date)
         {
-            var act = dal.FindSignleBySql<v_timeoff_activity_request>($"SELECT * FROM v_timeoff_activity_request WHERE resource_id={resId} and activity_date=(SELECT MAX(activity_date) FROM v_timeoff_activity_request WHERE activity_date<='{date.ToString("yyyy-MM-dd mm:ss")}') ORDER BY entity_id DESC LIMIT 1");
-            return act.hours.Value;
+            string sql = $"SELECT balance FROM v_timeoff_activity_summary WHERE resource_id ={resId} and activity_date<= '{date.ToString("yyyy-MM-dd mm:ss")}' ORDER BY activity_date DESC, id DESC LIMIT 1";
+            var balance = dal.FindSignleBySql<string>(sql);
+            decimal bal;
+            if (decimal.TryParse(balance, out bal))
+                return bal;
+            else
+                return 0;
         }
 
         /// <summary>
@@ -905,13 +916,14 @@ namespace EMT.DoneNOW.BLL
 
                 if (rq.task_id != (long)CostCode.Holiday)   // 修改休假余额
                 {
-                    var balance = UpdateTimeoffBalance(rq.resource_id, rq.request_date.Value, rq.request_hours);
-                    tst_timeoff_balance bal = new tst_timeoff_balance();
-                    bal.object_id = rq.id;
-                    bal.object_type_id = 2215;
-                    bal.task_id = rq.task_id;
-                    bal.balance = balance + rq.request_hours;
-                    balDal.Insert(bal);
+                    UpdateTimeoffBalance(rq.resource_id, rq.request_date.Value, (CostCode)rq.task_id);
+                    //tst_timeoff_balance bal = new tst_timeoff_balance();
+                    //bal.object_id = rq.id;
+                    //bal.object_type_id = 2215;
+                    //bal.task_id = rq.task_id;
+                    //bal.resource_id = rq.resource_id;
+                    //bal.balance = balance + rq.request_hours;
+                    //balDal.Insert(bal);
                 }
 
                 if (approverList.Exists(_ => _.approver_resource_id == userId && _.tier == 1))  // 该员工是自己的一级审批人
@@ -1012,8 +1024,9 @@ namespace EMT.DoneNOW.BLL
 
             if (rq.task_id != (long)CostCode.Holiday)   // 修改休假余额
             {
-                var balance = UpdateTimeoffBalance(rq.resource_id, rq.request_date.Value, 0 - rq.request_hours);
-                balDal.ExecuteSQL($"delete from tst_timeoff_balance where object_id={rq.id}");
+                UpdateTimeoffBalance(rq.resource_id, rq.request_date.Value, (CostCode)rq.task_id);
+                //var balance = UpdateTimeoffBalance(rq.resource_id, rq.request_date.Value, rq.request_hours);
+                //balDal.ExecuteSQL($"delete from tst_timeoff_balance where object_id={rq.id}");
             }
 
             tst_timeoff_request_log log = new tst_timeoff_request_log();
@@ -1096,6 +1109,8 @@ namespace EMT.DoneNOW.BLL
                         we.update_time = we.create_time;
                         we.create_user_id = userId;
                         we.update_user_id = userId;
+                        we.start_time = Tools.Date.DateHelper.ToUniversalTimeStamp(request.request_date.Value);
+                        we.end_time = we.start_time;
                         we.task_id = request.task_id;
                         we.resource_id = request.resource_id;
                         we.cost_code_id = request.task_id;
@@ -1155,8 +1170,9 @@ namespace EMT.DoneNOW.BLL
 
                     if (request.task_id != (long)CostCode.Holiday)   // 修改休假余额
                     {
-                        var balance = UpdateTimeoffBalance(request.resource_id, request.request_date.Value, 0 - request.request_hours);
-                        balDal.ExecuteSQL($"delete from tst_timeoff_balance where object_id={request.id}");
+                        UpdateTimeoffBalance(request.resource_id, request.request_date.Value, (CostCode)request.task_id);
+                        //var balance = UpdateTimeoffBalance(request.resource_id, request.request_date.Value, request.request_hours);
+                        //balDal.ExecuteSQL($"delete from tst_timeoff_balance where object_id={request.id}");
                     }
 
                     tst_timeoff_request_log log = new tst_timeoff_request_log();
@@ -1172,7 +1188,7 @@ namespace EMT.DoneNOW.BLL
                 }
             }
 
-            return false;
+            return true;
         }
 
         /// <summary>

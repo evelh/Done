@@ -549,7 +549,6 @@
     </form>
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
     <script src="../Scripts/Admin.js"></script>
-    <script src="Scripts/index.js" type="text/javascript" charset="utf-8"></script>
     <script>
         $(window).resize(function (){
         var Height = $(document).height()-66+"px";
@@ -575,6 +574,7 @@
             $("#chaxun").hide();
             $("#body").show();
         }
+        var hideHeader = 1;
     </script>
 </body>
 </html>

@@ -49,10 +49,18 @@ function Add() {
 function Edit() {
     if (status == 1) {
         requestData("/Tools/TimesheetAjax.ashx?act=getType&id=" + entityid, null, function (data) {
-            if (data[0] == true) {
+            if (data[0] == false) {
+                LayerMsg("未知工时");
+                return;
+            } else if (data[1]==1) {
                 window.open('../TimeSheet/RegularTimeAddEdit?id=' + entityid, windowObj.timeoffRequest + windowType.manage, 'left=0,top=0,location=no,status=no,width=925,height=755', false);
-            } else {
-                window.open('../Project/WorkEntry?id=' + data[1], windowObj.workEntry + windowType.manage, 'left=0,top=0,location=no,status=no,width=925,height=755', false);
+            } else if (data[1] == 2) {
+                LayerMsg("休假请求不能修改");
+                return;
+            } else if (data[1] == 3) {
+                window.open('../Project/WorkEntry?id=' + data[2], windowObj.workEntry + windowType.manage, 'left=0,top=0,location=no,status=no,width=925,height=755', false);
+            } else if (data[1] == 4) {
+                window.open("../ServiceDesk/TicketLabour.aspx?id=" + data[2], windowObj.workEntry + windowType.edit, 'left=0,top=0,location=no,status=no,width=1000,height=943', false);
             }
         })
     } else {
@@ -60,14 +68,30 @@ function Edit() {
     }
 }
 function Submit() {
-    LayerConfirmOk("要将所有工时提交吗", "确定", "取消", function () {
-        requestData("/Tools/TimesheetAjax.ashx?act=submit&startDate=" + startDate + "&resId=" + $("input[name='con2735']").val(), null, function (data) {
-            if (data == true) {
-                window.location.reload();
-            } else {
-                LayerMsg("已审批和已提交工时表不能提交");
-            }
-        })
+    requestData("/Tools/TimesheetAjax.ashx?act=submitCheck&startDate=" + startDate + "&resId=" + $("input[name='con2735']").val(), null, function (data) {
+        if (data == 1) {
+            LayerConfirmOk("工时表为空，需要提交吗？", "确定", "取消", function () {
+                requestData("/Tools/TimesheetAjax.ashx?act=submit&startDate=" + startDate + "&resId=" + $("input[name='con2735']").val(), null, function (data) {
+                    if (data == true) {
+                        window.location.reload();
+                    } else {
+                        LayerMsg("已审批和已提交工时表不能提交");
+                    }
+                })
+            })
+        } else if (data==2) {
+            LayerMsg("已审批和已提交工时表不能提交");
+        } else if (data == 0) {
+            LayerConfirmOk("要将所有工时提交吗？", "确定", "取消", function () {
+                requestData("/Tools/TimesheetAjax.ashx?act=submit&startDate=" + startDate + "&resId=" + $("input[name='con2735']").val(), null, function (data) {
+                    if (data == true) {
+                        window.location.reload();
+                    } else {
+                        LayerMsg("已审批和已提交工时表不能提交");
+                    }
+                })
+            })
+        }
     })
 }
 function CancleSubmit() {

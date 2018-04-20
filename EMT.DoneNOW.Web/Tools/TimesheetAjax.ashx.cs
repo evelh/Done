@@ -25,6 +25,9 @@ namespace EMT.DoneNOW.Web
                 case "timesheetInfo":
                     GetTimesheetInfo(context);
                     break;
+                case "submitCheck":
+                    SubmitTimesheetCheck(context);
+                    break;
                 case "submit":
                     SubmitTimesheet(context);
                     break;
@@ -88,8 +91,9 @@ namespace EMT.DoneNOW.Web
         {
             long batchId = long.Parse(context.Request.QueryString["id"]);
             long id = 0;
-            bool rtn = new BLL.WorkEntryBLL().GetTimesheetIsRegural(batchId, out id);
-            object[] data = new object[] { rtn, id };
+            int type;
+            bool rtn = new BLL.WorkEntryBLL().GetWorkEntryType(batchId, out type, out id);
+            object[] data = new object[] { rtn, type, id };
             context.Response.Write(new Tools.Serialize().SerializeJson(data));
         }
 
@@ -113,7 +117,21 @@ namespace EMT.DoneNOW.Web
         {
             DateTime start = DateTime.Parse(context.Request.QueryString["startDate"]);
             long resId = long.Parse(context.Request.QueryString["resId"]);
-            context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.WorkEntryBLL().SubmitWorkEntry(start, resId, LoginUserId)));
+            var bll = new BLL.WorkEntryBLL();
+            context.Response.Write(new Tools.Serialize().SerializeJson(bll.SubmitWorkEntry(start, resId, LoginUserId)));
+        }
+
+        /// <summary>
+        /// 工时表提交状态检查
+        /// </summary>
+        /// <param name="context"></param>
+        private void SubmitTimesheetCheck(HttpContext context)
+        {
+            DateTime start = DateTime.Parse(context.Request.QueryString["startDate"]);
+            long resId = long.Parse(context.Request.QueryString["resId"]);
+            var bll = new BLL.WorkEntryBLL();
+            int status = bll.SubmitWorkEntryCheck(start, resId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(status));
         }
 
         /// <summary>

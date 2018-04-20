@@ -622,4 +622,7 @@
 
     <%   
       }%>
+            if (parent.parent.hideHeader != undefined) {
+                $(".header").hide();
+            }
 </script>
