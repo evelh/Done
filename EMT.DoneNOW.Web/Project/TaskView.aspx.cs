@@ -68,6 +68,15 @@ namespace EMT.DoneNOW.Web.Project
                     {
                         Response.End();
                     }
+                    #region 记录浏览历史
+                    var account = new CompanyBLL().GetCompany(thisTask.account_id);
+                    var history = new sys_windows_history()
+                        {
+                            title = $"查看{taskType}:" + (thisProject != null ? thisProject.name : "") + " " + thisTask.title + " " + (account != null ? account.name : ""),
+                            url = Request.RawUrl,
+                        };
+                    new IndexBLL().BrowseHistory(history, LoginUserId);
+                    #endregion
                     thisProject = new pro_project_dal().FindNoDeleteById((long)thisTask.project_id);
                     if (thisProject != null)
                     {

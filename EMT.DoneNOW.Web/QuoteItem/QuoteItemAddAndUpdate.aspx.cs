@@ -87,6 +87,25 @@ namespace EMT.DoneNOW.Web.QuoteItem
                             default:
                                 break;
                         }
+
+                        #region 记录浏览历史
+                        var accountName = "";
+                        if (quote_item.quote_id != null)
+                        {
+                            var quote = new crm_quote_dal().FindNoDeleteById((long)quote_item.quote_id);
+                            if (quote != null)
+                            {
+                                var account = new CompanyBLL().GetCompany(quote.account_id);
+                                accountName = account != null ? account.name : "";
+                            }
+                        }
+                        var history = new sys_windows_history()
+                        {
+                            title = $"编辑报价项：" + quote_item.name + " " + accountName,
+                            url = Request.RawUrl,
+                        };
+                        new IndexBLL().BrowseHistory(history, LoginUserId);
+                        #endregion
                     }
                 }
                 else

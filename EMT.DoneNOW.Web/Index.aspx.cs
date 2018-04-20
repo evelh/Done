@@ -13,7 +13,6 @@ namespace EMT.DoneNOW.Web
     {
         protected bool isFromLogin = false;  // 是否是从登陆页面跳转过来的
         protected List<sys_notice> notList;  // 系统公告类消息
-        protected List<sys_windows_history> hisList;   // 浏览记录
         protected Dictionary<string, int> searchCountDic;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -28,7 +27,6 @@ namespace EMT.DoneNOW.Web
                     new IndexBLL().InsertNoticeRes(notList,LoginUserId);
             }
             
-            hisList = new IndexBLL().GetHistoryList(LoginUserId);
 
         }
     }

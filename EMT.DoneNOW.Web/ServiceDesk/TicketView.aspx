@@ -76,8 +76,8 @@
                                 <div class="TitleBarButton NavigateLeft NormalState" style="margin-top: 9px; margin-left: -19px;" onclick="ViewTicket('<%=thisIndex != 0 ? pageTicketList[thisIndex - 1].id : pageTicketList[pageTicketList.Count - 1].id %>')">
                                     <div class="TitleBarIcon NavigateLeft"></div>
                                 </div>
-                                <span class="Text" style="width: 53px; max-width: 66px;"><%=thisIndex + 1 %> of <%=pageTicketList.Count %></span>
-                                <div class="TitleBarButton NavigateRight NormalState" style="margin-top: -16px; margin-left: 53px;" onclick="ViewTicket('<%=thisIndex != (pageTicketList.Count - 1) ? pageTicketList[thisIndex + 1].id : pageTicketList[0].id %>')">
+                                <span class="Text" style="width: 65px; max-width: 66px;"><%=thisIndex + 1 %> of <%=pageTicketList.Count %></span>
+                                <div class="TitleBarButton NavigateRight NormalState" style="margin-top: -16px; margin-left: 65px;" onclick="ViewTicket('<%=thisIndex != (pageTicketList.Count - 1) ? pageTicketList[thisIndex + 1].id : pageTicketList[0].id %>')">
                                     <div class="TitleBarIcon NavigateRight"></div>
                                 </div>
                             </div>

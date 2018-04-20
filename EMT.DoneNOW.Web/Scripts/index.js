@@ -203,6 +203,30 @@ $(".RecentOverlay").on("mouseout", function () {
     $(this).hide();
 });
 
+//书签的下拉菜单
+$(".Bookmark").on("mousemove", function () {
+    $(this).addClass("HoverState");
+    $(this).css("borderBottom", "1px solid #fff");
+    $(".BookmarkDiv").show();
+});
+$(".Bookmark").on("mouseout", function () {
+    $(this).removeClass("HoverState");
+    $(this).css("borderTop", "1px solid #d7d7d7");
+    $(this).css("borderBottom", "1px solid #d7d7d7");
+    $(".BookmarkDiv").hide();
+});
+$(".BookmarkDiv").on("mousemove", function () {
+    $(".Bookmark").addClass("HoverState");
+    $(".Bookmark").css("borderBottom", "1px solid #fff");
+    $(this).show();
+});
+$(".BookmarkDiv").on("mouseout", function () {
+    $(".Bookmark").removeClass("HoverState");
+    $(".Bookmark").css("borderTop", "1px solid #d7d7d7");
+    $(".Bookmark").css("borderBottom", "1px solid #d7d7d7");
+    $(this).hide();
+});
+
 //内容的选项卡切换
 $.each($(".SelectDashboardTab"), function (i) {
     $(this).on("click", function () {

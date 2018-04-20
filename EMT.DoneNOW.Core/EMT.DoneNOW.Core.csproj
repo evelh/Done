@@ -147,6 +147,7 @@
     <Compile Include="SDK\sdk_work_entry_report.cs" />
     <Compile Include="SDK\sdk_work_record.cs" />
     <Compile Include="SDK\v_task_all.cs" />
+    <Compile Include="SYS\sys_bookmark.cs" />
     <Compile Include="SYS\sys_department.cs" />
     <Compile Include="SYS\sys_notice.cs" />
     <Compile Include="SYS\sys_notice_resource.cs" />

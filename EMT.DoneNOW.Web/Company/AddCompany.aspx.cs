@@ -19,10 +19,10 @@ namespace EMT.DoneNOW.Web
         protected crm_account parent_account = null;
         protected List<crm_account> searchCompany = null;     // 查询出的所有没有父客户的客户
         protected string CallBack = "";
- 
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl,LoginUserId);
             #region 下拉框赋值
             CallBack = Request.QueryString["CallBack"];
             var dic = new CompanyBLL().GetField();

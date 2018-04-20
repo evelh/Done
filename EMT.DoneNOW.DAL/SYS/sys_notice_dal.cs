@@ -14,7 +14,7 @@ namespace EMT.DoneNOW.DAL
         public List<sys_notice> GetSysNotice(long userId)
         {
             var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            return FindListBySql<sys_notice>($"SELECT * from sys_notice sn where begin_time<={timeNow} and end_time>={timeNow} and delete_time = 0 and ( (send_type_id ='1' and not EXISTS(SELECT 1 from sys_notice_resource snr where snr.notice_id=sn.id )) or ( EXISTS(SELECT 1 from sys_notice_resource snr where snr.notice_id=sn.id and snr.resource_id={userId} and is_show=1)))");
+            return FindListBySql<sys_notice>($"SELECT * from sys_notice sn where begin_time<={timeNow} and end_time>={timeNow} and delete_time = 0 and ( (send_type_id ='1' and not EXISTS(SELECT 1 from sys_notice_resource snr where snr.notice_id=sn.id  and snr.resource_id={userId})) or ( EXISTS(SELECT 1 from sys_notice_resource snr where snr.notice_id=sn.id and snr.resource_id={userId} and is_show=1)))");
         }
     }
 }

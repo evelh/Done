@@ -100,6 +100,15 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 thisticketRes = new sdk_recurring_ticket_dal().GetByTicketId(thisTicket.id);
                 #endregion
                 ticketUdfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.TASK, thisTicket.id, tickUdfList);
+
+                #region 记录浏览历史
+                var history = new sys_windows_history()
+                {
+                    title = $"编辑定期服务主工单：" + thisTicket.no + " " + thisTicket.title + " " + (thisAccount != null ? thisAccount.name : ""),
+                    url = Request.RawUrl,
+                };
+                new IndexBLL().BrowseHistory(history, LoginUserId);
+                #endregion
             }
         }
         public void Bind()

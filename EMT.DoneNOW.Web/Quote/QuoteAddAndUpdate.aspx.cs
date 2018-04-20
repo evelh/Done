@@ -77,7 +77,7 @@ namespace EMT.DoneNOW.Web.Quote
                     if (quote != null)
                     {
                         isAdd = false;
-
+                      
                     }
 
                 }
@@ -107,6 +107,14 @@ namespace EMT.DoneNOW.Web.Quote
                             BillLocation.Checked = quote.bill_to_location_id == quote.sold_to_location_id;
                             ShipLocation.Checked = quote.ship_to_location_id == quote.sold_to_location_id;
                         }
+                        #region 记录浏览历史
+                        var history = new sys_windows_history()
+                        {
+                            title = $"编辑报价：" + quote.name + " " + (account != null ? account.name : ""),
+                            url = Request.RawUrl,
+                        };
+                        new IndexBLL().BrowseHistory(history, LoginUserId);
+                        #endregion
                     }
                 }
 

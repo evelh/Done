@@ -29,6 +29,21 @@ namespace EMT.DoneNOW.Web
                 case "ClearHistory":
                     ClearHistory(context);
                     break;
+                case "LoadBrowerHistory":
+                    LoadBrowerHistory(context);
+                    break;
+                case "BookMarkManage":
+                    BookMarkManage(context);
+                    break;
+                case "LoadBook":
+                    LoadBook(context);
+                    break;
+                case "DeleteChooseBook":
+                    DeleteChooseBook(context);
+                    break;
+                case "DeleteAllBook":
+                    DeleteAllBook(context);
+                    break;
                 default:
                     break;
             }
@@ -109,6 +124,60 @@ namespace EMT.DoneNOW.Web
         {
             var result = false;
             result = new IndexBLL().ClearHistory(LoginUserId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 获取浏览历史
+        /// </summary>
+        public void LoadBrowerHistory(HttpContext context)
+        {
+            var hisList = new IndexBLL().GetHistoryList(LoginUserId);
+            if(hisList!=null&& hisList.Count > 0)
+            {
+                if (hisList.Count >= 50)
+                    hisList = hisList.Take(50).ToList();
+                context.Response.Write(new Tools.Serialize().SerializeJson(hisList));
+            }
+        }
+        /// <summary>
+        /// 获取书签信息
+        /// </summary>
+        public void LoadBook(HttpContext context)
+        {
+            var bookList = new DAL.sys_bookmark_dal().GetBookList(LoginUserId);
+            if (bookList != null && bookList.Count > 0)
+            {
+                if (bookList.Count >= 50)
+                    bookList = bookList.Take(50).ToList();
+                context.Response.Write(new Tools.Serialize().SerializeJson(bookList));
+            }
+        }
+
+        /// <summary>
+        /// 书签管理
+        /// </summary>
+        public void BookMarkManage(HttpContext context)
+        {
+            var url = context.Request.QueryString["url"];
+            var title = context.Request.QueryString["title"];
+            var result = new IndexBLL().BookMarkManage(url,title,LoginUserId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 删除选中的书签
+        /// </summary>
+        public void DeleteChooseBook(HttpContext context)
+        {
+            var ids = context.Request.QueryString["ids"];
+            var result = new IndexBLL().DeleteBookByIds(ids,LoginUserId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 删除全部书签
+        /// </summary>
+        public void DeleteAllBook(HttpContext context)
+        {
+            var result = new IndexBLL().DeleteAllBook(LoginUserId);
             context.Response.Write(new Tools.Serialize().SerializeJson(result));
         }
     }

@@ -25,5 +25,12 @@ namespace EMT.DoneNOW.DAL
         {
             return FindSignleBySql<sys_windows_history>($"SELECT * from sys_windows_history where url='{url}' and create_user_id={userId}");
         }
+
+
+        public bool DeletFifty()
+        {
+            return ExecuteSQL(@"        DELETE from sys_windows_history where create_time<(SELECT min(create_time) from(
+       SELECT create_time from sys_windows_history ORDER BY create_time desc LIMIT 50) a)") >0;
+        }
     }
 }

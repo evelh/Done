@@ -25,7 +25,16 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 if (!string.IsNullOrEmpty(appId))
                     appo = new DAL.sdk_appointment_dal().FindNoDeleteById(long.Parse(appId));
                 if (appo != null)
+                {
                     isAdd = false;
+                    var thisRes = new sys_resource_dal().FindNoDeleteById(appo.resource_id);
+                    var history = new sys_windows_history()
+                    {
+                        title = "编辑约会:" + appo.name + (thisRes==null?"":$"({thisRes.name})"),
+                        url = Request.RawUrl,
+                    };
+                    new IndexBLL().BrowseHistory(history, LoginUserId);
+                }
                 var chooseDateString = Request.QueryString["chooseDate"];
                 if (!string.IsNullOrEmpty(chooseDateString))
                     chooseDate = DateTime.Parse(chooseDateString);

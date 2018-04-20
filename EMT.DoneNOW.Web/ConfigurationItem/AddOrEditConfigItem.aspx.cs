@@ -46,6 +46,15 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                     if (iProduct != null)
                     {
                         account = new CompanyBLL().GetCompany((long)iProduct.account_id);
+                        var product = new ivt_product_dal().FindNoDeleteById(iProduct.product_id);
+                        #region 记录浏览历史
+                        var history = new sys_windows_history()
+                        {
+                            title = "配置项:" + (product==null?"":product.name) + account.name,
+                            url = Request.RawUrl,
+                        };
+                        new IndexBLL().BrowseHistory(history, LoginUserId);
+                        #endregion
                     }
                 }
                 var account_id = Request.QueryString["account_id"];

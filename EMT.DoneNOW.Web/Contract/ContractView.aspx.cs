@@ -21,6 +21,14 @@ namespace EMT.DoneNOW.Web.Contract
                 var contract_id = Request.QueryString["id"];
                 contract = new ctt_contract_dal().FindNoDeleteById(long.Parse(contract_id));
                 var conAccount = new CompanyBLL().GetCompany(contract.account_id);
+                #region 记录浏览历史
+                var history = new sys_windows_history()
+                {
+                    title = "合同详情:" + contract.name + conAccount.name,
+                    url = Request.RawUrl,
+                };
+                new IndexBLL().BrowseHistory(history, LoginUserId);
+                #endregion
                 var type = Request.QueryString["type"];
                 switch (type)
                 {

@@ -13,12 +13,69 @@
     <link href="../Content/style.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="../Content/multipleList.css" />
     <style>
+        .BookmarkButton {
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: relative;
+    width: 16px;
+    float:right;
+    margin-top: 8px;
+}
+             .BookmarkButton.Selected div {
+    border-color: #f9d959;
+}
+        .BookmarkButton>.LowerLeftPart {
+    border-right-width: 8px;
+    border-bottom-width: 6px;
+    border-left-width: 8px;
+    top: 5px;
+    -moz-transform: rotate(35deg);
+    -webkit-transform: rotate(35deg);
+    -ms-transform: rotate(35deg);
+    transform: rotate(35deg);
+}
+        .BookmarkButton>.LowerRightPart {
+    border-right-width: 8px;
+    border-bottom-width: 6px;
+    border-left-width: 8px;
+    top: 5px;
+    -moz-transform: rotate(-35deg);
+    -webkit-transform: rotate(-35deg);
+    -ms-transform: rotate(-35deg);
+    transform: rotate(-35deg);
+}
+        .BookmarkButton>div.LowerLeftPart, .BookmarkButton>div.LowerRightPart, .BookmarkButton>div.UpperPart {
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-style: solid;
+    border-top: none;
+    height: 0;
+    position: absolute;
+    width: 0;
+}
+        .BookmarkButton>.UpperPart {
+    border-bottom-width: 6px;
+    border-left-width: 3px;
+    border-right-width: 3px;
+    left: 5px;
+    top: 1px;
+}
+   
     </style>
 </head>
 <body runat="server">
     <form id="AddCompany" name="AddCompany" runat="server">
         <input type="hidden" id="isCheckCompanyName" value="yes" />
-        <div class="header">添加客户</div>
+        <div class="header">添加客户 
+
+            <div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> " onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div>
+        </div>
         <div class="header-title">
             <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
@@ -1077,6 +1134,28 @@
                 $("#SubCompanyHidden").val(ids);
             })
         }
+    }
+
+    function ChangeBookMark() {
+        //$("#bookmark").removeAttr("onclick");
+        var url = '<%=Request.RawUrl %>';
+        var title = $('title').text();
+        var isBook = $("#bookmark").hasClass("Selected");
+        $.ajax({
+            type: "GET",
+            url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    if (isBook) {
+                        $("#bookmark").removeClass("Selected");
+                    } else {
+                        $("#bookmark").addClass("Selected");
+                    }
+                }
+            }
+        })
     }
 </script>
 

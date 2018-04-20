@@ -26,8 +26,10 @@ namespace EMT.DoneNOW.Web
         //protected List<crm_account> searchCompany = null;     // 查询出的所有没有父客户的客户
         protected List<crm_account> subCompanyList = null;
         protected Dictionary<string, object> dic = null;
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
+            thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
             var company_id = Convert.ToInt64(Request.QueryString["id"]);
             if (AuthBLL.GetUserCompanyAuth(LoginUserId,LoginUser.security_Level_id,company_id).CanEdit==false)  // 权限验证
             {

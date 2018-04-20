@@ -49,6 +49,20 @@ namespace EMT.DoneNOW.Web.Activity
                     note = bll.GetActivity(noteid);
                     contactList = new ContactBLL().GetContactByCompany((long)note.account_id);
                     opportunityList = new OpportunityBLL().GetOpportunityByCompany((long)note.account_id);
+                    #region 记录浏览历史
+                    var accountName = "";
+                    if (note.account_id != null)
+                    {
+                        var account = new CompanyBLL().GetCompany((long)note.account_id);
+                        accountName = account == null ? "" : account.name;
+                    }
+                    var history = new sys_windows_history()
+                    {
+                        title = "待办:" + note.description + ":" + accountName,
+                        url = Request.RawUrl,
+                    };
+                    new IndexBLL().BrowseHistory(history, LoginUserId);
+                    #endregion
                 }
 
                 if (long.TryParse(Request.QueryString["accountId"], out accountId))

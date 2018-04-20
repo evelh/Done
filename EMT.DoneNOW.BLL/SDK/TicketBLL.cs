@@ -739,6 +739,7 @@ namespace EMT.DoneNOW.BLL
             var sweDal = new sdk_work_entry_dal();
             var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             thisEntry.id = sweDal.GetNextIdCom();
+            thisEntry.batch_id = _dal.GetNextId("seq_entry_batch");
             thisEntry.create_time = timeNow;
             thisEntry.update_time = timeNow;
             thisEntry.create_user_id = userId;

@@ -18,10 +18,12 @@ namespace EMT.DoneNOW.Web.Company
         protected string type;
         protected string actType;
         protected string iframeSrc;
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+                thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
                 var id = Request.QueryString["id"];
                 type = Request.QueryString["type"];
                 if (id != null)
@@ -38,7 +40,14 @@ namespace EMT.DoneNOW.Web.Company
                             Response.End();
                             return;
                         }
-                       
+                        #region 记录浏览历史
+                        var history = new sys_windows_history()
+                        {
+                            title = "客户:"+ crm_account.name,
+                            url = Request.RawUrl,
+                        };
+                        new IndexBLL().BrowseHistory(history, LoginUserId);
+                        #endregion
                         dic = new CompanyBLL().GetField();    // 获取字典
                         if (string.IsNullOrEmpty(type))
                         {

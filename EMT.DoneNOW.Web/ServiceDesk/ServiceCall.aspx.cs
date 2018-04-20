@@ -43,6 +43,17 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     if (!string.IsNullOrEmpty(ticketIds))
                         ticketIds = ticketIds.Substring(0, ticketIds.Length-1);
                 }
+                if (!isAdd)
+                {
+                    #region 记录浏览历史
+                    var history = new sys_windows_history()
+                    {
+                        title = "服务预定:" + Tools.Date.DateHelper.ConvertStringToDateTime(thisCall.start_time).ToString("yyyy-MM-dd HH:mm")+"~"+ Tools.Date.DateHelper.ConvertStringToDateTime(thisCall.end_time).ToString("yyyy-MM-dd HH:mm")+thisAccount.name,
+                        url = Request.RawUrl,
+                    };
+                    new IndexBLL().BrowseHistory(history, LoginUserId);
+                    #endregion
+                }
             }
                 
             if (!IsPostBack)

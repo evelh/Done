@@ -149,10 +149,11 @@ namespace EMT.DoneNOW.Web.Project
 
                             department_id.SelectedValue = thisTask.department_id == null ? "" : ((int)thisTask.department_id).ToString();
                         }
-
+                        var typeName = "任务";
                         //  判断是阶段，查询出相关项目的关联合同的里程碑  和自己的里程碑
                         if (type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE && thisProject != null&&thisProject.contract_id!=null)
                         {
+                            typeName = "阶段";
                             // 获取该项目合同下未被关联的里程碑
                             var proConMilList = new ctt_contract_milestone_dal().GetListByProId(thisProject.id);
                             // 获取该阶段下的所有里程碑
@@ -170,10 +171,20 @@ namespace EMT.DoneNOW.Web.Project
                             {
                                 thisPhaMile = thisPhaMile.OrderBy(_ => _.dueDate).ToList();
                             }
-
-
                         }
-                        
+                        #region 记录浏览历史
+                        if (!isCopy && !isAdd)
+                        {
+                            var account = new CompanyBLL().GetCompany(thisTask.account_id);
+                            var history = new sys_windows_history()
+                            {
+                                title = $"编辑{typeName}:" + (thisProject != null ? thisProject.name : "") + " " + thisTask.title + " " + (account != null ? account.name : ""),
+                                url = Request.RawUrl,
+                            };
+                            new IndexBLL().BrowseHistory(history, LoginUserId);
+                        }
+                        #endregion
+
                     }
                 }
                 if (type_id == (int)DicEnum.TASK_TYPE.PROJECT_PHASE)

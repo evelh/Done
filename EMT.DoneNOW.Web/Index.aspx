@@ -55,6 +55,9 @@
     padding-left: 10px;
     padding-top: 5px;
 }
+         #MoreBookDiv input[type=checkbox]{
+             margin-top:5px;
+         }
     </style>
 </head>
 <body>
@@ -1134,20 +1137,7 @@
                                 <div class="Large ContextOverlayColumn">
                                     <div>
                                         <div class="Group" id="BrowerHistoryDiv">
-                                            <% if (hisList != null && hisList.Count > 0)
-                                                {
-                                                    foreach (var history in hisList.Take(20))
-                                                    {   %>
-                                             <div class="Content">
-                                                <a class="Button ButtonIcon NormalState" onclick="window.open(<%=history.url %>, '_blank', 'left=0,top=0,location=no,status=no,width=900,height=750', false)">
-                                                    <span class="Text"><%=history.title %></span>
-                                                </a>
-                                            </div>
-                                            <%
-                                                    }
-                                              } %>
-                                           
-                                            
+                                         
                                         </div>
                                     </div>
                                 </div>
@@ -1161,13 +1151,45 @@
                                                 <a class="Button ButtonIcon Link NormalState" onclick="ClearBrowerHistory()">清除
                                                 </a>
                                             </div>
-                                            <%if (hisList != null && hisList.Count > 20)
-                                                { %>
-                                            <div class="Content">
+                                            
+                                            <div class="Content" id="ShowHistoryFifty" style="display:none;">
                                                 <a class="Button ButtonIcon Link NormalState" onclick="ShowMoreHistory()">查看更多
                                                 </a>
                                             </div>
-                                            <%} %>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <!--书签的下拉菜单-->
+            <div class="ContextOverlayContainer">
+                <div class="BookmarkDiv ContextOverlay" style="left: 426px; top: 39px;">
+                    <div class="Content">
+                        <div class="Title">书签</div>
+                        <div class="RecentItemsContainer">
+                            <div class="ColumnSet">
+                                <div class="Large ContextOverlayColumn">
+                                    <div>
+                                        <div class="Group" id="BookDropListDiv">
+                                         
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="SiteNavigationFooterSeparator"></div>
+                            <div class="ColumnSet">
+                                <div class="Normal ContextOverlayColumn">
+                                    <div>
+                                        <div class="Group">
+                                            <div class="Content" id="ManageBookDiv">
+                                                <a class="Button ButtonIcon Link NormalState" onclick="ShowManageBook()">管理书签
+                                                </a>
+                                            </div>
+                                           
                                         </div>
                                     </div>
                                 </div>
@@ -1238,6 +1260,60 @@
     </div>
     <% }
             } %>
+
+      <div class="Dialog Large" style="margin-left: -442px; margin-top: -229px; z-index: 100; width: 400px; height: 400px;" id="NoticeHistory">
+           <div class="CancelDialogButton" onclick="CancelSingleDialog('NoticeHistory')"></div>
+           <div class="heard-title" style="height: 30px;">更多的浏览历史</div>
+          <div class="DialogHeadingContainer">
+              <div class="ButtonContainer"><a class="Button ButtonIcon NormalState" id="ClearButton" tabindex="0" onclick="ClearBrowerHistory()">
+                  <span class="Icon"></span><span class="Text">清除</span></a></div><div class="Instructions" style="padding-left:10px;">
+                      <div class="InstructionItem">下面是你最近浏览的部分页面。你可以通过点击链接回到这些页面。</div>
+                </div>
+          </div>
+          <div class="ScrollingContentContainer">
+              <div class="ScrollingContainer" style="padding-left: 12px;overflow-x: auto;overflow-y: auto;height: 210px;">
+                  <div class="Normal NoHeading Section">
+                      <div class="Content">
+                          <div class="Large Column">
+                              <div class="PageNavigationLinkGroup">
+                                  <div class="PageNavigationLinkColumn Large" id="MoreHistoryDiv">
+
+                                    </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    <div class="Dialog Large" style="margin-left: -442px; margin-top: -229px; z-index: 100; width: 400px; height: 400px;" id="BookManageNav">
+           <div class="CancelDialogButton" onclick="CancelSingleDialog('BookManageNav')"></div>
+           <div class="heard-title" style="height: 30px;">书签</div>
+          <div class="DialogHeadingContainer">
+              <div class="ButtonContainer">
+                  <a class="Button ButtonIcon NormalState" tabindex="0" onclick="DeleteChooseBook()">
+                  <span class="Icon"></span><span class="Text">删除选中</span></a>
+                  <a class="Button ButtonIcon NormalState" tabindex="0" onclick="DeleteAllBook()">
+                  <span class="Icon"></span><span class="Text">删除全部</span></a>
+              </div>
+          </div>
+          <div class="ScrollingContentContainer">
+              <div class="ScrollingContainer" style="padding-left: 12px;overflow-x: auto;overflow-y: auto;height: 210px;">
+                  <div class="Normal NoHeading Section">
+                      <div class="Content">
+                          <div class="Large Column">
+                              <div class="PageNavigationLinkGroup">
+                                  <div class="PageNavigationLinkColumn Large" id="MoreBookDiv">
+
+                                    </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
     <!--背景布-->
     <div id="WorkspaceContainer">
         <div id="yibiaopan" >
@@ -1289,6 +1365,8 @@
     var Height = $(window).height() - 66 + "px";
     $("#PageFrame").css("height", Height);
     LoadHistory();
+    LoadBrowerHistory();
+    LoadBook();
     // 搜索相关
     $("#QuickSearchPage").click(function () {
         var searchText = $("#SearchText").val();
@@ -1458,18 +1536,22 @@
     }
     <%if (isFromLogin && notList != null && notList.Count > 0)
     { %>
-    $(".Dialog").show();
+    $(".Notice").show();
     $("#BackgroundOverLay").show();
     <%}%>
 
     // 关闭弹窗
     function CancelDialog(navId) {
         $("#" + navId).hide();
-        var allLength = $(".Dialog").length;
-        var hiddenLength = $(".Dialog:hidden").length;
+        var allLength = $(".Notice").length;
+        var hiddenLength = $(".Notice:hidden").length;
         if (allLength == hiddenLength) {
             $("#BackgroundOverLay").hide();
         }
+    }
+    function CancelSingleDialog(navId) {
+        $("#" + navId).hide();
+        $("#BackgroundOverLay").hide();
     }
     // 下次提醒我
     $(".AlertNext").click(function () {
@@ -1573,7 +1655,7 @@
         }
         // 
     }
-
+    // 清除浏览记录
     function ClearBrowerHistory() {
         $.ajax({
             type: "GET",
@@ -1587,9 +1669,161 @@
             },
         });
     }
-
+    // 
     function ShowMoreHistory() {
+        var browerHistoryTwtenHtml = "";
+        
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/IndexAjax.ashx?act=LoadBrowerHistory",
+            dataType: "json",
+            success: function (data) {
+                if (data != "") {
+                    for (var i = 0; i < data.length; i++) {
+                        var title = data[i].title;
+                        if (data[i].title.length >= 30) {
+                            title = data[i].title.substring(0, 30) + "...";
+                        }
+                        browerHistoryTwtenHtml += "<div class='PageNavigationLink'><a class='Button ButtonIcon Link NormalState HistoryClick'  onclick=\"window.open('" + data[i].url + "', '_blank', 'left=0,top=0,location=no,status=no,width=1280,height=750', false)\">" + title + "</a><span></span></div>";
+                    }
+                   
+                }
+            },
+        });
+        $("#MoreHistoryDiv").html(browerHistoryTwtenHtml);
+        $(".HistoryClick").click(function () {
+            setTimeout(function () { LoadBrowerHistory(); }, 2000)
+        })
+        $("#BackgroundOverLay").show();
+        $("#NoticeHistory").show();
+    }
 
+    function LoadBrowerHistory() {
+        var browerHistoryTwtenHtml = "";
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/IndexAjax.ashx?act=LoadBrowerHistory",
+            dataType: "json",
+            success: function (data) {
+                if (data != "") {
+                    var length = data.length;
+                    if (data.length >= 20) {
+                        length = 20;
+                        $("#ShowHistoryFifty").show();
+                    }
+                    else {
+                        $("#ShowHistoryFifty").hide();
+                    }
+                    for (var i = 0; i < length; i++) {
+                        var title = data[i].title;
+                        if (data[i].title.length >= 30) {
+                            title = data[i].title.substring(0,30)+"...";
+                        }
+                        browerHistoryTwtenHtml += " <div class='Content'><a class='Button ButtonIcon NormalState HistoryClick' onclick=\"window.open('" + data[i].url + "', '_blank', 'left=0,top=0,location=no,status=no,width=900,height=750', false)\"><span class='Text'>" + title + "</span></a></div>";
+                    }
+
+                } else {
+                    $("#ShowHistoryFifty").hide();
+                }
+            },
+        });
+        $("#BrowerHistoryDiv").html(browerHistoryTwtenHtml);
+        $(".HistoryClick").click(function () {
+            setTimeout(function () { LoadBrowerHistory(); }, 2000)
+        })
+    }
+    $(".HistoryClick").click(function () {
+        setTimeout(function () { LoadBrowerHistory();},2000)
+    })
+
+    function ShowManageBook() {
+        var bookHtml = "";
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/IndexAjax.ashx?act=LoadBook",
+            dataType: "json",
+            success: function (data) {
+                if (data != "") {
+                    for (var i = 0; i < data.length; i++) {
+                        bookHtml += "<div class='PageNavigationLink'><p><span style='display:inline-block'><input type='checkbox' value='" + data[i].id + "' class='CkBookMark'  /><span><span><a class='Button ButtonIcon Link NormalState'>" + data[i].title + "</a></span><p></div>";
+                    }
+                }
+            },
+        });
+        $("#MoreBookDiv").html(bookHtml);
+        $("#BackgroundOverLay").show();
+        $("#BookManageNav").show();
+    }
+
+    function LoadBook() {
+        var bookHtml = "";
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/IndexAjax.ashx?act=LoadBook",
+            dataType: "json",
+            success: function (data) {
+                if (data != "") {
+                    for (var i = 0; i < data.length; i++) {
+                        bookHtml += " <div class='Content'><a class='Button ButtonIcon NormalState' onclick=\"window.open('" + data[i].url + "', '_blank', 'left=0,top=0,location=no,status=no,width=900,height=750', false)\"><span class='Text'>" + data[i].title + "</span></a></div>";
+                    }
+
+                }
+            },
+        });
+        $("#BookDropListDiv").html(bookHtml);
+    }
+    function DeleteChooseBook() {
+        LayerConfirm("该删除不可恢复，是否继续？", "是", "否", function () {
+            var ids = "";
+            $(".CkBookMark").each(function () {
+                if ($(this).is(":checked")) {
+                    ids += $(this).val() + ",";
+                }
+            })
+            if (ids != "") {
+                ids = ids.substring(0, ids.length - 1);
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    url: "../Tools/IndexAjax.ashx?act=DeleteChooseBook&ids="+ids,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data) {
+
+
+                        }
+                    },
+                });   
+            }
+            LoadBook();
+            $("#BackgroundOverLay").hide();
+            $("#BookManageNav").hide();
+        });
+       
+
+    }
+    function DeleteAllBook() {
+        LayerConfirm("该删除不可恢复，是否继续？", "是", "否", function () {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/IndexAjax.ashx?act=DeleteAllBook",
+                dataType: "json",
+                success: function (data) {
+                    if (data) {
+                       
+
+                    }
+                },
+            });
+            LoadBook();
+            $("#BackgroundOverLay").hide();
+            $("#BookManageNav").hide();
+        });
     }
 </script>
 </html>

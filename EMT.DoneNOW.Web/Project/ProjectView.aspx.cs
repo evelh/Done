@@ -69,6 +69,15 @@ namespace EMT.DoneNOW.Web.Project
                             viewProjectIframe.Src = "ProjectSummary?id=" + thisProject.id;
                             break;
                     }
+
+                    #region 记录浏览历史
+                    var history = new sys_windows_history()
+                    {
+                        title = $"项目：" + thisProject.name + " " +(thisAccount!=null? thisAccount.name:""),
+                        url = Request.RawUrl,
+                    };
+                    new IndexBLL().BrowseHistory(history, LoginUserId);
+                    #endregion
                 }
                 else
                 {

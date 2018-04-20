@@ -9,6 +9,56 @@
   <link rel="stylesheet" type="text/css" href="../Content/base.css" />
   <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" href="../Content/style.css" />
+    <style>
+            .BookmarkButton {
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: relative;
+    width: 16px;
+    float:right;
+    margin-top: 8px;
+}
+             .BookmarkButton.Selected div {
+    border-color: #f9d959;
+}
+        .BookmarkButton>.LowerLeftPart {
+    border-right-width: 8px;
+    border-bottom-width: 6px;
+    border-left-width: 8px;
+    top: 5px;
+    -moz-transform: rotate(35deg);
+    -webkit-transform: rotate(35deg);
+    -ms-transform: rotate(35deg);
+    transform: rotate(35deg);
+}
+        .BookmarkButton>.LowerRightPart {
+    border-right-width: 8px;
+    border-bottom-width: 6px;
+    border-left-width: 8px;
+    top: 5px;
+    -moz-transform: rotate(-35deg);
+    -webkit-transform: rotate(-35deg);
+    -ms-transform: rotate(-35deg);
+    transform: rotate(-35deg);
+}
+        .BookmarkButton>div.LowerLeftPart, .BookmarkButton>div.LowerRightPart, .BookmarkButton>div.UpperPart {
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-style: solid;
+    border-top: none;
+    height: 0;
+    position: absolute;
+    width: 0;
+}
+        .BookmarkButton>.UpperPart {
+    border-bottom-width: 6px;
+    border-left-width: 3px;
+    border-right-width: 3px;
+    left: 5px;
+    top: 1px;
+}
+</style>
 </head>
 <body>
   <form id="form1" runat="server">
@@ -85,6 +135,12 @@
         </ul>
       </i>
       客户-<%=account.name %>(<%="ID:" + account.oid.ToString() %>)&nbsp;<%=account.is_active == 1 ? "激活" : "未激活" %>&nbsp;<%=account.type_id == null ? "" : company_type.FirstOrDefault(_ => _.val == account.type_id.ToString()).show %>
+        <div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> " onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div>
     </div>
     <div class="header-title" style="width:480px;">
       <ul>
@@ -513,6 +569,28 @@
         // var checkResult = <% %>;
     }
     var pageType = "account";
+
+    function ChangeBookMark() {
+        //$("#bookmark").removeAttr("click");
+        var url = '<%=Request.RawUrl %>';
+        var title = $('title').text();
+        var isBook = $("#bookmark").hasClass("Selected");
+        $.ajax({
+            type: "GET",
+            url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    if (isBook) {
+                        $("#bookmark").removeClass("Selected");
+                    } else {
+                        $("#bookmark").addClass("Selected");
+                    }
+                }
+            }
+        })
+       }
 </script>
 
   <% if (type.Equals("activity")) { %>

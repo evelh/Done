@@ -243,6 +243,8 @@ LEFT JOIN (select quote_id,sum(unit_price*quantity) total_revenue from crm_quote
                 history.create_time = timeNow;
                 history.create_user_id = userId;
                 swhDal.Insert(history);
+                // todo 删除50之后的数据
+                swhDal.DeletFifty();
             }
         }
         /// <summary>
@@ -266,6 +268,50 @@ LEFT JOIN (select quote_id,sum(unit_price*quantity) total_revenue from crm_quote
         public List<sys_windows_history> GetHistoryList(long? userId = null)
         {
             return new sys_windows_history_dal().GetHisList(userId);
+        }
+        /// <summary>
+        /// 书签
+        /// </summary>
+        public bool BookMarkManage(string url,string title,long userId)
+        {
+            var sbDal = new sys_bookmark_dal();
+            var oldBook = sbDal.GetSingBook(url,userId);
+            if (oldBook == null)
+            {
+                oldBook = new sys_bookmark();
+                oldBook.id = sbDal.GetNextIdCom();
+                oldBook.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                oldBook.create_user_id = userId;
+                oldBook.url = url;
+                oldBook.title = title;
+                sbDal.Insert(oldBook);
+            }
+            else
+                return sbDal.DeleteBook(oldBook.id.ToString(), userId);
+            return true;
+        }
+        /// <summary>
+        /// 获取书签信息
+        /// </summary>
+        public sys_bookmark GetSingBook(string url,long userId)
+        {
+            return new sys_bookmark_dal().GetSingBook(url, userId);
+        }
+        /// <summary>
+        /// 根据Ids 删除相关书签
+        /// </summary>
+        public bool DeleteBookByIds(string ids,long userId)
+        {
+            var sbDal = new sys_bookmark_dal();
+            return sbDal.DeleteBook(ids, userId);
+        }
+        /// <summary>
+        /// 删除该用户下的所有书签
+        /// </summary>
+        public bool DeleteAllBook(long userId)
+        {
+            var sbDal = new sys_bookmark_dal();
+            return sbDal.DeleteBook(userId);
         }
     }
 }
