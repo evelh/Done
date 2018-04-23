@@ -45,7 +45,7 @@
                 <li>私人时间</li>
                 <%} %>
                 <%if (policyItems.Exists(_ => _.cate_id == 25)) { %>
-                <li>年休假</li>
+                <li>年假</li>
                 <%} %>
                 <%if (policyItems.Exists(_ => _.cate_id == 23)) { %>
                 <li>病假</li>

@@ -161,7 +161,7 @@ function LayerLoadClose() {
 // 消息框
 function LayerMsg(msg) {
     var index = layer.msg(msg, {
-        time: 2000
+        time: 3000
     });
     layer.style(index, {
         width: 'auto',

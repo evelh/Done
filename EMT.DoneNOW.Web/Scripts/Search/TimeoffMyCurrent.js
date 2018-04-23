@@ -91,6 +91,8 @@ function Submit() {
                     }
                 })
             })
+        } else if (data == 3) {
+            LayerMsg("有一个或多个休假申请没有批准，不能提交工时表");
         }
     })
 }

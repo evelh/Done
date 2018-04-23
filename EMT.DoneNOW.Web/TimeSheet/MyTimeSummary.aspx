@@ -144,7 +144,7 @@
                             <table>
                                 <tr style="border:1px solid #838383;">
                                     <th></th>
-                                    <%if (timeoffSummary.Exists(_ => _.task_id == (int)EMT.DoneNOW.DTO.CostCode.Vacation)) { %><th style="width:110px;text-align:left;">带薪休假</th><%} %>
+                                    <%if (timeoffSummary.Exists(_ => _.task_id == (int)EMT.DoneNOW.DTO.CostCode.Vacation)) { %><th style="width:110px;text-align:left;">年假</th><%} %>
                                     <%if (timeoffSummary.Exists(_ => _.task_id == (int)EMT.DoneNOW.DTO.CostCode.Personal)) { %><th style="width:110px;text-align:left;">私人时间</th><%} %>
                                     <%if (timeoffSummary.Exists(_ => _.task_id == (int)EMT.DoneNOW.DTO.CostCode.Sick)) { %><th style="width:110px;text-align:left;">病假</th><%} %>
                                     <%if (timeoffSummary.Exists(_ => _.task_id == (int)EMT.DoneNOW.DTO.CostCode.Floating)) { %><th style="width:110px;text-align:left;">浮动假期</th><%} %>

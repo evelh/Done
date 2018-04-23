@@ -340,14 +340,7 @@ namespace EMT.DoneNOW.BLL
 
             workEntryId = workEntry.id;
 
-            if (workEntry.cost_code_id == (long)CostCode.Sick
-                || workEntry.cost_code_id == (long)CostCode.Holiday)
-            {
-                type = 1;
-                return true;
-            }
-
-            if(workEntry.timeoff_request_id!=null)
+            if (workEntry.timeoff_request_id != null)
             {
                 type = 2;
                 return true;
@@ -383,7 +376,7 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="resourceId"></param>
-        /// <returns>0:OK;1:工时表为空:2:工时表不为可提交状态</returns>
+        /// <returns>0:OK;1:工时表为空:2:工时表不为可提交状态;3:有一个或多个休假请求没有审批</returns>
         public int SubmitWorkEntryCheck(DateTime startDate, long resourceId)
         {
             var weList = GetWorkEntryListByStartDate(startDate, resourceId);
@@ -391,6 +384,10 @@ namespace EMT.DoneNOW.BLL
                 return 1;
 
             sdk_work_entry_report_dal rptDal = new sdk_work_entry_report_dal();
+
+            var requestCnt = rptDal.FindSignleBySql<int>($"select count(0) from tst_timeoff_request where resource_id={resourceId} and status_id={(int)DicEnum.TIMEOFF_REQUEST_STATUS.COMMIT} and request_date>='{startDate}' and request_date<'{startDate.AddDays(7)}' and delete_time=0");
+            if (requestCnt > 0)
+                return 3;
 
             var find = rptDal.FindSignleBySql<sdk_work_entry_report>($"select * from sdk_work_entry_report where resource_id={resourceId} and start_date='{startDate}' and delete_time=0");
             if (find != null && find.status_id != (int)DicEnum.WORK_ENTRY_REPORT_STATUS.HAVE_IN_HAND && find.status_id != (int)DicEnum.WORK_ENTRY_REPORT_STATUS.REJECTED)
@@ -499,8 +496,8 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public List<sdk_work_entry> GetWorkEntryListByStartDate(DateTime startDate, long resId)
         {
-            DateTime endDate = startDate.AddDays(6);
-            return dal.FindListBySql($"select * from sdk_work_entry where resource_id={resId} and start_time>={Tools.Date.DateHelper.ToUniversalTimeStamp(startDate)} and start_time<={Tools.Date.DateHelper.ToUniversalTimeStamp(endDate)} and delete_time=0");
+            DateTime endDate = startDate.AddDays(7);
+            return dal.FindListBySql($"select * from sdk_work_entry where resource_id={resId} and start_time>={Tools.Date.DateHelper.ToUniversalTimeStamp(startDate)} and start_time<{Tools.Date.DateHelper.ToUniversalTimeStamp(endDate)} and delete_time=0");
         }
 
 

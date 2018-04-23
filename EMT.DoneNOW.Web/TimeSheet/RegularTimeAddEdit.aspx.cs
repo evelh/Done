@@ -37,6 +37,18 @@ namespace EMT.DoneNOW.Web.TimeSheet
                 startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             else
                 startDate = DateTime.Parse(Request.QueryString["startDate"]);
+            if (!isAdd)     // 编辑工时的开始日期
+            {
+                workEntryList = bll.GetWorkEntryByBatchId(batchId);
+                if (workEntryList.Count <= 0)
+                {
+                    Response.Write("<script>alert('工时不存在');window.close();</script>");
+                    Response.End();
+                    return;
+                }
+                startDate = Tools.Date.DateHelper.TimeStampToUniversalDateTime(workEntryList[0].start_time.Value);
+                resourceId = workEntryList[0].resource_id.Value;
+            }
             if (startDate.DayOfWeek != DayOfWeek.Monday)
             {
                 if (startDate.DayOfWeek == DayOfWeek.Sunday)
@@ -60,22 +72,9 @@ namespace EMT.DoneNOW.Web.TimeSheet
                 }
                 else
                 {
-                    workEntryList = bll.GetWorkEntryByBatchId(batchId);
-                    if (workEntryList.Count > 0)
-                    {
-                        cost_code_id.Visible = false;
-                        costCodeName.Visible = true;
-                        costCodeName.Text = costCodeList.Find(_ => _.id == workEntryList[0].task_id).name;
-
-                        startDate = Tools.Date.DateHelper.TimeStampToUniversalDateTime(workEntryList[0].start_time.Value);
-                        if (startDate.DayOfWeek != DayOfWeek.Monday)
-                        {
-                            if (startDate.DayOfWeek == DayOfWeek.Sunday)
-                                startDate = startDate.AddDays(-6);
-                            else
-                                startDate = startDate.AddDays((int)DayOfWeek.Monday - (int)startDate.DayOfWeek);
-                        }
-                    }
+                    cost_code_id.Visible = false;
+                    costCodeName.Visible = true;
+                    costCodeName.Text = costCodeList.Find(_ => _.id == workEntryList[0].task_id).name;
 
                     DateTime dt = new DateTime(startDate.Ticks);
                     var find = workEntryList.Find(_ => _.start_time == Tools.Date.DateHelper.ToUniversalTimeStamp(dt));
@@ -105,9 +104,9 @@ namespace EMT.DoneNOW.Web.TimeSheet
                     find = workEntryList.Find(_ => _.start_time == Tools.Date.DateHelper.ToUniversalTimeStamp(dt));
                     if (find != null)
                     {
-                        tuesday.Text = find.hours_billed.Value.ToString();
-                        tuesdayInter.Value = find.internal_notes;
-                        tuesdayNodes.Value = find.summary_notes;
+                        thursday.Text = find.hours_billed.Value.ToString();
+                        thursdayInter.Value = find.internal_notes;
+                        thursdayNodes.Value = find.summary_notes;
                     }
                     dt = dt.AddDays(1);
                     find = workEntryList.Find(_ => _.start_time == Tools.Date.DateHelper.ToUniversalTimeStamp(dt));
@@ -141,8 +140,8 @@ namespace EMT.DoneNOW.Web.TimeSheet
                     resource_id.DataTextField = "show";
                     resource_id.DataSource = resList;
                     resource_id.DataBind();
-                    if (resList.Exists(_ => _.val == LoginUserId.ToString()))
-                        resource_id.SelectedValue = LoginUserId.ToString();
+                    if (resList.Exists(_ => _.val == resourceId.ToString()))
+                        resource_id.SelectedValue = resourceId.ToString();
                 }
                 notify_tmpl_id.DataTextField = "name";
                 notify_tmpl_id.DataValueField = "id";

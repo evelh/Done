@@ -185,15 +185,17 @@ namespace EMT.DoneNOW.BLL
                             {
                                 var tierOld = tierDal.FindById(itemTier.id);
 
-                                if (itm.accrual_period_type_id == (int)DicEnum.TIMEOFF_PERIOD_TYPE.DAY)
+                                if (itm.accrual_period_type_id == null)
+                                    itemTier.hours_accrued_per_period = null;
+                                else if (itm.accrual_period_type_id == (int)DicEnum.TIMEOFF_PERIOD_TYPE.DAY)
                                     itemTier.hours_accrued_per_period = itemTier.annual_hours / 365;
-                                if (itm.accrual_period_type_id == (int)DicEnum.TIMEOFF_PERIOD_TYPE.WEEK)
+                                else if (itm.accrual_period_type_id == (int)DicEnum.TIMEOFF_PERIOD_TYPE.WEEK)
                                     itemTier.hours_accrued_per_period = itemTier.annual_hours / 52;
-                                if (itm.accrual_period_type_id == (int)DicEnum.TIMEOFF_PERIOD_TYPE.DOUBLE_WEEK)
+                                else if (itm.accrual_period_type_id == (int)DicEnum.TIMEOFF_PERIOD_TYPE.DOUBLE_WEEK)
                                     itemTier.hours_accrued_per_period = itemTier.annual_hours / 26;
-                                if (itm.accrual_period_type_id == (int)DicEnum.TIMEOFF_PERIOD_TYPE.HALF_MONTH)
+                                else if (itm.accrual_period_type_id == (int)DicEnum.TIMEOFF_PERIOD_TYPE.HALF_MONTH)
                                     itemTier.hours_accrued_per_period = itemTier.annual_hours / 24;
-                                if (itm.accrual_period_type_id == (int)DicEnum.TIMEOFF_PERIOD_TYPE.MONTH)
+                                else if (itm.accrual_period_type_id == (int)DicEnum.TIMEOFF_PERIOD_TYPE.MONTH)
                                     itemTier.hours_accrued_per_period = itemTier.annual_hours / 12;
 
                                 itemTier.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
@@ -1062,8 +1064,10 @@ namespace EMT.DoneNOW.BLL
             var user = new UserResourceBLL().GetResourceById(userId);
             foreach (var request in requests)
             {
-                var reportList = bll.GetWorkEntryReportListByDate(request.request_date.Value, request.request_date.Value, userId);
-                if (reportList.Count != 0 && reportList[0].status_id == (int)DicEnum.WORK_ENTRY_REPORT_STATUS.HAVE_IN_HAND)   // 已生成工时表且是提交状态，不能审批休假请求
+                var reportList = bll.GetWorkEntryReportListByDate(request.request_date.Value, request.request_date.Value, requests[0].resource_id);
+                if (reportList.Count != 0
+                    && (reportList[0].status_id == (int)DicEnum.WORK_ENTRY_REPORT_STATUS.HAVE_IN_HAND
+                    || reportList[0].status_id == (int)DicEnum.WORK_ENTRY_REPORT_STATUS.PAYMENT_BEEN_APPROVED))   // 已生成工时表且是提交或已审批状态，不能审批休假请求
                     continue;
 
                 // 判断用户是否在当前可以审批休假请求
@@ -1098,10 +1102,7 @@ namespace EMT.DoneNOW.BLL
                         request.approved_resource_id = userId;
                         rqstDal.Update(request);
                         OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<tst_timeoff_request>(requestOld, request), request.id, userId, DicEnum.OPER_LOG_OBJ_CATE.TIMEOFF_REQUEST, "休假请求审批");
-
-
-                        if (request.task_id == (long)CostCode.Holiday)  // 其他休假不进行其他处理
-                            continue;
+                        
 
                         sdk_work_entry we = new sdk_work_entry();
                         we.id = weDal.GetNextIdCom();
