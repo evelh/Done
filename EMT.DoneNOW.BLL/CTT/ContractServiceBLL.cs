@@ -925,8 +925,12 @@ namespace EMT.DoneNOW.BLL
             var periodList = GetServicePeriodList(serviceId);   // 服务周期列表
             var service = GetService(serviceId);
 
-            var adjust = adjDal.FindSignleBySql<ctt_contract_service_adjust>($"select * from ctt_contract_service_adjust where contract_service_id={serviceId} and approve_and_post_user_id is null and delete_time=0 order by effective_date asc");
-            if (adjust != null)
+            DicEnum.QUOTE_ITEM_PERIOD_TYPE svcPeriod;   // 服务周期类型
+            DicEnum.QUOTE_ITEM_PERIOD_TYPE maxPeriod;   // 合同与服务周期类型中较大的周期类型
+            decimal rate = GetPeriodRate((DicEnum.QUOTE_ITEM_PERIOD_TYPE)contract.period_type, service.id, 0, out svcPeriod, out maxPeriod);
+
+            var adjustList = adjDal.FindListBySql<ctt_contract_service_adjust>($"select * from ctt_contract_service_adjust where contract_service_id={serviceId} and approve_and_post_user_id is null and delete_time=0 order by effective_date asc");
+            foreach (var adjust in adjustList)
             {
                 if (endDate < adjust.effective_date)
                 {
