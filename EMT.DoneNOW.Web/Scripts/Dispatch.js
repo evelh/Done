@@ -776,7 +776,7 @@ function ShowNav4() {
     } else {
         $("#TodoStartDate").text(endDateArr[0]);
     }
-    ;
+    console.log(endDate);
     $.ajax({
         type: "GET",
         async: false,
@@ -790,7 +790,7 @@ function ShowNav4() {
                     $("#TodoStartTime").val(data.startTimeString);
                 }
                 else {
-                    $("#TodoStartTime").val(endDateArr[0]);
+                    $("#TodoStartTime").val(endDateArr[1]);
                 }
                 $("#TodoDurationTime").val(data.durHours);
                 ChangeTodoEndDate();

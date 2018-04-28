@@ -377,10 +377,10 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                                 var callHtml = GetSingResDateCall(res.id, thisDay, out callHours);
                                 var allUserHours = appiontHours + todoHours + callHours;
                                 var allRemainHours = ((thisDay.DayOfWeek == DayOfWeek.Sunday || thisDay.DayOfWeek == DayOfWeek.Saturday) ? 0 : 8) - timeHours;
-                                singContentHtml.Append($"<ul class='HouverTask'><li style='min-height:27px;margin-bottom: 1px;height:auto;border-width: 0px;'><div class='border'></div><div class='Hover-t'>{timeHtml}</div></li><li data-res='{res.id.ToString()}' data-date='{chooseDate.ToString("yyyy-MM-dd HH:mm")}'><div class='border'></div><div class='TaskConter'><div class='t1'>{appHtml + todoHtml + callHtml}</div><div class='t2'></div></div></li>");
+                                singContentHtml.Append($"<ul class='HouverTask'><li style='min-height:27px;margin-bottom: 1px;height:auto;border-width: 0px;'><div class='border'></div><div class='Hover-t'>{timeHtml}</div></li><li data-res='{res.id.ToString()}' data-date='{thisDay.ToString("yyyy-MM-dd HH:mm")}'><div class='border'></div><div class='TaskConter'><div class='t1'>{appHtml + todoHtml + callHtml}</div><div class='t2'></div></div></li>");
                                 for (int j = 0; j < 23; j++)
                                 {
-                                    singContentHtml.Append($"<li {(j >= 7 && j <= 18 ? "style = 'background-color:white;'" : "")} data-res='{res.id.ToString()}' data-date='{chooseDate.AddHours(j + 1).ToString("yyyy-MM-dd HH:mm")}'><div class='border'></div><div class='TaskConter'><div class='t1'></div><div class='t2'></div></div></li>");
+                                    singContentHtml.Append($"<li {(j >= 7 && j <= 18 ? "style = 'background-color:white;'" : "")} data-res='{res.id.ToString()}' data-date='{thisDay.AddHours(j + 1).ToString("yyyy-MM-dd HH:mm")}'><div class='border'></div><div class='TaskConter'><div class='t1'></div><div class='t2'></div></div></li>");
                                 }
                                 singContentHtml.Append("</ul>");
 
@@ -395,7 +395,6 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                                 if (!userTimeDic[thisKey].ContainsKey("RemainHours"))
                                     userTimeDic[thisKey].Add("RemainHours", allRemainHours);
                             }
-
 
                         }
                     }

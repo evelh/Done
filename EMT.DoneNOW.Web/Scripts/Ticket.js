@@ -16,7 +16,7 @@ $(".Title3").on("click", function () {
     index3++;
 });
 $(".Title4").on("click", function () {
-    $(this).next().toggle();
+    $(this).next().toggle(); 
     $(this).children().find($('.Toggle')).children().find($('.InlineIcon ')).css("background-image", "url(../Images/" + backImg[index4 % 2] + ")");
     index4++;
 });

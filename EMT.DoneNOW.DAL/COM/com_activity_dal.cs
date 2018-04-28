@@ -18,5 +18,29 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<com_activity>($"SELECT * from com_activity where delete_time = 0 and object_id = {oid} "+where);
         }
+        /// <summary>
+        /// 获取未完成的待办
+        /// </summary>
+        public List<com_activity> GetNoCompleteTodo(long userId)
+        {
+            return FindListBySql<com_activity>($"SELECT * from com_activity where cate_id = {(int)DTO.DicEnum.ACTIVITY_CATE.TODO} and resource_id = {userId} and status_id = {(int)DTO.DicEnum.ACTIVITY_STATUS.NOT_COMPLETED} and delete_time = 0");
+        }
+        /// <summary>
+        /// 根据客户获取相关备注
+        /// </summary>
+        public List<com_activity> GetNoteByAccount(long accountId)
+        {
+            return FindListBySql($"SELECT * from com_activity where cate_id = {(int)DTO.DicEnum.ACTIVITY_CATE.NOTE} and account_id = {accountId} and delete_time = 0");
+        }
+        /// <summary>
+        /// 获取今天创建的待办的数量
+        /// </summary>
+        public int GetTodoCountByRes(long userId,string where ="")
+        {
+            if (userId != 0)
+                where += $" and resource_id ={userId}";
+            return Convert.ToInt32(GetSingle($"SELECT count(1) from com_activity where cate_id = {(int)DTO.DicEnum.ACTIVITY_CATE.TODO} and delete_time = 0"+ where));
+        }
+
     }
 }

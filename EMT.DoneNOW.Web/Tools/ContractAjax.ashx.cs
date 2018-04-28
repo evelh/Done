@@ -203,6 +203,12 @@ namespace EMT.DoneNOW.Web
                     case "GetContractService":
                         GetContractService(context);
                         break;
+                    case "SetContractCompliance":
+                        SetContractCompliance(context);
+                        break;
+                    case "AjustServiceDate":
+                        AjustServiceDate(context);
+                        break;
                     default:
                         break;
                 }
@@ -860,6 +866,35 @@ namespace EMT.DoneNOW.Web
                     context.Response.Write(resDepString.ToString());
                 }
             }
+        }
+
+        private void SetContractCompliance(HttpContext context)
+        {
+            var result = false;
+            var contractId = context.Request.QueryString["contract_id"];
+            if (!string.IsNullOrEmpty(contractId))
+                result = new ContractBLL().SetContractCompliance(long.Parse(contractId),LoginUserId);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 调整服务的时间
+        /// </summary>
+        private void AjustServiceDate(HttpContext context)
+        {
+            var result = false;
+            var contractId = context.Request.QueryString["contractId"];
+            var serviceId = context.Request.QueryString["serviceId"];
+            var chooseDate = context.Request.QueryString["chooseDate"];
+            if (!string.IsNullOrEmpty(contractId) && !string.IsNullOrEmpty(serviceId) && !string.IsNullOrEmpty(chooseDate))
+            {
+                var conSer = new ctt_contract_service_dal().FindNoDeleteById(long.Parse(serviceId));
+                conSer.effective_date = DateTime.Parse(chooseDate);
+                if (conSer.object_type == 1)
+                    result = new ContractServiceBLL().AdjustService(conSer,LoginUserId);
+                else if (conSer.object_type == 2)
+                    result = new ContractServiceBLL().AdjustServiceBundle(conSer, LoginUserId);
+            }
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
         }
     }
 }

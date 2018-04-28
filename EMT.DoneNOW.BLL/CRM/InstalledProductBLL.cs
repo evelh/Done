@@ -1164,6 +1164,13 @@ namespace EMT.DoneNOW.BLL
 
              return true;
         }
-
+        /// <summary>
+        /// 获取到合同下的对应服务的已绑定配置项数量
+        /// </summary>
+        public int GetExistInsServiceCount(long contractId,long serviceId)
+        {
+            return Convert.ToInt32(_dal.GetSingle($"SELECT COUNT(*) from crm_installed_product where delete_time = 0 and contract_id = {contractId} and (service_id = {serviceId} or service_bundle_id = {serviceId})"));
+            //
+        }
     }
 }

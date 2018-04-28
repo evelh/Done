@@ -1841,6 +1841,7 @@ namespace EMT.DoneNOW.DTO
         CompanyView = 107,
         ParentCompanyView = 108,
         CompanySiteConfiguration = 109,             // 客户站点页面
+        COMPANTREPORT,
 
         ContactAdd = 111,                            //
         ContactEdit = 112,                            //

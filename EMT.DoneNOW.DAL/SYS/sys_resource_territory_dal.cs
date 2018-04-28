@@ -17,6 +17,13 @@ namespace EMT.DoneNOW.DAL
             string sql = $"SELECT * FROM sys_resource_territory WHERE resource_id={resourceId} AND delete_time=0";
             return FindListBySql(sql);
         }
+        /// <summary>
+        /// 根据地域获取相关信息
+        /// </summary>
+        public List<sys_resource_territory> GetByTerrId(long terrId)
+        {
+            return FindListBySql($"SELECT * FROM sys_resource_territory WHERE  delete_time=0 and territory_id = {terrId}");
+        }
     }
 
 }

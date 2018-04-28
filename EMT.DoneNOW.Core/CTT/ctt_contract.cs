@@ -98,6 +98,8 @@ namespace EMT.DoneNOW.Core
         public Decimal? adjust_setup_fee { get; set; }
         [DataMember]
         public Int64? setup_fee_cost_code_id { get; set; }
+        [DataMember]
+        public SByte outof_compliance { get; set; }
 
 
     }

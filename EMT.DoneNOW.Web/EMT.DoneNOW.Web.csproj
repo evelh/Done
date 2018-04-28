@@ -138,12 +138,16 @@
     <Content Include="Common\ColumnSelector.aspx" />
     <Content Include="Activity\AddActivity.aspx" />
     <Content Include="Company\CompanyNameSimilar.aspx" />
+    <Content Include="Company\CompanyReport.aspx" />
     <Content Include="Company\CompanySiteManage.aspx" />
+    <Content Include="Company\CrmDashboard.aspx" />
+    <Content Include="Company\ExecutiveSummary.aspx" />
     <Content Include="Company\UpdateContact.aspx" />
     <Content Include="ConfigurationItem\AddOrEditConfigItem.aspx" />
     <Content Include="ConfigurationItem\ConfigItemWizard.aspx" />
     <Content Include="ConfigurationItem\ConfigType.aspx" />
     <Content Include="ConfigurationItem\ConfigUdfField.aspx" />
+    <Content Include="ConfigurationItem\ContractServiceCompliance.aspx" />
     <Content Include="ConfigurationItem\QuoteItemWizard.aspx" />
     <Content Include="ConfigurationItem\RelatiobContract.aspx" />
     <Content Include="ConfigurationItem\SubscriptionAddOrEdit.aspx" />
@@ -155,6 +159,7 @@
     <Content Include="Company\LocationManage.aspx" />
     <Content Include="Company\ViewCompany.aspx" />
     <Content Include="Content\1.css" />
+    <Content Include="Content\AccountReport.css" />
     <Content Include="Content\Admin.css" />
     <Content Include="Content\bootstrap.min2.2.2.css" />
     <Content Include="Contact\ViewContact.aspx" />
@@ -198,6 +203,10 @@
     <Content Include="Images\LoadingRefresh.gif" />
     <Content Include="Images\ThemeSwatchIcons.png" />
     <Content Include="Images\WidgetConfigurationIcons.png" />
+    <Content Include="Images\bronze_managed_service.jpg" />
+    <Content Include="Images\dashboard_callmetrics.png" />
+    <Content Include="Images\dashboard_salesalert.png" />
+    <Content Include="Images\dashboard_salesmetrics.png" />
     <Content Include="Scripts\clipboard.js" />
     <Content Include="Scripts\clipboard.min.js" />
     <Content Include="Scripts\Dashboard\Dashboard.js" />
@@ -540,6 +549,7 @@
     <Content Include="ServiceDesk\KnowledgebaseDetail.aspx" />
     <Content Include="ServiceDesk\ManageKnowledgebase.aspx" />
     <Content Include="ServiceDesk\MasterTicket.aspx" />
+    <Content Include="ServiceDesk\MyInCompleteItem.aspx" />
     <Content Include="ServiceDesk\MyQueueList.aspx" />
     <Content Include="ServiceDesk\Newsubcategory.aspx" />
     <Content Include="ServiceDesk\DeleteMasterTicket.aspx" />
@@ -1097,12 +1107,33 @@
     <Compile Include="Company\CompanyNameSimilar.aspx.designer.cs">
       <DependentUpon>CompanyNameSimilar.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Company\CompanyReport.aspx.cs">
+      <DependentUpon>CompanyReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Company\CompanyReport.aspx.designer.cs">
+      <DependentUpon>CompanyReport.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Company\CompanySiteManage.aspx.cs">
       <DependentUpon>CompanySiteManage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Company\CompanySiteManage.aspx.designer.cs">
       <DependentUpon>CompanySiteManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Company\CrmDashboard.aspx.cs">
+      <DependentUpon>CrmDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Company\CrmDashboard.aspx.designer.cs">
+      <DependentUpon>CrmDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Company\ExecutiveSummary.aspx.cs">
+      <DependentUpon>ExecutiveSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Company\ExecutiveSummary.aspx.designer.cs">
+      <DependentUpon>ExecutiveSummary.aspx</DependentUpon>
     </Compile>
     <Compile Include="Company\UpdateContact.aspx.cs">
       <DependentUpon>UpdateContact.aspx</DependentUpon>
@@ -1138,6 +1169,13 @@
     </Compile>
     <Compile Include="ConfigurationItem\ConfigUdfField.aspx.designer.cs">
       <DependentUpon>ConfigUdfField.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationItem\ContractServiceCompliance.aspx.cs">
+      <DependentUpon>ContractServiceCompliance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConfigurationItem\ContractServiceCompliance.aspx.designer.cs">
+      <DependentUpon>ContractServiceCompliance.aspx</DependentUpon>
     </Compile>
     <Compile Include="ConfigurationItem\QuoteItemWizard.aspx.cs">
       <DependentUpon>QuoteItemWizard.aspx</DependentUpon>
@@ -2100,6 +2138,13 @@
     </Compile>
     <Compile Include="ServiceDesk\MasterTicket.aspx.designer.cs">
       <DependentUpon>MasterTicket.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\MyInCompleteItem.aspx.cs">
+      <DependentUpon>MyInCompleteItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\MyInCompleteItem.aspx.designer.cs">
+      <DependentUpon>MyInCompleteItem.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServiceDesk\MyQueueList.aspx.cs">
       <DependentUpon>MyQueueList.aspx</DependentUpon>

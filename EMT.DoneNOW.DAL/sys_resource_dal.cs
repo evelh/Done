@@ -35,9 +35,13 @@ namespace EMT.DoneNOW.DAL
         /// 获取到所有的员工
         /// </summary>
         /// <returns></returns>
-        public List<sys_resource> GetSourceList()
+        public List<sys_resource> GetSourceList(bool isActive = true)
         {
-            return FindListBySql<sys_resource>("select * from sys_resource where is_active = 1 and delete_time = 0");
+           
+            string where = " and is_active = 1";
+            if (!isActive)
+                where = "";
+            return FindListBySql<sys_resource>("select * from sys_resource where  delete_time = 0 " + where);
         }
 
         public List<sys_resource> GetListByIds(string ids,bool isActive = true)

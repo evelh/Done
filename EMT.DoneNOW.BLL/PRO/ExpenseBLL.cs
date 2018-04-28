@@ -346,7 +346,7 @@ namespace EMT.DoneNOW.BLL
                 var thisReport = _dal.FindNoDeleteById(eid);
                 if (thisReport != null)
                 {
-                    if (thisReport.status_id == (int)DTO.DicEnum.EXPENSE_REPORT_STATUS.HAVE_IN_HAND)
+                    if (thisReport.status_id == (int)DTO.DicEnum.EXPENSE_REPORT_STATUS.HAVE_IN_HAND|| thisReport.status_id == (int)DTO.DicEnum.EXPENSE_REPORT_STATUS.REJECTED)
                     {
                         var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                         #region 修改费用报表状态
@@ -402,7 +402,7 @@ namespace EMT.DoneNOW.BLL
                     }
                     else
                     {
-                        faileReason = "只有进行中的报表报表才可以进行提交操作！";
+                        faileReason = "只有进行中或者已拒绝的报表报表才可以进行提交操作！";
                         return false;
                     }
                 }

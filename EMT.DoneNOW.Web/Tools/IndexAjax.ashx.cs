@@ -11,7 +11,7 @@ namespace EMT.DoneNOW.Web
     /// </summary>
     public class IndexAjax : BaseAjax
     {
-
+        protected IndexBLL indexBll = new IndexBLL();
         public override void AjaxProcess(HttpContext context)
         {
             var action = context.Request.QueryString["act"];
@@ -20,7 +20,7 @@ namespace EMT.DoneNOW.Web
                 case "SearchHistoryManage":
                     SearchHistoryManage(context);
                     break;
-                case "LoadSearchHistory":
+                case "LoadSearchHistory":  // 加载查询历史
                     LoadSearchHistory(context);
                     break;
                 case "ChangeNoticeNext":
@@ -29,7 +29,7 @@ namespace EMT.DoneNOW.Web
                 case "ClearHistory":
                     ClearHistory(context);
                     break;
-                case "LoadBrowerHistory":
+                case "LoadBrowerHistory":  // 加载浏览历史
                     LoadBrowerHistory(context);
                     break;
                 case "BookMarkManage":
@@ -43,6 +43,18 @@ namespace EMT.DoneNOW.Web
                     break;
                 case "DeleteAllBook":
                     DeleteAllBook(context);
+                    break;
+                case "LoadDispatch": // 加载调度工作室日历
+                    LoadDispatch(context);
+                    break;
+                case "DeleteWorkTicket":
+                    DeleteWorkTicket(context);
+                    break;
+                case "DeleteSingWorkTicket":
+                    DeleteSingWorkTicket(context);
+                    break;
+                case "AddWorkList":
+                    AddWorkList(context);
                     break;
                 default:
                     break;
@@ -180,5 +192,82 @@ namespace EMT.DoneNOW.Web
             var result = new IndexBLL().DeleteAllBook(LoginUserId);
             context.Response.Write(new Tools.Serialize().SerializeJson(result));
         }
+        /// <summary>
+        /// 加载调度日历
+        /// </summary>
+        public void LoadDispatch(HttpContext context)
+        {
+            var chooseDateString = context.Request.QueryString["chooseDate"];
+            if (!string.IsNullOrEmpty(chooseDateString))
+            {
+                
+                var chooseDate = DateTime.Parse(chooseDateString);
+                var firstDay = indexBll.GetMonday(DateTime.Parse(chooseDate.ToString("yyyy-MM")+"-01"));
+                int monthDays = DateTime.DaysInMonth(chooseDate.Year, chooseDate.Month);  // 当月的天数
+                var lastDay = indexBll.GetSunDay(DateTime.Parse(chooseDate.ToString("yyyy-MM") + "-"+ monthDays.ToString("00")));
+                var weekNums = indexBll.GetDateDiffMonth(firstDay, lastDay, "week");
+                var disHtml = new System.Text.StringBuilder();
+                for (int i = 0; i < weekNums; i++)
+                {
+                    var days = i * 7;
+                    var thisMonthDay = firstDay.AddDays(days);
+                    disHtml.Append("<tr>");
+                    //for (int j = 0; j < 7; j++)
+                    //{
+                    //    var thisDay = thisMonthDay.AddDays(j);
+                    //    disHtml.Append($"<td class='{indexBll.ReturnClassName(chooseDate,thisDay,LoginUserId)}'>{thisDay.Day}</td>");
+                    //}
+                    disHtml.Append(AddHtml(chooseDate, thisMonthDay));
+                    disHtml.Append("</tr>");
+                }
+                context.Response.Write(new Tools.Serialize().SerializeJson(new {showToMonth= chooseDate.Year.ToString()+"年 "+ chooseDate.Month.ToString()+"月",lastMonth = chooseDate.AddMonths(-1).ToString("yyyy-MM")+"-01",nextMonth = chooseDate.AddMonths(1).ToString("yyyy-MM") + "-01",content = disHtml.ToString() }));
+            }
+        }
+        /// <summary>
+        /// 日历Html 代码↑
+        /// </summary>
+        public string AddHtml(DateTime chooseDate,DateTime thisMonDay)
+        {
+            string html = "";
+            for (int i = 0; i < 7; i++)
+            {
+                html += $"<td class='{indexBll.ReturnClassName(chooseDate, thisMonDay.AddDays(i), LoginUserId)}' onclick=\"ToSingDispatch('{thisMonDay.AddDays(i).ToString("yyyy-MM-dd")}')\">{thisMonDay.AddDays(i).Day}</td>";
+            }
+            
+            return html;
+        }
+        /// <summary>
+        /// 删除工作列表的工单/任务
+        /// </summary>
+        public void DeleteWorkTicket(HttpContext context)
+        {
+            bool isTicket = !string.IsNullOrEmpty(context.Request.QueryString["isTicket"]);
+            var result = indexBll.DeleteWorkTicket(LoginUserId,isTicket);
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 删除指定的工作列表
+        /// </summary>
+        public void DeleteSingWorkTicket(HttpContext context)
+        {
+            var ids = context.Request.QueryString["ids"];
+            var result = false;
+            if (!string.IsNullOrEmpty(ids))
+                result = indexBll.DeleteSingWorkTicket(ids,LoginUserId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 添加到工作列表
+        /// </summary>
+        public void AddWorkList(HttpContext context)
+        {
+            var resIds = context.Request.QueryString["resIds"];
+            var taskId = context.Request.QueryString["taskId"];
+            var result = false;
+            if (!string.IsNullOrEmpty(resIds) && !string.IsNullOrEmpty(taskId))
+                result = indexBll.AddToManyWorkList(resIds,long.Parse(taskId));
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+
     }
 }

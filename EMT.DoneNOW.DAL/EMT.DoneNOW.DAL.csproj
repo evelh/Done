@@ -223,6 +223,8 @@
     <Compile Include="SYS\sys_workflow_dal.cs" />
     <Compile Include="SYS\sys_workflow_log_dal.cs" />
     <Compile Include="SYS\sys_workgroup_dal.cs" />
+    <Compile Include="SYS\sys_work_list_dal.cs" />
+    <Compile Include="SYS\sys_work_list_task_dal.cs" />
     <Compile Include="sys_resource_dal.cs" />
     <Compile Include="TST\tst_timeoff_activity_dal.cs" />
     <Compile Include="TST\tst_timeoff_balance_dal.cs" />
