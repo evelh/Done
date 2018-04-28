@@ -485,7 +485,7 @@
                 { %>
             <%--<input name="<%=param3 %>" type="hidden" class="sl_cdt" value="<%=param4 %>" />--%>
             <%} %>
-               <% if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INSTALLEDPRODUCT||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SALEORDER||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.QUOTE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CRM_NOTE_SEARCH||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TODOS)
+               <% if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INSTALLEDPRODUCT||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SALEORDER||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.QUOTE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CRM_NOTE_SEARCH||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TODOS||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY)
                 { %>
                         <% if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
                 { %>
@@ -606,7 +606,8 @@
 
            
     <%   
-      }  else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TODOS)
+    }
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TODOS)
     {  %>
             var obj = $("select[name = '662']").eq(0);
             if (obj != undefined) {
@@ -621,7 +622,24 @@
 
 
     <%   
-      }%>
+    }
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY)
+    {
+        if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
+            {%>
+       
+            if ($("input[name = '<%=param1 %>']").val() != undefined) {
+                $("input[name = '<%=param1 %>']").val("<%=param2 %>");
+                <%
+     }
+         if (!string.IsNullOrEmpty(param3) && !string.IsNullOrEmpty(param4))
+            {%>
+
+                if ($("input[name = '<%=param3 %>']").val() != undefined) {
+                    $("input[name = '<%=param3 %>']").val("<%=param4 %>");
+                <%
+     }
+    } %>
             if (parent.parent.hideHeader != undefined) {
                 $(".header").hide();
             }

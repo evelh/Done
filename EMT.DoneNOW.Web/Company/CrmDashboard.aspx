@@ -645,22 +645,18 @@
 
                                     <tbody>
                                         <tr>
-                                            <td width="70%"><a href="#" onclick="showMyCustomerList();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">公司</font></font></a></td>
+                                            <td width="70%"><a href="#" onclick="showMyCustomerList('<%=resourceId!=null&&resourceId!=0?resourceId.ToString():"" %>','<%=terrId!=null&&terrId!=0?terrId.ToString():"" %>');"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">公司</font></font></a></td>
                                             <td width="30%" align="right"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=accountCount %></font></font></td>
                                         </tr>
                                         <tr>
                                             <td width="70%">
-
                                                 <a href="#" onclick="showActiveOpportunities();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">积极的机会</font></font></a>
-
                                             </td>
                                             <td width="30%" align="right"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=activeOppoCount %></font></font></td>
                                         </tr>
                                         <tr>
                                             <td width="70%">
-
                                                 <a href="#" onclick="showNewOpportunitiesThisMonth();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">本月新的机会</font></font></a>
-
                                             </td>
                                             <td width="30%" align="right"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=newOppoMonthCount %></font></font></td>
                                         </tr>
@@ -720,7 +716,7 @@
                                                 <%} %>
                                             </td>
                                             <td width="60%">
-                                                <a href="#" onclick="showKeyAccounts ('<%=accCalss.id %>')"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=accCalss.name %></font></font></a>
+                                                <a href="#" onclick="showKeyAccounts('<%=accCalss.id %>','<%=resourceId!=null&&resourceId!=0?resourceId.ToString():"" %>','<%=terrId!=null&&terrId!=0?terrId.ToString():"" %>')"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=accCalss.name %></font></font></a>
                                             </td>
                                             <td width="30%" align="right"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=classAccDic[accCalss.id] %></font></font></td>
                                         </tr>
@@ -822,8 +818,42 @@
         location.href = "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TODOS %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Todos %>&group=112&param1=3014&param2=" + resId + "&param3=3013&param4=1&con662=" + resId;
     }
     function showOverdueOpportunities(resIds) {
-        if (resIds == 0)
+        if (resIds == 0) {
             resIds = "''";
+        }
         location.href = "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Opportunity %>&group=9&con274=" + resIds+"&con271=<%=(int)EMT.DoneNOW.DTO.DicEnum.OPPORTUNITY_STATUS.ACTIVE %>&con276_h=<%=DateTime.Now.ToString("yyyy-MM-dd") %>";
+    }
+    // 昨天创建的工单
+    function showYesterdayCustomerST() {
+
+    }
+    // 今天创建的工单
+    function showTodayCustomerST() {
+
+    }
+
+    function showMyCustomerList(resIds, terrId) {
+        var where = "";
+        if (resIds != "") {
+            where += "&param1=82&param2=" + resIds;
+        }
+        if (terrId != "") {
+            where += "&param1=74&param2=" + terrId;
+        }
+        location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Company %>&group=11&con17=" + resIds + "&isShow=Search" + where;
+    }
+
+    function showAccountsOfTerritory(terrId) {
+        location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Company %>&group=11&isShow=Search&param1=74&param2=" + terrId;
+    }
+    function showKeyAccounts(accClasssId, resIds, terrId) {
+        var where = "";
+        if (resIds != "") {
+            where += "&param1=82&param2=" + resIds;
+        }
+        if (terrId != "") {
+            where += "&param1=74&param2=" + terrId;
+        }
+        location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Company %>&group=11&isShow=Search&param3=80&param4=" + accClasssId + where;
     }
 </script>

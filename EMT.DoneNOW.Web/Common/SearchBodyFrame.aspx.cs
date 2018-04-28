@@ -460,7 +460,7 @@ namespace EMT.DoneNOW.Web
                     if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
                         queryPara.query_params.Add(new Para() { id = long.Parse(param1), value = param2 });
                 }
-                else if(queryTypeId == (int)QueryType.Contact|| queryTypeId == (int)QueryType.Opportunity || queryTypeId == (int)QueryType.SaleOrder || queryTypeId == (int)QueryType.Quote || queryTypeId == (int)QueryType.CRMNote || queryTypeId == (int)QueryType.Todos)
+                else if(queryTypeId == (int)QueryType.Contact|| queryTypeId == (int)QueryType.Opportunity || queryTypeId == (int)QueryType.SaleOrder || queryTypeId == (int)QueryType.Quote || queryTypeId == (int)QueryType.CRMNote || queryTypeId == (int)QueryType.Todos || queryTypeId == (int)QueryType.Company)
                 {
                     var id = keys["conparam1"];
                     string val = keys["conparam2"];
@@ -468,7 +468,7 @@ namespace EMT.DoneNOW.Web
                         queryPara.query_params.Add(new Para() { id = long.Parse(id), value = val });
 
                 }
-                if(queryTypeId == (int)QueryType.Todos)
+                if(queryTypeId == (int)QueryType.Todos || queryTypeId == (int)QueryType.Company)
                 {
                     if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
                         queryPara.query_params.Add(new Para() { id = long.Parse(param1), value = param2 });
