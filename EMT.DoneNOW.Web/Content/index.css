@@ -775,3 +775,93 @@ body #WorkspaceContainer {
         background-position: center;
         display: block;
     }
+.CalendarContainer .Calendar table.DateContainer td:hover {
+    background: #eaedf4;
+    border: 0 solid #FFF;
+    border-radius: 50%;
+}
+td.Overlap {
+    color: #acb8cb;
+}
+.CalendarContainer .Calendar table.DateContainer td {
+    cursor: pointer;
+    height: 28px;
+    text-align: center;
+}
+.CalendarContainer .Calendar table.DateContainer th, .CalendarContainer .Calendar table.DateContainer td {
+    padding: 0;
+    width: 28px;
+}
+    
+    .CalendarContainer .Calendar table.DateContainer td.Today {
+        color: #65b0ee;
+    }
+    .CalendarContainer .Calendar table.DateContainer td.Important {
+        background: #65b0ee !important;
+        border-radius: 50%;
+        color: #FFF !important;
+        opacity: .75;
+    }
+.CalendarContainer .Calendar .CalendarNavigation .Text {
+    color: #000;
+    font-size: 15px;
+    font-weight: 800;
+    left: 27px;
+    line-height: 36px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 182px;
+}
+.CalendarContainer .Calendar .CalendarNavigation .Arrow.Left > span {
+    border-left: 0;
+    left: 15px;
+}
+.CalendarContainer .Calendar .CalendarNavigation .Arrow > span {
+    border-color: #acb8cb;
+    border-style: solid;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    border-width: 6px 9px 6px 9px;
+    height: 0;
+    top: 12px;
+    width: 0;
+}
+.CalendarContainer .Calendar .CalendarNavigation .Arrow.Right {
+    right: 0;
+}
+.CalendarContainer .Calendar .CalendarNavigation .Arrow {
+    height: 36px;
+    width: 27px;
+}
+    .CalendarContainer .Calendar .CalendarNavigation .Arrow.Right > span {
+        border-right: 0;
+        right: 15px;
+    }
+.loading {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    z-index: 999999;
+    display: none;
+}
+
+.loadimg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 170px;
+    height: 100px;
+    margin-left: -85px;
+    margin-top: -50px;
+    text-align: center;
+    border: 5px solid #BCBCBC;
+    background: #E4E4E4;
+    padding: 10px;
+}
+
+    .loadimg img {
+        display: block;
+        margin: 0 auto;
+    }

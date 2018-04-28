@@ -1310,5 +1310,25 @@ namespace EMT.DoneNOW.BLL
 
             return true;
         }
+        /// <summary>
+        /// 修改合同 的 合同服务数量与CI不一致字段
+        /// </summary>
+        public bool SetContractCompliance(long contractId,long userId)
+        {
+
+            var contract = dal.FindNoDeleteById(contractId);
+            if (contract == null)
+                return false;
+            if (contract.outof_compliance != 1)
+            {
+                contract.outof_compliance = 1;
+                contract.update_user_id = userId;
+                contract.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                var oldContract = dal.FindNoDeleteById(contractId);
+                dal.Update(contract);
+                OperLogBLL.OperLogUpdate<ctt_contract>(contract, oldContract, contract.id, userId, OPER_LOG_OBJ_CATE.CONTACTS, "修改合同");
+            }
+            return true;
+        }
     }
 }

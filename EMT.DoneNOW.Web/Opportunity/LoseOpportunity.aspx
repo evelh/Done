@@ -300,7 +300,7 @@ textarea {
                                         <td class="FieldLabels">
                                            丢失时间
                                             <div>
-                                                <input type="text" id="lostTime" onclick="WdatePicker()" class="Wdate" value="<%=DateTime.Now.ToString("yyyy-MM-dd") %>"/>
+                                                <input type="text" id="lostTime" name="lostTime" onclick="WdatePicker()" class="Wdate" value="<%=DateTime.Now.ToString("yyyy-MM-dd") %>"/>
                                             </div>
                                         </td>
                                     </tr>
@@ -752,6 +752,11 @@ textarea {
         var resource_id = $("#resource_id").val();
         if (resource_id == 0) {
             alert("请选择一个商机负责人");
+            return false;
+        }
+        var lostTime = $("#lostTime").val();
+        if (lostTime == "") {
+            alert("请填写丢失时间");
             return false;
         }
         // 根据系统设置进行必填项校验

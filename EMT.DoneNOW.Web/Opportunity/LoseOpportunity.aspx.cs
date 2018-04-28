@@ -131,6 +131,12 @@ namespace EMT.DoneNOW.Web.Opportunity
             opportunity.competitor_id = thisOppo.competitor_id;
             opportunity.loss_reason_type_id = thisOppo.loss_reason_type_id;
             opportunity.loss_reason = thisOppo.loss_reason;
+            var actual_closed_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            if (!string.IsNullOrEmpty(Request.Form["lostTime"]))
+                opportunity.actual_closed_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(Request.Form["lostTime"]));
+            //else
+            //    opportunity.actual_closed_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+
             // opportunity.resource_id = thisOppo.resource_id;
             // opportunity.resource_id = thisOppo.resource_id;
             LoseOpportunityDto dto = new LoseOpportunityDto()

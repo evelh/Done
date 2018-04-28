@@ -468,6 +468,15 @@ namespace EMT.DoneNOW.Web
                         queryPara.query_params.Add(new Para() { id = long.Parse(id), value = val });
 
                 }
+                if(queryTypeId == (int)QueryType.Todos)
+                {
+                    if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
+                        queryPara.query_params.Add(new Para() { id = long.Parse(param1), value = param2 });
+                    var param3 = string.IsNullOrEmpty(Request.QueryString["param3"]) ? "" : Request.QueryString["param3"];
+                    var param4 = string.IsNullOrEmpty(Request.QueryString["param4"]) ? "" : Request.QueryString["param4"];
+                    if (!string.IsNullOrEmpty(param3) && !string.IsNullOrEmpty(param4))
+                        queryPara.query_params.Add(new Para() { id = long.Parse(param3), value = param4 });
+                }
                
                 #endregion
 

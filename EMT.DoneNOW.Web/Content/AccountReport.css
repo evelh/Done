@@ -1,0 +1,12 @@
+﻿body {
+    font-size: 12px;
+    background: #fff;
+    left: 0;
+    position: relative;
+    top: 0;
+    min-width: 700px;
+}
+#txtBlack8, .txtBlack8 {
+    font-size: 12px;
+    color: #4F4F4F;
+}

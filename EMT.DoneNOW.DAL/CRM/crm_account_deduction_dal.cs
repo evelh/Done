@@ -57,7 +57,21 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<crm_account_deduction>($"SELECT * from crm_account_deduction where delete_time = 0 and object_id = {object_id} ");
         }
-    
+        /// <summary>
+        /// 获取指定时间内的合同的总和
+        /// </summary>
+        public decimal GetContractSum(long accountId,DateTime startDate,DateTime endDate)
+        {
+            return Convert.ToDecimal(GetSingle($"SELECT sum(dollars) from v_posted_all where posted_date<='{endDate.ToString("yyyy-MM-dd")}' and posted_date>='{startDate.ToString("yyyy-MM-dd")}' and account_id = {accountId} and contract_name is not NULL"));
+        }
+        /// <summary>
+        /// 获取指定时间内的项目的总和
+        /// </summary>
+        public decimal GetProjectSum(long accountId, DateTime startDate, DateTime endDate)
+        {
+            return Convert.ToDecimal(GetSingle($"SELECT sum(dollars) from v_posted_all where posted_date<='{endDate.ToString("yyyy-MM-dd")}' and posted_date>='{startDate.ToString("yyyy-MM-dd")}' and account_id = {accountId} and project_id is not NULL"));
+        }
+
     }
 
 }

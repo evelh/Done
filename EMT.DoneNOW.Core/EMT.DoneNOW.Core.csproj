@@ -193,6 +193,8 @@
     <Compile Include="SYS\sys_workflow.cs" />
     <Compile Include="SYS\sys_workflow_log.cs" />
     <Compile Include="SYS\sys_workgroup.cs" />
+    <Compile Include="SYS\sys_work_list.cs" />
+    <Compile Include="SYS\sys_work_list_task.cs" />
     <Compile Include="SYS\v_timeoff_activity_request.cs" />
     <Compile Include="sys_resource.cs" />
     <Compile Include="TST\tst_timeoff_activity.cs" />

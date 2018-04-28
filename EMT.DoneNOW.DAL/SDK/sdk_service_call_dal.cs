@@ -22,6 +22,12 @@ namespace EMT.DoneNOW.DAL
             // and ssct.service_call_id = {callId} and st.type_id in({(int)DTO.DicEnum.TASK_TYPE.PROJECT_TASK}, {(int)DTO.DicEnum.TASK_TYPE.PROJECT_ISSUE}, {(int)DTO.DicEnum.TASK_TYPE.PROJECT_PHASE})
             return Convert.ToInt32(res) > 0;
         }
-       
+        /// <summary>
+        /// 获取未完成的服务预定 - 根据负责人
+        /// </summary>
+        public List<sdk_service_call> GetNoComCall(long userId)
+        {
+            return FindListBySql($"SELECT ssc.* from sdk_service_call  ssc JOIN sdk_service_call_task ssct on ssct.service_call_id = ssc.id JOIN sdk_service_call_task_resource ssctr on ssctr.service_call_task_id = ssct.id where ssc.status_id = {(int)DTO.DicEnum.SERVICE_CALL_STATUS.NEW} and ssctr.resource_id = {userId} and ssc.delete_time = 0 and ssct.delete_time = 0 and ssctr.delete_time = 0");
+        }
     }
 }

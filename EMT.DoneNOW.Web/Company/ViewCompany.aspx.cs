@@ -7,6 +7,9 @@ using System.Web.UI.WebControls;
 using EMT.DoneNOW.DTO;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.BLL;
+using System.IO;
+using System.Diagnostics;
+using System.Text;
 
 namespace EMT.DoneNOW.Web.Company
 {
@@ -23,11 +26,11 @@ namespace EMT.DoneNOW.Web.Company
         {
             try
             {
-                thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
                 var id = Request.QueryString["id"];
                 type = Request.QueryString["type"];
                 if (id != null)
                 {
+                    thisBookMark = new IndexBLL().GetSingBook(Request.Url.LocalPath + "?id=" + id, LoginUserId);
                     var src = Request.QueryString["src"];
                     if (!string.IsNullOrEmpty(src))
                         crm_account = companyBll.GetCompanyByOtherId(Convert.ToInt64(id), src);
@@ -44,7 +47,7 @@ namespace EMT.DoneNOW.Web.Company
                         var history = new sys_windows_history()
                         {
                             title = "客户:"+ crm_account.name,
-                            url = Request.RawUrl,
+                            url = Request.Url.LocalPath + "?id=" + id,
                         };
                         new IndexBLL().BrowseHistory(history, LoginUserId);
                         #endregion
@@ -112,6 +115,9 @@ namespace EMT.DoneNOW.Web.Company
                                 iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.PROJECT_SEARCH + "&type=" + (int)QueryType.PROJECT_SEARCH + "&con630=" + crm_account.id;
                                 actType = "项目";
                                 break;
+                            case "finance":
+                                actType = "财务";
+                                break;
                             default:
                                 iframeSrc = "";  // 默认  project_search
                                 actType = "活动";
@@ -126,13 +132,12 @@ namespace EMT.DoneNOW.Web.Company
                 }
                 else
                 {
-                    Response.End();
+                    Response.Write("<script>alert('未获取到客户信息');window.close();</script>");
                 }
-
             }
-            catch (Exception)
+            catch (Exception msg)
             {
-                Response.End();
+                Response.Write($"<script>alert('{msg.Message}');window.close();</script>");
             }
       
         }
@@ -162,6 +167,76 @@ namespace EMT.DoneNOW.Web.Company
         public crm_contact GetDefaultContact()
         {
             return new ContactBLL().GetDefaultByAccountId(crm_account.id);
+        }
+
+        private bool HtmlToPdf(string url, string where = "",string fileName = "1")
+        {
+            bool success = true;
+            // string dwbh = url.Split('?')[1].Split('=')[1];
+            //CommonBllHelper.CreateUserDir(dwbh);
+            //url = Request.Url.Host + "/html/" + url;
+            string guid = DateTime.Now.ToString("yyyyMMddhhmmss");
+            string pdfName = fileName+".pdf";
+            //string path = Server.MapPath("~/kehu/" + dwbh + "/pdf/") + pdfName;
+            string path = Server.MapPath("\\" + pdfName);
+            try
+            {
+                if (string.IsNullOrEmpty(url) || string.IsNullOrEmpty(path))
+                    success = false;
+                string str = Server.MapPath("~\\bin\\wkhtmltopdf.exe");
+                Process p = System.Diagnostics.Process.Start(str + where, url + " " + path);
+                p.WaitForExit();
+                if (!System.IO.File.Exists(str))
+                    success = false;
+                if (System.IO.File.Exists(path))
+                {
+                    FileStream fs = new FileStream(path, FileMode.Open);
+                    byte[] bytes = new byte[(int)fs.Length];
+                    fs.Read(bytes, 0, bytes.Length);
+                    fs.Close();
+                    if (Request.UserAgent != null)
+                    {
+                        string userAgent = Request.UserAgent.ToUpper();
+                        if (userAgent.IndexOf("FIREFOX", StringComparison.Ordinal) <= 0)
+                        {
+                            Response.AddHeader("Content-Disposition",
+                                          "attachment;  filename=" + HttpUtility.UrlEncode(pdfName, Encoding.UTF8));
+                        }
+                        else
+                        {
+                            Response.AddHeader("Content-Disposition", "attachment;  filename=" + pdfName);
+                        }
+                    }
+                    Response.ContentEncoding = Encoding.UTF8;
+                    Response.ContentType = "application/octet-stream";
+                    //通知浏览器下载文件而不是打开
+                    Response.BinaryWrite(bytes);
+                    Response.Buffer = true;
+                    Response.Flush();
+
+                    fs.Close();
+                    System.IO.File.Delete(path);
+                    //Response.End();
+                }
+                else
+                {
+                    Response.Write("文件未找到,可能已经被删除");
+                    Response.Flush();
+                    Response.End();
+                }
+            }
+            catch (Exception ex)
+            {
+                success = false;
+            }
+            return success;
+        }
+
+        protected void ToPdfSummary_ServerClick(object sender, EventArgs e)
+        {
+            var url = Request.Url.ToString();
+            url = url.Substring(0,url.LastIndexOf("/"))+ "/ExecutiveSummary?accountId="+ crm_account.id.ToString();
+            HtmlToPdf(url,"","执行摘要");
         }
     }
 }

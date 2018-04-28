@@ -70,7 +70,7 @@ namespace EMT.DoneNOW.Web.Project
                         
                     }
                     resource_id.DataSource = resList;
-
+                    resource_id.SelectedValue = LoginUserId.ToString();
                     resource_id.DataBind();
 
                     var statusList = dic.FirstOrDefault(_ => _.Key == "ticket_status").Value as List<DictionaryEntryDto>;
@@ -109,11 +109,11 @@ namespace EMT.DoneNOW.Web.Project
                             Response.Write("<script>alert('审批提交的工时不可以更改！');window.close();</script>");
                             Response.End();
                         }
-
+                        
                         if (!resList.Any(_ => _.val == thisWorkEntry.create_user_id.ToString()))
                         {
-                            Response.Write("<script>alert('系统设置不能代理操作！')window.close();</script>");
-                            Response.End();
+                            Response.Write("<script>alert('系统设置不能代理操作！');window.close();</script>");
+                            return;
                         }
                         if(thisWorkEntry.end_time==null&& noTimeSet != null && noTimeSet.setting_value == "0")
                         {
@@ -124,6 +124,7 @@ namespace EMT.DoneNOW.Web.Project
                         thisTask = new sdk_task_dal().FindNoDeleteById(thisWorkEntry.task_id);
                         if (!IsPostBack)
                         {
+                            resource_id.ClearSelection();
                             resource_id.SelectedValue = ((long)thisWorkEntry.resource_id).ToString();
                             cost_code_id.SelectedValue = ((long)thisWorkEntry.cost_code_id).ToString();
                             // status_id.SelectedValue = ((long)thisWorkEntry.)
@@ -244,7 +245,7 @@ namespace EMT.DoneNOW.Web.Project
             catch (Exception msg)
             {
 
-                Response.End();
+                Response.Write($"<script>alert('{msg.Message}');window.close();</script>");
             }
         }
 

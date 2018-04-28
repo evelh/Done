@@ -384,6 +384,8 @@ namespace EMT.DoneNOW.Web.Opportunity
             opportunity.competitor_id = thisOppo.competitor_id;
             opportunity.win_reason_type_id = thisOppo.win_reason_type_id;
             opportunity.win_reason = thisOppo.win_reason;
+            if (!string.IsNullOrEmpty(Request.Form["CloseDate"]))
+                opportunity.actual_closed_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(Request.Form["CloseDate"]));
 
             CloseOpportunityDto param = new CloseOpportunityDto()
             {

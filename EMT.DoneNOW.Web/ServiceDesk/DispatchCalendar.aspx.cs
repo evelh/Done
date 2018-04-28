@@ -7,11 +7,11 @@ using System.Web.UI.WebControls;
 
 namespace EMT.DoneNOW.Web.ServiceDesk
 {
-    public partial class DispatchCalendar : System.Web.UI.Page
+    public partial class DispatchCalendar : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+           
         }
     }
 }

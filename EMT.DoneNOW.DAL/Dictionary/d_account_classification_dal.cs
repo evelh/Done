@@ -23,6 +23,13 @@ namespace EMT.DoneNOW.DAL
 
             return list;
         }
+        /// <summary>
+        /// 获取相关列表
+        /// </summary>
+        public List<d_account_classification> GetAccClassList()
+        {
+            return FindListBySql($"SELECT * from d_account_classification where delete_time = 0 ");
+        }
 
     }
 }

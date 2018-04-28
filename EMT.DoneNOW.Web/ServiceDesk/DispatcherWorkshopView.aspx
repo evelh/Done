@@ -117,7 +117,7 @@
     </div>
     <input type="hidden" id="isSingle" value="<%=isSingResPage?"1":"" %>" />
     <div class="ButtonCollectionBase">
-        <div class="Buttonleft">
+        <div class="Buttonleft" style="margin-left:10px;">
             <div class="newbtn">
                 <img src="../Images/new.png" alt="" />
                 <span>新增</span>
@@ -131,34 +131,42 @@
                 </div>
             </div>
             <div class="btntext" style="display:none;">Workload Report</div>
+             <%if (resIds == LoginUserId.ToString()&&isSingResPage)
+                { %>
+            <div class="btntext" style="" onclick="window.open('MyInCompleteItem','MyNoComplete','left=200,top=200,width=410,height=800',false);">查看我的条目</div>
+            <%} %>
         </div>
         <div class="ButtonRight">
             <% if (!isSingResPage)
-                     { %>
+                { %>
             <div class="vivews">
                 <span>视图</span>
                 <select class="txtBlack8Class" name="" id="SelectView">
                     <option selected="selected" value=""></option>
                     <% if (viewList != null && viewList.Count > 0)
-                     {
-                         foreach (var view in viewList)
-                         {%>
+    {
+        foreach (var view in viewList)
+        {%>
                     <option value="<%=view.id %>" <%if (chooseView != null && chooseView.id == view.id)
-                     { %>
+    { %>
                         selected="selected" <%} %>><%=view.name %></option>
                     <%
-                         }
-                     } %>
+        }
+    } %>
                     <option value="">---------------------------</option>
                     <%if (chooseView != null)
-                     { %>
+    { %>
                     <option value="SaveThis">保存当前视图</option>
                     <%} %>
                     <option value="New">保存为新的视图</option>
                     <option value="Manage">管理已保存的视图</option>
                 </select>
             </div>
-            <%} %>
+            <%}
+    else
+    {%>
+           
+    <%}%>
             <div class="daysElm">
                 <ul>
                     <li <%if (dateType == (int)EMT.DoneNOW.DTO.DicEnum.DISPATCHER_MODE.ONE_DAY_VIEW)

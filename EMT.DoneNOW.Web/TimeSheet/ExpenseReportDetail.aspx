@@ -610,7 +610,7 @@
     // 提交操作
     function Submit() {
         var thisStatus = '<%=thisReport.status_id.ToString() %>';
-        if (thisStatus == '<%=(int)EMT.DoneNOW.DTO.DicEnum.EXPENSE_REPORT_STATUS.HAVE_IN_HAND %>')
+        if (thisStatus == '<%=(int)EMT.DoneNOW.DTO.DicEnum.EXPENSE_REPORT_STATUS.HAVE_IN_HAND %>' || thisStatus == '<%=(int)EMT.DoneNOW.DTO.DicEnum.EXPENSE_REPORT_STATUS.REJECTED %>' )
         {
             LayerConfirm("确认要提交吗？", "确认", "取消", function () {
                 $.ajax({
@@ -634,7 +634,7 @@
         }
         else
         {
-            LayerMsg('进行中状态的费用报表才可以提交');
+            LayerMsg('进行中或者已拒绝状态的费用报表才可以提交');
         }
     }
 

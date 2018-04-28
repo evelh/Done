@@ -226,6 +226,29 @@ $(".BookmarkDiv").on("mouseout", function () {
     $(".Bookmark").css("borderBottom", "1px solid #d7d7d7");
     $(this).hide();
 });
+//书签的下拉菜单
+$(".Calendar").on("mousemove", function () {
+    $(this).addClass("HoverState");
+    $(this).css("borderBottom", "1px solid #fff");
+    $(".CalendarOverlay").show();
+});
+$(".Calendar").on("mouseout", function () {
+    $(this).removeClass("HoverState");
+    $(this).css("borderTop", "1px solid #d7d7d7");
+    $(this).css("borderBottom", "1px solid #d7d7d7");
+    $(".CalendarOverlay").hide();
+});
+$(".CalendarOverlay").on("mousemove", function () {
+    $(".Calendar").addClass("HoverState");
+    $(".Calendar").css("borderBottom", "1px solid #fff");
+    $(this).show();
+});
+$(".CalendarOverlay").on("mouseout", function () {
+    $(".Calendar").removeClass("HoverState");
+    $(".Calendar").css("borderTop", "1px solid #d7d7d7");
+    $(".Calendar").css("borderBottom", "1px solid #d7d7d7");
+    $(this).hide();
+});
 
 //内容的选项卡切换
 $.each($(".SelectDashboardTab"), function (i) {

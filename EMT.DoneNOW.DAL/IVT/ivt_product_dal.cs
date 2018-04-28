@@ -50,5 +50,12 @@ namespace EMT.DoneNOW.DAL
         {
             return GetSingle($"SELECT sum(t.quantity- ifnull((select sum(x.quantity) from ivt_reserve x, crm_quote_item y where x.delete_time = 0 and x.quote_item_id = y.id and y.object_id = t.product_id and x.warehouse_id = t.id), 0)- ifnull((select sum(x.quantity) from ctt_contract_cost_product x, ctt_contract_cost y where x.delete_time = 0 and x.status_id = 2157 and x.contract_cost_id = y.id and y.product_id = t.product_id and x.warehouse_id = t.id), 0) )as 可用数 from ivt_warehouse_product t where product_id = {project_id} and delete_time = 0");
         }
+        /// <summary>
+        /// 获取到产品列表
+        /// </summary>
+        public List<ivt_product> GetProList()
+        {
+            return FindListBySql<ivt_product>($"SELECT id,name from ivt_product where delete_time = 0");
+        }
     }
 }

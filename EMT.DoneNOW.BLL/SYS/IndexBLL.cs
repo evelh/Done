@@ -313,5 +313,203 @@ LEFT JOIN (select quote_id,sum(unit_price*quantity) total_revenue from crm_quote
             var sbDal = new sys_bookmark_dal();
             return sbDal.DeleteBook(userId);
         }
+        /// <summary>
+        /// 获取本周的星期一
+        /// </summary>
+        public DateTime GetMonday(DateTime date)
+        {
+            if ((int)date.DayOfWeek != 1)
+            {
+                if ((int)date.DayOfWeek == 0)
+                    date = date.AddDays(-6);
+                else
+                    date = date.AddDays(1 - (int)date.DayOfWeek);
+            }
+            return date;
+        }
+        /// <summary>
+        /// 获取本周的周末
+        /// </summary>
+        public DateTime GetSunDay(DateTime date)
+        {
+            if (date.DayOfWeek != DayOfWeek.Sunday)
+            {
+                date = date.AddDays(7-(int)date.DayOfWeek);
+            }
+            return date;
+        }
+
+        /// <summary>
+        /// 根据开始时间和结束时间计算两个时间相差的月，周，天数
+        /// </summary>
+        public int GetDateDiffMonth(DateTime startDate, DateTime endDate, string dateType)
+        {
+            int num = 0;
+            TimeSpan ts1 = new TimeSpan(startDate.Ticks);
+            TimeSpan ts2 = new TimeSpan(endDate.Ticks);
+            TimeSpan ts = ts1.Subtract(ts2).Duration();
+            num = ts.Days;
+            switch (dateType)
+            {
+                case "day":
+                    num = ts.Days;
+                    break;
+                case "week":
+                    var week = num / 7;
+                    if (num % 7 != 0)
+                    {
+                        num = week + 1;
+                    }
+                    else
+                    {
+                        num = week;
+                    }
+                    break;
+                case "month":
+                    num = (endDate.Year - startDate.Year) * 12 + (endDate.Month - startDate.Month + 1);
+                    // + (endDate.Day >= startDate.Day ? 1 : 0)
+                    break;
+                default:
+                    break;
+            }
+            return num;
+        }
+        /// <summary>
+        /// 根据选择的日期获取相应类名，
+        /// </summary>
+        public string ReturnClassName(DateTime chooseDate,DateTime thisDay,long userId)
+        {
+            // 过期 Overlap
+            // 有待办 预定~  Important
+            // 今天 Today
+            // 本月天数无信息 ""
+            string className = "";
+            if(thisDay.Year!= chooseDate.Year || thisDay.Month != chooseDate.Month)
+                className += "Overlap ";
+            if(thisDay.Year == DateTime.Now.Year&& thisDay.Month == DateTime.Now.Month && thisDay.Day == DateTime.Now.Day)
+                className += "Today ";
+            var dBll = new DispatchBLL();
+            var appList = dBll.GetAppByResDate(userId, thisDay);
+            if(appList!=null&& appList.Count > 0)
+            {
+                className += "Important";
+                return className;
+            }
+            var todoList = new ActivityBLL().GetToListByResDate(userId, thisDay);
+            if (todoList != null && todoList.Count > 0)
+            {
+                className += "Important";
+                return className;
+            }
+            var callList = new TicketBLL().GetCallByResDate(userId, thisDay);
+            if (callList != null && callList.Count > 0)
+            {
+                className += "Important";
+                return className;
+            }
+            var timeList = new TimeOffPolicyBLL().GetTimeOffByResDate(userId, thisDay);
+            if (timeList != null && timeList.Count > 0)
+            {
+                className += "Important";
+                return className;
+            }
+            return className;
+        }
+
+        #region 工作列表相关
+        /// <summary>
+        /// 移除我的工单/任务 列表
+        /// </summary>
+        public bool DeleteWorkTicket(long userId, bool isTicket = true)
+        {
+            var swltDal = new sys_work_list_task_dal();
+            var mtTaskList = swltDal.GetMyWorkList(userId,isTicket);
+            if(mtTaskList!=null&& mtTaskList.Count > 0)
+            {
+                mtTaskList.ForEach(_ => {
+                    swltDal.Delete(_);
+                });
+            }
+            return true;
+        }
+        /// <summary>
+        /// 删除指定的工作列表中的数据
+        /// </summary>
+        public bool DeleteSingWorkTicket(string ids,long userId)
+        {
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var idArr = ids.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                var swltDal = new sys_work_list_task_dal();
+                foreach (var thisId in idArr)
+                {
+                    var thisWorkTask = swltDal.FindById(long.Parse(thisId));
+                    if (thisWorkTask != null)
+                    {
+                        swltDal.Delete(thisWorkTask);
+                    }
+                }
+            }
+            return true;
+        }
+        /// <summary>
+        /// 我的工作列表排序号改变
+        /// </summary>
+        public void WorkListSortManage(long userId,bool isTicket = true)
+        {
+            var swltDal = new sys_work_list_task_dal();
+            var taskList = swltDal.GetMyWorkList(userId,isTicket);
+            if(taskList!=null&& taskList.Count > 0)
+            {
+
+            }
+        }
+        /// <summary>
+        /// 拖拽 - 更改排序号
+        /// </summary>
+        public void ChangeSort(long firWorTasId,long lasWorTaskId,long userId)
+        {
+
+        }
+
+        /// <summary>
+        /// 添加到我的工作列表
+        /// </summary>
+        public bool AddToWorkList(long taskId,long userId)
+        {
+            var swltDal = new sys_work_list_task_dal();
+            var singWorkTask = swltDal.GetByResTaskId(userId,taskId);
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            if (singWorkTask == null)
+            {
+                singWorkTask = new sys_work_list_task() {
+                    id = swltDal.GetNextIdCom(),
+                    resource_id = userId,
+                    task_id = taskId,
+                    create_time = timeNow,
+                    create_user_id = userId,
+                    update_time = timeNow,
+                    sort_order = swltDal.GetMaxSortOrder(userId)+1,
+                };
+            }
+
+            return true;
+        }
+        /// <summary>
+        /// 添加到多个员工的工作列表
+        /// </summary>
+        public bool AddToManyWorkList(string resIds,long taskId)
+        {
+            if (!string.IsNullOrEmpty(resIds))
+            {
+                var resArr = resIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                foreach (var resId in resArr)
+                {
+                    AddToWorkList(taskId,long.Parse(resId));
+                }
+            }
+            return true;
+        }
+        #endregion
     }
 }

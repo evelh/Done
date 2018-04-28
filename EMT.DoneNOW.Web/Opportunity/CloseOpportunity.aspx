@@ -504,7 +504,7 @@
                                             </td>
                                             <td class="FieldLabels">关闭日期
                                             <div>
-                                                <input name="projected_close_date" id="projected_close_date" type="text" onclick="WdatePicker()" class="Wdate" value="<%=opportunity.projected_close_date!=null?((DateTime)opportunity.projected_close_date).ToString("yyyy-MM-dd"):"" %>" />
+                                                <input name="CloseDate" id="projected_close_date" type="text" onclick="WdatePicker()" class="Wdate" value="<%=DateTime.Now.ToString("yyyy-MM-dd") %>" />
                                             </div>
                                             </td>
                                         </tr>
@@ -1422,10 +1422,14 @@
             alert("请选择一个商机负责人");
             return false;
         }
+        var projected_close_date = $("#projected_close_date").val();
+        if (projected_close_date == "") {
+            alert("请选择商机关闭日期");
+            return false;
+        }
 
         if (<%=wonSetting.setting_value %> == <%=(int)EMT.DoneNOW.DTO.DicEnum.SYS_CLOSE_OPPORTUNITY.NEED_TYPE_DETAIL %>) // 根据系统设置决定是否校验
         {
-
             var win_reason_type_id = $("#win_reason_type_id").val();
             if (win_reason_type_id == 0) {
                 alert("请选择关闭商机原因");
