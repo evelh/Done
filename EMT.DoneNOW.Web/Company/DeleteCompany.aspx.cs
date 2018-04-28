@@ -15,6 +15,22 @@ namespace EMT.DoneNOW.Web.Company
         protected crm_account crm_account = null;
         protected Dictionary<string, object> dic = null;
         protected CompanyBLL companyBll = new CompanyBLL();
+        protected List<crm_contact> contactList;
+        protected List<crm_opportunity> opportunityList;
+        protected List<com_activity> todoList;
+        protected List<crm_installed_product> insProList;
+        protected List<com_activity> noteList;
+        protected List<pro_project> projectList;
+        protected List<sdk_expense_report> expReportList;
+        protected List<sdk_task> accTicketList;          // 客户的工单
+        protected List<sdk_task> accMasterTicketList;    // 客户的定期主工单
+        protected List<ctt_contract> contractList;
+        protected List<ctt_contract> contractNoBillList; // 客户还没有开始计费的合同
+        protected List<ivt_product> productList;
+        protected List<crm_sales_order> saleOrderList;
+        protected List<ivt_service> serviceList;
+        protected List<ivt_transfer> transferList;
+        protected List<ivt_product> AllProductList = new DAL.ivt_product_dal().GetProList();
         protected void Page_Load(object sender, EventArgs e)
         {
             var id = Request.QueryString["id"];
@@ -25,12 +41,15 @@ namespace EMT.DoneNOW.Web.Company
                     Response.End();
                     return;
                 }
-
                 crm_account = new CompanyBLL().GetCompany(Convert.ToInt64(id));
                 dic = companyBll.GetField();
                 if (crm_account != null)
                 {
-
+                    contactList = new ContactBLL().GetContactByCompany(crm_account.id);
+                    opportunityList = new OpportunityBLL().GetOpportunityByCompany(crm_account.id);
+                    todoList = new DAL.com_activity_dal().GetNoteByAccount(crm_account.id,(int)DicEnum.ACTIVITY_CATE.TODO);
+                    noteList = new DAL.com_activity_dal().GetNoteByAccount(crm_account.id);
+                    insProList = new DAL.crm_installed_product_dal().FindByAccountId(crm_account.id);
                 }
                 else
                 {

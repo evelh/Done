@@ -1010,21 +1010,10 @@ namespace EMT.DoneNOW.BLL
 
             #region  1.Company Detail客户信息：逻辑删除                   ✓
             account.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            account.delete_user_id = user.id;
-            _dal.SoftDelete(account, user.id);
-            new sys_oper_log_dal().Insert(new sys_oper_log()
-            {
-                user_cate = "用户",
-                user_id = user.id,
-                name = user.name,
-                phone = user.mobile == null ? "" : user.mobile,
-                oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                oper_object_id = account.id,
-                oper_type_id = (int)OPER_LOG_TYPE.DELETE,
-                oper_description = _dal.AddValue(account), // 删除时和新增时记录的字段相同。通过同一个方法进行处理
-                remark = "删除客户信息",
-            });
+            account.delete_user_id = user_id;
+            _dal.SoftDelete(account, user_id);
+            OperLogBLL.OperLogDelete<crm_account>(account,account.id,user_id,OPER_LOG_OBJ_CATE.CUSTOMER, "删除客户信息");
+            
             #endregion
 
             #region  4.Contacts联系人：逻辑删除                     ✓
@@ -1036,19 +1025,7 @@ namespace EMT.DoneNOW.BLL
                 foreach (var contact in contact_list)                                    // 循环联系人，全部逻辑删除
                 {
                     contact_dal.SoftDelete(contact, user.id);
-                    new sys_oper_log_dal().Insert(new sys_oper_log()
-                    {
-                        user_cate = "用户",
-                        user_id = user.id,
-                        name = user.name,
-                        phone = user.mobile == null ? "" : user.mobile,
-                        oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                        oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
-                        oper_object_id = contact.id,
-                        oper_type_id = (int)OPER_LOG_TYPE.DELETE,
-                        oper_description = contact_dal.AddValue(contact), // 删除时和新增时记录的字段相同。通过同一个方法进行处理
-                        remark = "删除联系人信息",
-                    });
+                    OperLogBLL.OperLogDelete<crm_contact>(contact, contact.id, user_id, OPER_LOG_OBJ_CATE.CONTACTS, "删除联系人信息");
                 }
             }
             #endregion
@@ -1063,19 +1040,7 @@ namespace EMT.DoneNOW.BLL
                 {
                     if (installed_product_dal.SoftDelete(installed_product, user.id))
                     {
-                        new sys_oper_log_dal().Insert(new sys_oper_log()
-                        {
-                            user_cate = "用户",
-                            user_id = user.id,
-                            name = user.name,
-                            phone = user.mobile == null ? "" : user.mobile,
-                            oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                            oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
-                            oper_object_id = installed_product.id,
-                            oper_type_id = (int)OPER_LOG_TYPE.DELETE,
-                            oper_description = _dal.AddValue(installed_product), // 删除时和新增时记录的字段相同。通过同一个方法进行处理
-                            remark = "删除配置项信息",
-                        });
+                        OperLogBLL.OperLogDelete<crm_installed_product>(installed_product, installed_product.id, user_id, OPER_LOG_OBJ_CATE.CONFIGURAITEM, "删除配置项信息");
                     }
                 }
             }

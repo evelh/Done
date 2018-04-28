@@ -10,11 +10,15 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <%--    <link rel="stylesheet" type="text/css" href="../Content/NewCompany.css" />--%>
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
+    <style>
+        td{
+            text-align:left;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
-
-        <%  var account = GetAccount();
+        <%  
             var location = GetDefaultLocation();
             var taxRegion = dic.FirstOrDefault(_ => _.Key == "taxRegion").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
             var classification = dic.FirstOrDefault(_ => _.Key == "classification").Value as List<EMT.DoneNOW.DTO.DictionaryEntryDto>;
@@ -42,8 +46,8 @@
 
 
         <div id="ComapnyDetail" style="margin-left: 40px;">
-            <h4>1 .   公司简介</h4>
-            <p><%=account.name %></p>
+            <h4>公司简介</h4>
+            <p><%=crm_account.name %></p>
             <p><%=country.First(_=>_.val.ToString()==location.country_id.ToString()).show  %></p>
             <p><%=addressdistrict.First(_=>_.val.ToString()==location.province_id.ToString()).show  %></p>
             <p><%=addressdistrict.First(_=>_.val.ToString()==location.city_id.ToString()).show  %></p>
@@ -57,61 +61,182 @@
                 { %>
             <p><%=location.additional_address %></p>
             <%} %>
-            <% if (!string.IsNullOrEmpty(account.phone))
+            <% if (!string.IsNullOrEmpty(crm_account.phone))
                 { %>
-            <p><%=account.phone %></p>
+            <p><%=crm_account.phone %></p>
             <%} %>
         </div>
-        <div id="OutsourceManagement" style="margin-left: 40px;">
-            <h4>2.  外部资源管理</h4>
+     <%--   <div id="OutsourceManagement" style="margin-left: 40px;">
+            <h4> 外部资源管理</h4>
         </div>
         <div id="OutsourceNetworks" style="margin-left: 40px;">
-            <h4>3.  外部网络</h4>
-        </div>
+            <h4>外部网络</h4>
+        </div>--%>
         <div id="Contacts" style="margin-left: 40px;">
-            <h4>4.  联系人</h4>
+            <h4>联系人</h4>
+            <% if (contactList != null && contactList.Count > 0)
+                { %>
+            <table>
+                <%foreach (var contact in contactList)
+                    {%>
+                <tr>
+                    <td><%=contact.name %> - 电话号码：<%=contact.phone %></td>
+                </tr>
+                   <% } %>
+
+            </table>
+            <%}
+            else
+            {%>
+              <p><span style="color:red;">无</span></p>
+            <%} %>
         </div>
         <div id="PostedBillingItems" style="margin-left: 40px;">
-            <h4>5.  已提交计费项</h4>
+            <h4>已提交计费项</h4>
         </div>
         <div id="Opportunities" style="margin-left: 40px;">
-            <h4>6.  商机</h4>
+            <h4>商机</h4>
+             <% if (opportunityList != null && opportunityList.Count > 0)
+                { %>
+            <table>
+                <%foreach (var opportunity in opportunityList)
+                    {%>
+                <tr>
+                    <td><%=opportunity.name %></td>
+                </tr>
+                   <% } %>
+
+            </table>
+            <%}
+            else
+            {%>
+              <p><span style="color:red;">无</span></p>
+            <%} %>
         </div>
         <div id="ToDos" style="margin-left: 40px;">
-            <h4>7.  待办</h4>
+            <h4>待办</h4>
+             <% if (todoList != null && todoList.Count > 0)
+                { %>
+            <table>
+                <%foreach (var todo in todoList)
+                    {%>
+                <tr>
+                    <td><%=todo.description %></td>
+                </tr>
+                   <% } %>
+
+            </table>
+            <%}
+            else
+            {%>
+              <p><span style="color:red;">无</span></p>
+            <%} %>
         </div>
         <div id="Activities" style="margin-left: 40px;">
-            <h4>8.  活动</h4>
+            <h4>活动</h4>
         </div>
         <div id="ConfigurationItems" style="margin-left: 40px;">
-            <h4>9.  配置项</h4>
+            <h4>配置项</h4>
+              <% if (insProList != null && insProList.Count > 0&&AllProductList!=null&&AllProductList.Count>0)
+                { %>
+            <table>
+                <%foreach (var insPro in insProList)
+                    {
+                        var thisProduct = AllProductList.FirstOrDefault(_ => _.id == insPro.product_id);
+                        if (thisProduct == null)
+                        {
+                            continue;
+                        }
+                        %>
+                <tr>
+                    <td><%=thisProduct.name %> - 参考号：<%=insPro.reference_number %></td>
+                </tr>
+                   <% } %>
+
+            </table>
+            <%}
+            else
+            {%>
+              <p><span style="color:red;">无</span></p>
+            <%} %>
         </div>
         <div id="Projects" style="margin-left: 40px;">
-            <h4>10.  项目</h4>
+            <h4>项目</h4>
+              <% if (projectList != null && projectList.Count > 0)
+                { %>
+            <table>
+                <%foreach (var project in projectList)
+                    {
+                        %>
+                <tr>
+                    <td><%=project.name %></td>
+                </tr>
+                   <% } %>
+
+            </table>
+            <%}
+            else
+            {%>
+              <p><span style="color:red;">这个客户没有关联项目</span></p>
+            <%} %>
         </div>
         <div id="ExpenseReports" style="margin-left: 40px;">
-            <h4>11.  费用报告</h4>
+            <h4>费用报告</h4>
         </div>
         <div id="Tickets" style="margin-left: 40px;">
-            <h4>12.  工单</h4>
+            <h4>工单</h4>
+               <% if (accTicketList != null && accTicketList.Count > 0)
+                { %>
+            <table>
+                <%foreach (var accTicket in accTicketList)
+                    {
+                        %>
+                <tr>
+                    <td><%=accTicket.title %></td>
+                </tr>
+                   <% } %>
+
+            </table>
+            <%}
+            else
+            {%>
+              <p><span style="color:red;">这个客户没有关联项目</span></p>
+            <%} %>
         </div>
         <div id="ServiceDeskRecurringMasterTickets" style="margin-left: 40px;">
-            <h4>13.  服务台循环主工单</h4>
+            <h4>服务台循环主工单</h4>
+               <% if (accMasterTicketList != null && accMasterTicketList.Count > 0)
+                { %>
+            <table>
+                <%foreach (var accTicket in accMasterTicketList)
+                    {
+                        %>
+                <tr>
+                    <td><%=accTicket.title %></td>
+                </tr>
+                   <% } %>
+
+            </table>
+            <%}
+            else
+            {%>
+              <p><span style="color:red;">无</span></p>
+            <%} %>
         </div>
         <div id="Notes" style="margin-left: 40px;">
-            <h4>14.  备注</h4>
+            <h4>备注</h4>
         </div>
         <div id="Contracts" style="margin-left: 40px;">
-            <h4>15.  合同</h4>
+            <h4>合同</h4>
         </div>
         <div id="Products" style="margin-left: 40px;">
-            <h4>16.  产品</h4>
+            <h4>产品</h4>
         </div>
         <div id="PurchaseOrders" style="margin-left: 40px;">
-            <h4>17.  采购单</h4>
+            <h4>采购单</h4>
         </div>
         <div id="Services" style="margin-left: 40px;">
-            <h4>18.  服务</h4>
+            <h4>服务</h4>
         </div>
 
 

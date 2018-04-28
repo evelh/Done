@@ -155,7 +155,7 @@ namespace EMT.DoneNOW.Web.Company
                 if (terrId != 0)
                 {
                     if (!string.IsNullOrEmpty(terResIds))
-                        accClassWhere = $" and resource_id in({terResIds})";
+                        accClassWhere =" "+ accountLimitSql+ $" and resource_id in({terResIds})";
                     else
                         accClassWhere = $" and resource_id in('')";
                 }
@@ -191,7 +191,7 @@ namespace EMT.DoneNOW.Web.Company
                 #endregion
 
                 accountCount = Convert.ToInt32(caDal.GetSingle($"SELECT COUNT(1) from crm_account ca where delete_time = 0 "+ accountLimitSql + (resourceId!=0? "  and resource_id ="+ resourceId.ToString() : "")));
-                activeOppoList = caDal.FindListBySql<crm_opportunity>($"SELECT * from crm_opportunity where delete_time = 0 and status_id = {(int)DicEnum.OPPORTUNITY_STATUS.ACTIVE} " + (resourceId != 0 ? "  and resource_id =" + resourceId.ToString() : ""));
+                activeOppoList = caDal.FindListBySql<crm_opportunity>($"SELECT * from crm_opportunity cp inner join crm_account ca on cp.account_id = ca.id where cp.delete_time = 0 and cp.status_id = {(int)DicEnum.OPPORTUNITY_STATUS.ACTIVE} "+ accountLimitSql + " " + oppoLimitSql + (resourceId != 0 ? "  and cp.resource_id =" + resourceId.ToString() : ""));
                 newOppoMonthCount = Convert.ToInt32(caDal.GetSingle($"SELECT COUNT(1) from crm_opportunity where delete_time = 0 and create_time>={Tools.Date.DateHelper.ToUniversalTimeStamp(monthStart)} and create_time<={Tools.Date.DateHelper.ToUniversalTimeStamp(monthEnd)} " + (resourceId != 0 ? "  and resource_id =" + resourceId.ToString() : "")));
 
                 updateOppoNoteCount = Convert.ToInt32(caDal.GetSingle($"SELECT * from com_activity ca INNER JOIN crm_opportunity co on ca.opportunity_id = co.id where ca.action_type_id = {(int)DicEnum.ACTIVITY_TYPE.OPPORTUNITYUPDATE} and ca.cate_id = {(int)DicEnum.ACTIVITY_CATE.NOTE} and ca.delete_time = 0 and co.delete_time = 0 and ca.create_time>{Tools.Date.DateHelper.ToUniversalTimeStamp(monthStart)} and ca.create_time<={Tools.Date.DateHelper.ToUniversalTimeStamp(monthEnd)} " + (resourceId != 0 ? "  and co.resource_id =" + resourceId.ToString() : "")));
@@ -205,7 +205,7 @@ namespace EMT.DoneNOW.Web.Company
                 }
                 else
                 {
-                    accClassWhere= $" and resource_id ={resourceId.ToString()}";
+                    accClassWhere= accountLimitSql+ $" and resource_id ={resourceId.ToString()}";
                     // 单个员工时，获取单个员工下的所有区域信息
                     if (terList != null&& terList.Count>0)
                         terList.ForEach(_ => {
@@ -236,7 +236,7 @@ namespace EMT.DoneNOW.Web.Company
             if(accClassList!=null&& accClassList.Count > 0)
             {
                 accClassList.ForEach(_ => {
-                    classAccDic.Add(_.id, Convert.ToInt32(caDal.GetSingle($"SELECT COUNT(1) from crm_account where delete_time = 0 and classification_id ="+_.id.ToString() + accClassWhere)));
+                    classAccDic.Add(_.id, Convert.ToInt32(caDal.GetSingle($"SELECT COUNT(1) from crm_account ca where delete_time = 0 and classification_id ="+_.id.ToString()+" " + accClassWhere)));
                 })
 ;            }
         }

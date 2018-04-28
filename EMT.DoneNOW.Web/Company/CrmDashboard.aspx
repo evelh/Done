@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link href="../Content/Dashboard.css" rel="stylesheet" />
+    <link href="../Content/crmDashboard.css" rel="stylesheet" />
     <title></title>
 </head>
 <body>
@@ -91,7 +91,7 @@
                                                             <td width="99%"><a onclick="showOverdueOpportunities('<%=resourceId!=null&&resourceId!=0?resourceId.ToString():(!string.IsNullOrEmpty(terResIds)?terResIds:(terrId!=null?"0":"")) %>');" style="color: #376597;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">需要更新的商机（<%=needEditOppoCount %>）</font></font></a></td>
                                                         </tr>
                                                         <tr>
-                                                            <td width="99%"><font><font>工单：</font></font><a class="PrimaryLink" href="#" onclick="showYesterdayCustomerST();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">昨天（<%=yesTicketCount %>）</font></font></a><font><font> | </font></font><a class="PrimaryLink" href="#" onclick="showTodayCustomerST();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">今日（<%=todayTicketCount %>）</font></font></a></td>
+                                                            <td width="99%"><font><font>工单：</font></font><a class="PrimaryLink" style="color: #376597;" onclick="showYesterdayCustomerST();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">昨天（<%=yesTicketCount %>）</font></font></a><font><font> | </font></font><a class="PrimaryLink" style="color: #376597;" onclick="showTodayCustomerST();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">今日（<%=todayTicketCount %>）</font></font></a></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -118,24 +118,24 @@
                                                     <tbody>
                                                         <tr>
                                                             <td width="1%" align="right"></td>
-                                                            <td width="79%"><a href="#" onclick="showLostSales();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">丢失的商机（<%=monthLostOppo %>）</font></font></a></td>
+                                                            <td width="79%"><a style="color: #376597;" onclick="showLostSales();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">丢失的商机（<%=monthLostOppo %>）</font></font></a></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"></td>
-                                                            <td><a href="#" onclick="showOpptnToClose();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">待关闭的商机（<%=monthCloseOppo %>）</font></font></a></td>
+                                                            <td><a style="color: #376597;" onclick="showOpptnToClose();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">待关闭的商机（<%=monthCloseOppo %>）</font></font></a></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"></td>
-                                                            <td><a href="#" onclick="showClosedSales();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">已关闭的商机（<%=monthClosedOppo %>）</font></font></a></td>
+                                                            <td><a style="color: #376597;" onclick="showClosedSales();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">已关闭的商机（<%=monthClosedOppo %>）</font></font></a></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"></td>
-                                                            <td><a href="#" onclick="showMyPipelineReport();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">管道报告</font></font></a></td>
+                                                            <td><a style="color: #376597;" onclick="showMyPipelineReport();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">管道报告</font></font></a></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"></td>
 
-                                                            <td><a href="#" onclick="showMyLeadStatusReport();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">铅状态报告</font></font></a></td>
+                                                            <td><a style="color: #376597;" onclick="showMyLeadStatusReport();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">铅状态报告</font></font></a></td>
 
                                                         </tr>
 
@@ -608,7 +608,7 @@
                                                         <tr>
 
 
-                                                            <td width="99%"><a href="#" onclick="callSummaryReport();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">通话摘要报告</font></font></a></td>
+                                                            <td width="99%"><a style="color: #376597;" onclick="callSummaryReport();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">通话摘要报告</font></font></a></td>
 
                                                         </tr>
                                                     </tbody>
@@ -619,7 +619,7 @@
 
                                                     <tbody>
                                                         <tr style="height: 18px; vertical-align: top;">
-                                                            <td width="70%"><a href="#" onclick="showActions('0')"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">商机更新（<%=updateOppoNoteCount %>）</font></font></a></td>
+                                                            <td width="70%"><a style="color: #376597;" onclick="showActions('0')"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">商机更新（<%=updateOppoNoteCount %>）</font></font></a></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -645,18 +645,18 @@
 
                                     <tbody>
                                         <tr>
-                                            <td width="70%"><a href="#" onclick="showMyCustomerList('<%=resourceId!=null&&resourceId!=0?resourceId.ToString():"" %>','<%=terrId!=null&&terrId!=0?terrId.ToString():"" %>');"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">公司</font></font></a></td>
+                                            <td width="70%"><a style="color: #376597;" onclick="showMyCustomerList('<%=resourceId!=null&&resourceId!=0?resourceId.ToString():"" %>','<%=terrId!=null&&terrId!=0?terrId.ToString():"" %>');"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">公司</font></font></a></td>
                                             <td width="30%" align="right"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=accountCount %></font></font></td>
                                         </tr>
                                         <tr>
                                             <td width="70%">
-                                                <a href="#" onclick="showActiveOpportunities();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">积极的机会</font></font></a>
+                                                <a style="color: #376597;" onclick="showActiveOpportunities();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">积极的机会</font></font></a>
                                             </td>
                                             <td width="30%" align="right"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=activeOppoCount %></font></font></td>
                                         </tr>
                                         <tr>
                                             <td width="70%">
-                                                <a href="#" onclick="showNewOpportunitiesThisMonth();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">本月新的机会</font></font></a>
+                                                <a style="color: #376597;" onclick="showNewOpportunitiesThisMonth();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">本月新的机会</font></font></a>
                                             </td>
                                             <td width="30%" align="right"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=newOppoMonthCount %></font></font></td>
                                         </tr>
@@ -686,7 +686,7 @@
                                         <tr>
                                             <td width="70%">
 
-                                                <a href="#" onclick="showAccountsOfTerritory ('<%=terrAcc.Key %>')"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=thisTerr.name %></font></font></a>
+                                                <a style="color: #376597;" onclick="showAccountsOfTerritory ('<%=terrAcc.Key %>')"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=thisTerr.name %></font></font></a>
 
                                             </td>
                                             <td width="30%" align="right"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=terrAcc.Value %></font></font></td>
@@ -716,7 +716,7 @@
                                                 <%} %>
                                             </td>
                                             <td width="60%">
-                                                <a href="#" onclick="showKeyAccounts('<%=accCalss.id %>','<%=resourceId!=null&&resourceId!=0?resourceId.ToString():"" %>','<%=terrId!=null&&terrId!=0?terrId.ToString():"" %>')"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=accCalss.name %></font></font></a>
+                                                <a style="color: #376597;" onclick="showKeyAccounts('<%=accCalss.id %>','<%=resourceId!=null&&resourceId!=0?resourceId.ToString():"" %>','<%=terrId!=null&&terrId!=0?terrId.ToString():"" %>')"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=accCalss.name %></font></font></a>
                                             </td>
                                             <td width="30%" align="right"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=classAccDic[accCalss.id] %></font></font></td>
                                         </tr>
@@ -734,7 +734,7 @@
 						积极的机会
 					</font></font></span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> 
 					
-						（</font></font><a style="text-transform: capitalize" href="#" onclick="showStagesReport();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">图表</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">）
+						（</font></font><a style="text-transform: capitalize;color: #376597;" onclick="showStagesReport();"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">图表</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">）
 					
 				</font></font>
                             </div>
@@ -762,7 +762,7 @@
                                                     %>
                                         <tr>
                                             <td width="70%" valign="top">
-                                                <a href="#" onclick="showProposalsOnStage ('<%=oppoStage.id.ToString() %>')"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=oppoStage.name %></font></font></a>
+                                                <a  onclick="showProposalsOnStage ('<%=oppoStage.id.ToString() %>','<%=resourceId!=null&&resourceId!=0?resourceId.ToString():(!string.IsNullOrEmpty(terResIds)?terResIds:(terrId!=null?"0":"")) %>')" style="color: #376597;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=oppoStage.name %></font></font></a>
                                             </td>
                                             <td width="10%" valign="top"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><%=count %></font></font></td>
                                             <td width="20%" valign="top" align="right"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">¥<%=totalMoney.ToString("#0.00") %></font></font></td>
@@ -855,5 +855,12 @@
             where += "&param1=74&param2=" + terrId;
         }
         location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Company %>&group=11&isShow=Search&param3=80&param4=" + accClasssId + where;
+    }
+    // 显示相关商机
+    function showProposalsOnStage(stageId, resIds) {
+        if (resIds == 0) {
+            resIds = "''";
+        }
+        location.href = "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Opportunity %>&group=9&con274=" + resIds + "&con271=<%=(int)EMT.DoneNOW.DTO.DicEnum.OPPORTUNITY_STATUS.ACTIVE %>&con269=" + stageId;
     }
 </script>

@@ -167,6 +167,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\ClassificationIcons.css" />
+    <Content Include="Content\crmDashboard.css" />
     <Content Include="Content\dashboard.css" />
     <Content Include="Content\Dispatch.css" />
     <Content Include="Content\drag.css" />

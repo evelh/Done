@@ -28,9 +28,9 @@ namespace EMT.DoneNOW.DAL
         /// <summary>
         /// 根据客户获取相关备注
         /// </summary>
-        public List<com_activity> GetNoteByAccount(long accountId)
+        public List<com_activity> GetNoteByAccount(long accountId, int cateId = (int)DTO.DicEnum.ACTIVITY_CATE.NOTE)
         {
-            return FindListBySql($"SELECT * from com_activity where cate_id = {(int)DTO.DicEnum.ACTIVITY_CATE.NOTE} and account_id = {accountId} and delete_time = 0");
+            return FindListBySql($"SELECT * from com_activity where cate_id = {cateId} and account_id = {accountId} and delete_time = 0");
         }
         /// <summary>
         /// 获取今天创建的待办的数量

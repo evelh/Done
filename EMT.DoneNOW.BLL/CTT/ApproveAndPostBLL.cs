@@ -3115,6 +3115,7 @@ namespace EMT.DoneNOW.BLL
                     var thisEntryRate = new ContractRateBLL().GetRateByCodeAndRole((long)thisEntry.cost_code_id, (long)thisEntry.role_id);
                     var thisRate = cad_dal.GetSingle($"select f_get_labor_rate({cc.id},{thisEntry.cost_code_id.ToString()},{thisEntry.role_id.ToString()})");
                     var totalMoney = (thisEntry.hours_billed_deduction ?? thisEntry.hours_billed) * (thisEntry.hours_rate_deduction ?? (thisRate == null ? 0 : (decimal)thisRate));
+                    var totalHoours = thisEntry.hours_billed_deduction ?? thisEntry.hours_billed;
                     if (cc.type_id == (int)CONTRACT_TYPE.RETAINER)
                     {
                         string endDate =  Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEntry.start_time).ToString("yyyy-MM-dd");
@@ -3148,9 +3149,9 @@ namespace EMT.DoneNOW.BLL
                     else if (cc.type_id == (int)CONTRACT_TYPE.BLOCK_HOURS)
                     {
                         string endDate = Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEntry.start_time).ToString("yyyy-MM-dd") ;
-                        var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={cc.id} and b.status_id=1 and b.start_date <='{Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEntry.start_time).ToString("yyyy-MM-dd")}' and b.end_date >='{endDate}'");
-                        decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
-                        if (totalMoney==null|| totalMoney < extended_price)
+                        var re = ccb_dal.ExecuteDataTable($"SELECT sum(round(b.quantity - ifnull((SELECT sum(quantity)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={cc.id} and b.status_id=1 and b.start_date <='{Tools.Date.DateHelper.ConvertStringToDateTime((long)thisEntry.start_time).ToString("yyyy-MM-dd")}' and b.end_date >='{endDate}'");
+                        decimal extended_hours = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
+                        if (totalHoours == null|| totalHoours < extended_hours)
                         {
                             return ERROR_CODE.ERROR;
                         }
@@ -3238,16 +3239,12 @@ namespace EMT.DoneNOW.BLL
                         thisContract = new ctt_contract_dal().FindNoDeleteById((long)oldEntry.contract_id);
                     }
                     var thisTask = new sdk_task_dal().FindNoDeleteById(oldEntry.task_id);
-                    if (thisTask != null && thisTask.project_id != null)
+                    if (thisTask != null)
                     {
-                        thisProject = new pro_project_dal().FindNoDeleteById((long)thisTask.project_id);
-                        if (thisProject != null)
+                        thisAccount = new CompanyBLL().GetCompany(thisTask.account_id);
+                        if (thisTask.project_id != null)
                         {
-                            thisAccount = new CompanyBLL().GetCompany(thisProject.account_id);
-                            //if (thisProject.contract_id != null)
-                            //{
-                            //    thisContract = new ctt_contract_dal().FindNoDeleteById((long)thisProject.contract_id);
-                            //}
+                            thisProject = new pro_project_dal().FindNoDeleteById((long)thisTask.project_id);
                         }
                     }
                     var thisContractId = thisContract == null ? "null" : thisContract.id.ToString();
@@ -3302,6 +3299,7 @@ namespace EMT.DoneNOW.BLL
                     {
                         string endDate =  Tools.Date.DateHelper.ConvertStringToDateTime((long)oldEntry.start_time).ToString("yyyy-MM-dd");
                         var totalMoney = (oldEntry.hours_billed_deduction ?? oldEntry.hours_billed) * (oldEntry.hours_rate_deduction ?? (thisObject == null ? 0 : (decimal)thisObject));  // 这个工时的总额
+                        var totalHours = (oldEntry.hours_billed_deduction ?? oldEntry.hours_billed);
                         if (thisContract.type_id == (int)CONTRACT_TYPE.RETAINER)
                         {
                            
@@ -3765,8 +3763,8 @@ namespace EMT.DoneNOW.BLL
                         else if (thisContract.type_id == (int)CONTRACT_TYPE.BLOCK_HOURS)
                         {
                             // 预付时间不在有效期内不使用
-                            var re = sweDal.ExecuteDataTable($"SELECT sum(round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={thisContract.id} and b.status_id=1 and b.start_date <='{Tools.Date.DateHelper.ConvertStringToDateTime((long)oldEntry.start_time).ToString("yyyy-MM-dd")}' and b.end_date >='{endDate}'");
-                            decimal extended_price = re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
+                            var re = sweDal.ExecuteDataTable($"SELECT sum(round(b.quantity - ifnull((SELECT sum(quantity)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2)) AS rate FROM	ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={thisContract.id} and b.status_id=1 and b.start_date <='{Tools.Date.DateHelper.ConvertStringToDateTime((long)oldEntry.start_time).ToString("yyyy-MM-dd")}' and b.end_date >='{endDate}'");
+                            decimal extended_hours= re.Rows[0][0] == null || string.IsNullOrEmpty(re.Rows[0][0].ToString()) ? 0 : Convert.ToDecimal(re.Rows[0][0].ToString());
                             var thisEntryRate = new ContractRateBLL().GetRateByCodeAndRole((long)oldEntry.cost_code_id, (long)oldEntry.role_id);
                            // var totalMoney = oldEntry.hours_billed *(block_hour_multiplier ?? 1);  // 这个工时的总额
                             var block_hours = sweDal.ExecuteDataTable($"SELECT b.id,round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.contract_id={thisContract.id} and b.status_id=1 and b.start_date <='{Tools.Date.DateHelper.ConvertStringToDateTime((long)oldEntry.start_time).ToString("yyyy-MM-dd")}' and b.end_date >='{endDate}' ORDER BY b.start_date");
@@ -3777,7 +3775,7 @@ namespace EMT.DoneNOW.BLL
                                     block.Add(Convert.ToInt32(i[0]), Convert.ToDecimal(i[1]));
                                 }
                             }
-                            if (totalMoney == null || totalMoney < extended_price)
+                            if (totalHours == null || totalHours < extended_hours)
                             {
                                 if (totalMoney != null)
                                 {

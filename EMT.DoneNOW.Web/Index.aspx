@@ -114,7 +114,7 @@
                                     { %>
                                 <div class="GuideNavigation Button ButtonIcon NormalState">CRM</div>
                                 <%} %>
-                                <div class="GuideNavigation Button ButtonIcon NormalState">目录</div>
+                                <%--<div class="GuideNavigation Button ButtonIcon NormalState">目录</div>--%>
                                 <%if (CheckAuth("MENU_CONTRACT"))
                                     { %>
                                 <div class="GuideNavigation Button ButtonIcon NormalState">合同</div>
@@ -130,7 +130,7 @@
                                 <div class="GuideNavigation Button ButtonIcon NormalState">库存</div>
                                 <%} %>
                                 <div class="GuideNavigation Button ButtonIcon NormalState">报表</div>
-                                <div class="GuideNavigation Button ButtonIcon NormalState">外包</div>
+                                <%--<div class="GuideNavigation Button ButtonIcon NormalState">外包</div>--%>
                                 <%if (CheckAuth("MENU_SETTING"))
                                     { %>
                                 <div class="GuideNavigation Button ButtonIcon NormalState">系统设置</div>
@@ -247,8 +247,8 @@
                                 </div>
                                 <%} %>
                                 <!--第三个-->
-                                <div class="Module">
-                                </div>
+                                <%--<div class="Module">
+                                </div>--%>
                                 <!--第四个-->
                                 <%if (CheckAuth("MENU_CONTRACT"))
                                     { %>
@@ -655,8 +655,8 @@
                                     </div>
                                 </div>
                                 <!--第10个-->
-                                <div class="Module">
-                                </div>
+                               <%-- <div class="Module">
+                                </div>--%>
                                 <!--第11个-->
                                 <%if (CheckAuth("MENU_SETTING"))
                                     { %>
@@ -1397,7 +1397,6 @@
 
     <!--背景布-->
     <div id="WorkspaceContainer">
-<<<<<<< HEAD
         <div id="yibiaopan" >
           <%--<img src="Images/background.jpg" style="width:100%;height:100%;" />--%>
             <div id="DashboardContainer" style="background-color:#fff; height:100%;">
@@ -1469,20 +1468,6 @@
                         <div class="item" style="line-height: 57px;">
                             <input type="checkbox">
                             根据可用空间定位小部件
-=======
-        <div id="yibiaopan">
-            <img src="Images/background.jpg" style="width: 100%; height: 100%;" />
-            <div id="DashboardContainer" style="display: none;">
-                <div class="DashboardTitleBar ThemePrimaryColor">
-                    <div class="DashboardButtonContainer">
-                        <div class="DashboardTabButtonContainer">
-                            <div class="ButtonIcon Button SelectDashboardTab SelectedState">仪表盘1</div>
-                            <div class="ButtonIcon Button SelectDashboardTab">仪表盘2</div>
-                            <div class="ButtonIcon Button SelectDashboardTab">仪表盘3</div>
-                            <div class="ButtonIcon Button SelectDashboardTab">仪表盘4</div>
-                            <div class="ButtonIcon Button SelectDashboardTab">仪表盘5</div>
-                            <div class="ButtonIcon Button SelectDashboardTab">仪表盘6</div>
->>>>>>> 0cc30f2c5ae4600c8ab2a06ca0d92be478bc4303
                         </div>
                         <div class="item">
                             <p>主题</p>
@@ -1989,15 +1974,9 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
     <div class="loading">
         <img src="Images/Loading.gif" alt="">
     </div>
-
-    
-=======
-
->>>>>>> 0cc30f2c5ae4600c8ab2a06ca0d92be478bc4303
     <div class="cont" style="display: none;">
         <div class="header" id="SearchTitle" style="display: none; height: 40px; line-height: 40px; background: #346A95; padding: 0 10px; font-size: 18px; color: #FFFFFF;"></div>
         <iframe id="PageFrame" name="PageFrame" style="width: 100%;"></iframe>
@@ -2017,10 +1996,10 @@
         })
         var Height = $(window).height() - 66 + "px";
         $("#PageFrame").css("height", Height);
-<<<<<<< HEAD
         LoadHistory();
         LoadBrowerHistory();
         LoadBook();
+        LoadDispatch('<%=DateTime.Now.ToString("yyyy-MM-dd") %>');
         // 搜索相关
         $("#QuickSearchPage").click(function () {
             var searchText = $("#SearchText").val();
@@ -2048,7 +2027,7 @@
             if (historyId == "") {
                 return;
             }
-            // todo 更新查询的 update_time
+            //  更新查询的 update_time
             $.ajax({
                 type: "GET",
                 async: false,
@@ -2060,7 +2039,7 @@
                 },
             });
             $("#SearchText").val(text);
-            // todo radio 赋值
+            //  radio 赋值
             $("input[name='SearchTypeRadioButton'][value=" + type + "]").prop("checked", true); 
             SearchByNameType(text, type);
         }
@@ -2082,81 +2061,12 @@
                             var obj = JSON.parse(data[i].conditions);
                             html += "<div class='Content'><a class='Button ButtonIcon NormalState' onclick=\"SearchByHistory('" + data[i].id + "','" + obj.Condition + "','" + obj.SearchType + "')\"><span class='Text'>" + obj.Condition + "(" + obj.Name+")</span></a></div>";
                         }
-=======
-    })
-    var Height = $(window).height() - 66 + "px";
-    $("#PageFrame").css("height", Height);
-    LoadHistory();
-    LoadBrowerHistory();
-    LoadBook();
-    LoadDispatch('<%=DateTime.Now.ToString("yyyy-MM-dd") %>');
-    // 搜索相关
-    $("#QuickSearchPage").click(function () {
-        var searchText = $("#SearchText").val();
-        if (searchText == "" || $.trim(searchText) == "") {
-            alert("请输入搜索内容！");
-            return;
-        }
-        var searchType = $('input[type=radio]:checked').eq(0).val();
-        var searchTypeName = $('input[type=radio]:checked').eq(0).next().text();
-        // todo 新增查询历史
-        $.ajax({
-            type: "GET",
-            async: false,
-            url: "../Tools/IndexAjax.ashx?act=SearchHistoryManage&searchText=" + searchText + "&searchType=" + searchType + "&searchTypeName=" + searchTypeName + "&url=<%=Request.Url.LocalPath %>",
-            dataType: "json",
-            success: function (data) {
 
-
-            },
-        });
-
-        SearchByNameType(searchText, searchType);
-    })
-    function SearchByHistory(historyId, text, type) {
-        if (historyId == "") {
-            return;
-        }
-        // todo 更新查询的 update_time
-        $.ajax({
-            type: "GET",
-            async: false,
-            url: "../Tools/IndexAjax.ashx?act=SearchHistoryManage&id=" + historyId,
-            dataType: "json",
-            success: function (data) {
-
-
-            },
-        });
-        $("#SearchText").val(text);
-        // todo radio 赋值
-        $("input[name='SearchTypeRadioButton'][value=" + type + "]").prop("checked", true);
-        SearchByNameType(text, type);
-    }
-
-    function LoadHistory() {
-        var url = '<%=Request.Url.LocalPath %>';
-        $("#SearchHisDiv").nextAll().remove();
-        var html = "";
-        $.ajax({
-            type: "GET",
-            async: false,
-            url: "../Tools/IndexAjax.ashx?act=LoadSearchHistory&url=" + url,
-            dataType: "json",
-            success: function (data) {
-                if (data != null) {
-                    for (var i = 0; i < data.length; i++) {
-                        //var obj = data[i].conditions.parseJSON();
-                        var obj = JSON.parse(data[i].conditions);
-                        html += "<div class='Content'><a class='Button ButtonIcon NormalState' onclick=\"SearchByHistory('" + data[i].id + "','" + obj.Condition + "','" + obj.SearchType + "')\"><span class='Text'>" + obj.Condition + "(" + obj.Name + ")</span></a></div>";
->>>>>>> 0cc30f2c5ae4600c8ab2a06ca0d92be478bc4303
                     }
                 },
             });
             $("#SearchHisDiv").after(html);
         }
-
-<<<<<<< HEAD
         function SearchByNameType(text, type) {
             setTimeout(function () { LoadHistory(); }, 300);
        
@@ -2262,98 +2172,7 @@
         $(".Notice").show();
         $("#BackgroundOverLay").show();
         <%}%>
-=======
-    function SearchByNameType(text, type) {
-        setTimeout(function () { LoadHistory(); }, 300);
 
-        if (text == "" || type == "") {
-            return;
-        }
-
-        $("#SearchTitle").show();
-        $("#SearchTitle").text("");
-        setTimeout(function () {
-            $(".cont").show();
-            $(".SearchOverlay").hide();
-        }, 300);
-        setTimeout(function () {
-            $("#yibiaopan").hide();
-        }, 100);
-        var url = "";
-        var title = "";
-        if (type == "Company") {
-            title = "客户";
-            url = "Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Company %>&group=4&con5=" + text;
-        }
-        else if (type == "ContactName") {
-            title = "联系人";
-            url = "Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Contact %>&group=5&con30=" + text;
-        }
-        else if (type == "ContactEmail") {
-            title = "联系人";
-            url = "Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Contact %>&group=5&con33=" + text;
-        }
-        else if (type == "TicketNo") {
-            $("#SearchTitle").hide();
-            url = "Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1611&param2=" + text + "&param3=SearchNow";
-        }
-        else if (type == "TicketIn24") {
-            $("#SearchTitle").hide();
-            url = "Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1630&param2=<%=DateTime.Now.AddYears(-2).ToString("yyyy-MM-dd") %>&param3=SearchNow";
-        }
-        else if (type == "Project") {
-            title = "项目";
-            url = "Project/ProjectSearchResult.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_SEARCH %>&param1=2749&param2=" + text;
-        }
-        else if (type == "TaskNo") {
-            title = "任务编号";
-            url = "Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TASK_SEARCH_NO %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TASK_SEARCH_NO %>&con2754=" + text;
-        }
-        else if (type == "InsPro") {
-            $("#SearchTitle").hide();
-            url = "Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INSTALLEDPRODUCT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.InstalledProductView %>&param1=2750&param2=" + text + "&isShow=Search";
-        }
-        else if (type == "InsProUdf") {
-            $("#SearchTitle").hide();
-            url = "Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INSTALLEDPRODUCT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.InstalledProductView %>&param1=2750&param2=" + text + "&isShow=Search";
-        }
-        else if (type == "OpportunityName") {
-            $("#SearchTitle").hide();
-            url = "Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Opportunity %>&group=9&con261=" + text;
-        }
-        else if (type == "QuoteName") {
-            title = "报价名称";
-            url = "Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Company %>&group=4&con5=" + text;
-        }
-
-        else if (type == "Knowledge") {
-            title = "知识库";
-            url = "Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.KNOWLEDGEBASE_ARTICLE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.KnowledgebaseArticle %>&param1=2751&param2=" + text;
-        }
-        else if (type == "Community") {
-            title = "社区";
-            url = "";
-        }
-        else if (type == "InvoiceNo") {
-            $("#SearchTitle").hide();
-            url = "Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVOICE_HISTORY %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Invoice_History %>&param1=2752&param2=" + text;
-        }
-        else if (type == "InvoiceId") {
-            $("#SearchTitle").hide();
-            url = "Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVOICE_HISTORY %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Invoice_History %>&param1=2753&param2=" + text;
-        }
-        else {
-            return;
-        }
-        $("#SearchTitle").text(title);
-        $("#PageFrame").attr("src", url);
-    }
-    <%if (isFromLogin && notList != null && notList.Count > 0)
-    { %>
-    $(".Notice").show();
-    $("#BackgroundOverLay").show();
-    <%}%>
->>>>>>> 0cc30f2c5ae4600c8ab2a06ca0d92be478bc4303
 
         // 关闭弹窗
         function CancelDialog(navId) {
@@ -2478,7 +2297,6 @@
                 url: "../Tools/IndexAjax.ashx?act=ClearHistory",
                 dataType: "json",
                 success: function (data) {
-<<<<<<< HEAD
                     if (data) {
                         $("#BrowerHistoryDiv").html("");
                     }
@@ -2538,157 +2356,6 @@
                                 title = data[i].title.substring(0,30)+"...";
                             }
                             browerHistoryTwtenHtml += " <div class='Content'><a class='Button ButtonIcon NormalState HistoryClick' onclick=\"window.open('" + data[i].url + "', '_blank', 'left=0,top=0,location=no,status=no,width=900,height=750', false)\"><span class='Text'>" + title + "</span></a></div>";
-=======
-
-                },
-            });
-        }
-    })
-
-    function AddObject(objectType) {
-        if (objectType == "ticket") {
-            window.open('../ServiceDesk/TicketManage', windowType.ticket + windowType.add, 'left=200,top=200,width=1280,height=800', false);
-        }
-        else if (objectType == "masterTicket") {
-            window.open("../ServiceDesk/MasterTicket", windowType.masterTicket + windowType.add, 'left=200,top=200,width=1280,height=800', false);
-        }
-        else if (objectType == "serviceCall") {
-            window.open("../ServiceDesk/ServiceCall", windowType.serviceCall + windowType.add, 'left=200,top=200,width=1280,height=800', false);
-        }
-        else if (objectType == "knowledge") {
-            window.open("../ServiceDesk/AddRepository.aspx", "_blank", "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=800,height=700");
-        }
-        else if (objectType == "account") {
-            window.open("../Company/AddCompany.aspx", windowObj.company + windowType.add, 'left=0,top=0,width=900,height=750,resizable=yes', false);
-        }
-        else if (objectType == "contact") {
-            window.open("../Contact/AddContact.aspx", windowObj.contact + windowType.add, 'left=0,top=0,width=900,height=750,resizable=yes', false);
-        }
-        else if (objectType == "opportunity") {
-            window.open("../Opportunity/OpportunityAddAndEdit.aspx", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd %>', 'left=0,top=0,width=900,height=750,resizable=yes', false);
-        }
-        else if (objectType == "quote") {
-            window.open("../Quote/QuoteAddAndUpdate.aspx", windowObj.quote + windowType.add, 'left=0,top=0,width=900,height=750,resizable=yes', false);
-        }
-        else if (objectType == "todo") {
-            window.open("../Activity/Todos.aspx", windowObj.todos + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
-        }
-        else if (objectType == "appoint") {
-            window.open("../ServiceDesk/AppointmentsManage.aspx", windowObj.appointment + windowType.add, 'left=200,top=200,width=600,height=800', false);
-        }
-        else if (objectType == "note") {
-            window.open("../Activity/Notes.aspx", windowObj.notes + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
-        }
-        else if (objectType == "taskLabour") {
-            window.open("../Project/WorkEntry.aspx", windowObj.workEntry + windowType.add, 'left=200,top=200,width=1080,height=800', false);
-        }
-        else if (objectType == "generalLabour") {
-            window.open("../TimeSheet/RegularTimeAddEdit.aspx", windowObj.workEntry + windowType.add, 'left=0,top=0,location=no,status=no,width=1080,height=750', false);
-        }
-        else if (objectType == "leaveRequest") {
-            window.open("../TimeSheet/TimeoffRequestAdd.aspx", windowObj.timeoffRequest + windowType.add, 'left=0,top=0,location=no,status=no,width=850,height=750', false);
-        }
-        else if (objectType == "costReport") {
-            window.open("../Project/ExpenseReportManage.aspx", windowObj.expenseReport + windowType.add, 'left=0,top=0,location=no,status=no,width=400,height=250', false);
-        }
-        else if (objectType == "serviceContract") {
-            window.open("../Contract/ContractAdd.aspx?type=<%=(int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE %>", windowObj.contract + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-        else if (objectType == "timeMaterialsContract") {
-            window.open("../Contract/ContractAdd.aspx?type=<%=(int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.TIME_MATERIALS %>", windowObj.contract + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-        else if (objectType == "fixedPriceContract") {
-            window.open("../Contract/ContractAdd.aspx?type=<%=(int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.FIXED_PRICE %>", windowObj.contract + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-        else if (objectType == "retainerContract") {
-            window.open("../Contract/ContractAdd.aspx?type=<%=(int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER %>", windowObj.contract + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-        else if (objectType == "blockHoursContract") {
-            window.open("../Contract/ContractAdd.aspx?type=<%=(int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS %>", windowObj.contract + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-        else if (objectType == "perTicketContract") {
-            window.open("../Contract/ContractAdd.aspx?type=<%=(int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.PER_TICKET %>", windowObj.contract + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-        else if (objectType == "project") {
-            window.open("../Project/ProjectAddOrEdit?type_id=<%=(int)EMT.DoneNOW.DTO.DicEnum.PROJECT_TYPE.ACCOUNT_PROJECT %>", windowObj.project + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-        else if (objectType == "projectFromTemp") {
-            window.open("../Project/ProjectAddOrEdit?type_id=<%=(int)EMT.DoneNOW.DTO.DicEnum.PROJECT_TYPE.ACCOUNT_PROJECT %>&isFromTemp=1", windowObj.project + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-        else if (objectType == "yuan") {
-            window.open("../Project/ProjectAddOrEdit?type_id=<%=(int)EMT.DoneNOW.DTO.DicEnum.PROJECT_TYPE.PROJECT_DAY %>", windowObj.project + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-        else if (objectType == "projectTemp") {
-            window.open("../Project/ProjectAddOrEdit?isTemp=1", windowObj.project + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-        }
-        // 
-    }
-    // 清除浏览记录
-    function ClearBrowerHistory() {
-        $.ajax({
-            type: "GET",
-            async: false,
-            url: "../Tools/IndexAjax.ashx?act=ClearHistory",
-            dataType: "json",
-            success: function (data) {
-                if (data) {
-                    $("#BrowerHistoryDiv").html("");
-                }
-            },
-        });
-    }
-    // 
-    function ShowMoreHistory() {
-        var browerHistoryTwtenHtml = "";
-
-        $.ajax({
-            type: "GET",
-            async: false,
-            url: "../Tools/IndexAjax.ashx?act=LoadBrowerHistory",
-            dataType: "json",
-            success: function (data) {
-                if (data != "") {
-                    for (var i = 0; i < data.length; i++) {
-                        var title = data[i].title;
-                        if (data[i].title.length >= 30) {
-                            title = data[i].title.substring(0, 30) + "...";
-                        }
-                        browerHistoryTwtenHtml += "<div class='PageNavigationLink'><a class='Button ButtonIcon Link NormalState HistoryClick'  onclick=\"window.open('" + data[i].url + "', '_blank', 'left=0,top=0,location=no,status=no,width=1280,height=750', false)\">" + title + "</a><span></span></div>";
-                    }
-
-                }
-            },
-        });
-        $("#MoreHistoryDiv").html(browerHistoryTwtenHtml);
-        $(".HistoryClick").click(function () {
-            setTimeout(function () { LoadBrowerHistory(); }, 2000)
-        })
-        $("#BackgroundOverLay").show();
-        $("#NoticeHistory").show();
-    }
-
-    function LoadBrowerHistory() {
-        var browerHistoryTwtenHtml = "";
-        $.ajax({
-            type: "GET",
-            async: false,
-            url: "../Tools/IndexAjax.ashx?act=LoadBrowerHistory",
-            dataType: "json",
-            success: function (data) {
-                if (data != "") {
-                    var length = data.length;
-                    if (data.length >= 20) {
-                        length = 20;
-                        $("#ShowHistoryFifty").show();
-                    }
-                    else {
-                        $("#ShowHistoryFifty").hide();
-                    }
-                    for (var i = 0; i < length; i++) {
-                        var title = data[i].title;
-                        if (data[i].title.length >= 30) {
-                            title = data[i].title.substring(0, 30) + "...";
->>>>>>> 0cc30f2c5ae4600c8ab2a06ca0d92be478bc4303
                         }
 
                     } else {
@@ -2704,13 +2371,11 @@
         $(".HistoryClick").click(function () {
             setTimeout(function () { LoadBrowerHistory();},2000)
         })
-<<<<<<< HEAD
-=======
-    }
+
+    
     $(".HistoryClick").click(function () {
         setTimeout(function () { LoadBrowerHistory(); }, 2000)
     })
->>>>>>> 0cc30f2c5ae4600c8ab2a06ca0d92be478bc4303
 
         function ShowManageBook() {
             var bookHtml = "";
@@ -2785,11 +2450,7 @@
                 $.ajax({
                     type: "GET",
                     async: false,
-<<<<<<< HEAD
                     url: "../Tools/IndexAjax.ashx?act=DeleteAllBook",
-=======
-                    url: "../Tools/IndexAjax.ashx?act=DeleteChooseBook&ids=" + ids,
->>>>>>> 0cc30f2c5ae4600c8ab2a06ca0d92be478bc4303
                     dataType: "json",
                     success: function (data) {
                         if (data) {
@@ -2798,83 +2459,52 @@
                         }
                     },
                 });
-<<<<<<< HEAD
                 LoadBook();
                 $("#BackgroundOverLay").hide();
                 $("#BookManageNav").hide();
             });
         }
-    </script>
-</body>
-=======
-            }
-            LoadBook();
-            $("#BackgroundOverLay").hide();
-            $("#BookManageNav").hide();
-        });
+        // 加载调度工作室
+        function LoadDispatch(chooseDate) {
 
-
-    }
-    function DeleteAllBook() {
-        LayerConfirm("该删除不可恢复，是否继续？", "是", "否", function () {
             $.ajax({
                 type: "GET",
                 async: false,
-                url: "../Tools/IndexAjax.ashx?act=DeleteAllBook",
+                url: "../Tools/IndexAjax.ashx?act=LoadDispatch&chooseDate=" + chooseDate,
                 dataType: "json",
                 success: function (data) {
-                    if (data) {
-
-
+                    if (data != "") {
+                        $("#LastMonthDay").val(data.lastMonth);
+                        $("#NextMonthDay").val(data.nextMonth);
+                        $("#ThisMonthText").text(data.showToMonth);
+                        $("#IndexShowMuClandarTBody").html(data.content);
                     }
                 },
             });
-            LoadBook();
-            $("#BackgroundOverLay").hide();
-            $("#BookManageNav").hide();
-        });
-    }
-    // 加载调度工作室
-    function LoadDispatch(chooseDate)
-    {
-        
-        $.ajax({
-            type: "GET",
-            async: false,
-            url: "../Tools/IndexAjax.ashx?act=LoadDispatch&chooseDate=" + chooseDate,
-            dataType: "json",
-            success: function (data) {
-                if (data!="") {
-                    $("#LastMonthDay").val(data.lastMonth);
-                    $("#NextMonthDay").val(data.nextMonth);
-                    $("#ThisMonthText").text(data.showToMonth);
-                    $("#IndexShowMuClandarTBody").html(data.content);
-                }
-            },
-        });
-    }
-
-    function LoadLastDispatch() {
-        var LastMonthDay = $("#LastMonthDay").val();
-        if (LastMonthDay != "") {
-            $('.loading').show();
-            $("#IndexShowMuClandarTBody").html("");
-            setTimeout(function () { LoadDispatch(LastMonthDay);$('.loading').hide();  }, 1000);
         }
-    }
-    function LoadNextDispatch() {
-        var NextMonthDay = $("#NextMonthDay").val();
-        if (NextMonthDay != "") {
-            $('.loading').show();
-            $("#IndexShowMuClandarTBody").html("");
-            setTimeout(function () { LoadDispatch(NextMonthDay); $('.loading').hide(); }, 1000);
-        }
-    }
 
-    function ToSingDispatch(chooseDate) {
-        window.open('../ServiceDesk/DispatcherWorkshopView.aspx?resIds=<%=LoginUserId %>&chooseDate=' + chooseDate +"&isSingResPage=1", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.DISPATCH_CALENDAR %>', 'left=0,top=0,width=1800,height=950', false);
+        function LoadLastDispatch() {
+            var LastMonthDay = $("#LastMonthDay").val();
+            if (LastMonthDay != "") {
+                $('.loading').show();
+                $("#IndexShowMuClandarTBody").html("");
+                setTimeout(function () { LoadDispatch(LastMonthDay); $('.loading').hide(); }, 1000);
+            }
+        }
+        function LoadNextDispatch() {
+            var NextMonthDay = $("#NextMonthDay").val();
+            if (NextMonthDay != "") {
+                $('.loading').show();
+                $("#IndexShowMuClandarTBody").html("");
+                setTimeout(function () { LoadDispatch(NextMonthDay); $('.loading').hide(); }, 1000);
+            }
+        }
+
+        function ToSingDispatch(chooseDate) {
+            window.open('../ServiceDesk/DispatcherWorkshopView.aspx?resIds=<%=LoginUserId %>&chooseDate=' + chooseDate + "&isSingResPage=1", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.DISPATCH_CALENDAR %>', 'left=0,top=0,width=1800,height=950', false);
     }
-</script>
->>>>>>> 0cc30f2c5ae4600c8ab2a06ca0d92be478bc4303
+    </script>
+</body>
+
 </html>
 
