@@ -94,13 +94,14 @@
     <Compile Include="SDK\WorkEntryBLL.cs" />
     <Compile Include="SYS\AccountClassBLL.cs" />
     <Compile Include="SYS\ConfigTypeBLL.cs" />
+    <Compile Include="SYS\DashboardBLL.cs" />
     <Compile Include="SYS\DistrictBLL.cs" />
-    <Compile Include="SYS\ErrorLogBLL.cs" />
+    <Compile Include="Com\ErrorLogBLL.cs" />
     <Compile Include="SYS\FormTemplateBLL.cs" />
     <Compile Include="SYS\GeneralBLL.cs" />
     <Compile Include="SYS\DepartmentBLL.cs" />
     <Compile Include="SYS\IndexBLL.cs" />
-    <Compile Include="SYS\OperLogBLL.cs" />
+    <Compile Include="Com\OperLogBLL.cs" />
     <Compile Include="SYS\QuoteAndInvoiceEmailTempBLL.cs" />
     <Compile Include="SYS\ReverseBLL.cs" />
     <Compile Include="SYS\SysRoleInfoBLL.cs" />

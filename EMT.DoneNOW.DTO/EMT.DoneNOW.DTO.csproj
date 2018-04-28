@@ -65,6 +65,7 @@
     <Compile Include="ContractEditDto.cs" />
     <Compile Include="ContractMilestoneEntityDto.cs" />
     <Compile Include="ContractServiceEntityDto.cs" />
+    <Compile Include="DashboardDto.cs" />
     <Compile Include="DataPermissionDto.cs" />
     <Compile Include="DictionaryEntryDto.cs" />
     <Compile Include="EnumAuthority.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="UserDefinedFieldDto.cs" />
     <Compile Include="UserDefinedFieldValue.cs" />
     <Compile Include="UserInfoDto.cs" />
+    <Compile Include="DashboardWidgetInfoDto.cs" />
     <Compile Include="WorkflowRuleDto.cs" />
   </ItemGroup>
   <ItemGroup>

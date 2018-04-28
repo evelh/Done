@@ -95,6 +95,16 @@
 </head>
 <body style="overflow-x: auto; overflow-y: auto;">
   <%="" %>
+    <%if (isShowTitle) { %>
+    <div class="TitleBar">
+        <div class="Title" style="left:0;">
+            <div class="TitleBarNavigationButton">
+                <a class="Button ButtonIcon NormalState" id="goBack"><img src="../Images/move-left.png" /></a>
+            </div>
+            <span class="text1" id="opname"><%=title %></span>
+        </div>
+    </div>
+    <%} %>
     <form id="form1">
         <div id="search_list">
             <input type="hidden" id="page_num" name="page_num" <%if (queryResult != null)
@@ -204,7 +214,7 @@
                 </div>
               <%} %>
             </div>
-            <div class="contenttitle clear" style="position: fixed; border-bottom: 1px solid #e8e8fa; left: 0; top: 0; background: #fff; width: 100%;min-width:900px;">
+            <div class="contenttitle clear" style="border-bottom: 1px solid #e8e8fa; left: 0; top: 0; background: #fff; width: 100%;min-width:900px;">
                 <ul class="clear fl">
                     <%if (!string.IsNullOrEmpty(addBtn))
     {
@@ -506,7 +516,7 @@
     </form>
     <%if (queryResult != null) { %>
 
-    <div class="searchcontent" id="searchcontent" style="margin-top: 56px; min-width: <%=tableWidth%>px; overflow: hidden;">
+    <div class="searchcontent" id="searchcontent" style="min-width: <%=tableWidth%>px; overflow: hidden;">
         <table border="" cellspacing="0" cellpadding="0" style="overflow: scroll; width: 100%; height: 100%;" id="SearchTable">
             <tr>
                 <%if (!string.IsNullOrEmpty(isCheck))

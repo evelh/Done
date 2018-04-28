@@ -148,6 +148,9 @@
     <Compile Include="SDK\sdk_work_record.cs" />
     <Compile Include="SDK\v_task_all.cs" />
     <Compile Include="SYS\sys_bookmark.cs" />
+    <Compile Include="SYS\sys_dashboard.cs" />
+    <Compile Include="SYS\sys_dashboard_publish.cs" />
+    <Compile Include="SYS\sys_dashboard_resource.cs" />
     <Compile Include="SYS\sys_department.cs" />
     <Compile Include="SYS\sys_notice.cs" />
     <Compile Include="SYS\sys_notice_resource.cs" />
@@ -189,6 +192,8 @@
     <Compile Include="SYS\sys_udf_field.cs" />
     <Compile Include="SYS\sys_udf_group_field.cs" />
     <Compile Include="SYS\sys_udf_list.cs" />
+    <Compile Include="SYS\sys_widget.cs" />
+    <Compile Include="SYS\sys_widget_guage.cs" />
     <Compile Include="SYS\sys_windows_history.cs" />
     <Compile Include="SYS\sys_workflow.cs" />
     <Compile Include="SYS\sys_workflow_log.cs" />

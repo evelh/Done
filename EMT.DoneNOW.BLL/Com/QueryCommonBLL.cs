@@ -384,6 +384,61 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 获取小窗口钻取的查询结果
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="para"></param>
+        /// <returns></returns>
+        public QueryResultDto GetResultWidgetDrill(long userId, QueryWidgetDrillParaDto para)
+        {
+            QueryResultDto result = new QueryResultDto();
+            int count = 0;
+
+            string sql = new DashboardBLL().GetWidgetDrillSql(para.widget_id, para.group1, para.group2, para.order_by, userId, out count);      // 获取查询sql语句
+            result.count = count;
+            result.query_type_id = para.query_type_id;
+            result.para_group_id = para.para_group_id;
+            if (count == 0)     // 查询记录总数为0
+                return result;
+
+            // 计算分页信息
+            if (para.page_size == 0)
+                para.page_size = _pageSize;
+            int totalPage = count / para.page_size;
+            if (count % para.page_size != 0)
+                ++totalPage;
+            if (para.page <= 0)
+                para.page = 1;
+            if (para.page > totalPage)
+                para.page = totalPage;
+            int offset = (para.page - 1) * para.page_size;
+            
+            // 获取查询结果
+            sql = sql + $" LIMIT {offset},{para.page_size}";
+            var table = new sys_query_type_user_dal().ExecuteDataTable(sql);
+            List<Dictionary<string, object>> list = new List<Dictionary<string, object>>();
+            foreach (DataRow row in table.Rows)
+            {
+                Dictionary<string, object> column = new Dictionary<string, object>();
+                foreach (DataColumn col in table.Columns)
+                {
+                    column.Add(col.ColumnName, row[col.ColumnName]);
+                }
+                list.Add(column);
+            }
+
+            result.order_by = para.order_by;
+            result.page = para.page;
+            result.page_count = totalPage;
+            result.page_size = para.page_size;
+            //result.query_id = queryId;
+            result.query_id = "";
+            result.result = list;
+
+            return result;
+        }
+
+        /// <summary>
         /// 获取一个搜索页面的查询语句
         /// </summary>
         /// <param name="userId">用户id</param>
@@ -585,7 +640,7 @@ namespace EMT.DoneNOW.BLL
         {
             List<QueryResultParaDto> result = new List<QueryResultParaDto>();
 
-            string sql = $"SELECT * FROM d_query_result WHERE query_type_id={queryTypeId} and is_visible = 1 ORDER BY col_order ASC";
+            string sql = $"SELECT * FROM d_query_result WHERE query_type_id={queryTypeId} and (type_id is null or type_id=3) and is_visible = 1 ORDER BY col_order ASC";
             var queryResultList = new d_query_result_dal().FindListBySql(sql);
             foreach (var qr in queryResultList)
             {
