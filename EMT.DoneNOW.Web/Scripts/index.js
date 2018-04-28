@@ -28,6 +28,25 @@ $(".informationTitle i").click(function(){
     
 })
 
+function ShowDashboard() {
+    $(".cont").hide();
+    $("#yibiaopan").show();
+}
+function ShowSearchCon() {
+    $(".cont").show();
+    $("#yibiaopan").hide();
+}
+function ShowLoading() {
+    //$('.loading').show();
+    //$('#cover').show();
+    LayerLoad();
+}
+function HideLoading() {
+    //$('.loading').hide();
+    //$('#cover').hide();
+    LayerLoadClose();
+}
+
 
 var  informationWidth=$(".information").width();
 var leftLenght=$(".information ").children(".left").length;

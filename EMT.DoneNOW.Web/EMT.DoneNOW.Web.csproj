@@ -162,7 +162,9 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\ClassificationIcons.css" />
+    <Content Include="Content\dashboard.css" />
     <Content Include="Content\Dispatch.css" />
+    <Content Include="Content\drag.css" />
     <Content Include="Content\DynamicContent.css" />
     <Content Include="Content\EmailTempl.css" />
     <Content Include="Content\index.css" />
@@ -191,13 +193,28 @@
     <Content Include="Content\sysset_user.css" />
     <Content Include="Content\Ticket.css" />
     <Content Include="Content\TicketLabour.css" />
+    <Content Include="Images\ButtonIcons.svg" />
+    <Content Include="Images\DecorationIcons.svg" />
+    <Content Include="Images\LoadingRefresh.gif" />
+    <Content Include="Images\ThemeSwatchIcons.png" />
+    <Content Include="Images\WidgetConfigurationIcons.png" />
     <Content Include="Scripts\clipboard.js" />
     <Content Include="Scripts\clipboard.min.js" />
+    <Content Include="Scripts\Dashboard\Dashboard.js" />
+    <Content Include="Scripts\Dashboard\drag.js" />
+    <Content Include="Scripts\Dashboard\echarts.js" />
+    <Content Include="Scripts\Dashboard\html2canvas.js" />
+    <Content Include="Scripts\Dashboard\Widget.js" />
     <Content Include="Scripts\Dispatch.js" />
+    <Content Include="Scripts\Search\CompanyWidgetDrill.js" />
+    <Content Include="Scripts\Search\ConfigurationWidgetDrill.js" />
+    <Content Include="Scripts\Search\ContractWidgetDrill.js" />
     <Content Include="Scripts\Search\dispatch_ticket_search.js" />
     <Content Include="Scripts\Search\ResourcePolicyAssignment.js" />
     <Content Include="Scripts\Search\ResourceServiceDeskQueue.js" />
     <Content Include="Scripts\Search\TimeoffMyBalance.js" />
+    <Content Include="Scripts\Search\TimeoffRequestWidgetDrill.js" />
+    <Content Include="Scripts\Search\TimesheetWidgetDrill.js" />
     <Content Include="ServiceDesk\AddQuickCall.aspx" />
     <Content Include="ServiceDesk\AppointmentsManage.aspx" />
     <Content Include="ServiceDesk\DispatchCalendar.aspx" />
@@ -2287,6 +2304,9 @@
     <Compile Include="TimeSheet\TimeoffRequestAdd.aspx.designer.cs">
       <DependentUpon>TimeoffRequestAdd.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\DashboardAjax.ashx.cs">
+      <DependentUpon>DashboardAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\DispatchAjax.ashx.cs">
       <DependentUpon>DispatchAjax.ashx</DependentUpon>
     </Compile>
@@ -2801,6 +2821,7 @@
     <Content Include="Tools\DispatchAjax.ashx" />
     <Content Include="Tools\ServiceCallAjax.ashx" />
     <Content Include="Tools\IndexAjax.ashx" />
+    <Content Include="Tools\DashboardAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

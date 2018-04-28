@@ -28,11 +28,26 @@ namespace EMT.DoneNOW.Web
         protected string param1;
         protected string param2;
 
+        protected bool isShowTitle = false;     // 页面是否显示title
+        protected string title;                 // 页面title
+
         protected DateTime searchTime = DateTime.Now;   // 合同服务查询的查询日期
 
         protected string isCheck = ""; //  用于控制是否显示checkBox
         protected void Page_Load(object sender, EventArgs e)
         {
+            isCheck = Request.QueryString["isCheck"];
+            param1 = string.IsNullOrEmpty(Request.QueryString["param1"]) ? "" : Request.QueryString["param1"];
+            param2 = string.IsNullOrEmpty(Request.QueryString["param2"]) ? "" : Request.QueryString["param2"];
+
+
+            if (!string.IsNullOrEmpty(Request.QueryString["widgetDrill"]))
+            {
+                WidgetDrillQuery();
+                return;
+            }
+
+
             if (!int.TryParse(Request.QueryString["cat"], out catId))
                 catId = 0;
             if (!long.TryParse(Request.QueryString["type"], out queryTypeId))
@@ -44,9 +59,6 @@ namespace EMT.DoneNOW.Web
                 Response.Close();
                 return;
             }
-            isCheck = Request.QueryString["isCheck"];
-            param1 = string.IsNullOrEmpty(Request.QueryString["param1"]) ? "" : Request.QueryString["param1"];
-            param2 = string.IsNullOrEmpty(Request.QueryString["param2"]) ? "" : Request.QueryString["param2"];
             // 一个query_type下只有一个group时可以不传参gruop_id
             if (paraGroupId == 0)
             {
@@ -75,6 +87,89 @@ namespace EMT.DoneNOW.Web
             {
                 QueryData();
                 CalcTableWidth();
+            }
+        }
+
+        /// <summary>
+        /// 小窗口钻取查询处理
+        /// </summary>
+        private void WidgetDrillQuery()
+        {
+            long widgetId;
+            if (!long.TryParse(Request.QueryString["id"], out widgetId))
+            {
+                Response.End();
+                return;
+            }
+            var wgtBll = new DashboardBLL();
+            var widget = wgtBll.GetWidgetById(widgetId);
+            if (widget == null)
+            {
+                Response.End();
+                return;
+            }
+            var groups = bll.GetQueryGroup(widget.entity_id);
+            if (groups.Count != 1)
+            {
+                Response.End();
+                return;
+            }
+            catId = groups[0].cate_id;
+            queryTypeId = groups[0].query_type_id;
+            paraGroupId = groups[0].id;
+
+            resultPara = bll.GetResultParaSelect(LoginUserId, paraGroupId);    // 获取查询结果列信息
+            var keys = Request.QueryString;
+            string order = keys["order"];   // order by 条件
+            int page;
+            if (!int.TryParse(keys["page_num"], out page))
+                page = 1;
+            int pageSize = string.IsNullOrEmpty(keys["page_size"]) ? 0 : int.Parse(keys["page_size"]);  // 查询每页个数
+
+            QueryWidgetDrillParaDto queryPara = new QueryWidgetDrillParaDto();
+            queryPara.query_type_id = queryTypeId;
+            queryPara.para_group_id = paraGroupId;
+            queryPara.page = page;
+            queryPara.order_by = order;
+            queryPara.page_size = pageSize;
+            queryPara.widget_id = widgetId;
+            queryPara.group1 = keys["val1"];
+            queryPara.group2 = keys["val2"];
+            queryResult = bll.GetResultWidgetDrill(LoginUserId, queryPara);
+
+
+            isShowTitle = true;
+            InitPageTitle();
+
+            GetMenus();
+            CalcTableWidth();
+        }
+
+        /// <summary>
+        /// 设置页面title
+        /// </summary>
+        private void InitPageTitle()
+        {
+            switch (queryTypeId)
+            {
+                case (int)QueryType.CompanyWidgetDrill:
+                    title = "客户管理";
+                    break;
+                case (int)QueryType.ConfigurationWidgetDrill:
+                    title = "配置项管理";
+                    break;
+                case (int)QueryType.ContractWidgetDrill:
+                    title = "合同管理";
+                    break;
+                case (int)QueryType.TimeoffRequestWidgetDrill:
+                    title = "休假请求";
+                    break;
+                case (int)QueryType.TimesheetWidgetDrill:
+                    title = "工时表管理";
+                    break;
+                default:
+                    title = "";
+                    break;
             }
         }
 
@@ -687,6 +782,18 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除客户", click_function = "DeleteCompany()" });
                     break;
+                case (long)QueryType.CompanyWidgetDrill:
+                    contextMenu.Add(new PageContextMenuDto { text = "修改客户", click_function = "EditCompany()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "关闭商机向导", click_function = "CloseOpportunity()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "丢失商机向导", click_function = "LoseOpportunity()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "重新指定客户经理向导", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "注销客户向导", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除客户", click_function = "DeleteCompany()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增备注", click_function = "AddNote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增工单", click_function = "AddTicket()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    break;
                 case (long)QueryType.Contact:
                 case (long)QueryType.ContactCompanyView:
                     contextMenu.Add(new PageContextMenuDto { text = "修改联系人", click_function = "EditContact()" });
@@ -748,6 +855,14 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "删除当前配置项", click_function = "DeleteIProduct()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除选中配置项", click_function = "DeleteIProducts()" });
                     break;
+                case (long)QueryType.ConfigurationWidgetDrill:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑配置项", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活配置项", click_function = "Active()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用配置项", click_function = "Inactive()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除配置项", click_function = "DeleteIProduct()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制配置项", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增工单", click_function = "AddTicket()\" \" style='color:grey;'" });
+                    break;
                 case (long)QueryType.Subscription:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "创建订阅副本", click_function = "openopenopen()\" \" style='color:grey;'" });
@@ -775,6 +890,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()\" \" style='color:grey;'" });
                     break;
                 case (long)QueryType.Contract:
+                case (long)QueryType.ContractWidgetDrill:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑合同", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看合同", click_function = "ViewContract()" });
                     contextMenu.Add(new PageContextMenuDto { text = "在新窗口中查看合同", click_function = "ViewNewWindow()" });

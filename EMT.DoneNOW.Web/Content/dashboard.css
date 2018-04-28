@@ -1,0 +1,379 @@
+﻿*{margin: 0;padding: 0;list-style: none;font-size: 14px;font-family: '微软雅黑'}
+body{overflow-x: hidden;overflow-y: hidden;}
+select {
+    height: 24px;
+    padding: 0;
+    border: solid 1px #D7D7D7;
+}
+textarea{border: solid 1px #D7D7D7;}
+input[type=text], input[type=password] {
+    height: 24px;
+    border: solid 1px #D7D7D7;
+}
+/*nav*/
+.panel_nav{width: 100%;height: auto;background:#346A95;position: relative;}
+.settings{position: absolute;height: auto;width: auto;padding: 5px;right: 30px;top:0;cursor: pointer;margin-top:3px; }
+.settings > span{width: 16px;height: 2px;background: #c2c2c2;display: block;margin-top:3px;}
+/*.settings span:nth-of-type(1){margin-top:6px;}*/
+.settings .settingsBox{display: none; width: 170px;height: auto;padding: 10px;position: absolute;top:20px;right: 0;border: 1px solid #f2f2f2;box-shadow: rgba(0,0,0,0.24) 2px 2px 3px 0;background: #fff;z-index: 99;}
+.settings .settingsBox > li{width: 100%;height: auto; padding: 5px 3px;color: #666;overflow: hidden;}
+.settings .settingsBox > li:hover{background: #E8F1FA;}
+.settings .settingsBox > li img{display: block;float: left;margin-right: 7px;margin-top:2px;}
+.settings:hover .settingsBox{display: block;}
+.settings:hover{background: #fff;}
+
+.panel_nav > ul{padding: 0 10px;padding-top:5px;  height: auto;overflow: hidden;}
+.panel_nav > ul > li{cursor: pointer;float:left;width: auto;height: auto;text-align:center;background-color: #f2f2f2;border-bottom: 1px solid #ccc;color: #858585;padding: 5px;font-size: 12px;font-weight: bold;margin-left: 5px;}
+.panel_nav > ul > li:first-child{margin-left:0; }
+.panel_nav > ul > li:last-child{position: relative;padding: 13px 15px;}
+.panel_nav > ul > li:last-child .hline{width: 10px;height:2px;position: absolute;top:50%;left: 50%;background: #858585;margin-left:-5px;margin-top: -1px; }
+.panel_nav > ul > li:last-child .sline{width: 2px;height:10px;position: absolute;top:50%;left: 50%;background: #858585;margin-left:-1px;margin-top: -5px;}
+.panel_nav_now{background: #fff !important;color: #333 !important;cursor: default !important;border-bottom: 1px solid #fff !important;}
+
+/*content*/
+.panel_content{height: auto;padding: 10px;overflow-x:hidden;overflow-y: scroll; }
+.panel_content > ul{width: 100%;height: auto;background: #fff;position: relative;}
+.panel_content > ul > li{width: 100%;height: 100%;display: none;position: absolute; overflow: hidden;}
+
+.panel_content > ul > li .WidgetShell{background: #fff; border: 1px solid #f2f2f2;box-shadow: rgba(0,0,0,0.24) 2px 2px 3px 0;float: left;height: 258px;margin: 7px;box-sizing: border-box;position: relative;}
+
+/*ContainerMenu*/
+.ContainerMenu{width:30px;padding: 2px 5px;cursor: pointer;position: absolute;bottom: 0;right: 0;background: #fff; }
+.Menuborderline{width: 40px;height: 4px;position: absolute;bottom: 10px;right: 0;background: #fff;display: none;}
+.ContainerMenu:hover{border-left: 2px solid #ccc;}
+.ContainerMenu:hover .Menuborderline{display: block;}
+.ContainerMenu:hover .MenuBox{display: block;}
+.ContainerMenu > span{display:block;float: right;background: #bebebe;border-radius:7px;width: 7px;height: 7px;margin: 1px;margin-right: 2px; }
+.ContainerMenu .MenuBox{display: none; width: 170px;height: auto;padding: 10px;position: absolute;bottom:13px;right: 0;border: 1px solid #f2f2f2;box-shadow: rgba(0,0,0,0.24) 2px 2px 3px 0;background: #fff;}
+.ContainerMenu .MenuBox  li{width: 100%;height: auto; padding: 5px 3px;color: #666;overflow: hidden;}
+.ContainerMenu .MenuBox  li:hover{background: #E8F1FA;}
+.ContainerMenu .MenuBox  li img{display: block;float: left;margin-right: 7px;margin-top:2px;}
+
+/*addShell*/
+.addShell{border: none !important;box-shadow: none !important; }
+.addShell .addWidget{width: 100%;height: 100%;border: 5px dashed #ccc;box-sizing: border-box;text-align: center;position: relative;color: #ccc;font-size: 20px;font-weight: bold;line-height: 350px;display: none;cursor: pointer;}
+.addShell .addWidget span:nth-of-type(1){position: absolute;display: block;width: 48px;height: 16px;top:50%;left: 50%;background: #ccc;margin-left:-24px; margin-top:-28px;}
+.addShell .addWidget span:nth-of-type(2){position: absolute;display: block;width: 16px;height: 48px;top:50%;left: 50%;background: #ccc;margin-top:-44px;margin-left: -8px;}
+.addShell:hover .addWidget{display: block;}
+
+
+
+/*cover*/
+.cover{position: fixed;top:0;bottom: 0;left: 0;right: 0;background:rgba(0,0,0,0.5);display: none; z-index: 99}
+/*POP*/
+.POPbox{z-index:100;width: 876px;height: 600px;position: absolute;left: 50%;top: 50%;margin-left:-438px;margin-top: -300px; background: #fff;box-sizing: border-box;border: 5px solid #B9B9B9;display: none;}
+.shut{
+    background: url('../Images/DecorationIcons.svg');
+    background-position: 0 -48px;
+    border: none;
+    cursor: pointer;
+    height: 32px;
+    position: absolute;
+    right: -14px;
+    top: -14px;
+    width: 32px;}
+.SettingsPOP{width: 100%;height: auto;}
+.POPbox h3{font-size: 16px;font-weight: bold;color:#fff;line-height: 38px;display: block;width: 100%;height: 38px;background: #346A95;text-indent: 10px; }
+.content{padding: 10px;height: auto;}
+.common{border: 1px solid #d3d3d3;padding: 4px 0 4px 0;margin-top:10px;}
+.common p{color: #666;font-weight: bold;font-size: 12px;}
+.normal p{color: #666;font-weight: bold;font-size: 12px;}
+.button{width: 100%;height: auto;overflow: hidden;}
+.button div{padding:3px 5px;color: #666;font-weight: 600;float: left;border: 1px solid #d3d3d3;background: #F8F8F8;cursor: pointer;}
+.button div img{display: block;margin-top:2px;margin-right: 5px;float: left;}
+.button .delete{margin-left: 10px;}
+.Column{padding:0 28px;padding-top: 10px;overflow:hidden;}
+.Column .item{width: 50%;height: auto;float: left;font-size: 12px;color: #666;margin-top:5px;height: 50px;position: relative;}
+.Column .item input[type=text]{width: 320px;box-sizing: border-box;}
+.Column .item select{width: 320px;box-sizing: border-box;}
+.Column .item input[type=checkbox]{display: block;float: left;margin-top:22px;margin-right: 5px;}
+.Column .item .colors{background-position: -735px 0;background-repeat: repeat-y;background-color: transparent; height: 23px; width: 100px;margin-left: 0;margin-top: 15px;border: 1px solid #E4E4E4;background: url('../Images/ThemeSwatchIcons.png')}
+
+.normal{border: 1px solid #d3d3d3;padding: 4px 0 4px 0;margin-top:10px;}
+.heading .toogle{
+    display: block;float: left;
+    background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+    border: 1px solid #c6c6c6;
+    cursor: pointer;
+    height: 14px;
+    width: 14px;
+    margin-left: 5px;
+    text-align: center;line-height: 12px;font-weight: bold;color: #888888;position: relative;
+}
+.heading .toogle .Vertical{position: absolute;width:2px;height: 8px;left: 50%;margin-left:-1px;top:50%;margin-top:-4px; background: #888; display: none;}
+.heading .toogle .Horizontal{position: absolute;width:8px;height: 2px;left: 50%;margin-left:-4px;top:50%;margin-top:-1px; background: #888; }
+.heading{font-size: 12px;font-weight: bold;color: #666;padding: 3px;text-indent: 3px;}
+.Radiogroup{margin-top: 10px;width:100%;float: left;}
+.radioitem{margin-top:5px;font-size: 12px;color: #666;}
+.radioitem input{display: block;float: left;margin-top:2px; margin-right:5px; }
+
+
+/*loading*/
+.loading{position: absolute;top:50%;left: 50%;z-index: 88;margin-left: -37px;margin-top: -37px;-webkit-animation: loading 2s ease normal;animation: loading 2s linear infinite; width:74px;height: 74px;display: none;}
+@-webkit-keyframes loading 
+{
+    0%   {transform:rotate(0deg)}
+    100% {transform:rotate(360deg)}
+}
+
+
+/*PresentationMode*/
+#PresentationMode{width: 486px;height: 450px;margin-left: -243px;margin-top:-225px;color:#666;font-size: 12px;}
+#PresentationMode p{font-weight: bold;}
+
+
+
+/*全屏title*/
+.ModeTitle{width: 100%;height: 35px;color:white;font-size: 20px;font-weight: bold;line-height: 35px;background:#346A95;display: none; }
+.ModeTitle .icon{background-image: url('../Images/DecorationIcons.svg'); background-position: -370px 0;height: 24px;width: 24px;float: left;margin-left: 10px;margin-right: 10px;margin-top:5px;}
+.PresentationModeCancelButton{
+    background-image: url('../Images/DecorationIcons.svg');
+    background-position: -130px 0;
+    border: none;
+    cursor: pointer;
+    height: 16px;
+    float: right;
+    margin-right: 10px;
+    margin-top:10px;
+    width: 16px;
+}
+
+
+
+
+/*closetable*/
+#CloseTable{width: 510px;height: 200px;margin-left: -255px;margin-top:-100px;color:#666;font-size: 12px;}
+.CloseTableTOP{overflow: hidden;}
+#CloseTable .remindlog{background-position: -80px -48px;width: 48px;height: 48px;background-image: url('../Images/DecorationIcons.svg');float: left;margin-left: 20px;margin-top:20px;}
+#CloseTable .content{float: left;width: 390px;height: auto;margin-top:10px;color: #666;font-size: 12px;}
+#CloseTable p{font-weight: bold;}
+#CloseTable span{margin-top:5px;display: block;}
+#CloseTable .button{margin-top: 10px;}
+#CloseTable .no{margin-left: 10px;}
+
+
+/*add 提醒*/
+#AddWidgetRemind{width: 510px;height: 200px;margin-left: -255px;margin-top:-100px;color:#666;font-size: 12px;}
+.TableRemind .content{padding: 30px;font-size: 12px;color: #666;}
+#AddWidgetRemind .button{margin-top: 10px;}
+
+
+/*AddWidget 添加小工具*/
+#AddWidget .Column{padding: 50px;font-size: 12px;color: #666;padding-top:20px;overflow: hidden; }
+#AddWidget .itemborderBottom{width: 100%;height: 1px;background: #E4E4E4;float: left;}
+#AddWidget .Column .title{font-weight: bold;color: #000;margin-bottom: 20px;display: block;float: left;width: 100%;}
+#AddWidget .Column p{font-weight: bold;font-size: 12px;}
+#AddWidget .Column input[type=radio]{margin-top: 2px;margin-right: 5px;display: block;float: left}
+#AddWidget .button{position: absolute;bottom:10px;}
+#AddWidget .button div{float: right;margin-right: 25px;}
+#AddWidget .button div span{
+    display: block;float: left; 
+    background: transparent url('../Images/ButtonIcons.svg') no-repeat scroll;
+    height: 16px;
+    margin-top: 2px;
+    width: 16px;
+    background-position: -16px -16px;
+}
+
+.AddWidgetBeforePOP{}
+
+.CustomLayoutContainer{overflow: hidden;width: 100%;height: auto;}
+.CustomLayoutContainer li{width: 59px;height: 59px;margin-top:3px; margin-bottom: 3px;margin-left: 3px; margin-right: 15px;float: left;cursor: pointer;background: transparent url('../Images/WidgetConfigurationIcons.png') no-repeat scroll;border: 3px solid transparent;}
+
+
+
+#AddWidgetBefore .content{overflow-x:auto;overflow-y: auto;position: absolute;right: 0;top: 38px;;bottom: 38px;left: 0;flex: 1 1 auto; }
+.ClickNow{border: 3px solid #AEAEAE !important; }
+#AddWidgetBefore .cancel{width:16px;height: 16px;position: absolute;right: 40px;bottom: 13px;cursor: pointer; margin: 2px;background: transparent url('../Images/ButtonIcons.svg') no-repeat scroll;background-position: -96px 0;}
+#AddWidgetBefore .widgetSizeList{width: 100%;height: auto;margin-top:10px;}
+#AddWidgetBefore .widgetSizeList li{width: 112px;height: 37px;float: left; 
+margin-top:3px; margin-bottom: 3px;margin-left: 3px; margin-right:20px; border: 3px solid transparent;cursor: pointer;}
+
+#AddWidgetBefore .widgetSizeList li:nth-of-type(1){
+background: transparent url('../Images/WidgetConfigurationIcons.png') no-repeat scroll;background-position: -1142px -2px;
+}
+#AddWidgetBefore .widgetSizeList li:nth-of-type(2){
+background: transparent url('../Images/WidgetConfigurationIcons.png') no-repeat scroll;background-position: -1142px -62px;
+}
+#AddWidgetBefore .widgetSizeList li:nth-of-type(3){
+background: transparent url('../Images/WidgetConfigurationIcons.png') no-repeat scroll;background-position: -1142px -122px;
+}
+#AddWidgetBefore .widgetSizeList li:nth-of-type(4){
+background: transparent url('../Images/WidgetConfigurationIcons.png') no-repeat scroll;background-position: -1142px -182px;
+}
+
+.widgetSizeListNow{border: 3px solid #AEAEAE !important; }
+#AddWidgetBefore .button{position: absolute;bottom: 10px;}
+#AddWidgetBefore .button .pev{float: left;margin-left: 10px;}
+#AddWidgetBefore .button .pev span{
+    display: block;float: left; 
+    background: transparent url('../Images/ButtonIcons.svg') no-repeat scroll;
+    height: 16px;
+    margin-top: 2px;
+    width: 16px;
+    background-position: 0 -16px;
+}
+#AddWidgetBefore .button .next{float: right;margin-right: 25px;}
+
+
+
+
+
+
+
+
+
+/*小窗口内*/
+.WidgetShell .moveCont{width: 100%;height: 100%;position: absolute;}
+.WidgetShell .Draggable{color: #2a4257;font-size: 13px;font-weight: bold;padding: 2px 5px;cursor: move;}
+.WidgetShell .Content{position: absolute;left: 0;right: 0;top:20px;bottom: 15px;}
+/*noe*/
+.WidgetShell .Content .GaugeContainer-one{width: 100%;height: 100%;}
+.WidgetShell .Content .GaugeContainer-one .footertitle{width: 100%;height: 20%;text-align: center;color: #4f4f4f;font-size: 20px;}
+.WidgetShell .Content .GaugeContainer-one .GaugeContainerCanvas{width: 100%;height: 80%;}
+/*two*/
+
+.WidgetShell .Content .GaugeContainer-two{width: 100%;height: 50%;}
+.WidgetShell .Content .GaugeContainer-two .footertitle{width: 100%;height: 20%;text-align: center;color: #4f4f4f;font-size: 16px;}
+.WidgetShell .Content .GaugeContainer-two .GaugeContainerCanvas{width: 100%;height: 80%;}
+/*three*/
+
+.WidgetShell .Content .GaugeContainer-three{width: 100%;height: 33.33%;}
+.WidgetShell .Content .GaugeContainer-three .footertitle{width: 50%;height: 100%;text-align: left;color: #4f4f4f;font-size: 16px;float: left;display: flex;justify-content: left;align-items: center;}
+.WidgetShell .Content .GaugeContainer-three .GaugeContainerCanvas{width: 50%;height: 100%;float: left;}
+/*four*/
+
+.WidgetShell .Content .GaugeContainer-four{width: 50%;height: 50%;float: left;}
+.WidgetShell .Content .GaugeContainer-four .footertitle{width: 100%;height: 20%;text-align: left;color: #4f4f4f;font-size: 16px;float: left;text-align: center;}
+.WidgetShell .Content .GaugeContainer-four .GaugeContainerCanvas{width: 100%;height: 80%;float: left;}
+
+/*five*/
+
+.WidgetShell .Content .GaugeContainer-five{width: 51%;height: 50%;float: left;}
+.WidgetShell .Content .GaugeContainer-five .footertitle{width: 100%;height: 20%;text-align: left;color: #4f4f4f;font-size: 16px;float: left;text-align: center;}
+.WidgetShell .Content .GaugeContainer-five .GaugeContainerCanvas{width: 100%;height: 80%;float: left;}
+
+.WidgetShell .Content .GaugeContainer-five:nth-of-type(3){width: 49%;height: 33.33%;float: left;position: absolute;right: 0;top: 0;}
+.WidgetShell .Content .GaugeContainer-five:nth-of-type(4){width: 49%;height: 33.33%;float: left;position: absolute;right: 0;top: 33.33%;}
+.WidgetShell .Content .GaugeContainer-five:nth-of-type(5){width: 49%;height: 33.33%;float: left;position: absolute;right: 0;top:66.66%;}
+.WidgetShell .Content .GaugeContainer-five:nth-of-type(n+3) .footertitle{width: 50%;height: 100%;text-align: left;color: #4f4f4f;font-size: 16px;float: left;display: flex;justify-content: left;align-items: center; }
+.WidgetShell .Content .GaugeContainer-five:nth-of-type(n+3) .GaugeContainerCanvas{width: 50%;height: 100%;float: left;}
+
+
+/*six*/
+
+.WidgetShell .Content .GaugeContainer-six{width: 50%;height: 33.33%;float: left;}
+.WidgetShell .Content .GaugeContainer-six .footertitle{width: 50%;height: 100%;text-align: left;color: #4f4f4f;font-size: 16px;float: left;display: flex;justify-content: left;align-items: center;}
+.WidgetShell .Content .GaugeContainer-six .GaugeContainerCanvas{width: 50%;height: 100%;float: left;}
+
+
+.WidgetShell .Content .TableTotal{text-align: right;color: #333;font-size: 14px;height: 15%;font-weight: bold;padding-right: 10px;}
+.WidgetShell .Content .GaugeContainerCanvas{width: 100%;height: 85%;}
+
+
+/*table*/
+
+
+.WidgetShell .Content .TopTotal{color: #333;font-weight: bold;line-height: 20px;height: 20px;position: absolute;width: 100%;padding-left:5px;}
+.WidgetShell .Content .GaugeContainerTable{color: #333;position: absolute;top: 20px;bottom: 0;right: 0;left: 0;overflow: auto;}
+.WidgetShell .Content table{width: 100%;height: auto;min-width: 100%;}
+.WidgetShell .Content .GaugeContainerTable table tr{display: table-row;vertical-align: inherit; border-color: inherit;}
+.WidgetShell .Content .GaugeContainerTable table td{padding: 5px;font-size: 12px;}
+
+
+/*table1*/
+.WidgetShell .Content .GaugeContainerTable .Table1 tr:nth-of-type(2n){background:#F2F2F2; }
+.WidgetShell .Content .GaugeContainerTable .Table1 .Amount{font-size: 16px;font-weight: bold;text-align: right;}
+
+/*table2*/
+.WidgetShell .Content .grid_fiex{border-top-color: #cddff2;display: flex;flex-direction: column;bottom: 0;left: 0;position: absolute;right: 0;top: 0;}
+.WidgetShell .Content .HeaderContainer{flex: 0 0 auto;background:#dce8f4;border-left:1px solid  #cddff2; border-right:1px solid  #cddff2;}
+.WidgetShell .Content .grid_fiex .ScrollingContentContainer{flex: 1 1 auto;position: relative;border-bottom: 1px solid #e8e8e8;overflow: auto;overflow-y:scroll; }
+.WidgetShell .Content .grid_fiex .FooterContainer{flex: 0 0 auto;border-bottom: solid 1px #ddd;border-top: solid 1px #ddd;height: 28px;color: #666;position: relative;}
+.WidgetShell .Content .grid_fiex .FooterContainer .RowStatus{height: 16px;top: 6px;left: 10px;position: absolute;}
+.WidgetShell .Content .grid_fiex .FooterContainer .ShowAllButtonDiv{height: 16px; left: 43%;top: 6px;position: absolute;cursor: pointer;color:#376597}
+.WidgetShell .Content .grid_fiex .FooterContainer .ShowAllButtonDiv a:hover{text-decoration: underline;}
+.WidgetShell .Content .grid_fiex .HeaderContainer td{color: #518bca;border-bottom: 1px solid #cddff2;border-right: 1px solid #cddff2;font-size: 12px;font-weight: bold;padding: 3px 5px;    user-select: none;width: auto;}
+.ScrollBarSpacer{width: 17px;padding: 0 ! important;}
+
+.WidgetShell .Content .grid_fiex .ScrollingContentContainer .Table2 td{ font-size:12px;border: solid 1px #e8e8e8;padding: 4px 4px 4px 4px;vertical-align: top;word-wrap: break-word;border-right-color: #f8f8f8;}
+.WidgetShell .Content .grid_fiex .ScrollingContentContainer .Table2 td p{font-size:12px;}
+
+
+/*NormalState*/
+.NormalState .icon{width: 16px;height: 16px;background: transparent url('../Images/ButtonIcons.svg') no-repeat scroll;background-position: -192px -96px;box-sizing: border-box;}
+.NormalState{padding:3px;height: auto;position: relative;cursor: pointer;border: 1px solid transparent;}
+.NormalState .NormalState_Menu{display: none; padding:2px 5px;position: absolute;z-index:999; top: 100%;left: -1px; background: #fff; border: 1px solid #d7d7d7;box-shadow: rgba(0,0,0,0.24) 2px 2px 3px 0;box-sizing: border-box;}
+.NormalState_Menu_load{padding: 10px 5px;}
+.NormalState_Menu_line{width: 22px;height: 2px;position: absolute;top:-1px;left: 0;background: #fff;}
+.NormalState:hover{border: 1px solid #d7d7d7;box-sizing: border-box;}
+.NormalState:hover .NormalState_Menu{display: block;}
+
+.NormalState_Menu_list{width: 170px;height: auto;padding: 10px;display: none;}
+.NormalState_Menu_list > li{width: 100%;height: auto; padding: 5px 3px;color: #666;overflow: hidden;}
+.NormalState_Menu_list > li:hover{background: #E8F1FA;}
+.NormalState_Menu_list > li img{display: block;float: left;margin-right: 7px;margin-top:2px;}
+
+
+.LoadingWidget {
+    position: absolute;
+    z-index: 30;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    background-image: url('../Images/LoadingRefresh.gif');
+    background-position: center;
+    background-repeat: no-repeat;
+    display: none;
+}
+
+.WidgetShell .LittleBorder {
+    border-color: transparent;
+    border-bottom-color: #346A95;
+    border-style: solid;
+    border-width: 3.54px;
+    height: 0;
+    left: -3.5px;
+    position: absolute;
+    -moz-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    top: -3.5px;
+    width: 0;
+    cursor: pointer;
+}
+
+.WidgetMenuIcon {
+    float: left;
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: url(../Images/ButtonIcons.svg) no-repeat scroll;
+    margin-top: 2px;
+}
+.WidgetMenuIconDelete {
+    background-position: -64px 0;
+}
+.WidgetMenuIconCopy {
+    background-position: -224px -48px;
+}
+.WidgetMenuIconSetting {
+    background-position: -288px -32px;
+}
+.WidgetMenuIconMove {
+    background-position: -272px 0;
+}
+.WidgetMenuIconApply {
+    background-position: -64px -128px;
+}
+.WidgetMenuIconRefresh {
+    background-position: -288px 0;
+}
+.WidgetMenuText {
+    float: left;
+    display: block;
+    padding-left: 8px;
+}

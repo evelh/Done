@@ -1598,6 +1598,42 @@ namespace EMT.DoneNOW.DTO
             APPROVED = 2489,    // 已批准
             REJECTED = 2490,    // 已拒绝
         }
+
+        /// <summary>
+        /// 小窗口图形类型
+        /// </summary>
+        public enum WIDGET_CHART_VISUAL_TYPE
+        {
+            PIE = 2545,                         // 饼图
+            DOUGHNUT = 2546,                    // 圆环图
+            LINE = 2547,                        // 折线图
+            BAR = 2548,                         // 条形图
+            COLUMN = 2549,                      // 柱状图
+            STACKED_BAR = 2550,                 // 堆积条形图
+            STACKED_COLUMN = 2551,              // 堆积柱状图
+            GROUPED_BAR = 2552,                 // 分组条形图
+            GROUPED_COLUMN = 2553,              // 分组柱状图
+            STACKED_COLUMN_PERCENT = 2554,      // 百分比堆积条形图
+            STACKED_BAR_PERCENT = 2555,         // 百分比堆积柱状图
+            STACKED_AREA = 2556,                // 堆积面积图
+            TABLE = 2557,                       // 表格
+            FUNNEL = 2558,                      // 漏斗图
+            NEEDLE = 2559,                      // 仪表盘
+            DOUGHNUT_GUAGE = 2560,              // 圆环图
+            NUMBER = 2561,                      // 数字
+        }
+
+        /// <summary>
+        /// 小窗口类型 - 189
+        /// </summary>
+        public enum WIDGET_TYPE
+        {
+            CHART = 2581,           // 图形
+            CHART_COMPARE = 2582,   // 图形（比较两个指标）
+            GUAGE = 2583,           // 进度指示
+            GRID = 2584,            // 表格
+            HTML = 2585,            // HTML
+        }
     }
 
     /// <summary>
@@ -1772,6 +1808,13 @@ namespace EMT.DoneNOW.DTO
         TimeoffMyBalance = 222,             // 工时表管理-休假余额详情
         TimeoffRequestWaitApprove = 223,    // 等待我审批的休假请求
         TASK_SEARCH_NO = 225,               // 系统管理-快捷搜索-任务编号
+
+
+        CompanyWidgetDrill = 216,           // 小窗口-客户
+        ConfigurationWidgetDrill = 226,     // 小窗口-配置项
+        ContractWidgetDrill = 227,          // 小窗口-合同
+        TimeoffRequestWidgetDrill = 230,    // 小窗口-休假申请
+        TimesheetWidgetDrill = 231,         // 小窗口-工时表
 
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
