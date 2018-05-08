@@ -152,20 +152,74 @@ namespace EMT.DoneNOW.Web
         {
             switch (queryTypeId)
             {
-                case (int)QueryType.CompanyWidgetDrill:
+                case (int)QueryType.WidgetDrillCompany:
                     title = "客户管理";
                     break;
-                case (int)QueryType.ConfigurationWidgetDrill:
+                case (int)QueryType.WidgetDrillConfiguration:
                     title = "配置项管理";
                     break;
-                case (int)QueryType.ContractWidgetDrill:
+                case (int)QueryType.WidgetDrillContract:
                     title = "合同管理";
                     break;
-                case (int)QueryType.TimeoffRequestWidgetDrill:
+                case (int)QueryType.WidgetDrillInvoiceItems:
+                    title = "发票条目";
+                    break;
+                case (int)QueryType.WidgetDrillMilestones:
+                    title = "里程碑";
+                    break;
+                case (int)QueryType.WidgetDrillMiscellaneous:
+                    title = "其他";
+                    break;
+                case (int)QueryType.WidgetDrillOpportunity:
+                    title = "商机";
+                    break;
+                case (int)QueryType.WidgetDrillOutOffice:
+                    title = "外出";
+                    break;
+                case (int)QueryType.WidgetDrillPendingBillItems:
+                    title = "待审批并提交条目";
+                    break;
+                case (int)QueryType.WidgetDrillPostedBillItems:
+                    title = "已审批并提交条目";
+                    break;
+                case (int)QueryType.WidgetDrillProjects:
+                    title = "项目";
+                    break;
+                case (int)QueryType.WidgetDrillTask:
+                    title = "任务";
+                    break;
+                case (int)QueryType.WidgetDrillQuotes:
+                    title = "报价";
+                    break;
+                case (int)QueryType.WidgetDrillQuoteItems:
+                    title = "报价项";
+                    break;
+                case (int)QueryType.WidgetDrillRecurMasterTickets:
+                    title = "定期服务主工单";
+                    break;
+                case (int)QueryType.WidgetDrillScheduledItems:
+                    title = "已调度条目";
+                    break;
+                case (int)QueryType.WidgetDrillServiceCalls:
+                    title = "服务预定";
+                    break;
+                case (int)QueryType.WidgetDrillSurveys:
+                    title = "问卷调查";
+                    break;
+                case (int)QueryType.WidgetDrillTickets:
+                    title = "工单";
+                    break;
+                case (int)QueryType.WidgetDrillTimeoffRequest:
                     title = "休假请求";
                     break;
-                case (int)QueryType.TimesheetWidgetDrill:
+                case (int)QueryType.WidgetDrillTimesheet:
                     title = "工时表管理";
+                    break;
+                case (int)QueryType.WidgetDrillTodoNotes:
+                    title = "备注和待办";
+                    break;
+                case (int)QueryType.WidgetDrillWorkEntries:
+                    title = "工时";
                     break;
                 default:
                     title = "";
@@ -791,7 +845,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除客户", click_function = "DeleteCompany()" });
                     break;
-                case (long)QueryType.CompanyWidgetDrill:
+                case (long)QueryType.WidgetDrillCompany:
                     contextMenu.Add(new PageContextMenuDto { text = "修改客户", click_function = "EditCompany()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
                     contextMenu.Add(new PageContextMenuDto { text = "关闭商机向导", click_function = "CloseOpportunity()" });
@@ -864,7 +918,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "删除当前配置项", click_function = "DeleteIProduct()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除选中配置项", click_function = "DeleteIProducts()" });
                     break;
-                case (long)QueryType.ConfigurationWidgetDrill:
+                case (long)QueryType.WidgetDrillConfiguration:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑配置项", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活配置项", click_function = "Active()" });
                     contextMenu.Add(new PageContextMenuDto { text = "停用配置项", click_function = "Inactive()" });
@@ -899,7 +953,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()\" \" style='color:grey;'" });
                     break;
                 case (long)QueryType.Contract:
-                case (long)QueryType.ContractWidgetDrill:
+                case (long)QueryType.WidgetDrillContract:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑合同", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看合同", click_function = "ViewContract()" });
                     contextMenu.Add(new PageContextMenuDto { text = "在新窗口中查看合同", click_function = "ViewNewWindow()" });

@@ -28,7 +28,7 @@ input[type=text], input[type=password] {
 /*nav*/
 .panel_nav {
     width: 100%;
-    height: auto;
+    height: 32px;
     background: #346A95;
     position: relative;
 }
@@ -93,14 +93,18 @@ input[type=text], input[type=password] {
         background: #fff;
     }
 
-.panel_nav > ul {
+.panel_nav > .nav_heard {
     padding: 0 10px;
     padding-top: 5px;
+    padding-right: 5px;
     height: auto;
     overflow: hidden;
+    width: auto;
+    height: auto;
+    float: left;
 }
 
-    .panel_nav > ul > li {
+    .panel_nav > .nav_heard > div {
         cursor: pointer;
         float: left;
         width: auto;
@@ -109,42 +113,49 @@ input[type=text], input[type=password] {
         background-color: #f2f2f2;
         border-bottom: 1px solid #ccc;
         color: #858585;
-        padding: 5px;
+        padding: 1px 5px;
         font-size: 12px;
         font-weight: bold;
         margin-left: 5px;
     }
 
-        .panel_nav > ul > li:first-child {
+        .panel_nav > .nav_heard > div:first-child {
             margin-left: 0;
         }
 
-        .panel_nav > ul > li:last-child {
-            position: relative;
-            padding: 13px 15px;
-        }
+.nav_add {
+    position: relative;
+    padding: 13px;
+    float: left;
+    width: auto;
+    height: auto;
+    background: #f2f2f2;
+    border-bottom: 1px solid #ccc;
+    margin-top: 5px;
+    cursor: pointer;
+}
 
-            .panel_nav > ul > li:last-child .hline {
-                width: 10px;
-                height: 2px;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                background: #858585;
-                margin-left: -5px;
-                margin-top: -1px;
-            }
+    .nav_add .hline {
+        width: 10px;
+        height: 2px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        background: #858585;
+        margin-left: -5px;
+        margin-top: -1px;
+    }
 
-            .panel_nav > ul > li:last-child .sline {
-                width: 2px;
-                height: 10px;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                background: #858585;
-                margin-left: -1px;
-                margin-top: -5px;
-            }
+    .nav_add .sline {
+        width: 2px;
+        height: 10px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        background: #858585;
+        margin-left: -1px;
+        margin-top: -5px;
+    }
 
 .panel_nav_now {
     background: #fff !important;
@@ -152,6 +163,7 @@ input[type=text], input[type=password] {
     cursor: default !important;
     border-bottom: 1px solid #fff !important;
 }
+
 
 /*content*/
 .panel_content {
@@ -170,7 +182,7 @@ input[type=text], input[type=password] {
 
         .panel_content > ul > li {
             width: 100%;
-            height: 100%;
+            height: auto;
             display: none;
             position: absolute;
             overflow: hidden;
@@ -466,6 +478,12 @@ input[type=text], input[type=password] {
             background: url('../Images/ThemeSwatchIcons.png')
         }
 
+.widgetFilterValue {
+    float: left;
+    width: 185px;
+    margin-left: 10px;
+}
+
 .normal {
     border: 1px solid #d3d3d3;
     padding: 4px 0 4px 0;
@@ -758,8 +776,8 @@ input[type=text], input[type=password] {
 }
 
     .CustomLayoutContainer li {
-        width: 59px;
-        height: 59px;
+        width: 58px;
+        height: 58px;
         margin-top: 3px;
         margin-bottom: 3px;
         margin-left: 3px;

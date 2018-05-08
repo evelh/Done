@@ -149,6 +149,30 @@ $(".SearchOverlay").on("mouseout", function () {
     $(this).hide();
 });
 
+//仪表板的下拉菜单
+$(".Dashboard").on("mousemove", function () {
+    $(this).addClass("HoverState");
+    $(this).css("borderBottom", "1px solid #fff");
+    $(".DashboardOverlay").show();
+});
+$(".Dashboard").on("mouseout", function () {
+    $(this).removeClass("HoverState");
+    $(this).css("borderTop", "1px solid #d7d7d7");
+    $(this).css("borderBottom", "1px solid #d7d7d7");
+    $(".DashboardOverlay").hide();
+});
+$(".DashboardOverlay").on("mousemove", function () {
+    $(".Dashboard").addClass("HoverState");
+    $(".Dashboard").css("borderBottom", "1px solid #fff");
+    $(this).show();
+});
+$(".DashboardOverlay").on("mouseout", function () {
+    $(".Dashboard").removeClass("HoverState");
+    $(".Dashboard").css("borderTop", "1px solid #d7d7d7");
+    $(".Dashboard").css("borderBottom", "1px solid #d7d7d7");
+    $(this).hide();
+});
+
 //新增的下拉菜单
 $(".New").on("mousemove", function () {
     $(this).addClass("HoverState");

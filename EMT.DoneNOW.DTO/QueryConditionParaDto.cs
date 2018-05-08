@@ -36,4 +36,11 @@ namespace EMT.DoneNOW.DTO
         public string ref_sql;      // 列表的取值语句
         public List<DictionaryEntryDto> values;     // 查询条件值为列表时的值列表
     }
+
+    /// <summary>
+    /// 小窗口的过滤条件参数
+    /// </summary>
+    public class WidgetFilterPataDto : WorkflowConditionParaDto
+    {
+    }
 }

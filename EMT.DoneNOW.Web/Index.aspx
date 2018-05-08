@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="Content/index.css" />
     <link rel="stylesheet" type="text/css" href="Content/drag.css" />
     <link rel="stylesheet" type="text/css" href="Content/dashboard.css" />
+    <link rel="stylesheet" type="text/css" href="Content/multiple-select.css"/>
     <style>
         /*黑色幕布*/
         #BackgroundOverLay {
@@ -793,6 +794,42 @@
                     </div>
                 </div>
             </div>
+            <div class="ContextOverlayContainer">
+                <div class="DashboardOverlay ContextOverlay" style="left: 282px; top: 39px;">
+                    <div class="Content">
+                        <div class="Title">仪表板</div>
+                        <div class="RecentItemsContainer">
+                            <div class="ColumnSet">
+                                <div class="Large ContextOverlayColumn">
+                                    <div>
+                                        <div class="Group" id="DashboardList">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="SiteNavigationFooterSeparator"></div>
+                            <div class="ColumnSet">
+                                <div class="Normal ContextOverlayColumn">
+                                    <div>
+                                        <div class="Group">
+                                            <div class="Content">
+                                                <a class="Button ButtonIcon Link NormalState" onclick="AddDashboard()">新增仪表板
+                                                </a>
+                                            </div>
+
+                                            <div class="Content">
+                                                <a class="Button ButtonIcon Link NormalState" onclick="ManageDashboard()">管理共享仪表板
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!--新增的下拉菜单-->
             <div class="ContextOverlayContainer">
                 <div class="NewOverlay ContextOverlay" style="left: 318px; top: 39px;">
@@ -1401,7 +1438,11 @@
           <%--<img src="Images/background.jpg" style="width:100%;height:100%;" />--%>
             <div id="DashboardContainer" style="background-color:#fff; height:100%;">
                 <div class="panel_nav">
-                    <ul></ul>
+                    <div class="nav_heard"></div>
+                    <div class="nav_add"> 
+                        <div class="hline"></div>
+                        <div class="sline"></div>
+                    </div>
                     <div class="settings">
                         <span></span>
                         <span></span>
@@ -1471,7 +1512,7 @@
                         </div>
                         <div class="item">
                             <p>主题</p>
-                            <select name="ThemeList" id="ThemeList">
+                            <select id="ThemeList">
                                 <option value="AutotaskTheme" selected='selected'>AutotaskTheme</option>
                                 <option value="CoastalTheme">CoastalTheme</option>
                                 <option value="CollegiateTheme">CollegiateTheme</option>
@@ -1606,98 +1647,87 @@
             </div>
         </div>
     </div>
+    <form id="addWidgetForm">
     <div class="POPbox" id='AddWidget' >
-        <div class="shut" id='settingShut' onclick="POPClose(this)">
+        <div class="shut" onclick="POPClose(this)">
         </div>
         <div class="Widget">
-            <h3>添加小工具</h3>
+            <h3>新增小窗口</h3>
             <div class="Column">
                 <p class="title">您想做什么？</p>
                 <div class="item">
-                    <input type="radio"> 从一个新的小部件开始
+                    <input type="radio" name="addWidgetType" id="addWidgetType1" checked="checked" value="1"><label for="addWidgetType1"> 选择小窗口对象和类型</label>
                 </div>
                 <div class="item">
                     <p>实体</p>
 
-                    <select name="" id=""></select>
+                    <select name="addWidgetEntity" id="addWidgetEntity"></select>
                 </div>
                 <div class="item">
                 </div>
                 <div class="item">
                     <p>图表类型</p>
-                    <select name="" id=""></select>
+                    <select name="addWidgetTypeSelect" id="addWidgetTypeSelect"></select>
                 </div>
                 <div class="itemborderBottom"></div>
                 <div class="item" style="padding-top:20px; ">
-                    <input type="radio"> 从一个现有小部件的副本开始
+                    <input type="radio" name="addWidgetType" id="addWidgetType2" value="2"><label for="addWidgetType2"> 从本人已存在的小窗口中复制</label>
                 </div>
                 <div class="itemborderBottom"></div>
                 <div class="item"  style="padding-top:20px;">
-                    <input type="radio"> 从小部件库中选择一个小部件
+                    <input type="radio" name="addWidgetType" id="addWidgetType3" value="3"><label for="addWidgetType3"> 从系统的小窗口库中选择</label>
                 </div>
             </div>
             <div class="button">
-                <div onclick="$('#AddWidget').hide();$('.loading').show();setTimeout(function(){$('.loading').hide() ;$('#AddWidgetBefore').show()},3000);"><span></span>下一步</div>
+                <div onclick="AddWidgetStep1()"><span></span>下一步</div>
             </div>
         </div>
     </div>
     <div class="POPbox" id="AddWidgetBefore">
-        <div class="shut" id='settingShut' onclick="POPClose(this)">
+        <div class="shut" onclick="POPClose(this)">
         </div>
         <div class="AddWidgetBeforePOP">
-            <h3>添加小工具</h3>
+            <h3>新增小窗口</h3>
             <div class="content">
                 <div class="normal">
                     <div class="heading">
-                        <div class="toogle" id='settingsToogle1' onclick="Toogle(this)">
+                        <div class="toogle" onclick="Toogle(this)">
                             <div class="Vertical"></div>
                             <div class="Horizontal"></div>
                         </div>
-                        一般
+                        常规
                     </div>
                     <div class="Column">
                         <div class="item">
-                            <p>窗口小部件名称/标签<span style="color: red;">*</span></p>
-                            <input type="text">
+                            <p>小窗口标题<span style="color: red;">*</span></p>
+                            <input type="text" name="addWidgetName" id="addWidgetName">
+                            <input type="hidden" id="wgtVisualType" name="wgtVisualType" />
                         </div>
                         <div class="item" style="line-height: 20px;">
-                            <p>实体</p>
-                            门票
+                            <p>对象</p>
+                            <span id="addWidgetEntityName"></span>
                         </div>
                         <div class="item" style="width: 100%;height: 90px;">
                             <p>描述</p>
-                            <textarea  name="" id="" style="width: 100%;height: 45px;resize: none;"></textarea>
-                            <span style="font-size: 12px;"><a style="font-size: 12px;">0</a>/500</span>
+                            <textarea id="wgtDesc" name="wgtDesc" style="width: 100%;height: 45px;resize: none;"></textarea>
                         </div>
-                        <div class="item" style="width: 100%;height: auto;">
-                            <p>常规图型</p>
-                            <ul class="CustomLayoutContainer">
-                                <li class="ClickNow "></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                            </ul>
-                        </div>
-                        <div class="item" style="width: 100%;height: auto;">
-                            <p>高级图形</p>
-                            <ul class="CustomLayoutContainer">
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                            </ul>
+                        <div>
+                            <div class="item" style="width: 100%;height: auto;">
+                                <p>常规图形类型</p>
+                                <ul class="CustomLayoutContainer" id="chartBasicVisual">
+                                </ul>
+                            </div>
+                            <div class="item" style="width: 100%;height: auto;">
+                                <p>高级图形类型</p>
+                                <ul class="CustomLayoutContainer" id="chartAdvVisual">
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="normal">
                     <div class="heading">
-                        <div class="toogle" id='settingsToogle1' onclick="Toogle(this)">
+                        <div class="toogle" onclick="Toogle(this)">
                             <div class="Vertical"></div>
                             <div class="Horizontal"></div>
                         </div>
@@ -1705,89 +1735,53 @@
                     </div>
                     <div class="Column">
                         <div class="item">
-                            <p>统计对象</p>
-                            <select name="" id="">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
+                            <p>统计对象<span style="color: red;">*</span></p>
+                            <select id="wgtReport1" name="wgtReport1">
                             </select>
                             <div class="cancel"></div>
                         </div>
                         <div class="item">
                             <p>统计类型</p>
-                            <select name="" id="">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
+                            <select id="wgtReportType1" name="wgtReportType1">
                             </select>
                         </div>
                         <div class="item">
                             <p>第二个统计对象</p>
-                            <select name="" id="">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
+                            <select id="wgtReport2" name="wgtReport2">
                             </select>
                             <div class="cancel"></div>
                         </div>
                         <div class="item">
                             <p>统计类型</p>
-                            <select name="" id="">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
+                            <select id="wgtReportType2" name="wgtReportType2">
                             </select>
                         </div>
                         <div class="item" style="height: 20px;">
-                            <input type="checkbox" style="margin-top: 2px;">
-                            显示左右两个纵坐标
+                            <input type="checkbox" id="wgtShowTwoAxis" name="wgtShowTwoAxis" style="margin-top: 2px;">
+                            <label for="wgtShowTwoAxis">显示左右两个纵坐标</label>
                         </div>
                         <div class="item" style="width:705px;height: 1px ;background: #E4E4E4; "></div>
                          <div class="item">
                             <p>分组条件<span style="color: red;">*</span></p>
-                            <select name="" id="">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
+                            <select id="wgtGroup1" name="wgtGroup1">
                             </select>
                             <div class="cancel"></div>
                         </div>
                         <div class="item">
                             <p>第二个分组条件</p>
-                            <select name="" id="">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
+                            <select id="wgtGroup2" name="wgtGroup2">
                             </select>
                             <div class="cancel"></div>                            
                         </div>
                         <div class="item" style="height: 20px;">
-                            <input type="checkbox" style="margin-top: 2px;">
-                            分组条件取值包括“空”
+                            <input type="checkbox" id="wgtShowBlank" name="wgtShowBlank" style="margin-top: 2px;">
+                            <label for="wgtShowBlank">分组条件取值包括“空”</label>
                         </div>
                     </div>
                 </div>
                 <div class="normal">
                     <div class="heading">
-                        <div class="toogle" id='settingsToogle1' onclick="Toogle(this)">
+                        <div class="toogle" onclick="Toogle(this)">
                             <div class="Vertical"></div>
                             <div class="Horizontal"></div>
                         </div>
@@ -1796,105 +1790,75 @@
                     <div class="Column">
                         <div class="item">
                             <p>过滤条件1</p>
-                            <select name="" id="">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
+                            <select id="wgtFilter1" name="wgtFilter1" data-val="1" class="wgtFilter">
                             </select>
                             <div class="cancel"></div>
                         </div>
                         <div class="item" style="padding-top:16px;height: 34px; ">
-                            <select style="float: left;width: 125px;" name="" id=""></select>
+                            <select style="float: left;width: 125px;" data-val="1" id="wgtFilter1Oper" name="wgtFilter1Oper" class="wgtOper"></select>
+                            <select id="wgtFilter1Val0" name="wgtFilter1Val0" style="width:180px;display:none;" class="widgetFilterValue"></select>
+                            <input id="wgtFilter1Val1" name="wgtFilter1Val1" style="width:180px;display:none;" class="widgetFilterValue" />
+                            <div id="mlt1" class="multiplebox widgetFilterValue">
+                                <input type="hidden" id="wgtFilter1Val2" name="wgtFilter1Val2" class="sl_cdt" />
+							    <select id="mltslt1" multiple="multiple" style="display:none;">
+				                </select>
+                            </div>
+                        </div>
+                         <div class="item">
+                            <p>过滤条件2</p>
+                            <select id="wgtFilter2">
+                            </select>
+                            <div class="cancel"></div>
+                        </div>
+                        <div class="item" style="padding-top:16px;height: 34px; ">
+                            <select style="float: left;width: 125px;" name="" id="wgtFilter2Oper"></select>
                             <input style="float: left;width: 185px;margin-left: 10px;" type="text">
                         </div>
                          <div class="item">
-                            <p>过滤条件1</p>
-                            <select name="" id="">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
+                            <p>过滤条件3</p>
+                            <select id="wgtFilter3">
                             </select>
                             <div class="cancel"></div>
                         </div>
                         <div class="item" style="padding-top:16px;height: 34px; ">
-                            <select style="float: left;width: 125px;" name="" id=""></select>
+                            <select style="float: left;width: 125px;" name="" id="wgtFilter3Oper"></select>
                             <input style="float: left;width: 185px;margin-left: 10px;" type="text">
                         </div>
                          <div class="item">
-                            <p>过滤条件1</p>
-                            <select name="" id="">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
+                            <p>过滤条件4</p>
+                            <select id="wgtFilter4">
                             </select>
                             <div class="cancel"></div>
                         </div>
                         <div class="item" style="padding-top:16px;height: 34px; ">
-                            <select style="float: left;width: 125px;" name="" id=""></select>
+                            <select style="float: left;width: 125px;" name="" id="wgtFilter4Oper"></select>
                             <input style="float: left;width: 185px;margin-left: 10px;" type="text">
                         </div>
                          <div class="item">
-                            <p>过滤条件1</p>
-                            <select name="" id="">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
+                            <p>过滤条件5</p>
+                            <select id="wgtFilter5">
                             </select>
                             <div class="cancel"></div>
                         </div>
                         <div class="item" style="padding-top:16px;height: 34px; ">
-                            <select style="float: left;width: 125px;" name="" id=""></select>
+                            <select style="float: left;width: 125px;" name="" id="wgtFilter5Oper"></select>
                             <input style="float: left;width: 185px;margin-left: 10px;" type="text">
                         </div>
                          <div class="item">
-                            <p>过滤条件1</p>
-                            <select name="" id="">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
+                            <p>过滤条件6</p>
+                            <select id="wgtFilter6">
                             </select>
                             <div class="cancel"></div>
                         </div>
                         <div class="item" style="padding-top:16px;height: 34px; ">
-                            <select style="float: left;width: 125px;" name="" id=""></select>
-                            <input style="float: left;width: 185px;margin-left: 10px;" type="text">
-                        </div>
-                         <div class="item">
-                            <p>过滤条件1</p>
-                            <select name="" id="">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                            </select>
-                            <div class="cancel"></div>
-                        </div>
-                        <div class="item" style="padding-top:16px;height: 34px; ">
-                            <select style="float: left;width: 125px;" name="" id=""></select>
+                            <select style="float: left;width: 125px;" name="" id="wgtFilter6Oper"></select>
                             <input style="float: left;width: 185px;margin-left: 10px;" type="text">
                         </div>
                     </div>
                 </div>
                 <div class="normal">
                     <div class="heading">
-                        <div class="toogle" id='settingsToogle1' onclick="Toogle(this)">
+                        <div class="toogle" onclick="Toogle(this)">
                             <div class="Vertical"></div>
                             <div class="Horizontal"></div>
                         </div>
@@ -1903,52 +1867,50 @@
                     <div class="Column">
                         <div class="item">
                             <p>显示</p>
-                            <select name="" id="">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
+                            <select name="wgtShowType" id="wgtShowType">
+                                <option value="2741">前5</option>
+                                <option value="2742">前10</option>
+                                <option value="2743">前25</option>
+                                <option value="2744">最后5</option>
+                                <option value="2745">最后10</option>
+                                <option value="2746">最后25</option>
                             </select>
                         </div>
                         <div class="item">
                             <p>排序方式</p>
-                            <select name="" id="">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
+                            <select name="wgtSortType" id="wgtSortType">
+                                <option value="2770">统计字段升序</option>
+                                <option value="2771">统计字段降序</option>
+                                <option value="2772">分组字段升序</option>
+                                <option value="2773">分组字段降序</option>
                             </select>
                         </div>
                         <div class="item" style="height: 20px;">
-                            <input type="checkbox" style="margin-top: 2px;">
-                            剩余的合在一起显示，名称为“其他”
+                            <input type="checkbox" id="wgtDisplayOth" name="wgtDisplayOth" style="margin-top: 2px;">
+                            <label for="wgtDisplayOth">剩余的合在一起显示，名称为“其他”</label>
                         </div>
                         <div class="item" style="width:705px;height: 1px ;background: #E4E4E4; "></div>
                          <div class="item" style="height: 30px;">
-                            <input type="checkbox" style="margin-top: 2px;">
-                            显示轴标签
+                            <input type="checkbox" id="wgtShowAxis" name="wgtShowAxis" checked="checked" style="margin-top: 2px;">
+                            <label for="wgtShowAxis">显示轴标签</label>
                         </div>
                         <div class="item" style="height: 30px;">
-                            <input type="checkbox" style="margin-top: 2px;">
-                            显示趋势线        
+                            <input type="checkbox" id="wgtShowTrendline" name="wgtShowTrendline" style="margin-top: 2px;">
+                            <label for="wgtShowTrendline">显示趋势线</label>
                         </div>
                         <div class="item" style="height: 30px;">
-                            <input type="checkbox" style="margin-top: 2px;">
-                            显示图例/标题
+                            <input type="checkbox" id="wgtShowTitle" name="wgtShowTitle" style="margin-top: 2px;">
+                            <label for="wgtShowTitle">显示图例/标题</label>
                         </div>
                         <div class="item" style="height: 30px;">
-                            <input type="checkbox" style="margin-top: 2px;">
-                            显示总计
+                            <input type="checkbox" id="wgtShowTotal" name="wgtShowTotal" style="margin-top: 2px;">
+                            <label for="wgtShowTotal">显示总计</label>
                         </div>
                     </div>
                 </div>
                 <div class="normal">
                     <div class="heading">
-                        <div class="toogle" id='settingsToogle1' onclick="Toogle(this)">
+                        <div class="toogle" onclick="Toogle(this)">
                             <div class="Vertical"></div>
                             <div class="Horizontal"></div>
                         </div>
@@ -1956,12 +1918,12 @@
                     </div>
                     <div class="Column">
                         <div class="item" style="width: 100%;height: auto;">
-                            <p>宽度   <a style="color: #ccc;font-weight: normal;font-size: 11px;">(小部件占用的列数)</a></p>
+                            <p>宽度   <a style="color: #ccc;font-weight: normal;font-size: 11px;">(小窗口占用的列数)</a><input type="hidden" id="wgtSize" name="wgtSize" value="2" /></p>
                             <ul class="widgetSizeList">
-                                <li title="1列" class="widgetSizeListNow"></li>
-                                <li title="2列"></li>
-                                <li title="3列"></li>
-                                <li title="4列"></li>
+                                <li title="1列" data-val="1"></li>
+                                <li title="2列" data-val="2" class="widgetSizeListNow"></li>
+                                <li title="3列" data-val="3"></li>
+                                <li title="4列" data-val="4"></li>
                             </ul>
                         </div>
                         
@@ -1969,14 +1931,12 @@
                 </div>
             </div>
             <div class="button">
-                <div class="pev" onclick="$('#AddWidgetBefore').hide();$('.loading').show();setTimeout(function(){$('.loading').hide() ;$('#AddWidget').show()},3000);"><span></span>上一步</div>                
-                <div class="next" onclick="$('#cover').hide();$('#AddWidgetBefore').hide();">完成</div>                
+                <div class="pev" onclick="BackAddWidgetStep0();"><span></span>上一步</div>
+                <div class="next" onclick="AddWidgetFinish();">完成</div>
             </div>
         </div>
     </div>
-    <div class="loading">
-        <img src="Images/Loading.gif" alt="">
-    </div>
+    </form>
     <div class="cont" style="display: none;">
         <div class="header" id="SearchTitle" style="display: none; height: 40px; line-height: 40px; background: #346A95; padding: 0 10px; font-size: 18px; color: #FFFFFF;"></div>
         <iframe id="PageFrame" name="PageFrame" style="width: 100%;"></iframe>
@@ -1986,9 +1946,11 @@
     <script src="Scripts/Dashboard/echarts.js"></script>
     <script src="Scripts/Dashboard/html2canvas.js"></script> 
     <script src="Scripts/Dashboard/drag.js"></script>
+    <script src="Scripts/Dashboard/drag2.js"></script>
     <script src="Scripts/common.js"></script>
     <script src="Scripts/Dashboard/Widget.js"></script>
     <script src="Scripts/Dashboard/Dashboard.js"></script>
+    <script src="Scripts/Common/multiple-select.js" type="text/javascript" charset="utf-8"></script>
     <script>
         $(window).resize(function () {
             var Height = $(window).height() - 66 + "px";
