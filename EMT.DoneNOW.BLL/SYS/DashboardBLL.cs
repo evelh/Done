@@ -37,7 +37,71 @@ namespace EMT.DoneNOW.BLL
             if (dto != null)
                 dto.widgetList = GetWidgetListByDashboardId(dsbdId, userId);
 
+            var themeList = new GeneralBLL().GetGeneralList((int)GeneralTableEnum.DASHBOARD_COLOR_THEME);
+            var idx = themeList.FindIndex(_ => _.id == dto.theme_id);
+            if (idx != -1)
+                dto.theme_id = idx;
+            else
+                dto.theme_id = 0;
+
             return dto;
+        }
+
+        /// <summary>
+        /// 修改小窗口位置
+        /// </summary>
+        /// <param name="dsbdId"></param>
+        /// <param name="change"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool UpdateWidgetPosition(long dsbdId, string change, long userId)
+        {
+            if (string.IsNullOrEmpty(change))
+                return false;
+            if (change[change.Length - 1] == ',')
+                change = change.Remove(change.Length - 1);
+            var pos = change.Split(',');
+            var wgtList = GetWidgetListOrdered(dsbdId);
+            if (pos.Length != wgtList.Count)
+                return false;
+            var before = pos.OrderBy(_ => int.Parse(_.Split('-')[0]));
+            var positions = before.ToList();
+            for (int order = 0; order < wgtList.Count; order++)
+            {
+                int sort = int.Parse(positions[order].Split('-')[1]);
+                if (wgtList[order].sort_order != sort)
+                { 
+                    wgtList[order].sort_order = sort;
+                    wgtDal.Update(wgtList[order]);
+                }
+            }
+            //foreach (var po in pos)
+            //{
+            //    string[] p = po.Split('-');
+            //    var find = wgtList.Find(_ => _.sort_order != null && _.sort_order.Value == int.Parse(p[0]));
+            //    if (find == null)
+            //        return false;
+            //    if (find.sort_order.Value == int.Parse(p[1]))
+            //        continue;
+
+            //    find.sort_order = int.Parse(p[1]);
+            //    wgtDal.Update(find);
+            //}
+            return true;
+        }
+
+
+        /// <summary>
+        /// 获取仪表板可选的色系列表
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<string> GetWidgetColorThemeList(long userId)
+        {
+            var list = new GeneralBLL().GetGeneralList((int)GeneralTableEnum.DASHBOARD_COLOR_THEME);
+            var themeList = from theme in list orderby theme.sort_order ascending select theme.name;
+
+            return themeList.ToList();
         }
         #endregion
 
@@ -52,6 +116,17 @@ namespace EMT.DoneNOW.BLL
         {
             return wgtDal.FindNoDeleteById(widgetId);
         }
+
+        /// <summary>
+        /// 获取一个仪表板的小窗口列表
+        /// </summary>
+        /// <param name="dsbdId"></param>
+        /// <returns></returns>
+        public List<sys_widget> GetWidgetListOrdered(long dsbdId)
+        {
+            return wgtDal.FindListBySql($"select * from sys_widget where dashboard_id={dsbdId} and delete_time=0 order by sort_order asc limit 12");
+        }
+
         /// <summary>
         /// 获取一个仪表板的小窗口概要信息
         /// </summary>
@@ -60,7 +135,7 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public List<DashboardWidgetDto> GetWidgetListByDashboardId(long dsbdId, long userId)
         {
-            var list = wgtDal.FindListBySql<DashboardWidgetDto>($"select id as widgetId,width from sys_widget where dashboard_id={dsbdId} and delete_time=0 order by sort_order asc");
+            var list = wgtDal.FindListBySql<DashboardWidgetDto>($"select id as widgetId,width from sys_widget where dashboard_id={dsbdId} and delete_time=0 order by sort_order asc limit 12");
             return list;
         }
 
@@ -94,6 +169,10 @@ namespace EMT.DoneNOW.BLL
                 List<object> dataRow = new List<object>();
                 for (int i = 0; i < table.Columns.Count; i++)
                 {
+                    if (widget.type_id == (int)DicEnum.WIDGET_TYPE.GRID
+                        && table.Columns[i].ColumnName == "id")
+                        continue;
+
                     if (object.Equals(row[i], System.DBNull.Value))
                         dataRow.Add("");
                     else
@@ -122,18 +201,25 @@ namespace EMT.DoneNOW.BLL
 
                     return dto;
                 }
+                dto.columns = new List<string>();
+                for (int i = 0; i < table.Columns.Count; i++)
+                {
+                    dto.columns.Add(table.Columns[i].ColumnName);
+                }
                 var g = from grp in data select grp[0];
                 dto.group1 = g.Distinct().ToList();
 
                 if (widget.visual_type_id == (int)DicEnum.WIDGET_CHART_VISUAL_TYPE.BAR
                     || widget.visual_type_id == (int)DicEnum.WIDGET_CHART_VISUAL_TYPE.STACKED_BAR
-                    || widget.visual_type_id == (int)DicEnum.WIDGET_CHART_VISUAL_TYPE.GROUPED_BAR)
+                    || widget.visual_type_id == (int)DicEnum.WIDGET_CHART_VISUAL_TYPE.GROUPED_BAR
+                    || widget.visual_type_id == (int)DicEnum.WIDGET_CHART_VISUAL_TYPE.STACKED_BAR_PERCENT)
                 {
                     dto.isy = 1;
                 }
                 else if (widget.visual_type_id == (int)DicEnum.WIDGET_CHART_VISUAL_TYPE.COLUMN
                     || widget.visual_type_id == (int)DicEnum.WIDGET_CHART_VISUAL_TYPE.STACKED_COLUMN
-                    || widget.visual_type_id == (int)DicEnum.WIDGET_CHART_VISUAL_TYPE.GROUPED_COLUMN)
+                    || widget.visual_type_id == (int)DicEnum.WIDGET_CHART_VISUAL_TYPE.GROUPED_COLUMN
+                    || widget.visual_type_id == (int)DicEnum.WIDGET_CHART_VISUAL_TYPE.STACKED_COLUMN_PERCENT)
                 {
                     dto.isx = 1;
                 }
@@ -213,6 +299,9 @@ namespace EMT.DoneNOW.BLL
                     List<string> cols = new List<string>();
                     foreach (System.Data.DataColumn col in table.Columns)
                     {
+                        if (col.ColumnName == "id")
+                            continue;
+
                         cols.Add(col.ColumnName);
                     }
                     dto.gridHeader = cols;
@@ -249,6 +338,131 @@ namespace EMT.DoneNOW.BLL
                 return null;
             return wgtDal.GetWidgetDrillSql(widgetId, userId, null, orderby, val1, val2);
         }
+
+        /// <summary>
+        /// 删除小窗口
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool DeleteWidget(long id, long userId)
+        {
+            var wgt = wgtDal.FindNoDeleteById(id);
+            if (wgt == null)
+                return false;
+
+            wgt.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            wgt.delete_user_id = userId;
+            wgtDal.Update(wgt);
+            OperLogBLL.OperLogDelete<sys_widget>(wgt, wgt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_WIDGET, "删除小窗口");
+            return true;
+        }
+
         #endregion
+
+
+        #region 新增小窗口的配置
+
+        /// <summary>
+        /// 获取新增小窗口的实体类型
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<WidgetEntityDto> GetAddWidgetEntityList(long userId)
+        {
+            var list = new List<WidgetEntityDto>();
+            var ettList = new GeneralBLL().GetGeneralList((int)GeneralTableEnum.WIDGET_ENTITY);
+            foreach (var ett in ettList)
+            {
+                WidgetEntityDto dto = new WidgetEntityDto();
+                dto.id = ett.id;
+                dto.name = ett.name;
+
+                var types = ett.ext1.Split(',');
+                dto.type = types.ToList();
+
+                list.Add(dto);
+            }
+
+            return list;
+        }
+
+        /// <summary>
+        /// 获取小窗口的过滤条件参数
+        /// </summary>
+        /// <param name="entityId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<List<WidgetFilterPataDto>> GetWidgetFilterPara(long entityId, long userId)
+        {
+            List<List<WidgetFilterPataDto>> parasList = new List<List<WidgetFilterPataDto>>();
+            QueryCommonBLL queryBll = new QueryCommonBLL();
+            var groupList = queryBll.GetQueryGroup((int)entityId);
+            if (groupList.Count == 0)
+                return parasList;
+            var grp = groupList[0];
+            string sql = $"select id,data_type_id as data_type,default_value as defaultValue,col_name,col_comment as description,ref_sql,ref_url,operator_type_id from d_query_para where query_para_group_id={grp.id} and is_visible=1 and operator_type_id is not null";
+            var paras = new d_query_para_dal().FindListBySql<WidgetFilterPataDto>(sql);
+
+            sql = $"select distinct(col_comment) from d_query_para where query_para_group_id={grp.id} and is_visible=1 and operator_type_id is not null";
+            var cdts = new d_query_para_dal().FindListBySql<string>(sql);
+            foreach (var cdt in cdts)
+            {
+                List<WidgetFilterPataDto> newDtos = new List<WidgetFilterPataDto>();
+                var dtos = (from prm in paras where cdt.Equals(prm.description) select prm).ToList();
+                foreach (var dto in dtos)
+                {
+                    if (string.IsNullOrEmpty(dto.operator_type_id))
+                        continue;
+
+                    if (dto.data_type == (int)DicEnum.QUERY_PARA_TYPE.DROPDOWN
+                    || dto.data_type == (int)DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN
+                    || dto.data_type == (int)DicEnum.QUERY_PARA_TYPE.DYNAMIC)
+                    {
+                        var dt = new d_query_para_dal().ExecuteDataTable(dto.ref_sql);
+                        if (dt != null)
+                        {
+                            dto.values = new List<DictionaryEntryDto>();
+                            foreach (System.Data.DataRow row in dt.Rows)
+                            {
+                                dto.values.Add(new DictionaryEntryDto(row[0].ToString(), row[1].ToString()));
+                            }
+                        }
+                    }
+
+                    var opers = dto.operator_type_id.Split(',');
+                    if (opers.Length == 1)
+                    {
+                        dto.operatorName = dal.FindSignleBySql<string>($"select name from d_general where id={long.Parse(dto.operator_type_id)}");
+                        newDtos.Add(dto);
+                    }
+                    else
+                    {
+                        foreach (var oper in opers)
+                        {
+                            WidgetFilterPataDto newDto = new WidgetFilterPataDto
+                            {
+                                col_name = dto.col_name,
+                                data_type = dto.data_type,
+                                defaultValue = dto.defaultValue,
+                                description = dto.description,
+                                id = dto.id,
+                                operatorName = dal.FindSignleBySql<string>($"select name from d_general where id={long.Parse(oper)}"),
+                                operator_type_id = oper,
+                                ref_sql = dto.ref_sql,
+                                ref_url = dto.ref_url,
+                                values = dto.values
+                            };
+                            newDtos.Add(newDto);
+                        }
+                    }
+                }
+                parasList.Add(newDtos);
+            }
+
+            return parasList;
+        }
+        #endregion
+
     }
 }

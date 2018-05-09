@@ -27,8 +27,30 @@ namespace EMT.DoneNOW.Web
                 case "GetWidgetInfo":
                     GetWidgetInfo();
                     break;
+                case "DeleteWidget":
+                    DeleteWidget();
+                    break;
                 case "DrillDetail":
                     WidgetDrill();
+                    break;
+                case "ChangeWidgetPosition":
+                    ChangeWidgetPosition();
+                    break;
+
+                case "GetWidgetEntityList":
+                    GetWidgetEntityList();
+                    break;
+                case "GetWidgetFilter":
+                    GetWidgetFilterList();
+                    break;
+                case "AddWidget":
+                    AddWidget();
+                    break;
+                case "GetWidgetTypeList":
+                    GetWidgetTypeList();
+                    break;
+                case "GetColorThemeList":
+                    GetColorThemeList();
                     break;
                 default:
                     WriteResponseJson("{\"code\": 1, \"msg\": \"参数错误！\"}");
@@ -77,6 +99,15 @@ namespace EMT.DoneNOW.Web
         }
 
         /// <summary>
+        /// 删除小窗口
+        /// </summary>
+        private void DeleteWidget()
+        {
+            var id = long.Parse(request.QueryString["id"]);
+            WriteResponseJson(bll.DeleteWidget(id, LoginUserId));
+        }
+
+        /// <summary>
         /// 小窗口钻取
         /// </summary>
         private void WidgetDrill()
@@ -86,6 +117,60 @@ namespace EMT.DoneNOW.Web
             //var val2 = request.QueryString["val2"];
             //bll.WidgetDrill(id, val1, val2, LoginUserId);
             WriteResponseJson(true);
+        }
+
+        /// <summary>
+        /// 修改小窗口位置
+        /// </summary>
+        private void ChangeWidgetPosition()
+        {
+            var change = request.QueryString["change"];
+            var id = long.Parse(request.QueryString["id"]);
+            if (string.IsNullOrEmpty(change))
+            {
+                WriteResponseJson(true);
+                return;
+            }
+            WriteResponseJson(bll.UpdateWidgetPosition(id, change, LoginUserId));
+        }
+
+
+        private void AddWidget()
+        {
+            WriteResponseJson(1);
+        }
+
+        /// <summary>
+        /// 获取新增小窗口的实体类型
+        /// </summary>
+        private void GetWidgetEntityList()
+        {
+            WriteResponseJson(bll.GetAddWidgetEntityList(LoginUserId));
+        }
+
+        /// <summary>
+        /// 获取小窗口的过滤条件参数
+        /// </summary>
+        private void GetWidgetFilterList()
+        {
+            var id = long.Parse(request.QueryString["id"]);
+            WriteResponseJson(bll.GetWidgetFilterPara(id, LoginUserId));
+        }
+
+        /// <summary>
+        /// 获取新增小窗口的类型
+        /// </summary>
+        private void GetWidgetTypeList()
+        {
+            WriteResponseJson(new GeneralBLL().GetDicValues(DTO.GeneralTableEnum.WIDGET_TYPE));
+        }
+
+        /// <summary>
+        /// 获取可选的色系列表
+        /// </summary>
+        private void GetColorThemeList()
+        {
+            WriteResponseJson(bll.GetWidgetColorThemeList(LoginUserId));
         }
     }
 }

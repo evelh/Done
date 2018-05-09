@@ -1,4 +1,4 @@
-.dad-noSelect,.dad-noSelect *{
+.dad-noSelect, .dad-noSelect * {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -9,7 +9,7 @@
     cursor: -moz-grabbing !important;
 }
 
-.dad-container{
+.dad-container {
     position: relative;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -18,27 +18,49 @@
     -ms-user-select: none;
     user-select: none;
 }
-.dad-container::after{
-    content: '';
-    clear: both !important;
-    display: block;
-}
-.dad-active .dad-draggable-area{
+
+    .dad-container::after {
+        content: '';
+        clear: both !important;
+        display: block;
+    }
+
+.dad-active .dad-draggable-area {
     cursor: -webkit-grab;
     cursor: -moz-grab;
 }
-.dads-children-clone{
+
+.dads-children-clone {
     z-index: 9999;
     pointer-events: none;
 }
-.dads-children-placeholder{
+
+.dads-children-placeholder {
     overflow: hidden;
     position: absolute !important;
     box-sizing: border-box;
-    border:4px dashed #ccc;
-    margin:5px;
+    border: 4px dashed #ccc;
+    margin: 5px;
     background: #E5E5E5;
     text-align: center;
     color: #ccc;
     font-weight: bold;
+}
+
+.dads-children-placeholder2 {
+    overflow: hidden;
+    position: absolute !important;
+    box-sizing: border-box;
+    margin: 5px;
+    background: #346A95;
+    text-align: center;
+    color: #ccc;
+    font-weight: bold;
+}
+
+.dads-children-clone2 {
+    z-index: 9999;
+    pointer-events: none;
+    background: rgba(0, 0, 0, 0.4) !important;
+    color: white !important;
 }

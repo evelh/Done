@@ -1,4 +1,7 @@
-
+/*!
+ * jquery.dad.js v1 (http://konsolestudio.com/dad)
+ * Author William Lima
+ */
 (function ($) {
     "use strict";
 
@@ -18,8 +21,9 @@
             self.y = e.pageY;
             if (self.clone != false && self.target != false) {
                 self.clone.css({
-                    top: self.y - self.cloneoffset.y,
+                    // top: self.y - self.cloneoffset.y,
                     left: self.x - self.cloneoffset.x,
+                    'margin-left':self.target.css('marginLeft'),
                 })
             } else {}
         };
@@ -27,23 +31,24 @@
             self.move(e)
         })
     }
-    $.prototype.dad = function (opts) {
+    $.prototype.dad2 = function (opts) {
         var me, defaults, options;
+            var downtime = 0;var fun ;
+        var hasMoveT;
         me = this;
         defaults = {
             target: '>div',
             draggable: false,
-            placeholder: '拖动到这里',
+            placeholder: '',
             callback: false,
-            callbackmethod: null,
             containerClass: 'dad-container',
             childrenClass: 'dads-children',
-            cloneClass: 'dads-children-clone',
-            active: true,
+            cloneClass: 'dads-children-clone2',
+            active: true
         };
         options = $.extend({}, defaults, opts);
         $(this).each(function () {
-            var mouse, target, dragClass, active, callback, callbackmethod, placeholder, daddy, childrenClass, jQclass, cloneClass;
+            var mouse, target, dragClass, active, callback, placeholder, daddy, childrenClass, jQclass, cloneClass;
             mouse = new O_dad();
             active = options.active;
             daddy = $(this);
@@ -55,7 +60,6 @@
             target = daddy.find(options.target);
             placeholder = options.placeholder;
             callback = options.callback;
-            callbackmethod = options.callbackmethod;
             dragClass = 'dad-draggable-area';
             me.addDropzone = function (selector, func) {
                 $(selector).on('mouseenter', function () {                    
@@ -112,9 +116,10 @@
                 return me
             };
             $(document).on('mouseup', function () {
-                //完成时添加 addshell
-                $('.addShell').show()
+                clearInterval(hasMoveT)
                 dad_end()
+                console.log(downtime)
+                downtime = 0;       
             });
             var order = 1;
             target.addClass(childrenClass).each(function () {
@@ -127,24 +132,14 @@
 
             function update_position(e) {
                 var order = 1;
-                var change = 0;
-                var changestr = '';
                 e.find(jQclass).each(function () {
-                    if ($(this).data('pop') == undefined) {
-                        changestr += $(this).attr('data-dad-position') + '-' + order + ',';
-                        if ($(this).attr('data-dad-position') != order) {
-                            change = 1;
-                        }
-                    }
                     $(this).attr('data-dad-position', order);
                     order++
                 })
-                if (change == 1 && callbackmethod != null) {
-                    callbackmethod(changestr);
-                }
             }
 
             function dad_end() {
+                
                 if (mouse.target != false && mouse.clone != false) {
                     if (callback != false) {
                         callback(mouse.target)
@@ -159,15 +154,16 @@
                     if ($.contains(daddy[0], mouse.target[0])) {
                         mouse.clone.animate({
                             top: mouse.target.offset().top - daddy.offset().top - bTop,
-                            left: mouse.target.offset().left - daddy.offset().left - bLeft
-                        }, 300, function () {
+                            left: mouse.target.offset().left - daddy.offset().left - bLeft,
+                           'margin-left':mouse.target.css('marginLeft')                          
+                        }, 0, function () {
                             appear.css({
                                 visibility: 'visible'
                             }).removeClass('active');
                             desapear.remove()
                         })
                     } else {
-                        mouse.clone.fadeOut(300, function () {
+                        mouse.clone.fadeOut(0, function () {
                             desapear.remove()
                         })
                     }
@@ -195,8 +191,12 @@
                     mouse.placeholder.css({
                         top: mouse.target.offset().top - daddy.offset().top,
                         left: mouse.target.offset().left - daddy.offset().left,
-                        width: mouse.target.outerWidth() - 10,
-                        height: mouse.target.outerHeight() - 10
+                        width: mouse.target.outerWidth() ,
+                        height: mouse.target.outerHeight() ,
+                        opacity:0,
+                        
+                        'margin-left':mouse.target.css('marginLeft')                            
+                        
                     });
                     origin.remove();
                     newplace.remove()
@@ -204,63 +204,60 @@
             }
             var jq = (options.draggable != false) ? options.draggable : jQclass;
             daddy.find(jq).addClass(dragClass);
+
             daddy.find(jq).on('mousedown touchstart', function (e) {
-                if (mouse.target == false && e.which == 1 && active == true) {
-                    if (options.draggable != false) {
-                        mouse.target = daddy.find(jQclass).has(this)
-                    } else {
-                        mouse.target = $(this)
-                    }
-                    //避免拖拽添加到addshell 
-                    if (mouse.target.siblings('.addShell').html()) {
-                        mouse.target.siblings('.addShell').hide()
-                    }
-                    html2canvas(mouse.target, {    
-                        allowTaint: true,    
-                        taintTest: false,    
-                        onrendered: function(canvas) {    
-                            canvas.id = "mycanvas";    
-                            //生成base64图片数据    
-                            var dataUrl = canvas.toDataURL();    
-                            var newImg = document.createElement("img");    
-                            newImg.src =  dataUrl;
-                            newImg.id = 'canvasimg';                                                        
-                            document.body.appendChild(newImg)
-                            mouse.clone = mouse.target.clone();
-                            mouse.clone.html(newImg)
-                            mouse.target.css({
-                                visibility: 'hidden'
-                            }).addClass('active');
-                            mouse.clone.addClass(cloneClass);
-                            daddy.append(mouse.clone);
-                            mouse.placeholder = $('<div></div>');
-                            mouse.placeholder.addClass('dads-children-placeholder');
-                            mouse.placeholder.css({
-                                top: mouse.target.offset().top - daddy.offset().top,
-                                left: mouse.target.offset().left - daddy.offset().left,
-                                width: mouse.target.outerWidth() - 10,
-                                height: mouse.target.outerHeight() - 10,
-                                lineHeight: mouse.target.height() - 18 + 'px',
-                                textAlign: 'center'
-                            }).text(placeholder);
-                            daddy.append(mouse.placeholder);
-                            var difx, dify;
-                            var bLeft = Math.floor(parseFloat(daddy.css('border-left-width')));
-                            var bTop = Math.floor(parseFloat(daddy.css('border-top-width')));
-                            difx = mouse.x - mouse.target.offset().left + daddy.offset().left + bLeft;
-                            dify = mouse.y - mouse.target.offset().top + daddy.offset().top + bTop;
-                            mouse.cloneoffset.x = difx;
-                            mouse.cloneoffset.y = dify;
-                            mouse.clone.removeClass(childrenClass).css({
-                                position: 'absolute',
-                                top: mouse.y - mouse.cloneoffset.y,
-                                left: mouse.x - mouse.cloneoffset.x
-                            });
-                            $("html,body").addClass('dad-noSelect')
-                                }    
-                            });    
-                   
-                     }
+                    if (mouse.target == false && e.which == 1 && active == true) {
+                        if (options.draggable != false) {
+                            mouse.target = daddy.find(jQclass).has(this)
+                        } else {
+                            mouse.target = $(this)
+                        }
+                        
+                        fun = function(){
+                            // console.log(hasMoveT)
+                             downtime++;        
+                             if(downtime==5){
+                                clearInterval(hasMoveT)
+                                mouse.clone = mouse.target.clone();
+                                mouse.target.css({
+                                    visibility: 'hidden',
+                                }).addClass('active');
+                                mouse.clone.addClass(cloneClass);
+                                daddy.append(mouse.clone);
+                                mouse.placeholder = $('<div></div>');
+                                mouse.placeholder.addClass('dads-children-placeholder2');
+                                mouse.placeholder.css({
+                                    // top: mouse.target.offset().top - daddy.offset().top,
+                                    // left: mouse.target.offset().left - daddy.offset().left,
+                                    // width: mouse.target.outerWidth(),
+                                    // height: mouse.target.outerHeight(),
+                                    // 'margin-left': mouse.target.css('marginLeft'),
+                                    // lineHeight: mouse.target.height() + 'px',
+                                    // textAlign: 'center',
+                                    opacity:0,                        
+                                }).text(placeholder);
+                                daddy.append(mouse.placeholder);
+                                var difx, dify;
+                                var bLeft = Math.floor(parseFloat(daddy.css('border-left-width')));
+                                var bTop = Math.floor(parseFloat(daddy.css('border-top-width')));
+                                difx = mouse.x - mouse.target.offset().left + daddy.offset().left + bLeft;
+                                dify = mouse.y - mouse.target.offset().top + daddy.offset().top + bTop;
+                                mouse.cloneoffset.x = difx;
+                                mouse.cloneoffset.y = dify;
+                                mouse.clone.removeClass(childrenClass).css({
+                                    position: 'absolute',
+                                    top: mouse.y - mouse.cloneoffset.y,
+                                    left: mouse.x - mouse.cloneoffset.x,
+                                    'margin-left': 0,   
+                                });
+                                $("html,body").addClass('dad-noSelect')
+                            }else{
+                              
+                                $("html,body").addClass('dad-noSelect')
+                            }           
+                        }
+                        hasMoveT = setInterval(fun,100)                            
+                }
             });
             $(jQclass).on('mouseenter', function () {
                 dad_update($(this))
@@ -269,3 +266,18 @@
         return this
     }
 }(jQuery));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

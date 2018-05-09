@@ -51,7 +51,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? groupby_id2 { get; set; }
         [DataMember]
-        public SByte? include_none { get; set; }
+        public SByte include_none { get; set; }
         [DataMember]
         public Int32? display_type_id { get; set; }
         [DataMember]
@@ -80,6 +80,8 @@ namespace EMT.DoneNOW.Core
         public SByte? show_column_header { get; set; }
         [DataMember]
         public String html { get; set; }
+        [DataMember]
+        public Int32? sort_order { get; set; }
 
 
     }

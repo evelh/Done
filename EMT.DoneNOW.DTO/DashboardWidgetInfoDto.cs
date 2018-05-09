@@ -32,6 +32,7 @@ namespace EMT.DoneNOW.DTO
         public List<object> group2;         // 第二个分组名列表
         public List<object> report1;        // 第一个结果列表
         public List<object> report2;        // 第二个结果列表
+        public List<string> columns;        // 结果列头
     }
 
     /// <summary>

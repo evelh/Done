@@ -11,19 +11,20 @@ var ColorTheme = [
 ]
 //选中配色;
 var SelectTheme;
-var ThemeArry = ['AutotaskTheme', 'CoastalTheme', 'CollegiateTheme', 'LivelyTheme', 'ModernTheme', 'PrismTheme', 'TechTheme', 'TrendTheme'];
-$('#ThemeList').change(function () {
-    for (var i = 0; i < ThemeArry.length; i++) {
-        if ($('#ThemeList').val() == ThemeArry[i]) {
-            $('.colors').css('background-position-x', i * 105);
-            var a = ThemeArry[i];
-            SelectTheme = ColorTheme[i];
-        }
-    }
-})
+var ThemeIdx;
+//var ThemeArry = ['AutotaskTheme', 'CoastalTheme', 'CollegiateTheme', 'LivelyTheme', 'ModernTheme', 'PrismTheme', 'TechTheme', 'TrendTheme'];
+//$('#ThemeList').change(function () {
+//    for (var i = 0; i < ThemeArry.length; i++) {
+//        if ($('#ThemeList').val() == ThemeArry[i]) {
+//            $('.colors').css('background-position-x', i * 105);
+//            var a = ThemeArry[i];
+//            SelectTheme = ColorTheme[i];
+//        }
+//    }
+//})
 function RefreshDashboard() {
-    var id = $(".panel_nav .panel_nav_now").data('dshdb');
-    if (id == undefined)
+    var id = CurrentDashboardId();
+    if (id == null)
         return;
     ShowLoading();
     setTimeout(function () {
@@ -35,6 +36,12 @@ function RefreshDashboard() {
         })
     }, 500)
 }
+function CurrentDashboardId() {
+    var id = $(".panel_nav .panel_nav_now").data('dshdb');
+    if (id == undefined)
+        return null;
+    return id;
+}
 function AddWidget(dom, wgt) {
     var str = '<div  data-size="' + wgt.width + '" id="widget' + wgt.widgetId + '" class="WidgetShell">';
     str += '<div class="LoadingWidget"></div>';
@@ -42,7 +49,7 @@ function AddWidget(dom, wgt) {
     str += '<div class="Draggable"></div>';
     str += '<div class="Content"></div>';
     str += '<div class="ContainerMenu"><span></span><span></span><span></span><ul class="MenuBox">';
-    str += '<li title="删除"><span class="WidgetMenuIcon WidgetMenuIconDelete"></span><span class="WidgetMenuText">删除</span></li><li title="复制"><span class="WidgetMenuIcon WidgetMenuIconCopy"></span><span class="WidgetMenuText">复制</span></li>';
+    str += '<li title="删除" onclick="DeleteWidget(' + wgt.widgetId + ')"><span class="WidgetMenuIcon WidgetMenuIconDelete"></span><span class="WidgetMenuText">删除</span></li><li title="复制"><span class="WidgetMenuIcon WidgetMenuIconCopy"></span><span class="WidgetMenuText">复制</span></li>';
     str += '<li title="设置"><span class="WidgetMenuIcon WidgetMenuIconSetting"></span><span class="WidgetMenuText">设置</span></li><li title="移至其他仪表板"><span class="WidgetMenuIcon WidgetMenuIconMove"></span><span class="WidgetMenuText">移至其他仪表板</span></li>';
     str += '<li title="分享给其他用户"><span class="WidgetMenuIcon WidgetMenuIconApply"></span><span class="WidgetMenuText">分享给其他用户</span></li><li title="刷新" onclick="RefreshWidget(' + wgt.widgetId + ')"><span class="WidgetMenuIcon WidgetMenuIconRefresh"></span><span class="WidgetMenuText">刷新</span></li>';
     str += '</ul><div class="Menuborderline"></div></div>';
@@ -51,22 +58,39 @@ function AddWidget(dom, wgt) {
     RefreshWidget(wgt.widgetId);
 }
 
+function SwichDashboard(id) {
+    var crtId = CurrentDashboardId();
+    if (crtId == id) return;
+    $.each($(".panel_nav_now").removeClass('panel_nav_now').addClass('panel_nav_no').siblings(), function () {
+        if ($(this).data("dshdb") == id)
+            $(this).addClass('panel_nav_now').removeClass('panel_nav_no');
+    });
+    $("#dshli" + crtId).hide();
+    $("#dshli" + id).show();
+    RefreshDashboard();
+}
+
 function AddDashboardList(list) {
-    var dom = $('.panel_nav > ul');
+    var dom = $('.panel_nav > .nav_heard');
     var str = '';
     var strCtn = '';
+    var strList = '';
     if (list.length > 0) {
-        str += '<li class="panel_nav_now" data-dshdb="' + list[0].val + '" >' + list[0].show + '</li>';
+        str += '<div class="panel_nav_now" data-dshdb="' + list[0].val + '" >' + list[0].show + '</div>';
         strCtn += '<li style="display: block;" id="dshli' + list[0].val + '"></li>';
+        for (var i = 0; i < list.length; i++) {
+            strList += "<div class='Content'><a class='Button ButtonIcon NormalState HistoryClick' onclick='SwichDashboard(" + list[i].val + ")' ><span class='Text'>" + list[i].show + "</span></a></div>";
+        }
+        $("#DashboardList")[0].innerHTML = strList;
     }
     if (list.length > 1) {
         for (var i = 1; i < list.length; i++) {
-            str += '<li class="panel_nav_no" data-dshdb="' + list[i].val + '">' + list[i].show + '</li>';
+            str += '<div class="panel_nav_no" data-dshdb="' + list[i].val + '">' + list[i].show + '</div>';
             strCtn += '<li id="dshli' + list[i].val + '"></li>';
         }
     }
-    str += '<li><div class="hline"></div><div class="sline"></div></li>';
     dom[0].innerHTML = str;
+    $('.panel_nav .nav_heard').dad2()  
     $('.panel_content > ul')[0].innerHTML = strCtn;
 
     //$.each($('.panel_nav > ul > li'), function (i) {
@@ -86,19 +110,28 @@ function WidgetClick(id, val1, val2) {
     ShowLoading();
     window.open("/Common/SearchBodyFrame?widgetDrill=1&id=" + id + "&val1=" + val1 + "&val2=" + val2, "PageFrame", "", true);
 }
+function ChangeWidgetPosition(change) {
+    requestData("/Tools/DashboardAjax.ashx?act=ChangeWidgetPosition&change=" + change + "&id=" + CurrentDashboardId(), null, function (data) {
+        if (data != true) {
+            RefreshDashboard();
+        }
+    })
+}
 function SettingDashboard() {
     $('.loading').hide();
     $('#cover').hide();
     //InitDashboard();
 }
 function InitDashboard(data) {
-    SelectTheme = ColorTheme[0];
+    ThemeIdx = data.theme_id;
+    SelectTheme = ColorTheme[ThemeIdx];
     $("#dshli" + data.id)[0].innerHTML = '';
     for (var i = 0; i < data.widgetList.length; i++) {
         AddWidget($("#dshli" + data.id), data.widgetList[i]);
     }
-
-    $(".panel_nav_no").click(function () {
+    $(".panel_nav_now").unbind("click");
+    $(".panel_nav_no").unbind("click").click(function () {
+        $('.panel_nav .nav_heard').dad2()
         var id = $(this).data('dshdb');
         if (id == undefined)
             return;
@@ -112,8 +145,7 @@ function InitDashboard(data) {
                     return;
                 }
                 dom.addClass('panel_nav_now').removeClass('panel_nav_no').siblings().removeClass('panel_nav_now').addClass('panel_nav_no')
-                $("#dshli" + id).show().siblings().hide()
-                dom.unbind("click");
+                $("#dshli" + id).show().siblings().hide();
                 InitDashboard(data);
             })
         }, 500)
@@ -121,10 +153,12 @@ function InitDashboard(data) {
 
     // 最低高度 宽度
     $('.panel_content > ul').css('min-height', $(window).height() - $('.panel_nav').height() - 20)
-    $('.panel_nav > ul').css('min-width', $('.panel_nav ul').width())
+    $('.panel_content > ul >li').css('min-height', $(window).height() - $('.panel_nav').height() - 20)
+    // $('.panel_nav .nav_heard').css('min-width',$('.panel_nav .nav_heard').width())
     $(window).resize(function () {
         $('.panel_content > ul').css('min-height', $(window).height() - $('.panel_nav').height() - 20)
-        $('.panel_nav > ul').css('min-width', $('.panel_nav ul').width())
+        $('.panel_content > ul >li').css('min-height', $(window).height() - $('.panel_nav').height() - 20)
+        // $('.panel_nav .nav_heard').css('min-width',$('.panel_nav .nav_heard').width())
     })
 
     var dom = $("#dshli" + data.id).children('.WidgetShell');
@@ -139,14 +173,15 @@ function InitDashboard(data) {
     })
     //判断数量，是否有添加按钮
     if (dom.length < 12) {
-        var addShell = '<div onclick="POPOpen(this)" data-pop = "AddWidget" class="WidgetShell addShell" style="width:200px;"><div class="addWidget"><span></span> <span></span>  添加</div></div>';
+        var addShell = '<div onclick="AddWidgetStep0()" class="WidgetShell addShell" style="width:200px;"><div class="addWidget"><span></span> <span></span>  添加</div></div>';
         $("#dshli" + data.id).append(addShell)
         $('.addShell').css('width', screenW / 8 - 14)
     }
 
     $.each($('.panel_content > ul > li'), function (i) {
-        $('.panel_content > ul > li').eq(i).dad({     //拖拽类父容器   
-            draggable: '.Draggable'               //指定拖拽区域
+        $('.panel_content > ul > li').eq(i).dad({
+            draggable: '.Draggable',
+            callbackmethod: ChangeWidgetPosition
         });
     })
 
@@ -157,6 +192,7 @@ $(function () {
     setTimeout(function () {
         requestData("/Tools/DashboardAjax.ashx?act=GetInitailDashboard", null, function (data) {
             if (data == null) {
+                HideLoading();
                 return;
             }
             AddDashboardList(data[0]);
@@ -164,6 +200,45 @@ $(function () {
         })
     }, 500)
 });
+$(function () {
+    var hidden, state, visibilityChange, time;
+    if (typeof document.hidden !== "undefined") {
+        hidden = "hidden";
+        visibilityChange = "visibilitychange";
+        state = "visibilityState";
+    } else if (typeof document.mozHidden !== "undefined") {
+        hidden = "mozHidden";
+        visibilityChange = "mozvisibilitychange";
+        state = "mozVisibilityState";
+    } else if (typeof document.msHidden !== "undefined") {
+        hidden = "msHidden";
+        visibilityChange = "msvisibilitychange";
+        state = "msVisibilityState";
+    } else if (typeof document.webkitHidden !== "undefined") {
+        hidden = "webkitHidden";
+        visibilityChange = "webkitvisibilitychange";
+        state = "webkitVisibilityState";
+    }
+    
+    document.addEventListener(visibilityChange, function () {
+        if (document[state] == "hidden") {
+            time = new Date().getTime();
+        } else if (document[state] == "visible") {
+            var sc = new Date().getTime() - time;
+            if (sc > 300000) {
+                RefreshDashboard();
+            }
+        }
+        //document.title = document[state];
+    }, false);
+})
+function AddDashboard() {
+
+}
+
+function ManageDashboard() {
+
+}
 
 
 //POP  toogle方法
@@ -193,7 +268,7 @@ function POPOpen(dom) {
             if ($('.panel_content > ul > li').eq(i).is(':visible')) {
                 console.log($('.panel_content > ul > li').eq(i).children('.WidgetShell').length)
                 if ($('.panel_content > ul > li').eq(i).children('.WidgetShell').length < 12) {
-                    $('#AddWidget').show()
+                    AddWidgetStep0();
                 } else {
                     $('#' + pop).show()
                 }

@@ -23,6 +23,262 @@ function RefreshWidget(id) {
     }, 500)
 }
 
+function DeleteWidget(id) {
+    LayerConfirmOk("删除操作将不能恢复，是否继续?", "确定", "取消", function () {
+        requestData("/Tools/DashboardAjax.ashx?act=DeleteWidget&id=" + id, null, function (data) {
+            if (data != true)
+                RefreshDashboard();
+            else {
+                $("#widget" + id).remove();
+            }
+        })
+    })
+}
+
+$('input:radio[name="addWidgetType"]').click(function () {
+    if ($('input:radio[name="addWidgetType"]:checked').val() == "1") {
+        $("#addWidgetEntity").removeAttr("disabled");
+        $("#addWidgetTypeSelect").removeAttr("disabled");
+    } else {
+        $("#addWidgetEntity").attr("disabled", "disabled");
+        $("#addWidgetTypeSelect").attr("disabled", "disabled");
+    }
+})
+var widgetEntityList;
+var widgetTypeList;
+function AddWidgetStep0() {
+    ShowLoading();
+    setTimeout(function () {
+        requestData("/Tools/DashboardAjax.ashx?act=GetWidgetEntityList", null, function (data) {
+            widgetEntityList = data;
+            $("#addWidgetEntity").empty();
+            $("#addWidgetEntity").unbind("change");
+            for (var i = 0; i < data.length; i++) {
+                $("#addWidgetEntity").append("<option value='" + data[i].id + "'>" + data[i].name + "</option>");
+            }
+            requestData("/Tools/DashboardAjax.ashx?act=GetWidgetTypeList", null, function (data) {
+                widgetTypeList = data;
+                WidgetEntityChange();
+                $("#addWidgetEntity").change(function () { WidgetEntityChange();})
+                HideLoading();
+                $("#cover").show();
+                $('#AddWidget').show();
+            })
+        })
+    }, 200);
+}
+function WidgetEntityChange() {
+    $("#addWidgetTypeSelect").empty();
+    var ett;
+    for (var i = 0; i < widgetEntityList.length; i++) {
+        if (widgetEntityList[i].id == $("#addWidgetEntity").val()) {
+            ett = widgetEntityList[i];
+            break;
+        }
+    }
+    for (var i = 0; i < ett.type.length; i++) {
+        for (var j = 0; j < widgetTypeList.length; j++) {
+            if (ett.type[i] == widgetTypeList[j].val) {
+                $("#addWidgetTypeSelect").append("<option value='" + widgetTypeList[i].val + "'>" + widgetTypeList[i].show + "</option>");
+                break;
+            }
+        }
+    }
+}
+function BackAddWidgetStep0() {
+    LayerConfirmOk("如果返回前一步，所有未保存的更改将会丢失，是否继续？", "确定", "取消", function () {
+        $('#AddWidget').show();
+        $('#AddWidgetBefore').hide();
+    })
+}
+function AddWidgetStep1() {
+    if ($('input:radio[name="addWidgetType"]:checked').val() == "1") {
+        for (var i = 0; i < widgetEntityList.length; i++) {
+            if (widgetEntityList[i].id == $("#addWidgetEntity").val()) {
+                $("#addWidgetEntityName").text(widgetEntityList[i].name);
+                break;
+            }
+        }
+        var yidx = -60 * ThemeIdx - 1;
+        $("#chartBasicVisual").empty();
+        $("#chartAdvVisual").empty();
+        $("#chartBasicVisual").append('<li class="ClickNow WidgetVisual" data-visual="2545" style="background-position:-61px ' + yidx + 'px" title="饼图"></li>');
+        $("#chartBasicVisual").append('<li class="ClickNo WidgetVisual" data-visual="2546" style="background-position:0px ' + yidx + 'px" title="圆环图"></li>');
+        $("#chartBasicVisual").append('<li class="ClickNo WidgetVisual" data-visual="2547" style="background-position:-481px ' + yidx + 'px" title="折线图"></li>');
+        $("#chartBasicVisual").append('<li class="ClickNo WidgetVisual" data-visual="2548" style="background-position:-181px ' + yidx + 'px" title="条形图"></li>');
+        $("#chartBasicVisual").append('<li class="ClickNo WidgetVisual" data-visual="2549" style="background-position:-121px ' + yidx + 'px" title="柱状图"></li>');
+        $("#chartBasicVisual").append('<li class="ClickNo WidgetVisual" data-visual="2556" style="background-position:-421px ' + yidx + 'px" title="堆积面积图"></li>');
+        $("#chartBasicVisual").append('<li class="ClickNo WidgetVisual" data-visual="2558" style="background-position:-541px ' + yidx + 'px" title="漏斗图"></li>');
+        $("#chartAdvVisual").append('<li class="ClickNo WidgetVisual" data-visual="2553" style="background-position:-361px ' + yidx + 'px" title="分组柱状图"></li>');
+        $("#chartAdvVisual").append('<li class="ClickNo WidgetVisual" data-visual="2552" style="background-position:-1021px ' + yidx + 'px" title="分组条形图"></li>');
+        $("#chartAdvVisual").append('<li class="ClickNo WidgetVisual" data-visual="2551" style="background-position:-241px ' + yidx + 'px" title="堆积柱状图"></li>');
+        $("#chartAdvVisual").append('<li class="ClickNo WidgetVisual" data-visual="2550" style="background-position:-901px ' + yidx + 'px" title="堆积条形图"></li>');
+        $("#chartAdvVisual").append('<li class="ClickNo WidgetVisual" data-visual="2555" style="background-position:-301px ' + yidx + 'px" title="百分比堆积柱状图"></li>');
+        $("#chartAdvVisual").append('<li class="ClickNo WidgetVisual" data-visual="2554" style="background-position:-961px ' + yidx + 'px" title="百分比堆积条形图"></li>');
+        $("#chartAdvVisual").append('<li class="ClickNo WidgetVisual" data-visual="2557" style="background-position:-841px -1px" title="表格"></li>');
+        $(".ClickNo").click(function () {
+            ChooseVisual(this);
+        })
+        ChooseVisual($(".ClickNow"));
+        requestData("/Tools/DashboardAjax.ashx?act=GetWidgetFilter&id=" + $("#addWidgetEntity").val(), null, function (data) {
+            InitWidgetFilter(data);
+        });
+        $('#AddWidget').hide();
+        $('#AddWidgetBefore').show();
+    }
+}
+function AddWidgetFinish() {
+    $("#addWidgetForm").submit(function () {
+        jQuery.ajax({
+            url: 'Tools/DashboardAjax.ashx?act=AddWidget',
+            data: $('#addWidgetForm').serialize(),
+            type: "POST",
+            beforeSend: function () {
+            },
+            success: function (data) {
+                LayerMsg(data);
+            }
+        });
+        return false;
+    })
+    $("#addWidgetForm").submit();
+}
+function ChooseVisual(dom) {
+    $(".ClickNow").removeClass("ClickNow").addClass("ClickNo").click(function () { ChooseVisual(this); });
+    var type = $(dom).addClass("ClickNow").removeClass("ClickNo").unbind("click").data("visual");
+    $("#wgtVisualType").val(type);
+    if (type == 2545 || type == 2546 || type == 2557 || type == 2558) {
+        $("#wgtShowAxis").prop("checked", false);
+        $("#wgtShowAxis").attr("disabled", "disabled");
+    } else {
+        $("#wgtShowAxis").removeAttr("disabled");
+        $("#wgtShowAxis").prop("checked", true);
+    }
+    if (type == 2547 || type == 2549 || type == 2556) {
+        $("#wgtShowTrendline").removeAttr("disabled");
+        $("#wgtShowTrendline").prop("checked", false);
+    } else {
+        $("#wgtShowTrendline").prop("checked", false);
+        $("#wgtShowTrendline").attr("disabled", "disabled");
+    }
+    if (type == 2547 || type == 2548 || type == 2549) {
+        $("#wgtShowTwoAxis").removeAttr("disabled");
+        $("#wgtShowTwoAxis").prop("checked", false);
+    } else {
+        $("#wgtShowTwoAxis").prop("checked", false);
+        $("#wgtShowTwoAxis").attr("disabled", "disabled");
+    }
+    if (type == 2545 || type == 2546 || type == 2556 || type == 2558) {
+        $("#wgtReport2").attr("disabled", "disabled");
+        $("#wgtReportType2").attr("disabled", "disabled");
+    } else {
+        $("#wgtReport2").removeAttr("disabled");
+        $("#wgtReportType2").removeAttr("disabled");
+    }
+    if (type == 2545 || type == 2546 || type == 2547 || type == 2548 || type == 2549 || type == 2556 || type == 2558) {
+        $("#wgtGroup2").attr("disabled", "disabled");
+    } else {
+        $("#wgtGroup2").removeAttr("disabled");
+    }
+}
+function InitWidgetFilter(data) {
+    var str = "<option value=''></option>";
+    for (var i = 0; i < data.length; i++) {
+        str += "<option value='" + data[i][0].description + "'>" + data[i][0].description + "</option>";
+    }
+    $(".wgtFilter").each(function () { $(this)[0].innerHTML = str; });
+    //document.getElementById("wgtFilter1").innerHTML = str;
+    //document.getElementById("wgtFilter2").innerHTML = str;
+    //document.getElementById("wgtFilter3").innerHTML = str; 
+    //document.getElementById("wgtFilter4").innerHTML = str;
+    //document.getElementById("wgtFilter5").innerHTML = str;
+    //document.getElementById("wgtFilter6").innerHTML = str;
+    $(".wgtFilter").unbind("change").bind("change", function () {
+        FilterChange($(this).data("val"));
+    })
+    $(".wgtOper").unbind("change").bind("change", function () {
+        OperChange($(this).data("val"));
+    })
+    function FilterChange(idx) {
+        var sltValue = $("#wgtFilter" + idx).val();
+        if (sltValue == "") {
+            //document.getElementById("def1oper" + idx).innerHTML = "<option>(选择一个操作符)</option>";
+            //$("#def1val" + idx + "0").hide();
+            //$("#def1val" + idx + "1").hide();
+            //if (idx < 4 && $("#def1pro" + (idx + 1)).val() == "") {
+            //    $("#def1pro" + (idx + 1)).attr("disabled", "disabled");
+            //    $("#def1oper" + (idx + 1)).attr("disabled", "disabled");
+            //}
+            //if (idx > 0 && $("#def1pro" + (idx - 1)).val() == "") {
+            //    $("#def1pro" + idx).attr("disabled", "disabled");
+            //    $("#def1oper" + idx).attr("disabled", "disabled");
+            //}
+        } else {
+            var str = "";
+            for (var i = 0; i < data.length; i++) {
+                if (data[i][0].description != sltValue) { continue; }
+                for (var j = 0; j < data[i].length; j++) {
+                    str += "<option value='" + data[i][j].operator_type_id + "'>" + data[i][j].operatorName + "</option>";
+                }
+                break;
+            }
+            $("#wgtFilter" + idx + "Oper")[0].innerHTML = str;
+            OperChange(idx);
+            //if (idx < 4) {
+            //    $("#def1pro" + (idx + 1)).removeAttr("disabled");
+            //    $("#def1oper" + (idx + 1)).removeAttr("disabled");
+            //}
+        }
+    }
+    function OperChange(idx) {
+        if ($("#wgtFilter" + idx + "Oper").val() == "") { return; }
+        var proValue = $("#wgtFilter" + idx).val();
+        var operValue = $("#wgtFilter" + idx + "Oper").val();
+        for (var i = 0; i < data.length; i++) {
+            if (data[i][0].description != proValue) { continue; }
+            for (var j = 0; j < data[i].length; j++) {
+                if (operValue != data[i][j].operator_type_id) { continue; }
+                var cdt = data[i][j];
+                var sltVals = "";
+                if (cdt.values != null) {
+                    for (var k = 0; k < cdt.values.length; k++) {
+                        sltVals += "<option value='" + cdt.values[k].val + "'>" + cdt.values[k].show + "</option>";
+                    }
+                }
+                if (cdt.data_type == 820) {
+                    $("#wgtFilter" + idx + "Val0").hide();
+                    $("#wgtFilter" + idx + "Val1").hide();
+                    $("#mlt" + idx).hide();
+                } else if (cdt.data_type == 809) {
+                    $("#wgtFilter" + idx + "Val0")[0].innerHTML = sltVals;
+                    $("#wgtFilter" + idx + "Val0").show();
+                    $("#wgtFilter" + idx + "Val1").hide();
+                    $("#mlt" + idx).hide();
+                } else if (cdt.data_type == 805 || cdt.data_type == 806) {
+                    $("#wgtFilter" + idx + "Val0").hide();
+                    $("#wgtFilter" + idx + "Val1").show();
+                    $("#mlt" + idx).hide();
+                } else if (cdt.data_type == 810) {
+                    $("#mltslt" + idx)[0].innerHTML = sltVals;
+                    $("#wgtFilter" + idx + "Val0").hide();
+                    $("#wgtFilter" + idx + "Val1").hide();
+                    $("#mlt" + idx).show();
+                    $("#mltslt" + idx).change(function () {
+                        $("#wgtFilter" + idx + "Val2").val($(this).val());
+                    }).multipleSelect({
+                        width: '100%'
+                    })
+                }
+            }
+            break;
+        }
+    }
+}
+$(".widgetSizeList").children().click(function () {
+    $(this).addClass("widgetSizeListNow").siblings().removeClass("widgetSizeListNow");
+})
+
+
 function CreateBar(dom, data) {
     var str = '<div class="TableTotal">总计：  ' + data.totalCnt + '</div><div class="GaugeContainerCanvas" id="widget' + data.id + 'container0"></div>';
     dom[0].innerHTML = str;
@@ -38,19 +294,19 @@ function CreateBar(dom, data) {
         CreateWidgetGrid(dom, data);
     else if (data.visualType == 2558)
         CreateWidgetFunnel(data.id, data.group1, data.report1);
-    else if (data.isx == 1)
-        CreateWidgetBar(data.id, data.group1, data.group2, data.report1, 1, data.isStack);
-    else if (data.isy == 1)
-        CreateWidgetBar(data.id, data.group1, data.group2, data.report1, 0, data.isStack);
+    else if (data.visualType == 2554 || data.visualType == 2555)
+        CreateWidgetBarPercent(data);
+    else if (data.isx == 1 || data.isy == 1)
+        CreateWidgetBar(data);
 }
 
-function CreateWidgetBar(id, group1, group2, data, x, stack) {
-    var myChart = echarts.init(document.getElementById('widget' + id + 'container0'));
+function CreateWidgetBar(data) {
+    var myChart = echarts.init(document.getElementById('widget' + data.id + 'container0'));
 
     var ser = new Array();
-    if (group2 == null) {
+    if (data.group2 == null && data.report2 == null) {
         ser[0] = {
-            data: data,
+            data: data.report1,
             type: 'bar',
             itemStyle: {
                 normal: {
@@ -61,13 +317,38 @@ function CreateWidgetBar(id, group1, group2, data, x, stack) {
 
             },
         };
+    } else if (data.report2 != null) {
+        ser[0] = {
+            data: data.report1,
+            name: data.columns[0],
+            type: 'bar',
+            stack: data.isStack,
+            itemStyle: {
+                normal: {
+                    color: SelectTheme[0],
+                },
+
+            },
+        };
+        ser[1] = {
+            data: data.report2,
+            name: data.columns[1],
+            type: 'bar',
+            stack: data.isStack,
+            itemStyle: {
+                normal: {
+                    color: SelectTheme[1],
+                },
+
+            },
+        };
     } else {
-        for (var i = 0; i < data.length; i++) {
+        for (var i = 0; i < data.report1.length; i++) {
             ser[i] = {
-                data: data[i],
-                name: group2[i],
+                data: data.report1[i],
+                name: data.group2[i],
                 type: 'bar',
-                stack: stack,
+                stack: data.isStack,
                 itemStyle: {
                     normal: {
                         color: SelectTheme[i % SelectTheme.length],
@@ -79,11 +360,11 @@ function CreateWidgetBar(id, group1, group2, data, x, stack) {
     }
 
     var option = {
-        yAxis: x == 1 ? {
+        yAxis: data.isx == 1 ? {
             type: 'value'
         } : {
                 type: 'category',
-                data: group1,
+                data: data.group1,
             },
         grid: {
             left: '3%',
@@ -92,9 +373,9 @@ function CreateWidgetBar(id, group1, group2, data, x, stack) {
             top: '12%',
             containLabel: true
         },
-        xAxis: x == 1 ? {
+        xAxis: data.isx == 1 ? {
             type: 'category',
-            data: group1,
+            data: data.group1,
         } : {
                 type: 'value'
             },
@@ -116,10 +397,143 @@ function CreateWidgetBar(id, group1, group2, data, x, stack) {
 
     //点击事件
     myChart.on('click', function (params) {
-        if (group2 == null) {
-            WidgetClick(id, params.name, null);
+        if (data.group2 == null) {
+            WidgetClick(data.id, params.name, null);
         } else {
-            WidgetClick(id, params.name, params.seriesName);
+            WidgetClick(data.id, params.name, params.seriesName);
+        }
+    });
+}
+
+function CreateWidgetBarPercent(data) {
+    var myChart = echarts.init(document.getElementById('widget' + data.id + 'container0'));
+    var max = 1;
+    for (var i = 0; i < data.report1.length; i++) {
+        if (data.report1[i] != null && parseFloat(data.report1[i]) > max)
+            max = parseFloat(data.report1[i]);
+    }
+    if (data.report2 != null) {
+        for (var i = 0; i < data.report2.length; i++) {
+            if (data.report2[i] != null && parseFloat(data.report2[i]) > max)
+                max = parseFloat(data.report2[i]);
+        }
+    }
+    var repPercent1 = new Array();
+    var repPercent2 = new Array();
+    for (var i = 0; i < data.report1.length; i++) {
+        repPercent1[i] = data.report1[i];
+        if (data.report1[i] != null)
+            repPercent1[i] = parseFloat(data.report1[i]) * 100 / max;
+    }
+    if (data.report2 != null) {
+        for (var i = 0; i < data.report2.length; i++) {
+            repPercent2[i] = data.report2[i];
+            if (data.report2[i] != null)
+                repPercent2[i] = parseFloat(data.report2[i]) * 100 / max;
+        }
+    }
+    var ser = new Array();
+    if (data.group2 == null && data.report2 == null) {
+        ser[0] = {
+            data: repPercent1,
+            type: 'bar',
+            itemStyle: {
+                normal: {
+                    color: function (params) {
+                        return SelectTheme[params.dataIndex % SelectTheme.length];
+                    },
+                },
+
+            },
+        };
+    } else if (data.report2 != null) {
+        ser[0] = {
+            data: repPercent1,
+            name: data.columns[0],
+            type: 'bar',
+            stack: data.isStack,
+            itemStyle: {
+                normal: {
+                    color: SelectTheme[0],
+                },
+
+            },
+        };
+        ser[1] = {
+            data: repPercent2,
+            name: data.columns[1],
+            type: 'bar',
+            stack: data.isStack,
+            itemStyle: {
+                normal: {
+                    color: SelectTheme[1],
+                },
+
+            },
+        };
+    } else {
+        for (var i = 0; i < data.report1.length; i++) {
+            ser[i] = {
+                data: repPercent1[i],
+                name: data.group2[i],
+                type: 'bar',
+                stack: data.isStack,
+                itemStyle: {
+                    normal: {
+                        color: SelectTheme[i % SelectTheme.length],
+                    },
+
+                },
+            };
+        }
+    }
+
+    var option = {
+        yAxis: data.isx == 1 ? {
+            type: 'value'
+        } : {
+                type: 'category',
+                data: data.group1,
+            },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            top: '12%',
+            containLabel: true
+        },
+        xAxis: data.isx == 1 ? {
+            type: 'category',
+            data: data.group1,
+        } : {
+                type: 'value'
+            },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'none'
+            },
+            formatter: function (params) {
+                var str = params[0].name + ":" + params[0].value * max / 100;
+                return str
+            },
+            backgroundColor: '#fff',
+            borderWidth: 1,
+            padding: [5, 10],
+            textStyle: {
+                color: '#000'
+            }
+        },
+        series: ser
+    };
+    myChart.setOption(option);
+
+    //点击事件
+    myChart.on('click', function (params) {
+        if (data.group2 == null) {
+            WidgetClick(data.id, params.name, null);
+        } else {
+            WidgetClick(data.id, params.name, params.seriesName);
         }
     });
 }
@@ -618,7 +1032,7 @@ function CreateWidgetGuageNeedle(id, data, idx) {
             endAngle: 0,
             min: min,
             max: max,
-            splitNumber: 4,
+            splitNumber: 100,
             center: ["50%", "50%"],
             axisLine: {
                 lineStyle: {
@@ -640,6 +1054,18 @@ function CreateWidgetGuageNeedle(id, data, idx) {
                 textStyle: {
                     color: ["#2d99e2",],
                     fontSize: 12,
+                },
+                formatter: function (e) {
+                    if (e == min)
+                        return min;
+                    if (e == max)
+                        return max;
+                    for (var i = 0; i < prct.length; i++) {
+                        if (parseInt(prct[i][0] * 100) * (parseFloat(max - min) / 100) + min == e) {
+                            return data[3][i + 1];
+                        }
+                    }
+                    return "";
                 }
             },
 
@@ -698,7 +1124,7 @@ function CreateWidgetGuagePie(id, data, idx) {
             valIdx = i;
     }
     if (value >= max)
-        valIdx = prct.length - 1;
+        valIdx = data[3].length - 1;
 
     //实例化样式
     var dataStyle = {
@@ -713,7 +1139,7 @@ function CreateWidgetGuagePie(id, data, idx) {
     };
     var placeHolderStyle = {
         normal: {
-            color: '#e6e6e6', //未完成的圆环的颜色
+            color: '#e6e6e6',
             label: {
                 show: false
             },
@@ -723,12 +1149,12 @@ function CreateWidgetGuagePie(id, data, idx) {
         },
         
         emphasis: {
-            color: '#e6e6e6' //未完成的圆环的颜色
+            color: '#e6e6e6'
         }
     };
     //数据填充
     var option = {
-        color: [SelectTheme[valIdx % SelectTheme.length], '#e6e6e6'],
+        color: [SelectTheme[valIdx % SelectTheme.length], SelectTheme[valIdx % SelectTheme.length]],
         title: {
             text: data[2],
             x: 'center',
@@ -753,7 +1179,7 @@ function CreateWidgetGuagePie(id, data, idx) {
                 {
                     value: value - min,
                     itemStyle: {
-                        color: SelectTheme[0],
+                        color: SelectTheme[valIdx % SelectTheme.length],
                     },
                     tooltip: {
                         confine: false,
@@ -788,6 +1214,16 @@ function CreateWidgetGuagePie(id, data, idx) {
 
 function CreateWidgetGuageNumber(id, data, idx) {
     var myChart = echarts.init(document.getElementById('widget' + id + 'container' + idx));
+    var min = parseInt(data[3][0]);
+    var max = parseInt(data[3][data[3].length - 1]);
+    var value = data[2];
+    var valIdx = 0;
+    for (var i = 0; i < data[3].length - 1; i++) {
+        if (value < parseInt(data[3][i + 1]) && value >= parseInt(data[3][i]))
+            valIdx = i;
+    }
+    if (value >= max)
+        valIdx = data[3].length - 1;
     //实例化样式
     var dataStyle = {
         normal: {
@@ -801,7 +1237,7 @@ function CreateWidgetGuageNumber(id, data, idx) {
     };
     var placeHolderStyle = {
         normal: {
-            color: '#e6e6e6', //未完成的圆环的颜色
+            color: '#e6e6e6',
             label: {
                 show: false
             },
@@ -811,7 +1247,7 @@ function CreateWidgetGuageNumber(id, data, idx) {
         },
 
         emphasis: {
-            color: '#e6e6e6' //未完成的圆环的颜色
+            color: '#e6e6e6'
         }
     };
     //数据填充
@@ -823,7 +1259,7 @@ function CreateWidgetGuageNumber(id, data, idx) {
             y: 'center',
             textStyle: {
                 fontWeight: 'normal',
-                color: "#0bb6f0",
+                color: SelectTheme[valIdx % SelectTheme.length],
                 fontSize: 26
             }
         },
@@ -869,6 +1305,6 @@ function CreateGrid(dom, data) {
     if (data.totalCnt == 0)
         str += '</table></div><div class="FooterContainer"><div class="RowStatus">0 - 0 / 0</div><div class="ShowAllButtonDiv"></div></div></div>';
     else
-        str += '</table></div><div class="FooterContainer"><div class="RowStatus">1 - ' + data.gridData.length + ' / ' + data.totalCnt + '</div><div class="ShowAllButtonDiv"><a>显示全部</a></div></div></div>';
+        str += '</table></div><div class="FooterContainer"><div class="RowStatus">1 - ' + data.gridData.length + ' / ' + data.totalCnt + '</div><div class="ShowAllButtonDiv"><a onclick="WidgetClick(' + data.id + ', null, null)">显示全部</a></div></div></div>';
     dom[0].innerHTML = str;
 }

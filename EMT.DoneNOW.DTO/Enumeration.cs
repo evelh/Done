@@ -93,6 +93,9 @@ namespace EMT.DoneNOW.DTO
         KB_PUBLISH_TO_TYPE=165,                  // 知识库：发布对象类型
         TICKET_CATE = 167,                       // 工单种类
         SKILLS_CATE = 175,                      // 技能类别
+        DASHBOARD_COLOR_THEME = 184,            // 仪表板色系
+        WIDGET_TYPE = 189,                      // 小窗口类型
+        WIDGET_ENTITY = 190,                    // 小窗口实体
     }
 
     /// <summary>
@@ -875,6 +878,7 @@ namespace EMT.DoneNOW.DTO
             SDK_KONWLEDGE = 1429,                       // 知识库
             SDK_KONWLEDGE_COMMENT = 1430,               // 知识库评论
             SDK_KONWLEDGE_TICKET = 1431,                // 知识库关联工单
+            DASHBOARD_WIDGET = 1436,                    // 仪表板小窗口
             TICKET_SLA_EVENT,                           // 工单sla 事件
             
         }
@@ -1810,11 +1814,29 @@ namespace EMT.DoneNOW.DTO
         TASK_SEARCH_NO = 225,               // 系统管理-快捷搜索-任务编号
 
 
-        CompanyWidgetDrill = 216,           // 小窗口-客户
-        ConfigurationWidgetDrill = 226,     // 小窗口-配置项
-        ContractWidgetDrill = 227,          // 小窗口-合同
-        TimeoffRequestWidgetDrill = 230,    // 小窗口-休假申请
-        TimesheetWidgetDrill = 231,         // 小窗口-工时表
+        WidgetDrillCompany = 216,           // 小窗口-客户
+        WidgetDrillConfiguration = 226,     // 小窗口-配置项
+        WidgetDrillContract = 227,          // 小窗口-合同
+        WidgetDrillInvoiceItems = 232,      // 小窗口-发票条目
+        WidgetDrillMilestones = 235,        // 小窗口-里程碑
+        WidgetDrillMiscellaneous = 237,     // 小窗口-其他
+        WidgetDrillOpportunity = 238,       // 小窗口-商机
+        WidgetDrillOutOffice = 239,         // 小窗口-外出
+        WidgetDrillPendingBillItems = 234,  // 小窗口-待审批并提交条目
+        WidgetDrillPostedBillItems = 233,   // 小窗口-已审批并提交条目
+        WidgetDrillProjects = 240,          // 小窗口-项目
+        WidgetDrillTask = 241,              // 小窗口-任务
+        WidgetDrillQuotes = 242,            // 小窗口-报价
+        WidgetDrillQuoteItems = 243,        // 小窗口-报价项
+        WidgetDrillRecurMasterTickets = 244,// 小窗口-定期服务主工单
+        WidgetDrillScheduledItems = 245,    // 小窗口-已调度条目
+        WidgetDrillServiceCalls = 246,      // 小窗口-服务预定
+        WidgetDrillSurveys = 247,           // 小窗口-问卷调查
+        WidgetDrillTickets = 248,           // 小窗口-工单
+        WidgetDrillTimeoffRequest = 230,    // 小窗口-休假申请
+        WidgetDrillTimesheet = 231,         // 小窗口-工时表
+        WidgetDrillTodoNotes = 249,         // 小窗口-备注和待办
+        WidgetDrillWorkEntries = 236,       // 小窗口-工时
 
         MyWorkListTicket = 250,              // 我的工作列表 工单列表
         MyWorkListTask = 251,                // 我的工作列表 任务列表
