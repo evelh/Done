@@ -29,7 +29,9 @@ namespace EMT.DoneNOW.BLL
                 var thisTicket = param.ticket;
                 #region 1 新增工单
                 if (thisTicket != null)
+                {
                     InsertTicket(thisTicket, userId);
+                }
                 else
                     return false;
                 #endregion

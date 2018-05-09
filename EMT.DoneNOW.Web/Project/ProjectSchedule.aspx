@@ -1947,10 +1947,10 @@
                         </div>
                     </div>
                     <div class="DialogHeadingContainer">
-                        <div class="ButtonContainer"><a class="Button ButtonIcon Save NormalState" tabindex="0"><span class="Icon"></span><span class="Text">保存并关闭</span></a><a class="Button ButtonIcon Cancel NormalState" id="CancelButton" onclick="CloseDigAddOtherDiv()"><span class="Icon"></span><span class="Text">取消</span></a></div>
+                        <div class="ButtonContainer"><a class="Button ButtonIcon Save NormalState" onclick="SaveAddToOtherWorkList()"><span class="Icon" style="background: url(../Images/Icons.png) no-repeat -38px 0px;"></span><span class="Text">保存并关闭</span></a><a class="Button ButtonIcon Cancel NormalState" id="CancelButton" onclick="CloseDigAddOtherDiv()"><span class="Icon" style="background: url(../Images/Icons.png) no-repeat -102px 0px;"></span><span class="Text">取消</span></a></div>
                     </div>
-                    <div class="ScrollingContentContainer">
-                        <div class="ScrollingContainer">
+                    <div class="ScrollingContentContainer" style="position:unset;">
+                        <div class="ScrollingContainer" style="position:unset;">
                                 <div class="Medium NoHeading Section">
                                     <div class="Content">
                                         <div class="Normal Column">
@@ -1963,8 +1963,8 @@
                                             </div>
                                             <div class="Editor DataSelector">
                                                 <div class="InputField">
-                                                    <input id="" type="text" value="" />
-                                                    <a class="Button ButtonIcon IconOnly DataSelector NormalState" id="" ><span class="Icon"></span><span class="Text"></span></a>
+                                                    <input id="" type="text" value="" style="width:200px;padding:0px;"/>
+                                                    <a class="Button ButtonIcon IconOnly DataSelector NormalState" id="" ><span class="Icon" onclick="ChooseOtherRes()"  style="background-image:url(../Images/data-selector.png)"></span><span class="Text"></span></a>
                                                     <input id="ToOtherResIds" name="" type="hidden" value="" />
                                                     <input id="ToOtherResIdsHidden" name="" type="hidden" value="" />
                                                     <div class="ContextOverlayContainer">
@@ -1978,7 +1978,7 @@
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <select id="ResManySelect" multiple="multiple"></select>
+                                                        <select id="ResManySelect" multiple="multiple" style="width:200px;height:100px;"></select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -3693,8 +3693,54 @@
         $("#ShowAddOtherDiv").show();
     }
 
+    function SaveAddToOtherWorkList() {
+        var resIds = $("#ToOtherResIdsHidden").val();
+        if (resIds != "" && entityid!="") {
+            AddToWorkList(resIds, entityid);
+        }
+        CloseDigAddOtherDiv();
+    }
+
     function CloseDigAddOtherDiv() {
         $("#BackgroundOverLay").hide();
         $("#ShowAddOtherDiv").hide();
+    }
+
+    function ChooseOtherRes() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE_CALLBACK %>&field=ToOtherResIds&muilt=1&callBack=GetRes", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+    function GetRes() {
+        var resIds = $("#ToOtherResIdsHidden").val();
+        var resHtml = "";
+        if (resIds != "") {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ResourceAjax.ashx?act=GetResList&ids=" + resIds,
+                dataType: "json",
+                success: function (data) {
+                    if (data != "") {
+                        for (var i = 0; i < data.length; i++) {
+                            resHtml += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        }
+                    }
+                },
+            });
+        }
+        $("#ResManySelect").html(resHtml);
+        $("#ResManySelect option").dblclick(function () {
+            RemoveResDep(this);
+        })
+    }
+    function RemoveResDep(val) {
+        $(val).remove();
+        var ids = "";
+        $("#ResManySelect option").each(function () {
+            ids += $(this).val() + ',';
+        })
+        if (ids != "") {
+            ids = ids.substr(0, ids.length - 1);
+        }
+        $("#ToOtherResIdsHidden").val(ids);
     }
 </script>

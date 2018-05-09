@@ -126,6 +126,7 @@
             <input type="hidden" id="param1" value="<%=param1 %>" />
             <input type="hidden" id="param2" value="<%=param2 %>" />
             <input type="hidden" id="isCheck" name="isCheck" value="<%=isCheck %>" />
+            <input type="hidden" id="loginUserId" name="isCheck" value="<%=LoginUserId %>" />
             <div id="conditions">
                 <%foreach (var para in queryParaValue)
                     { %>

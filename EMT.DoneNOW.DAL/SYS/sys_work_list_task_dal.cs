@@ -18,8 +18,8 @@ namespace EMT.DoneNOW.DAL
                 where = " and st.type_id in(1818, 1809)";
             else
                 where = " and st.type_id in(1807, 1808, 1812)";
-            where += " order by sort_order";
-            return FindListBySql($"SELECT swlt.* from sys_work_list_task swlt INNER JOIN sdk_task st on swlt.task_id = st.id where  st.delete_time = 0 "+where);
+            where += " order by swlt.sort_order";
+            return FindListBySql($"SELECT swlt.* from sys_work_list_task swlt INNER JOIN sdk_task st on swlt.task_id = st.id where  st.delete_time = 0  and swlt.resource_id="+ userId.ToString() + where);
         }
         /// <summary>
         /// 根据员工和任务Id 获取相应实例
@@ -34,6 +34,13 @@ namespace EMT.DoneNOW.DAL
         public long GetMaxSortOrder(long userId)
         {
             return Convert.ToInt64(GetSingle($"SELECT MAX(sort_order) from sys_work_list_task where resource_id = {userId}"));
+        }
+        /// <summary>
+        /// 获取序号比这个大的列表信息
+        /// </summary>
+        public List<sys_work_list_task> GetTaskListBySort(long userId,long sortOrder)
+        {
+            return FindListBySql($"SELECT * from sys_work_list_task where resource_id = {userId} and sort_order>{sortOrder}");
         }
     }
 }

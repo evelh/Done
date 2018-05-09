@@ -453,6 +453,25 @@ LEFT JOIN (select quote_id,sum(unit_price*quantity) total_revenue from crm_quote
             return true;
         }
         /// <summary>
+        /// 根据任务Id 和登录用户获取相关列表信息并删除
+        /// </summary>
+        public bool DeleteSingWorkTicket(long taskId, long userId)
+        {
+            var swltDal = new sys_work_list_task_dal();
+            var thisWorkTask = swltDal.GetByResTaskId(userId,taskId);
+            if (thisWorkTask != null)
+                swltDal.Delete(thisWorkTask);
+            var nextList = swltDal.GetTaskListBySort(userId, thisWorkTask.sort_order);
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            if (nextList != null && nextList.Count > 0)
+                nextList.ForEach(_ => {
+                    _.update_time = timeNow;
+                    _.sort_order = _.sort_order - 1;
+                    swltDal.Update(_);
+                });
+            return true;
+        }
+        /// <summary>
         /// 我的工作列表排序号改变
         /// </summary>
         public void WorkListSortManage(long userId,bool isTicket = true)
@@ -467,46 +486,128 @@ LEFT JOIN (select quote_id,sum(unit_price*quantity) total_revenue from crm_quote
         /// <summary>
         /// 拖拽 - 更改排序号
         /// </summary>
-        public void ChangeSort(long firWorTasId,long lasWorTaskId,long userId)
+        public void ChangeSort(sys_work_list_task firWorTas, sys_work_list_task lasWorTask,long userId)
         {
+            var swltDal = new sys_work_list_task_dal();
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            if (firWorTas.sort_order> lasWorTask.sort_order)
+            {
+                var changeList = swltDal.FindListBySql($"SELECT * from sys_work_list_task where resource_id = {userId} and sort_order>={lasWorTask.sort_order} and sort_order<{firWorTas.sort_order}");
+                if (changeList != null && changeList.Count > 0)
+                {
+                    changeList.ForEach(_ => {
+                        _.update_time = timeNow;
+                        _.sort_order = _.sort_order + 1;
+                        swltDal.Update(_);
+                    });
+                    firWorTas.update_time = timeNow;
+                    firWorTas.sort_order = lasWorTask.sort_order;
+                    swltDal.Update(firWorTas);
+                }
+            }
+            else
+            {
+                var changeList = swltDal.FindListBySql($"SELECT * from sys_work_list_task where resource_id = {userId} and sort_order>{firWorTas.sort_order} and sort_order<={lasWorTask.sort_order}");
+                if(changeList!=null&& changeList.Count > 0)
+                {
+                    changeList.ForEach(_ => {
+                        _.update_time = timeNow;
+                        _.sort_order = _.sort_order - 1;
+                        swltDal.Update(_);
+                    });
+                    firWorTas.update_time = timeNow;
+                    firWorTas.sort_order = lasWorTask.sort_order;
+                    swltDal.Update(firWorTas);
+                }
+            }
+        }
 
+        public bool ChangeWorkTaskSort(long firstTaskId,long lastTaskId,long userId)
+        {
+            if (firstTaskId == lastTaskId)
+                return false;
+            var swltDal = new sys_work_list_task_dal();
+            var firWorTask = swltDal.GetByResTaskId(userId, firstTaskId);
+            var lasWorTask = swltDal.GetByResTaskId(userId, lastTaskId);
+            if (firWorTask == null || lasWorTask == null)
+                return false;
+            ChangeSort(firWorTask, lasWorTask,userId);
+            return true;
         }
 
         /// <summary>
         /// 添加到我的工作列表
         /// </summary>
-        public bool AddToWorkList(long taskId,long userId)
+        public bool AddToWorkList(long taskId,long resId,long userId)
         {
             var swltDal = new sys_work_list_task_dal();
-            var singWorkTask = swltDal.GetByResTaskId(userId,taskId);
+            var singWorkTask = swltDal.GetByResTaskId(resId, taskId);
             var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             if (singWorkTask == null)
             {
                 singWorkTask = new sys_work_list_task() {
                     id = swltDal.GetNextIdCom(),
-                    resource_id = userId,
+                    resource_id = resId,
                     task_id = taskId,
                     create_time = timeNow,
                     create_user_id = userId,
                     update_time = timeNow,
                     sort_order = swltDal.GetMaxSortOrder(userId)+1,
                 };
+                swltDal.Insert(singWorkTask);
             }
-
             return true;
         }
         /// <summary>
         /// 添加到多个员工的工作列表
         /// </summary>
-        public bool AddToManyWorkList(string resIds,long taskId)
+        public bool AddToManyWorkList(string resIds,long taskId,long userId)
         {
             if (!string.IsNullOrEmpty(resIds))
             {
                 var resArr = resIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
                 foreach (var resId in resArr)
                 {
-                    AddToWorkList(taskId,long.Parse(resId));
+                    AddToWorkList(taskId,long.Parse(resId), userId);
                 }
+            }
+            return true;
+        }
+        /// <summary>
+        /// 工作清单管理
+        /// </summary>
+        public bool SysWorkSetting(bool sendMyWork,bool autoStart,long userId)
+        {
+            var swlDal = new sys_work_list_dal();
+            var thisWork = swlDal.GetByResId(userId);
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            var isAuto = (sbyte)(autoStart ? 1 : 0);
+            var isKeep = (sbyte)(sendMyWork ? 1 : 0);
+            if (thisWork != null)
+            {
+                if(thisWork.auto_start!= isAuto|| thisWork.keep_running!= isKeep)
+                {
+                    thisWork.auto_start = isAuto;
+                    thisWork.keep_running = isKeep;
+                    thisWork.update_time = timeNow;
+                    thisWork.update_user_id = userId;
+                    swlDal.Update(thisWork);
+                }
+            }
+            else
+            {
+                thisWork = new sys_work_list()
+                {
+                    id = swlDal.GetNextIdCom(),
+                    auto_start = isAuto,
+                    create_time = timeNow,
+                    create_user_id = userId,
+                    keep_running = isKeep,
+                    resource_id = userId,
+                    update_time = timeNow,
+                    update_user_id = userId,
+                };
+                swlDal.Insert(thisWork);
             }
             return true;
         }

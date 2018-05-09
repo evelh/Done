@@ -1816,6 +1816,8 @@ namespace EMT.DoneNOW.DTO
         TimeoffRequestWidgetDrill = 230,    // 小窗口-休假申请
         TimesheetWidgetDrill = 231,         // 小窗口-工时表
 
+        MyWorkListTicket = 250,              // 我的工作列表 工单列表
+        MyWorkListTask = 251,                // 我的工作列表 任务列表
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
         Line_Of_Business,              //系统管理：组织：业务条线

@@ -33,6 +33,12 @@ namespace EMT.DoneNOW.Web
             {
                 // 保存选择内容
                 SaveSelect();
+                if (queryTypeId == (int)EMT.DoneNOW.DTO.QueryType.MyWorkListTicket)
+                {
+                    var sendMyWork = !string.IsNullOrEmpty(Request.Form["keep_running"]) && Request.Form["keep_running"].Equals("1");
+                    var autoStart = !string.IsNullOrEmpty(Request.Form["auto_start"]) && Request.Form["auto_start"].Equals("1");
+                    new IndexBLL().SysWorkSetting(sendMyWork, autoStart,LoginUserId);
+                }
             }
             
             GetSelect();

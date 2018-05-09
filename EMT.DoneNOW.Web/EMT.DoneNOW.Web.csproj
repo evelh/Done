@@ -193,6 +193,7 @@
     <Content Include="Content\reset.css" />
     <Content Include="Content\Roles.css" />
     <Content Include="Content\searchList.css" />
+    <Content Include="Content\SidebarDrag.css" />
     <Content Include="Content\SysSettingRoles.css" />
     <Content Include="Content\SysUserSecurityLevel.css" />
     <Content Include="Content\style.css" />
@@ -202,12 +203,15 @@
     <Content Include="Images\ButtonIcons.svg" />
     <Content Include="Images\DecorationIcons.svg" />
     <Content Include="Images\LoadingRefresh.gif" />
+    <Content Include="Images\StopwatchSmallIcons.svg" />
     <Content Include="Images\ThemeSwatchIcons.png" />
     <Content Include="Images\WidgetConfigurationIcons.png" />
     <Content Include="Images\bronze_managed_service.jpg" />
     <Content Include="Images\dashboard_callmetrics.png" />
     <Content Include="Images\dashboard_salesalert.png" />
     <Content Include="Images\dashboard_salesmetrics.png" />
+    <Content Include="Images\WorklistGripper.png" />
+    <Content Include="Images\WorklistIcons.svg" />
     <Content Include="Scripts\clipboard.js" />
     <Content Include="Scripts\clipboard.min.js" />
     <Content Include="Scripts\Dashboard\Dashboard.js" />
@@ -225,6 +229,7 @@
     <Content Include="Scripts\Search\TimeoffMyBalance.js" />
     <Content Include="Scripts\Search\TimeoffRequestWidgetDrill.js" />
     <Content Include="Scripts\Search\TimesheetWidgetDrill.js" />
+    <Content Include="Scripts\SidebarDrag.js" />
     <Content Include="ServiceDesk\AddQuickCall.aspx" />
     <Content Include="ServiceDesk\AppointmentsManage.aspx" />
     <Content Include="ServiceDesk\DispatchCalendar.aspx" />

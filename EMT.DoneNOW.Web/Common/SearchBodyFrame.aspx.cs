@@ -1270,9 +1270,9 @@ namespace EMT.DoneNOW.Web
                          new PageContextMenuDto(){text = "复制到项目", click_function = "CopyToProject()" },
                          new PageContextMenuDto(){text = "合并到另一个工单", click_function = "MergeTicket()" },
                          new PageContextMenuDto(){text = "吸收合并其他工单", click_function = "AbsorbTicket()" },
-                         new PageContextMenuDto(){text = "加入到我的工作列表", click_function = "" },
-                         new PageContextMenuDto(){text = "加入到主负责人的工作列表", click_function = "" },
-                         new PageContextMenuDto(){text = "加入到其他负责人的工作列表", click_function = "" },
+                         new PageContextMenuDto(){text = "加入到我的工作列表", click_function = "AddToMyWorkList()" },
+                         new PageContextMenuDto(){text = "加入到主负责人的工作列表", click_function = "AddToPriResWorkList()" },
+                         new PageContextMenuDto(){text = "加入到其他负责人的工作列表", click_function = "AddToOtherResWorkList()" },
                          new PageContextMenuDto(){text = "取消与项目管理关系", click_function = "CancelProject()" },
                          new PageContextMenuDto(){text = "删除工单", click_function = "DeleteTicket()" },
                     };
@@ -1320,9 +1320,9 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "添加工单备注", click_function = "AddTicketNote()", class_name = "ticket" });
                     contextMenu.Add(new PageContextMenuDto { text = "修改工单", click_function = "ModifyTicket()", class_name = "ticket" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除工单", click_function = "DeleteTicket()", class_name = "ticket" });
-                    contextMenu.Add(new PageContextMenuDto { text = "添加到我的工作列表", click_function = "AddMyWorkList()", class_name = "ticket" });
-                    contextMenu.Add(new PageContextMenuDto { text = "添加到主负责人的工作列表", click_function = "AddPriWorkList()", class_name = "ticket" });
-                    contextMenu.Add(new PageContextMenuDto { text = "添加到其他负责人的工作列表", click_function = "AddOtherWorkList()", class_name = "ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加到我的工作列表", click_function = "AddToMyWorkList()", class_name = "ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加到主负责人的工作列表", click_function = "AddToPriResWorkList()", class_name = "ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加到其他负责人的工作列表", click_function = "AddToOtherResWorkList()", class_name = "ticket" });
                     contextMenu.Add(new PageContextMenuDto { text = "解除关联项目", click_function = "DisProject()", class_name = "ticket" });
                     #endregion
 
@@ -1335,9 +1335,9 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "查看任务备注", click_function = "ViewTaskNote()", class_name = "task" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看项目", click_function = "ViewProject()", class_name = "task" });
                     contextMenu.Add(new PageContextMenuDto { text = "生成报表", click_function = "ToGoTaskReport()", class_name = "task" });
-                    contextMenu.Add(new PageContextMenuDto { text = "添加到我的工作列表", click_function = "AddTaskMyWorkList()", class_name = "task" });
-                    contextMenu.Add(new PageContextMenuDto { text = "添加到主负责人的工作列表", click_function = "AddTaskPriWorkList()", class_name = "task" });
-                    contextMenu.Add(new PageContextMenuDto { text = "添加到其他负责人的工作列表", click_function = "AddTaskOtherWorkList()", class_name = "task" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加到我的工作列表", click_function = "AddToMyWorkList()", class_name = "task" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加到主负责人的工作列表", click_function = "AddToPriResWorkList()", class_name = "task" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加到其他负责人的工作列表", click_function = "AddToOtherResWorkList()", class_name = "task" });
                     #endregion
                     break;
                 case (long)QueryType.TimeoffPolicy:
@@ -1479,9 +1479,9 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "添加备注", click_function = "AddNote()", class_name = "" });
                     contextMenu.Add(new PageContextMenuDto { text = "转发/修改", click_function = "TicketModify()", class_name = "" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除工单", click_function = "DeleteTicket()", class_name = "" });
-                    contextMenu.Add(new PageContextMenuDto { text = "加入到我的工作列表", click_function = "", class_name = "" });
-                    contextMenu.Add(new PageContextMenuDto { text = "加入到主负责人的工作列表", click_function = "", class_name = "" });
-                    contextMenu.Add(new PageContextMenuDto { text = "加入到其他负责人的工作列表", click_function = "", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "加入到我的工作列表", click_function = "AddToMyWorkList()", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "加入到主负责人的工作列表", click_function = "AddToPriResWorkList()", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "加入到其他负责人的工作列表", click_function = "AddToOtherResWorkList()", class_name = "" });
                     contextMenu.Add(new PageContextMenuDto { text = "取消与项目管理关系", click_function = "RemoveProject()", class_name = "" });
                     break;
                 case (long)QueryType.DISPATCH_TICKET_SEARCH:
