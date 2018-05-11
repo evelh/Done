@@ -170,7 +170,7 @@ namespace EMT.DoneNOW.Web.Company
                 if (!string.IsNullOrEmpty(terIds))
                     terIds = terIds.Substring(0, terIds.Length - 1);
                 #region 摘要查询数量
-                todayTodoCount = caDal.GetTodoCountByRes((long)resourceId,$" and create_time <={Tools.Date.DateHelper.ToUniversalTimeStamp(end)} and create_time>={Tools.Date.DateHelper.ToUniversalTimeStamp(start)}");
+                todayTodoCount = caDal.GetTodoCountByRes((long)resourceId,$" and start_date <={Tools.Date.DateHelper.ToUniversalTimeStamp(end)} and start_date>={Tools.Date.DateHelper.ToUniversalTimeStamp(start)}");
                 overdueTodoCount = caDal.GetTodoCountByRes((long)resourceId,$" and status_id = {(int)DTO.DicEnum.ACTIVITY_STATUS.NOT_COMPLETED} and end_date<={timeNow}");
                 myAsignToOtherCount = caDal.GetTodoCountByRes(0, resourceId==0?$" and create_user_id <> resource_id" :$" and create_user_id= {resourceId} and resource_id<>{resourceId}");
 

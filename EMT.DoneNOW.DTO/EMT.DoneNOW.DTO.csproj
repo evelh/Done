@@ -71,6 +71,7 @@
     <Compile Include="EnumAuthority.cs" />
     <Compile Include="Enumeration.cs" />
     <Compile Include="EnumSysSetting.cs" />
+    <Compile Include="ExexuteContactDto.cs" />
     <Compile Include="ExpenseDto.cs" />
     <Compile Include="FormTmplOpportunityDto.cs" />
     <Compile Include="InventoryItemEditDto.cs" />

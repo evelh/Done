@@ -74,9 +74,14 @@
                             <div class="Content Content1" id="c3">
                                 <div class="Large Column">
                                     <div class="PageNavigationLinkGroup">
-                                       
+                                        <div class="PageNavigationLinkColumn">
+
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CRM_MY_ACCOUNT_TICKET %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">我的客户的工单</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                   
                                 </div>
                             </div>
                         </div>
@@ -96,13 +101,13 @@
                             <div class="Content Content1" id="c4">
                                 <div class="Large Column">
                                     <div class="PageNavigationLinkGroup">
-                                       <div class="PageNavigationLinkColumn">
-                                            
+                                        <div class="PageNavigationLinkColumn">
+
                                             <div class="PageNavigationLink">
                                                 <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CRM_INSPRO_DETAIL %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">配置项详情</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -124,9 +129,25 @@
                             <div class="Content Content1" id="c5">
                                 <div class="Large Column">
                                     <div class="PageNavigationLinkGroup">
-                                       
+                                        <div class="PageNavigationLinkColumn">
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CRM_OPPORTUNITY_DETAILS %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">商机详情</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CRM_OPPORTUNITY_CRM_NOTE %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">CRM备注</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                        </div>
+                                        <div class="PageNavigationLinkColumn">
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CRM_OPPORTUNITY_STATUS %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">商机状态</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+
+                                        </div>
                                     </div>
-                                   
+
                                 </div>
                             </div>
                         </div>
@@ -147,23 +168,23 @@
                                 <div class="Large Column">
                                     <div class="PageNavigationLinkGroup">
                                         <div class="PageNavigationLinkColumn">
-                                            
+
                                             <div class="PageNavigationLink">
                                                 <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CRM_EXPORT_COMPANY %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">导出客户</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
-                                            
+
                                         </div>
                                         <div class="PageNavigationLinkColumn">
-                                            
+
                                             <div class="PageNavigationLink">
                                                 <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CRM_EXPORT_CONTACT %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">导出联系人</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
-                                            
+
                                         </div>
                                     </div>
-                                   
+
                                 </div>
                             </div>
                         </div>
@@ -210,7 +231,7 @@
                                 </div>
                             </div>
                         </div>
-                       <%-- <!--第二个框-->
+                        <%-- <!--第二个框-->
                         <div class="Normal Collapsed Section Normal2 col" id="f2">
                             <div class="Heading">
                                 <div class="Toggle Expand Toggle2" id="e2">
@@ -343,7 +364,7 @@
                             </a>
                         </div>
                         <!--第一个框-->
-                        <div class="Normal Collapsed Section Normal4 col" >
+                        <div class="Normal Collapsed Section Normal4 col">
                             <div class="Heading">
                                 <div class="Toggle Expand Toggle4">
                                     <div class="Vertical Vertical4"></div>
@@ -385,7 +406,7 @@
                             </div>
                             <div class="Content Content4">
                                 <div class="Large Column">
-                                   <div class="PageNavigationLinkGroup">
+                                    <div class="PageNavigationLinkGroup">
                                         <div class="PageNavigationLinkColumn">
                                             <div class="PageNavigationLink">
                                                 <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CONTRACT_BILLED %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">已计费信息</a>
@@ -491,7 +512,7 @@
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
                                             <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_OTHER_SYSTEM_OPERLOG %>" target="PageFrame1" >操作日志</a>
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_OTHER_SYSTEM_OPERLOG %>" target="PageFrame1">操作日志</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
                                             <div class="PageNavigationLink">
@@ -558,8 +579,7 @@
 
         $(function () {
             var queryPanel = '<%=Request.QueryString["SearchType"] %>';
-            if (queryPanel == "Project")
-            {
+            if (queryPanel == "Project") {
                 $("#TabButtonProject").trigger("click");
             }
             else if (queryPanel == "ServiceDesk") {
@@ -575,7 +595,7 @@
                 $("#TabButtonCrm").trigger("click");
             }
         })
-         
+
     </script>
 </body>
 </html>

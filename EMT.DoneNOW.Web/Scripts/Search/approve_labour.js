@@ -44,22 +44,66 @@ function PostSin() {
 }
 // 编辑工时
 function EditWorkEntry() {
+    var taskId = "";
     $.ajax({
         type: "GET",
         url: "../Tools/ApproveAndPostAjax.ashx?act=GetLabourInfo&id=" + entityid,
         dataType: "json",
         success: function (data) {
             if (data != "") {
-                OpenWindow("../Project/WorkEntry.aspx?id=" + entityid, windowObj.workEntry + windowType.edit);
+                // todo 获取taskId 判断是工时还是工单
+                taskId = data.task_id;
             }
-
         }
     });
-
+    if (taskId != "" && taskId != undefined) {
+        $.ajax({
+            type: "GET",
+            async: false,
+            //dataType: "json",
+            url: "../Tools/TicketAjax.ashx?act=IsTicket&ticket_id=" + taskId,
+            success: function (data) {
+                if (data == "1") {
+                    window.open("../ServiceDesk/TicketLabour.aspx?id=" + entityid, windowObj.workEntry + windowType.edit, 'left=0,top=0,location=no,status=no,width=1000,height=943', false);
+                }
+                else if (data == "2") {
+                    OpenWindow("../Project/WorkEntry.aspx?id=" + entityid, windowObj.workEntry + windowType.edit);
+                }
+                
+            },
+           
+        });
+    }
+    
 }
 // 编辑工单
 function EditTicket() {
+    var taskId = "";
+    $.ajax({
+        type: "GET",
+        url: "../Tools/ApproveAndPostAjax.ashx?act=GetLabourInfo&id=" + entityid,
+        dataType: "json",
+        success: function (data) {
+            if (data != "") {
+                // todo 获取taskId 判断是工时还是工单
+                taskId = data.task_id;
+            }
+        }
+    });
+    if (taskId != "" && taskId != undefined) {
+        $.ajax({
+            type: "GET",
+            async: false,
+            //dataType: "json",
+            url: "../Tools/TicketAjax.ashx?act=IsTicket&ticket_id=" + taskId,
+            success: function (data) {
+                if (data == "1") {
+                    window.open("../ServiceDesk/TicketManage?id=" + taskId, windowObj.ticket + windowType.edit, 'left=200,top=200,width=1280,height=800', false);
+                }
+            },
 
+        });
+    }
 }
 // 工时详情
 function EntryDetail() {
@@ -105,7 +149,32 @@ function ProjectDetail() {
 }
 // 工单详情
 function TicketDetail() {
+    var taskId = "";
+    $.ajax({
+        type: "GET",
+        url: "../Tools/ApproveAndPostAjax.ashx?act=GetLabourInfo&id=" + entityid,
+        dataType: "json",
+        success: function (data) {
+            if (data != "") {
+                // todo 获取taskId 判断是工时还是工单
+                taskId = data.task_id;
+            }
+        }
+    });
+    if (taskId != "" && taskId != undefined) {
+        $.ajax({
+            type: "GET",
+            async: false,
+            //dataType: "json",
+            url: "../Tools/TicketAjax.ashx?act=IsTicket&ticket_id=" + taskId,
+            success: function (data) {
+                if (data == "1") {
+                    window.open("../ServiceDesk/TicketView?id=" + taskId, windowType.blank, 'left=200,top=200,width=1280,height=800', false);
+                }
+            },
 
+        });
+    }
 }
 // 恢复初始值
 function RestoreInitiall() {

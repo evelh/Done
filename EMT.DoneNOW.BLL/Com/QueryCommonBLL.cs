@@ -475,6 +475,7 @@ namespace EMT.DoneNOW.BLL
 
             // 组合查询条件
             d_query_para_dal paraDal = new d_query_para_dal();
+            para.query_params = para.query_params.OrderBy(_ => _.id).ToList();
             foreach (var p in para.query_params)
             {
                 if (p.value == null && p.value2 == null)

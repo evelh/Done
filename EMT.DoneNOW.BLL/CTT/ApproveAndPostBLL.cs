@@ -235,6 +235,7 @@ namespace EMT.DoneNOW.BLL
             cad.tax_category_name = tax_category_name;//税收种类name
             cad.tax_region_name = tax_region_name;//税区
             cad.effective_tax_rate = tax_rate;//税率
+            cad.extended_cost = GetCost(id);
             if (ca.is_tax_exempt != 1)
             {
                 cad.tax_dollars = tax_rate * Convert.ToDecimal(cad.extended_price);//税额
@@ -396,6 +397,7 @@ namespace EMT.DoneNOW.BLL
             cad.tax_region_name = tax_region_name;//税区
             cad.effective_tax_rate = tax_rate;//税率
                                               //判断客户是否免税
+            cad.extended_cost = GetCost(id);
             if (ca.is_tax_exempt != 1)
             {
                 cad.tax_dollars = tax_rate * Convert.ToDecimal(csp.period_price);//税额
@@ -486,6 +488,7 @@ namespace EMT.DoneNOW.BLL
             cad.effective_tax_rate = tax_rate;//税率
             cad.bill_create_user_id = ccc.create_user_id;//条目创建
             cad.purchase_order_no = ccc.purchase_order_no;//采购订单号
+            cad.extended_cost = GetCost(id);
             Dictionary<int, decimal> block = new Dictionary<int, decimal>();//存储预付id，和总价
                                                                             //工单(待整理) sdk_task
             if (ccc.task_id != null)
@@ -1181,7 +1184,7 @@ namespace EMT.DoneNOW.BLL
             cad.tax_category_name = tax_category_name;//税收种类name
             cad.tax_region_name = tax_region_name;//税区
             cad.effective_tax_rate = tax_rate;//税率
-
+            cad.extended_cost = GetCost(id);
             var ccbList = ccb_dal.FindListBySql<ctt_contract_block>($"select * from ctt_contract_block where contract_id={ccc.contract_id}  and status_id=1");
             decimal extend = 0;
             foreach (var ccb in ccbList)
@@ -1432,6 +1435,7 @@ namespace EMT.DoneNOW.BLL
             cad.effective_tax_rate = tax_rate;//税率
             cad.bill_create_user_id = ccc.create_user_id;//条目创建
             cad.purchase_order_no = ccc.purchase_order_no;//采购订单号
+            cad.extended_cost = GetCost(id);
             Dictionary<int, decimal> block = new Dictionary<int, decimal>();//存储预付id，和总价
                                                                             //工单(待整理) sdk_task
             if (ccc.task_id != null)
@@ -1813,7 +1817,7 @@ namespace EMT.DoneNOW.BLL
             cad.tax_region_name = tax_region_name;//税区
             cad.effective_tax_rate = tax_rate;//税率
             cad.purchase_order_no = ccc.purchase_order_no;//采购订单号
-
+            cad.extended_cost = ccc.unit_cost*ccc.quantity;
             Dictionary<int, decimal> block = new Dictionary<int, decimal>();//存储预付id，和总价
             //关联预付费合同
             if (cc != null && cc.start_date <= ccc.date_purchased && cc.end_date >= ccc.date_purchased && cc.type_id == (int)CONTRACT_TYPE.RETAINER)
@@ -2198,6 +2202,7 @@ namespace EMT.DoneNOW.BLL
             cad.tax_region_name = tax_region_name;//税区
             cad.effective_tax_rate = tax_rate;//税率
                                               //判断客户是否免税
+            cad.extended_cost = 0;
             if (ca.is_tax_exempt != 1)
             {
                 cad.tax_dollars = tax_rate * Convert.ToDecimal(ccm.dollars);//税额
@@ -3350,6 +3355,7 @@ namespace EMT.DoneNOW.BLL
                                                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                                 create_user_id = user_id,
                                                 update_user_id = user_id,
+                                                extended_cost = GetCost(id),
                                             };
                                             if (thisAccount.is_tax_exempt != 1)
                                             {
@@ -3402,6 +3408,7 @@ namespace EMT.DoneNOW.BLL
                                                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                                 create_user_id = user_id,
                                                 update_user_id = user_id,
+                                                extended_cost = GetCost(id),
                                             };
                                             thisBlockDed.extended_price = i.Value - (extend - totalMoney);
                                             cad_dal.Insert(thisBlockDed);
@@ -3437,6 +3444,7 @@ namespace EMT.DoneNOW.BLL
                                         update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                         create_user_id = user_id,
                                         update_user_id = user_id,
+                                        extended_cost = GetCost(id),
                                     };
                                     cad_dal.Insert(thisBlockDed);
                                     OperLogBLL.OperLogAdd<crm_account_deduction>(thisBlockDed, thisBlockDed.id, user_id, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "审批提交工时");
@@ -3478,6 +3486,7 @@ namespace EMT.DoneNOW.BLL
                                             update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                             create_user_id = user_id,
                                             update_user_id = user_id,
+                                            extended_cost = GetCost(id),
                                         };
                                         if (thisAccount.is_tax_exempt != 1)
                                         {
@@ -3586,6 +3595,7 @@ namespace EMT.DoneNOW.BLL
                                                     update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                                     create_user_id = user_id,
                                                     update_user_id = user_id,
+                                                    extended_cost = GetCost(id),
                                                 };
                                                 if (thisAccount != null && thisAccount.is_tax_exempt != 1)
                                                 {
@@ -3676,6 +3686,7 @@ namespace EMT.DoneNOW.BLL
                                                     update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                                     create_user_id = user_id,
                                                     update_user_id = user_id,
+                                                    extended_cost = GetCost(id),
                                                 };
                                                 if (thisAccount != null && thisAccount.is_tax_exempt != 1)
                                                 {
@@ -3713,6 +3724,7 @@ namespace EMT.DoneNOW.BLL
                                                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                                 create_user_id = user_id,
                                                 update_user_id = user_id,
+                                                extended_cost = GetCost(id),
                                             };
                                             if (thisAccount != null && thisAccount.is_tax_exempt != 1)
                                             {
@@ -3749,6 +3761,7 @@ namespace EMT.DoneNOW.BLL
                                         create_user_id = user_id,
                                         update_user_id = user_id,
                                         contract_id = thisContract.id,
+                                        extended_cost = GetCost(id),
                                     };
                                     
                                     
@@ -3809,6 +3822,7 @@ namespace EMT.DoneNOW.BLL
                                                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                                 create_user_id = user_id,
                                                 update_user_id = user_id,
+                                                extended_cost = GetCost(id),
                                             };
                                             if (thisAccount.is_tax_exempt != 1)
                                             {
@@ -3860,6 +3874,7 @@ namespace EMT.DoneNOW.BLL
                                                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                                 create_user_id = user_id,
                                                 update_user_id = user_id,
+                                                extended_cost = GetCost(id),
                                             };
                                             thisBlockDed.extended_price = i.Value - (extend - totalMoney);
                                             cad_dal.Insert(thisBlockDed);
@@ -3894,6 +3909,7 @@ namespace EMT.DoneNOW.BLL
                                         update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                                         create_user_id = user_id,
                                         update_user_id = user_id,
+                                        extended_cost = GetCost(id),
                                     };
                                     cad_dal.Insert(thisBlockDed);
                                     OperLogBLL.OperLogAdd<crm_account_deduction>(thisBlockDed, thisBlockDed.id, user_id, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "审批提交工时");
@@ -4242,6 +4258,7 @@ namespace EMT.DoneNOW.BLL
                             update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                             create_user_id = user_id,
                             update_user_id = user_id,
+                            extended_cost = GetCost(id),
                         };
                         if (thisContract != null)
                         {
@@ -4349,6 +4366,7 @@ namespace EMT.DoneNOW.BLL
                         update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                         create_user_id = user_id,
                         update_user_id = user_id,
+                        extended_cost = GetCost(id),
                     };
                     cad_dal.Insert(thisDed);
                     OperLogBLL.OperLogAdd<crm_account_deduction>(thisDed, thisDed.id, user_id, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "审批提交费用");
@@ -4433,6 +4451,17 @@ namespace EMT.DoneNOW.BLL
             {
                 return false;
             }
+        }
+        /// <summary>
+        /// 获取成本
+        /// </summary>
+        public decimal? GetCost(long id)
+        {
+            decimal? cost = null;
+            var thisPend = new v_pending_all_dal().FindById(id);
+            if (thisPend != null && thisPend.cost != null)
+                cost = thisPend.cost;
+            return cost;
         }
     }
 }

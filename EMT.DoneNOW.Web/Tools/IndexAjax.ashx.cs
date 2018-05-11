@@ -69,6 +69,9 @@ namespace EMT.DoneNOW.Web
                 case "ChangeWorkTaskSort":   // 工作列表拖拽
                     ChangeWorkTaskSort(context);
                     break;
+                case "WorkListSortManage": // 工作列表拖拽
+                    WorkListSortManage(context);
+                    break;
                 default:
                     break;
             }
@@ -398,6 +401,18 @@ namespace EMT.DoneNOW.Web
             var lastTaskId = context.Request.QueryString["lastTaskId"];
             if (!string.IsNullOrEmpty(firstTaskId) && !string.IsNullOrEmpty(lastTaskId))
                 result = indexBll.ChangeWorkTaskSort(long.Parse(firstTaskId),long.Parse(lastTaskId),LoginUserId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 拖拽更改序号
+        /// </summary>
+        public void WorkListSortManage(HttpContext context)
+        {
+            var result = false;
+            var ids = context.Request.QueryString["taskIds"];
+            var isTiket = !string.IsNullOrEmpty(context.Request.QueryString["isTicket"]);
+            if (!string.IsNullOrEmpty(ids))
+                result = indexBll.WorkListSortManage(LoginUserId,ids,isTiket);
             context.Response.Write(new Tools.Serialize().SerializeJson(result));
         }
     }

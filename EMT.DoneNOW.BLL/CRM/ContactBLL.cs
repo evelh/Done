@@ -378,9 +378,6 @@ namespace EMT.DoneNOW.BLL
             return _dal.GetContactByIds(ids);
         }
 
-
-
-
         public bool UpdateContacts(string updateIds,string phone,string fax,long user_id)
         {
             var user = UserInfoBLL.GetUserInfo(user_id);
@@ -419,5 +416,235 @@ namespace EMT.DoneNOW.BLL
 
             return true;
         }
+        /// <summary>
+        /// 获取指定联系人组下的指定客户的联系人信息
+        /// </summary>
+        public List<crm_contact_group_contact> GetAccountGroupContact(long groupId, long accountId)
+        {
+            return new crm_contact_group_contact_dal().GetAccountGroupContact(groupId, accountId);
+        }
+        /// <summary>
+        /// 根据名称获取联系人组(联系人组 名称唯一)
+        /// </summary>
+        public crm_contact_group GetGroupByName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                return null;
+            return new crm_contact_group_dal().GetGroupByName(name);
+        }
+        /// <summary>
+        /// 根据Id 获取指定联系人组
+        /// </summary>
+        public crm_contact_group GetGroupById(long id)
+        {
+            return new crm_contact_group_dal().FindNoDeleteById(id);
+        }
+        /// <summary>
+        /// 联系人组名称校验
+        /// </summary>
+        public bool CheckGroupName(string name,long? id=null)
+        {
+            var group = GetGroupByName(name);
+            if (group == null)
+                return true;
+            if (id != null && id == group.id)
+                return true;
+            return false;
+        }
+        /// <summary>
+        /// 获取所有的联系人组
+        /// </summary>
+        public List<crm_contact_group> GetAllGroup()
+        {
+            return new crm_contact_group_dal().FindListBySql("SELECT * from crm_contact_group where delete_time = 0");
+        }
+        /// <summary>
+        /// 客户的联系人组 联系人管理
+        /// </summary>
+        public bool AccountContractGroupManage(long accountId,long groupId,string ids,long userId)
+        {
+            var thisGroup = GetGroupById(groupId);
+            var thisAccount = new CompanyBLL().GetCompany(accountId);
+            if (thisGroup == null || thisAccount == null)
+                return false;
+            var oldConList = GetAccountGroupContact(groupId,accountId);
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            var ccgcDal = new crm_contact_group_contact_dal();
+            if (oldConList!=null&& oldConList.Count > 0)
+            {
+                if (!string.IsNullOrEmpty(ids))
+                {
+                    var idArr = ids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var id in idArr)
+                    {
+                        var thisCon = oldConList.FirstOrDefault(_=>_.contact_group_id== groupId&&_.contact_id==long.Parse(id));
+                        if (thisCon != null)
+                        {
+                            oldConList.Remove(thisCon);
+                            continue;
+                        }
+                        thisCon = new crm_contact_group_contact()
+                        {
+                            id = ccgcDal.GetNextIdCom(),
+                            contact_group_id = groupId,
+                            contact_id = long.Parse(id),
+                            create_time = timeNow,
+                            create_user_id = userId,
+                            update_time = timeNow,
+                            update_user_id = userId,
+                        };
+                        ccgcDal.Insert(thisCon);
+                    }
+                    if (oldConList.Count > 0)
+                        oldConList.ForEach(_ => {
+                            ccgcDal.SoftDelete(_, userId);
+                        });
+
+                }
+                else
+                    oldConList.ForEach(_ => {
+                        ccgcDal.SoftDelete(_,userId);
+                    });
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(ids))
+                {
+                    var idArr = ids.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var id in idArr)
+                    {
+                        var thisCon = ccgcDal.GetByGroupContact(groupId,long.Parse(id));
+                        if (thisCon != null)
+                            continue;
+                        thisCon = new crm_contact_group_contact() {
+                            id = ccgcDal.GetNextIdCom(),
+                            contact_group_id = groupId,
+                            contact_id = long.Parse(id),
+                            create_time = timeNow,
+                            create_user_id = userId,
+                            update_time = timeNow,
+                            update_user_id = userId,
+                        };
+                        ccgcDal.Insert(thisCon);
+                    }
+                }
+            }
+            return true;
+        }
+        /// <summary>
+        /// 联系人群组管理
+        /// </summary>
+        public bool ContactGroupManage(long? id,string name,sbyte isActive,long userId)
+        {
+            if (string.IsNullOrEmpty(name))
+                return false;
+            if (!CheckGroupName(name, id))
+                return false;
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            var ccgDal = new crm_contact_group_dal();
+            var group = new crm_contact_group();
+            if (id != null)
+                group = ccgDal.FindNoDeleteById((long)id);
+            if (group.id == 0)
+            {
+                group.id = ccgDal.GetNextIdCom();
+                group.is_active = isActive;
+                group.create_time = timeNow;
+                group.update_time = timeNow;
+                group.create_user_id = timeNow;
+                group.update_user_id = timeNow;
+                group.name = name;
+                ccgDal.Insert(group);
+            }
+            else
+            {
+                group.update_time = timeNow;
+                group.update_user_id = timeNow;
+                group.name = name;
+                group.is_active = isActive;
+                ccgDal.Update(group);
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 根据Ids 获取相应联系人
+        /// </summary>
+        public List<crm_contact> GetListByIds(string ids)
+        {
+            return _dal.GetContactByIds(ids);
+        }
+        /// <summary>
+        /// 执行联系人活动信息
+        /// </summary>
+        public bool ExectueContactAction(ExexuteContactDto param,long userId)
+        {
+            if (string.IsNullOrEmpty(param.ids))
+                return false;
+            if (!param.isHasNote && !param.isHasTodo)
+                return false;
+            var conList = GetListByIds(param.ids);
+            if (conList == null || conList.Count == 0)
+                return false;
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            var caDal = new com_activity_dal();
+            var accBll = new CompanyBLL();
+            foreach (var contact in conList)
+            {
+                if (param.isHasNote)
+                {
+                    var thisNote = new com_activity()
+                    {
+                        id = caDal.GetNextIdCom(),
+                        cate_id = (int)DicEnum.ACTIVITY_CATE.NOTE,
+                        account_id = contact.account_id,
+                        action_type_id = param.note_action_type,
+                        contact_id = contact.id,
+                        object_id = contact.id,
+                        object_type_id = (int)DicEnum.OBJECT_TYPE.CONTACT,
+                        description = param.note_content,
+                        create_time = timeNow,
+                        update_time = timeNow,
+                        create_user_id = userId,
+                        resource_id = userId,
+                        update_user_id = userId,
+                    };
+                    caDal.Insert(thisNote);
+                    OperLogBLL.OperLogAdd<com_activity>(thisNote, thisNote.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ACTIVITY, "新增备注");
+                }
+                if (param.isHasTodo)
+                {
+                    long? resId = param.assignRes;
+                    if (resId == -1)
+                    {
+                        var thisAcc = accBll.GetCompany(contact.account_id);
+                        if (thisAcc != null)
+                            resId = thisAcc.resource_id;
+                    }
+                    var thisTodo = new com_activity()
+                    {
+                        id = caDal.GetNextIdCom(),
+                        cate_id = (int)DicEnum.ACTIVITY_CATE.TODO,
+                        account_id = contact.account_id,
+                        action_type_id = param.todo_action_type,
+                        contact_id = contact.id,
+                        object_id = contact.id,
+                        resource_id = resId,
+                        object_type_id = (int)DicEnum.OBJECT_TYPE.CONTACT,
+                        description = param.todo_content,
+                        create_time = timeNow,
+                        update_time = timeNow,
+                        create_user_id = userId,
+                        update_user_id = userId,
+                        start_date = param.startDate,
+                        end_date = param.endDate,
+                    };
+                    caDal.Insert(thisTodo);
+                    OperLogBLL.OperLogAdd<com_activity>(thisTodo, thisTodo.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ACTIVITY, "新增备注");
+                }
+            }
+            return true;
+        }
+
     }
 }

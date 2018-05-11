@@ -98,6 +98,9 @@ namespace EMT.DoneNOW.Core
         public Decimal? bill_factor { get; set; }
         [DataMember]
         public Int64? parent_id { get; set; }
+        [DataMember]
+        public Decimal? extended_cost { get; set; }
+        
 
 
     }

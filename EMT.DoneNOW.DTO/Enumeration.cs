@@ -153,7 +153,16 @@ namespace EMT.DoneNOW.DTO
             TASK_NOTE = 1499,                       // 任务备注
             TICKET_NOTE = 1500,                   // 工单备注
         }
-
+        /// <summary>
+        /// 活动：活动类型：日历显示模式 - 9
+        /// </summary>
+        public enum CALENDAR_DISPLAY
+        {
+            NONE=32,             // 无
+            CALANDAR=33,         // 日历
+            LIST=34,             // 列表
+            CALANDAR_LIST=35,    // 日历和列表
+        }
 
         /// <summary>
         /// 客户告警类型 - 10
@@ -727,6 +736,27 @@ namespace EMT.DoneNOW.DTO
             TIMEOFF_REQUEST_WAIT_APPROVE = 1637,    // 工时表管理-等待我审批的休假请求
             WORKGROUP_CALLBACK = 1638,              // 工作组-查找带回
             TASK_SEARCH_NO = 1639,                  // 系统管理-快捷搜索-任务编号
+            COMPANY_VIEW_ACCOUNT_PROFIT_MARGIN=1642,       // 客户查看-客户利润率
+            COMPANY_VIEW_MONTH_PROFIT_MARGIN=1643,         // 客户查看-月利润率
+            COMPANY_VIEW_MONTH_PROFIT_MARGIN_BYDATE=1644,  // 客户查看-月利润率（按照计费时间）
+            COMPANY_VIEW_CONTRACT_PROFIT = 1645,           // 客户查看-合同利润
+            COMPANY_VIEW_CONTRACT_PROFIT_BYDATE = 1646,    // 客户查看-合同利润（按照计费时间）
+            COMPANY_VIEW_CONTRACT_PROFIT_MARGIN = 1647,    // 客户查看-合同利润率
+            COMPANY_VIEW_PROJECT_PROFIT = 1648,            // 客户查看-项目利润
+            COMPANY_VIEW_PROJECT_PROFIT_BYDATE = 1649,     // 客户查看-项目利润（按照计费时间）
+            COMPANY_VIEW_PROJECT_PROFIT_MARGIN = 1650,     // 客户查看-项目利润率
+            COMPANY_VIEW_RES_WORKHOUR =1651,               // 客户查看-员工已工作时间
+            COMPANY_VIEW_RES_WORKHOUR_BYDATE = 1652,       // 客户查看-员工已工作时间（按照计费时间）
+            COMPANY_VIEW_ACCOUNT_OVERVIEW = 1653,          // 客户查看-客户总览
+            COMPANY_VIEW_ACCOUNT_OVERVIEW_BYDATE = 1654,   // 客户查看-客户总览（按照计费时间）
+
+            REPORT_CRM_MY_ACCOUNT_TICKET=1655,              // 报表-CRM-我的客户的工单
+            REPORT_CRM_OPPORTUNITY_DETAILS = 1656,          // 报表-CRM-商机-商机详情
+            REPORT_CRM_OPPORTUNITY_STATUS = 1657,           // 报表-CRM-商机-商机状态
+            REPORT_CRM_OPPORTUNITY_CRM_NOTE = 1658,         // 报表-CRM-商机-CRM备注
+
+
+            company_view_Project_Profit_Margin,
 
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
@@ -1840,6 +1870,25 @@ namespace EMT.DoneNOW.DTO
 
         MyWorkListTicket = 250,              // 我的工作列表 工单列表
         MyWorkListTask = 251,                // 我的工作列表 任务列表
+
+        COMPANY_VIEW_ACCOUNT_PROFIT_MARGIN = 252,       // 客户查看-客户利润率
+        COMPANY_VIEW_MONTH_PROFIT_MARGIN = 253,         // 客户查看-月利润率
+        COMPANY_VIEW_MONTH_PROFIT_MARGIN_BYDATE = 254,  // 客户查看-月利润率（按照计费时间）
+        COMPANY_VIEW_CONTRACT_PROFIT = 255,             // 客户查看-合同利润
+        COMPANY_VIEW_CONTRACT_PROFIT_BYDATE = 256,      // 客户查看-合同利润（按照计费时间）
+        COMPANY_VIEW_CONTRACT_PROFIT_MARGIN = 257,      // 客户查看-合同利润率
+        COMPANY_VIEW_PROJECT_PROFIT = 258,              // 客户查看-项目利润
+        COMPANY_VIEW_PROJECT_PROFIT_BYDATE = 259,       // 客户查看-项目利润（按照计费时间）
+        COMPANY_VIEW_PROJECT_PROFIT_MARGIN = 260,     // 客户查看-项目利润率
+        COMPANY_VIEW_RES_WORKHOUR = 261,                // 客户查看-员工已工作时间
+        COMPANY_VIEW_RES_WORKHOUR_BYDATE = 262,         // 客户查看-员工已工作时间（按照计费时间）  
+        COMPANY_VIEW_ACCOUNT_OVERVIEW = 263,            // 客户查看-客户总览    
+        COMPANY_VIEW_ACCOUNT_OVERVIEW_BYDATE = 264,     // 客户查看-客户总览（按照计费时间）
+
+        REPORT_CRM_MY_ACCOUNT_TICKET = 265,            // 报表-CRM-我的客户的工单
+        REPORT_CRM_OPPORTUNITY_DETAILS = 266,          // 报表-CRM-商机-商机详情
+        REPORT_CRM_OPPORTUNITY_STATUS = 267,           // 报表-CRM-商机-商机状态
+        REPORT_CRM_OPPORTUNITY_CRM_NOTE = 268,         // 报表-CRM-商机-CRM备注
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
         Line_Of_Business,              //系统管理：组织：业务条线

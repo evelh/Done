@@ -474,14 +474,28 @@ LEFT JOIN (select quote_id,sum(unit_price*quantity) total_revenue from crm_quote
         /// <summary>
         /// 我的工作列表排序号改变
         /// </summary>
-        public void WorkListSortManage(long userId,bool isTicket = true)
+        public bool WorkListSortManage(long userId,string ids,bool isTicket = true)
         {
             var swltDal = new sys_work_list_task_dal();
-            var taskList = swltDal.GetMyWorkList(userId,isTicket);
-            if(taskList!=null&& taskList.Count > 0)
+            var oldTaskList = swltDal.GetMyWorkList(userId,isTicket);
+            var newTaskList = swltDal.GetTaskListByTaskIds(userId,ids);
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            var idArr = ids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            if (oldTaskList != null&& newTaskList != null && oldTaskList.Count== newTaskList.Count&& idArr.Count()== newTaskList.Count)
             {
-
+                for (int i = 0; i < oldTaskList.Count; i++)
+                {
+                    var thisWorkTask = newTaskList.FirstOrDefault(_ => _.task_id.ToString() == idArr[i]);
+                    if (thisWorkTask == null)
+                        continue;
+                    if (thisWorkTask.sort_order == oldTaskList[i].sort_order)
+                        continue;
+                    thisWorkTask.sort_order = oldTaskList[i].sort_order;
+                    thisWorkTask.update_time = timeNow;
+                    swltDal.Update(thisWorkTask);
+                }
             }
+            return true;
         }
         /// <summary>
         /// 拖拽 - 更改排序号

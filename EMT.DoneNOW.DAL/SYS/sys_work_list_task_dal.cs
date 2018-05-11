@@ -42,5 +42,15 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql($"SELECT * from sys_work_list_task where resource_id = {userId} and sort_order>{sortOrder}");
         }
+
+        /// <summary>
+        /// 根据任务Id 获取相关信息
+        /// </summary>
+        public List<sys_work_list_task> GetTaskListByTaskIds(long userId, string taskIds)
+        {
+            if (string.IsNullOrEmpty(taskIds))
+                return null;
+            return FindListBySql($"SELECT * from sys_work_list_task where resource_id = {userId} and task_id in ({taskIds})");
+        }
     }
 }

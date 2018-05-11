@@ -118,9 +118,14 @@ namespace EMT.DoneNOW.Web.Company
                             case "finance":
                                 actType = "财务";
                                 break;
+                            case "ticket":
+                                actType = "工单";
+                                iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.MY_QUEUE_ACTIVE + "&group=215&con2627=" + crm_account.id+ "&param1=ShowPara";
+                                break;
                             default:
                                 iframeSrc = "";  // 默认  project_search
                                 actType = "活动";
+                                
                                 break;
                         }
                         //viewCompany_iframe.Src = "";  // 

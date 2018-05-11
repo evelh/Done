@@ -619,12 +619,16 @@ namespace EMT.DoneNOW.Web
                 }
                 if(queryTypeId == (int)QueryType.Todos || queryTypeId == (int)QueryType.Company)
                 {
-                    if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
+                    if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2)&& new System.Text.RegularExpressions.Regex(@"^[0-9]*$").IsMatch(param1))
                         queryPara.query_params.Add(new Para() { id = long.Parse(param1), value = param2 });
                     var param3 = string.IsNullOrEmpty(Request.QueryString["param3"]) ? "" : Request.QueryString["param3"];
                     var param4 = string.IsNullOrEmpty(Request.QueryString["param4"]) ? "" : Request.QueryString["param4"];
                     if (!string.IsNullOrEmpty(param3) && !string.IsNullOrEmpty(param4))
                         queryPara.query_params.Add(new Para() { id = long.Parse(param3), value = param4 });
+                }
+                if (queryTypeId == (int)QueryType.REPORT_CRM_MY_ACCOUNT_TICKET)
+                {
+                    queryPara.query_params.Add(new Para() { id = 3605, value = LoginUserId.ToString() });
                 }
                
                 #endregion

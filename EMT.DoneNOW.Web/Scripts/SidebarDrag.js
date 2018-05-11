@@ -179,6 +179,7 @@
                     update_position(daddy)
                 }
                 $("html,body").removeClass('dad-noSelect')
+                DragWorkTask();
             }
 
             function dad_update(obj) {
@@ -507,17 +508,53 @@ function ShowTaskWorkListSetting() {
     window.open('../Common/ColumnSelector.aspx?type=251&group=265', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);
 }
 
-function DragWorkTask(firstTaskId, lastTaskId) {
-    if (firstTaskId == "" || lastTaskId == "" || firstTaskId == lastTaskId) {
-        return;
-    }
-    $.ajax({
-        type: "GET",
-        async: false,
-        url: "../Tools/IndexAjax.ashx?act=ChangeWorkTaskSort&firstTaskId=" + firstTaskId + "&lastTaskId=" + lastTaskId,
-        dataType: "json",
-        success: function (data) {
+//function DragWorkTask(firstTaskId, lastTaskId) {
+//    if (firstTaskId == "" || lastTaskId == "" || firstTaskId == lastTaskId) {
+//        return;
+//    }
+//    $.ajax({
+//        type: "GET",
+//        async: false,
+//        url: "../Tools/IndexAjax.ashx?act=ChangeWorkTaskSort&firstTaskId=" + firstTaskId + "&lastTaskId=" + lastTaskId,
+//        dataType: "json",
+//        success: function (data) {
             
-        },
-    });
+//        },
+//    });
+//}
+
+function DragWorkTask() {
+    var ids = "";
+    var isTicket = "";
+    if (!$("#TicketWorkListItems").is(":hidden")) {
+        isTicket = "1";
+        $("#TicketWorkListItems .WorkListItem").each(function () {
+            var thisId = $(this).data("task-id");
+            if (thisId != "" && !$(this).hasClass("dads-children-clone-bar")) {
+                ids += thisId + ",";
+            }
+        })
+
+    } else {
+        $("#TaskWorkListItems .WorkListItem").each(function () {
+            var thisId = $(this).data("task-id");
+            if (thisId != "" && !$(this).hasClass("dads-children-clone-bar")) {
+                ids += thisId + ",";
+            }
+        })
+    }
+    if (ids != "") {
+        ids = ids.substring(0, ids.length - 1);
+
+        $.ajax({
+            type: "GET",
+            //async: false,
+            url: "../Tools/IndexAjax.ashx?act=WorkListSortManage&taskIds=" + ids + "&isTicket=" + isTicket,
+            dataType: "json",
+            success: function (data) {
+
+            },
+        });
+    }
+       
 }
