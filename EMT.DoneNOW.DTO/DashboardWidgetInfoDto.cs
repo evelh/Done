@@ -22,7 +22,6 @@ namespace EMT.DoneNOW.DTO
         public bool isStack;        // 图表是否是stack
 
         public sbyte colorScheme;   // 配色方案
-        public sbyte guageType;     // 进度指示类型
         public object guageList;    // 进度指示类型的数据
 
         public object gridData;     // 表格数据

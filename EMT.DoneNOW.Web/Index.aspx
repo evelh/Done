@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="Content/drag.css" />
     <link rel="stylesheet" type="text/css" href="Content/dashboard.css" />
     <link rel="stylesheet" type="text/css" href="Content/multiple-select.css"/>
+    <link rel="stylesheet" type="text/css" href="Scripts/My97DatePicker/skin/WdatePicker.css" />
     <style>
         /*黑色幕布*/
         #BackgroundOverLay {
@@ -1688,8 +1689,8 @@
         </div>
         <div class="AddWidgetBeforePOP">
             <h3>新增小窗口</h3>
-            <div class="content">
-                <div class="normal">
+            <div class="content" id="addWgtContent">
+                <%--<div class="normal">
                     <div class="heading">
                         <div class="toogle" onclick="Toogle(this)">
                             <div class="Vertical"></div>
@@ -1795,14 +1796,16 @@
                             <div class="cancel"></div>
                         </div>
                         <div class="item" style="padding-top:16px;height: 34px; ">
-                            <select style="float: left;width: 125px;" data-val="1" id="wgtFilter1Oper" name="wgtFilter1Oper" class="wgtOper"></select>
-                            <select id="wgtFilter1Val0" name="wgtFilter1Val0" style="width:180px;display:none;" class="widgetFilterValue"></select>
+                            
+                            <div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="1" id="wgtFilter1Oper" name="wgtFilter1Oper" class="wgtOper"></select></div>
+                            <div style="width: 180px;position:relative;float: left;height: 22px;margin-top: 6px;" id="wgtFilter1ValDiv"></div>
+                            <%--<select id="wgtFilter1Val0" name="wgtFilter1Val0" style="width:180px;display:none;" class="widgetFilterValue"></select>
                             <input id="wgtFilter1Val1" name="wgtFilter1Val1" style="width:180px;display:none;" class="widgetFilterValue" />
                             <div id="mlt1" class="multiplebox widgetFilterValue">
                                 <input type="hidden" id="wgtFilter1Val2" name="wgtFilter1Val2" class="sl_cdt" />
 							    <select id="mltslt1" multiple="multiple" style="display:none;">
 				                </select>
-                            </div>
+                            </div>--
                         </div>
                          <div class="item">
                             <p>过滤条件2</p>
@@ -1926,9 +1929,8 @@
                                 <li title="4列" data-val="4"></li>
                             </ul>
                         </div>
-                        
                     </div>
-                </div>
+                </div>--%>
             </div>
             <div class="button">
                 <div class="pev" onclick="BackAddWidgetStep0();"><span></span>上一步</div>
@@ -1950,6 +1952,7 @@
     <script src="Scripts/common.js"></script>
     <script src="Scripts/Dashboard/Widget.js"></script>
     <script src="Scripts/Dashboard/Dashboard.js"></script>
+    <script src="Scripts/My97DatePicker/WdatePicker.js"></script>
     <script src="Scripts/Common/multiple-select.js" type="text/javascript" charset="utf-8"></script>
     <script>
         $(window).resize(function () {

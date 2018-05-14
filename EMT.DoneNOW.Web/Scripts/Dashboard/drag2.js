@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * jquery.dad.js v1 (http://konsolestudio.com/dad)
  * Author William Lima
  */
@@ -21,11 +21,22 @@
             self.y = e.pageY;
             if (self.clone != false && self.target != false) {
                 self.clone.css({
-                    // top: self.y - self.cloneoffset.y,
-                    left: self.x - self.cloneoffset.x,
-                    'margin-left':self.target.css('marginLeft'),
+                    'margin-left': self.target.css('marginLeft'),
                 })
-            } else {}
+                var parent_wh = self.target.parent().width() - self.target.width();
+                if (self.x - self.cloneoffset.x <= 10) {
+                    return;
+
+                } else
+                    if (self.x - self.cloneoffset.x > parent_wh) {
+                        return;
+
+                    } else {
+                        self.clone.css({
+                            left: self.x - self.cloneoffset.x,
+                        })
+                    }
+            } else { }
         };
         $(window).on('mousemove', function (e) {
             self.move(e)
@@ -41,8 +52,8 @@
             draggable: false,
             placeholder: '',
             callback: false,
-            containerClass: 'dad-container',
-            childrenClass: 'dads-children',
+            containerClass: 'dad-container2',
+            childrenClass: 'dads-children2',
             cloneClass: 'dads-children-clone2',
             active: true
         };
@@ -216,7 +227,7 @@
                         fun = function(){
                             // console.log(hasMoveT)
                              downtime++;        
-                             if(downtime==5){
+                             if(downtime==2){
                                 clearInterval(hasMoveT)
                                 mouse.clone = mouse.target.clone();
                                 mouse.target.css({

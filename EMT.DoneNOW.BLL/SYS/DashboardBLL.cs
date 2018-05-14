@@ -268,12 +268,7 @@ namespace EMT.DoneNOW.BLL
             else if (widget.type_id == (int)DicEnum.WIDGET_TYPE.GUAGE)
             {
                 var guageList = GetGuageChildren(widget.id);
-                if (widget.visual_type_id == (int)DicEnum.WIDGET_CHART_VISUAL_TYPE.NEEDLE)
-                    dto.guageType = 1;
-                else if (widget.visual_type_id == (int)DicEnum.WIDGET_CHART_VISUAL_TYPE.DOUGHNUT_GUAGE)
-                    dto.guageType = 2;
-                else if (widget.visual_type_id == (int)DicEnum.WIDGET_CHART_VISUAL_TYPE.NUMBER)
-                    dto.guageType = 3;
+                dto.visualType = widget.visual_type_id;
 
                 var ggData = new List<List<object>>();
                 foreach (var gg in guageList)
@@ -361,7 +356,59 @@ namespace EMT.DoneNOW.BLL
         #endregion
 
 
-        #region 新增小窗口的配置
+        #region 新增小窗口及配置
+
+        /// <summary>
+        /// 新增小窗口
+        /// </summary>
+        /// <param name="widget"></param>
+        /// <param name="guages"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public long AddWidget(sys_widget widget, List<sys_widget_guage> guages, long userId)
+        {
+            if (widget.dashboard_id == null || widget.dashboard_id.Value == 0)
+                return 0;
+            if (widget.type_id == (int)DicEnum.WIDGET_TYPE.GUAGE)
+            {
+                if (guages == null || guages.Count == 0)
+                    return 0;
+            }
+
+            var list = GetWidgetListOrdered(widget.dashboard_id.Value);
+            if (list.Count == 0)
+                widget.sort_order = 0;
+            else
+                widget.sort_order = list[list.Count - 1].sort_order.Value + 1;
+
+            widget.id = wgtDal.GetNextIdCom();
+            widget.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            widget.create_time = widget.update_time;
+            widget.create_user_id = userId;
+            widget.update_user_id = userId;
+
+            wgtDal.Insert(widget);
+            OperLogBLL.OperLogAdd<sys_widget>(widget, widget.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_WIDGET, "新增小窗口");
+
+            if (widget.type_id == (int)DicEnum.WIDGET_TYPE.GUAGE)
+            {
+                sys_widget_guage_dal gDal = new sys_widget_guage_dal();
+                foreach (var guage in guages)
+                {
+                    guage.id = gDal.GetNextIdCom();
+                    guage.widget_id = widget.id;
+                    guage.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                    guage.create_time = widget.update_time;
+                    guage.create_user_id = userId;
+                    guage.update_user_id = userId;
+
+                    gDal.Insert(guage);
+                    OperLogBLL.OperLogAdd<sys_widget_guage>(guage, guage.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_WIDGET_GUAGE, "新增小窗口部件");
+                }
+            }
+
+            return widget.id;
+        }
 
         /// <summary>
         /// 获取新增小窗口的实体类型
@@ -461,6 +508,60 @@ namespace EMT.DoneNOW.BLL
             }
 
             return parasList;
+        }
+
+        /// <summary>
+        /// 获取小窗口的分组条件参数
+        /// </summary>
+        /// <param name="entityId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<DictionaryEntryDto> GetWidgetGroupbyPara(long entityId, long userId)
+        {
+            QueryCommonBLL queryBll = new QueryCommonBLL();
+            var groupList = queryBll.GetQueryGroup((int)entityId);
+            if (groupList.Count == 0)
+                return new List<DictionaryEntryDto>();
+            
+            return dal.FindListBySql<DictionaryEntryDto>($"select id as `val`,col_comment as `show` from d_query_groupby where query_type_id={groupList[0].query_type_id}");
+        }
+
+        /// <summary>
+        /// 获取小窗口的统计字段参数
+        /// </summary>
+        /// <param name="entityId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<List<WidgetReportOnParaDto>> GetWidgetReportOnPara(long entityId, long userId)
+        {
+            var result = new List<List<WidgetReportOnParaDto>>();
+            QueryCommonBLL queryBll = new QueryCommonBLL();
+            var groupList = queryBll.GetQueryGroup((int)entityId);
+            if (groupList.Count == 0)
+                return result;
+
+            var all = dal.FindListBySql<WidgetReportOnParaDto>($"select id,col_comment as `name`,aggregation_type_id as agrId,(select `name` from d_general WHERE id=aggregation_type_id) as agrType from d_query_result WHERE query_type_id={groupList[0].query_type_id} and type_id=1");
+            var disRpt = from r in all group r by r.name into g select g;
+            foreach (var name in disRpt)
+            {
+                var dto = new List<WidgetReportOnParaDto>();
+                //dto.name = name.Key;
+                //dto.id=name.First().id;
+                var group = from r in all where r.name.Equals(name.Key) select r;
+                foreach (var agr in group)
+                {
+                    dto.Add(new WidgetReportOnParaDto
+                    {
+                        id = agr.id,
+                        name = name.Key,
+                        agrId = agr.agrId,
+                        agrType = agr.agrType
+                    });
+                }
+                result.Add(dto);
+            }
+
+            return result;
         }
         #endregion
 

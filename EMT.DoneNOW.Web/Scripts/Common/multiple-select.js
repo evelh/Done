@@ -613,7 +613,7 @@
 
         selectAllText: '全选',
         allSelected: '选择全部',
-        countSelected: '# of % selected',
+        countSelected: '选择 # 共 %',//'# of % selected',
         noMatchesFound: 'No matches found',
 
         styler: function () {
