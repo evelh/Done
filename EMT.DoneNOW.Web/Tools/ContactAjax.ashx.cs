@@ -53,6 +53,15 @@ namespace EMT.DoneNOW.Web
                     case "GetConByAccount":
                         GetConByAccount(context);
                         break;
+                    case "AccountContractGroupManage":
+                        AccountContractGroupManage(context);
+                        break;
+                    case "CheckGroupName":
+                        CheckGroupName(context);
+                        break;
+                    case "GroupManage":
+                        GroupManage(context);
+                        break;
                     default:
                         break;
                 }
@@ -227,6 +236,48 @@ namespace EMT.DoneNOW.Web
                 if(conList!=null&& conList.Count>0)
                     context.Response.Write(new Tools.Serialize().SerializeJson(conList));
             }
+        }
+        /// <summary>
+        /// 客户的联系人组管理
+        /// </summary>
+        private void AccountContractGroupManage(HttpContext context)
+        {
+            var accountId = context.Request.QueryString["accountId"];
+            var groupId = context.Request.QueryString["groupId"];
+            var ids = context.Request.QueryString["ids"];
+            var result = false;
+            if (!string.IsNullOrEmpty(accountId) && !string.IsNullOrEmpty(groupId))
+                result = new ContactBLL().AccountContractGroupManage(long.Parse(accountId),long.Parse(groupId),ids,LoginUserId) ;
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 校验联系人群组名称
+        /// </summary>
+        private void CheckGroupName(HttpContext context)
+        {
+            var name = context.Request.QueryString["name"];
+            var result = false;
+            long? id = null;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
+                id = long.Parse(context.Request.QueryString["id"]);
+            if (!string.IsNullOrEmpty(name))
+                result = new ContactBLL().CheckGroupName(name, id);
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 联系人群组管理（新增，编辑）
+        /// </summary>
+        private void GroupManage(HttpContext context)
+        {
+            var name = context.Request.QueryString["name"];
+            var result = false;
+            long? id = null;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
+                id = long.Parse(context.Request.QueryString["id"]);
+            var isActive = Convert.ToSByte(context.Request.QueryString["isActive"]);
+            if (!string.IsNullOrEmpty(name))
+                result = new ContactBLL().ContactGroupManage(id,name, isActive,LoginUserId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
         }
     }
 }

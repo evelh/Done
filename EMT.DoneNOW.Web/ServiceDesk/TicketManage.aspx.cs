@@ -324,6 +324,15 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                                 var duteDate = DateTime.Parse(duteDateDic.Value.ToString());
                                 pageTicket.estimated_end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(duteDate);
                             }
+                            var firstResponseDateDic = slaDic.FirstOrDefault(_ => _.Key == "响应时间");
+                            if (!default(KeyValuePair<string, object>).Equals(firstResponseDateDic))
+                                pageTicket.first_response_target_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(firstResponseDateDic.Value.ToString()));
+                            var resoluTatgetDic = slaDic.FirstOrDefault(_ => _.Key == "解决时间");
+                            if (!default(KeyValuePair<string, object>).Equals(resoluTatgetDic))
+                                pageTicket.resolution_target_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(resoluTatgetDic.Value.ToString()));
+                            var resoluPlanTatgetDic = slaDic.FirstOrDefault(_ => _.Key == "解决方案提供时间");
+                            if (!default(KeyValuePair<string, object>).Equals(firstResponseDateDic))
+                                pageTicket.resolution_plan_target_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(resoluPlanTatgetDic.Value.ToString()));
                         }
                     }
                 }

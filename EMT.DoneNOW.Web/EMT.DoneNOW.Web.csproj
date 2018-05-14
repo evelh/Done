@@ -151,6 +151,7 @@
     <Content Include="ConfigurationItem\QuoteItemWizard.aspx" />
     <Content Include="ConfigurationItem\RelatiobContract.aspx" />
     <Content Include="ConfigurationItem\SubscriptionAddOrEdit.aspx" />
+    <Content Include="Contact\AddAccountContactGroup.aspx" />
     <Content Include="Contact\AddContact.aspx" />
     <Content Include="Activity\ViewActivity.aspx" />
     <Content Include="Common\SearchFrameSet.aspx" />
@@ -158,6 +159,9 @@
     <Content Include="Company\DeleteCompany.aspx" />
     <Content Include="Company\LocationManage.aspx" />
     <Content Include="Company\ViewCompany.aspx" />
+    <Content Include="Contact\ContactGroupManage.aspx" />
+    <Content Include="Contact\ExecuteContact.aspx" />
+    <Content Include="Contact\ViewContactList.aspx" />
     <Content Include="Content\1.css" />
     <Content Include="Content\AccountReport.css" />
     <Content Include="Content\Admin.css" />
@@ -193,6 +197,7 @@
     <Content Include="Content\reset.css" />
     <Content Include="Content\Roles.css" />
     <Content Include="Content\searchList.css" />
+    <Content Include="Content\SidebarDrag.css" />
     <Content Include="Content\SysSettingRoles.css" />
     <Content Include="Content\SysUserSecurityLevel.css" />
     <Content Include="Content\style.css" />
@@ -202,12 +207,15 @@
     <Content Include="Images\ButtonIcons.svg" />
     <Content Include="Images\DecorationIcons.svg" />
     <Content Include="Images\LoadingRefresh.gif" />
+    <Content Include="Images\StopwatchSmallIcons.svg" />
     <Content Include="Images\ThemeSwatchIcons.png" />
     <Content Include="Images\WidgetConfigurationIcons.png" />
     <Content Include="Images\bronze_managed_service.jpg" />
     <Content Include="Images\dashboard_callmetrics.png" />
     <Content Include="Images\dashboard_salesalert.png" />
     <Content Include="Images\dashboard_salesmetrics.png" />
+    <Content Include="Images\WorklistGripper.png" />
+    <Content Include="Images\WorklistIcons.svg" />
     <Content Include="Scripts\clipboard.js" />
     <Content Include="Scripts\clipboard.min.js" />
     <Content Include="Scripts\Dashboard\Dashboard.js" />
@@ -217,6 +225,19 @@
     <Content Include="Scripts\Dashboard\html2canvas.js" />
     <Content Include="Scripts\Dashboard\Widget.js" />
     <Content Include="Scripts\Dispatch.js" />
+    <Content Include="Scripts\Search\company_view_account_overview.js" />
+    <Content Include="Scripts\Search\company_view_account_overview_bydate.js" />
+    <Content Include="Scripts\Search\company_view_account_profit_margin.js" />
+    <Content Include="Scripts\Search\company_view_contract_profit.js" />
+    <Content Include="Scripts\Search\company_view_contract_profit_bydate.js" />
+    <Content Include="Scripts\Search\company_view_contract_profit_margin.js" />
+    <Content Include="Scripts\Search\company_view_month_profit_margin.js" />
+    <Content Include="Scripts\Search\company_view_month_profit_margin_bydate.js" />
+    <Content Include="Scripts\Search\company_view_project_profit.js" />
+    <Content Include="Scripts\Search\company_view_project_profit_bydate.js" />
+    <Content Include="Scripts\Search\company_view_project_profit_margin.js" />
+    <Content Include="Scripts\Search\company_view_res_workhour.js" />
+    <Content Include="Scripts\Search\company_view_res_workhour_bydate.js" />
     <Content Include="Scripts\Search\WidgetDrillCompany.js" />
     <Content Include="Scripts\Search\WidgetDrillConfiguration.js" />
     <Content Include="Scripts\Search\WidgetDrillContract.js" />
@@ -224,6 +245,9 @@
     <Content Include="Scripts\Search\ResourcePolicyAssignment.js" />
     <Content Include="Scripts\Search\ResourceServiceDeskQueue.js" />
     <Content Include="Scripts\Search\TimeoffMyBalance.js" />
+    <Content Include="Scripts\Search\TimeoffRequestWidgetDrill.js" />
+    <Content Include="Scripts\Search\TimesheetWidgetDrill.js" />
+    <Content Include="Scripts\SidebarDrag.js" />
     <Content Include="Scripts\Search\WidgetDrillInvoiceItems.js" />
     <Content Include="Scripts\Search\WidgetDrillMilestones.js" />
     <Content Include="Scripts\Search\WidgetDrillTimeoffRequest.js" />
@@ -1218,6 +1242,13 @@
     <Compile Include="ConfigurationItem\SubscriptionAddOrEdit.aspx.designer.cs">
       <DependentUpon>SubscriptionAddOrEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contact\AddAccountContactGroup.aspx.cs">
+      <DependentUpon>AddAccountContactGroup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contact\AddAccountContactGroup.aspx.designer.cs">
+      <DependentUpon>AddAccountContactGroup.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contact\AddContact.aspx.cs">
       <DependentUpon>AddContact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1272,12 +1303,33 @@
     <Compile Include="Company\ViewCompany.aspx.designer.cs">
       <DependentUpon>ViewCompany.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contact\ContactGroupManage.aspx.cs">
+      <DependentUpon>ContactGroupManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contact\ContactGroupManage.aspx.designer.cs">
+      <DependentUpon>ContactGroupManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contact\ExecuteContact.aspx.cs">
+      <DependentUpon>ExecuteContact.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contact\ExecuteContact.aspx.designer.cs">
+      <DependentUpon>ExecuteContact.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contact\ViewContact.aspx.cs">
       <DependentUpon>ViewContact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Contact\ViewContact.aspx.designer.cs">
       <DependentUpon>ViewContact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contact\ViewContactList.aspx.cs">
+      <DependentUpon>ViewContactList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contact\ViewContactList.aspx.designer.cs">
+      <DependentUpon>ViewContactList.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\AddCharges.aspx.cs">
       <DependentUpon>AddCharges.aspx</DependentUpon>

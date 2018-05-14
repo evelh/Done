@@ -1,6 +1,14 @@
 ﻿$(function () {
     $("#RefreshLi").show();
-    $("#menuUl").css("width","250px");
+    $("#menuUl").css("width", "250px");
+    if ($("input[name = 'con2652']").val() != undefined) {
+        $("#DueTime").val($("input[name = 'con2652']").eq(0).val());
+    }
+    if ($("input[name = 'con2656']").val() != undefined) {
+        if ($("input[name = 'con2656']").eq(0).val() == "1") {
+            $("#CkIncludeMaster").prop("checked", true);
+        }
+    }
 })
 
 $("#options").on("mouseover", function () {
@@ -256,3 +264,80 @@ function RemoveProject() {
         }
     })
 }
+// 添加到我的工作列表
+function AddToMyWorkList() {
+    debugger;
+    var loginUserId = $("#loginUserId").val();
+    if (entityid != "" && loginUserId != "") {
+        AddToWorkList(loginUserId, entityid);
+    }
+}
+// 添加到主负责人的工作列表
+function AddToPriResWorkList() {
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: "../Tools/ProjectAjax.ashx?act=GetSinTask&task_id=" + entityid,
+        dataType: "json",
+        success: function (data) {
+            if (data != "") {
+                if (data.owner_resource_id != "" && data.owner_resource_id != null && data.owner_resource_id != undefined) {
+                    AddToWorkList(data.owner_resource_id, entityid);
+                } else {
+                    LayerMsg("暂无主负责人");
+                }
+            }
+        },
+    });
+}
+// 添加到其他负责人的工作列表
+function AddToOtherResWorkList() {
+    debugger;
+    parent.parent.$('#BackgroundOverLay').show();
+    parent.parent.$('#ShowAddOtherDiv').show();
+
+}
+function AddToWorkList(resIds, taskId) {
+    if (resIds == "" || taskId == "") {
+        return;
+    }
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: "../Tools/IndexAjax.ashx?act=AddWorkList&resIds=" + resIds + "&taskId=" + taskId,
+        dataType: "json",
+        success: function (data) {
+            if (data) {
+                LayerMsg("添加成功！");
+            } else {
+                LayerMsg("添加失败！");
+            }
+        },
+    });
+}
+
+function ChangeLocation() {
+    var DueTime = $("#DueTime").val();
+    var includeMaster = "";
+    if ($("#CkIncludeMaster").is(":checked")) {
+        includeMaster = "1";
+    }
+    else {
+        includeMaster = "0";
+    }
+    var accountId = "";
+    if ($("input[name = 'con2627']").val() != undefined) {
+        accountId = $("input[name = 'con2627']").eq(0).val();
+    }
+    if (accountId == "" || accountId == undefined) {
+        return;
+    }
+    location.href = "../Common/SearchBodyFrame.aspx?cat=1617&type=202&group=215&con2627=" + accountId + "&con2652=" + DueTime + "&con2656=" + includeMaster +"&param1=ShowPara";
+}
+$("#DueTime").change(function () {
+    ChangeLocation();
+})
+$("#CkIncludeMaster").click(function () {
+    ChangeLocation();
+})
+

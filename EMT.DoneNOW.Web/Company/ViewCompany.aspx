@@ -142,7 +142,7 @@
                     <%}%>
                     <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_TICKETS"))
                         { %>
-                    <li>工单</li>
+                    <li onclick="window.location.href='ViewCompany.aspx?id=<%=account.id %>&type=ticket'"><a>工单</a></li>
                     <%}%>
                     <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_PROJECT"))
                         { %>
@@ -628,7 +628,7 @@
                                             </tr>
                                             <tr>
                                                 <td style="padding-bottom: 10px">
-                                                    <a style="font-weight: 700; font-size: 12px" href="">客户总览</a>
+                                                    <a style="font-weight: 700; font-size: 12px" onclick="ShowIframe('AccountOverview')">客户总览</a>  
                                                 </td>
                                             </tr>
                                             <tr>
@@ -652,33 +652,33 @@
                                         <tbody>
                                             <tr>
                                                 <td style="padding-bottom: 10px">
-                                                    <a style="font-weight: 700; font-size: 12px" href="">客户利润率</a>
+                                                    <a style="font-weight: 700; font-size: 12px" onclick="ShowIframe('AccountProfitMargin')">客户利润率</a>  
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="padding-bottom: 10px">
-                                                    <a style="font-weight: 700; font-size: 12px" href="">月利润率</a>
+                                                    <a style="font-weight: 700; font-size: 12px" onclick="ShowIframe('MonthProfitMargin')">月利润率</a>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="padding-bottom: 10px">
-                                                    <a style="font-weight: 700; font-size: 12px" href="">合同利润</a>
+                                                    <a style="font-weight: 700; font-size: 12px" onclick="ShowIframe('ContractProfit')">合同利润</a>
                                                 </td>
                                             </tr>
 
                                             <tr>
                                                 <td style="padding-bottom: 10px">
-                                                    <a style="font-weight: 700; font-size: 12px" href="">合同利润率</a>
+                                                    <a style="font-weight: 700; font-size: 12px" onclick="ShowIframe('ContractProfitMargin')">合同利润率</a>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="padding-bottom: 10px">
-                                                    <a style="font-weight: 700; font-size: 12px" href="">项目利润</a>
+                                                    <a style="font-weight: 700; font-size: 12px" onclick="ShowIframe('ProjectProfit')">项目利润</a>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="padding-bottom: 17px">
-                                                    <a style="font-weight: 700; font-size: 12px" href="">项目利润率</a>
+                                                    <a style="font-weight: 700; font-size: 12px" onclick="ShowIframe('ProjectProfitMargin')">项目利润率</a>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -716,7 +716,13 @@
         $("#showCompanyGeneral").hide();
         $("#ShowCompany_Right").hide();
         $("#FinancialsDiv").show();
-        <%} %>
+        <%}
+    else if (type == "ticket")
+    {%>
+        $("#showCompanyGeneral").hide();
+    <%}
+
+    %>
     })
 
     var Height = $(window).height() - 130 + "px";
@@ -765,7 +771,6 @@
     // 客户报告
     function ShowAccountReport() {
         window.open('../Company/CompanyReport?accountId=<%=crm_account.id %>', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.COMPANTREPORT %>', 'left=200,top=200,width=800,height=750', false);
-        288
     }
     // 展示查询信息
     function ShowIframe(type)
@@ -774,15 +779,36 @@
         $("#ShowCompany_Right").show();
 
         if (type == "ResWorkHour") {
-            $("#viewCompany_iframe").attr("src","");
+            $("#viewCompany_iframe").attr("src", "../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_RES_WORKHOUR %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.COMPANY_VIEW_RES_WORKHOUR %>&con3596=<%=crm_account.id %>");
         }
+        else if (type == "AccountOverview") {
+            $("#viewCompany_iframe").attr("src", "../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_ACCOUNT_OVERVIEW %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.COMPANY_VIEW_ACCOUNT_OVERVIEW %>&con3600=<%=crm_account.id %>");
+        }
+        else if (type == "AccountProfitMargin") {
+           $("#viewCompany_iframe").attr("src", "../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_ACCOUNT_PROFIT_MARGIN %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.COMPANY_VIEW_ACCOUNT_PROFIT_MARGIN %>&con3574=<%=crm_account.id %>");
+        }
+        else if (type == "MonthProfitMargin") {
+            $("#viewCompany_iframe").attr("src", "../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_MONTH_PROFIT_MARGIN %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.COMPANY_VIEW_MONTH_PROFIT_MARGIN %>&con3577=<%=crm_account.id %>");
+        }
+        else if (type == "ContractProfit") {
+            $("#viewCompany_iframe").attr("src", "../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_CONTRACT_PROFIT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.COMPANY_VIEW_CONTRACT_PROFIT %>&con3586=<%=crm_account.id %>");
+        }
+        else if (type == "ContractProfitMargin") {
+            $("#viewCompany_iframe").attr("src", "../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_CONTRACT_PROFIT_MARGIN %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.COMPANY_VIEW_CONTRACT_PROFIT_MARGIN %>&con3585=<%=crm_account.id %>");
+        }
+        else if (type == "ProjectProfit") {
+            $("#viewCompany_iframe").attr("src", "../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_PROJECT_PROFIT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.COMPANY_VIEW_PROJECT_PROFIT %>&con3589=<%=crm_account.id %>");
+        }
+        else if (type == "ProjectProfitMargin") {
+            $("#viewCompany_iframe").attr("src", "../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_PROJECT_PROFIT_MARGIN %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.COMPANY_VIEW_PROJECT_PROFIT_MARGIN %>&con3594=<%=crm_account.id %>");
+        }
+        
     }
     // 从查询中返回财务界面
     function ShowFunanic() {
         $("#ShowCompany_Right").hide();
         $("#FinancialsDiv").show();
     }
-
 </script>
 
 <% if (type.Equals("activity"))

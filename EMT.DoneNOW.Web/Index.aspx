@@ -3,12 +3,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>DoneNOW</title>
     <link rel="stylesheet" type="text/css" href="Content/base.css" />
     <link rel="stylesheet" type="text/css" href="Content/index.css" />
     <link rel="stylesheet" type="text/css" href="Content/drag.css" />
     <link rel="stylesheet" type="text/css" href="Content/dashboard.css" />
+    <link href="Content/SidebarDrag.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="Content/multiple-select.css"/>
     <link rel="stylesheet" type="text/css" href="Scripts/My97DatePicker/skin/WdatePicker.css" />
     <style>
@@ -69,7 +70,6 @@
 </head>
 <body>
     <!--导航栏-->
-    <%="" %>
     <div id="SiteNavigationBar">
         <div class="Left">
             <div class="Logo Button ButtonIcon">
@@ -1433,6 +1433,61 @@
         </div>
     </div>
 
+    <div class="Dialog Large" style="margin-left: -442px; margin-top: -229px; z-index: 100; display: none; width: 650px;" id="ShowAddOtherDiv">
+            <div>
+
+                <div class="DialogContentContainer">
+                    <div class="CancelDialogButton" onclick="CloseDigAddOtherDiv()"></div>
+                    <div class="Active ThemePrimaryColor TitleBar">
+                        <div class="Title">
+                            <span class="text" style="color: white;font-size: medium;font-weight: 500;margin-left: 10px;">添加到员工的工作列表-</span><span id="ToOtherTaskNo"></span>
+                        </div>
+                    </div>
+                    <div class="DialogHeadingContainer">
+                        <div class="ButtonContainer"><a class="Button ButtonIcon Save NormalState" onclick="SaveAddToOtherWorkList()"><span class="Icon" style="background: url(../Images/Icons.png) no-repeat -38px 0px;"></span><span class="Text">保存并关闭</span></a><a class="Button ButtonIcon Cancel NormalState" id="CancelButton" onclick="CloseDigAddOtherDiv()"><span class="Icon" style="background: url(../Images/Icons.png) no-repeat -102px 0px;"></span><span class="Text">取消</span></a></div>
+                    </div>
+                    <div class="ScrollingContentContainer" style="position:unset;">
+                        <div class="ScrollingContainer" style="position:unset;">
+                                <div class="Medium NoHeading Section">
+                                    <div class="Content">
+                                        <div class="Normal Column">
+                                            <div class="Instructions">
+                                                <div class="InstructionItem">你想将这个任务添加到谁的工作列表中?</div>
+                                            </div>
+                                            <div class="EditorLabelContainer">
+                                                <div class="Label">
+                                                    <label>员工</label><span class="Required" style="color:red;">*</span></div>
+                                            </div>
+                                            <div class="Editor DataSelector">
+                                                <div class="InputField">
+                                                    <input id="" type="text" value="" style="width:200px;padding:0px;"/>
+                                                    <a class="Button ButtonIcon IconOnly DataSelector NormalState" id="" ><span class="Icon" onclick="ChooseOtherRes()"  style="background-image:url(../Images/data-selector.png);width: 16px;height: 16px;"></span><span class="Text"></span></a>
+                                                    <input id="ToOtherResIds" name="" type="hidden" value="" />
+                                                    <input id="ToOtherResIdsHidden" name="" type="hidden" value="" />
+                                                    <div class="ContextOverlayContainer">
+                                                        <div class="AutoComplete ContextOverlay">
+                                                            <div class="Active LoadingIndicator"></div>
+                                                            <div class="Content"></div>
+                                                        </div>
+                                                        <div class="AutoComplete ContextOverlay">
+                                                            <div class="Active LoadingIndicator"></div>
+                                                            <div class="Content"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <select id="ResManySelect" multiple="multiple" style="width:200px;height:100px;"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     <!--背景布-->
     <div id="WorkspaceContainer">
         <div id="yibiaopan" >
@@ -1481,6 +1536,50 @@
                 </div>
             </div>
         </div>
+        <div class="Siderbar_button" style="position: absolute;right: 0px;top: 80px;width: auto;height: auto;left:auto;">
+            <div class="Siderbar_button_item">
+                <div class="Icon"></div>
+                <div class="Badge"><%=ticketList==null?0:ticketList.Count %></div>
+            </div>
+            <div class="Siderbar_button_item">
+                <div class="Icon"></div>
+                <div class="Badge"><%=taskList==null?0:taskList.Count %></div>
+            </div>
+        </div>
+        <div class="SlideOut" style="background-color: gray;bottom: 0;position: fixed;right: -230px;top: 61px;width: 230px;left:auto;">
+        <div class="WorkList">
+            <div class="Header">
+                <div class="TaskIcon"></div>
+                <div class="HeaderText">工单列表</div>
+                <div class="HeaderBadge"><%=ticketList!=null&&ticketList.Count>0?ticketList.Where(_=>_.resource_id!=_.create_user_id).ToList().Count:0 %></div>
+            </div>
+            <div class="WorkListItems" id="TicketWorkListItems">
+                
+
+            </div>
+            <div class="WorkListItems" id="TaskWorkListItems">
+              
+            </div>
+            <div class="WorkListFooter">
+                <div class="WorkListLinkContainer">
+                    <span onclick="ResetAllWatch()">重设秒表</span><span>&nbsp;|&nbsp;</span><span onclick="DeleteAllWorkTicket()">删除所有工单</span>
+                </div>
+                <div class="WorkListTaskLinkContainer" style="display:none;">
+                    <span onclick="DeleteAllWorkTask()">删除所有任务</span>
+                </div>
+
+                <div class="WorkListNewWindow">在新窗口中打开</div>
+                <div class="FooterIcon WorkListLinkContainer">
+                    <div class="WorkListRefresh Icon WorkListIcon" onclick="LoadWorkListTicket()"></div>
+                    <div class="WorkListSettings Icon WorkListIcon" onclick="ShowTicketWorkListSetting()"></div>
+                </div>
+                 <div class="FooterIcon WorkListTaskLinkContainer" style="display:none;">
+                    <div class="WorkListRefresh Icon WorkListIcon" onclick="LoadWorkListTask()"></div>
+                    <div class="WorkListSettings Icon WorkListIcon" onclick="ShowTaskWorkListSetting()"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
     <div class="cover" id="cover"></div>
     <!--弹窗-->    
@@ -1953,6 +2052,7 @@
     <script src="Scripts/Dashboard/Widget.js"></script>
     <script src="Scripts/Dashboard/Dashboard.js"></script>
     <script src="Scripts/My97DatePicker/WdatePicker.js"></script>
+    <script src="Scripts/SidebarDrag.js"  type="text/javascript" charset="utf-8"></script>
     <script src="Scripts/Common/multiple-select.js" type="text/javascript" charset="utf-8"></script>
     <script>
         $(window).resize(function () {
@@ -2467,7 +2567,77 @@
 
         function ToSingDispatch(chooseDate) {
             window.open('../ServiceDesk/DispatcherWorkshopView.aspx?resIds=<%=LoginUserId %>&chooseDate=' + chooseDate + "&isSingResPage=1", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.DISPATCH_CALENDAR %>', 'left=0,top=0,width=1800,height=950', false);
-    }
+        }
+
+        function SaveAddToOtherWorkList() {
+            var resIds = $("#ToOtherResIdsHidden").val();
+            var entityid = window.frames["PageFrame"].frames["SearchFrameSet"].SearchBody.entityid;
+            if (resIds != "" && entityid != "") {
+                window.frames["PageFrame"].frames["SearchFrameSet"].SearchBody.AddToWorkList(resIds, entityid);
+            }
+            CloseDigAddOtherDiv();
+        }
+
+        function CloseDigAddOtherDiv() {
+            $('#BackgroundOverLay').hide();
+            $('#ShowAddOtherDiv').hide();
+        }
+
+        function ChooseOtherRes() {
+            window.open("../Common/SelectCallBack.aspx?cat=913&field=ToOtherResIds&muilt=1&callBack=GetRes", '_blank', 'left=200,top=200,width=600,height=800', false);
+        }
+        function GetRes() {
+            var resIds = $("#ToOtherResIdsHidden").val();
+            var resHtml = "";
+            if (resIds != "") {
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    url: "../Tools/ResourceAjax.ashx?act=GetResList&ids=" + resIds,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data != "") {
+                            for (var i = 0; i < data.length; i++) {
+                                resHtml += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            }
+                        }
+                    },
+                });
+            }
+            $("#ResManySelect").html(resHtml);
+            $("#ResManySelect option").dblclick(function () {
+                RemoveResDep(this);
+            })
+        }
+        function RemoveResDep(val) {
+            $(val).remove();
+            var ids = "";
+            $("#ResManySelect option").each(function () {
+                ids += $(this).val() + ',';
+            })
+            if (ids != "") {
+                ids = ids.substr(0, ids.length - 1);
+            }
+            $("#ToOtherResIdsHidden").val(ids);
+        }
+        // 页面内打开工单，任务
+        function PageNewOpenTicket(ticketId,IsJiShi) {
+            setTimeout(function () {$("#yibiaopan").hide();$(".cont").show(); }, 800);
+            $("#PageFrame").attr("src", "/ServiceDesk/TicketView?id=" + ticketId);
+            if (IsJiShi != "") {
+                var thisOpen = $("." + ticketId + "ThisWatch").children(".Play").eq(0);
+                if (thisOpen != undefined) {
+                    var thisCssPosi = thisOpen.css("background-position");
+                    if (thisCssPosi == "0px 0px") {
+                        thisOpen.trigger("click");
+                    }
+                }
+            }
+        }
+        function PageNewOpenTask(taskId) {
+            setTimeout(function () { $("#yibiaopan").hide(); $(".cont").show(); }, 800);
+            $("#PageFrame").attr("src", "/Project/TaskView.aspx?id=" + taskId);
+        }
     </script>
 </body>
 
