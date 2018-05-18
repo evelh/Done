@@ -917,6 +917,7 @@ namespace EMT.DoneNOW.DTO
             SDK_KONWLEDGE_COMMENT = 1430,               // 知识库评论
             SDK_KONWLEDGE_TICKET = 1431,                // 知识库关联工单
             DASHBOARD_WIDGET = 1436,                    // 仪表板小窗口
+            DASHBOARD_WIDGET_GUAGE = 1437,              // 仪表板小窗口部件
             TICKET_SLA_EVENT,                           // 工单sla 事件
             
         }
@@ -936,10 +937,12 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum QUERY_PARA_TYPE
         {
+            DYNAMIC_DATE = 803,     // 动态日期范围
+            NONE_INPUT = 804,       // 不需要输入的类型（空、非空等）
             SINGLE_LINE = 805,      // 单行文本
             NUMBER = 806,           // 数值(做范围判断)
-            DATE = 807,             // 日期
-            DATETIME = 808,         // 日期时间
+            DATE = 807,             // 日期(做范围判断)
+            DATETIME = 808,         // 日期时间(做范围判断)
             DROPDOWN = 809,         // 下拉选择框
             MULTI_DROPDOWN = 810,   // 多选下拉框
             AREA = 811,             // 行政区
@@ -947,7 +950,7 @@ namespace EMT.DoneNOW.DTO
             BOOLEAN = 813,          // 布尔值
             MUILT_CALLBACK = 814,   // 多选查找带回
             NUMBER_EQUAL = 816,     // 数值(做等于判断)
-            TIMESPAN = 817,         // 日期-时间戳
+            TIMESPAN = 817,         // 日期-时间戳(做范围判断)
             UN_EQUAL = 818,         // 不等于
             DYNAMIC = 819,          // 动态参考
             CHANGED = 820,          // 变更

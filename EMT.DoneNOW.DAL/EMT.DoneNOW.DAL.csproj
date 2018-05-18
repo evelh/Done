@@ -126,6 +126,7 @@
     <Compile Include="Dictionary\d_change_board_dal.cs" />
     <Compile Include="Dictionary\d_cost_code_rule_dal.cs" />
     <Compile Include="Dictionary\d_holiday_dal.cs" />
+    <Compile Include="Dictionary\d_query_groupby_dal.cs" />
     <Compile Include="Dictionary\d_sla_dal.cs" />
     <Compile Include="Dictionary\d_cost_code_dal.cs" />
     <Compile Include="Dictionary\d_tax_region_cate_dal.cs" />

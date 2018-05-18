@@ -102,6 +102,7 @@
     <Compile Include="Dictionary\d_change_board.cs" />
     <Compile Include="Dictionary\d_cost_code_rule.cs" />
     <Compile Include="Dictionary\d_holiday.cs" />
+    <Compile Include="Dictionary\d_query_groupby.cs" />
     <Compile Include="Dictionary\d_sla.cs" />
     <Compile Include="Dictionary\d_cost_code.cs" />
     <Compile Include="Dictionary\d_tax_region_cate.cs" />

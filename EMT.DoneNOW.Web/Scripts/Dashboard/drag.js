@@ -130,7 +130,7 @@
                 var change = 0;
                 var changestr = '';
                 e.find(jQclass).each(function () {
-                    if ($(this).data('pop') == undefined) {
+                    if ($(this)[0].className.split(' ')[1] != 'addShell') {
                         changestr += $(this).attr('data-dad-position') + '-' + order + ',';
                         if ($(this).attr('data-dad-position') != order) {
                             change = 1;

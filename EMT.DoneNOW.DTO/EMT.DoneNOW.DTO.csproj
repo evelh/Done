@@ -124,6 +124,7 @@
     <Compile Include="UserInfoDto.cs" />
     <Compile Include="DashboardWidgetInfoDto.cs" />
     <Compile Include="WidgetEntityDto.cs" />
+    <Compile Include="WidgetReportOnParaDto.cs" />
     <Compile Include="WorkflowRuleDto.cs" />
   </ItemGroup>
   <ItemGroup>
