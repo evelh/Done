@@ -535,6 +535,7 @@ namespace EMT.DoneNOW.DTO
             EXPENSE_REPORT = 717,   // 费用报表
             LABOUR = 718,           // 工时
             KNOWLEDGE = 719,        // 知识库
+            CONFIGITEM = 720,       // 配置项
         }
 
         /// <summary>
@@ -660,6 +661,7 @@ namespace EMT.DoneNOW.DTO
             PROJECT_ATTACH = 1558,                  // 项目管理-项目详情-附件查询
             PROJECT_UDF = 1559,                     // 项目管理-项目详情-自定义查询
             TASK_HISTORY = 1560,                    // 任务操作历史
+            WAREHOUSEPRODUCTSN=1561,                // 库存产品串号查询
             INVENTORY_TRANSFER = 1562,              // 库存转移查询
             PURCHASE_APPROVAL = 1563,               // 采购审批查询
             PURCHASING_FULFILLMENT = 1564,          // 库存管理-待采购产品查询
@@ -754,9 +756,15 @@ namespace EMT.DoneNOW.DTO
             REPORT_CRM_OPPORTUNITY_DETAILS = 1656,          // 报表-CRM-商机-商机详情
             REPORT_CRM_OPPORTUNITY_STATUS = 1657,           // 报表-CRM-商机-商机状态
             REPORT_CRM_OPPORTUNITY_CRM_NOTE = 1658,         // 报表-CRM-商机-CRM备注
+            CONTACR_GROUP_SEARCH=1659,                      // CRM 联系人组
+            VIEW_CONTACT_GROUP_SEARCH =1660,                // 查看联系人组-成员信息
+            CONTACR_GROUP_CONTACT_CALLBACK = 1661,          // 联系人组成员添加-联系人查找带回
+            CONTACT_ACTION_TEMP = 1662,                     // 联系人活动 模板
+            ACCOUNT_CONTACT_GROUP_SEARCH = 1663,            // 查看客户-联系人组
+            OTHER_INSTALLED_PRODUCT_SEARCH=1664, 
+            WAREHOUSE_PRODUCT_CALLBACK= 1665,               // 配置项管理-配置项替换-库存产品查找带回
 
 
-            company_view_Project_Profit_Margin,
 
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
@@ -1776,6 +1784,7 @@ namespace EMT.DoneNOW.DTO
         PROJECT_ATTACH = 137,           // 项目管理-项目详情-附件查询
         PROJECT_UDF = 138,              // 项目管理-项目详情-自定义查询
         TASK_HISTORY = 139,             // 任务操作历史
+        WAREHOUSEPRODUCTSN = 140,                // 库存产品串号查询
         InventoryTransfer = 141,        // 库存转移
         PurchaseApproval = 142,         // 采购审批查询
         PurchaseFulfillment = 143,      // 待采购产品查询
@@ -1884,11 +1893,19 @@ namespace EMT.DoneNOW.DTO
         COMPANY_VIEW_RES_WORKHOUR_BYDATE = 262,         // 客户查看-员工已工作时间（按照计费时间）  
         COMPANY_VIEW_ACCOUNT_OVERVIEW = 263,            // 客户查看-客户总览    
         COMPANY_VIEW_ACCOUNT_OVERVIEW_BYDATE = 264,     // 客户查看-客户总览（按照计费时间）
-
         REPORT_CRM_MY_ACCOUNT_TICKET = 265,            // 报表-CRM-我的客户的工单
         REPORT_CRM_OPPORTUNITY_DETAILS = 266,          // 报表-CRM-商机-商机详情
         REPORT_CRM_OPPORTUNITY_STATUS = 267,           // 报表-CRM-商机-商机状态
         REPORT_CRM_OPPORTUNITY_CRM_NOTE = 268,         // 报表-CRM-商机-CRM备注
+        CONTACR_GROUP_SEARCH = 269, 
+        VIEW_CONTACT_GROUP_SEARCH =270,
+        CONTACR_GROUP_CONTACT_CALLBACK = 271,
+        CONTACT_ACTION_TEMP = 272,                     // 联系人活动 模板
+        ACCOUNT_CONTACT_GROUP_SEARCH = 273,
+        OTHER_INSTALLED_PRODUCT_SEARCH=274,
+  
+       
+
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
         Line_Of_Business,              //系统管理：组织：业务条线

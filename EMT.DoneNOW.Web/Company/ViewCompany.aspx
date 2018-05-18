@@ -93,6 +93,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <input type="hidden" id="AccountId" value="<%=crm_account.id.ToString() %>" />
 
         <%  var account = GetAccount();
             var location = GetDefaultLocation();
@@ -138,7 +139,7 @@
                     <%}%>
                     <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_CONTACT_GROUP"))
                         { %>
-                    <li>联系人组</li>
+                    <li onclick="window.location.href='ViewCompany.aspx?id=<%=account.id %>&type=contactGroup'"><a>联系人组</a></li>
                     <%}%>
                     <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_VIEW_TICKETS"))
                         { %>
@@ -717,11 +718,10 @@
         $("#ShowCompany_Right").hide();
         $("#FinancialsDiv").show();
         <%}
-    else if (type == "ticket")
+    else if (type == "ticket"||type == "contactGroup")
     {%>
         $("#showCompanyGeneral").hide();
     <%}
-
     %>
     })
 

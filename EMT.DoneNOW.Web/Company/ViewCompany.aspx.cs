@@ -122,6 +122,10 @@ namespace EMT.DoneNOW.Web.Company
                                 actType = "工单";
                                 iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.MY_QUEUE_ACTIVE + "&group=215&con2627=" + crm_account.id+ "&param1=ShowPara";
                                 break;
+                            case "contactGroup":
+                                actType = "联系人组";
+                                iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ACCOUNT_CONTACT_GROUP_SEARCH + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.ACCOUNT_CONTACT_GROUP_SEARCH + "&con3961="+ crm_account.id.ToString();
+                                break;
                             default:
                                 iframeSrc = "";  // 默认  project_search
                                 actType = "活动";
@@ -132,7 +136,7 @@ namespace EMT.DoneNOW.Web.Company
                     }
                     else
                     {
-                        Response.End();
+                        Response.Write("<script>alert('未获取到客户信息');window.close();</script>");
                     }
                 }
                 else

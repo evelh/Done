@@ -152,6 +152,11 @@
                                                 <div class="Heading">
                                                     <div class="Text">视图</div>
                                                 </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Company/CrmDashboard.aspx" target="PageFrame">
+                                                        <span class="Text">仪表板</span>
+                                                    </a>
+                                                </div>
                                             </div>
                                             <div class="Group">
                                                 <div class="Heading">
@@ -242,6 +247,23 @@
                                                     </a>
                                                 </div>
                                                 <%}%>
+                                            </div>
+                                             <div class="Group">
+                                                <div class="Heading">
+                                                    <div class="Text">通知你的联系人</div>
+                                                </div>
+                                                
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACR_GROUP_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.CONTACR_GROUP_SEARCH %>" target="PageFrame">
+                                                        <span class="Text">联系人组</span>
+                                                    </a>
+                                                </div>
+                                                 <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT_ACTION_TEMP %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.CONTACT_ACTION_TEMP %>" target="PageFrame">
+                                                        <span class="Text">联系人活动模板</span>
+                                                    </a>
+                                                </div>
+                                              
                                             </div>
                                         </div>
                                     </div>
@@ -1278,15 +1300,7 @@
                                         </tr>
                                     </thead>
                                     <tbody id="IndexShowMuClandarTBody">
-                                         <tr>
-                                            <td class="Overlap">26</td>
-                                            <td class="Important Overlap">27</td>
-                                            <td class="Overlap">28</td>
-                                            <td class="Overlap">29</td>
-                                            <td class="Overlap">30</td>
-                                            <td class="Today">31</td>
-                                            <td>1</td>
-                                        </tr>
+                                         
                                     </tbody>
                                 </table>
                               
@@ -2531,7 +2545,7 @@
 
             $.ajax({
                 type: "GET",
-                async: false,
+                //async: false,
                 url: "../Tools/IndexAjax.ashx?act=LoadDispatch&chooseDate=" + chooseDate,
                 dataType: "json",
                 success: function (data) {

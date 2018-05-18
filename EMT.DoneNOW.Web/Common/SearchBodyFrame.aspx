@@ -383,11 +383,14 @@
     {%>
                     <li onclick="ApplyTicket()" style="padding-left: 5px;"><span>关联工单</span></li>
                        <li onclick="AddTicket()" style="padding-left: 5px;"><span>新增工单</span></li>
-                    <%} else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALL_SEARCH)
+                    <%}
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SERVICE_CALL_SEARCH)
     {%>
                     <li onclick="Add()" style="padding-left: 5px;"><span>新增</span></li>
                        <li onclick="PrintView()" style="padding-left: 5px;"><span>打印预览</span></li>
-                    <%} else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_MY_TICKET||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_VIEW) { %>
+                    <%}
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_MY_TICKET || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_VIEW)
+    { %>
                     <li class="Button ButtonIcon NormalState f1" id="options" tabindex="0"> 
                     <span class="Icon" style="width: 0; margin: 0;"></span>
                     <span class="Text">新增</span>
@@ -397,6 +400,19 @@
                         <input type="hidden" id="AbsorbTicketIds" />
                         <input type="hidden" id="AbsorbTicketIdsHidden" />
             </li>
+                    <%}else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.VIEW_CONTACT_GROUP_SEARCH){ %>
+                  
+                    <li onclick="ContactCallBack()" style="padding-left:5px;">
+                        <input type="hidden" id="ContactId"/>
+                        <input type="hidden" id="ContactIdHidden"/>
+                        <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;width: 16px;margin-top: 4px;" class="icon-1"></i>
+                        <span>添加到群组</span>
+                    </li>
+                    <li onclick="Remove()" style="padding-left:5px;"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -64px 0;width: 16px;margin-top: 4px;" class="icon-1"></i><span>移除</span></li>
+                    <li id="CreateNoteLi" style="width:80px;padding-left:5px;">创建备注<i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;width: 10px;height: 10px;display: block;float: right;margin-top: 8px;margin-left: 10px;"></i>
+                    </li>
+                    <li id="CreateTodoLi" style="width:80px;padding-left:5px;">创建待办<i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;width: 10px;height: 10px;display: block;float: right;margin-top: 8px;margin-left: 10px;"></i>
+                    </li>
                     <%} %>
                     <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_ACCOUNT_PROFIT_MARGIN||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_MONTH_PROFIT_MARGIN||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_MONTH_PROFIT_MARGIN_BYDATE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_CONTRACT_PROFIT||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_CONTRACT_PROFIT_BYDATE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_CONTRACT_PROFIT_MARGIN||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_PROJECT_PROFIT||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_PROJECT_PROFIT_BYDATE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_RES_WORKHOUR||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_RES_WORKHOUR_BYDATE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_ACCOUNT_OVERVIEW||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_ACCOUNT_OVERVIEW_BYDATE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_PROJECT_PROFIT_MARGIN){ %> 
                     <li style="width:28px;" id="ReturnUpper"><i style="background: url(../Images/Icons.png) no-repeat -6px -11px;width: 16px;height: 21px;margin-left: 5px;"></i></li>
@@ -453,7 +469,7 @@
     { %><li><span class='DropDownMenuItemText' onclick='CopyFromOppo()'>从商机复制</span></li><%}%></ul>
                 </div>
                 <%}
-    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_ACCOUNT_LIST || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_MY_TICKET||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_VIEW)
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_ACCOUNT_LIST || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_TASK_TICKET || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_MY_TICKET || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_VIEW)
     { %>
                 <div class="DropDownMenu" id="D1" style=" background-color: #FFF;padding: 5px;border: 1px solid #BCBCBC;cursor: pointer;box-shadow: 1px 3px 4px rgba(0,0,0,0.33);position: fixed;top: 35px;border-top:white;display:none;">
                     <ul>
@@ -479,6 +495,21 @@
     { %>
                 <%--<span style="font-size: 12px;color: #4F4F4F;margin-top: 13px;height: 22px;display: inline-block;margin-right:20px;margin-left:80px;"><span style="font-weight: bold;margin-top: 6px;">条目是否分配</span><select id="isFenPei" style="margin-left:6px;"><option value="0">未分配</option><option value="1">已分配</option></select></span>
                 <span style="font-size: 12px;color: #4F4F4F;margin-top: 13px;height: 22px;display: inline-block;margin-right:20px;"><span style="font-weight: bold;margin-top: 6px;">截止时间范围</span><select id="dueTime" style="margin-left:6px;"><option value="1">从今天开始+/-30天</option><option value=""></option></select></span>--%>
+                <%}
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.VIEW_CONTACT_GROUP_SEARCH)
+    { %>
+                 <div class="DropDownMenu" id="D1" style=" background-color: #FFF;padding: 5px;border: 1px solid #BCBCBC;cursor: pointer;box-shadow: 1px 3px 4px rgba(0,0,0,0.33);position: fixed;top: 36px;left:194px;border-top:white;display:none;">
+                    <ul>
+                        <li><span class='DropDownMenuItemText' onclick="CreateNoteSelect()">为选择联系人创建备注</span></li> 
+                        <li><span class='DropDownMenuItemText' onclick="CreateNoteAll()">为全部联系人创建备注</span></li> 
+                    </ul>
+                </div>
+                <div class="DropDownMenu" id="D2" style=" background-color: #FFF;padding: 5px;border: 1px solid #BCBCBC;cursor: pointer;box-shadow: 1px 3px 4px rgba(0,0,0,0.33);position: fixed;top: 35px;left:284px;border-top:white;display:none;">
+                    <ul>
+                        <li><span class='DropDownMenuItemText' onclick="CreateTodoSelect()">为选择联系人创建待办</span></li> 
+                        <li><span class='DropDownMenuItemText' onclick="CreateTodoAll()">为全部联系人创建待办</span></li> 
+                    </ul>
+                </div>
                 <%} %>
 
               <div class="fl" id="addDiv" style="line-height:47px;margin-right:30px;">

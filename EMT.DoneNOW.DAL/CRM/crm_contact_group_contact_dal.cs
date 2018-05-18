@@ -27,5 +27,12 @@ where ccgc.delete_time = 0 and ccg.delete_time = 0 and cc.delete_time = 0 and cc
         {
             return FindSignleBySql<crm_contact_group_contact>($"SELECT * from crm_contact_group_contact where delete_time =0 and contact_group_id ={groupId} and contact_id = {contactId}");
         }
+        /// <summary>
+        /// 根据联系人组获取相应联系人信息
+        /// </summary>
+        public List<crm_contact_group_contact> GetGroupContactByGroup(long groupId)
+        {
+            return FindListBySql<crm_contact_group_contact>($"SELECT * from crm_contact_group_contact where delete_time = 0 and contact_group_id = {groupId}");
+        }
     }
 }

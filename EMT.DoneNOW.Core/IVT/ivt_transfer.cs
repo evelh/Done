@@ -21,7 +21,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64 product_id { get; set; }
         [DataMember]
-        public Int64 from_warehouse_id { get; set; }
+        public Int64? from_warehouse_id { get; set; }
         [DataMember]
         public Int64? to_warehouse_id { get; set; }
         [DataMember]

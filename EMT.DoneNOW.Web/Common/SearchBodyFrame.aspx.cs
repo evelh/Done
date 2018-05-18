@@ -430,6 +430,8 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.RESOURCE_CERTIFICATE:
                 case (int)DicEnum.QUERY_CATE.RESOURCE_DEGREE:
                 case (int)DicEnum.QUERY_CATE.RESOURCE_ATTACHMENT:
+                case (int)DicEnum.QUERY_CATE.CONTACR_GROUP_SEARCH:
+                case (int)DicEnum.QUERY_CATE.CONTACT_ACTION_TEMP: 
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.KNOWLEDGEBASE_ARTICLE:
@@ -443,6 +445,9 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (int)DicEnum.QUERY_CATE.TIMEOFF_MY_REQUEST:
                     addBtn = "新增休假请求";
+                    break;
+                case (int)DicEnum.QUERY_CATE.ACCOUNT_CONTACT_GROUP_SEARCH:
+                    addBtn = "添加联系人到群组";
                     break;
                 default:
                     addBtn = "";
@@ -587,23 +592,21 @@ namespace EMT.DoneNOW.Web
                     if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
                         queryPara.query_params.Add(new Para() { id = long.Parse(param1), value = param2 });
                     if (paraGroupId == 215)
-                        queryPara.query_params.Add(new Para() { id = 2626, value = LoginUserId.ToString() });
+                    {
+                        if(string.IsNullOrEmpty(keys["con3962"]))
+                            queryPara.query_params.Add(new Para() { id = 2626, value = LoginUserId.ToString() });
+                    }
                     else if(paraGroupId == 230)
                         queryPara.query_params.Add(new Para() { id = 2730, value = LoginUserId.ToString() });
-                }
-                else if (queryTypeId == (int)QueryType.MY_QUEUE_MY_TICKET)
-                    queryPara.query_params.Add(new Para() { id = 2658, value = LoginUserId.ToString() });
-                else if (queryTypeId == (int)QueryType.MY_QUEUE_CHANGE_APPROVEL)
-                    queryPara.query_params.Add(new Para() { id = 2662, value = LoginUserId.ToString() });
-                else if (queryTypeId == (int)QueryType.MY_QUEUE_ACTIVE)
-                {
-                    if(!string.IsNullOrEmpty(param1)&& !string.IsNullOrEmpty(param2))
-                        queryPara.query_params.Add(new Para() { id = long.Parse(param1), value = param2 });
                     var param3 = string.IsNullOrEmpty(Request.QueryString["param3"]) ? "" : Request.QueryString["param3"];
                     var param4 = string.IsNullOrEmpty(Request.QueryString["param4"]) ? "" : Request.QueryString["param4"];
                     if (!string.IsNullOrEmpty(param3) && !string.IsNullOrEmpty(param4))
                         queryPara.query_params.Add(new Para() { id = long.Parse(param3), value = param4 });
                 }
+                else if (queryTypeId == (int)QueryType.MY_QUEUE_MY_TICKET)
+                    queryPara.query_params.Add(new Para() { id = 2658, value = LoginUserId.ToString() });
+                else if (queryTypeId == (int)QueryType.MY_QUEUE_CHANGE_APPROVEL)
+                    queryPara.query_params.Add(new Para() { id = 2662, value = LoginUserId.ToString() });
                 else if (queryTypeId == (int)QueryType.PROJECT_SEARCH|| queryTypeId == (int)QueryType.InstalledProductView || queryTypeId == (int)QueryType.KnowledgebaseArticle || queryTypeId == (int)QueryType.Invoice_History )
                 {
                     if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
@@ -1547,6 +1550,46 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "查看工单", click_function = "ViewTicket()", id = "MenuViewTicket" });
                     contextMenu.Add(new PageContextMenuDto { text = "加入到新的服务预定", click_function = "AddNewCall()", id = "MenuAddNewCall" });
                     contextMenu.Add(new PageContextMenuDto { text = "加入到已存在的服务预定", click_function = "AddAlreadyCall()", id = "MenuAddAlreadyCall" });
+                    break;
+                case (long)QueryType.OTHER_INSTALLED_PRODUCT_SEARCH:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "替换", click_function = "Swap()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "移动", click_function = "Move()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设为父配置项", click_function = "SetAsParent()", id="AsParent" });
+                    contextMenu.Add(new PageContextMenuDto { text = "取消父配置项设置", click_function = "RemoveParent()", id="CancelParent" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设为子配置项", click_function = "SetAsChild()", id="AsChild" });
+                    contextMenu.Add(new PageContextMenuDto { text = "取消子配置项设置", click_function = "RemoveChild()", id="CancelChild" });
+                    contextMenu.Add(new PageContextMenuDto { text = "经过合同审核", click_function = "ReViewByContract()", id = "ReViewByContractMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "不经过合同审核", click_function = "NoReViewByContract()", id = "NoReViewByContractMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.VIEW_CONTACT_GROUP_SEARCH:
+                    contextMenu.Add(new PageContextMenuDto { text = "创建备注", click_function = "CreateNoteSingle()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "创建待办", click_function = "CreateTodoSingle()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "从联系人组移除", click_function = "RemoveSingle()" });
+                    break;
+                case (long)QueryType.ACCOUNT_CONTACT_GROUP_SEARCH:
+                    contextMenu.Add(new PageContextMenuDto { text = "添加/移除组成员", click_function = "AddRemove()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "为组成员创建备注", click_function = "CreateNote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "为组成员创建待办", click_function = "CreateTodo()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看组", click_function = "ViewGroup()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑组", click_function = "EditGroup()" });
+                    break;
+                case (long)QueryType.CONTACR_GROUP_SEARCH:
+                    contextMenu.Add(new PageContextMenuDto { text = "查看联系人组", click_function = "ViewGroup()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "为组成员创建备注", click_function = "CreateNote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "为组成员创建待办", click_function = "CreateTodo()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑联系人组", click_function = "EditGroup()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制联系人组", click_function = "CopyGroup()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活联系人组", click_function = "ActiveGroup()",id="Active" });
+                    contextMenu.Add(new PageContextMenuDto { text = "失活联系人组", click_function = "InActiveGroup()",id= "InActive" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除联系人组", click_function = "DeleteGroup()" });
+                    break;
+                case (long)QueryType.CONTACT_ACTION_TEMP:
+                    contextMenu.Add(new PageContextMenuDto { text = "查看联系人活动模板", click_function = "View()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑联系人活动模板", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除联系人活动模板", click_function = "Delete()" });
                     break;
                 default:
                     break;

@@ -39,9 +39,31 @@ namespace EMT.DoneNOW.BLL
             dic.Add("period_type", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.QUOTE_ITEM_PERIOD_TYPE)));
             return dic;
         }
-
-
-
+        /// <summary>
+        /// 根据Id 获取配置项信息
+        /// </summary>
+        public crm_installed_product GetById(long id)
+        {
+            return _dal.FindNoDeleteById(id);
+        }
+        /// <summary>
+        /// 返回有未审批订阅周期 的订阅
+        /// </summary>
+        public List<crm_subscription> ReturnSubIds(List<crm_subscription> subList)
+        {
+            List<crm_subscription> noAppSub = new List<crm_subscription>();
+            if (subList != null && subList.Count > 0)
+            {
+                var cspDal = new crm_subscription_period_dal();
+                foreach (var thisSub in subList)
+                {
+                    var perList = cspDal.GetSubPeriodByWhere($" and subscription_id = {thisSub.id}");
+                    if (perList != null && perList.Count > 0 && perList.Any(_ => _.approve_and_post_date == null && _.approve_and_post_user_id == null))
+                        noAppSub.Add(thisSub);
+                }
+            }
+            return noAppSub;
+        }
 
         /// <summary>
         /// 新增配置项
@@ -96,6 +118,7 @@ namespace EMT.DoneNOW.BLL
                 setup_fee = param.terms.setup_fee,
                 peruse_cost = param.terms.peruse_cost,
                 accounting_link = param.terms.accounting_link,
+                reviewed_for_contract = param.reviewByContract
 
             };   // 创建配置项对象
 
@@ -108,14 +131,14 @@ namespace EMT.DoneNOW.BLL
                     {
                         installed_product.service_id = ser.object_id;
                     }
-                    else if(ser.object_type == 2)
+                    else if (ser.object_type == 2)
                     {
                         installed_product.service_bundle_id = ser.object_id;
                     }
                 }
                 else
                 {
-                    
+
                 }
             }
             installed_product_dal.Insert(installed_product);                            // 插入配置项
@@ -190,68 +213,39 @@ namespace EMT.DoneNOW.BLL
             {
                 return false;
             }
+            #region 页面参数
+            var installed_product = installed_product_dal.GetInstalledProduct(param.id);
+            installed_product.product_id = param.product_id;
+            installed_product.cate_id = param.installed_product_cate_id;
+            installed_product.account_id = param.account_id;
+            installed_product.start_date = param.start_date;
+            installed_product.through_date = param.through_date;
+            installed_product.number_of_users = param.number_of_users;
+            installed_product.serial_number = param.serial_number;
+            installed_product.reference_number = param.reference_number;
+            installed_product.reference_name = param.reference_name;
+            installed_product.contract_id = param.contract_id == 0 ? null : (long?)param.contract_id;
+            installed_product.location = param.location;
+            installed_product.contact_id = param.contact_id == 0 ? null : (long?)param.contact_id;
+            installed_product.vendor_account_id = param.vendor_id == 0 ? null : (long?)param.vendor_id;
+            installed_product.is_active = (sbyte)param.status;
+            installed_product.installed_resource_id = user.id;
+            installed_product.reviewed_for_contract = param.reviewByContract;
+            // installed_contact_id = param.contact_id, // todo -- 安装人与联系人
+            installed_product.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            installed_product.update_user_id = user.id;
+            installed_product.remark = param.notes;
+            //service_id = param.service_id,
+            // Terms
+            installed_product.hourly_cost = param.terms.hourly_cost;
+            installed_product.daily_cost = param.terms.daily_cost;
+            installed_product.monthly_cost = param.terms.monthly_cost;
+            installed_product.setup_fee = param.terms.setup_fee;
+            installed_product.peruse_cost = param.terms.peruse_cost;
+            installed_product.accounting_link = param.terms.accounting_link;
 
-
-            crm_installed_product installed_product = new crm_installed_product()
-            {
-                id = old_installed_product.id,
-                product_id = param.product_id,
-                cate_id = param.installed_product_cate_id,
-                account_id = param.account_id,
-                start_date = param.start_date,
-                through_date = param.through_date,
-                number_of_users = param.number_of_users,
-                serial_number = param.serial_number,
-                reference_number = param.reference_number,
-                reference_name = param.reference_name,
-                contract_id = param.contract_id == 0 ? null : (long?)param.contract_id,
-                location = param.location,
-                contact_id = param.contact_id == 0 ? null : (long?)param.contact_id,
-                vendor_account_id = param.vendor_id == 0 ? null : (long?)param.vendor_id,
-                is_active = (sbyte)param.status,
-                installed_resource_id = user.id,
-                // installed_contact_id = param.contact_id, // todo -- 安装人与联系人
-                //create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                //create_user_id = user.id,
-                update_user_id = user.id,
-                remark = param.notes,
-                //service_id = param.service_id,
-                // Terms
-                hourly_cost = param.terms.hourly_cost,
-                daily_cost = param.terms.daily_cost,
-                monthly_cost = param.terms.monthly_cost,
-                setup_fee = param.terms.setup_fee,
-                peruse_cost = param.terms.peruse_cost,
-                accounting_link = param.terms.accounting_link,
-
-                #region 服务等信息等待合同创建后处理，其字段从源数据获取
-
-                cost_product_id = old_installed_product.cost_product_id,
-                create_time = old_installed_product.create_time,
-                create_user_id = old_installed_product.create_user_id,
-                delete_time = old_installed_product.delete_time,
-                delete_user_id = old_installed_product.delete_user_id,
-                entrytimestamp = old_installed_product.entrytimestamp,
-                extension_adapter_disovery_data_id = old_installed_product.extension_adapter_disovery_data_id,
-                followup_cost = old_installed_product.followup_cost,
-                implementation_cost = old_installed_product.implementation_cost,
-                installed_contact_id = old_installed_product.installed_contact_id,
-                inventory_transfer_id = old_installed_product.inventory_transfer_id,
-                is_swapped_out = old_installed_product.is_swapped_out,
-                oid = old_installed_product.oid,
-                parent_id = old_installed_product.parent_id,
-                quote_item_id = old_installed_product.quote_item_id,
-                
-
-                //service_bundle_id = old_installed_product.service_bundle_id,
-                //service_id = old_installed_product.service_id,
-                udf_group_id = old_installed_product.udf_group_id,
-
-
-                #endregion
-
-            };   // 创建配置项对象
+            #endregion
+            // 创建配置项对象
             if (param.service_id != null)
             {
                 var ser = new ctt_contract_service_dal().FindNoDeleteById((long)param.service_id);
@@ -277,7 +271,7 @@ namespace EMT.DoneNOW.BLL
             else
             {
                 installed_product.service_bundle_id = null;
-                installed_product.service_id =null;
+                installed_product.service_id = null;
             }
             installed_product_dal.Update(installed_product);
             new sys_oper_log_dal().Insert(new sys_oper_log()
@@ -361,7 +355,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="lastTime"></param>
         /// <param name="subscription"></param>
         /// <param name="user"></param>
-        public void InsertSubPeriod(DateTime firstTime,DateTime lastTime,crm_subscription subscription, UserInfoDto user)
+        public void InsertSubPeriod(DateTime firstTime, DateTime lastTime, crm_subscription subscription, UserInfoDto user)
         {
             var periods = 1;   // 定义初始的期数为1 
             //var firstTime = subscription.effective_date; // 生效日期
@@ -453,7 +447,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 获取两个时间相差天数
         /// </summary>
-        public int GetDiffDay(DateTime startDate,DateTime endDate)
+        public int GetDiffDay(DateTime startDate, DateTime endDate)
         {
             TimeSpan ts1 = new TimeSpan(startDate.Ticks);
             TimeSpan ts2 = new TimeSpan(endDate.Ticks);
@@ -515,7 +509,8 @@ namespace EMT.DoneNOW.BLL
             {
                 if (subPeriodList != null && subPeriodList.Count > 0)
                 {
-                    subPeriodList.ForEach(_=> {
+                    subPeriodList.ForEach(_ =>
+                    {
                         new sys_oper_log_dal().Insert(new sys_oper_log()
                         {
                             user_cate = "用户",
@@ -577,11 +572,12 @@ namespace EMT.DoneNOW.BLL
                         {
                             old_last_time = dealSub.Max(_ => _.period_date);
                         }
-                        
+
                         // 删除未执行的分期订阅
                         if (NoDealSub != null && NoDealSub.Count > 0)
                         {
-                            NoDealSub.ForEach(_ => {
+                            NoDealSub.ForEach(_ =>
+                            {
                                 new sys_oper_log_dal().Insert(new sys_oper_log()
                                 {
                                     user_cate = "用户",
@@ -604,7 +600,7 @@ namespace EMT.DoneNOW.BLL
                             old_last_time = old_last_time.AddMonths(periodMonths);
                             if (new_last_time < old_last_time) // 代表结束时间在最后一期分期订阅的范围之内,暂不处理吧QAQ --todo
                             {
-                                
+
                             }
                             else
                             {
@@ -621,12 +617,12 @@ namespace EMT.DoneNOW.BLL
                 }
             }
 
-            
-   
-            
-            
 
-            
+
+
+
+
+
             return ERROR_CODE.SUCCESS;
         }
 
@@ -639,7 +635,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="user_id"></param>
         /// <param name="isActive"></param>
         /// <returns></returns>
-        public string ActivationInstalledProduct(long iProduct_id,long user_id,bool isActive)
+        public string ActivationInstalledProduct(long iProduct_id, long user_id, bool isActive)
         {
 
 
@@ -649,7 +645,7 @@ namespace EMT.DoneNOW.BLL
             if (iProduct != null)
             {
 
-                if (iProduct.is_active == (isActive?0:1))
+                if (iProduct.is_active == (isActive ? 0 : 1))
                 {
                     iProduct.is_active = (sbyte)(isActive ? 1 : 0);
                     iProduct.update_user_id = user.id;
@@ -665,7 +661,7 @@ namespace EMT.DoneNOW.BLL
                         oper_object_id = iProduct.id,
                         oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
                         oper_description = dal.CompareValue(new crm_installed_product_dal().GetInstalledProduct(iProduct_id), iProduct),
-                        remark = (isActive?"激活":"失活")+"配置项",
+                        remark = (isActive ? "激活" : "失活") + "配置项",
                     });
                     dal.Update(iProduct);
                     return "ok";
@@ -685,7 +681,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="user_id"></param>
         /// <param name="isActive"></param>
         /// <returns></returns>
-        public bool AvtiveManyIProduct(string ids,long user_id, bool isActive)
+        public bool AvtiveManyIProduct(string ids, long user_id, bool isActive)
         {
             var user = BLL.UserInfoBLL.GetUserInfo(user_id);
             var dal = new crm_installed_product_dal();
@@ -694,7 +690,7 @@ namespace EMT.DoneNOW.BLL
                 var idList = ids.Split(',');
                 foreach (var id in idList)
                 {
-                    ActivationInstalledProduct(long.Parse(id),user_id, isActive);
+                    ActivationInstalledProduct(long.Parse(id), user_id, isActive);
                 }
                 return true;
             }
@@ -706,7 +702,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="iProduct_id"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public bool DeleteIProduct(long iProduct_id,long user_id)
+        public bool DeleteIProduct(long iProduct_id, long user_id)
         {
             var user = UserInfoBLL.GetUserInfo(user_id);
             var IProduct = new crm_installed_product_dal().GetInstalledProduct(iProduct_id);
@@ -741,7 +737,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="ids"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public bool DeleteIProducts(string ids,long user_id)
+        public bool DeleteIProducts(string ids, long user_id)
         {
             var user = BLL.UserInfoBLL.GetUserInfo(user_id);
             var dal = new crm_installed_product_dal();
@@ -763,7 +759,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="user_id"></param>
         /// <param name="isActive"></param>
         /// <returns></returns>
-        public string ActiveSubsctiption(long sid,long user_id, int status_id)
+        public string ActiveSubsctiption(long sid, long user_id, int status_id)
         {
             var user = BLL.UserInfoBLL.GetUserInfo(user_id);
             var dal = new crm_subscription_dal();
@@ -805,10 +801,10 @@ namespace EMT.DoneNOW.BLL
         /// <param name="user_id"></param>
         /// <param name="isActive"></param>
         /// <returns></returns>
-        public bool ActiveSubsctiptions(string ids,long user_id, int status_id)
+        public bool ActiveSubsctiptions(string ids, long user_id, int status_id)
         {
             var user = BLL.UserInfoBLL.GetUserInfo(user_id);
-            if (!string.IsNullOrEmpty(ids)&&user!=null)
+            if (!string.IsNullOrEmpty(ids) && user != null)
             {
                 var idList = ids.Split(',');
                 foreach (var id in idList)
@@ -826,12 +822,12 @@ namespace EMT.DoneNOW.BLL
         /// <param name="sid"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public bool DeleteSubsctiption(long sid,long user_id)
+        public bool DeleteSubsctiption(long sid, long user_id)
         {
             var user = BLL.UserInfoBLL.GetUserInfo(user_id);
             var sDal = new crm_subscription_dal();
             var subscription = sDal.GetSubscription(sid);
-            if (subscription != null&&user!=null)
+            if (subscription != null && user != null)
             {
                 //subsctiption.delete_user_id = user.id;
                 //subsctiption.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -860,7 +856,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="sids"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public bool DeleteSubsctiptions(string sids,long user_id)
+        public bool DeleteSubsctiptions(string sids, long user_id)
         {
             var user = BLL.UserInfoBLL.GetUserInfo(user_id);
             if (!string.IsNullOrEmpty(sids))
@@ -879,7 +875,7 @@ namespace EMT.DoneNOW.BLL
 
                     return false;
                 }
-              
+
             }
             return false;
         }
@@ -891,7 +887,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="ipID"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public bool RelieveInsProduct(long contract_id,long ip_id,long user_id)
+        public bool RelieveInsProduct(long contract_id, long ip_id, long user_id)
         {
             var user = BLL.UserInfoBLL.GetUserInfo(user_id);
             var insPro = _dal.FindNoDeleteById(ip_id);
@@ -912,7 +908,7 @@ namespace EMT.DoneNOW.BLL
                     oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONFIGURAITEM,
                     oper_object_id = insPro.id,
                     oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                    oper_description = _dal.CompareValue(_dal.FindNoDeleteById(insPro.id),insPro),
+                    oper_description = _dal.CompareValue(_dal.FindNoDeleteById(insPro.id), insPro),
                     remark = "解除配置项与合同的绑定",
                 });
                 _dal.Update(insPro);
@@ -927,7 +923,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="ipID"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public bool RelationInsProduct(long contract_id, long ip_id, long user_id,long? service_id = null)
+        public bool RelationInsProduct(long contract_id, long ip_id, long user_id, long? service_id = null)
         {
             var user = BLL.UserInfoBLL.GetUserInfo(user_id);
             var insPro = _dal.FindNoDeleteById(ip_id);
@@ -940,11 +936,11 @@ namespace EMT.DoneNOW.BLL
                 if (service_id != null)
                 {
                     var isService = new OpportunityBLL().isServiceOrBag((long)service_id);
-                    if (isService==1)
+                    if (isService == 1)
                     {
                         insPro.service_id = service_id;
                     }
-                    else if(isService == 2)
+                    else if (isService == 2)
                     {
                         insPro.service_bundle_id = service_id;
                     }
@@ -972,7 +968,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 通过报价生成配置项
         /// </summary>
-        public bool AddInsProByQuote(QuoteConfigItemDto param,long user_id)
+        public bool AddInsProByQuote(QuoteConfigItemDto param, long user_id)
         {
             var cipDal = new crm_installed_product_dal();
             var cqiDal = new crm_quote_item_dal();
@@ -985,7 +981,7 @@ namespace EMT.DoneNOW.BLL
                 return false;
             }
             var user = UserInfoBLL.GetUserInfo(user_id);
-            if (param.insProList!=null&& param.insProList.Count > 0)
+            if (param.insProList != null && param.insProList.Count > 0)
             {
                 foreach (var insPro in param.insProList)
                 {
@@ -1018,7 +1014,7 @@ namespace EMT.DoneNOW.BLL
                         contract_id = null,
                         location = null,
                         contact_id = null,
-                        vendor_account_id = defaultVendor==null?null: defaultVendor.vendor_account_id,
+                        vendor_account_id = defaultVendor == null ? null : defaultVendor.vendor_account_id,
                         is_active = 1,
                         installed_resource_id = user_id,
                         remark = "从报价项中生成",
@@ -1030,22 +1026,23 @@ namespace EMT.DoneNOW.BLL
                         create_user_id = user_id,
                         update_user_id = user_id,
 
-                     
+
                     };   // 创建配置项对象
                     cipDal.Insert(installed_product);                            // 插入配置项
 
-                    OperLogBLL.OperLogAdd<crm_installed_product>(installed_product, installed_product.id,user_id,OPER_LOG_OBJ_CATE.CONFIGURAITEM,"新增配置项");
-                 
+                    OperLogBLL.OperLogAdd<crm_installed_product>(installed_product, installed_product.id, user_id, OPER_LOG_OBJ_CATE.CONFIGURAITEM, "新增配置项");
+
                     var udf_configuration_items_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONFIGURATION_ITEMS);   // 查询自定义信息
                     new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONFIGURATION_ITEMS, user_id, installed_product.id, udf_configuration_items_list, null, OPER_LOG_OBJ_CATE.CONFIGURAITEM);  // 保存自定义扩展信息
-                        #endregion
+                    #endregion
 
-                    if(param.insProSubList!=null&& param.insProSubList.Count > 0)
+                    if (param.insProSubList != null && param.insProSubList.Count > 0)
                     {
-                        var thisSub = param.insProSubList.FirstOrDefault(_=>_.insProId==insPro.pageProId);
+                        var thisSub = param.insProSubList.FirstOrDefault(_ => _.insProId == insPro.pageProId);
                         if (thisSub != null)
                         {
-                            var sub = new crm_subscription() {
+                            var sub = new crm_subscription()
+                            {
                                 id = csDal.GetNextIdCom(),
                                 name = thisSub.subName,
                                 description = thisSub.subDes,
@@ -1064,8 +1061,8 @@ namespace EMT.DoneNOW.BLL
                             };
 
                             var periods = 1;   // 定义初始的期数为1 
-                           var firstTime = sub.effective_date; // 生效日期
-                           var lastTime = sub.expiration_date; // 结束日期
+                            var firstTime = sub.effective_date; // 生效日期
+                            var lastTime = sub.expiration_date; // 结束日期
                             var period_type = sub.period_type_id;
                             var days = Math.Ceiling((lastTime - firstTime).TotalDays); // 获取到相差几天
 
@@ -1098,7 +1095,7 @@ namespace EMT.DoneNOW.BLL
                             sub.total_cost = sub.period_cost * period;
                             csDal.Insert(sub);
                             OperLogBLL.OperLogAdd<crm_subscription>(sub, sub.id, user_id, OPER_LOG_OBJ_CATE.SUBSCRIPTION, "新增订阅");
-                            InsertSubPeriod(sub.effective_date,sub.expiration_date,sub,user);
+                            InsertSubPeriod(sub.effective_date, sub.expiration_date, sub, user);
                         }
                     }
                 }
@@ -1162,15 +1159,471 @@ namespace EMT.DoneNOW.BLL
                 }
             }
 
-             return true;
+            return true;
         }
         /// <summary>
         /// 获取到合同下的对应服务的已绑定配置项数量
         /// </summary>
-        public int GetExistInsServiceCount(long contractId,long serviceId)
+        public int GetExistInsServiceCount(long contractId, long serviceId)
         {
             return Convert.ToInt32(_dal.GetSingle($"SELECT COUNT(*) from crm_installed_product where delete_time = 0 and contract_id = {contractId} and (service_id = {serviceId} or service_bundle_id = {serviceId})"));
             //
         }
+        /// <summary>
+        /// 设置父配置项
+        /// </summary>
+        public bool SetAsParent(long thisId, long parentId, long userId)
+        {
+            var parInsPro = _dal.FindNoDeleteById(parentId);
+            var thisInsPro = _dal.FindNoDeleteById(thisId);
+            if (thisInsPro == null || parInsPro == null)
+                return false;
+            var oldThisPro = _dal.FindNoDeleteById(thisId);
+            if (thisInsPro.parent_id != parentId)
+            {
+                thisInsPro.parent_id = parentId;
+                thisInsPro.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                thisInsPro.update_user_id = userId;
+                _dal.Update(thisInsPro);
+                OperLogBLL.OperLogUpdate<crm_installed_product>(thisInsPro, oldThisPro, thisId, userId, OPER_LOG_OBJ_CATE.CONFIGURAITEM, "");
+            }
+            return true;
+        }
+        /// <summary>
+        /// 取消父配置项设置
+        /// </summary>
+        public bool RemoveParent(long thisId, long userId)
+        {
+            var thisPro = _dal.FindNoDeleteById(thisId);
+            if (thisPro == null || thisPro.parent_id == null)
+                return false;
+            var oldPro = _dal.FindNoDeleteById(thisId);
+            thisPro.parent_id = null;
+            thisPro.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            thisPro.update_user_id = userId;
+            _dal.Update(thisPro);
+            OperLogBLL.OperLogUpdate<crm_installed_product>(thisPro, oldPro, thisId, userId, OPER_LOG_OBJ_CATE.CONFIGURAITEM, "");
+            return true;
+        }
+        /// <summary>
+        /// 配置项替换
+        /// </summary>
+        public bool SwapConfigItem(SwapConfigItemDto param, long userId)
+        {
+            var outInsPro = _dal.FindNoDeleteById(param.outSwapId);
+            var thisUser = new sys_resource_dal().FindNoDeleteById(userId);
+            if (outInsPro == null)
+                return false;
+            var ipDal = new ivt_product_dal();
+            ivt_product oldProduct = ipDal.FindById(outInsPro.product_id);
+            if (oldProduct == null)
+                return false;
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            var oldOutInsPro = _dal.FindNoDeleteById(param.outSwapId);
+            outInsPro.is_active = 0;
+            outInsPro.is_swapped_out = 1;
+            outInsPro.contract_id = null;
+            outInsPro.remark += $"此配置项由{thisUser.name}于{DateTime.Now.Year}年{DateTime.Now.Month}月{DateTime.Now.Day}日换出";
+            outInsPro.update_time = timeNow;
+            outInsPro.update_user_id = userId;
+            #region 新增配置项
+            crm_installed_product newConfigItem = null;
+            string newWareName = string.Empty;
+            if (param.inWareProId != null)
+            {
+                var iwpDal = new ivt_warehouse_product_dal();
+                var wareProduct = iwpDal.FindNoDeleteById((long)param.inWareProId);
+               
+                ivt_warehouse_product_sn sn = null;
+
+                if (param.inWareProSnId != null)
+                    sn = new ivt_warehouse_product_sn_dal().FindNoDeleteById((long)param.inWareProSnId);
+                if (wareProduct != null)
+                {
+                    ivt_product inProduct = ipDal.FindNoDeleteById(wareProduct.product_id);
+                    if(wareProduct.warehouse_id!=null)
+                    {
+                        ivt_warehouse ware = new ivt_warehouse_dal().FindNoDeleteById((long)wareProduct.warehouse_id);
+                        if (ware != null)
+                            newWareName = ware.name;
+                    }
+                    
+                    newConfigItem = new crm_installed_product()
+                    {
+                        id = _dal.GetNextIdCom(),
+                        product_id = wareProduct.product_id,
+                        is_active = 1,
+                        installed_resource_id = userId,
+                        start_date = DateTime.Now,
+                        through_date = DateTime.Now.AddYears(1),
+                        remark = oldOutInsPro.remark + $"此配置项由{thisUser.name}于{DateTime.Now.Year}年{DateTime.Now.Month}月{DateTime.Now.Day}日创建，用来替换配置项" + oldProduct.name,
+                        account_id = outInsPro.account_id,
+                        contact_id = outInsPro.contact_id,
+                        location = outInsPro.location,
+                        contract_id = outInsPro.contract_id,
+                        service_id = outInsPro.service_id,
+                        service_bundle_id = outInsPro.service_bundle_id,
+                        vendor_account_id = null,
+                        hourly_cost = outInsPro.hourly_cost,
+                        daily_cost = outInsPro.daily_cost,
+                        monthly_cost = outInsPro.monthly_cost,
+                        setup_fee = outInsPro.setup_fee,
+                        peruse_cost = outInsPro.peruse_cost,
+                        accounting_link = outInsPro.accounting_link,
+                        cate_id = outInsPro.cate_id,
+                        create_time = timeNow,
+                        update_time = timeNow,
+                        create_user_id = userId,
+                        update_user_id = userId,
+                        reviewed_for_contract = (sbyte)(outInsPro.contract_id == null ? 0 : 1),
+                    };
+                    if (sn != null)
+                        newConfigItem.serial_number = sn.sn;
+                    _dal.Insert(newConfigItem);
+                    OperLogBLL.OperLogAdd<crm_installed_product>(newConfigItem, newConfigItem.id, userId, OPER_LOG_OBJ_CATE.CONFIGURAITEM, "");
+                    outInsPro.remark += ",它被替换为配置项" + (inProduct != null ? inProduct.name : "");
+                    ChangeSubInsProId(outInsPro.id, newConfigItem.id, userId);
+                }
+            }
+            #endregion
+            _dal.Update(outInsPro);
+            OperLogBLL.OperLogUpdate<crm_installed_product>(outInsPro, oldOutInsPro, outInsPro.id, userId, OPER_LOG_OBJ_CATE.CONFIGURAITEM, "");
+
+            #region 工单处理
+            ConfigTicketDeal(outInsPro, newConfigItem, newWareName, param.ticketList,userId);
+            #endregion
+
+            #region 库存处理
+            ConfigItemTransfer(param, outInsPro, userId);
+            #endregion
+
+            #region 通知
+            #endregion
+
+
+
+            return true;
+        }
+        /// <summary>
+        /// 更换未审批提交的订阅 的配置项
+        /// </summary>
+        public void ChangeSubInsProId(long oldInsProId, long newInsProId, long userId)
+        {
+            crm_subscription_dal csDal = new crm_subscription_dal();
+            var newInsPro = _dal.FindNoDeleteById(newInsProId);
+            if (newInsPro == null)
+                return;
+            var thisSubAllList = csDal.GetSubByInsProId(oldInsProId);
+            if (thisSubAllList != null && thisSubAllList.Count > 0)
+            {
+                var subList = ReturnSubIds(thisSubAllList);
+                if (subList != null && subList.Count > 0)
+                {
+                    var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    subList.ForEach(_ =>
+                    {
+                        var oldSub = csDal.FindNoDeleteById(_.id);
+                        if (oldSub != null)
+                        {
+                            _.update_time = timeNow;
+                            _.update_user_id = userId;
+                            _.installed_product_id = newInsProId;
+                            csDal.Update(_);
+                            OperLogBLL.OperLogUpdate<crm_subscription>(_, oldSub, _.id, userId, OPER_LOG_OBJ_CATE.SUBSCRIPTION, "");
+                        }
+                    });
+                }
+            }
+        }
+        /// <summary>
+        /// 配置项的工单处理
+        /// </summary>
+        public void ConfigTicketDeal(crm_installed_product oldInsPro, crm_installed_product newInsPro,string newWareName, Dictionary<long, string> ticketDic, long userId)
+        {
+            if (ticketDic != null && ticketDic.Count > 0)
+            {
+                sdk_task_dal stDal = new sdk_task_dal();
+                ivt_product_dal ipDal = new ivt_product_dal();
+                com_activity_dal actDal = new com_activity_dal();
+                TicketBLL ticBll = new TicketBLL();
+                var oldProduct = ipDal.FindById(oldInsPro.product_id);
+                foreach (var thisTicket in ticketDic)
+                {
+                    sdk_task ticket = stDal.FindNoDeleteById(thisTicket.Key);
+                    if (ticket == null|| thisTicket.Value == "nothing")
+                        continue;
+                    else if (thisTicket.Value == "asgin")
+                    {
+                        if (newInsPro != null)
+                        {
+                            var newProduct = ipDal.FindById(newInsPro.product_id);
+                            ticket.installed_product_id = newInsPro.id;
+                            ticBll.EditTicket(ticket, userId);
+                            com_activity note = new com_activity()
+                            {
+                                id = _dal.GetNextIdCom(),
+                                cate_id = (int)DicEnum.ACTIVITY_CATE.TICKET_NOTE,
+                                action_type_id = (int)ACTIVITY_TYPE.TASK_INFO,
+                                object_id = ticket.id,
+                                object_type_id = (int)OBJECT_TYPE.TICKETS,
+                                account_id = ticket.account_id,
+                                contact_id = ticket.contact_id,
+                                name = "配置项换出"+(oldProduct!=null? oldProduct.name:""),
+                                description = $"换出配置项:{(oldProduct != null ? oldProduct.name : "")}/r序列号：{oldInsPro.serial_number}/r参考号：{oldInsPro.reference_number}/r参考名：{oldInsPro.reference_name}/r/r换入配置项：{(newProduct != null ? newProduct.name : "")}/r库存地点：{newWareName},序列号:{newInsPro.serial_number}",
+                                publish_type_id = (int)NOTE_PUBLISH_TYPE.TICKET_ALL_USER,
+                                ticket_id = ticket.id,
+                                create_user_id = 0,
+                                update_user_id = 0,
+                                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                                is_system_generate = 1,
+                            };
+                            actDal.Insert(note);
+                            OperLogBLL.OperLogAdd<com_activity>(note, note.id, userId, OPER_LOG_OBJ_CATE.ACTIVITY,  "");
+                        }
+                    }
+                    else if (thisTicket.Value == "complete")
+                    {
+                        ticket.status_id = (int)DicEnum.TICKET_STATUS.DONE;
+                        ticBll.EditTicket(ticket, userId);
+                        com_activity note = new com_activity()
+                        {
+                            id = _dal.GetNextIdCom(),
+                            cate_id = (int)DicEnum.ACTIVITY_CATE.TICKET_NOTE,
+                            action_type_id = (int)ACTIVITY_TYPE.TASK_INFO,
+                            object_id = ticket.id,
+                            object_type_id = (int)OBJECT_TYPE.TICKETS,
+                            account_id = ticket.account_id,
+                            contact_id = ticket.contact_id,
+                            name = "配置项换出" + (oldProduct != null ? oldProduct.name : ""),
+                            description = $"换出配置项:{(oldProduct != null ? oldProduct.name : "")}/r序列号：{oldInsPro.serial_number}/r参考号：{oldInsPro.reference_number}/r参考名：{oldInsPro.reference_name}",
+                            publish_type_id = (int)NOTE_PUBLISH_TYPE.TICKET_ALL_USER,
+                            ticket_id = ticket.id,
+                            create_user_id = 0,
+                            update_user_id = 0,
+                            create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
+                            is_system_generate = 1,
+                        };
+                        actDal.Insert(note);
+                        OperLogBLL.OperLogAdd<com_activity>(note, note.id, userId, OPER_LOG_OBJ_CATE.ACTIVITY, "");
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 替换配置项的库存管理
+        /// </summary>
+        public void ConfigItemTransfer(SwapConfigItemDto param,crm_installed_product insPro,long userId)
+        {
+            try
+            {
+                if (param.CkToWarehouse)
+                {
+                    crm_account thisAccount = new CompanyBLL().GetCompany((long)insPro.account_id);
+                    ivt_transfer_dal itDal = new ivt_transfer_dal();
+                    ivt_transfer_sn_dal itsDal = new ivt_transfer_sn_dal();
+                    ivt_warehouse_dal iwDal = new ivt_warehouse_dal();
+                    ivt_warehouse_product_dal iwpDal = new ivt_warehouse_product_dal();
+                    ivt_warehouse_product_sn_dal iwpsDal = new ivt_warehouse_product_sn_dal();
+                    var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    ivt_warehouse wareHouse = new ivt_warehouse();
+                    ivt_warehouse_product warePro = null;
+                    ivt_warehouse_product_sn wareProSn = null;
+
+
+                    if (param.isExist)
+                    {
+                        warePro = iwpDal.FindNoDeleteById((long)param.existWareProId);
+                        if (warePro != null)
+                        {
+                            wareHouse = iwDal.FindNoDeleteById((long)warePro.warehouse_id);
+                            ivt_transfer existTrans = new ivt_transfer()
+                            {
+                                id = itDal.GetNextIdCom(),
+                                create_time = timeNow,
+                                update_time = timeNow,
+                                create_user_id = userId,
+                                update_user_id = userId,
+                                type_id = (int)DicEnum.INVENTORY_TRANSFER_TYPE.TICKETS,
+                                from_warehouse_id = wareHouse.id,
+                                notes = "转给客户："+ thisAccount.name,
+                                quantity = 1,
+                                to_account_id = insPro.account_id,
+                                product_id = warePro.product_id,
+                            };
+                            itDal.Insert(existTrans);
+
+
+                            //if (param.existWareProSnId != null)
+                            //    wareProSn = iwpsDal.FindNoDeleteById((long)param.existWareProSnId);
+                            if (!string.IsNullOrEmpty(param.existWareProSn))
+                                wareProSn = iwpsDal.GetSnByWareAndSn(warePro.id, param.existWareProSn);
+                            
+                            warePro.quantity += 1;
+                            warePro.update_time = timeNow;
+                            warePro.update_user_id = userId;
+                            iwpDal.Update(warePro);
+                            if (wareProSn == null)
+                            {
+                                wareProSn = new ivt_warehouse_product_sn()
+                                {
+                                    id = iwpsDal.GetNextIdCom(),
+                                    create_time = timeNow,
+                                    update_time = timeNow,
+                                    create_user_id = userId,
+                                    update_user_id = userId,
+                                    sn = param.existWareProSn,
+                                    warehouse_product_id = warePro.id,
+                                };
+                                iwpsDal.Insert(wareProSn);
+                            }
+                            if (wareProSn != null)
+                            {
+
+                                ivt_transfer_sn existTransSn = new ivt_transfer_sn()
+                                {
+                                    id = itsDal.GetNextIdCom(),
+                                    create_time = timeNow,
+                                    update_time = timeNow,
+                                    create_user_id = userId,
+                                    update_user_id = userId,
+                                    sn = wareProSn.sn,
+                                    transfer_id = existTrans.id,
+                                };
+                                itsDal.Insert(existTransSn);
+                            }
+
+                        }
+                    }
+                    else if (param.isNew)
+                    {
+                        wareHouse = iwDal.FindNoDeleteById(param.newWareId);
+                        warePro = new ivt_warehouse_product() {
+                            id = iwpDal.GetNextIdCom(),
+                            create_time = timeNow,
+                            update_time = timeNow,
+                            create_user_id = userId,
+                            update_user_id = userId,
+                            product_id = insPro.product_id,
+                            warehouse_id = param.newWareId,
+                            reference_number = param.newRefNumber,
+                            bin = param.newBin,
+                            quantity = (int)param.newQuan,
+                            quantity_maximum = param.newMax,
+                            quantity_minimum = param.newMin,
+                        };
+                        iwpDal.Insert(warePro);
+
+                        if (!string.IsNullOrEmpty(param.newSerNum))
+                        {
+                            var newWareProSn = iwpsDal.GetSnByWareAndSn(warePro.id, param.newSerNum);
+                            if (newWareProSn == null)
+                            {
+                                newWareProSn = new ivt_warehouse_product_sn() {
+                                    id = iwpsDal.GetNextIdCom(),
+                                    create_time = timeNow,
+                                    update_time = timeNow,
+                                    create_user_id = userId,
+                                    update_user_id = userId,
+                                    sn = param.newSerNum,
+                                    warehouse_product_id = warePro.id,
+                                };
+                                iwpsDal.Insert(newWareProSn);
+                            }
+                        }
+                    }
+                    else
+                        return;
+                    if (wareHouse == null)
+                        return;
+                    ivt_transfer trans = new ivt_transfer()
+                    {
+                        id = itDal.GetNextIdCom(),
+                        create_time = timeNow,
+                        update_time = timeNow,
+                        create_user_id = userId,
+                        update_user_id = userId,
+                        type_id = (int)DicEnum.INVENTORY_TRANSFER_TYPE.TICKETS,
+                        to_warehouse_id = wareHouse.id,
+                        notes = "转入",
+                        quantity = 1,
+                        to_account_id  =insPro.account_id,
+                        product_id = insPro.product_id,
+                    };
+                    itDal.Insert(trans);
+                    if (wareProSn != null)
+                    {
+                        ivt_transfer_sn transSn = new ivt_transfer_sn()
+                        {
+                            id = itsDal.GetNextIdCom(),
+                            create_time = timeNow,
+                            update_time = timeNow,
+                            create_user_id = userId,
+                            update_user_id = userId,
+                            sn = wareProSn.sn,
+                            transfer_id = trans.id,
+                        };
+                        itsDal.Insert(transSn);
+                    }
+
+                    // 减少库存
+                    if (param.inWareProId != null)
+                    {
+                        var inWarePro = iwpDal.FindNoDeleteById((long)param.inWareProId);
+                        if (inWarePro != null&& inWarePro.quantity>0)
+                        {
+                            inWarePro.quantity -= 1;
+                            inWarePro.update_time = timeNow;
+                            inWarePro.update_user_id = userId;
+                            iwpDal.Update(inWarePro);
+
+                            if (param.inWareProSnId != null)
+                            {
+                                var inWareProSn = iwpsDal.FindNoDeleteById((long)param.inWareProSnId);
+                                if (inWareProSn != null)
+                                {
+                                    iwpsDal.SoftDelete(inWareProSn,userId);
+                                }
+                            }
+
+                        }
+                    }
+                        
+
+
+                }
+            }
+            catch (Exception msg)
+            {
+                
+            }
+            
+        }
+        /// <summary>
+        /// 配置项是否需要合同审核
+        /// </summary>
+        public bool ReviewInsPro(long insProId,bool isReview,long userId)
+        {
+            var thisInsPro = _dal.FindNoDeleteById(insProId);
+            if (thisInsPro == null)
+                return false;
+            if (thisInsPro.contract_id != null)
+                isReview = true;
+            sbyte isView = (sbyte)(isReview?1:0);
+            if(thisInsPro.reviewed_for_contract!= isView)
+            {
+                var oldInsPro = _dal.FindNoDeleteById(insProId);
+                thisInsPro.reviewed_for_contract = isView;
+                thisInsPro.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                thisInsPro.update_user_id = userId;
+                _dal.Update(thisInsPro);
+                OperLogBLL.OperLogUpdate<crm_installed_product>(thisInsPro, oldInsPro, thisInsPro.id, userId, OPER_LOG_OBJ_CATE.CONFIGURAITEM, "");
+
+            }
+            return true;
+        }
+
     }
 }

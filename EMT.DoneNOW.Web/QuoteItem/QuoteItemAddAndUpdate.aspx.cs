@@ -334,7 +334,6 @@ namespace EMT.DoneNOW.Web.QuoteItem
 
                     break;
                 case (int)QUOTE_ITEM_TYPE.DISCOUNT:
-
                     break;
                 case (int)QUOTE_ITEM_TYPE.PRODUCT:
                     var wareIds = Request.Form["wareIds"];

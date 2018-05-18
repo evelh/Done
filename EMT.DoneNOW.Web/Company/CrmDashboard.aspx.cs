@@ -60,12 +60,13 @@ namespace EMT.DoneNOW.Web.Company
         protected long? terrId;              // 区域Id
         protected string terResIds;          // 该区域下的所有负责人的Id 集合
         protected OpportunityBLL oppBLl = new OpportunityBLL();
+        protected List<sys_resource_sales_quota> resQuotaList;
         protected void Page_Load(object sender, EventArgs e)
         {
             // 今天生成的待办数量
             // 过期的待办
             // 打开的指派给其他人的待办
-
+            // sys_resource_sales_quota
             //  需要更新的商机
             // 昨天的工单 | 今天的工单
             queryType = Request.QueryString["queryType"];
@@ -121,7 +122,7 @@ namespace EMT.DoneNOW.Web.Company
                
 
                 overdueTodoCount = Convert.ToInt32(caDal.GetSingle($"SELECT count(1) from com_activity act INNER JOIN crm_account ca on act.account_id = ca.id  where act.cate_id = {(int)DTO.DicEnum.ACTIVITY_CATE.TODO} and ca.delete_time = 0 and act.delete_time = 0  and act.status_id = {(int)DTO.DicEnum.ACTIVITY_STATUS.NOT_COMPLETED} and act.end_date<={timeNow} "+ accountLimitSql + (terrId == 0 ? $"" : $" and act.resource_id in({(string.IsNullOrEmpty(terResIds) ? "''" : terResIds)})")));
-                myAsignToOtherCount = Convert.ToInt32(caDal.GetSingle($"SELECT count(1) from com_activity act INNER JOIN crm_account ca on act.account_id = ca.id  where act.cate_id = {(int)DTO.DicEnum.ACTIVITY_CATE.TODO} and ca.delete_time = 0 and act.delete_time = 0 "+ accountLimitSql + (terrId ==0?$" and create_user_id <> resource_id" : $" and act.create_user_id in({(string.IsNullOrEmpty(terResIds)?"''": terResIds)})")));
+                myAsignToOtherCount = Convert.ToInt32(caDal.GetSingle($"SELECT count(1) from com_activity act INNER JOIN crm_account ca on act.account_id = ca.id  where act.cate_id = {(int)DTO.DicEnum.ACTIVITY_CATE.TODO} and ca.delete_time = 0 and act.delete_time = 0 "+ accountLimitSql + (terrId ==0?$" and act.create_user_id <> act.resource_id" : $" and act.create_user_id in({(string.IsNullOrEmpty(terResIds)?"''": terResIds)})")));
 
                 needEditOppoCount = Convert.ToInt32(caDal.GetSingle($"SELECT count(1) from crm_opportunity cp inner join crm_account ca on cp.account_id = ca.id  where cp.delete_time = 0  and projected_close_date < '{DateTime.Now.ToString("yyyy-MM-dd")}' and status_id ={(int)DicEnum.OPPORTUNITY_STATUS.ACTIVE} " + accountLimitSql + oppoLimitSql + (terrId == 0 ? "" : (string.IsNullOrEmpty(terResIds) ? " and cp.resource_id in('')" : $" and cp.resource_id in({terResIds})"))));
                 yesTicketCount = Convert.ToInt32(caDal.GetSingle($"SELECT count(1) FROM sdk_task st INNER JOIN crm_account ca on st.account_id = ca.id where st.type_id in (1809,1818)  and st.create_time <={Tools.Date.DateHelper.ToUniversalTimeStamp(yesEnd)} and st.create_time>={Tools.Date.DateHelper.ToUniversalTimeStamp(yesStart)}" + (string.IsNullOrEmpty(terResIds) ? "" : $" and ca.resource_id in({terResIds})")));
@@ -159,6 +160,8 @@ namespace EMT.DoneNOW.Web.Company
                     else
                         accClassWhere = $" and resource_id in('')";
                 }
+                if (!string.IsNullOrEmpty(terResIds))
+                    resQuotaList = new DAL.sys_resource_sales_quota_dal().GetQuotaByResIds(terResIds,DateTime.Now.Year, DateTime.Now.Month);
 
             }
             else if (resourceId != null)
@@ -212,7 +215,7 @@ namespace EMT.DoneNOW.Web.Company
                             terrAccDic.Add(_.territory_id, Convert.ToInt32(caDal.GetSingle($"SELECT COUNT(1) from crm_account where delete_time = 0 and territory_id =" + _.id.ToString())));
                         });
                 }
-               
+                resQuotaList = new DAL.sys_resource_sales_quota_dal().GetQuotaByResIds(resourceId.ToString(), DateTime.Now.Year, DateTime.Now.Month);
 
             }
             if (monthClosedOppoList != null && monthClosedOppoList.Count > 0)
@@ -239,6 +242,19 @@ namespace EMT.DoneNOW.Web.Company
                     classAccDic.Add(_.id, Convert.ToInt32(caDal.GetSingle($"SELECT COUNT(1) from crm_account ca where delete_time = 0 and classification_id ="+_.id.ToString()+" " + accClassWhere)));
                 })
 ;            }
+
+            if(resQuotaList!=null&& resQuotaList.Count > 0)
+            {
+                quotaAmount = resQuotaList.Sum(_ => _.amount ?? 0);
+                quotaProdess = resQuotaList.Sum(_ => _.opportunity_ext1 ?? 0);
+                quotaTrains = resQuotaList.Sum(_ => _.opportunity_ext2 ?? 0);
+                quotaHardware = resQuotaList.Sum(_ => _.opportunity_ext3 ?? 0);
+                quotaMonthFee = resQuotaList.Sum(_ => _.opportunity_ext4 ?? 0);
+                quotaOther = resQuotaList.Sum(_ => _.opportunity_ext5 ?? 0);
+            }
+
+            
+
         }
     }
 }

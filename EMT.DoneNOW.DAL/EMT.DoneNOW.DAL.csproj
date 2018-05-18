@@ -91,6 +91,7 @@
     <Compile Include="CRM\crm_account_deduction_dal.cs" />
     <Compile Include="CRM\crm_account_reference_dal.cs" />
     <Compile Include="CRM\crm_account_territory_dal.cs" />
+    <Compile Include="CRM\crm_contact_action_tmpl_dal.cs" />
     <Compile Include="CRM\crm_contact_dal.cs" />
     <Compile Include="CRM\crm_contact_group_contact_dal.cs" />
     <Compile Include="CRM\crm_contact_group_dal.cs" />
@@ -213,6 +214,7 @@
     <Compile Include="SYS\sys_resource_availability_dal.cs" />
     <Compile Include="SYS\sys_resource_department_dal.cs" />
     <Compile Include="SYS\sys_resource_internal_cost_dal.cs" />
+    <Compile Include="SYS\sys_resource_sales_quota_dal.cs" />
     <Compile Include="SYS\sys_resource_skill_dal.cs" />
     <Compile Include="SYS\sys_resource_territory_dal.cs" />
     <Compile Include="SYS\sys_role_dal.cs" />

@@ -9,9 +9,10 @@
     <link rel="stylesheet" href="../Content/reset.css" />
     <link href="../Content/DynamicContent.css" rel="stylesheet" />
     <link rel="stylesheet" href="../Content/NewWorkType.css" />
-
-
     <style>
+        body{
+            background-color:white;
+        }
         .empty_row {
             height: 8px;
             border-top: solid 1px #d3d3d3;

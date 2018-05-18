@@ -183,6 +183,7 @@ namespace EMT.DoneNOW.BLL
                 ticket.sla_start_time = timeNow;
             ticket.id = _dal.GetNextIdCom();
             ticket.create_time = timeNow;
+            ticket.estimated_begin_time = timeNow;
             ticket.create_user_id = user_id;
             ticket.update_time = timeNow;
             ticket.update_user_id = user_id;

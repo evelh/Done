@@ -194,6 +194,10 @@ namespace EMT.DoneNOW.Web.QuoteItem
                         //        break;
                         //}
                         // ClientScript.RegisterStartupScript(this.GetType(), "提示信息", "<script> $(\"#groupBy\").val('"+groupBy+"')</script>"); 
+                        if(discountQIList!=null&& discountQIList.Count > 0)
+                        {
+                            discountQIList.ForEach(_ => { if (_.discount_percent != null) { _.discount_percent = _.discount_percent / 100; } });
+                        }
                     }
 
                 }

@@ -14,6 +14,7 @@ namespace EMT.DoneNOW.Web.Contact
     {
         protected bool isAdd = true;
         protected crm_contact_group pageGroup;
+        protected bool isCopy = false;
         protected void Page_Load(object sender, EventArgs e)
         {
             var id = Request.QueryString["id"];
@@ -21,6 +22,9 @@ namespace EMT.DoneNOW.Web.Contact
                 pageGroup = new ContactBLL().GetGroupById(long.Parse(id));
             if (pageGroup != null)
                 isAdd = false;
+            if (Request.QueryString["isCopy"] == "1")
+                isAdd = true; isCopy = true;
+                
         }
     }
 }

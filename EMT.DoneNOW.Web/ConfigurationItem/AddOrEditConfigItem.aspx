@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddOrEditConfigItem.aspx.cs" Inherits="EMT.DoneNOW.Web.ConfigurationItem.AddOrEditConfigItem" EnableEventValidation="false"  %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddOrEditConfigItem.aspx.cs" Inherits="EMT.DoneNOW.Web.ConfigurationItem.AddOrEditConfigItem" EnableEventValidation="false" %>
 
 <!DOCTYPE html>
 
@@ -358,16 +358,62 @@
         .NoneBorder {
             border: none;
         }
+
         select.sl_cdt {
-    width: 150px;
-}
+            width: 150px;
+        }
+         .grid thead tr td {
+            background-color: #cbd9e4;
+            border-color: #98b4ca;
+            color: #64727a;
+        }
+
+        .grid {
+            font-size: 12px;
+            background-color: #FFF;
+        }
+
+            .grid thead td {
+                border-width: 1px;
+                border-style: solid;
+                font-size: 13px;
+                font-weight: bold;
+                height: 19px;
+                padding: 4px 4px 4px 4px;
+                word-wrap: break-word;
+                vertical-align: top;
+            }
+
+            .grid table {
+                border-collapse: collapse;
+                width: 100%;
+                border-bottom-width: 1px;
+                /*border-bottom-style: solid;*/
+            }
+
+            .grid tbody td {
+                border-width: 1px;
+                border-style: solid;
+                border-left-color: #F8F8F8;
+                border-right-color: #F8F8F8;
+                border-top-color: #e8e8e8;
+                border-bottom-width: 0;
+                padding: 4px 4px 4px 4px;
+                vertical-align: top;
+                word-wrap: break-word;
+                font-size: 12px;
+                color: #333;
+            }
+            #save_add,#save,#save_close{
+                    background: rgb(240, 240, 240);
+            }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
         <div class="TitleBar">
             <div class="Title">
-                <span class="text1"><%=isAdd?"新增":"修改" %>配置项</span>
+                <span class="text1"><%=isAdd ? "新增" : "修改" %>配置项</span>
                 <a href="###" class="collection"></a>
                 <a href="###" class="help"></a>
             </div>
@@ -407,7 +453,7 @@
                     <span class="Icon" style="width: 0; margin: 0;"></span>
                     <span class="Text" onclick="ViewAccountSite()">站点配置</span>
                 </li>
-                <li class="Button ButtonIcon Appendix NormalState" id="OtherConfigurationItems" tabindex="0">
+                <li class="Button ButtonIcon Appendix NormalState" id="OtherConfigurationItems" onclick="ShowOtherInsPro()">
                     <span class="Icon" style="width: 0; margin: 0;"></span>
                     <span class="Text">其他配置项</span>
                 </li>
@@ -419,7 +465,7 @@
                     <tbody>
                         <tr>
                             <td class="RightClickMenuItemIcon" align="center" valign="middle">
-                                <img src="../Images/copy.png" alt="">
+                                <img src="../Images/copy.png" alt=""/>
                             </td>
                             <td class="RightClickMenuItemText">
                                 <span class="lblNormalClass">复制</span>
@@ -433,7 +479,7 @@
                     <tbody>
                         <tr>
                             <td class="RightClickMenuItemIcon" align="center" valign="middle">
-                                <img src="../Images/refresh.png" alt="">
+                                <img src="../Images/refresh.png" alt=""/>
                             </td>
                             <td class="RightClickMenuItemText">
                                 <span class="lblNormalClass">替换</span>
@@ -447,7 +493,7 @@
                     <tbody>
                         <tr>
                             <td class="RightClickMenuItemIcon" align="center" valign="middle">
-                                <img src="../Images/employees.png" alt="">
+                                <img src="../Images/employees.png" alt=""/>
                             </td>
                             <td class="RightClickMenuItemText">
                                 <span class="lblNormalClass">谁能看这个？</span>
@@ -507,14 +553,14 @@
                                                     产品 <span style="color: Red;">*</span>
                                                             <div>
                                                                 <span style="display: inline-block;">
-                                                                    <input type="text" name="productName" id="product_id" value="<%=product==null?"":product.name %>" /></span>
+                                                                    <input type="text" name="productName" id="product_id" value="<%=product == null ? "" : product.name %>" /></span>
                                                                 <a onclick="chooseProduct()" class="DataSelectorLinkIcon">
                                                                     <img src="../Images/data-selector.png" alt="" /></a>
                                                                 <a id="EditProduct" onclick="EditProduct()" style="display: none;" class="DataSelectorLinkIcon">
                                                                     <img src="../Images/edit.png" alt="" /></a>
 
 
-                                                                <input type="hidden" name="product_id" id="product_idHidden" value="<%=product==null?"":product.id.ToString() %>" />
+                                                                <input type="hidden" name="product_id" id="product_idHidden" value="<%=product == null ? "" : product.id.ToString() %>" />
 
                                                             </div>
                                                         </td>
@@ -535,18 +581,18 @@
                                                         </td>
                                                         <td class="FieldLabel" style="width: 330px;">所属客户
                                                     <div>
-                                                        <input type="text" id="account_id" value="<%=account!=null?account.name:"" %>"/>
+                                                        <input type="text" id="account_id" value="<%=account != null ? account.name : "" %>" />
                                                         <%--<a href="../Company/ViewCompany.aspx?id=<%=account.id %>"><%=account.name %></a>--%>
-                                                        <input type="hidden" name="account_id" id="account_idHidden" value="<%=account!=null?account.id.ToString():"" %>" />
+                                                        <input type="hidden" name="account_id" id="account_idHidden" value="<%=account != null ? account.id.ToString() : "" %>" />
                                                         <% if (account != null)
                                                             { %>
-                                                             <a class="DataSelectorLinkIcon">
-                                                                    <img src="../Images/data-selector.png" alt="" /></a>
+                                                        <a class="DataSelectorLinkIcon">
+                                                            <img src="../Images/data-selector.png" alt="" /></a>
                                                         <%}
-                                                        else
-                                                        { %>
-                                                           <a class="DataSelectorLinkIcon" onclick="ChooseAccount()">
-                                                                    <img src="../Images/data-selector.png" alt="" /></a>
+                                                            else
+                                                            { %>
+                                                        <a class="DataSelectorLinkIcon" onclick="ChooseAccount()">
+                                                            <img src="../Images/data-selector.png" alt="" /></a>
                                                         <%} %>
                                                     </div>
                                                         </td>
@@ -592,16 +638,16 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="FieldLabel">安装日期<span style="color: Red;">*</span>
-                                                    <div>
-                                                        <span style="display: inline-block;">
-                                                            <input type="text" onclick="WdatePicker()" class="Wdate" name="start_date" id="start_date" value="<%=(!isAdd)&&iProduct.start_date!=null?((DateTime)iProduct.start_date).ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" />
-                                                        </span>
-                                                    </div>
+                                                            <div>
+                                                                <span style="display: inline-block;">
+                                                                    <input type="text" onclick="WdatePicker()" class="Wdate" name="start_date" id="start_date" value="<%=(!isAdd) && iProduct.start_date != null ? ((DateTime)iProduct.start_date).ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd") %>" />
+                                                                </span>
+                                                            </div>
                                                         </td>
                                                         <td class="FieldLabel" style="cursor: pointer; margin-left: 2px; margin-bottom: -3px;">位置 <%--<span style="color: Red;">*</span>--%>
                                                             <div>
                                                                 <span style="display: inline-block;">
-                                                                    <input type="text" style="width: 250px;" name="location" id="location" value="<%=(!isAdd)&&iProduct.location!=null?iProduct.location:"" %>" /></span>
+                                                                    <input type="text" style="width: 250px;" name="location" id="location" value="<%=(!isAdd) && iProduct.location != null ? iProduct.location : "" %>" /></span>
 
                                                             </div>
 
@@ -609,17 +655,17 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="FieldLabel">质保过期日期<span style="color: Red;">*</span>
-                                                       <div>
-                                                           <span style="display: inline-block;">
-                                                               <input type="text" onclick="WdatePicker()" class="Wdate" name="through_date" id="through_date" value="<%=(!isAdd)&&iProduct.through_date!=null?((DateTime)iProduct.through_date).ToString("yyyy-MM-dd"):DateTime.Now.AddYears(1).ToString("yyyy-MM-dd") %>" />
-                                                           </span>
-                                                       </div>
+                                                            <div>
+                                                                <span style="display: inline-block;">
+                                                                    <input type="text" onclick="WdatePicker()" class="Wdate" name="through_date" id="through_date" value="<%=(!isAdd) && iProduct.through_date != null ? ((DateTime)iProduct.through_date).ToString("yyyy-MM-dd") : DateTime.Now.AddYears(1).ToString("yyyy-MM-dd") %>" />
+                                                                </span>
+                                                            </div>
                                                         </td>
                                                         <td class="FieldLabel" style="cursor: pointer; margin-left: 2px; margin-bottom: -3px;">合同
                                                             <div>
 
-                                                                <input type="text" name="contract_name" id="contract_id" value="<%=contract!=null?contract.name:"" %>" />
-                                                                <input type="hidden" name="contract_id" id="contract_idHidden" value="<%=contract!=null?contract.id.ToString():"" %>" />
+                                                                <input type="text" name="contract_name" id="contract_id" value="<%=contract != null ? contract.name : "" %>" />
+                                                                <input type="hidden" name="contract_id" id="contract_idHidden" value="<%=contract != null ? contract.id.ToString() : "" %>" />
                                                                 <a onclick="chooseContract()" class="DataSelectorLinkIcon">
                                                                     <img src="../Images/data-selector.png" alt="" /></a>
 
@@ -630,7 +676,7 @@
                                                         <td class="FieldLabel">序列号 
                                                     <div>
                                                         <span style="display: inline-block;">
-                                                            <input type="text" style="width: 250px;" name="serial_number" id="serial_number" value="<%=(!isAdd)&&iProduct.serial_number!=null?iProduct.serial_number:"" %>" /></span>
+                                                            <input type="text" style="width: 250px;" name="serial_number" id="serial_number" value="<%=(!isAdd) && iProduct.serial_number != null ? iProduct.serial_number : "" %>" /></span>
                                                     </div>
                                                         </td>
                                                         <td class="FieldLabel">服务/服务集
@@ -645,7 +691,7 @@
                                                         <td class="FieldLabel">参考号 
                                                     <div>
                                                         <span style="display: inline-block;">
-                                                            <input type="text" style="width: 250px;" name="reference_number" id="reference_number" value="<%=(!isAdd)&&iProduct.reference_number!=null?iProduct.reference_number:"" %>" /></span>
+                                                            <input type="text" style="width: 250px;" name="reference_number" id="reference_number" value="<%=(!isAdd) && iProduct.reference_number != null ? iProduct.reference_number : "" %>" /></span>
                                                     </div>
                                                         </td>
                                                         <td class="FieldLabel" style="cursor: pointer; margin-left: 2px; margin-bottom: -3px;">
@@ -653,8 +699,10 @@
                                                             <div>
                                                                 <span style="display: inline-block;">
                                                                     <span class="txtBlack8Class">
-                                                                        <%--               <label>是否经过合同审核</label>
-                                                               <asp:CheckBox ID="Reviewed_for_contract" runat="server" />--%>
+                                                                               <label>是否经过合同审核</label>
+                                                                        <input name="ckByContract" id="ckByContract" type="checkbox" <%if (iProduct != null && iProduct.reviewed_for_contract == 1)
+                                                                            {  %> checked="checked" <%} %> />
+                                                               <%--        <asp:CheckBox ID="Reviewed_for_contract" runat="server" />--%>
                                                                
                                                                     </span>
                                                                 </span>
@@ -665,7 +713,7 @@
                                                         <td class="FieldLabel">参考名称 
                                                     <div>
                                                         <span style="display: inline-block;">
-                                                            <input type="text" style="width: 250px;" name="reference_name" id="reference_name" value="<%=(!isAdd)&&iProduct.reference_name!=null?iProduct.reference_name:"" %>" /></span>
+                                                            <input type="text" style="width: 250px;" name="reference_name" id="reference_name" value="<%=(!isAdd) && iProduct.reference_name != null ? iProduct.reference_name : "" %>" /></span>
                                                     </div>
                                                         </td>
                                                         <td>物料成本
@@ -677,7 +725,7 @@
                                                         <td class="FieldLabel">用户数 
                                                     <div>
                                                         <span style="display: inline-block;">
-                                                            <input type="text" style="width: 250px;" name="number_of_users" id="number_of_users" value="<%=(!isAdd)&&iProduct.number_of_users!=null?((decimal)iProduct.number_of_users).ToString("0"):"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" class="Number" /></span>
+                                                            <input type="text" style="width: 250px;" name="number_of_users" id="number_of_users" value="<%=(!isAdd) && iProduct.number_of_users != null ? ((decimal)iProduct.number_of_users).ToString("0") : "" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" class="Number" /></span>
                                                     </div>
                                                         </td>
                                                         <td class="FieldLabel">供应商
@@ -702,7 +750,7 @@
                                                     <tr>
                                                         <td colspan="4" class="FieldLabel">备注
                                                     <div>
-                                                        <textarea style="height: 80px; width: 640px; resize: none;" name="notes"><%=isAdd?"":iProduct.remark %></textarea>
+                                                        <textarea style="height: 80px; width: 640px; resize: none;" name="notes"><%=isAdd ? "" : iProduct.remark %></textarea>
                                                     </div>
                                                         </td>
                                                     </tr>
@@ -745,7 +793,7 @@
                                                         <td class="ip_general_label_udf">
                                                             <div class="clear">
                                                                 <label><%=udf.name %></label>
-                                                                <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=(!isAdd)&&iProduct_udfValueList!=null&&iProduct_udfValueList.Count>0?iProduct_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
+                                                                <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=(!isAdd) && iProduct_udfValueList != null && iProduct_udfValueList.Count > 0 ? iProduct_udfValueList.FirstOrDefault(_ => _.id == udf.id).value : "" %>" />
                                                             </div>
 
                                                         </td>
@@ -757,7 +805,7 @@
                                                         <td class="ip_general_label_udf">
                                                             <div class="clear">
                                                                 <label><%=udf.name %></label>
-                                                                <textarea name="<%=udf.id %>" rows="2" cols="20"><%=iProduct_udfValueList!=null&&iProduct_udfValueList.Count>0?iProduct_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %></textarea>
+                                                                <textarea name="<%=udf.id %>" rows="2" cols="20"><%=iProduct_udfValueList != null && iProduct_udfValueList.Count > 0 ? iProduct_udfValueList.FirstOrDefault(_ => _.id == udf.id).value : "" %></textarea>
                                                             </div>
 
                                                         </td>
@@ -769,7 +817,7 @@
                                                                 <div class="clear">
                                                                     <label><%=udf.name %></label>
 
-                                                                    <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=iProduct_udfValueList!=null&&iProduct_udfValueList.Count>0?iProduct_udfValueList.FirstOrDefault(_=>_.id==udf.id).value.ToString():"" %>" />
+                                                                    <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=iProduct_udfValueList != null && iProduct_udfValueList.Count > 0 ? iProduct_udfValueList.FirstOrDefault(_ => _.id == udf.id).value.ToString() : "" %>" />
                                                                 </div>
 
                                                             </td>
@@ -781,7 +829,7 @@
                                                         <td class="ip_general_label_udf">
                                                             <div class="clear">
                                                                 <label><%=udf.name %></label>
-                                                                <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" value="<%=iProduct_udfValueList!=null&&iProduct_udfValueList.Count>0?iProduct_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
+                                                                <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" value="<%=iProduct_udfValueList != null && iProduct_udfValueList.Count > 0 ? iProduct_udfValueList.FirstOrDefault(_ => _.id == udf.id).value : "" %>" />
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -832,6 +880,63 @@
                         <span class="lblNormalClass">关联配置项</span>
                     </div>
                     <div class="Content">
+                        <table id="ip_related_items_panel" name="ip_related_items_panel" class="Neweditsubsection" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="SectionLevelInstruction" style="color: #666666; padding-left: 0px; padding-bottom: 0px; margin-bottom: 10px; margin-left: 0px;">
+                                            若要关联其他配置项或将关联作为父或子删除，请导航到<a>其他配置项页</a> 并右键单击要关联的配置项。
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div id="ucInstalledProductGeneral_relateditemspanel">
+                                            <table id="ucInstalledProductGeneral_relateditemstable" cellspacing="0" cellpadding="0" border="0" style="width: 90%; border-collapse: collapse;">
+                                                <tbody>
+                                                    <%if (parentInsPro != null)
+                                                        {
+                                                            var parPro = ipDal.FindNoDeleteById(parentInsPro.product_id);
+                                                            if (parPro != null)
+                                                            {
+                                                    %>
+                                                    <tr>
+                                                        <td class="FieldLabel ip_general_label">父配置项</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <a onclick="EditInsPro('<%=parentInsPro.id %>')"><%=parPro.name %></a>
+                                                        </td>
+                                                    </tr>
+                                                    <%}
+                                                    } %>
+                                                    <%if (childInsProList != null && childInsProList.Count > 0)
+                                                        { %>
+                                                    <tr>
+                                                        <td class="FieldLabel ip_general_label ChildFieldLabel">子配置项</td>
+                                                    </tr>
+                                                    <%foreach (var insPro in childInsProList)
+                                                        {
+                                                            var thisPro = ipDal.FindNoDeleteById(insPro.product_id);
+                                                            if (thisPro == null)
+                                                            {
+                                                                continue;
+                                                            }
+                                                    %>
+                                                    <tr>
+                                                        <td>
+                                                            <a onclick="EditInsPro('<%=insPro.id %>')"><%=thisPro.name %></a>
+                                                        </td>
+                                                    </tr>
+                                                    <%} %>
+                                                    <%} %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -909,8 +1014,85 @@
                 </div>
             </div>--%>
         </div>
-        <div class="TabContainer" style="display: none;"></div>
-        <div class="TabContainer" style="display: none;"></div>
+        <div class="TabContainer" style="display: none;"><% if (!isAdd)
+                { %>
+            <iframe runat="server" id="view_ticket_iframe" height="500" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;width:100%;"></iframe>
+            <%} %></div>
+        <div class="TabContainer" style="display: none;">
+
+               <div id="DIVAttach" class="" style="visibility: visible; position: relative; top: 0px; left: 0px; display: block;">
+
+                    <table width="100%" cellpadding="5" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td>
+
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tbody>
+                                           <tr>
+                                               <td>
+                                                                        <div style="padding-bottom: 10px; text-align: left; padding-left: 40px;">
+                                                                            <a class="PrimaryLink" id="AddAttachmentLink" onclick="AddAttch()" style="    background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);border: 1px solid #bcbcbc;display: inline-block;color: #4F4F4F;cursor: pointer;padding: 0 5px 0 3px;position: relative;text-decoration: none;vertical-align: middle;height: 22px;margin-left: -4px;">
+                                                                                新增附件</a>
+                                                                        </div>
+                                           </td> </tr>          
+                                            <tr>
+                                                <td class="FieldLabels" style="text-align: left; padding-left: 40px;">
+                                                    <div class="grid">
+                                                        <input type="hidden" name="attIds" id="attIds" />
+                                                        <table width="100%" cellpadding="0" style="border-collapse: collapse; width: 600px;">
+                                                            <thead>
+                                                                <tr style="height: 21px;">
+                                                                    <td width="1%" style="min-width: 22px;">&nbsp;</td>
+                                                                    <td width="10%">类型</td>
+                                                                    <td width="20%">名称</td>
+                                                                    <td width="29%">文件名称</td>
+                                                                    <td width="20%" align="center" style="min-width:70px;">日期</td>
+                                                                    <td width="10%" align="right" style="min-width:70px;">大小</td>
+                                                                    <td width="10%" align="right" style="min-width:70px;">创建人</td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <%if (thisNoteAtt != null && thisNoteAtt.Count > 0)
+                                                                    {
+                                                                        foreach (var thisAtt in thisNoteAtt)
+                                                                        {
+                                                                            var thisCreate = resList.FirstOrDefault(_ => _.id == thisAtt.create_user_id);
+                                                                            %>
+                                                                <tr class="thisAttTR" id="<%=thisAtt.id %>" data-val="<%=thisAtt.id %>">
+                                                                    <td><a onclick="DeleteAttach('<%=thisAtt.id %>')">
+                                                                        <img src="../Images/delete.png" style="height: 15px; width: 15px; display: unset;" /></a></td>
+                                                                    <td></td>
+                                                                    <td><%=thisAtt.filename %></td>
+                                                                    <td><a onclick="OpenAttach('<%=thisAtt.id %>')"><%=thisAtt.filename %></a></td>
+                                                                   
+                                                                    <td align="center"><span id="DisplayValueForDateTime"><%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisAtt.create_time).ToString("yyyy-MM-dd") %></span></td>
+                                                                    <td align="right"><%=thisAtt.sizeinbyte!=null?attBll.HumanReadableFilesize((double)thisAtt.sizeinbyte):"" %></td>
+                                                                    <td><%=thisCreate!=null?thisCreate.name:"" %></td>
+                                                                </tr>
+                                                                <%
+                                                                        }
+                                                                    } %>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+        </div>
         <div class="TabContainer" style="display: none;">
             <div class="DivSection NoneBorder">
                 <table style="width: 720px;" border="0" cellpadding="0" cellspacing="0">
@@ -970,25 +1152,125 @@
         <div class="TabContainer" style="display: none;">
             <% if (!isAdd)
                 { %>
-            <iframe runat="server" id="viewSubscription_iframe" width="860" height="500" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
+            <iframe runat="server" id="viewSubscription_iframe" width="860" height="500" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;width:100%;"></iframe>
             <%} %>
         </div>
-        <div class="TabContainer" style="display: none;"></div>
-
-        <%--    <div id="menu">
-        <ul style="width: 220px;">
-            <li onclick=""><i class="menu-i1"></i>编辑</li>
-            <li onclick=""><i class="menu-i1"></i>更新</li>
-            <li onclick=""><i class="menu-i1"></i>取消</li>
-            <li onclick=""><i class="menu-i1"></i>失效</li>
-            <li onclick=""><i class="menu-i1"></i>删除</li>
-        </ul>
-    </div>--%>
+        <div class="TabContainer" style="display: none;">
+                 <div id="pnlTab_7" style="height: 100%; width: 100%;">
+                    <div id="Page7Panel" style="height: 453px; position: static; vertical-align: top; overflow-y: auto; overflow-x: hidden;">
+                        <div class="TabLevelInstruction">
+                            <span class="lblNormalClass" style="font-weight: normal;margin-left:10px;">选择收件人将会发送邮件</span>
+                        </div>
+                        <div class="DivSection" style="border-width: 0px; padding-left: 0px; padding-top: 0px; margin-left: 0px;">
+                            <div style="width: 780px; padding-left: 10px; padding-right: 10px;">
+                                <div class="DivSection" style="margin-left: 0px; padding-left: 7px; margin-right: 23px; background-color: #F0F5FB; border: 1px solid #D3D3D3; height: 127px;">
+                                    <div style="padding-left: 4px;">
+                                        <a href="#">全选</a>
+                                    </div>
+                                    <table border="0" style="width: 100%;" id="ChooseList">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 374px;"><span id="ctrlNotification_chkccMe"><span class="txtBlack8Class">
+                                                    <input id="ccMe" type="checkbox" name="ccMe" style="vertical-align: middle;" /><label style="vertical-align: middle;">抄送给我 </label>
+                                                </span></span><span class="lblNormalClass" style="font-weight: normal;">&nbsp;(<%=LoginUser.name %>)</span></td>
+                                                <td style="padding-left: 6px;"><span id="ctrlNotification_chkAcManager"><span class="txtBlack8Class">
+                                                    <input id="ccAccMan" type="checkbox" name="ccAccMan" style="vertical-align: middle;" /><label  style="vertical-align: middle;">客户经理</label></span></span><span id="notify_account_manage" class="lblNormalClass" style="font-weight: normal;"></span></td>
+                                            </tr>
+                                            <tr valign="top">
+                                                <td align="left"><span id="ctrlNotification_chkSendEmailFromHelpDesk"><span class="txtBlack8Class">
+                                                    <input id="sendFromSys" type="checkbox" name="sendFromSys" style="vertical-align: middle;" /><label  style="vertical-align: middle;">Send email from </label>
+                                                </span></span><span class="lblNormalClass" style="font-weight: normal;">&nbsp;hong.li@itcat.net.cn</span></td>
+                                                
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <table cellspacing="0" cellpadding="0" border="0" style="width: 100%; border-collapse: collapse;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 380px;"><span class="lblNormalClass" style="font-weight: bold;">联系人</span></td>
+                                            <td style="width: 380px; padding-right: 15px;"><span class="lblNormalClass" style="font-weight: bold;">员工 </span><a onclick="LoadRes()">(加载)</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="InnerGrid" style="background-color: White; height: 180px;">
+                                                    <span id="" style="display: inline-block; height: 112px; width: 382px;">
+                                                        <div id="" class="GridContainer">
+                                                            
+                                                            <div id="" style="height: 154px; width: 100%; overflow: auto; z-index: 0;">
+                                                                <div class='grid' style='overflow: auto; height: 147px;'>
+                                                                    <table width='100%' border='0' cellspacing='0' cellpadding='3'>
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <td width='1%'></td>
+                                                                                <td width='33%'>联系人姓名</td>
+                                                                                <td width='33%'>邮箱地址</td>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="conhtml">
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="InnerGrid" style="background-color: White; height: 180px; margin-right: -11px;">
+                                                    <span id="ctrlNotification_dgEmployees" style="display: inline-block; height: 112px; width: 382px;"><span></span>
+                                                        <div id="reshtml" style="width: 350px; height: 150px; border: 1px solid #d7d7d7; margin-bottom: 20px;">
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="padding-top: 11px;"><span class="lblNormalClass" style="font-weight: bold;">其他邮件地址<br>
+                                            </span><span id="ctrlNotification_otherEmails" style="display: inline-block; display: block;">
+                                                <input name="notify_others" type="text" id="notify_others" class="txtBlack8Class" style="width: 95%;" /></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="padding-top: 11px;"><span class="lblNormalClass" style="font-weight: bold;">模板
+                                                <br />
+                                            </span><span id="ctrlNotification_ddlTemplate" style="display: inline-block;">
+                                                <select name="notify_temp" id="notify_temp" class="txtBlack8Class" style="width: 100%;min-width: 500px;">
+                                                    <%if (tempList != null && tempList.Count > 0)
+                                                        {foreach (var temp in tempList)
+                                                            {%>
+                                                    <option value="<%=temp.id %>"><%=temp.name %></option>
+                                                    <%} } %>
+                                                </select></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="padding-top: 11px;"><span class="lblNormalClass" style="font-weight: bold;">主题<br>
+                                            </span><span id="ctrlNotification_txtsubject" style="display:inline-block; display: block;">
+                                                <input name="notify_title" type="text" value="" id="notify_title" class="txtBlack8Class" style="width: 95%;" /></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table cellspacing="0" cellpadding="0" border="0" style="width: 100%; margin-top: 11px;">
+                                    <tbody>
+                                        <tr style="padding: 0px;">
+                                            <td valign="bottom" colspan="2" style="width: 392px;"><span class="lblNormalClass" style="font-weight: bold;">附加邮件文本</span></td>
+                                        </tr>
+                                        <tr style="padding: 0px;">
+                                            <td valign="top" colspan="2"><span id="ctrlNotification_txtAddEmailText" style="display: inline-block; display: block;">
+                                                <textarea name="notify_description" id="notify_description" class="txtBlack8Class" style="height: 30px; width: 95%; margin-bottom: 15px;"></textarea>&nbsp;<%--<img id="ctrlNotification_txtAddEmailText_imgAdditionalText" src="/autotask/images/icons/zoom-in.png?v=45785" align="top" border="0" style="cursor: pointer;" />--%></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <input type="hidden" id="notifyConIds" name="notifyConIds" />
+                                <input type="hidden" id="notifyResIds" name="notifyResIds" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
     </form>
 </body>
 </html>
 <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
-
 <script src="../Scripts/index.js"></script>
 <script src="../Scripts/common.js"></script>
 <script src="../Scripts/Common/Address.js" type="text/javascript" charset="utf-8"></script>
@@ -1033,7 +1315,6 @@
     });
     $.each($(".TabBar a"), function (i) {
         $(this).click(function () {
-            debugger;
             var isadd = '<%=isAdd %>';
             if (isadd == 'True') {
                 var thisValue = $(this).children().first().text(); //配置项必须先保存，才能继续，请确认
@@ -1110,16 +1391,15 @@
 
 
     $(function () {
-        debugger;
         GetContactList();
          <%if (contract != null)
-         { %>
-            GetServiceByContract();
+    { %>
+        GetServiceByContract();
             <%
-         }
-         else
-         {%>
-            $("#service_id").prop("disabled", true);
+    }
+    else
+    {%>
+        $("#service_id").prop("disabled", true);
         <%}%>
 
 
@@ -1129,24 +1409,25 @@
         <%}
     else
     {
-       
+
 
         if (iProduct.contact_id != null)
         {%>
             $("#contact_id").val('<%=iProduct.contact_id.ToString() %>');
         <%}
-        if (iProduct.contract_id != null && (iProduct.service_id != null || iProduct.service_bundle_id != null))
+    if (iProduct.contract_id != null && (iProduct.service_id != null || iProduct.service_bundle_id != null))
+    {
+        EMT.DoneNOW.Core.ctt_contract_service conSer = null;
+        if (iProduct.service_id != null)
         {
-            EMT.DoneNOW.Core.ctt_contract_service conSer = null;
-            if(iProduct.service_id != null)
-            {
-                conSer = new EMT.DoneNOW.DAL.ctt_contract_service_dal().GetServiceByConSerId((long)iProduct.contract_id,(long)iProduct.service_id);
-            }else if( iProduct.service_bundle_id != null)
-            {
-                conSer = new EMT.DoneNOW.DAL.ctt_contract_service_dal().GetServiceByConSerId((long)iProduct.contract_id,(long)iProduct.service_bundle_id);
-            }
-            if (conSer != null)
-            {%>
+            conSer = new EMT.DoneNOW.DAL.ctt_contract_service_dal().GetServiceByConSerId((long)iProduct.contract_id, (long)iProduct.service_id);
+        }
+        else if (iProduct.service_bundle_id != null)
+        {
+            conSer = new EMT.DoneNOW.DAL.ctt_contract_service_dal().GetServiceByConSerId((long)iProduct.contract_id, (long)iProduct.service_bundle_id);
+        }
+        if (conSer != null)
+        {%>
             $("#service_id").val('<%=conSer.id.ToString() %>');
             <%}
 
@@ -1164,7 +1445,6 @@
                     url: "../Tools/ProductAjax.ashx?act=GetVendorInfo&product_id=" + product_id,
                     // data: { CompanyName: companyName },
                     success: function (data) {
-                        debugger;
                         if (data != "") {
                             var thisText = data.name + '(' + data.vendor_product_no + ')';
                             $("#manufacturer").text(thisText);
@@ -1191,11 +1471,11 @@
                 },
 
             });
-        
-           
+
+
         <%}%>
 
-        GetUdfByCate();
+            GetUdfByCate();
     })
     // contact_id
     $("#contact_id").change(function () {
@@ -1336,8 +1616,8 @@
             alert('请填写日成本！');
             return false;
         }
-
-
+        GetConIds();
+        GetResIds();
 
         return true;
     }
@@ -1366,8 +1646,9 @@
                 },
             });
         } else {
-            $("#contact_id").prop("disabled",true);
+            $("#contact_id").prop("disabled", true);
         }
+        GetConByAccount();
 
     }
 
@@ -1387,7 +1668,6 @@
                 // data: { CompanyName: companyName },
                 success: function (data) {
                     if (data != "") {
-                        debugger;
                         $("#EditProduct").css("display", "");
                         //$("#EditProduct").attr("click", EditProduct())
                         // $("#installed_product_cate_id").val(data.cate_id);   // 配置项种类
@@ -1463,7 +1743,6 @@
                 url: "../Tools/ProductAjax.ashx?act=GetVendorInfo&product_id=" + product_id,
                 // data: { CompanyName: companyName },
                 success: function (data) {
-                    debugger;
                     if (data != "") {
                         var thisText = data.name + '(' + data.vendor_product_no + ')';
                         $("#manufacturer").text(thisText);
@@ -1513,7 +1792,7 @@
                 url: "../Tools/ContractAjax.ashx?act=isService&contract_id=" + contract_id,
                 async: false,
                 success: function (data) {
-                    
+
                     if (data != "") {
                         $("#service_id").html(data);
                         $("#service_id").prop("disabled", false);
@@ -1523,11 +1802,13 @@
                     }
                 },
                 error: function (data) {
-                    debugger;
-                    console.log(data);
                 },
 
-            })
+            });
+            $("#ckByContract").prop("disabled", true);
+            $("#ckByContract").prop("checked", true);
+        } else {
+            $("#ckByContract").prop("disabled", false);
         }
     }
 
@@ -1556,12 +1837,130 @@
                     if (data != "") {
                         udfHtml = data;
                     }
-                   
+
                 }
             })
 
         }
 
         $("#insProHtml").html(udfHtml);
+    }
+
+    function EditInsPro(insProId) {
+        window.open("../ConfigurationItem/AddOrEditConfigItem.aspx?id=" + insProId, windowObj.configurationItem + windowType.edit, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+    }
+    function OpenAttach(attId) {
+        window.open("../Activity/OpenAttachment.aspx?id=" + attId, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASK_ATTACH %>', 'left=200,top=200,width=1080,height=800', false);
+
+    }
+    function DeleteAttach(attId) {
+        LayerConfirm("删除不能恢复，是否继续？", "是", "否", function () {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/AttachmentAjax.ashx?act=DeleteAttachment&id=" + attId,
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data) {
+                        $("#" + attId).remove();
+                    }
+                }
+            })
+        }, function () { });
+    }
+
+    function AddAttch() {
+        <% if (iProduct != null){ %>
+        window.open("../Activity/AddAttachment.aspx?objId=<%=iProduct.id %>&objType=<%=(int)EMT.DoneNOW.DTO.DicEnum.ATTACHMENT_OBJECT_TYPE.CONFIGITEM %>", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASK_ATTACH %>', 'left=200,top=200,width=1080,height=800', false);
+        <%}%> 
+    }
+
+    function LoadRes() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/ResourceAjax.ashx?act=GetResAndWorkGroup",
+            success: function (data) {
+                if (data != "") {
+                    var resList = JSON.parse(data);
+                    var resHtml = "";
+                    resHtml += "<div class='grid' style='overflow: auto;height: 147px;'><table width='100%' border='0' cellspacing='0' cellpadding='3'><thead><tr><td width='1%'></td><td width='33%'>员工姓名</td ><td width='33%'>邮箱地址</td></tr ></thead ><tbody>";// <input type='checkbox' id='checkAll'/>
+                    for (var i = 0; i < resList.length; i++) {
+                        resHtml += "<tr><td><input type='checkbox' value='" + resList[i].id + "' class='" + resList[i].type + "' /></td><td>" + resList[i].name + "</td><td><a href='mailto:" + resList[i].email + "'>" + resList[i].email + "</a></td></tr>";
+                    }
+                    resHtml += "</tbody></table></div>";
+
+                    $("#reshtml").html(resHtml);
+                }
+            },
+        });
+    }
+    function GetConByAccount() {
+        var html = "";
+        var accountIdHidden = $("#account_idHidden").val();
+        if (accountIdHidden != "") {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ContactAjax.ashx?act=GetContacts&account_id=" + accountIdHidden,
+                success: function (data) {
+                    if (data != "") {
+                        html = data;
+                    }
+                },
+            });
+        }
+        $("#conhtml").html(html);
+    }
+    $("#notify_temp").change(function () {
+        var thisTempId = $(this).val();
+        if (thisTempId != "") {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/GeneralAjax.ashx?act=GetNotiTempEmail&temp_id=" + thisTempId,
+                dataType: "json",
+                success: function (data) {
+                    if (data != "") {
+                        if (data.subject != "" && data.subject != null && data.subject != undefined) {
+                            $("#notify_title").val(data.subject);
+                        }
+                    }
+                },
+            });
+        }
+    })
+
+    function GetConIds() {
+        var ids = "";
+        $(".checkCon").each(function () {
+            if ($(this).is(":checked")) {
+                ids += $(this).val() + ','
+            }
+        })
+        if (ids != "") {
+            ids = ids.substring(0, ids.length - 1);
+        }
+        $("#notifyConIds").val(ids);
+    }
+
+    function GetResIds() {
+        var ids = "";
+        $(".checkRes").each(function () {
+            if ($(this).is(":checked")) {
+                ids += $(this).val() + ','
+            }
+        })
+        if (ids != "") {
+            ids = ids.substring(0, ids.length - 1);
+        }
+        $("#notifyResIds").val(ids);
+    }
+
+    function ShowOtherInsPro() {
+        <%if (iProduct != null)
+    { %>
+        window.open("../ConfigurationItem/OtherConfigItem.aspx?insProId=<%=iProduct.id %>", '_blank', 'left=200,top=200,width=1080,height=800', false);
+        <%} %>
     }
 </script>

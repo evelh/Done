@@ -91,7 +91,9 @@ namespace EMT.DoneNOW.Core
         public Int64? extension_adapter_disovery_data_id { get; set; }
         [DataMember]
         public Int64? contract_cost_id { get; set; }
+        [DataMember]
+        public SByte reviewed_for_contract { get; set; }
 
-
+        
     }
 }

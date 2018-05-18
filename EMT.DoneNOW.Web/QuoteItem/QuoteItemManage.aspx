@@ -452,7 +452,7 @@
                                 <td></td>
                                 <td></td>
 
-                                <td><%=quoteItem.discount_percent!=null?(quoteItem.discount_percent*100).ToString()+"%":"" %></td>
+                                <td><%=quoteItem.discount_percent!=null?((decimal)quoteItem.discount_percent*100).ToString("#0.00")+"%":"" %></td>
                                 <td><%=oneTimeList!=null&&oneTimeList.Count>0?(decimal.Round(decimal.Parse((oneTimeList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0)*quoteItem.discount_percent).ToString()),2).ToString()):"" %></td>
                                 <td></td>
                                 <td></td>
@@ -1017,7 +1017,7 @@
                                 <td></td>
                                 <td></td>
 
-                                <td><%=quoteItem.discount_percent!=null?(quoteItem.discount_percent*100).ToString()+"%":"" %></td>
+                                <td><%=quoteItem.discount_percent!=null?((decimal)quoteItem.discount_percent*100).ToString("#0.00")+"%":"" %></td>
                                 <td><%=oneTimeList!=null&&oneTimeList.Count>0?(decimal.Round(decimal.Parse((oneTimeList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0)*quoteItem.discount_percent).ToString()),2).ToString()):"" %></td>
                                 <td></td>
                                 <td></td>
@@ -1513,7 +1513,7 @@
                                 <td></td>
                                 <td></td>
 
-                                <td><%=quoteItem.discount_percent!=null?(quoteItem.discount_percent*100).ToString()+"%":"" %></td>
+                                <td><%=quoteItem.discount_percent!=null?((decimal)quoteItem.discount_percent*100).ToString("#0.00")+"%":"" %></td>
                                 <td><%=oneTimeList!=null&&oneTimeList.Count>0?(decimal.Round(decimal.Parse((oneTimeList.Sum(_ => (_.unit_discount != null && _.unit_price != null && _.quantity != null) ? (_.unit_price - _.unit_discount) * _.quantity : 0)*quoteItem.discount_percent/100*100).ToString()),2).ToString()):"" %></td>
                                 <td></td>
                                 <td></td>

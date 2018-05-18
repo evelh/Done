@@ -95,6 +95,7 @@
     <Compile Include="PurchaseOrderItemManageDto.cs" />
     <Compile Include="SdkWorkEntryDto.cs" />
     <Compile Include="ServiceCallDto.cs" />
+    <Compile Include="SwapConfigItemDto.cs" />
     <Compile Include="TaskNoteDto.cs" />
     <Compile Include="TaskSaveDto.cs" />
     <Compile Include="TaskServiceCallDto.cs" />
