@@ -216,6 +216,12 @@
     <Content Include="Images\dashboard_salesmetrics.png" />
     <Content Include="Images\WorklistGripper.png" />
     <Content Include="Images\WorklistIcons.svg" />
+    <Content Include="Images\arrowlefttwo.png" />
+    <Content Include="Images\arrowright.png" />
+    <Content Include="Images\arrowdown.png" />
+    <Content Include="Images\arrowup.png" />
+    <Content Include="Images\arrowleft.png" />
+    <Content Include="Images\arrowrighttow.png" />
     <Content Include="Scripts\clipboard.js" />
     <Content Include="Scripts\clipboard.min.js" />
     <Content Include="Scripts\Dashboard\Dashboard.js" />
@@ -245,8 +251,6 @@
     <Content Include="Scripts\Search\ResourcePolicyAssignment.js" />
     <Content Include="Scripts\Search\ResourceServiceDeskQueue.js" />
     <Content Include="Scripts\Search\TimeoffMyBalance.js" />
-    <Content Include="Scripts\Search\TimeoffRequestWidgetDrill.js" />
-    <Content Include="Scripts\Search\TimesheetWidgetDrill.js" />
     <Content Include="Scripts\SidebarDrag.js" />
     <Content Include="Scripts\Search\WidgetDrillInvoiceItems.js" />
     <Content Include="Scripts\Search\WidgetDrillMilestones.js" />

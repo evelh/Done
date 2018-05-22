@@ -23,6 +23,41 @@ function RefreshWidget(id) {
     }, 500)
 }
 
+function SettingWidget(id) {
+    LayerLoad();
+    requestData("/Tools/DashboardAjax.ashx?act=GetWidget&id=" + id, null, function (data) {
+        if (data[0] != null) {
+            $("#cover").show();
+            LayerLoadClose();
+            AddWidgetStep1(data);
+        }
+        else {
+            LayerLoadClose();
+            LayerMsg("小窗口错误!");
+        }
+    })
+}
+
+function CopyWidget(id) {
+    if ($('#dshli' + CurrentDashboardId()).children('.WidgetShell').length >= 12) {
+        $('#cover').show();
+        $("#AddWidgetRemind").show();
+        return;
+    }
+    LayerLoad();
+    requestData("/Tools/DashboardAjax.ashx?act=GetWidget&id=" + id, null, function (data) {
+        if (data[0] != null) {
+            $("#cover").show();
+            LayerLoadClose();
+            AddWidgetStep1(data, 1);
+        }
+        else {
+            LayerLoadClose();
+            LayerMsg("小窗口错误!");
+        }
+    })
+}
+
 function DeleteWidget(id) {
     LayerConfirmOk("删除操作将不能恢复，是否继续?", "确定", "取消", function () {
         requestData("/Tools/DashboardAjax.ashx?act=DeleteWidget&id=" + id, null, function (data) {
@@ -46,7 +81,13 @@ $('input:radio[name="addWidgetType"]').click(function () {
 })
 var widgetEntityList;
 var widgetTypeList;
+var widgetDynamicDateTypes;
 function AddWidgetStep0() {
+    if ($('#dshli' + CurrentDashboardId()).children('.WidgetShell').length >= 12) {
+        $('#cover').show();
+        $("#AddWidgetRemind").show();
+        return;
+    }
     ShowLoading();
     setTimeout(function () {
         requestData("/Tools/DashboardAjax.ashx?act=GetWidgetEntityList", null, function (data) {
@@ -79,7 +120,7 @@ function WidgetEntityChange() {
     for (var i = 0; i < ett.type.length; i++) {
         for (var j = 0; j < widgetTypeList.length; j++) {
             if (ett.type[i] == widgetTypeList[j].val) {
-                $("#addWidgetTypeSelect").append("<option value='" + widgetTypeList[i].val + "'>" + widgetTypeList[i].show + "</option>");
+                $("#addWidgetTypeSelect").append("<option value='" + widgetTypeList[j].val + "'>" + widgetTypeList[j].show + "</option>");
                 break;
             }
         }
@@ -105,6 +146,7 @@ function GeneralAddWidgetForm(type) {
             + '<div class="item">'
             + '<p>小窗口标题<span style="color: red;">*</span></p>'
             + '<input type="text" name="addWidgetName" id="addWidgetName">'
+            + '<input type="hidden" id="addWidgetId" name="addWidgetId" value="0" />'
             + '<input type="hidden" id="wgtVisualType" name="wgtVisualType" />'
             + '</div>'
             + '<div class="item" style="line-height: 20px;">'
@@ -200,7 +242,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="1" id="wgtFilter1Oper" name="wgtFilter1Oper" class="wgtOper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtFilter1ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtFilter1ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件2</p>'
@@ -210,7 +252,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="2" id="wgtFilter2Oper" name="wgtFilter2Oper" class="wgtOper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtFilter2ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtFilter2ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件3</p>'
@@ -220,7 +262,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="3" id="wgtFilter3Oper" name="wgtFilter3Oper" class="wgtOper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtFilter3ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtFilter3ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件4</p>'
@@ -230,7 +272,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="4" id="wgtFilter4Oper" name="wgtFilter4Oper" class="wgtOper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtFilter4ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtFilter4ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件5</p>'
@@ -240,7 +282,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="5" id="wgtFilter5Oper" name="wgtFilter5Oper" class="wgtOper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtFilter5ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtFilter5ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件6</p>'
@@ -250,7 +292,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="6" id="wgtFilter6Oper" name="wgtFilter6Oper" class="wgtOper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtFilter6ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtFilter6ValDiv"></div>'
             + '</div><p style="clear:both;"></p>'
             + '</div>'
             + '</div>'
@@ -343,6 +385,7 @@ function GeneralAddWidgetForm(type) {
             + '<div class="item">'
             + '<p>小窗口标题<span style="color: red;">*</span></p>'
             + '<input type="text" name="addWidgetName" id="addWidgetName">'
+            + '<input type="hidden" id="addWidgetId" name="addWidgetId" value="0" />'
             + '<input type="hidden" id="wgtVisualType" name="wgtVisualType" />'
             + '</div>'
             + '<div class="item" style="line-height: 20px;">'
@@ -353,13 +396,18 @@ function GeneralAddWidgetForm(type) {
             + '<p>描述</p>'
             + '<textarea id="wgtDesc" name="wgtDesc" style="width: 100%;height: 45px;resize: none;"></textarea>'
             + '</div>'
-            + '<div>'
-            + '<div class="item" style="width: 100%;height: auto;">'
+            + '<div class="item" style="width: 50%;height: auto;">'
             + '<p>图形类型</p>'
             + '<ul class="CustomLayoutContainer" id="chartBasicVisual">'
             + '</ul>'
             + '</div>'
+
+            + '<div class="item" style="width: 50%;height: auto;">'
+            + '<p>配色方案</p>'
+            + '<div><input type="radio" value="2765" id="AddWidgetColorScheme1" name="AddWidgetColorScheme" checked="checked" /><label for="AddWidgetColorScheme1">仪表板颜色</label></div>'
+            + '<div><input type="radio" value="2765" id="AddWidgetColorScheme2" name="AddWidgetColorScheme" /><label for="AddWidgetColorScheme2">红绿黄</label></div>'
             + '</div>'
+
             + '</div>'
             + '</div>'
             + '<div class="normal">'
@@ -367,6 +415,7 @@ function GeneralAddWidgetForm(type) {
             + '<div class="toogle" onclick="Toogle(this)">'
             + '<div class="Vertical"></div>'
             + '<div class="Horizontal"></div>'
+            + '<input type="hidden" id="addWidgetGuage1Id" name="addWidgetGuage1Id" value="0" />'
             + '</div>'
             + '子图表 1'
             + '</div>'
@@ -403,14 +452,22 @@ function GeneralAddWidgetForm(type) {
             + '<option value="5">5</option>'
             + '</select>'
             + '</div>'
-            + '<div class="item" style="width:705px;">'
-            + '<p>分段数</p>'
-            + '<input type="text" name="wgtSub1BP0" id="wgtSub1BP0" value="10" style="width:60px;">'
-            + '<input type="text" name="wgtSub1BP1" id="wgtSub1BP1" value="20" style="width:60px;margin-left:10px;">'
-            + '<input type="text" name="wgtSub1BP2" id="wgtSub1BP2" value="30" style="width:60px;margin-left:10px;">'
-            + '<input type="text" name="wgtSub1BP3" id="wgtSub1BP3" value="40" style="width:60px;margin-left:10px;">'
-            + '<input type="text" name="wgtSub1BP4" id="wgtSub1BP4" value="50" style="width:60px;margin-left:10px;display:none;">'
-            + '<input type="text" name="wgtSub1BP5" id="wgtSub1BP5" value="60" style="width:60px;margin-left:10px;display:none;">'
+            + '<div class="item" style="width:705px;height: auto;">'
+            + '<p>分段<a id="WgtSub1Reverse" style="color: #376597;cursor: pointer;display: block;float: right;">反向颜色</a></p>'
+            + '<ul class="BreakPoint">'
+            + '<li style="background:' + SelectTheme[0] + ';width:33.33333333%" id="wgtSub1BPC1"></li>'
+            + '<li style="background:' + SelectTheme[1] + ';width:33.33333333%" id="wgtSub1BPC2"></li>'
+            + '<li style="background:' + SelectTheme[2] + ';width:33.33333333%" id="wgtSub1BPC3"></li>'
+            + '<li style="background:' + SelectTheme[3] + ';width:33.33333333%;display:none;" id="wgtSub1BPC4"></li>'
+            + '<li style="background:' + SelectTheme[4] + ';width:33.33333333%;display:none;" id="wgtSub1BPC5"></li>'
+            + '</ul>'
+            + '<ul class="BreakPoint_Text">'
+            + '<li style="width:33.33333333%" id="wgtSub1BPL1"><input type="text" name="wgtSub1BP0" id="wgtSub1BP0" value="10" style="width:60px;"></li>'
+            + '<li style="width:33.33333333%" id="wgtSub1BPL2"><input type="text" name="wgtSub1BP1" id="wgtSub1BP1" value="20" style="width:60px;"></li>'
+            + '<li style="width:33.33333333%" id="wgtSub1BPL3"><input type="text" name="wgtSub1BP2" id="wgtSub1BP2" value="30" style="width:60px;"><input type="text" name="wgtSub1BP3" id="wgtSub1BP3" value="40" style="width:60px;float:right;"></li>'
+            + '<li style="width:33.33333333%;display:none;" id="wgtSub1BPL4"></li>'
+            + '<li style="width:33.33333333%;display:none;" id="wgtSub1BPL5"></li>'
+            + '</ul>'
             + '</div>'
             + '<div class="item" style="width:705px;height: 1px ;background: #E4E4E4; "></div>'
             + '<div class="item">'
@@ -421,7 +478,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="1" id="wgtSub1Filter1Oper" name="wgtSub1Filter1Oper" class="wgtSub1Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub1Filter1ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub1Filter1ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件2</p>'
@@ -431,7 +488,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="2" id="wgtSub1Filter2Oper" name="wgtSub1Filter2Oper" class="wgtSub1Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub1Filter2ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub1Filter2ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件3</p>'
@@ -441,7 +498,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="3" id="wgtSub1Filter3Oper" name="wgtSub1Filter3Oper" class="wgtSub1Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub1Filter3ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub1Filter3ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件4</p>'
@@ -451,7 +508,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="4" id="wgtSub1Filter4Oper" name="wgtSub1Filter4Oper" class="wgtSub1Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub1Filter4ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub1Filter4ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件5</p>'
@@ -461,7 +518,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="5" id="wgtSub1Filter5Oper" name="wgtSub1Filter5Oper" class="wgtSub1Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub1Filter5ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub1Filter5ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件6</p>'
@@ -471,7 +528,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="6" id="wgtSub1Filter6Oper" name="wgtSub1Filter6Oper" class="wgtSub1Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub1Filter6ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub1Filter6ValDiv"></div>'
             + '</div><p style="clear:both;"></p>'
             + '</div>'
             + '</div>'
@@ -480,8 +537,9 @@ function GeneralAddWidgetForm(type) {
             + '<div class="normal" style="background: rgb(242, 242, 242);">'
             + '<div class="heading">'
             + '<div class="toogle" onclick="Toogle(this)">'
-            + '<div class="Vertical"></div>'
+            + '<div class="Vertical" style="display: block;"></div>'
             + '<div class="Horizontal"></div>'
+            + '<input type="hidden" id="addWidgetGuage2Id" name="addWidgetGuage2Id" value="0" />'
             + '</div>'
             + '子图表 2'
             + '</div>'
@@ -518,14 +576,22 @@ function GeneralAddWidgetForm(type) {
             + '<option value="5">5</option>'
             + '</select>'
             + '</div>'
-            + '<div class="item" style="width:705px;">'
-            + '<p>分段数</p>'
-            + '<input type="text" name="wgtSub2BP0" id="wgtSub2BP0" value="10" style="width:60px;">'
-            + '<input type="text" name="wgtSub2BP1" id="wgtSub2BP1" value="20" style="width:60px;margin-left:10px;">'
-            + '<input type="text" name="wgtSub2BP2" id="wgtSub2BP2" value="30" style="width:60px;margin-left:10px;">'
-            + '<input type="text" name="wgtSub2BP3" id="wgtSub2BP3" value="40" style="width:60px;margin-left:10px;">'
-            + '<input type="text" name="wgtSub2BP4" id="wgtSub2BP4" value="50" style="width:60px;margin-left:10px;display:none;">'
-            + '<input type="text" name="wgtSub2BP5" id="wgtSub2BP5" value="60" style="width:60px;margin-left:10px;display:none;">'
+            + '<div class="item" style="width:705px;height: auto;">'
+            + '<p>分段<a id="WgtSub2Reverse" style="color: #376597;cursor: pointer;display: block;float: right;">反向颜色</a></p>'
+            + '<ul class="BreakPoint">'
+            + '<li style="background:' + SelectTheme[0] + ';width:33.33333333%" id="wgtSub2BPC1"></li>'
+            + '<li style="background:' + SelectTheme[1] + ';width:33.33333333%" id="wgtSub2BPC2"></li>'
+            + '<li style="background:' + SelectTheme[2] + ';width:33.33333333%" id="wgtSub2BPC3"></li>'
+            + '<li style="background:' + SelectTheme[3] + ';width:33.33333333%;display:none;" id="wgtSub2BPC4"></li>'
+            + '<li style="background:' + SelectTheme[4] + ';width:33.33333333%;display:none;" id="wgtSub2BPC5"></li>'
+            + '</ul>'
+            + '<ul class="BreakPoint_Text">'
+            + '<li style="width:33.33333333%" id="wgtSub2BPL1"><input type="text" name="wgtSub2BP0" id="wgtSub2BP0" value="10" style="width:60px;"></li>'
+            + '<li style="width:33.33333333%" id="wgtSub2BPL2"><input type="text" name="wgtSub2BP1" id="wgtSub2BP1" value="20" style="width:60px;"></li>'
+            + '<li style="width:33.33333333%" id="wgtSub2BPL3"><input type="text" name="wgtSub2BP2" id="wgtSub2BP2" value="30" style="width:60px;"><input type="text" name="wgtSub2BP3" id="wgtSub2BP3" value="40" style="width:60px;float:right;"></li>'
+            + '<li style="width:33.33333333%;display:none;" id="wgtSub2BPL4"></li>'
+            + '<li style="width:33.33333333%;display:none;" id="wgtSub2BPL5"></li>'
+            + '</ul>'
             + '</div>'
             + '<div class="item" style="width:705px;height: 1px ;background: #E4E4E4; "></div>'
             + '<div class="item">'
@@ -536,7 +602,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="1" id="wgtSub2Filter1Oper" name="wgtSub2Filter1Oper" class="wgtSub2Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub2Filter1ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub2Filter1ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件2</p>'
@@ -546,7 +612,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="2" id="wgtSub2Filter2Oper" name="wgtSub2Filter2Oper" class="wgtSub2Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub2Filter2ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub2Filter2ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件3</p>'
@@ -556,7 +622,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="3" id="wgtSub2Filter3Oper" name="wgtSub2Filter3Oper" class="wgtSub2Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub2Filter3ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub2Filter3ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件4</p>'
@@ -566,7 +632,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="4" id="wgtSub2Filter4Oper" name="wgtSub2Filter4Oper" class="wgtSub2Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub2Filter4ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub2Filter4ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件5</p>'
@@ -576,7 +642,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="5" id="wgtSub2Filter5Oper" name="wgtSub2Filter5Oper" class="wgtSub2Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub2Filter5ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub2Filter5ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件6</p>'
@@ -586,7 +652,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="6" id="wgtSub2Filter6Oper" name="wgtSub2Filter6Oper" class="wgtSub2Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub2Filter6ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub2Filter6ValDiv"></div>'
             + '</div><p style="clear:both;"></p>'
             + '</div>'
             + '</div>'
@@ -595,8 +661,9 @@ function GeneralAddWidgetForm(type) {
             + '<div class="normal" style="background: rgb(242, 242, 242);">'
             + '<div class="heading">'
             + '<div class="toogle" onclick="Toogle(this)">'
-            + '<div class="Vertical"></div>'
+            + '<div class="Vertical" style="display: block;"></div>'
             + '<div class="Horizontal"></div>'
+            + '<input type="hidden" id="addWidgetGuage3Id" name="addWidgetGuage3Id" value="0" />'
             + '</div>'
             + '子图表 3'
             + '</div>'
@@ -633,14 +700,22 @@ function GeneralAddWidgetForm(type) {
             + '<option value="5">5</option>'
             + '</select>'
             + '</div>'
-            + '<div class="item" style="width:705px;">'
-            + '<p>分段数</p>'
-            + '<input type="text" name="wgtSub3BP0" id="wgtSub3BP0" value="10" style="width:60px;">'
-            + '<input type="text" name="wgtSub3BP1" id="wgtSub3BP1" value="20" style="width:60px;margin-left:10px;">'
-            + '<input type="text" name="wgtSub3BP2" id="wgtSub3BP2" value="30" style="width:60px;margin-left:10px;">'
-            + '<input type="text" name="wgtSub3BP3" id="wgtSub3BP3" value="40" style="width:60px;margin-left:10px;">'
-            + '<input type="text" name="wgtSub3BP4" id="wgtSub3BP4" value="50" style="width:60px;margin-left:10px;display:none;">'
-            + '<input type="text" name="wgtSub3BP5" id="wgtSub3BP5" value="60" style="width:60px;margin-left:10px;display:none;">'
+            + '<div class="item" style="width:705px;height: auto;">'
+            + '<p>分段<a id="WgtSub3Reverse" style="color: #376597;cursor: pointer;display: block;float: right;">反向颜色</a></p>'
+            + '<ul class="BreakPoint">'
+            + '<li style="background:' + SelectTheme[0] + ';width:33.33333333%" id="wgtSub3BPC1"></li>'
+            + '<li style="background:' + SelectTheme[1] + ';width:33.33333333%" id="wgtSub3BPC2"></li>'
+            + '<li style="background:' + SelectTheme[2] + ';width:33.33333333%" id="wgtSub3BPC3"></li>'
+            + '<li style="background:' + SelectTheme[3] + ';width:33.33333333%;display:none;" id="wgtSub3BPC4"></li>'
+            + '<li style="background:' + SelectTheme[4] + ';width:33.33333333%;display:none;" id="wgtSub3BPC5"></li>'
+            + '</ul>'
+            + '<ul class="BreakPoint_Text">'
+            + '<li style="width:33.33333333%" id="wgtSub3BPL1"><input type="text" name="wgtSub3BP0" id="wgtSub3BP0" value="10" style="width:60px;"></li>'
+            + '<li style="width:33.33333333%" id="wgtSub3BPL2"><input type="text" name="wgtSub3BP1" id="wgtSub3BP1" value="20" style="width:60px;"></li>'
+            + '<li style="width:33.33333333%" id="wgtSub3BPL3"><input type="text" name="wgtSub3BP2" id="wgtSub3BP2" value="30" style="width:60px;"><input type="text" name="wgtSub3BP3" id="wgtSub3BP3" value="40" style="width:60px;float:right;"></li>'
+            + '<li style="width:33.33333333%;display:none;" id="wgtSub3BPL4"></li>'
+            + '<li style="width:33.33333333%;display:none;" id="wgtSub3BPL5"></li>'
+            + '</ul>'
             + '</div>'
             + '<div class="item" style="width:705px;height: 1px ;background: #E4E4E4; "></div>'
             + '<div class="item">'
@@ -651,7 +726,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="1" id="wgtSub3Filter1Oper" name="wgtSub3Filter1Oper" class="wgtSub3Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub3Filter1ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub3Filter1ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件2</p>'
@@ -661,7 +736,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="2" id="wgtSub3Filter2Oper" name="wgtSub3Filter2Oper" class="wgtSub3Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub3Filter2ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub3Filter2ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件3</p>'
@@ -671,7 +746,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="3" id="wgtSub3Filter3Oper" name="wgtSub3Filter3Oper" class="wgtSub3Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub3Filter3ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub3Filter3ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件4</p>'
@@ -681,7 +756,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="4" id="wgtSub3Filter4Oper" name="wgtSub3Filter4Oper" class="wgtSub3Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub3Filter4ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub3Filter4ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件5</p>'
@@ -691,7 +766,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="5" id="wgtSub3Filter5Oper" name="wgtSub3Filter5Oper" class="wgtSub3Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub3Filter5ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub3Filter5ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件6</p>'
@@ -701,7 +776,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="6" id="wgtSub3Filter6Oper" name="wgtSub3Filter6Oper" class="wgtSub3Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub3Filter6ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub3Filter6ValDiv"></div>'
             + '</div><p style="clear:both;"></p>'
             + '</div>'
             + '</div>'
@@ -710,8 +785,9 @@ function GeneralAddWidgetForm(type) {
             + '<div class="normal" style="background: rgb(242, 242, 242);">'
             + '<div class="heading">'
             + '<div class="toogle" onclick="Toogle(this)">'
-            + '<div class="Vertical"></div>'
+            + '<div class="Vertical" style="display: block;"></div>'
             + '<div class="Horizontal"></div>'
+            + '<input type="hidden" id="addWidgetGuage4Id" name="addWidgetGuage4Id" value="0" />'
             + '</div>'
             + '子图表 4'
             + '</div>'
@@ -748,14 +824,22 @@ function GeneralAddWidgetForm(type) {
             + '<option value="5">5</option>'
             + '</select>'
             + '</div>'
-            + '<div class="item" style="width:705px;">'
-            + '<p>分段数</p>'
-            + '<input type="text" name="wgtSub4BP0" id="wgtSub4BP0" value="10" style="width:60px;">'
-            + '<input type="text" name="wgtSub4BP1" id="wgtSub4BP1" value="20" style="width:60px;margin-left:10px;">'
-            + '<input type="text" name="wgtSub4BP2" id="wgtSub4BP2" value="30" style="width:60px;margin-left:10px;">'
-            + '<input type="text" name="wgtSub4BP3" id="wgtSub4BP3" value="40" style="width:60px;margin-left:10px;">'
-            + '<input type="text" name="wgtSub4BP4" id="wgtSub4BP4" value="50" style="width:60px;margin-left:10px;display:none;">'
-            + '<input type="text" name="wgtSub4BP5" id="wgtSub4BP5" value="60" style="width:60px;margin-left:10px;display:none;">'
+            + '<div class="item" style="width:705px;height: auto;">'
+            + '<p>分段<a id="WgtSub4Reverse" style="color: #376597;cursor: pointer;display: block;float: right;">反向颜色</a></p>'
+            + '<ul class="BreakPoint">'
+            + '<li style="background:' + SelectTheme[0] + ';width:33.33333333%" id="wgtSub4BPC1"></li>'
+            + '<li style="background:' + SelectTheme[1] + ';width:33.33333333%" id="wgtSub4BPC2"></li>'
+            + '<li style="background:' + SelectTheme[2] + ';width:33.33333333%" id="wgtSub4BPC3"></li>'
+            + '<li style="background:' + SelectTheme[3] + ';width:33.33333333%;display:none;" id="wgtSub4BPC4"></li>'
+            + '<li style="background:' + SelectTheme[4] + ';width:33.33333333%;display:none;" id="wgtSub4BPC5"></li>'
+            + '</ul>'
+            + '<ul class="BreakPoint_Text">'
+            + '<li style="width:33.33333333%" id="wgtSub4BPL1"><input type="text" name="wgtSub4BP0" id="wgtSub4BP0" value="10" style="width:60px;"></li>'
+            + '<li style="width:33.33333333%" id="wgtSub4BPL2"><input type="text" name="wgtSub4BP1" id="wgtSub4BP1" value="20" style="width:60px;"></li>'
+            + '<li style="width:33.33333333%" id="wgtSub4BPL3"><input type="text" name="wgtSub4BP2" id="wgtSub4BP2" value="30" style="width:60px;"><input type="text" name="wgtSub4BP3" id="wgtSub4BP3" value="40" style="width:60px;float:right;"></li>'
+            + '<li style="width:33.33333333%;display:none;" id="wgtSub4BPL4"></li>'
+            + '<li style="width:33.33333333%;display:none;" id="wgtSub4BPL5"></li>'
+            + '</ul>'
             + '</div>'
             + '<div class="item" style="width:705px;height: 1px ;background: #E4E4E4; "></div>'
             + '<div class="item">'
@@ -766,7 +850,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="1" id="wgtSub4Filter1Oper" name="wgtSub4Filter1Oper" class="wgtSub4Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub4Filter1ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub4Filter1ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件2</p>'
@@ -776,7 +860,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="2" id="wgtSub4Filter2Oper" name="wgtSub4Filter2Oper" class="wgtSub4Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub4Filter2ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub4Filter2ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件3</p>'
@@ -786,7 +870,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="3" id="wgtSub4Filter3Oper" name="wgtSub4Filter3Oper" class="wgtSub4Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub4Filter3ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub4Filter3ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件4</p>'
@@ -796,7 +880,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="4" id="wgtSub4Filter4Oper" name="wgtSub4Filter4Oper" class="wgtSub4Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub4Filter4ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub4Filter4ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件5</p>'
@@ -806,7 +890,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="5" id="wgtSub4Filter5Oper" name="wgtSub4Filter5Oper" class="wgtSub4Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub4Filter5ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub4Filter5ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件6</p>'
@@ -816,7 +900,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="6" id="wgtSub4Filter6Oper" name="wgtSub4Filter6Oper" class="wgtSub4Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub4Filter6ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub4Filter6ValDiv"></div>'
             + '</div><p style="clear:both;"></p>'
             + '</div>'
             + '</div>'
@@ -825,8 +909,9 @@ function GeneralAddWidgetForm(type) {
             + '<div class="normal" style="background: rgb(242, 242, 242);">'
             + '<div class="heading">'
             + '<div class="toogle" onclick="Toogle(this)">'
-            + '<div class="Vertical"></div>'
+            + '<div class="Vertical" style="display: block;"></div>'
             + '<div class="Horizontal"></div>'
+            + '<input type="hidden" id="addWidgetGuage5Id" name="addWidgetGuage5Id" value="0" />'
             + '</div>'
             + '子图表 5'
             + '</div>'
@@ -863,14 +948,22 @@ function GeneralAddWidgetForm(type) {
             + '<option value="5">5</option>'
             + '</select>'
             + '</div>'
-            + '<div class="item" style="width:705px;">'
-            + '<p>分段数</p>'
-            + '<input type="text" name="wgtSub5BP0" id="wgtSub5BP0" value="10" style="width:60px;">'
-            + '<input type="text" name="wgtSub5BP1" id="wgtSub5BP1" value="20" style="width:60px;margin-left:10px;">'
-            + '<input type="text" name="wgtSub5BP2" id="wgtSub5BP2" value="30" style="width:60px;margin-left:10px;">'
-            + '<input type="text" name="wgtSub5BP3" id="wgtSub5BP3" value="40" style="width:60px;margin-left:10px;">'
-            + '<input type="text" name="wgtSub5BP4" id="wgtSub5BP4" value="50" style="width:60px;margin-left:10px;display:none;">'
-            + '<input type="text" name="wgtSub5BP5" id="wgtSub5BP5" value="60" style="width:60px;margin-left:10px;display:none;">'
+            + '<div class="item" style="width:705px;height: auto;">'
+            + '<p>分段<a id="WgtSub5Reverse" style="color: #376597;cursor: pointer;display: block;float: right;">反向颜色</a></p>'
+            + '<ul class="BreakPoint">'
+            + '<li style="background:' + SelectTheme[0] + ';width:33.33333333%" id="wgtSub5BPC1"></li>'
+            + '<li style="background:' + SelectTheme[1] + ';width:33.33333333%" id="wgtSub5BPC2"></li>'
+            + '<li style="background:' + SelectTheme[2] + ';width:33.33333333%" id="wgtSub5BPC3"></li>'
+            + '<li style="background:' + SelectTheme[3] + ';width:33.33333333%;display:none;" id="wgtSub5BPC4"></li>'
+            + '<li style="background:' + SelectTheme[4] + ';width:33.33333333%;display:none;" id="wgtSub5BPC5"></li>'
+            + '</ul>'
+            + '<ul class="BreakPoint_Text">'
+            + '<li style="width:33.33333333%" id="wgtSub5BPL1"><input type="text" name="wgtSub5BP0" id="wgtSub5BP0" value="10" style="width:60px;"></li>'
+            + '<li style="width:33.33333333%" id="wgtSub5BPL2"><input type="text" name="wgtSub5BP1" id="wgtSub5BP1" value="20" style="width:60px;"></li>'
+            + '<li style="width:33.33333333%" id="wgtSub5BPL3"><input type="text" name="wgtSub5BP2" id="wgtSub5BP2" value="30" style="width:60px;"><input type="text" name="wgtSub5BP3" id="wgtSub5BP3" value="40" style="width:60px;float:right;"></li>'
+            + '<li style="width:33.33333333%;display:none;" id="wgtSub5BPL4"></li>'
+            + '<li style="width:33.33333333%;display:none;" id="wgtSub5BPL5"></li>'
+            + '</ul>'
             + '</div>'
             + '<div class="item" style="width:705px;height: 1px ;background: #E4E4E4; "></div>'
             + '<div class="item">'
@@ -881,7 +974,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="1" id="wgtSub5Filter1Oper" name="wgtSub5Filter1Oper" class="wgtSub5Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub5Filter1ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub5Filter1ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件2</p>'
@@ -891,7 +984,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="2" id="wgtSub5Filter2Oper" name="wgtSub5Filter2Oper" class="wgtSub5Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub5Filter2ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub5Filter2ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件3</p>'
@@ -901,7 +994,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="3" id="wgtSub5Filter3Oper" name="wgtSub5Filter3Oper" class="wgtSub5Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub5Filter3ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub5Filter3ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件4</p>'
@@ -911,7 +1004,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="4" id="wgtSub5Filter4Oper" name="wgtSub5Filter4Oper" class="wgtSub5Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub5Filter4ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub5Filter4ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件5</p>'
@@ -921,7 +1014,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="5" id="wgtSub5Filter5Oper" name="wgtSub5Filter5Oper" class="wgtSub5Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub5Filter5ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub5Filter5ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件6</p>'
@@ -931,7 +1024,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="6" id="wgtSub5Filter6Oper" name="wgtSub5Filter6Oper" class="wgtSub5Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub5Filter6ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub5Filter6ValDiv"></div>'
             + '</div><p style="clear:both;"></p>'
             + '</div>'
             + '</div>'
@@ -940,8 +1033,9 @@ function GeneralAddWidgetForm(type) {
             + '<div class="normal" style="background: rgb(242, 242, 242);">'
             + '<div class="heading">'
             + '<div class="toogle" onclick="Toogle(this)">'
-            + '<div class="Vertical"></div>'
+            + '<div class="Vertical" style="display: block;"></div>'
             + '<div class="Horizontal"></div>'
+            + '<input type="hidden" id="addWidgetGuage6Id" name="addWidgetGuage6Id" value="0" />'
             + '</div>'
             + '子图表 6'
             + '</div>'
@@ -978,14 +1072,22 @@ function GeneralAddWidgetForm(type) {
             + '<option value="5">5</option>'
             + '</select>'
             + '</div>'
-            + '<div class="item" style="width:705px;">'
-            + '<p>分段数</p>'
-            + '<input type="text" name="wgtSub6BP0" id="wgtSub6BP0" value="10" style="width:60px;">'
-            + '<input type="text" name="wgtSub6BP1" id="wgtSub6BP1" value="20" style="width:60px;margin-left:10px;">'
-            + '<input type="text" name="wgtSub6BP2" id="wgtSub6BP2" value="30" style="width:60px;margin-left:10px;">'
-            + '<input type="text" name="wgtSub6BP3" id="wgtSub6BP3" value="40" style="width:60px;margin-left:10px;">'
-            + '<input type="text" name="wgtSub6BP4" id="wgtSub6BP4" value="50" style="width:60px;margin-left:10px;display:none;">'
-            + '<input type="text" name="wgtSub6BP5" id="wgtSub6BP5" value="60" style="width:60px;margin-left:10px;display:none;">'
+            + '<div class="item" style="width:705px;height: auto;">'
+            + '<p>分段<a id="WgtSub6Reverse" style="color: #376597;cursor: pointer;display: block;float: right;">反向颜色</a></p>'
+            + '<ul class="BreakPoint">'
+            + '<li style="background:' + SelectTheme[0] + ';width:33.33333333%" id="wgtSub6BPC1"></li>'
+            + '<li style="background:' + SelectTheme[1] + ';width:33.33333333%" id="wgtSub6BPC2"></li>'
+            + '<li style="background:' + SelectTheme[2] + ';width:33.33333333%" id="wgtSub6BPC3"></li>'
+            + '<li style="background:' + SelectTheme[3] + ';width:33.33333333%;display:none;" id="wgtSub6BPC4"></li>'
+            + '<li style="background:' + SelectTheme[4] + ';width:33.33333333%;display:none;" id="wgtSub6BPC5"></li>'
+            + '</ul>'
+            + '<ul class="BreakPoint_Text">'
+            + '<li style="width:33.33333333%" id="wgtSub6BPL1"><input type="text" name="wgtSub6BP0" id="wgtSub6BP0" value="10" style="width:60px;"></li>'
+            + '<li style="width:33.33333333%" id="wgtSub6BPL2"><input type="text" name="wgtSub6BP1" id="wgtSub6BP1" value="20" style="width:60px;"></li>'
+            + '<li style="width:33.33333333%" id="wgtSub6BPL3"><input type="text" name="wgtSub6BP2" id="wgtSub6BP2" value="30" style="width:60px;"><input type="text" name="wgtSub6BP3" id="wgtSub6BP3" value="40" style="width:60px;float:right;"></li>'
+            + '<li style="width:33.33333333%;display:none;" id="wgtSub6BPL4"></li>'
+            + '<li style="width:33.33333333%;display:none;" id="wgtSub6BPL5"></li>'
+            + '</ul>'
             + '</div>'
             + '<div class="item" style="width:705px;height: 1px ;background: #E4E4E4; "></div>'
             + '<div class="item">'
@@ -996,7 +1098,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="1" id="wgtSub6Filter1Oper" name="wgtSub6Filter1Oper" class="wgtSub6Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub6Filter1ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub6Filter1ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件2</p>'
@@ -1006,7 +1108,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="2" id="wgtSub6Filter2Oper" name="wgtSub6Filter2Oper" class="wgtSub6Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub6Filter2ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub6Filter2ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件3</p>'
@@ -1016,7 +1118,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="3" id="wgtSub6Filter3Oper" name="wgtSub6Filter3Oper" class="wgtSub6Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub6Filter3ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub6Filter3ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件4</p>'
@@ -1026,7 +1128,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="4" id="wgtSub6Filter4Oper" name="wgtSub6Filter4Oper" class="wgtSub6Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub6Filter4ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub6Filter4ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件5</p>'
@@ -1036,7 +1138,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="5" id="wgtSub6Filter5Oper" name="wgtSub6Filter5Oper" class="wgtSub6Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub6Filter5ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub6Filter5ValDiv"></div>'
             + '</div>'
             + '<div class="item">'
             + '<p>过滤条件6</p>'
@@ -1046,7 +1148,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="item" style="padding-top:16px;height: 34px; ">'
             + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="6" id="wgtSub6Filter6Oper" name="wgtSub6Filter6Oper" class="wgtSub6Oper"></select></div>'
-            + '<div style="width: 180px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub6Filter6ValDiv"></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtSub6Filter6ValDiv"></div>'
             + '</div><p style="clear:both;"></p>'
             + '</div>'
             + '</div>'
@@ -1073,22 +1175,382 @@ function GeneralAddWidgetForm(type) {
             + '</div>';
     }
     else if (type == 2584) {
-
+        return '<div class="normal">'
+            + '<div class="heading">'
+            + '<div class="toogle" onclick="Toogle(this)">'
+            + '<div class="Vertical"></div>'
+            + '<div class="Horizontal"></div>'
+            + '</div>'
+            + '常规'
+            + '</div>'
+            + '<div class="Column">'
+            + '<div class="item">'
+            + '<p>小窗口标题<span style="color: red;">*</span></p>'
+            + '<input type="text" name="addWidgetName" id="addWidgetName">'
+            + '<input type="hidden" id="addWidgetId" name="addWidgetId" value="0" />'
+            + '<input type="hidden" id="wgtVisualType" name="wgtVisualType" />'
+            + '</div>'
+            + '<div class="item" style="line-height: 20px;">'
+            + '<p>对象</p>'
+            + '<span id="addWidgetEntityName"></span>'
+            + '</div>'
+            + '<div class="item" style="width: 100%;height: 90px;">'
+            + '<p>描述</p>'
+            + '<textarea id="wgtDesc" name="wgtDesc" style="width: 100%;height: 45px;resize: none;"></textarea>'
+            + '</div>'
+            + '</div>'
+            + '</div>'
+            + '<div class="normal">'
+            + '<div class="heading">'
+            + '<div class="toogle" onclick="Toogle(this)">'
+            + '<div class="Vertical"></div>'
+            + '<div class="Horizontal"></div>'
+            + '</div>'
+            + '列表首字段'
+            + '</div>'
+            + '<div class="Column">'
+            + '<div class="item" style="height:auto;width:100%;">'
+            + '<div class="rowtitle" style="width:100%;">'
+            + '<div class="col-xs-5" style="width:41.7%;position:relative;padding-right:15px;float:left;">首字段</div>'
+            + '<div class="col-xs-1" style="width:8.3%;position:relative;padding-left:15px;padding-right:15px;float:left;"></div>'
+            + '<div class="col-xs-5"style="padding-left:56px;width:41.7%;position:relative;padding-right:15px;float:left;">已选择列</div>'
+            + '<div class="col-xs-1" style="width:8.3%;position:relative;padding-left:15px;padding-right:15px;float:left;"></div>'
+            + '</div>'
+            + '<div class="row"  style="width:100%;">'
+            + '<div class="col-sm-5" style="width:38.7%;position:relative;float:left;">'
+            + '<select name="from[]" id="multiselect" class="form-control" size="8" style="height:320px;width:100%;" multiple="multiple">'
+            + '</select>'
+            + '</div>'
+            + '<div class="col-sm-1" style="width:8.3%;position:relative;padding-left:2%;padding-right:2%;float:left;">'
+            + '<button type="button"  class="btn btn-block AddWidgetTableColumnBtn" style="background: #fff;pointer-events:none;cursor:not-allowed;" disabled="disabled"><i class="glyphicon AddWidgetTableColumnGly"></i></button>'
+            + '<button type="button"  class="btn btn-block AddWidgetTableColumnBtn" style= "background: #fff;pointer-events:none;cursor:not-allowed;" disabled= "disabled" > <i class="glyphicon AddWidgetTableColumnGly"></i></button >'
+            + '<button type="button" id="multiselect_rightAll" class="btn btn-block AddWidgetTableColumnBtn"><i style="display:block;width:16px;height:16px;margin-left:10px;" class="glyphicon glyphicon-forward AddWidgetTableColumnGly"><img src="../Images/arrowrighttow.png"></i></button>'
+            + '<button type="button" id="multiselect_rightSelected" class="btn btn-block AddWidgetTableColumnBtn"><i style="display:block;width:16px;height:16px;margin-left:10px;" class="glyphicon glyphicon-chevron-right AddWidgetTableColumnGly"><img src="../Images/arrowright.png"></i></button>'
+            + '<button type="button" id="multiselect_leftSelected" class="btn btn-block AddWidgetTableColumnBtn"><i style="display:block;width:16px;height:16px;margin-left:10px;" class="glyphicon glyphicon-chevron-left AddWidgetTableColumnGly"><img src="../Images/arrowleft.png"></i></button>'
+            + '<button type="button" id="multiselect_leftAll" class="btn btn-block AddWidgetTableColumnBtn"><i style="display:block;width:16px;height:16px;margin-left:10px;" class="glyphicon glyphicon-backward AddWidgetTableColumnGly"><img src="../Images/arrowlefttwo.png"></i></button>'
+            + '</div>'
+            + '<div class="col-sm-5" style="width:38.7%;position:relative;float:left;">'
+            + '<select name="to[]" id="multiselect_to" class="form-control" size="8" style="height:320px;width:100%;" multiple="multiple">'
+            + '</select><input type="hidden" id="AddWidgetTableColumn1" name="AddWidgetTableColumn1" />'
+            + '</div>'
+            + '<div class="col-xs-1" style="width:8.3%;position:relative;padding-left:2%;float:left;">'
+            + '<button type="button" class="btn btn-block AddWidgetTableColumnBtn" style= "background: #fff;pointer-events:none;cursor:not-allowed;" disabled= "disabled" > <i class="glyphicon AddWidgetTableColumnGly"></i></button >'
+            + '<button type="button" class="btn btn-block AddWidgetTableColumnBtn" style="background: #fff;pointer-events:none;cursor:not-allowed;" disabled="disabled"><i class="glyphicon AddWidgetTableColumnGly"></i></button>'
+            + '<button type="button" class="btn btn-block AddWidgetTableColumnBtn" style="background: #fff;pointer-events:none;cursor:not-allowed;" disabled="disabled"><i class="glyphicon AddWidgetTableColumnGly"></i></button>'
+            + '<button type="button" id="multiselect_move_up" class="btn btn-block AddWidgetTableColumnBtn"><i style="display:block;width:16px;height:16px;margin-left:10px;" class="glyphicon glyphicon-arrow-up AddWidgetTableColumnGly"><img src="../Images/arrowup.png"></i></button>'
+            + '<button type="button" id="multiselect_move_down" class="btn btn-block col-sm-6 AddWidgetTableColumnBtn"><i style="display:block;width:16px;height:16px;margin-left:10px;" class="glyphicon glyphicon-arrow-down AddWidgetTableColumnGly"><img src="../Images/arrowdown.png"></i></button>'
+            + '<button type="button" class="btn btn-block AddWidgetTableColumnBtn" style="background: #fff;pointer-events:none;cursor:not-allowed;" disabled="disabled"><i class="glyphicon AddWidgetTableColumnGly"></i></button>'
+            + '</div >'
+            + '</div >'
+            + '</div>'
+            + '</div>'
+            + '</div>'
+            + '<div class="normal">'
+            + '<div class="heading">'
+            + '<div class="toogle" onclick="Toogle(this)">'
+            + '<div class="Vertical"></div>'
+            + '<div class="Horizontal"></div>'
+            + '</div>'
+            + '列表其他字段'
+            + '</div>'
+            + '<div class="Column">'
+            + '<div class="item" style="height:auto;width:100%;">'
+            + '<div class="rowtitle" style="width:100%;">'
+            + '<div class="col-xs-5" style="width:41.7%;position:relative;padding-right:15px;float:left;">首字段</div>'
+            + '<div class="col-xs-1" style="width:8.3%;position:relative;padding-left:15px;padding-right:15px;float:left;"></div>'
+            + '<div class="col-xs-5"style="padding-left:56px;width:41.7%;position:relative;padding-right:15px;float:left;">已选择列</div>'
+            + '<div class="col-xs-1" style="width:8.3%;position:relative;padding-left:15px;padding-right:15px;float:left;"></div>'
+            + '</div>'
+            + '<div class="row"  style="width:100%;">'
+            + '<div class="col-sm-5" style="width:38.7%;position:relative;float:left;">'
+            + '<select name="from[]" id="multiselect2" class="form-control" size="8" style="height:320px;width:100%;" multiple="multiple">'
+            + '</select>'
+            + '</div>'
+            + '<div class="col-sm-1" style="width:8.3%;position:relative;padding-left:2%;padding-right:2%;float:left;">'
+            + '<button type="button"  class="btn btn-block AddWidgetTableColumnBtn" style="background: #fff;pointer-events:none;cursor:not-allowed;" disabled="disabled"><i class="glyphicon AddWidgetTableColumnGly"></i></button>'
+            + '<button type="button"  class="btn btn-block AddWidgetTableColumnBtn" style= "background: #fff;pointer-events:none;cursor:not-allowed;" disabled= "disabled" > <i class="glyphicon AddWidgetTableColumnGly"></i></button >'
+            + '<button type="button" id="multiselect2_rightAll" class="btn btn-block AddWidgetTableColumnBtn"><i style="display:block;width:16px;height:16px;margin-left:10px;" class="glyphicon glyphicon-forward AddWidgetTableColumnGly"><img src="../Images/arrowrighttow.png"></i></button>'
+            + '<button type="button" id="multiselect2_rightSelected" class="btn btn-block AddWidgetTableColumnBtn"><i style="display:block;width:16px;height:16px;margin-left:10px;" class="glyphicon glyphicon-chevron-right AddWidgetTableColumnGly"><img src="../Images/arrowright.png"></i></button>'
+            + '<button type="button" id="multiselect2_leftSelected" class="btn btn-block AddWidgetTableColumnBtn"><i style="display:block;width:16px;height:16px;margin-left:10px;" class="glyphicon glyphicon-chevron-left AddWidgetTableColumnGly"><img src="../Images/arrowleft.png"></i></button>'
+            + '<button type="button" id="multiselect2_leftAll" class="btn btn-block AddWidgetTableColumnBtn"><i style="display:block;width:16px;height:16px;margin-left:10px;" class="glyphicon glyphicon-backward AddWidgetTableColumnGly"><img src="../Images/arrowlefttwo.png"></i></button>'
+            + '</div>'
+            + '<div class="col-sm-5" style="width:38.7%;position:relative;float:left;">'
+            + '<select name="to[]" id="multiselect2_to" class="form-control" size="8" style="height:320px;width:100%;" multiple="multiple">'
+            + '</select><input type="hidden" id="AddWidgetTableColumn2" name="AddWidgetTableColumn2" />'
+            + '</div>'
+            + '<div class="col-xs-1" style="width:8.3%;position:relative;padding-left:2%;float:left;">'
+            + '<button type="button" class="btn btn-block AddWidgetTableColumnBtn" style= "background: #fff;pointer-events:none;cursor:not-allowed;" disabled= "disabled" > <i class="glyphicon AddWidgetTableColumnGly"></i></button >'
+            + '<button type="button" class="btn btn-block AddWidgetTableColumnBtn" style="background: #fff;pointer-events:none;cursor:not-allowed;" disabled="disabled"><i class="glyphicon AddWidgetTableColumnGly"></i></button>'
+            + '<button type="button" class="btn btn-block AddWidgetTableColumnBtn" style="background: #fff;pointer-events:none;cursor:not-allowed;" disabled="disabled"><i class="glyphicon AddWidgetTableColumnGly"></i></button>'
+            + '<button type="button" id="multiselect2_move_up" class="btn btn-block AddWidgetTableColumnBtn"><i style="display:block;width:16px;height:16px;margin-left:10px;" class="glyphicon glyphicon-arrow-up AddWidgetTableColumnGly"><img src="../Images/arrowup.png"></i></button>'
+            + '<button type="button" id="multiselect2_move_down" class="btn btn-block col-sm-6 AddWidgetTableColumnBtn"><i style="display:block;width:16px;height:16px;margin-left:10px;" class="glyphicon glyphicon-arrow-down AddWidgetTableColumnGly"><img src="../Images/arrowdown.png"></i></button>'
+            + '<button type="button" class="btn btn-block AddWidgetTableColumnBtn" style="background: #fff;pointer-events:none;cursor:not-allowed;" disabled="disabled"><i class="glyphicon AddWidgetTableColumnGly"></i></button>'
+            + '</div >'
+            + '</div >'
+            + '</div>'
+            + '</div>'
+            + '</div>'
+            + '<div class="normal">'
+            + '<div class="heading">'
+            + '<div class="toogle" onclick="Toogle(this)">'
+            + '<div class="Vertical"></div>'
+            + '<div class="Horizontal"></div>'
+            + '</div>'
+            + '过滤'
+            + '</div>'
+            + '<div class="Column">'
+            + '<div class="item">'
+            + '<p>过滤条件1</p>'
+            + '<select id="wgtFilter1" name="wgtFilter1" data-val="1" class="wgtFilter">'
+            + '</select>'
+            + '<div class="cancel"></div>'
+            + '</div>'
+            + '<div class="item" style="padding-top:16px;height: 34px; ">'
+            + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="1" id="wgtFilter1Oper" name="wgtFilter1Oper" class="wgtOper"></select></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtFilter1ValDiv"></div>'
+            + '</div>'
+            + '<div class="item">'
+            + '<p>过滤条件2</p>'
+            + '<select id="wgtFilter2" name="wgtFilter2" data-val="2" class="wgtFilter">'
+            + '</select>'
+            + '<div class="cancel"></div>'
+            + '</div>'
+            + '<div class="item" style="padding-top:16px;height: 34px; ">'
+            + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="2" id="wgtFilter2Oper" name="wgtFilter2Oper" class="wgtOper"></select></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtFilter2ValDiv"></div>'
+            + '</div>'
+            + '<div class="item">'
+            + '<p>过滤条件3</p>'
+            + '<select id="wgtFilter3" name="wgtFilter3" data-val="3" class="wgtFilter">'
+            + '</select>'
+            + '<div class="cancel"></div>'
+            + '</div>'
+            + '<div class="item" style="padding-top:16px;height: 34px; ">'
+            + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="3" id="wgtFilter3Oper" name="wgtFilter3Oper" class="wgtOper"></select></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtFilter3ValDiv"></div>'
+            + '</div>'
+            + '<div class="item">'
+            + '<p>过滤条件4</p>'
+            + '<select id="wgtFilter4" name="wgtFilter4" data-val="4" class="wgtFilter">'
+            + '</select>'
+            + '<div class="cancel"></div>'
+            + '</div>'
+            + '<div class="item" style="padding-top:16px;height: 34px; ">'
+            + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="4" id="wgtFilter4Oper" name="wgtFilter4Oper" class="wgtOper"></select></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtFilter4ValDiv"></div>'
+            + '</div>'
+            + '<div class="item">'
+            + '<p>过滤条件5</p>'
+            + '<select id="wgtFilter5" name="wgtFilter5" data-val="5" class="wgtFilter">'
+            + '</select>'
+            + '<div class="cancel"></div>'
+            + '</div>'
+            + '<div class="item" style="padding-top:16px;height: 34px; ">'
+            + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="5" id="wgtFilter5Oper" name="wgtFilter5Oper" class="wgtOper"></select></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtFilter5ValDiv"></div>'
+            + '</div>'
+            + '<div class="item">'
+            + '<p>过滤条件6</p>'
+            + '<select id="wgtFilter6" name="wgtFilter6" data-val="6" class="wgtFilter">'
+            + '</select>'
+            + '<div class="cancel"></div>'
+            + '</div>'
+            + '<div class="item" style="padding-top:16px;height: 34px; ">'
+            + '<div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="6" id="wgtFilter6Oper" name="wgtFilter6Oper" class="wgtOper"></select></div>'
+            + '<div style="width: 186px;position:relative;float: left;height: 24px;margin-top: 6px;" id="wgtFilter6ValDiv"></div>'
+            + '</div><p style="clear:both;"></p>'
+            + '</div>'
+            + '</div>'
+            + '<div class="normal">'
+            + '<div class="heading">'
+            + '<div class="toogle" onclick="Toogle(this)">'
+            + '<div class="Vertical"></div>'
+            + '<div class="Horizontal"></div>'
+            + '</div>'
+            + '选项'
+            + '</div>'
+            + '<div class="Column">'
+            + '<div class="item">'
+            + '<p>排序</p>'
+            + '<select name="wgtSortType" id="wgtSortType">'
+            + '</select>'
+            + '</div>'
+            + '<div class="item">'
+            + '<p>突出显示</p>'
+            + '<select name="wgtEmphasis" id="wgtEmphasis">'
+            + '<option value=""></option>'
+            + '</select>'
+            + '</div>'
+            + '<div class="item">'
+            + '<p>显示</p>'
+            + '<select name="wgtShowType" id="wgtShowType">'
+            + '<option value="2741">前5</option>'
+            + '<option value="2742">前10</option>'
+            + '<option value="2743">前25</option>'
+            + '<option value="2744">最后5</option>'
+            + '<option value="2745">最后10</option>'
+            + '<option value="2746">最后25</option>'
+            + '</select>'
+            + '</div>'
+            + '<div class="item" style="width:705px;height: 1px ;background: #E4E4E4; "></div>'
+            + '<div class="item" style="height: 30px;">'
+            + '<input type="checkbox" id="wgtShowTitle" name="wgtShowTitle" checked="checked" style="margin-top: 2px;">'
+            + '<label for="wgtShowTitle">显示列标题</label>'
+            + '</div>'
+            + '<div class="item" style="height: 30px;">'
+            + '<input type="checkbox" id="wgtShowAction" name="wgtShowAction" style="margin-top: 2px;">'
+            + '<label for="wgtShowAction">显示操作栏</label>'
+            + '</div>'
+            + '</div>'
+            + '</div>'
+            + '<div class="normal">'
+            + '<div class="heading">'
+            + '<div class="toogle" onclick="Toogle(this)">'
+            + '<div class="Vertical"></div>'
+            + '<div class="Horizontal"></div>'
+            + '</div>'
+            + '布局/大小'
+            + '</div>'
+            + '<div class="Column">'
+            + '<div class="item" style="width: 100%;height: auto;">'
+            + '<p>宽度   <a style="color: #ccc;font-weight: normal;font-size: 11px;">(小窗口占用的列数)</a><input type="hidden" id="wgtSize" name="wgtSize" value="2" /></p>'
+            + '<ul class="widgetSizeList">'
+            + '<li title="1列" data-val="1"></li>'
+            + '<li title="2列" data-val="2" class="widgetSizeListNow"></li>'
+            + '<li title="3列" data-val="3"></li>'
+            + '<li title="4列" data-val="4"></li>'
+            + '</ul>'
+            + '</div>'
+            + '</div>'
+            + '</div>';
     }
     else if (type == 2585) {
-
+        return '<div class="normal">'
+            + '<div class="heading">'
+            + '<div class="toogle" onclick="Toogle(this)">'
+            + '<div class="Vertical"></div>'
+            + '<div class="Horizontal"></div>'
+            + '</div>'
+            + '常规'
+            + '</div>'
+            + '<div class="Column">'
+            + '<div class="item">'
+            + '<p>小窗口标题<span style="color: red;">*</span></p>'
+            + '<input type="text" name="addWidgetName" id="addWidgetName">'
+            + '<input type="hidden" id="addWidgetId" name="addWidgetId" value="0" />'
+            + '</div>'
+            + '<div class="item" style="line-height: 20px;">'
+            + '<p>对象</p>'
+            + '<span id="addWidgetEntityName"></span>'
+            + '</div>'
+            + '<div class="item" style="width: 100%;height: 90px;">'
+            + '<p>描述</p>'
+            + '<textarea id="wgtDesc" name="wgtDesc" style="width: 100%;height: 45px;resize: none;"></textarea>'
+            + '</div>'
+            + '</div>'
+            + '</div>'
+            + '<div class="normal">'
+            + '<div class="heading">'
+            + '<div class="toogle" onclick="Toogle(this)">'
+            + '<div class="Vertical"></div>'
+            + '<div class="Horizontal"></div>'
+            + '</div>'
+            + '内容'
+            + '</div>'
+            + '<div class="Column">'
+            + '<script id="containerHead" name="content" type="text/plain"></script>'
+            + '<script src="../RichText/js/ueditor.config.js"></script>'
+            + '<script src="../RichText/js/ueditor.all.js"></script>'
+            + '</div>'
+            + '</div>'
+            + '<div class="normal" >'
+            + '<div class="heading">'
+            + '<div class="toogle" onclick="Toogle(this)">'
+            + '<div class="Vertical"></div>'
+            + '<div class="Horizontal"></div>'
+            + '</div>'
+            + '选项'
+            + '</div>'
+            + '<div class="Column">'
+            + '<div class="item" style="height: 20px;">'
+            + '<input type="checkbox" id="wgtDisplayName" name="wgtDisplayName" checked="checked" style="margin-top: 2px;">'
+            + '<label for="wgtDisplayName">显示小窗口标题</label>'
+            + '</div>'
+            + '</div>'
+            + '</div>'
+            + '<div class="normal">'
+            + '<div class="heading">'
+            + '<div class="toogle" onclick="Toogle(this)">'
+            + '<div class="Vertical"></div>'
+            + '<div class="Horizontal"></div>'
+            + '</div>'
+            + '布局/大小'
+            + '</div>'
+            + '<div class="Column">'
+            + '<div class="item" style="width: 100%;height: auto;">'
+            + '<p>宽度   <a style="color: #ccc;font-weight: normal;font-size: 11px;">(小窗口占用的列数)</a><input type="hidden" id="wgtSize" name="wgtSize" value="2" /></p>'
+            + '<ul class="widgetSizeList">'
+            + '<li title="1列" data-val="1"></li>'
+            + '<li title="2列" data-val="2" class="widgetSizeListNow"></li>'
+            + '<li title="3列" data-val="3"></li>'
+            + '<li title="4列" data-val="4"></li>'
+            + '</ul>'
+            + '</div>'
+            + '</div>'
+            + '</div>';
     }
     return '';
 }
-function AddWidgetStep1() {
-    $("#addWgtContent").empty();
-    if ($('input:radio[name="addWidgetType"]:checked').val() == "1") {
+function AddWidgetStep1(widgetData, copy) {
+    var widget = guages = filters = null;
+    if (widgetData != null) {
+        widget = widgetData[0];
+        guages = widgetData[1];
+        filters = widgetData[2];
+    }
+    if (widget != null || $('input:radio[name="addWidgetType"]:checked').val() == "1") {
+        $("#addWgtContent").empty();
         var showType = $("#addWidgetTypeSelect").val();
+        var entityType = $("#addWidgetEntity").val();
+        if (widget != null) {
+            showType = widget.type_id;
+            entityType = widget.entity_id;
+        }
         $("#addWgtContent")[0].innerHTML = GeneralAddWidgetForm(showType);
-        for (var i = 0; i < widgetEntityList.length; i++) {
-            if (widgetEntityList[i].id == $("#addWidgetEntity").val()) {
-                $("#addWidgetEntityName").text(widgetEntityList[i].name);
-                break;
+        if (widget != null) {
+            $("#addWidgetId").val(widget.id);
+            $("#addWidgetName").val(widget.name);
+            $("#wgtDesc").text(widget.description);
+            $(".widgetSizeList").children().each(function () {
+                if ($(this).data("val") == widget.width) {
+                    $(this).addClass("widgetSizeListNow").siblings().removeClass("widgetSizeListNow");
+                }
+            })
+            // 修改按钮
+            $("#AddWidgetBefore").children(".AddWidgetBeforePOP").children(".button").remove();
+            $("#addWgtContent")[0].innerHTML = '<div class="button" style="bottom:auto;position:initial;"><div class="save" onclick= "AddWidgetFinish(' + showType + ');" ><img src="Images/save.png" alt="">保存并关闭</div>'
+                + '<div class="delete" onclick="DeleteWidget(' + widget.id + ')"><img src="Images/delete.png" alt="">删除小窗口</div></div>' + $("#addWgtContent")[0].innerHTML;
+            $("#addWgtContent").css("bottom", "0px");
+        }
+        if (copy == 1) {
+            $("#addWidgetId").val(0);
+        }
+        if (widgetEntityList == null) {
+            requestData("/Tools/DashboardAjax.ashx?act=GetWidgetEntityList", null, function (data) {
+                widgetEntityList = data;
+                for (var i = 0; i < widgetEntityList.length; i++) {
+                    if (widgetEntityList[i].id == entityType) {
+                        $("#addWidgetEntityName").text(widgetEntityList[i].name);
+                        break;
+                    }
+                }
+            })
+        } else {
+            for (var i = 0; i < widgetEntityList.length; i++) {
+                if (widgetEntityList[i].id == entityType) {
+                    $("#addWidgetEntityName").text(widgetEntityList[i].name);
+                    break;
+                }
             }
         }
         if (showType == 2581) {
@@ -1111,15 +1573,56 @@ function AddWidgetStep1() {
                 ChooseVisual(this);
             })
             ChooseVisual($(".ClickNow"));
-            requestData("/Tools/DashboardAjax.ashx?act=GetWidgetFilter&id=" + $("#addWidgetEntity").val(), null, function (data) {
-                InitWidgetFilter(data, "");
+            if (widget != null)
+                ChooseVisual($("li[data-visual=" + widget.visual_type_id + "]"));
+            requestData("/Tools/DashboardAjax.ashx?act=GetWidgetFilter&id=" + entityType, null, function (data) {
+                InitWidgetFilter(data, "", widget, filters);
             });
-            requestData("/Tools/DashboardAjax.ashx?act=GetWidgetReport&id=" + $("#addWidgetEntity").val(), null, function (data) {
-                InitWidgetReporton(data);
+            requestData("/Tools/DashboardAjax.ashx?act=GetWidgetReport&id=" + entityType, null, function (data) {
+                InitWidgetReporton(data, widget);
             });
-            requestData("/Tools/DashboardAjax.ashx?act=GetWidgetGroupby&id=" + $("#addWidgetEntity").val(), null, function (data) {
-                InitWidgetGroupby(data);
+            requestData("/Tools/DashboardAjax.ashx?act=GetWidgetGroupby&id=" + entityType, null, function (data) {
+                InitWidgetGroupby(data, widget);
             });
+            if (widget != null) {
+                if (widget.show2axis == 1) {
+                    $("#wgtShowTwoAxis").prop("checked", true);
+                } else {
+                    $("#wgtShowTwoAxis").prop("checked", false);
+                }
+                if (widget.include_none == 1) {
+                    $("#wgtShowBlank").prop("checked", true);
+                } else {
+                    $("#wgtShowBlank").prop("checked", false);
+                }
+                if (widget.display_other == 1) {
+                    $("#wgtDisplayOth").prop("checked", true);
+                } else {
+                    $("#wgtDisplayOth").prop("checked", false);
+                }
+                if (widget.show_axis_label == 1) {
+                    $("#wgtShowAxis").prop("checked", true);
+                } else {
+                    $("#wgtShowAxis").prop("checked", false);
+                }
+                if (widget.show_trendline == 1) {
+                    $("#wgtShowTrendline").prop("checked", true);
+                } else {
+                    $("#wgtShowTrendline").prop("checked", false);
+                }
+                if (widget.show_legend == 1) {
+                    $("#wgtShowTitle").prop("checked", true);
+                } else {
+                    $("#wgtShowTitle").prop("checked", false);
+                }
+                if (widget.show_total == 1) {
+                    $("#wgtShowTotal").prop("checked", true);
+                } else {
+                    $("#wgtShowTotal").prop("checked", false);
+                }
+                $("#wgtShowType").val(widget.display_type_id);
+                $("#wgtSortType").val(widget.orderby_id);
+            }
         }
         else if (showType == 2583) {
             var yidx = -60 * ThemeIdx - 1;
@@ -1129,65 +1632,223 @@ function AddWidgetStep1() {
             $(".ClickNo").click(function () {
                 ChooseGuage(this);
             })
+            $("#wgtVisualType").val(2559);
+            if (widget != null)
+                ChooseGuage($("li[data-visual=" + widget.visual_type_id + "]"));
             $("#wgtSub1BreakCnt").change(function () {
-                BreakPointCntChange(1);
+                BreakPointCntChange(1, null);
             })
             $("#wgtSub2BreakCnt").change(function () {
-                BreakPointCntChange(2);
+                BreakPointCntChange(2, null);
             })
             $("#wgtSub3BreakCnt").change(function () {
-                BreakPointCntChange(3);
+                BreakPointCntChange(3, null);
             })
             $("#wgtSub4BreakCnt").change(function () {
-                BreakPointCntChange(4);
+                BreakPointCntChange(4, null);
             })
             $("#wgtSub5BreakCnt").change(function () {
-                BreakPointCntChange(5);
+                BreakPointCntChange(5, null);
             })
             $("#wgtSub6BreakCnt").change(function () {
-                BreakPointCntChange(6);
+                BreakPointCntChange(6, null);
             })
-            requestData("/Tools/DashboardAjax.ashx?act=GetWidgetFilter&id=" + $("#addWidgetEntity").val(), null, function (data) {
-                InitWidgetFilter(data, "Sub1");
-                InitWidgetFilter(data, "Sub2");
-                InitWidgetFilter(data, "Sub3");
-                InitWidgetFilter(data, "Sub4");
-                InitWidgetFilter(data, "Sub5");
-                InitWidgetFilter(data, "Sub6");
-            });
-            requestData("/Tools/DashboardAjax.ashx?act=GetWidgetReport&id=" + $("#addWidgetEntity").val(), null, function (data) {
-                InitWidgetReportonSingle("Sub1", data);
-                InitWidgetReportonSingle("Sub2", data);
-                InitWidgetReportonSingle("Sub3", data);
-                InitWidgetReportonSingle("Sub4", data);
-                InitWidgetReportonSingle("Sub5", data);
-                InitWidgetReportonSingle("Sub6", data);
-            });
-            function BreakPointCntChange(sub) {
-                var bpCnt = parseInt($("#wgtSub" + sub + "BreakCnt").val());
-                if (bpCnt > 1) {
-                    $("#wgtSub" + sub + "BP2").show();
+            requestData("/Tools/DashboardAjax.ashx?act=GetWidgetFilter&id=" + entityType, null, function (data) {
+
+                if (widget != null && guages != null) {
+                    for (var i = 1; i <= guages.length; i++) {
+                        InitWidgetFilter(data, "Sub" + i, widget, filters[i - 1]);
+                    }
+                    for (var i = guages.length + 1; i <= 6; i++) {
+                        InitWidgetFilter(data, "Sub" + i, null, null);
+                    }
                 } else {
-                    $("#wgtSub" + sub + "BP2").hide();
+                    for (var i = 1; i <= 6; i++) {
+                        InitWidgetFilter(data, "Sub" + i, null, null);
+                    }
+                }
+            });
+            requestData("/Tools/DashboardAjax.ashx?act=GetWidgetReport&id=" + entityType, null, function (data) {
+                if (widget != null && guages != null) {
+                    for (var i = 1; i <= guages.length; i++) {
+                        InitWidgetReportonSingle("Sub" + i, data, guages[i - 1]);
+                    }
+                    for (var i = guages.length + 1; i <= 6; i++) {
+                        InitWidgetReportonSingle("Sub" + i, data, null);
+                    }
+                } else {
+                    for (var i = 1; i <= 6; i++) {
+                        InitWidgetReportonSingle("Sub" + i, data, null);
+                    }
+                }
+                
+            });
+            function BreakPointCntChange(sub, values) {
+                var bpCnt = parseInt($("#wgtSub" + sub + "BreakCnt").val());
+                var wdPercent = 100 / bpCnt + "%";
+                if (values == null)
+                    values = "10,20,30,40,50,60";
+                var vals = values.split(",");
+                $("#wgtSub" + sub + "BPC1").css("width", wdPercent);
+                $("#wgtSub" + sub + "BPL1").css("width", wdPercent);
+                if (bpCnt > 1) {
+                    $("#wgtSub" + sub + "BPC2").show().css("width", wdPercent);
+                    $("#wgtSub" + sub + "BPL2").show().css("width", wdPercent);
+                    $("#wgtSub" + sub + "BPL1").html('<input type="text" name="wgtSub' + sub + 'BP0" id="wgtSub' + sub + 'BP0" value="' + vals[0] + '" style="width:60px;">');
+                } else {
+                    $("#wgtSub" + sub + "BPC2").hide();
+                    $("#wgtSub" + sub + "BPL2").hide();
+                    $("#wgtSub" + sub + "BPL1").html('<input type="text" name="wgtSub' + sub + 'BP0" id="wgtSub' + sub + 'BP0" value="' + vals[0] + '" style="width:60px;"><input type="text" name="wgtSub' + sub + 'BP1" id="wgtSub' + sub + 'BP1" value="' + vals[1] + '" style="width:60px;float:right;">');
+                    $("#wgtSub" + sub + "BPL2").html('');
+                    $("#wgtSub" + sub + "BPL3").html('');
+                    $("#wgtSub" + sub + "BPL4").html('');
+                    $("#wgtSub" + sub + "BPL5").html('');
                 }
                 if (bpCnt > 2) {
-                    $("#wgtSub" + sub + "BP3").show();
+                    $("#wgtSub" + sub + "BPC3").show().css("width", wdPercent);
+                    $("#wgtSub" + sub + "BPL3").show().css("width", wdPercent);
+                    $("#wgtSub" + sub + "BPL2").html('<input type="text" name="wgtSub' + sub + 'BP1" id="wgtSub' + sub + 'BP1" value="' + vals[1] + '" style="width:60px;">');
                 } else {
-                    $("#wgtSub" + sub + "BP3").hide();
+                    $("#wgtSub" + sub + "BPC3").hide();
+                    $("#wgtSub" + sub + "BPL3").hide();
+                    if (bpCnt == 2) $("#wgtSub" + sub + "BPL2").html('<input type="text" name="wgtSub' + sub + 'BP1" id="wgtSub' + sub + 'BP1" value="' + vals[1] + '" style="width:60px;"><input type="text" name="wgtSub' + sub + 'BP2" id="wgtSub' + sub + 'BP2" value="' + vals[2] + '" style="width:60px;float:right;">');
+                    $("#wgtSub" + sub + "BPL3").html('');
+                    $("#wgtSub" + sub + "BPL4").html('');
+                    $("#wgtSub" + sub + "BPL5").html('');
                 }
                 if (bpCnt > 3) {
-                    $("#wgtSub" + sub + "BP4").show();
+                    $("#wgtSub" + sub + "BPC4").show().css("width", wdPercent);
+                    $("#wgtSub" + sub + "BPL4").show().css("width", wdPercent);
+                    $("#wgtSub" + sub + "BPL3").html('<input type="text" name="wgtSub' + sub + 'BP2" id="wgtSub' + sub + 'BP2" value="' + vals[2] + '" style="width:60px;">');
                 } else {
-                    $("#wgtSub" + sub + "BP4").hide();
+                    $("#wgtSub" + sub + "BPC4").hide();
+                    $("#wgtSub" + sub + "BPL4").hide();
+                    if (bpCnt == 3) $("#wgtSub" + sub + "BPL3").html('<input type="text" name="wgtSub' + sub + 'BP2" id="wgtSub' + sub + 'BP2" value="' + vals[2] + '" style="width:60px;"><input type="text" name="wgtSub' + sub + 'BP3" id="wgtSub' + sub + 'BP3" value="' + vals[3] + '" style="width:60px;float:right;">');
+                    $("#wgtSub" + sub + "BPL4").html('');
+                    $("#wgtSub" + sub + "BPL5").html('');
                 }
                 if (bpCnt > 4) {
-                    $("#wgtSub" + sub + "BP5").show();
+                    $("#wgtSub" + sub + "BPC5").show().css("width", wdPercent);
+                    $("#wgtSub" + sub + "BPL5").show().css("width", wdPercent);
+                    $("#wgtSub" + sub + "BPL4").html('<input type="text" name="wgtSub' + sub + 'BP3" id="wgtSub' + sub + 'BP3" value="' + vals[3] + '" style="width:60px;">');
+                    $("#wgtSub" + sub + "BPL5").html('<input type="text" name="wgtSub' + sub + 'BP4" id="wgtSub' + sub + 'BP4" value="' + vals[4] + '" style="width:60px;"><input type="text" name="wgtSub' + sub + 'BP5" id="wgtSub' + sub + 'BP5" value="' + vals[5] + '" style="width:60px;float:right;">');
                 } else {
-                    $("#wgtSub" + sub + "BP5").hide();
+                    $("#wgtSub" + sub + "BPC5").hide();
+                    $("#wgtSub" + sub + "BPL5").hide();
+                    if (bpCnt == 4) $("#wgtSub" + sub + "BPL4").html('<input type="text" name="wgtSub' + sub + 'BP3" id="wgtSub' + sub + 'BP3" value="' + vals[3] + '" style="width:60px;"><input type="text" name="wgtSub' + sub + 'BP4" id="wgtSub' + sub + 'BP4" value="' + vals[4] + '" style="width:60px;float:right;">');
+                    $("#wgtSub" + sub + "BPL5").html('');
+                }
+            }
+            if (widget != null) {
+                $("input[name=AddWidgetColorScheme][value='" + widget.color_scheme_id + "']").attr("checked", true);
+                for (var i = 1; i <= guages.length; i++) {
+                    $("#wgtSub" + i + "BreakCnt").val(guages[i - 1].segments);
+                    BreakPointCntChange(i, guages[i - 1].break_points);
+                    $("#wgtSub" + i + "Label").val(guages[i - 1].name);
+                    $("#addWidgetGuage" + i + "Id").val(guages[i - 1].id);
+                }
+            }
+        }
+        else if (showType == 2584) {
+            $('#multiselect').multiselect({
+                sort: false
+            });
+            $('#multiselect2').multiselect({
+                sort: false
+            });
+            requestData("/Tools/DashboardAjax.ashx?act=GetWidgetFilter&id=" + entityType, null, function (data) {
+                InitWidgetFilter(data, "");
+            });
+            requestData("/Tools/DashboardAjax.ashx?act=GetWidgetTableColumn&id=" + entityType, null, function (data) {
+                var str1 = '';
+                var strto1 = '';
+                var str2 = '';
+                var strto2 = '';
+                for (var i = 0; i < data.length; i++) {
+                    var opt='<option value="' + data[i].val + '">' + data[i].show + '</option>';
+                    if (widget != null && widget.primary_column_ids != null) {
+                        if ($.inArray(data[i].val, widget.primary_column_ids.split(",")) != -1) {
+                            strto1 += opt;
+                        } else {
+                            str1 += opt;
+                        }
+                    } else {
+                        str1 += opt;
+                    }
+                    if (widget != null && widget.other_column_ids != null) {
+                        if ($.inArray(data[i].val, widget.other_column_ids.split(",")) != -1) {
+                            strto2 += opt;
+                        } else {
+                            str2 += opt;
+                        }
+                    } else {
+                        str2 += opt;
+                    }
+                }
+                $("#multiselect").html(str1);
+                $("#multiselect2").html(str2);
+                $("#multiselect_to").html(strto1);
+                $("#multiselect2_to").html(strto2);
+            });
+            requestData("/Tools/DashboardAjax.ashx?act=GetWidgetTableSort&id=" + entityType, null, function (data) {
+                var str = '<option value=""></option>';
+                for (var i = 0; i < data.length; i++) {
+                    str += '<option value="' + data[i].val + '">' + data[i].show + '</option>';
+                }
+                $("#wgtSortType").html(str);
+                if (widget != null) {
+                    $("#wgtSortType").val(widget.orderby_grid_id);
+                }
+            });
+            $("#wgtEmphasis").focus(function () {
+                var optstr = '<option value=""></option>';
+                $("#multiselect2_to option").each(function () {
+                    optstr += '<option value="' + $(this).val() + '">' + $(this).text() + '</option>';
+                });
+                $("#wgtEmphasis").html(optstr);
+            })
+            if (widget != null) {
+                $("#wgtEmphasis").val(widget.emphasis_column_id);
+                $("#wgtShowType").val(widget.display_type_id);
+                if (widget.show_action_column == 1) {
+                    $("#wgtShowAction").prop("checked", true);
+                } else {
+                    $("#wgtShowAction").prop("checked", false);
+                }
+                if (widget.show_column_header == 1) {
+                    $("#wgtShowTitle").prop("checked", true);
+                } else {
+                    $("#wgtShowTitle").prop("checked", false);
+                }
+            }
+        }
+        else if (showType == 2585) {
+
+            var ue = UE.getEditor('containerHead', {
+                toolbars: [
+                    ['source', 'fontfamily', 'fontsize', 'bold', 'italic', 'underline', 'fontcolor', 'backcolor', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist', 'insertunorderedlist', 'undo', 'redo']
+                ],
+                initialFrameHeight: 300,//设置编辑器高度
+                initialFrameWidth: 780, //设置编辑器宽度
+                wordCount: false,
+                elementPathEnabled : false,
+                autoHeightEnabled: false  //设置滚动条
+            });
+            if (widget != null) {
+                ue.ready(function () {
+                    ue.setContent(widget.html);
+                });
+                if (widget.show_widget_name == 1) {
+                    $("#wgtDisplayName").prop("checked", true);
+                } else {
+                    $("#wgtDisplayName").prop("checked", false);
                 }
             }
         }
         ShowLoading();
+        $(".AddWidgetBeforePOP").children(".button").children(".next").unbind("click").bind("click", function () {
+            AddWidgetFinish(showType);
+        })
         setTimeout(function () {
             $(".widgetSizeList").children().click(function () {
                 $(this).addClass("widgetSizeListNow").siblings().removeClass("widgetSizeListNow");
@@ -1196,15 +1857,61 @@ function AddWidgetStep1() {
             $('#AddWidget').hide();
             $('#AddWidgetBefore').show();
             HideLoading();
-        }, 100);
+        }, 1000);
+        if (widgetDynamicDateTypes == null) {
+            requestData("/Tools/DashboardAjax.ashx?act=DynamicDateType", null, function (data) {
+                widgetDynamicDateTypes = data;
+                if (data != null) {
+                    var str = '<option value=""></option>';
+                    for (var i = 0; i < data[0].length; i++) {
+                        str += '<option value="' + data[0][i].val + '">' + data[0][i].show + '</option>';
+                    }
+                    $("#WidgetDynamicDateStart")[0].innerHTML = str;
+                    var str = '<option value=""></option>';
+                    for (var i = 0; i < data[1].length; i++) {
+                        str += '<option value="' + data[1][i].val + '">' + data[1][i].show + '</option>';
+                    }
+                    $("#WidgetDynamicDateEnd")[0].innerHTML = str;
+                    $("#WidgetDynamicDateStart").change(function () {
+                        var txt = $(this).find("option:selected").text();
+                        if (txt.indexOf("#") == -1) {
+                            $("#WidgetDynamicNumStart").val('');
+                            $("#WidgetDynamicNumStart").attr("disabled", "disabled");
+                        } else {
+                            $("#WidgetDynamicNumStart").removeAttr("disabled");
+                        }
+                        if ($(this).val() == 2933) {
+                            $("#WidgetDynamicDTimeStart").removeAttr("disabled");
+                        } else {
+                            $("#WidgetDynamicDTimeStart").val('');
+                            $("#WidgetDynamicDTimeStart").attr("disabled", "disabled");
+                        }
+                    })
+                    $("#WidgetDynamicDateEnd").change(function () {
+                        var txt = $(this).find("option:selected").text();
+                        if (txt.indexOf("#") == -1) {
+                            $("#WidgetDynamicNumEnd").val('');
+                            $("#WidgetDynamicNumEnd").attr("disabled", "disabled");
+                        } else {
+                            $("#WidgetDynamicNumEnd").removeAttr("disabled");
+                        }
+                        if ($(this).val() == 2934) {
+                            $("#WidgetDynamicDTimeEnd").removeAttr("disabled");
+                        } else {
+                            $("#WidgetDynamicDTimeEnd").val('');
+                            $("#WidgetDynamicDTimeEnd").attr("disabled", "disabled");
+                        }
+                    })
+                }
+            })
+        }
     }
 }
-function AddWidgetFinish() {
+function AddWidgetFinish(showType) {
     if ($("#addWidgetName").val() == "") {
         LayerMsg("请输入小窗口标题");
         return;
     }
-    var showType = $("#addWidgetTypeSelect").val();
     if (showType == 2581) {
         if ($("#wgtReport1").val() == "") {
             LayerMsg("请选择统计对象");
@@ -1246,6 +1953,24 @@ function AddWidgetFinish() {
             LayerMsg("请至少选择一个子图表");
             return;
         }
+    } else if (showType == 2584) {
+        if ($("#multiselect_to option").length == 0) {
+            LayerMsg("列表首字段请至少选择一列");
+            return;
+        }
+        var ids = "";
+        $("#multiselect_to option").each(function () {
+            ids += $(this).val() + ',';
+        });
+        ids = ids.substr(0, ids.length - 1);
+        $("#AddWidgetTableColumn1").val(ids);
+        ids = "";
+        $("#multiselect2_to option").each(function () {
+            ids += $(this).val() + ',';
+        });
+        if (ids != "")
+            ids = ids.substr(0, ids.length - 1);
+        $("#AddWidgetTableColumn2").val(ids);
     }
     $("#addWidgetForm").unbind("submit").submit(function () {
         LayerLoad();
@@ -1257,7 +1982,12 @@ function AddWidgetFinish() {
             },
             success: function (data) {
                 LayerLoadClose();
-                if (data != 0) RefreshDashboard();
+                if (data != 0) {
+                    RefreshDashboard();
+                    $('#AddWidgetBefore').hide();
+                } else {
+                    LayerMsg("新增失败！");
+                }
             }
         });
         return false;
@@ -1307,7 +2037,7 @@ function ChooseVisual(dom) {
         $("#wgtGroup2").removeAttr("disabled");
     }
 }
-function InitWidgetReportonSingle(sub, data) {
+function InitWidgetReportonSingle(sub, data, guage) {
     var str = "<option value=''></option>";
     for (var i = 0; i < data.length; i++) {
         str += "<option value='" + data[i][0].id + "'>" + data[i][0].name + "</option>";
@@ -1316,6 +2046,11 @@ function InitWidgetReportonSingle(sub, data) {
     $("#wgt" + sub + "Report1").unbind("change").bind("change", function () {
         ReportChange(sub);
     })
+    if (guage != null) {
+        $("#wgt" + sub + "Report1").val(guage.report_on_id);
+        ReportChange(sub);
+        $("#wgt" + sub + "ReportType1").val(guage.aggregation_type_id);
+    }
     function ReportChange(sub) {
         var sltValue = $("#wgt" + sub + "Report1").val();
         if (sltValue == "") {
@@ -1337,7 +2072,7 @@ function InitWidgetReportonSingle(sub, data) {
         }
     }
 }
-function InitWidgetReporton(data) {
+function InitWidgetReporton(data, widget) {
     var str = "<option value=''></option>";
     for (var i = 0; i < data.length; i++) {
         str += "<option value='" + data[i][0].id + "'>" + data[i][0].name + "</option>";
@@ -1350,6 +2085,16 @@ function InitWidgetReporton(data) {
     $("#wgtReport2").unbind("change").bind("change", function () {
         ReportChange(2);
     })
+    if (widget != null) {
+        $("#wgtReport1").val(widget.report_on_id);
+        ReportChange(1);
+        $("#wgtReportType1").val(widget.aggregation_type_id);
+        if (widget.report_on_id2 != null) {
+            $("#wgtReport2").val(widget.report_on_id2);
+            ReportChange(2);
+            $("#wgtReportType2").val(widget.aggregation_type_id2);
+        }
+    }
     function ReportChange(idx) {
         var sltValue = $("#wgtReport" + idx).val();
         var type = $(".ClickNow").data("visual");
@@ -1378,7 +2123,7 @@ function InitWidgetReporton(data) {
         }
     }
 }
-function InitWidgetGroupby(data) {
+function InitWidgetGroupby(data, widget) {
     var str = "<option value=''></option>";
     for (var i = 0; i < data.length; i++) {
         str += "<option value='" + data[i].val + "'>" + data[i].show + "</option>";
@@ -1391,6 +2136,13 @@ function InitWidgetGroupby(data) {
     $("#wgtGroup2").unbind("change").bind("change", function () {
         GroupChange(2);
     })
+    if (widget != null) {
+        $("#wgtGroup1").val(widget.groupby_id);
+        if (widget.groupby_id2 != null) {
+            $("#wgtGroup2").val(widget.groupby_id2);
+            GroupChange(2);
+        }
+    }
     function GroupChange(idx) {
         if (idx == 2) {
             var type = $(".ClickNow").data("visual");
@@ -1404,7 +2156,7 @@ function InitWidgetGroupby(data) {
         }
     }
 }
-function InitWidgetFilter(data, sub) {
+function InitWidgetFilter(data, sub, widget, filters) {
     var str = "<option value=''></option>";
     for (var i = 0; i < data.length; i++) {
         str += "<option value='" + data[i][0].description + "'>" + data[i][0].description + "</option>";
@@ -1416,6 +2168,67 @@ function InitWidgetFilter(data, sub) {
     $(".wgt" + sub + "Oper").unbind("change").bind("change", function () {
         OperChange(sub, $(this).data("val"));
     })
+    if (widget != null && filters != null) {
+        for (var n = 1; n <= filters.length; n++) {
+            for (var i = 0; i < data.length; i++) {
+                if (data[i][0].col_name != filters[n - 1].col_name) continue;
+
+                for (var j = 0; j < data[i].length; j++) {
+                    if (data[i][j].operator_type_id != filters[n - 1].operator) continue;
+                    var sfilter = data[i][j];
+                    $("#wgt" + sub + "Filter" + n).val(sfilter.description);
+                    FilterChange(sub, n);
+                    $("#wgt" + sub + "Filter" + n + "Oper").val(sfilter.operator_type_id);
+                    OperChange(sub, n);
+
+                    switch (sfilter.data_type){
+                        case 803:
+                            if (widgetDynamicDateTypes == null) {
+                                requestData("/Tools/DashboardAjax.ashx?act=DynamicDateType", null, function (data) {
+                                    widgetDynamicDateTypes = data;
+                                    $("#wgt" + sub + "Filter" + n + "Val1").val(GetDynamicDateData(filters[n - 1].value))
+                                    $("#wgt" + sub + "Filter" + n + "Val1Hidden").val(filters[n - 1].value);
+                                })
+                            } else {
+                                $("#wgt" + sub + "Filter" + n + "Val1").val(GetDynamicDateData(filters[n - 1].value))
+                                $("#wgt" + sub + "Filter" + n + "Val1Hidden").val(filters[n - 1].value);
+                            }
+                            break;
+                        case 805:
+                        case 809:
+                        case 816:
+                        case 818:
+                        case 2807:
+                            $("#wgt" + sub + "Filter" + n + "Val1").val(filters[n - 1].value);
+                            break;
+                        case 806:
+                        case 807:
+                            $("#wgt" + sub + "Filter" + n + "Val1").val(filters[n - 1].value.split(",")[0]);
+                            $("#wgt" + sub + "Filter" + n + "Val2").val(filters[n - 1].value.split(",")[1]);
+                            break;
+                        case 810:
+                            var vals = filters[n - 1].value.split(",");
+                            var sStr = "";
+                            for (var m = 0; m < vals.length; m++) {
+                                for (var k = 0; k < sfilter.values.length; k++) {
+                                    if (vals[m] != sfilter.values[k].val) continue;
+                                    sStr += ',' + sfilter.values[k].show;
+                                }
+                            }
+                            if (sStr != '')
+                                sStr = sStr.substring(1);
+                            if (vals.length == sfilter.values.length)
+                                sStr = "选择全部";
+                            $("#wgt" + sub + "Filter" + n + "Val1").val(filters[n - 1].value);
+                            $("#mlt" + sub + n).children(".ms-parent ").children(".ms-choice").children("span").text(sStr).removeClass("placeholder");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+    }
     function FilterChange(sub, idx) {
         var sltValue = $("#wgt" + sub + "Filter" + idx).val();
         if (sltValue == "") {
@@ -1458,7 +2271,7 @@ function InitWidgetFilter(data, sub) {
                     $("#wgt" + sub + "Filter" + idx + "ValDiv")[0].innerHTML = '<select id="wgt' + sub + 'Filter' + idx + 'Val1" name="wgt' + sub + 'Filter' + idx + 'Val1" style="width:100%;" class="widgetFilterValue"></select>';
                     $("#wgt" + sub + "Filter" + idx + "Val1")[0].innerHTML = sltVals;
                 } else if (cdt.data_type == 805 || cdt.data_type == 816 || cdt.data_type == 818) {
-                    $("#wgt" + sub + "Filter" + idx + "ValDiv")[0].innerHTML = '<input id="wgt' + sub + 'Filter' + idx + 'Val1" name="wgt' + sub + 'Filter' + idx + 'Val1" class="widgetFilterValue" />';
+                    $("#wgt" + sub + "Filter" + idx + "ValDiv")[0].innerHTML = '<input id="wgt' + sub + 'Filter' + idx + 'Val1" name="wgt' + sub + 'Filter' + idx + 'Val1" style="width:184px;" class="widgetFilterValue" />';
                 } else if (cdt.data_type == 810) {
                     $("#wgt" + sub + "Filter" + idx + "ValDiv")[0].innerHTML = '<div id="mlt' + sub + idx + '" class="multiplebox widgetFilterValue" style="border:0;"><input type= "hidden" id= "wgt' + sub + 'Filter' + idx + 'Val1" name= "wgt' + sub + 'Filter' + idx + 'Val1" class="sl_cdt" /><select id="mltslt' + sub + idx + '" multiple="multiple" ></select></div >';
                     $("#mltslt" + sub + idx)[0].innerHTML = sltVals;
@@ -1467,31 +2280,166 @@ function InitWidgetFilter(data, sub) {
                     }).multipleSelect({
                         width: '100%'
                     })
-                } else if (cdt.data_type == 812) {
-
+                } else if (cdt.data_type == 812 || cdt.data_type == 814) {
+                    $("#wgt" + sub + "Filter" + idx + "ValDiv")[0].innerHTML = '<input id="wgt' + sub + 'Filter' + idx + 'Val1" disabled="disabled" style="width:164px;" class="widgetFilterValue" /><input type="hidden" name="wgt' + sub + 'Filter' + idx + 'Val1" id="wgt' + sub + 'Filter' + idx + 'Val1Hidden" /><i class="icon-dh" style="height:16px;margin-top:3px;margin-left:3px;float:left;" onclick="window.open(\'' + cdt.ref_url + 'wgt' + sub + 'Filter' + idx + 'Val1\', \'_blank\', \'left= 200, top = 200, width = 600, height = 800\', false)"></i>';
                 } else if (cdt.data_type == 803) {
-
+                    $("#wgt" + sub + "Filter" + idx + "ValDiv")[0].innerHTML = '<input id="wgt' + sub + 'Filter' + idx + 'Val1" disabled="disabled" style="width:164px;" class="widgetFilterValue" /><input type="hidden" name="wgt' + sub + 'Filter' + idx + 'Val1" id="wgt' + sub + 'Filter' + idx + 'Val1Hidden" /><i class="icon-dh" style="height:16px;margin-top:3px;margin-left:3px;float:left;background-image:url(../Images/edit.png) !important" onclick="ChooseDynamicDate(\'' + proValue + '\',\'wgt' + sub + 'Filter' + idx + 'Val1\')"></i>';
                 } else if (cdt.data_type == 807 || cdt.data_type == 817) {
-                    var fltHtml = '<input id="wgt' + sub + 'Filter' + idx + 'Val1" name="wgt' + sub + 'Filter' + idx + 'Val1" class="widgetFilterValue Wdate" style="width:80px;" onclick="WdatePicker()" />';
+                    var fltHtml = '<input id="wgt' + sub + 'Filter' + idx + 'Val1" name="wgt' + sub + 'Filter' + idx + 'Val1" class="widgetFilterValue Wdate" style="width:83px;border:solid 1px #D7D7D7;" onclick="WdatePicker()" />';
                     fltHtml += '<span style="float:left;margin:0 4px 0 4px">-</span>';
-                    fltHtml += '<input id="wgt' + sub + 'Filter' + idx + 'Val2" name="wgt' + sub + 'Filter' + idx + 'Val2" class="widgetFilterValue Wdate" style="width:80px;" onclick="WdatePicker()" />';
+                    fltHtml += '<input id="wgt' + sub + 'Filter' + idx + 'Val2" name="wgt' + sub + 'Filter' + idx + 'Val2" class="widgetFilterValue Wdate" style="width:83px;border:solid 1px #D7D7D7;" onclick="WdatePicker()" />';
                     $("#wgt" + sub + "Filter" + idx + "ValDiv")[0].innerHTML = fltHtml;
                 } else if (cdt.data_type == 806) {
-                    var fltHtml = '<input id="wgt' + sub + 'Filter' + idx + 'Val1" name="wgt' + sub + 'Filter' + idx + 'Val1" class="widgetFilterValue" style="width:80px;" />';
+                    var fltHtml = '<input id="wgt' + sub + 'Filter' + idx + 'Val1" name="wgt' + sub + 'Filter' + idx + 'Val1" class="widgetFilterValue" style="width:83px;" />';
                     fltHtml += '<span style="float:left;margin:0 4px 0 4px">-</span>';
-                    fltHtml += '<input id="wgt' + sub + 'Filter' + idx + 'Val2" name="wgt' + sub + 'Filter' + idx + 'Val2" class="widgetFilterValue" style="width:80px;" />';
+                    fltHtml += '<input id="wgt' + sub + 'Filter' + idx + 'Val2" name="wgt' + sub + 'Filter' + idx + 'Val2" class="widgetFilterValue" style="width:83px;" />';
                     $("#wgt" + sub + "Filter" + idx + "ValDiv")[0].innerHTML = fltHtml;
-                } else if (cdt.data_type == 814) {
-
                 } else if (cdt.data_type == 2807) {
-                    $("#wgt" + sub + "Filter" + idx + "ValDiv")[0].innerHTML = '<input id="wgt' + sub + 'Filter' + idx + 'Val1" name="wgt' + sub + 'Filter' + idx + 'Val1" class="widgetFilterValue Wdate" onclick="WdatePicker()" />';
+                    $("#wgt" + sub + "Filter" + idx + "ValDiv")[0].innerHTML = '<input id="wgt' + sub + 'Filter' + idx + 'Val1" name="wgt' + sub + 'Filter' + idx + 'Val1" class="widgetFilterValue Wdate" style="border:solid 1px #D7D7D7;width:184px;" onclick="WdatePicker()" />';
                 }
             }
             break;
         }
     }
-}
 
+    function GetDynamicDateData(value) {
+        
+        var strTxt = '';
+        var str = value.split(",");
+        if (str[0] != "") {
+            var str0 = str[0].split("#");
+            for (var i = 0; i < widgetDynamicDateTypes[0].length; i++) {
+                if (str0[0] != widgetDynamicDateTypes[0][i].val) continue;
+                if (str0[1] != "" && str0[1] != null) {
+                    if (str0[0] == 2933)
+                        strTxt = str0[1];
+                    else {
+                        var idx = widgetDynamicDateTypes[0][i].show.indexOf("#");
+                        strTxt = widgetDynamicDateTypes[0][i].show.substring(0, idx) + str0[1] + widgetDynamicDateTypes[0][i].show.substring(idx + 1);
+                    }
+                } else {
+                    strTxt = widgetDynamicDateTypes[0][i].show;
+                }
+                
+            }
+        }
+
+        strTxt += '-';
+
+        if (str[1]!=null &&str[1] != "") {
+            var str1 = str[1].split("#");
+            for (var i = 0; i < widgetDynamicDateTypes[1].length; i++) {
+                if (str1[0] != widgetDynamicDateTypes[1][i].val) continue;
+                if (str1[1] != "" && str1[1] != null) {
+                    if (str1[0] == 2934)
+                        strTxt += str1[1];
+                    else {
+                        var idx = widgetDynamicDateTypes[1][i].show.indexOf("#");
+                        strTxt += widgetDynamicDateTypes[1][i].show.substring(0, idx) + str1[1] + widgetDynamicDateTypes[1][i].show.substring(idx + 1);
+                    }
+                } else {
+                    strTxt += widgetDynamicDateTypes[1][i].show;
+                }
+
+            }
+        }
+        
+        return strTxt;
+    }
+}
+function ChooseDynamicDate(obj, dom) {
+    $("#cover").css("z-index", 101);
+    $("#AddWidgetDynamicFilterName").text(obj);
+    $("#AddWidgetDynamicDom").val(dom);
+    $("#WidgetDynamicDateStart").val("");
+    $("#WidgetDynamicNumStart").val("");
+    $("#WidgetDynamicDTimeStart").val("");
+    $("#WidgetDynamicDateEnd").val("");
+    $("#WidgetDynamicNumEnd").val("");
+    $("#WidgetDynamicDTimeEnd").val("");
+    if ($("#" + dom + "Hidden").val() != "") {
+        var strs = $("#" + dom + "Hidden").val().split(',');
+        if (strs[0] != "") {
+            var strs1 = strs[0].split('#');
+            $("#WidgetDynamicDateStart").val(strs1[0]);
+            if (strs1[0] == 2933 && strs1[1] != "") {
+                $("#WidgetDynamicDTimeStart").removeAttr("disabled");
+                $("#WidgetDynamicDTimeStart").val(strs1[1]);
+            } else if (strs1[1] != "") {
+                $("#WidgetDynamicNumStart").removeAttr("disabled");
+                $("#WidgetDynamicNumStart").val(strs1[1]);
+            }
+        }
+        if (strs[1] != "") {
+            var strs2 = strs[1].split('#');
+            $("#WidgetDynamicDateEnd").val(strs2[0]);
+            if (strs2[0] == 2934 && strs2[1] != "") {
+                $("#WidgetDynamicDTimeEnd").removeAttr("disabled");
+                $("#WidgetDynamicDTimeEnd").val(strs2[1]);
+            } else if (strs2[1] != "") {
+                $("#WidgetDynamicNumEnd").removeAttr("disabled");
+                $("#WidgetDynamicNumEnd").val(strs2[1]);
+            }
+        }
+    }
+    $("#AddWidgetDynamicSelect").show();
+}
+function CloseDynamicDate() {
+    $("#cover").css("z-index", 99);
+    $("#AddWidgetDynamicSelect").hide();
+}
+function AddWidgetDynamicSelectFinish() {
+    var str = '';
+    var strTxt = '';
+    if ($("#WidgetDynamicDateStart").val() != "") {
+        if ($("#WidgetDynamicDateStart").val() == 2933) {
+            if ($("#WidgetDynamicDTimeStart").val() == "") {
+                LayerMsg("请选择固定开始时间");
+                return;
+            }
+            str += $("#WidgetDynamicDateStart").val() + "#" + $("#WidgetDynamicDTimeStart").val();
+            strTxt += $("#WidgetDynamicDTimeStart").val();
+        } else if ($("#WidgetDynamicDateStart").find("option:selected").text().indexOf("#") == -1) {
+            str += $("#WidgetDynamicDateStart").val() + "#";
+            strTxt += $("#WidgetDynamicDateStart").find("option:selected").text();
+        } else {
+            if ($("#WidgetDynamicNumStart").val() == "") {
+                LayerMsg("请输入开始#");
+                return;
+            }
+            str += $("#WidgetDynamicDateStart").val() + "#" + $("#WidgetDynamicNumStart").val();
+            var strTmp = $("#WidgetDynamicDateStart").find("option:selected").text().split('#');
+            strTxt += strTmp[0] + $("#WidgetDynamicNumStart").val() + strTmp[1];
+        }
+    }
+    str += ',';
+    strTxt += '-';
+    if ($("#WidgetDynamicDateEnd").val() != "") {
+        if ($("#WidgetDynamicDateEnd").val() == 2934) {
+            if ($("#WidgetDynamicDTimeEnd").val() == "") {
+                LayerMsg("请选择固定结束时间");
+                return;
+            }
+            str += $("#WidgetDynamicDateEnd").val() + "#" + $("#WidgetDynamicDTimeEnd").val();
+            strTxt += $("#WidgetDynamicDTimeEnd").val();
+        } else if ($("#WidgetDynamicDateEnd").find("option:selected").text().indexOf("#") == -1) {
+            str += $("#WidgetDynamicDateEnd").val() + "#";
+            strTxt += $("#WidgetDynamicDateEnd").find("option:selected").text();
+        } else {
+            if ($("#WidgetDynamicNumEnd").val() == "") {
+                LayerMsg("请输入结束#");
+                return;
+            }
+            str += $("#WidgetDynamicDateEnd").val() + "#" + $("#WidgetDynamicNumEnd").val();
+            var strTmp = $("#WidgetDynamicDateEnd").find("option:selected").text().split('#');
+            strTxt += strTmp[0] + $("#WidgetDynamicNumEnd").val() + strTmp[1];
+        }
+    }
+    $("#" + $("#AddWidgetDynamicDom").val()).val(strTxt);
+    $("#" + $("#AddWidgetDynamicDom").val() + "Hidden").val(str);
+    $("#cover").css("z-index", 99);
+    $("#AddWidgetDynamicSelect").hide();
+}
 
 
 function CreateBar(dom, data) {

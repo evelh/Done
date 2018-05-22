@@ -82,6 +82,8 @@ namespace EMT.DoneNOW.Core
         public String html { get; set; }
         [DataMember]
         public Int32? sort_order { get; set; }
+        [DataMember]
+        public SByte show_widget_name { get; set; }
 
 
     }

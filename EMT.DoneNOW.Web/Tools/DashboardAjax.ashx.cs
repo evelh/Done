@@ -30,11 +30,14 @@ namespace EMT.DoneNOW.Web
                 case "GetWidgetInfo":
                     GetWidgetInfo();
                     break;
+                case "GetWidget":
+                    GetWidget();
+                    break;
                 case "DeleteWidget":
                     DeleteWidget();
                     break;
-                case "DrillDetail":
-                    WidgetDrill();
+                case "DynamicDateType":
+                    GetDynamicDateType();
                     break;
                 case "ChangeWidgetPosition":
                     ChangeWidgetPosition();
@@ -51,6 +54,12 @@ namespace EMT.DoneNOW.Web
                     break;
                 case "GetWidgetGroupby":
                     GetWidgetGroupbyList();
+                    break;
+                case "GetWidgetTableColumn":
+                    GetWidgetTableColumn();
+                    break;
+                case "GetWidgetTableSort":
+                    GetWidgetTableSort();
                     break;
                 case "AddWidget":
                     AddWidget();
@@ -108,6 +117,41 @@ namespace EMT.DoneNOW.Web
         }
 
         /// <summary>
+        /// 获取小窗口及小窗口的小部件
+        /// </summary>
+        private void GetWidget()
+        {
+            var id = long.Parse(request.QueryString["id"]);
+            var info = bll.GetWidgetById(id);
+            var guages = bll.GetGuageChildren(id);
+
+            var srlz = new Tools.Serialize();
+            if (info.type_id != (int)DicEnum.WIDGET_TYPE.GUAGE && info.type_id != (int)DicEnum.WIDGET_TYPE.HTML)
+            {
+                object filter = null;
+                if (!string.IsNullOrEmpty(info.filter_json))
+                    filter = srlz.DeserializeJson<List<dynamic>>(info.filter_json);
+                info.filter_json = null;
+                object[] result = new object[] { info, guages, filter };
+                WriteResponseJson(result);
+            }
+            else if (info.type_id == (int)DicEnum.WIDGET_TYPE.GUAGE)
+            {
+                List<object> filters = new List<object>();
+                foreach (var guage in guages)
+                {
+                    if (!string.IsNullOrEmpty(guage.filter_json))
+                        filters.Add(srlz.DeserializeJson<List<dynamic>>(guage.filter_json));
+                    else
+                        filters.Add(null);
+                    guage.filter_json = null;
+                }
+                object[] result = new object[] { info, guages, filters };
+                WriteResponseJson(result);
+            }
+        }
+
+        /// <summary>
         /// 删除小窗口
         /// </summary>
         private void DeleteWidget()
@@ -119,13 +163,9 @@ namespace EMT.DoneNOW.Web
         /// <summary>
         /// 小窗口钻取
         /// </summary>
-        private void WidgetDrill()
+        private void GetDynamicDateType()
         {
-            //var id = long.Parse(request.QueryString["id"]);
-            //var val1 = request.QueryString["val1"];
-            //var val2 = request.QueryString["val2"];
-            //bll.WidgetDrill(id, val1, val2, LoginUserId);
-            WriteResponseJson(true);
+            WriteResponseJson(bll.GetDynamicDatePara());
         }
 
         /// <summary>
@@ -148,6 +188,11 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void AddWidget()
         {
+            if (request.Form["addWidgetId"] != "0")
+            {
+                UpdateWidget();
+                return;
+            }
             sys_widget wgt = new sys_widget();
             List<sys_widget_guage> guages = null;
             long dsbdId = long.Parse(request.QueryString["dashboardId"]);
@@ -180,6 +225,7 @@ namespace EMT.DoneNOW.Web
                     wgt.orderby_id = int.Parse(request.Form["wgtSortType"]);
                     wgt.display_other = (sbyte)(GetCheckBoxValue("wgtDisplayOth") ? 1 : 0);
                     wgt.show_axis_label = (sbyte)(GetCheckBoxValue("wgtShowAxis") ? 1 : 0);
+                    wgt.show2axis = (sbyte)(GetCheckBoxValue("wgtShowTwoAxis") ? 1 : 0);
                     wgt.show_trendline = (sbyte)(GetCheckBoxValue("wgtShowTrendline") ? 1 : 0);
                     wgt.show_legend = (sbyte)(GetCheckBoxValue("wgtShowTitle") ? 1 : 0);
                     wgt.show_total = (sbyte)(GetCheckBoxValue("wgtShowTotal") ? 1 : 0);
@@ -187,6 +233,7 @@ namespace EMT.DoneNOW.Web
                 else if (wgt.type_id == (int)DicEnum.WIDGET_TYPE.GUAGE)
                 {
                     wgt.visual_type_id = int.Parse(request.Form["wgtVisualType"]);
+                    wgt.color_scheme_id = int.Parse(request.Form["AddWidgetColorScheme"]);
                     guages = new List<sys_widget_guage>();
                     sbyte order = 1;
                     var filterPara = bll.GetWidgetFilterPara(wgt.entity_id, LoginUserId);
@@ -218,8 +265,124 @@ namespace EMT.DoneNOW.Web
                         guages.Add(gg);
                     }
                 }
+                else if (wgt.type_id == (int)DicEnum.WIDGET_TYPE.GRID)
+                {
+                    wgt.primary_column_ids = request.Form["AddWidgetTableColumn1"];
+                    wgt.other_column_ids = request.Form["AddWidgetTableColumn2"];
+                    if (!string.IsNullOrEmpty(request.Form["wgtSortType"]))
+                        wgt.orderby_grid_id = long.Parse(request.Form["wgtSortType"]);
+                    if (!string.IsNullOrEmpty(request.Form["wgtEmphasis"]))
+                        wgt.emphasis_column_id = long.Parse(request.Form["wgtEmphasis"]);
+                    wgt.display_type_id = int.Parse(request.Form["wgtShowType"]);
+                    wgt.show_action_column = (sbyte)(GetCheckBoxValue("wgtShowAction") ? 1 : 0);
+                    wgt.show_column_header = (sbyte)(GetCheckBoxValue("wgtShowTitle") ? 1 : 0);
+                }
+                else if (wgt.type_id == (int)DicEnum.WIDGET_TYPE.HTML)
+                {
+                    wgt.html = request.Form["content"];
+                    wgt.show_widget_name = (sbyte)(GetCheckBoxValue("wgtDisplayName") ? 1 : 0);
+                }
             }
             WriteResponseJson(bll.AddWidget(wgt, guages, LoginUserId));
+        }
+        private void UpdateWidget()
+        {
+            sys_widget wgt = bll.GetWidgetById(long.Parse(request.Form["addWidgetId"]));
+            
+            List<sys_widget_guage> guages = null;
+            if (request.Form["addWidgetType"] == "1")
+            {
+                wgt.name = request.Form["addWidgetName"];
+                wgt.description = request.Form["wgtDesc"];
+                wgt.width = sbyte.Parse(request.Form["wgtSize"]);
+                if (wgt.type_id == (int)DicEnum.WIDGET_TYPE.CHART)
+                {
+                    wgt.filter_json = GetFileterJson("", bll.GetWidgetFilterPara(wgt.entity_id, LoginUserId));
+                    wgt.visual_type_id = int.Parse(request.Form["wgtVisualType"]);
+                    wgt.report_on_id = long.Parse(request.Form["wgtReport1"]);
+                    wgt.aggregation_type_id = int.Parse(request.Form["wgtReportType1"]);
+                    if (!string.IsNullOrEmpty(request.Form["wgtReport2"]) && !string.IsNullOrEmpty(request.Form["wgtReportType2"]))
+                    {
+                        wgt.report_on_id2 = long.Parse(request.Form["wgtReport2"]);
+                        wgt.aggregation_type_id2 = int.Parse(request.Form["wgtReportType2"]);
+                    }
+                    wgt.groupby_id = long.Parse(request.Form["wgtGroup1"]);
+                    if (!string.IsNullOrEmpty(request.Form["wgtGroup2"]))
+                    {
+                        wgt.groupby_id2 = long.Parse(request.Form["wgtGroup2"]);
+                    }
+                    wgt.include_none = (sbyte)(GetCheckBoxValue("wgtShowBlank") ? 1 : 0);
+                    wgt.display_type_id = int.Parse(request.Form["wgtShowType"]);
+                    wgt.orderby_id = int.Parse(request.Form["wgtSortType"]);
+                    wgt.display_other = (sbyte)(GetCheckBoxValue("wgtDisplayOth") ? 1 : 0);
+                    wgt.show_axis_label = (sbyte)(GetCheckBoxValue("wgtShowAxis") ? 1 : 0);
+                    wgt.show2axis = (sbyte)(GetCheckBoxValue("wgtShowTwoAxis") ? 1 : 0);
+                    wgt.show_trendline = (sbyte)(GetCheckBoxValue("wgtShowTrendline") ? 1 : 0);
+                    wgt.show_legend = (sbyte)(GetCheckBoxValue("wgtShowTitle") ? 1 : 0);
+                    wgt.show_total = (sbyte)(GetCheckBoxValue("wgtShowTotal") ? 1 : 0);
+                }
+                else if (wgt.type_id == (int)DicEnum.WIDGET_TYPE.GUAGE)
+                {
+                    wgt.visual_type_id = int.Parse(request.Form["wgtVisualType"]);
+                    wgt.color_scheme_id = int.Parse(request.Form["AddWidgetColorScheme"]);
+                    guages = new List<sys_widget_guage>();
+                    sbyte order = 1;
+                    var filterPara = bll.GetWidgetFilterPara(wgt.entity_id, LoginUserId);
+                    for (int i = 1; i <= 6; i++)
+                    {
+                        if (string.IsNullOrEmpty(request.Form["wgtSub" + i + "Report1"]))
+                            continue;
+
+                        sys_widget_guage gg = new sys_widget_guage();
+
+                        long gid = 0;
+                        if (long.TryParse(request.Form["addWidgetGuage" + i + "Id"], out gid))
+                            gg.id = gid;
+                        else
+                            gg.id = 0;
+
+                        gg.report_on_id = long.Parse(request.Form["wgtSub" + i + "Report1"]);
+                        gg.sort_order = order++;
+                        gg.aggregation_type_id = int.Parse(request.Form["wgtSub" + i + "ReportType1"]);
+                        gg.name = request.Form["wgtSub" + i + "Label"];
+                        if (!string.IsNullOrEmpty(request.Form["wgtSub" + i + "BreakType"]))
+                            gg.break_based_on = int.Parse(request.Form["wgtSub" + i + "BreakType"]);
+                        gg.segments = sbyte.Parse(request.Form["wgtSub" + i + "BreakCnt"]);
+                        string bp = request.Form["wgtSub" + i + "BP0"];
+                        if (gg.segments.Value > 1)
+                            bp += "," + request.Form["wgtSub" + i + "BP1"];
+                        if (gg.segments.Value > 2)
+                            bp += "," + request.Form["wgtSub" + i + "BP2"];
+                        if (gg.segments.Value > 3)
+                            bp += "," + request.Form["wgtSub" + i + "BP3"];
+                        if (gg.segments.Value > 4)
+                            bp += "," + request.Form["wgtSub" + i + "BP4"];
+                        bp += "," + request.Form["wgtSub" + i + "BP" + gg.segments.Value];
+                        gg.break_points = bp;
+                        gg.filter_json = GetFileterJson("Sub" + i, filterPara);
+
+                        guages.Add(gg);
+                    }
+                }
+                else if (wgt.type_id == (int)DicEnum.WIDGET_TYPE.GRID)
+                {
+                    wgt.primary_column_ids = request.Form["AddWidgetTableColumn1"];
+                    wgt.other_column_ids = request.Form["AddWidgetTableColumn2"];
+                    if (!string.IsNullOrEmpty(request.Form["wgtSortType"]))
+                        wgt.orderby_grid_id = long.Parse(request.Form["wgtSortType"]);
+                    if (!string.IsNullOrEmpty(request.Form["wgtEmphasis"]))
+                        wgt.emphasis_column_id = long.Parse(request.Form["wgtEmphasis"]);
+                    wgt.display_type_id = int.Parse(request.Form["wgtShowType"]);
+                    wgt.show_action_column = (sbyte)(GetCheckBoxValue("wgtShowAction") ? 1 : 0);
+                    wgt.show_column_header = (sbyte)(GetCheckBoxValue("wgtShowTitle") ? 1 : 0);
+                }
+                else if (wgt.type_id == (int)DicEnum.WIDGET_TYPE.HTML)
+                {
+                    wgt.html = request.Form["content"];
+                    wgt.show_widget_name = (sbyte)(GetCheckBoxValue("wgtDisplayName") ? 1 : 0);
+                }
+            }
+            WriteResponseJson(bll.UpdateWidget(wgt, guages, LoginUserId));
         }
         /// <summary>
         /// 生成过滤条件json串
@@ -232,7 +395,7 @@ namespace EMT.DoneNOW.Web
             StringBuilder json = new StringBuilder("[");
             var form = request.Form;
 
-            for (int i = 1; i < 6; i++)
+            for (int i = 1; i <= 6; i++)
             {
                 if (string.IsNullOrEmpty(form["wgt"+sub+"Filter" + i]))
                     continue;
@@ -249,10 +412,30 @@ namespace EMT.DoneNOW.Web
                 if (para.data_type == (int)DicEnum.QUERY_PARA_TYPE.DROPDOWN
                     || para.data_type == (int)DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN
                     || para.data_type == (int)DicEnum.QUERY_PARA_TYPE.SINGLE_LINE
-                    || para.data_type == (int)DicEnum.QUERY_PARA_TYPE.NUMBER_EQUAL)
+                    || para.data_type == (int)DicEnum.QUERY_PARA_TYPE.NUMBER_EQUAL
+                    || para.data_type == (int)DicEnum.QUERY_PARA_TYPE.DYNAMIC_DATE
+                    || para.data_type == (int)DicEnum.QUERY_PARA_TYPE.CALLBACK
+                    || para.data_type == (int)DicEnum.QUERY_PARA_TYPE.MUILT_CALLBACK
+                    || para.data_type == (int)DicEnum.QUERY_PARA_TYPE.UN_EQUAL
+                    || para.data_type == (int)DicEnum.QUERY_PARA_TYPE.DATE_EQUAL)
                 {
                     json.Append("{\"col_name\":\"" + para.col_name + "\",\"operator\":\""
                         + para.operator_type_id + "\",\"value\":\"" + form["wgt" + sub + "Filter" + i + "Val1"] + "\"},");
+                }
+                else if (para.data_type == (int)DicEnum.QUERY_PARA_TYPE.NUMBER
+                    || para.data_type == (int)DicEnum.QUERY_PARA_TYPE.DATE)
+                {
+                    json.Append("{\"col_name\":\"" + para.col_name + "\",\"operator\":\""
+                        + para.operator_type_id + "\",\"value\":\"" + form["wgt" + sub + "Filter" + i + "Val1"] + "," + form["wgt" + sub + "Filter" + i + "Val2"] + "\"},");
+                }
+                else if (para.data_type == (int)DicEnum.QUERY_PARA_TYPE.TIMESPAN)
+                {
+                    DateTime t1, t2;
+                    if (DateTime.TryParse(form["wgt" + sub + "Filter" + i + "Val1"], out t1) && DateTime.TryParse(form["wgt" + sub + "Filter" + i + "Val2"], out t2))
+                    {
+                        json.Append("{\"col_name\":\"" + para.col_name + "\",\"operator\":\""
+                        + para.operator_type_id + "\",\"value\":\"" + Tools.Date.DateHelper.ToUniversalTimeStamp(t1) + "," + Tools.Date.DateHelper.ToUniversalTimeStamp(t2) + "\"},");
+                    }
                 }
                 else if (para.data_type == (int)DicEnum.QUERY_PARA_TYPE.CHANGED
                     || para.data_type == (int)DicEnum.QUERY_PARA_TYPE.NONE_INPUT)
@@ -316,6 +499,24 @@ namespace EMT.DoneNOW.Web
         {
             var id = long.Parse(request.QueryString["id"]);
             WriteResponseJson(bll.GetWidgetGroupbyPara(id, LoginUserId));
+        }
+
+        /// <summary>
+        /// 获取小窗口表格列参数
+        /// </summary>
+        private void GetWidgetTableColumn()
+        {
+            var id = long.Parse(request.QueryString["id"]);
+            WriteResponseJson(bll.GetWidgetTableColumnPara(id, LoginUserId));
+        }
+
+        /// <summary>
+        /// 获取小窗口表格排序参数
+        /// </summary>
+        private void GetWidgetTableSort()
+        {
+            var id = long.Parse(request.QueryString["id"]);
+            WriteResponseJson(bll.GetWidgetTableSortPara(id, LoginUserId));
         }
 
         /// <summary>

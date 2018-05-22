@@ -117,6 +117,7 @@ namespace EMT.DoneNOW.BLL
             return wgtDal.FindNoDeleteById(widgetId);
         }
 
+
         /// <summary>
         /// 获取一个仪表板的小窗口列表
         /// </summary>
@@ -410,6 +411,84 @@ namespace EMT.DoneNOW.BLL
             return widget.id;
         }
 
+        public long UpdateWidget(sys_widget widget, List<sys_widget_guage> guages, long userId)
+        {
+            var wgtOld = wgtDal.FindById(widget.id);
+            if (wgtOld == null)
+                return 0;
+
+            if (widget.type_id == (int)DicEnum.WIDGET_TYPE.GUAGE)
+            {
+                if (guages == null || guages.Count == 0)
+                    return 0;
+            }
+
+            widget.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            widget.update_user_id = userId;
+
+            var desc = OperLogBLL.CompareValue<sys_widget>(wgtOld, widget);
+            if (!string.IsNullOrEmpty(desc))
+            {
+                wgtDal.Update(widget);
+                OperLogBLL.OperLogUpdate(desc, widget.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_WIDGET, "设置小窗口");
+            }
+
+            if (widget.type_id == (int)DicEnum.WIDGET_TYPE.GUAGE)
+            {
+                var guagesOld = GetGuageChildren(widget.id);
+
+                //wgtDal.ExecuteSQL($"update sys_widget_guage set delete_time='{DateTime.Now}' and delete_user_id={userId}");
+                sys_widget_guage_dal gDal = new sys_widget_guage_dal();
+                foreach (var guage in guages)
+                {
+                    var gOld = guagesOld.Find(_ => _.id == guage.id);
+                    if (gOld != null)
+                    {
+                        var gUpt = gDal.FindById(guage.id);
+                        gUpt.sort_order = guage.sort_order;
+                        gUpt.report_on_id = guage.report_on_id;
+                        gUpt.aggregation_type_id = guage.aggregation_type_id;
+                        gUpt.name = guage.name;
+                        gUpt.break_based_on = guage.break_based_on;
+                        gUpt.segments = guage.segments;
+                        gUpt.break_points = guage.break_points;
+                        gUpt.filter_json = guage.filter_json;
+
+                        desc = OperLogBLL.CompareValue<sys_widget_guage>(gOld, gUpt);
+                        if (!string.IsNullOrEmpty(desc))
+                        {
+                            gDal.Update(gUpt);
+                            OperLogBLL.OperLogUpdate(desc, gUpt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_WIDGET_GUAGE, "编辑小窗口部件");
+                        }
+
+                        guagesOld.Remove(gOld);
+                    }
+                    else
+                    {
+                        guage.id = gDal.GetNextIdCom();
+                        guage.widget_id = widget.id;
+                        guage.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                        guage.create_time = widget.update_time;
+                        guage.create_user_id = userId;
+                        guage.update_user_id = userId;
+
+                        gDal.Insert(guage);
+                        OperLogBLL.OperLogAdd<sys_widget_guage>(guage, guage.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_WIDGET_GUAGE, "新增小窗口部件");
+                    }
+                }
+
+                foreach (var g in guagesOld)
+                {
+                    g.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                    g.delete_user_id = userId;
+                    gDal.Update(g);
+                    OperLogBLL.OperLogDelete<sys_widget_guage>(g, g.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_WIDGET_GUAGE, "删除小窗口部件");
+                }
+            }
+
+            return widget.id;
+        }
+
         /// <summary>
         /// 获取新增小窗口的实体类型
         /// </summary>
@@ -540,7 +619,7 @@ namespace EMT.DoneNOW.BLL
             if (groupList.Count == 0)
                 return result;
 
-            var all = dal.FindListBySql<WidgetReportOnParaDto>($"select id,col_comment as `name`,aggregation_type_id as agrId,(select `name` from d_general WHERE id=aggregation_type_id) as agrType from d_query_result WHERE query_type_id={groupList[0].query_type_id} and type_id=1");
+            var all = dal.FindListBySql<WidgetReportOnParaDto>($"select id,col_comment as `name`,aggregation_type_id as agrId,(select `name` from d_general WHERE id=aggregation_type_id) as agrType from d_query_result WHERE query_type_id={groupList[0].query_type_id} and type_id=1 order by col_comment");
             var disRpt = from r in all group r by r.name into g select g;
             foreach (var name in disRpt)
             {
@@ -563,6 +642,56 @@ namespace EMT.DoneNOW.BLL
 
             return result;
         }
+
+        /// <summary>
+        /// 获取小窗口表格列参数
+        /// </summary>
+        /// <param name="entityId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<DictionaryEntryDto> GetWidgetTableColumnPara(long entityId, long userId)
+        {
+            QueryCommonBLL queryBll = new QueryCommonBLL();
+            var groupList = queryBll.GetQueryGroup((int)entityId);
+            if (groupList.Count == 0)
+                return new List<DictionaryEntryDto>();
+
+            var all = dal.FindListBySql<DictionaryEntryDto>($"select id as `val`,col_comment as `show` from d_query_result WHERE query_type_id={groupList[0].query_type_id} and type_id=2 order by col_comment");
+
+            return all;
+        }
+
+        /// <summary>
+        /// 获取小窗口表格排序参数
+        /// </summary>
+        /// <param name="entityId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<DictionaryEntryDto> GetWidgetTableSortPara(long entityId, long userId)
+        {
+            QueryCommonBLL queryBll = new QueryCommonBLL();
+            var groupList = queryBll.GetQueryGroup((int)entityId);
+            if (groupList.Count == 0)
+                return new List<DictionaryEntryDto>();
+
+            var all = dal.FindListBySql<DictionaryEntryDto>($"select id as `val`,col_comment as `show` from d_query_orderby WHERE query_type_id={groupList[0].query_type_id} order by col_comment");
+
+            return all;
+        }
+
+        /// <summary>
+        /// 动态日期范围的日期范围值
+        /// </summary>
+        /// <returns></returns>
+        public object GetDynamicDatePara()
+        {
+            var gbll = new GeneralBLL();
+            var start = gbll.GetDicValues(GeneralTableEnum.DYNAMIC_START_DATE_TYPE);
+            var end = gbll.GetDicValues(GeneralTableEnum.DYNAMIC_END_DATE_TYPE);
+            var rtn = new object[] { start, end };
+            return rtn;
+        }
+
         #endregion
 
     }

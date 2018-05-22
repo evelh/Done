@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="Content/dashboard.css" />
     <link href="Content/SidebarDrag.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="Content/multiple-select.css"/>
+    <link rel="stylesheet" type="text/css" href="../Content/multipleList.css"/>
     <link rel="stylesheet" type="text/css" href="Scripts/My97DatePicker/skin/WdatePicker.css" />
     <style>
         /*黑色幕布*/
@@ -67,9 +68,19 @@
             margin-top: 5px;
         }
     </style>
+    <style>
+        .BreakPoint{width: 100%;height: auto;overflow: hidden;}
+        .BreakPoint li{height:10px;border-right: 2px solid #fff;box-sizing: border-box;float: left; }
+        .BreakPoint li:last-child{border: none;}
+
+        .BreakPoint_Text{width: 100%;height: auto;overflow: hidden;margin-top: 5px;}
+        .BreakPoint_Text li{height: auto;float: left;}
+        .BreakPoint_Text li input{width: 50px !important;height: 22px;font-size: 12px;padding: 6px;float: left;}
+    </style>
 </head>
 <body>
     <!--导航栏-->
+    <%="" %>
     <div id="SiteNavigationBar">
         <div class="Left">
             <div class="Logo Button ButtonIcon">
@@ -1508,25 +1519,25 @@
                                 <span class="Icon" style="float:left;display: block;width: 16px;height: 16px; background:url(Images/ButtonIcons.svg) no-repeat scroll;background-position: -288px 0;margin-top: 2px;"></span>
                                 <span class="Text" style="float: left;display: block;padding-left:8px; ">刷新</span>
                             </li>
-                            <li onclick="POPOpen(this)" data-pop = "settings" title="标签设置">
+                            <li title="仪表板设置" onclick="SettingDashboard()">
                                 <span class="Icon" style="float:left;display: block;width: 16px;height: 16px; background:url(Images/ButtonIcons.svg) no-repeat scroll;background-position: -288px -32px;margin-top: 2px;"></span>
-                                <span class="Text" style="float: left;display: block;padding-left:8px; ">标签设置</span>
+                                <span class="Text" style="float: left;display: block;padding-left:8px; ">仪表板设置</span>
                             </li>
-                            <li onclick="POPOpen(this)" data-pop = "AddWidgetRemind" title="添加小工具">
+                            <li title="添加小窗口" onclick="AddWidgetStep0()">
                                 <span class="Icon" style="float:left;display: block;width: 16px;height: 16px; background:url(Images/ButtonIcons.svg) no-repeat scroll;background-position: -80px 0;margin-top: 2px;"></span>
-                                <span class="Text" style="float: left;display: block;padding-left:8px; ">添加小工具</span>
+                                <span class="Text" style="float: left;display: block;padding-left:8px; ">添加小窗口</span>
                             </li>
                             <li onclick="POPOpen(this)" data-pop = "PresentationMode" title="演示模式">
                                 <span class="Icon" style="float:left;display: block;width: 16px;height: 16px; background:url(Images/ButtonIcons.svg) no-repeat scroll;background-position: -96px -128px;margin-top: 2px;"></span>
                                 <span class="Text" style="float: left;display: block;padding-left:8px; ">演示模式</span>
                             </li>
-                            <li onclick="POPOpen(this)" data-pop = ""  title="分享标签">
+                            <li onclick="POPOpen(this)" data-pop = ""  title="分享仪表板">
                                 <span class="Icon" style="float:left;display: block;width: 16px;height: 16px; background:url(Images/ButtonIcons.svg) no-repeat scroll;background-position: -64px -128px;margin-top: 2px;"></span>
-                                <span class="Text" style="float: left;display: block;padding-left:8px; ">分享标签</span>
+                                <span class="Text" style="float: left;display: block;padding-left:8px; ">分享仪表板</span>
                             </li>
-                            <li onclick="POPOpen(this)" data-pop = "CloseTable" title="关闭标签">
+                            <li onclick="POPOpen(this)" data-pop = "CloseTable" title="关闭仪表板">
                                 <span class="Icon" style="float:left;display: block;width: 16px;height: 16px; background:url(Images/ButtonIcons.svg) no-repeat scroll;background-position: -96px 0;margin-top: 2px;"></span>
-                                <span class="Text" style="float: left;display: block;padding-left:8px; ">关闭标签</span>
+                                <span class="Text" style="float: left;display: block;padding-left:8px; ">关闭仪表板</span>
                             </li>
                         </ul>
                     </div>
@@ -1587,10 +1598,10 @@
         <div class="shut" id='settingShut' onclick="POPClose(this)">
         </div>
         <div class="SettingsPOP">
-            <h3>标签设置</h3>
+            <h3>仪表板设置</h3>
             <div class="content">
                 <div class="button">
-                    <div class="save" onclick="$('.loading').show() ;setTimeout(function(){SettingDashboard()},1000);$('#settings').hide();">
+                    <div class="save" onclick="">
                         <img src="Images/save.png" alt="">
                         保存并关闭
                     </div>
@@ -1603,24 +1614,16 @@
                     <p class='title' style="padding-left:5px; ">一般</p>
                     <div class="Column">
                         <div class="item">
-                            <p>名称选项卡<span style="color: red;">*</span></p>
-                            <input type="text">
+                            <p>仪表板名称<span style="color: red;">*</span></p>
+                            <input type="text" id="dashboardName" name="dashboardName">
                         </div>
                         <div class="item" style="line-height: 57px;">
-                            <input type="checkbox">
-                            根据可用空间定位小部件
+                            <input type="checkbox" checked="checked" id="dashboardAutoPlace" name="dashboardAutoPlace">
+                            <label for="dashboardAutoPlace">根据可用空间定位小窗口</label>
                         </div>
                         <div class="item">
                             <p>主题</p>
-                            <select id="ThemeList">
-                                <option value="AutotaskTheme" selected='selected'>AutotaskTheme</option>
-                                <option value="CoastalTheme">CoastalTheme</option>
-                                <option value="CollegiateTheme">CollegiateTheme</option>
-                                <option value="LivelyTheme">LivelyTheme</option>
-                                <option value="ModernTheme">ModernTheme</option>
-                                <option value="PrismTheme">PrismTheme</option>
-                                <option value="TechTheme">TechTheme</option>
-                                <option value="TrendTheme">TrendTheme</option>
+                            <select id="dashboardTheme" name="dashboardTheme">
                             </select>
                         </div>
                         <div class="item">
@@ -1636,35 +1639,37 @@
                             <div class="Vertical"></div>
                             <div class="Horizontal"></div>
                         </div>
-                        标签级别的过滤器
+                        仪表板级别的过滤器
                     </div>
                     <div class="Column">
-                        <span style="color: #666;font-size: 12px;display: block;">标签级过滤器允许您同时将相同的过滤器应用于多个小部件。要将单个小部件配置为使用制表符级别筛选器，您必须编辑该小部件的设置并为“[字段名称]等于制表符级别筛选器”添加一个筛选器？</span>
-                         <div class="item">
+                        <span style="color: #666;font-size: 12px;display: block;">仪表板级过滤器允许您同时将相同的过滤器应用于多个小窗口。要将单个小窗口配置为使用仪表板级别过滤器，您必须编辑该小窗口的设置并为“[字段名称]等于仪表板级别过滤器”添加一个过滤器？</span>
+                        <div class="item">
                             <p>过滤</p>
                             <select name="" id="">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
+                            </select>
+                        </div>
+                        <div class="item" id="dashboardDftValDiv">
+                            <p>默认值<span style="color: red;">*</span></p>
+                            <select name="dashboardDftVal" id="dashboardDftVal">
                             </select>
                         </div>
                         <div class="Radiogroup">
-                            <p>限制选择</p>
+                           <p>条件限制</p>
                            <div class="radioitem">
-                                <input type="radio" checked='checked'>
-                                所有
+                               <input type="radio" id="dashboardLimitType1" name="dashboardLimitType" value="2520" onclick="ChangeDashboardLimit(2520)" checked='checked'>
+                               <label for="dashboardLimitType1">所有</label>
                            </div>
                            <div class="radioitem">
-                                <input type="radio">
-                                所有
+                               <input type="radio" id="dashboardLimitType2" name="dashboardLimitType" value="2521" onclick="ChangeDashboardLimit(2521)">
+                               <label for="dashboardLimitType2">我的</label>
                            </div>
                            <div class="radioitem">
-                                <input type="radio">
-                                所有
+                               <input type="radio" id="dashboardLimitType3" name="dashboardLimitType" value="2522" onclick="ChangeDashboardLimit(2522)">
+                               <label for="dashboardLimitType3">自定义</label>
                            </div>
+                        </div>
+                        <div class="item" style="width:100%;" id="dashboardMuiltFilter">
+
                         </div>
                     </div>
                 </div>
@@ -1699,7 +1704,7 @@
                         </div>
                         <div class="radioitem">
                             <input type="radio">
-                            没有（不要切换选项卡级别的筛选器值或选项卡）
+                            没有（不要切换仪表板级别的筛选器值或仪表板）
                         </div>
                         <div class="radioitem">
                             <input type="checkbox">
@@ -1724,7 +1729,7 @@
             </div>
             <div class="content">
                 <p>关闭标签</p>
-                <span>您即将关闭此选项卡。要稍后再次打开此选项卡，请单击“+”（添加）选项卡并选择“显示现有选项卡”选项。你想继续吗？</span>
+                <span>您即将关闭此仪表板。要稍后再次打开此仪表板，请单击“+”（添加）仪表板并选择“显示现有仪表板”选项。你想继续吗？</span>
 
                 <div class="button">
                     <div class="yes">是</div>
@@ -1737,12 +1742,12 @@
         <div class="shut" id='settingShut' onclick="POPClose(this)">
         </div>
         <div class="TableRemind">
-            <h3>信息</h3>
+            <h3>提示</h3>
             <div class="content">
-                <span>您已达到此选项卡的12个小部件的限制。如果您想添加其他小部件，请添加另一个选项卡。</span>
+                <span>您已达到此仪表板的12个小窗口的限制。如果您想添加其他小窗口，请添加另一个仪表板。</span>
 
                 <div class="button">
-                    <div onclick="$('#cover').hide();$('#AddWidgetRemind').hide();">好</div>
+                    <div onclick="$('#cover').hide();$('#AddWidgetRemind').hide();">确定</div>
                 </div>
             </div>
         </div>
@@ -1779,7 +1784,7 @@
                 </div>
             </div>
             <div class="button">
-                <div onclick="AddWidgetStep1()"><span></span>下一步</div>
+                <div onclick="AddWidgetStep1(null)"><span></span>下一步</div>
             </div>
         </div>
     </div>
@@ -1801,7 +1806,6 @@
                         <div class="item">
                             <p>小窗口标题<span style="color: red;">*</span></p>
                             <input type="text" name="addWidgetName" id="addWidgetName">
-                            <input type="hidden" id="wgtVisualType" name="wgtVisualType" />
                         </div>
                         <div class="item" style="line-height: 20px;">
                             <p>对象</p>
@@ -1811,18 +1815,6 @@
                             <p>描述</p>
                             <textarea id="wgtDesc" name="wgtDesc" style="width: 100%;height: 45px;resize: none;"></textarea>
                         </div>
-                        <div>
-                            <div class="item" style="width: 100%;height: auto;">
-                                <p>常规图形类型</p>
-                                <ul class="CustomLayoutContainer" id="chartBasicVisual">
-                                </ul>
-                            </div>
-                            <div class="item" style="width: 100%;height: auto;">
-                                <p>高级图形类型</p>
-                                <ul class="CustomLayoutContainer" id="chartAdvVisual">
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="normal">
@@ -1831,131 +1823,12 @@
                             <div class="Vertical"></div>
                             <div class="Horizontal"></div>
                         </div>
-                        数据
+                        内容
                     </div>
                     <div class="Column">
-                        <div class="item">
-                            <p>统计对象<span style="color: red;">*</span></p>
-                            <select id="wgtReport1" name="wgtReport1">
-                            </select>
-                            <div class="cancel"></div>
-                        </div>
-                        <div class="item">
-                            <p>统计类型</p>
-                            <select id="wgtReportType1" name="wgtReportType1">
-                            </select>
-                        </div>
-                        <div class="item">
-                            <p>第二个统计对象</p>
-                            <select id="wgtReport2" name="wgtReport2">
-                            </select>
-                            <div class="cancel"></div>
-                        </div>
-                        <div class="item">
-                            <p>统计类型</p>
-                            <select id="wgtReportType2" name="wgtReportType2">
-                            </select>
-                        </div>
-                        <div class="item" style="height: 20px;">
-                            <input type="checkbox" id="wgtShowTwoAxis" name="wgtShowTwoAxis" style="margin-top: 2px;">
-                            <label for="wgtShowTwoAxis">显示左右两个纵坐标</label>
-                        </div>
-                        <div class="item" style="width:705px;height: 1px ;background: #E4E4E4; "></div>
-                         <div class="item">
-                            <p>分组条件<span style="color: red;">*</span></p>
-                            <select id="wgtGroup1" name="wgtGroup1">
-                            </select>
-                            <div class="cancel"></div>
-                        </div>
-                        <div class="item">
-                            <p>第二个分组条件</p>
-                            <select id="wgtGroup2" name="wgtGroup2">
-                            </select>
-                            <div class="cancel"></div>                            
-                        </div>
-                        <div class="item" style="height: 20px;">
-                            <input type="checkbox" id="wgtShowBlank" name="wgtShowBlank" style="margin-top: 2px;">
-                            <label for="wgtShowBlank">分组条件取值包括“空”</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="normal">
-                    <div class="heading">
-                        <div class="toogle" onclick="Toogle(this)">
-                            <div class="Vertical"></div>
-                            <div class="Horizontal"></div>
-                        </div>
-                        过滤
-                    </div>
-                    <div class="Column">
-                        <div class="item">
-                            <p>过滤条件1</p>
-                            <select id="wgtFilter1" name="wgtFilter1" data-val="1" class="wgtFilter">
-                            </select>
-                            <div class="cancel"></div>
-                        </div>
-                        <div class="item" style="padding-top:16px;height: 34px; ">
-                            
-                            <div style="position:relative;float: left;margin-right: 10px;margin-top: 6px;"><select style="float: left;width: 125px;" data-val="1" id="wgtFilter1Oper" name="wgtFilter1Oper" class="wgtOper"></select></div>
-                            <div style="width: 180px;position:relative;float: left;height: 22px;margin-top: 6px;" id="wgtFilter1ValDiv"></div>
-                            <%--<select id="wgtFilter1Val0" name="wgtFilter1Val0" style="width:180px;display:none;" class="widgetFilterValue"></select>
-                            <input id="wgtFilter1Val1" name="wgtFilter1Val1" style="width:180px;display:none;" class="widgetFilterValue" />
-                            <div id="mlt1" class="multiplebox widgetFilterValue">
-                                <input type="hidden" id="wgtFilter1Val2" name="wgtFilter1Val2" class="sl_cdt" />
-							    <select id="mltslt1" multiple="multiple" style="display:none;">
-				                </select>
-                            </div>--
-                        </div>
-                         <div class="item">
-                            <p>过滤条件2</p>
-                            <select id="wgtFilter2">
-                            </select>
-                            <div class="cancel"></div>
-                        </div>
-                        <div class="item" style="padding-top:16px;height: 34px; ">
-                            <select style="float: left;width: 125px;" name="" id="wgtFilter2Oper"></select>
-                            <input style="float: left;width: 185px;margin-left: 10px;" type="text">
-                        </div>
-                         <div class="item">
-                            <p>过滤条件3</p>
-                            <select id="wgtFilter3">
-                            </select>
-                            <div class="cancel"></div>
-                        </div>
-                        <div class="item" style="padding-top:16px;height: 34px; ">
-                            <select style="float: left;width: 125px;" name="" id="wgtFilter3Oper"></select>
-                            <input style="float: left;width: 185px;margin-left: 10px;" type="text">
-                        </div>
-                         <div class="item">
-                            <p>过滤条件4</p>
-                            <select id="wgtFilter4">
-                            </select>
-                            <div class="cancel"></div>
-                        </div>
-                        <div class="item" style="padding-top:16px;height: 34px; ">
-                            <select style="float: left;width: 125px;" name="" id="wgtFilter4Oper"></select>
-                            <input style="float: left;width: 185px;margin-left: 10px;" type="text">
-                        </div>
-                         <div class="item">
-                            <p>过滤条件5</p>
-                            <select id="wgtFilter5">
-                            </select>
-                            <div class="cancel"></div>
-                        </div>
-                        <div class="item" style="padding-top:16px;height: 34px; ">
-                            <select style="float: left;width: 125px;" name="" id="wgtFilter5Oper"></select>
-                            <input style="float: left;width: 185px;margin-left: 10px;" type="text">
-                        </div>
-                         <div class="item">
-                            <p>过滤条件6</p>
-                            <select id="wgtFilter6">
-                            </select>
-                            <div class="cancel"></div>
-                        </div>
-                        <div class="item" style="padding-top:16px;height: 34px; ">
-                            <select style="float: left;width: 125px;" name="" id="wgtFilter6Oper"></select>
-                            <input style="float: left;width: 185px;margin-left: 10px;" type="text">
-                        </div>
+                        <script id="containerHead" name="content" type="text/plain"></script>
+                        <script src="../RichText/js/ueditor.config.js"></script>
+                        <script src="../RichText/js/ueditor.all.js"></script>
                     </div>
                 </div>
                 <div class="normal">
@@ -1967,46 +1840,9 @@
                         选项
                     </div>
                     <div class="Column">
-                        <div class="item">
-                            <p>显示</p>
-                            <select name="wgtShowType" id="wgtShowType">
-                                <option value="2741">前5</option>
-                                <option value="2742">前10</option>
-                                <option value="2743">前25</option>
-                                <option value="2744">最后5</option>
-                                <option value="2745">最后10</option>
-                                <option value="2746">最后25</option>
-                            </select>
-                        </div>
-                        <div class="item">
-                            <p>排序方式</p>
-                            <select name="wgtSortType" id="wgtSortType">
-                                <option value="2770">统计字段升序</option>
-                                <option value="2771">统计字段降序</option>
-                                <option value="2772">分组字段升序</option>
-                                <option value="2773">分组字段降序</option>
-                            </select>
-                        </div>
                         <div class="item" style="height: 20px;">
-                            <input type="checkbox" id="wgtDisplayOth" name="wgtDisplayOth" style="margin-top: 2px;">
-                            <label for="wgtDisplayOth">剩余的合在一起显示，名称为“其他”</label>
-                        </div>
-                        <div class="item" style="width:705px;height: 1px ;background: #E4E4E4; "></div>
-                         <div class="item" style="height: 30px;">
-                            <input type="checkbox" id="wgtShowAxis" name="wgtShowAxis" checked="checked" style="margin-top: 2px;">
-                            <label for="wgtShowAxis">显示轴标签</label>
-                        </div>
-                        <div class="item" style="height: 30px;">
-                            <input type="checkbox" id="wgtShowTrendline" name="wgtShowTrendline" style="margin-top: 2px;">
-                            <label for="wgtShowTrendline">显示趋势线</label>
-                        </div>
-                        <div class="item" style="height: 30px;">
-                            <input type="checkbox" id="wgtShowTitle" name="wgtShowTitle" style="margin-top: 2px;">
-                            <label for="wgtShowTitle">显示图例/标题</label>
-                        </div>
-                        <div class="item" style="height: 30px;">
-                            <input type="checkbox" id="wgtShowTotal" name="wgtShowTotal" style="margin-top: 2px;">
-                            <label for="wgtShowTotal">显示总计</label>
+                            <input type="checkbox" id="wgtDisplayName" name="wgtDisplayName" style="margin-top: 2px;">
+                            <label for="wgtDisplayOth">显示小窗口标题</label>
                         </div>
                     </div>
                 </div>
@@ -2033,11 +1869,57 @@
             </div>
             <div class="button">
                 <div class="pev" onclick="BackAddWidgetStep0();"><span></span>上一步</div>
-                <div class="next" onclick="AddWidgetFinish();">完成</div>
+                <div class="next" >完成</div>
             </div>
         </div>
     </div>
     </form>
+    <div class="POPbox" style="z-index:105;height:400px;margin-top:-200px;" id="AddWidgetDynamicSelect">
+        <div class="shut" onclick="CloseDynamicDate()">
+        </div>
+        <div class="AddWidgetDynamicSelectPOP">
+            <h3>过滤-动态日期</h3>
+            <div class="button" style="padding:10px 0 0 10px;">
+                <div class="next" onclick="AddWidgetDynamicSelectFinish();">确定</div>
+            </div>
+            <div class="content" style="padding:10px 40px 20px 40px;">
+                <div style="width:100%;">
+                    <div class="item">
+                        <p>过滤</p><label id="AddWidgetDynamicFilterName">日期</label>
+                        <input type="hidden" id="AddWidgetDynamicDom" />
+                    </div>
+                </div>
+                <div class="Column" style="margin:0 30px 0 30px;">
+                    <%--<div><input type="radio" value="2765" id="AddWidgetColorScheme1" name="AddWidgetColorScheme" checked="checked" /><label for="AddWidgetColorScheme1">仪表板颜色</label></div>
+                    <div><input type="radio" value="2765" id="AddWidgetColorScheme2" name="AddWidgetColorScheme" /><label for="AddWidgetColorScheme2">红绿黄</label></div>--%>
+                    <div class="item">
+                        <p>开始</p>
+                        <select id="WidgetDynamicDateStart"></select>
+                    </div>
+                    <div class="item">
+                        <p>结束</p>
+                        <select id="WidgetDynamicDateEnd"></select>
+                    </div>
+                    <div class="item">
+                        <p>#<span style="color: red;">*</span></p>
+                        <input type="text" id="WidgetDynamicNumStart" disabled="disabled" />
+                    </div>
+                    <div class="item">
+                        <p>#<span style="color: red;">*</span></p>
+                        <input type="text" id="WidgetDynamicNumEnd" disabled="disabled" />
+                    </div>
+                    <div class="item">
+                        <p>从日期<span style="color: red;">*</span></p>
+                        <input type="text" id="WidgetDynamicDTimeStart" disabled="disabled" class=" Wdate" onclick="WdatePicker()" />
+                    </div>
+                    <div class="item">
+                        <p>到日期<span style="color: red;">*</span></p>
+                        <input type="text" id="WidgetDynamicDTimeEnd" disabled="disabled" class=" Wdate" onclick="WdatePicker()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="cont" style="display: none;">
         <div class="header" id="SearchTitle" style="display: none; height: 40px; line-height: 40px; background: #346A95; padding: 0 10px; font-size: 18px; color: #FFFFFF;"></div>
         <iframe id="PageFrame" name="PageFrame" style="width: 100%;"></iframe>
@@ -2054,6 +1936,8 @@
     <script src="Scripts/My97DatePicker/WdatePicker.js"></script>
     <script src="Scripts/SidebarDrag.js"  type="text/javascript" charset="utf-8"></script>
     <script src="Scripts/Common/multiple-select.js" type="text/javascript" charset="utf-8"></script>
+    <script src="Scripts/bootstrap.min-3.3.4.js" type="text/javascript" charset="utf-8"></script>
+	<script src="Scripts/multiselect.min.js" type="text/javascript" charset="utf-8"></script>
     <script>
         $(window).resize(function () {
             var Height = $(window).height() - 66 + "px";

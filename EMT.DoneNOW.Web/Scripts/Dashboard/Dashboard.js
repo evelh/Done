@@ -49,8 +49,8 @@ function AddWidget(dom, wgt) {
     str += '<div class="Draggable"></div>';
     str += '<div class="Content"></div>';
     str += '<div class="ContainerMenu"><span></span><span></span><span></span><ul class="MenuBox">';
-    str += '<li title="删除" onclick="DeleteWidget(' + wgt.widgetId + ')"><span class="WidgetMenuIcon WidgetMenuIconDelete"></span><span class="WidgetMenuText">删除</span></li><li title="复制"><span class="WidgetMenuIcon WidgetMenuIconCopy"></span><span class="WidgetMenuText">复制</span></li>';
-    str += '<li title="设置"><span class="WidgetMenuIcon WidgetMenuIconSetting"></span><span class="WidgetMenuText">设置</span></li><li title="移至其他仪表板"><span class="WidgetMenuIcon WidgetMenuIconMove"></span><span class="WidgetMenuText">移至其他仪表板</span></li>';
+    str += '<li title="删除" onclick="DeleteWidget(' + wgt.widgetId + ')"><span class="WidgetMenuIcon WidgetMenuIconDelete"></span><span class="WidgetMenuText">删除</span></li><li title="复制" onclick="CopyWidget(' + wgt.widgetId + ')"><span class="WidgetMenuIcon WidgetMenuIconCopy"></span><span class="WidgetMenuText">复制</span></li>';
+    str += '<li title="设置" onclick="SettingWidget(' + wgt.widgetId + ')"><span class="WidgetMenuIcon WidgetMenuIconSetting"></span><span class="WidgetMenuText">设置</span></li><li title="移至其他仪表板"><span class="WidgetMenuIcon WidgetMenuIconMove"></span><span class="WidgetMenuText">移至其他仪表板</span></li>';
     str += '<li title="分享给其他用户"><span class="WidgetMenuIcon WidgetMenuIconApply"></span><span class="WidgetMenuText">分享给其他用户</span></li><li title="刷新" onclick="RefreshWidget(' + wgt.widgetId + ')"><span class="WidgetMenuIcon WidgetMenuIconRefresh"></span><span class="WidgetMenuText">刷新</span></li>';
     str += '</ul><div class="Menuborderline"></div></div>';
     //dom.appendChild(str);
@@ -117,11 +117,7 @@ function ChangeWidgetPosition(change) {
         }
     })
 }
-function SettingDashboard() {
-    $('.loading').hide();
-    $('#cover').hide();
-    //InitDashboard();
-}
+
 function InitDashboard(data) {
     ThemeIdx = data.theme_id;
     SelectTheme = ColorTheme[ThemeIdx];
@@ -237,6 +233,10 @@ function AddDashboard() {
 }
 
 function ManageDashboard() {
+
+}
+var dashboardFilters;
+function SettingDashboard() {
 
 }
 

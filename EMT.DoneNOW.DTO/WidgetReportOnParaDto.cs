@@ -15,12 +15,6 @@ namespace EMT.DoneNOW.DTO
         public string name;
         public long agrId;
         public string agrType;
-        //public List<WidgetReportOnAggregationType> type = new List<WidgetReportOnAggregationType>();
     }
-
-    public class WidgetReportOnAggregationType
-    {
-        public long id;
-        public string name;
-    }
+    
 }
