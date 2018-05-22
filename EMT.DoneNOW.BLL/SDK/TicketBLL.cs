@@ -183,6 +183,7 @@ namespace EMT.DoneNOW.BLL
                 ticket.sla_start_time = timeNow;
             ticket.id = _dal.GetNextIdCom();
             ticket.create_time = timeNow;
+            ticket.estimated_begin_time = timeNow;
             ticket.create_user_id = user_id;
             ticket.update_time = timeNow;
             ticket.update_user_id = user_id;
@@ -4483,6 +4484,36 @@ namespace EMT.DoneNOW.BLL
         }
         #endregion
 
+        /// <summary>
+        /// 获取到所有的工单信息
+        /// </summary>
+        public List<sdk_task> GetAllTicket()
+        {
+            return _dal.FindListBySql("SELECT * from sdk_task where type_id = 1809 and delete_time = 0");
+        }
 
+        /// <summary>
+        /// 完成工单的平均持续时间
+        /// </summary>
+        public int DoneTicketAvgDay(List<sdk_task> doneTicket)
+        {
+            int avgDays = 0;
+            if(doneTicket!=null&& doneTicket.Count > 0)
+            {
+                int allDays = 0;
+                doneTicket.ForEach(_ => {
+                    if (_.date_completed != null)
+                    {
+                        TimeSpan ts1 = new TimeSpan(Tools.Date.DateHelper.ConvertStringToDateTime(_.create_time).Ticks);
+                        TimeSpan ts2 = new TimeSpan(Tools.Date.DateHelper.ConvertStringToDateTime((long)_.date_completed).Ticks);
+                        int diffRec = ts1.Subtract(ts2).Duration().Days + 1;
+                        allDays += diffRec;
+                    }
+                    
+                });
+                avgDays = allDays / doneTicket.Count;
+            }
+            return avgDays;
+        }
     }
 }

@@ -1,0 +1,358 @@
+﻿body {
+    font-size: 12px;
+    background: white;
+    left: 0;
+    position: relative;
+    top: 0;
+    overflow: visible;
+    height: 100%;
+}
+
+.PageInstructions {
+    margin: 20px 10px 12px 10px;
+    padding-bottom: 0;
+}
+    .wizardPageLevelInstruction span {
+        font-size: 12px;
+        color: #666;
+        line-height: 16px;
+        font-weight: normal;
+    }
+.DivSectionWithHeader {
+    border: 1px solid #d3d3d3;
+    margin: 0 10px 10px 10px;
+    padding: 4px 0 4px 0;
+}
+    .DivSectionWithHeader .HeaderRow {
+        position: relative;
+        padding-bottom: 3px;
+    }
+    .DivSectionWithHeader > .HeaderRow > span {
+        display: inline-block;
+        vertical-align: middle;
+        position: relative;
+    }
+    .DivSectionWithHeader > .HeaderRow > span {
+        padding: 2px 4px 6px 6px;
+        color: #666;
+        height: 16px;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 17px;
+        text-transform: uppercase;
+    }
+    .DivSectionWithHeader .Content {
+        padding: 0 28px 4px 28px;
+    }
+table#installed_product_fieldstable {
+    font-size: 12px;
+    width: 100%;
+}
+.ip_general_label {
+    text-align: left;
+    width: 120px;
+    height: 25px;
+    font-weight: bold;
+}
+.FieldLabel, .workspace .FieldLabel, TABLE.FieldLabel TD, span.fieldlabel span label {
+    font-size: 12px;
+    color: #4F4F4F;
+}
+.ButtonBar {
+    font-size: 12px;
+    padding: 0 16px 10px 16px;
+    background-color: #FFF;
+}
+    .ButtonBar ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        height: 26px;
+        width: 100%;
+    }
+        .ButtonBar ul li {
+            float: left;
+        }
+div.ButtonBar li.right {
+    float: right;
+}
+.ButtonBar ul li a, .ButtonBar ul li a:visited, .contentButton a, .contentButton a:link, .contentButton a:visited, a.buttons, input.button, .ButtonBar ul li a:visited {
+    background: #d7d7d7;
+    background: -moz-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -webkit-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: -ms-linear-gradient(top,#fff 0,#d7d7d7 100%);
+    background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+    border: 1px solid #bcbcbc;
+    display: inline-block;
+    color: #4F4F4F;
+    cursor: pointer;
+    padding: 0 5px 0 3px;
+    position: relative;
+    text-decoration: none;
+    vertical-align: middle;
+    height: 24px;
+}
+    .ButtonBar ul li a span.Text, .contentButton a span.Text, a.buttons span.Text, input.button span.Text {
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 26px;
+        padding: 0 5px 0 3px;
+        color: #4F4F4F;
+        vertical-align: top;
+    }
+div.ButtonBar img.ButtonRightImg {
+    margin: 4px 1px 0 2px;
+}
+.txtBlack8Class {
+    font-size: 12px;
+    color: #333;
+    font-weight: normal;
+}
+input[type=radio] {
+    margin-right: 3px;
+    vertical-align: middle;
+    margin-top: 0;
+}
+
+input[type="text"]:disabled, input[type="checkbox"]:disabled, select:disabled, textarea:disabled {
+    background-color: #f0f0f0;
+    color: #6d6d6d;
+}
+
+input[type=text], select, textarea, input[type=password] {
+    border: solid 1px #D7D7D7;
+    font-size: 12px;
+    color: #333;
+    margin: 0;
+}
+input[type=text], input[type=password] {
+    height: 24px;
+    padding: 0 6px;
+}
+.wizardFieldLabel {
+    font-size: 12px;
+    color: #4F4F4F;
+    padding-left: 26px;
+    font-weight: bold;
+}
+select {
+    height: 24px;
+    padding: 0;
+}
+.menu {
+    position: absolute;
+    z-index: 999;
+    display: none;
+}
+
+    .menu ul {
+        margin: 0;
+        padding: 0;
+        position: relative;
+        width: 150px;
+        border: 1px solid gray;
+        background-color: #F5F5F5;
+        padding: 10px 0;
+    }
+
+        .menu ul li {
+            padding-left: 20px;
+            height: 25px;
+            line-height: 25px;
+            cursor: pointer;
+        }
+
+            .menu ul li ul {
+                display: none;
+                position: absolute;
+                right: -150px;
+                top: -1px;
+                background-color: #F5F5F5;
+                min-height: 90%;
+            }
+
+                .menu ul li ul li:hover {
+                    background: #e5e5e5;
+                }
+
+            .menu ul li:hover {
+                background: #e5e5e5;
+            }
+
+                .menu ul li:hover ul {
+                    display: block;
+                }
+
+            .menu ul li .menu-i1 {
+                width: 20px;
+                height: 100%;
+                display: block;
+                float: left;
+            }
+
+            .menu ul li .menu-i2 {
+                width: 20px;
+                height: 100%;
+                display: block;
+                float: right;
+            }
+
+        .menu ul .disabled {
+            color: #AAAAAA;
+        }
+.GridContainer {
+    margin: 0 10px 10px 10px;
+}
+.GridBottomBorder, .GridContainer {
+    border-color: #98b4ca;
+}
+#_ctl14_grdTix_grdTix_divhead {
+    border: 0px !important;
+}
+table.dataGridHeader {
+    height: 100%;
+}
+
+.dataGridHeader {
+    border-left: outset 1px;
+    border-right: outset 1px;
+    border-bottom: outset 1px;
+    font-size: 9px;
+    font-weight: bold;
+    color: #555;
+    text-decoration: none;
+    height: 25px;
+    background-color: buttonface;
+    vertical-align: top;
+}
+.dataGridHeader {
+    background-color: #cbd9e4;
+    border-left: outset 1px;
+    border-right: outset 1px;
+    border-bottom: outset 1px;
+    font-size: 9px;
+    font-weight: bold;
+    color: #555;
+    text-decoration: none;
+    height: 25px;
+    background-color: buttonface;
+    vertical-align: top;
+}
+
+    .dataGridHeader td {
+        background-position: bottom;
+        background-repeat: repeat-x;
+        background-color: #fff;
+        border-left: solid 1px darkgray;
+        border-right: solid 1px darkgray;
+        border-top: solid 1px darkgray;
+        border-bottom: solid 1px darkgray;
+        padding-bottom: 7px;
+        padding-top: 7px;
+        padding-left: 5px;
+        padding-right: 5px;
+        height: 25px;
+    }
+    .dataGridHeader td, .dataGridHeader th, tr.dataGridHeader td, tr.dataGridHeader th {
+        border-color: #98b4ca;
+        background-color: #cbd9e4;
+        color: #64727a;
+    }
+        .dataGridHeader td span {
+            font-weight: bold !important;
+            font-size: 13px;
+        }
+.dataGridBody tr, .dataGridBodyHover tr {
+    height: 22px;
+}
+.dataGridBody, .dataGridAlternating, .dataGridGroupBreak, .dataGridBodyHighlight {
+    background-color: white;
+    border-left-width: 0;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    font-size: 12px;
+    color: #333;
+    text-decoration: none;
+    vertical-align: middle;
+    padding: 10px 0 4px 0;
+    vertical-align: top;
+    word-wrap: break-word;
+    border-right-width: 1px;
+    border-right-style: solid;
+}
+.dataGridBody, .dataGridAlternating, .dataGridGroupBreak, .dataGridBodyHighlight {
+    border-bottom-color: #98b4ca;
+    border-right-color: #98b4ca;
+}
+    .dataGridBody td:first-child, .dataGridAlternating td:first-child, .dataGridBodyHover td:first-child, .dataGridAlternatingHover td:first-child, .dataGridDisabled td:first-child, .dataGridDisabledHover td:first-child {
+        border-left-color: #98b4ca;
+    }
+    .dataGridBody td, .dataGridAlternating td, .dataGridBodyHover td, .dataGridAlternatingHover td, .dataGridDisabled td, .dataGridDisabledHover td {
+        border-width: 1px;
+        border-style: solid;
+        border-left-color: #F8F8F8;
+        border-right-color: #F8F8F8;
+        border-top-color: #e8e8e8;
+        border-bottom-width: 0;
+        font-size: 12px;
+        color: #333;
+        text-decoration: none;
+        vertical-align: top;
+        padding: 4px;
+        word-wrap: break-word;
+    }
+input[type=radio] {
+    margin-right: 3px;
+    vertical-align: middle;
+    margin-top: 0;
+}
+.installed_product_general {
+    width: 100%;
+}
+.ButtonImg {
+    margin: 4px 1px 0 2px;
+}
+.grid thead tr td {
+    background-color: #cbd9e4;
+    border-color: #98b4ca;
+    color: #64727a;
+}
+
+.grid {
+    font-size: 12px;
+    background-color: #FFF;
+}
+
+    .grid thead td {
+        border-width: 1px;
+        border-style: solid;
+        font-size: 13px;
+        font-weight: bold;
+        height: 19px;
+        padding: 4px 4px 4px 4px;
+        word-wrap: break-word;
+        vertical-align: top;
+    }
+
+    .grid table {
+        border-collapse: collapse;
+        width: 100%;
+        border-bottom-width: 1px;
+        /*border-bottom-style: solid;*/
+    }
+
+    .grid tbody td {
+        border-width: 1px;
+        border-style: solid;
+        border-left-color: #F8F8F8;
+        border-right-color: #F8F8F8;
+        border-top-color: #e8e8e8;
+        border-bottom-width: 0;
+        padding: 4px 4px 4px 4px;
+        vertical-align: top;
+        word-wrap: break-word;
+        font-size: 12px;
+        color: #333;
+    }
+
+

@@ -448,7 +448,7 @@
                                                                 </td>
                                                                 <td class="FieldLabels" align="right">
                                                                     <div style="margin: 0; padding: 0; padding-bottom: 21px;">
-                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" name="discount_percent" id="Discount" disabled="disabled" class="Calculation" maxlength="5" value="<%=quote_item!=null&&quote_item.discount_percent!=null?quote_item.discount_percent.ToString():"" %>" />&nbsp;%
+                                                                        <input type="text" style="text-align: right; width: 86px; height: 22px; padding: 0 6px;" name="discount_percent" id="Discount" disabled="disabled" class="Calculation" maxlength="5" value="<%=quote_item!=null&&quote_item.discount_percent!=null?(quote_item.discount_percent*100).ToString():"" %>" />&nbsp;<span id="ShowBai">%</span> 
                                                                     </div> 
                                                                 </td>
                                                             </tr>
@@ -819,6 +819,7 @@
             $("#Gross_Profit_TR").css("display", "none");
             $("#LineDiscountTR").css("display", "none");
             $("#OptionTR").css("display", "none");
+            //$("#ShowBai").hide();
             $("#Discount").blur(function () {
                 var discount = $(this).val();
                 if (discount != "" && (!isNaN(discount))) {

@@ -22,7 +22,14 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
         protected crm_account account = null;
         protected ivt_product product = null;
         protected ctt_contract contract = null;
+        protected crm_installed_product parentInsPro;
+        protected List<crm_installed_product> childInsProList;
         protected ConfigurationItemAddDto param = new ConfigurationItemAddDto();
+        protected ivt_product_dal ipDal = new ivt_product_dal();
+        protected List<com_attachment> thisNoteAtt = null;   // 这个配置项的附件
+        protected List<sys_resource> resList = new sys_resource_dal().GetSourceList();
+        protected AttachmentBLL attBll = new AttachmentBLL();
+        protected List<sys_notify_tmpl> tempList = new sys_notify_tmpl_dal().GetTempByEvent(DicEnum.NOTIFY_EVENT.CONFIGURATION_ITEM_CREATED);
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -47,14 +54,7 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                     {
                         account = new CompanyBLL().GetCompany((long)iProduct.account_id);
                         var product = new ivt_product_dal().FindNoDeleteById(iProduct.product_id);
-                        #region 记录浏览历史
-                        var history = new sys_windows_history()
-                        {
-                            title = "配置项:" + (product==null?"":product.name) + account.name,
-                            url = Request.RawUrl,
-                        };
-                        new IndexBLL().BrowseHistory(history, LoginUserId);
-                        #endregion
+                   
                     }
                 }
                 var account_id = Request.QueryString["account_id"];
@@ -96,7 +96,24 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                 {
                     //account_id = iProduct.account_id.ToString();
                     iProduct_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.CONFIGURATION_ITEMS, iProduct.id, iProduct_udfList);
+                    var isCopy = Request.QueryString["isCopy"];
+                    
                     isAdd = false;
+                    if (!string.IsNullOrEmpty(isCopy) && isCopy == "1")
+                        isAdd = true;
+                    if (!isAdd)
+                    {
+                        #region 记录浏览历史
+                        var history = new sys_windows_history()
+                        {
+                            title = "配置项:" + (product == null ? "" : product.name) + account.name,
+                            url = Request.RawUrl,
+                        };
+                        new IndexBLL().BrowseHistory(history, LoginUserId);
+                        #endregion
+                    }
+
+
                     if (iProduct.contract_id != null)
                     {
                         contract = new ctt_contract_dal().FindNoDeleteById((long)iProduct.contract_id);
@@ -112,8 +129,17 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                         contact_id.SelectedValue = iProduct.contact_id.ToString();
                     }
                     viewSubscription_iframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONFIGSUBSCRIPTION + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.CONFIGSUBSCRIPTION + "&id=" + iProduct.id;
+
+                    view_ticket_iframe.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.MY_QUEUE_ACTIVE + "&group=215&con3962=" + iProduct.id+ "&param1=ShowPara";
                     // todo 订阅的通用查询
                     // "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT_COMPANY_VIEW + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.ContactCompanyView + "&id=" + id;
+                    thisNoteAtt = new com_attachment_dal().GetAttListByOid(iProduct.id);
+                    if (!isAdd)
+                    {
+                        if (iProduct.parent_id != null)
+                            parentInsPro = new crm_installed_product_dal().GetInstalledProduct((long)iProduct.parent_id);
+                        childInsProList = new crm_installed_product_dal().GetChildInsPro(iProduct.id);
+                    }
                 }
                 if (!IsPostBack)
                 {
@@ -191,7 +217,35 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
             {
                 param.id = iProduct.id;
             }
-
+            var ccMe = !string.IsNullOrEmpty(Request.Form["ccMe"]) && Request.Form["ccMe"].Equals("on");
+            var ccAccMan = !string.IsNullOrEmpty(Request.Form["ccAccMan"]) && Request.Form["ccAccMan"].Equals("on");
+            var sendFromSys = !string.IsNullOrEmpty(Request.Form["sendFromSys"]) && Request.Form["sendFromSys"].Equals("on");
+            if((ccMe|| ccAccMan)&&!string.IsNullOrEmpty(Request.Form["notify_temp"]))
+            {
+                param.notice = new Notice() {
+                    ckToMe = ccMe,
+                    ckToAccMan = ccAccMan,
+                    ckSendBySys = sendFromSys,
+                    resources = Request.Form["notifyResIds"],
+                    contacts = Request.Form["notifyConIds"],
+                    notification_template = int.Parse(Request.Form["notify_temp"]),
+                    subject = Request.Form["notify_title"],
+                    other_emails = Request.Form["notify_others"],
+                    additional_email_text = Request.Form["notify_description"],
+                };
+            }
+            if (param.contract_id != null)
+            {
+                param.reviewByContract = 1;
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(Request.Form["ckByContract"])&& Request.Form["ckByContract"].Equals("on"))
+                    param.reviewByContract = 1;
+                else
+                    param.reviewByContract = 0;
+            }
+            
             return param;
         }
 

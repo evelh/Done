@@ -85,6 +85,15 @@ namespace EMT.DoneNOW.Web.ConfigurationItem {
         protected global::System.Web.UI.WebControls.DropDownList service_id;
         
         /// <summary>
+        /// view_ticket_iframe 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlIframe view_ticket_iframe;
+        
+        /// <summary>
         /// viewSubscription_iframe 控件。
         /// </summary>
         /// <remarks>

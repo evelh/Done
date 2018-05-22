@@ -424,6 +424,14 @@ namespace EMT.DoneNOW.BLL
             return new crm_contact_group_contact_dal().GetAccountGroupContact(groupId, accountId);
         }
         /// <summary>
+        /// 获取指定联系人组下的联系人信息
+        /// </summary>
+        public List<crm_contact_group_contact> GetGroupContactByGroup(long groupId)
+        {
+            return new crm_contact_group_contact_dal().GetGroupContactByGroup(groupId);
+        }
+        
+        /// <summary>
         /// 根据名称获取联系人组(联系人组 名称唯一)
         /// </summary>
         public crm_contact_group GetGroupByName(string name)
@@ -531,6 +539,37 @@ namespace EMT.DoneNOW.BLL
             }
             return true;
         }
+        /// <summary>
+        /// 将联系人添加到联系人组
+        /// </summary>
+        public bool AddContactsToGroup(long groupId,string conIds,long userId)
+        {
+            var thisGroup = GetGroupById(groupId);
+            if (thisGroup == null || string.IsNullOrEmpty(conIds))
+                return false;
+            var conArr = conIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            var ccgcDal = new crm_contact_group_contact_dal();
+            foreach (var conId in conArr)
+            {
+                var thisGroupCon = ccgcDal.GetByGroupContact(thisGroup.id,long.Parse(conId));
+                if (thisGroupCon == null)
+                {
+                    thisGroupCon = new crm_contact_group_contact() {
+                        id = ccgcDal.GetNextIdCom(),
+                        contact_group_id = thisGroup.id,
+                        contact_id = long.Parse(conId),
+                        create_time = timeNow,
+                        update_time = timeNow,
+                        create_user_id = userId,
+                        update_user_id = userId,
+                    };
+                    ccgcDal.Insert(thisGroupCon);
+                }
+            }
+            return true;
+        }
+
         /// <summary>
         /// 联系人群组管理
         /// </summary>
@@ -642,6 +681,121 @@ namespace EMT.DoneNOW.BLL
                     caDal.Insert(thisTodo);
                     OperLogBLL.OperLogAdd<com_activity>(thisTodo, thisTodo.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ACTIVITY, "新增备注");
                 }
+            }
+            return true;
+        }
+        /// <summary>
+        /// 保存联系人活动模板信息
+        /// </summary>
+        public bool SaveActionTemp(crm_contact_action_tmpl temp,long userId,ref long tempId)
+        {
+            if (!CheckActionTempName(temp.name, temp.id))
+                return false;
+            var ccatDal = new crm_contact_action_tmpl_dal();
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            temp.update_time = timeNow;
+            temp.update_user_id = userId;
+            if (temp.id == 0)
+            {
+                temp.id = ccatDal.GetNextIdCom();
+                temp.create_time = timeNow;
+                temp.create_user_id = userId;
+                ccatDal.Insert(temp);
+            }
+            else
+            {
+                ccatDal.Update(temp);
+            }
+            tempId = temp.id;
+            return true;
+        }
+        /// <summary>
+        /// 校验联系人活动模板名称唯一性
+        /// </summary>
+        public bool CheckActionTempName(string name,long tempId = 0)
+        {
+            var ccatDal = new crm_contact_action_tmpl_dal();
+            // GetTempByName
+            if (string.IsNullOrEmpty(name))
+                return false;
+            var temp = ccatDal.GetTempByName(name);
+            if (temp == null)
+                return true;
+            if (temp != null && temp.id == tempId)
+                return true;
+            return false;
+        }
+        /// <summary>
+        /// 根据模板Id 获取相应信息
+        /// </summary>
+        public crm_contact_action_tmpl GetTempById(long tempId)
+        {
+            return new crm_contact_action_tmpl_dal().FindNoDeleteById(tempId);
+        }
+        /// <summary>
+        /// 从联系人组中移除联系人
+        /// </summary>
+        public bool RemoveContactFromGroup(long groupId,string conIds,long userId)
+        {
+            var thisGroup = GetGroupById(groupId);
+            if (thisGroup == null || string.IsNullOrEmpty(conIds))
+                return false;
+            var ccgcDal = new crm_contact_group_contact_dal();
+            var conArr = conIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+            foreach (var conId in conArr)
+            {
+                var thisGroupContact = ccgcDal.FindNoDeleteById(long.Parse(conId));
+                if (thisGroupContact != null)
+                {
+                    ccgcDal.SoftDelete(thisGroupContact, userId);
+                }
+            }
+            return true;
+        }
+        /// <summary>
+        /// 删除联系人组
+        /// </summary>
+        public bool DeleteContactGroup(long groupId,long userId)
+        {
+            var thisGroup = GetGroupById(groupId);
+            var ccgcDal = new crm_contact_group_contact_dal();
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            var thisGroupContactList = ccgcDal.GetGroupContactByGroup(groupId);
+            if (thisGroup != null)
+                new crm_contact_group_dal().SoftDelete(thisGroup,userId);
+            if (thisGroupContactList != null && thisGroupContactList.Count > 0)
+                thisGroupContactList.ForEach(_ => {
+                    ccgcDal.SoftDelete(_,userId);
+                });
+            return true;
+        }
+        /// <summary>
+        /// 激活/失活 联系人组
+        /// </summary>
+        public bool ActiveContactGroup(long groupId,bool isActive,long userId)
+        {
+            var thisGroup = GetGroupById(groupId);
+            if (thisGroup == null)
+                return false;
+            var sbyteIsActive = (sbyte)(isActive ? 1 : 0);
+            if(thisGroup.is_active!= sbyteIsActive)
+            {
+                thisGroup.is_active = sbyteIsActive;
+                thisGroup.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                thisGroup.update_user_id = userId;
+                new crm_contact_group_dal().Update(thisGroup);
+            }
+            return true;
+        }
+        /// <summary>
+        /// 删除联系人活动模板
+        /// </summary>
+        public bool DeleteContactActionTemp(long tempId,long userId)
+        {
+            var thisTemp = GetTempById(tempId);
+            if (thisTemp != null)
+            {
+                new crm_contact_action_tmpl_dal().SoftDelete(thisTemp,userId);
             }
             return true;
         }

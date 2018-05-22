@@ -76,7 +76,7 @@
         }
         $.ajax({
             type: "GET",
-            url: "../Tools/ContactAjax.ashx?act=GroupManage&id=<%=pageGroup!=null?pageGroup.id.ToString():"" %>&name=" + name + "&isActive=" + isCheck,
+            url: "../Tools/ContactAjax.ashx?act=GroupManage&id=<%=pageGroup!=null&&(!isAdd)?pageGroup.id.ToString():"" %>&name=" + name + "&isActive=" + isCheck,
             async: false,
             dataType: "json",
             success: function (data) {
@@ -85,6 +85,7 @@
                 } else {
                     LayerMsg("保存失败！");
                 }
+                self.opener.location.reload();
                 window.close();
             }
          })

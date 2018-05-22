@@ -12,5 +12,17 @@ namespace EMT.DoneNOW.DAL
         {
             return FindSignleBySql<crm_subscription>($"select * from crm_subscription where delete_time = 0 and id = {id}");
         }
+        /// <summary>
+        /// 根据配置项获取订阅信息
+        /// </summary>
+        public List<crm_subscription> GetSubByInsProId(long insProId)
+        {
+            return FindListBySql($"SELECT * from crm_subscription where delete_time = 0 and installed_product_id={insProId}");
+        }
+
+        //public List<crm_subscription> GetSubByIds(string ids)
+        //{
+        //    return null;
+        //}
     }
 }

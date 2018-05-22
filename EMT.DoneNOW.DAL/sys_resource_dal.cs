@@ -11,7 +11,7 @@ namespace EMT.DoneNOW.DAL
     {
         public List<DictionaryEntryDto> GetDictionary(bool isOnlyActive = false)
         {
-            var all = this.FindAll().OrderBy(_ => _.id).ToList();
+            var all = this.FindAll().Where(_=>_.id!=0).OrderBy(_ => _.id).ToList();
             if (isOnlyActive)
             {
                 all = all.Where(_ => _.is_active == 1).ToList();
@@ -41,7 +41,7 @@ namespace EMT.DoneNOW.DAL
             string where = " and is_active = 1";
             if (!isActive)
                 where = "";
-            return FindListBySql<sys_resource>("select * from sys_resource where  delete_time = 0 " + where);
+            return FindListBySql<sys_resource>("select * from sys_resource where  delete_time = 0 and id <> 0 " + where);
         }
 
         public List<sys_resource> GetListByIds(string ids,bool isActive = true)

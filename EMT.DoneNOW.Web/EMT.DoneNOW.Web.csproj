@@ -148,9 +148,12 @@
     <Content Include="ConfigurationItem\ConfigType.aspx" />
     <Content Include="ConfigurationItem\ConfigUdfField.aspx" />
     <Content Include="ConfigurationItem\ContractServiceCompliance.aspx" />
+    <Content Include="ConfigurationItem\MoveInstallProduct.aspx" />
+    <Content Include="ConfigurationItem\OtherConfigItem.aspx" />
     <Content Include="ConfigurationItem\QuoteItemWizard.aspx" />
     <Content Include="ConfigurationItem\RelatiobContract.aspx" />
     <Content Include="ConfigurationItem\SubscriptionAddOrEdit.aspx" />
+    <Content Include="ConfigurationItem\SwapConfigItemWizard.aspx" />
     <Content Include="Contact\AddAccountContactGroup.aspx" />
     <Content Include="Contact\AddContact.aspx" />
     <Content Include="Activity\ViewActivity.aspx" />
@@ -161,6 +164,8 @@
     <Content Include="Company\ViewCompany.aspx" />
     <Content Include="Contact\ContactGroupManage.aspx" />
     <Content Include="Contact\ExecuteContact.aspx" />
+    <Content Include="Contact\NewContactTemplate.aspx" />
+    <Content Include="Contact\ViewContactGroup.aspx" />
     <Content Include="Contact\ViewContactList.aspx" />
     <Content Include="Content\1.css" />
     <Content Include="Content\AccountReport.css" />
@@ -198,6 +203,7 @@
     <Content Include="Content\Roles.css" />
     <Content Include="Content\searchList.css" />
     <Content Include="Content\SidebarDrag.css" />
+    <Content Include="Content\SwapConfigItem.css" />
     <Content Include="Content\SysSettingRoles.css" />
     <Content Include="Content\SysUserSecurityLevel.css" />
     <Content Include="Content\style.css" />
@@ -205,7 +211,20 @@
     <Content Include="Content\Ticket.css" />
     <Content Include="Content\TicketLabour.css" />
     <Content Include="Images\ButtonIcons.svg" />
+    <Content Include="Images\dashboard_administration.png" />
+    <Content Include="Images\dashboard_assignments.png" />
+    <Content Include="Images\dashboard_completed.png" />
+    <Content Include="Images\dashboard_deadline.png" />
     <Content Include="Images\DecorationIcons.svg" />
+    <Content Include="Images\ico_service_dash_overview.png" />
+    <Content Include="Images\ico_service_dash_ticket_classification.png" />
+    <Content Include="Images\ico_service_dash_ticket_issue_type.png" />
+    <Content Include="Images\ico_service_dash_ticket_priority.png" />
+    <Content Include="Images\ico_service_dash_ticket_product.png" />
+    <Content Include="Images\ico_service_dash_ticket_queue.png" />
+    <Content Include="Images\ico_service_dash_ticket_resource.png" />
+    <Content Include="Images\ico_service_dash_ticket_source.png" />
+    <Content Include="Images\ico_service_dash_ticket_status.png" />
     <Content Include="Images\LoadingRefresh.gif" />
     <Content Include="Images\StopwatchSmallIcons.svg" />
     <Content Include="Images\ThemeSwatchIcons.png" />
@@ -222,6 +241,7 @@
     <Content Include="Images\arrowup.png" />
     <Content Include="Images\arrowleft.png" />
     <Content Include="Images\arrowrighttow.png" />
+    <Content Include="Project\ProjectDashboard.aspx" />
     <Content Include="Scripts\clipboard.js" />
     <Content Include="Scripts\clipboard.min.js" />
     <Content Include="Scripts\Dashboard\Dashboard.js" />
@@ -231,6 +251,7 @@
     <Content Include="Scripts\Dashboard\html2canvas.js" />
     <Content Include="Scripts\Dashboard\Widget.js" />
     <Content Include="Scripts\Dispatch.js" />
+    <Content Include="Scripts\Search\account_contact_group_search.js" />
     <Content Include="Scripts\Search\company_view_account_overview.js" />
     <Content Include="Scripts\Search\company_view_account_overview_bydate.js" />
     <Content Include="Scripts\Search\company_view_account_profit_margin.js" />
@@ -244,6 +265,10 @@
     <Content Include="Scripts\Search\company_view_project_profit_margin.js" />
     <Content Include="Scripts\Search\company_view_res_workhour.js" />
     <Content Include="Scripts\Search\company_view_res_workhour_bydate.js" />
+    <Content Include="Scripts\Search\contacr_group_search.js" />
+    <Content Include="Scripts\Search\contact_action_temp.js" />
+    <Content Include="Scripts\Search\other_installed_product_search.js" />
+    <Content Include="Scripts\Search\view_contact_group_search.js" />
     <Content Include="Scripts\Search\WidgetDrillCompany.js" />
     <Content Include="Scripts\Search\WidgetDrillConfiguration.js" />
     <Content Include="Scripts\Search\WidgetDrillContract.js" />
@@ -602,6 +627,7 @@
     <Content Include="ServiceDesk\Newsubcategory.aspx" />
     <Content Include="ServiceDesk\DeleteMasterTicket.aspx" />
     <Content Include="ServiceDesk\ServiceCall.aspx" />
+    <Content Include="ServiceDesk\ServiceDeskDashboard.aspx" />
     <Content Include="ServiceDesk\TaskServiceCall.aspx" />
     <Content Include="ServiceDesk\TicketActivity.aspx" />
     <Content Include="ServiceDesk\TicketCallResManage.aspx" />
@@ -1225,6 +1251,20 @@
     <Compile Include="ConfigurationItem\ContractServiceCompliance.aspx.designer.cs">
       <DependentUpon>ContractServiceCompliance.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationItem\MoveInstallProduct.aspx.cs">
+      <DependentUpon>MoveInstallProduct.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConfigurationItem\MoveInstallProduct.aspx.designer.cs">
+      <DependentUpon>MoveInstallProduct.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationItem\OtherConfigItem.aspx.cs">
+      <DependentUpon>OtherConfigItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConfigurationItem\OtherConfigItem.aspx.designer.cs">
+      <DependentUpon>OtherConfigItem.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationItem\QuoteItemWizard.aspx.cs">
       <DependentUpon>QuoteItemWizard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1245,6 +1285,13 @@
     </Compile>
     <Compile Include="ConfigurationItem\SubscriptionAddOrEdit.aspx.designer.cs">
       <DependentUpon>SubscriptionAddOrEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationItem\SwapConfigItemWizard.aspx.cs">
+      <DependentUpon>SwapConfigItemWizard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConfigurationItem\SwapConfigItemWizard.aspx.designer.cs">
+      <DependentUpon>SwapConfigItemWizard.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contact\AddAccountContactGroup.aspx.cs">
       <DependentUpon>AddAccountContactGroup.aspx</DependentUpon>
@@ -1321,12 +1368,26 @@
     <Compile Include="Contact\ExecuteContact.aspx.designer.cs">
       <DependentUpon>ExecuteContact.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contact\NewContactTemplate.aspx.cs">
+      <DependentUpon>NewContactTemplate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contact\NewContactTemplate.aspx.designer.cs">
+      <DependentUpon>NewContactTemplate.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contact\ViewContact.aspx.cs">
       <DependentUpon>ViewContact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Contact\ViewContact.aspx.designer.cs">
       <DependentUpon>ViewContact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contact\ViewContactGroup.aspx.cs">
+      <DependentUpon>ViewContactGroup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contact\ViewContactGroup.aspx.designer.cs">
+      <DependentUpon>ViewContactGroup.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contact\ViewContactList.aspx.cs">
       <DependentUpon>ViewContactList.aspx</DependentUpon>
@@ -1523,6 +1584,13 @@
     </Compile>
     <Compile Include="Contract\InteralCostAddOrEdit.aspx.designer.cs">
       <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Project\ProjectDashboard.aspx.cs">
+      <DependentUpon>ProjectDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Project\ProjectDashboard.aspx.designer.cs">
+      <DependentUpon>ProjectDashboard.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServiceDesk\AddQuickCall.aspx.cs">
       <DependentUpon>AddQuickCall.aspx</DependentUpon>
@@ -2243,6 +2311,13 @@
     <Compile Include="ServiceDesk\ServiceCall.aspx.designer.cs">
       <DependentUpon>ServiceCall.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ServiceDesk\ServiceDeskDashboard.aspx.cs">
+      <DependentUpon>ServiceDeskDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\ServiceDeskDashboard.aspx.designer.cs">
+      <DependentUpon>ServiceDeskDashboard.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ServiceDesk\TaskServiceCall.aspx.cs">
       <DependentUpon>TaskServiceCall.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2884,6 +2959,9 @@
     <Compile Include="Tools\TimesheetAjax.ashx.cs">
       <DependentUpon>TimesheetAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\WareHouseAjax.ashx.cs">
+      <DependentUpon>WareHouseAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\WorkflowRuleAjax.ashx.cs">
       <DependentUpon>WorkflowRuleAjax.ashx</DependentUpon>
     </Compile>
@@ -2943,6 +3021,7 @@
     <Content Include="Tools\ServiceCallAjax.ashx" />
     <Content Include="Tools\IndexAjax.ashx" />
     <Content Include="Tools\DashboardAjax.ashx" />
+    <Content Include="Tools\WareHouseAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

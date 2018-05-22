@@ -142,6 +142,15 @@ namespace EMT.DoneNOW.Web
                 case "GetInsProDetail":
                     GetInsProDetail(context);
                     break;
+                case "InsProSetAsParent":
+                    InsProSetAsParent(context);
+                    break;
+                case "InsProCancelAsParent":
+                    InsProCancelAsParent(context);
+                    break;
+                case "ReviewInsPro":    // 设置是否需要合同审核
+                    ReviewInsPro(context);
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     break;
@@ -149,7 +158,7 @@ namespace EMT.DoneNOW.Web
         }
 
         /// <summary>
-        /// 获取到产品的信息并返回
+        /// 获取到产品的信息并返回  
         /// </summary>
         /// <param name="context"></param>
         /// <param name="product_id"></param>
@@ -672,6 +681,42 @@ namespace EMT.DoneNOW.Web
                     context.Response.Write(new Tools.Serialize().SerializeJson(new {id=insPr.id,name=name, contactId= contactId, contactName = contactName, insTime = insTime, insUser = insUser, insWarnTime = insWarnTime, vendorId = vendorId, vendorName = vendorName, insService = insService, relateNum = relateNum }));
                 }
             }
+        }
+        /// <summary>
+        /// 设置为父配置项
+        /// </summary>
+        private void InsProSetAsParent(HttpContext context)
+        {
+            var insProId = context.Request.QueryString["insProId"];
+            var insProParentId = context.Request.QueryString["insProParentId"];
+            bool result = false;
+            if (!string.IsNullOrEmpty(insProId) && !string.IsNullOrEmpty(insProParentId))
+                result = new InstalledProductBLL().SetAsParent(long.Parse(insProId),long.Parse(insProParentId),LoginUserId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 取消父配置项配置
+        /// </summary>
+        private void InsProCancelAsParent(HttpContext context)
+        {
+            var insProId = context.Request.QueryString["insProId"];
+            
+            bool result = false;
+            if (!string.IsNullOrEmpty(insProId))
+                result = new InstalledProductBLL().RemoveParent(long.Parse(insProId), LoginUserId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 配置项是否需要合同审核
+        /// </summary>
+        private void ReviewInsPro(HttpContext context)
+        {
+            var insProId = context.Request.QueryString["insProId"];  // 需要变更的ID 的集合
+            var isView = !string.IsNullOrEmpty(context.Request.QueryString["isView"]);
+            bool result = false;
+            if (!string.IsNullOrEmpty(insProId) )
+                result = new InstalledProductBLL().ReviewInsPro(insProId, isView, LoginUserId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
         }
     }
 }

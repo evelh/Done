@@ -330,6 +330,9 @@ var windowObj = {
     appointment: "appointment",
     resource: "resource",
     resourcePolicy: "resourcePolicy",
+    contactGroup: "contactGroup",
+    opportunity: "opportunity",
+    contactActionTemp:"contactActionTemp",
 }
 var windowType = {
     blank: '_blank',

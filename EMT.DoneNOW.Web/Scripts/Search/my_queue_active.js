@@ -329,10 +329,19 @@ function ChangeLocation() {
     if ($("input[name = 'con2627']").val() != undefined) {
         accountId = $("input[name = 'con2627']").eq(0).val();
     }
-    if (accountId == "" || accountId == undefined) {
-        return;
+    var url = "../Common/SearchBodyFrame.aspx?cat=1617&type=202&group=215&con2652=" + DueTime + "&con2656=" + includeMaster + "&param1=ShowPara";
+    if (accountId != "" && accountId != null) {
+        url += "&con2627=" + accountId;
     }
-    location.href = "../Common/SearchBodyFrame.aspx?cat=1617&type=202&group=215&con2627=" + accountId + "&con2652=" + DueTime + "&con2656=" + includeMaster +"&param1=ShowPara";
+    var insProId = "";
+    if ($("input[name = 'con3962']").val() != undefined) {
+        insProId = $("input[name = 'con3962']").eq(0).val();
+    }
+    if (insProId != "" && insProId != null) {
+        url += "&con3962=" + insProId;
+    }
+
+    location.href = url;
 }
 $("#DueTime").change(function () {
     ChangeLocation();

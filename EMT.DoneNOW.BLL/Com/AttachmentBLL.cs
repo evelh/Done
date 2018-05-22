@@ -154,6 +154,13 @@ namespace EMT.DoneNOW.BLL
             else if (att.object_type_id == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.RESOURCE)
             {
             }
+            else if(att.object_type_id == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.CONFIGITEM)
+            {
+                crm_installed_product insPro = new crm_installed_product_dal().FindNoDeleteById(att.object_id);
+                if (insPro == null)
+                    return false;
+                att.account_id = insPro.account_id;
+            }
             else
                 return false;
 
@@ -231,5 +238,20 @@ namespace EMT.DoneNOW.BLL
             return dal.FindById(id);
         }
 
+        /// <summary>
+        /// 返回文件的大小
+        /// </summary>
+        public String HumanReadableFilesize(double size)
+        {
+            String[] units = new String[] { "B", "KB", "MB", "GB", "TB", "PB" };
+            double mod = 1024.0;
+            int i = 0;
+            while (size >= mod)
+            {
+                size /= mod;
+                i++;
+            }
+            return Math.Round(size) + units[i];
+        }
     }
 }

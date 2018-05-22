@@ -226,6 +226,14 @@ namespace EMT.DoneNOW.DAL
         {
             return Convert.ToInt32(GetSingle(sql));
         }
+        
+        /// <summary>
+        /// 根据配置项获取到未关闭的工单
+        /// </summary>
+        public List<sdk_task> GetNoDoneByInsPro(long insProId)
+        {
+            return FindListBySql($"SELECT * from sdk_task where installed_product_id = {insProId} and delete_time = 0 and type_id in(1809) and status_id <> {(int)DicEnum.TICKET_STATUS.DONE}");
+        }
 
         #endregion
 

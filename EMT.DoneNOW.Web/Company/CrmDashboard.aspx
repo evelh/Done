@@ -5,12 +5,47 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <link href="../Content/crmDashboard.css" rel="stylesheet" />
     <title></title>
+    <style>
+        li{
+            list-style:none;
+        }
+        .OnlyImageButton{
+                background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);
+    border: 1px solid #bcbcbc;
+    display: inline-block;
+    color: #4F4F4F;
+    cursor: pointer;
+    padding: 0 5px 0 3px;
+    position: relative;
+    text-decoration: none;
+    vertical-align: middle;
+    height: 22px;
+    margin-left:-4px;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
-        <select id="queryType">
+        <div class="header">CRM仪表板-<span id="SelectTypeSpan"></span></div>
+        <div class="header-title" style="width: 480px;">
+            <ul>
+                <li style="height:26px;"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;" class="icon-1"></i>
+                    新增
+                    <i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;"></i>
+                    <ul>
+                        <li onclick="AddAccount()"><a >客户</a></li>
+                        <li onclick="AddTodo()"><a >待办</a></li>
+                        <li onclick="AddNote()"><a >备注</a></li>
+                        <li onclick="AddContact()"><a >联系人</a></li>
+                        <li onclick="AddOpportunity()"><a >商机</a></li>
+                    </ul>
+                </li>
+                <li style=" background: linear-gradient(to bottom,#fff 0,#fff 100%);border: 0px;">
+                    <span>显示：</span>
+                    <select id="queryType" style="height:24px">
             <%if (terrList != null && terrList.Count > 0)
                 {%>
             <option value="T|0">全部地域</option>
@@ -32,13 +67,21 @@
                     }} %>
 
         </select>
+                </li>
+                <li style=" background: linear-gradient(to bottom,#fff 0,#fff 100%);border: 0px;">
+                    <input type="text" style="height:19px;background: linear-gradient(to bottom,#fff 0,#fff 100%);border: 1px solid #CCCCCC;" name="crtName" size="16" id="AccountName" value="" placeholder="查找客户"  />
+                   <a class="OnlyImageButton" onclick="SearchAccount()"><img src="../Images/search.png" /></a>
+                </li>
+            </ul>
+        </div>
+    
         <table width="1024px" cellspacing="0" cellpadding="0" border="0" style="margin-top: 10px;">
             <tbody>
                 <tr>
                     <td colspan="2">
-                        <div class="PageLevelInstructions">
+                        <div class="PageLevelInstructions" style="margin-left:10px;margin-bottom:10px;">
                             <span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
-				按地域过滤时，此页面上的数字基于该地区的资源，而不是与该地区的公司关联。
+				按地域过滤时，此页面上的数字基于该地区的员工，而不是与该地区的公司关联。
 				</font></font></span>
                         </div>
                     </td>
@@ -166,8 +209,6 @@
                                             </td>
                                             <td valign="top" width="70%" style="padding-left: 15px; padding-top: 10px;">
                                                 <table width="417" cellspacing="0" cellpadding="3" border="0">
-
-
                                                     <tbody>
                                                         <tr>
                                                             <td>
@@ -795,9 +836,12 @@
 </body>
 </html>
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
+<script src="../Scripts/common.js"></script>
 <script>
     $(function () {
         $("#queryType").val('<%=queryType %>');
+        var selectTypeSpan = $("#queryType").find("option:selected").text();
+        $("#SelectTypeSpan").text(selectTypeSpan);
     })
 
     $("#queryType").change(function () {
@@ -862,5 +906,30 @@
             resIds = "''";
         }
         location.href = "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.OPPORTUNITY %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Opportunity %>&group=9&con274=" + resIds + "&con271=<%=(int)EMT.DoneNOW.DTO.DicEnum.OPPORTUNITY_STATUS.ACTIVE %>&con269=" + stageId;
+    }
+
+    function SearchAccount() {
+        var AccountName = $("#AccountName").val();
+        if (AccountName == "") {
+            LayerMsg("先填写搜索条件！");
+            return;
+        }
+        location.href = "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.Company %>&group=11&con70=" + AccountName;
+    }
+
+    function AddAccount() {
+        window.open("../Company/AddCompany.aspx", windowObj.company + windowType.add, 'left=0,top=0,width=900,height=750,resizable=yes', false);
+    }
+    function AddTodo() {
+        window.open("../Activity/Todos.aspx", windowObj.todos + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+    }
+    function AddNote() {
+        window.open("../Activity/Notes.aspx", windowObj.notes + windowType.add, 'left=0,top=0,location=no,status=no,width=730,height=750', false);
+    }
+    function AddContact() {
+        window.open("../Contact/AddContact.aspx", windowObj.contact + windowType.add, 'left=0,top=0,width=900,height=750,resizable=yes', false);
+    }
+    function AddOpportunity() {
+        window.open("../Opportunity/OpportunityAddAndEdit.aspx", windowObj.opportunity + windowType.add, 'left=0,top=0,width=900,height=750,resizable=yes', false);
     }
 </script>

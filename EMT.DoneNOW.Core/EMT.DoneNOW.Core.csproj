@@ -67,6 +67,7 @@
     <Compile Include="CRM\crm_account_reference.cs" />
     <Compile Include="CRM\crm_account_territory.cs" />
     <Compile Include="CRM\crm_contact.cs" />
+    <Compile Include="CRM\crm_contact_action_tmpl.cs" />
     <Compile Include="CRM\crm_contact_group.cs" />
     <Compile Include="CRM\crm_contact_group_contact.cs" />
     <Compile Include="CRM\crm_installed_product.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="SYS\sys_resource_availability.cs" />
     <Compile Include="SYS\sys_resource_department.cs" />
     <Compile Include="SYS\sys_resource_internal_cost.cs" />
+    <Compile Include="SYS\sys_resource_sales_quota.cs" />
     <Compile Include="SYS\sys_resource_skill.cs" />
     <Compile Include="SYS\sys_resource_territory.cs" />
     <Compile Include="SYS\sys_role.cs" />

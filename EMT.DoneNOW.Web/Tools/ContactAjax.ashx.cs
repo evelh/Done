@@ -62,11 +62,41 @@ namespace EMT.DoneNOW.Web
                     case "GroupManage":
                         GroupManage(context);
                         break;
+                    case "SaveActionTemp":
+                        SaveActionTemp(context);
+                        break;
+                    case "CheckTempName":
+                        CheckTempName(context);
+                        break;
+                    case "GetTempInfo":
+                        GetTempInfo(context);
+                        break;
+                    case "RemoveContactFromGroup":
+                        RemoveContactFromGroup(context);
+                        break;
+                    case "AddContactsToGroup":
+                        AddContactsToGroup(context);
+                        break;
+                    case "GetContactGroup":
+                        GetContactGroup(context);
+                        break;
+                    case "DeleteContactGroup":
+                        DeleteContactGroup(context);
+                        break;
+                    case "ActiveContactGroup":
+                        ActiveContactGroup(context);
+                        break;
+                    case "SaveActionTempShort":
+                        SaveActionTempShort(context);
+                        break;
+                    case "DeleteContactActionTemp":
+                        DeleteContactActionTemp(context);
+                        break;
                     default:
                         break;
                 }
             }
-            catch (Exception)
+            catch (Exception) 
             {
 
                 context.Response.End();
@@ -251,6 +281,19 @@ namespace EMT.DoneNOW.Web
             context.Response.Write(new Tools.Serialize().SerializeJson(result));
         }
         /// <summary>
+        /// 将联系人添加到组
+        /// </summary>
+        private void AddContactsToGroup(HttpContext context)
+        {
+            var groupId = context.Request.QueryString["groupId"];
+            var ids = context.Request.QueryString["ids"];
+            var result = false;
+            if (!string.IsNullOrEmpty(ids) && !string.IsNullOrEmpty(groupId))
+                result = new ContactBLL().AddContactsToGroup(long.Parse(groupId), ids, LoginUserId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+
+        /// <summary>
         /// 校验联系人群组名称
         /// </summary>
         private void CheckGroupName(HttpContext context)
@@ -279,5 +322,175 @@ namespace EMT.DoneNOW.Web
                 result = new ContactBLL().ContactGroupManage(id,name, isActive,LoginUserId);
             context.Response.Write(new Tools.Serialize().SerializeJson(result));
         }
+        /// <summary>
+        /// 保存模板信息
+        /// </summary>
+        private void SaveActionTemp(HttpContext context)
+        {
+            crm_contact_action_tmpl actionTemp = null;
+            var sendEmail = (sbyte)(context.Request.QueryString["sendEmail"] == "1"?1:0);
+            var tempId = context.Request.QueryString["tempId"];
+            var noteActionTypeId = context.Request.QueryString["noteActionTypeId"];
+            var noteDescription = context.Request.QueryString["noteDescription"];
+
+            var todoActionTypeId = context.Request.QueryString["todoActionTypeId"];
+            var todoDescription = context.Request.QueryString["todoDescription"];
+            var todoResourceId = context.Request.QueryString["todoResourceId"];
+            var todoStartDate = context.Request.QueryString["todoStartDate"];
+            var todoEndDate = context.Request.QueryString["todoEndDate"];
+
+            var description = context.Request.QueryString["description"];
+
+            if (!string.IsNullOrEmpty(tempId))
+                actionTemp = new ContactBLL().GetTempById(long.Parse(tempId));
+            if (actionTemp == null)
+            {
+                actionTemp = new crm_contact_action_tmpl();
+                actionTemp.name = context.Request.QueryString["name"];
+            }
+            actionTemp.send_email = sendEmail;
+            if (!string.IsNullOrEmpty(noteActionTypeId))
+            {
+                actionTemp.note_action_type_id = int.Parse(noteActionTypeId);
+                actionTemp.note_description = noteDescription;
+            }
+            else
+            {
+                actionTemp.note_action_type_id = null;
+                actionTemp.note_description = string.Empty;
+            }
+            if (!string.IsNullOrEmpty(todoActionTypeId)&& !string.IsNullOrEmpty(todoStartDate) && !string.IsNullOrEmpty(todoEndDate))
+            {
+                actionTemp.todo_action_type_id = int.Parse(todoActionTypeId);
+                actionTemp.todo_description = todoDescription;
+                actionTemp.todo_resource_id = long.Parse(todoResourceId);
+                actionTemp.todo_start_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(todoStartDate));
+                actionTemp.todo_end_date = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(todoEndDate));
+            }
+            else
+            {
+                actionTemp.todo_action_type_id = null;
+                actionTemp.todo_description = string.Empty;
+                actionTemp.todo_resource_id = null;
+                actionTemp.todo_start_date = null;
+                actionTemp.todo_end_date = null;
+            }
+            actionTemp.description = description;
+            long thisTempId = 0;
+            var result = new ContactBLL().SaveActionTemp(actionTemp,LoginUserId,ref thisTempId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(new {result= result,id= thisTempId }));
+        }
+        /// <summary>
+        /// 保存联系人模板-只更新名称描述信息，功能同上
+        /// </summary>
+        private void SaveActionTempShort(HttpContext context)
+        {
+            crm_contact_action_tmpl actionTemp = null;
+            var tempId = context.Request.QueryString["tempId"];
+            if (!string.IsNullOrEmpty(tempId))
+                actionTemp = new ContactBLL().GetTempById(long.Parse(tempId));
+            if (actionTemp == null)
+                actionTemp = new crm_contact_action_tmpl();
+            actionTemp.name = context.Request.QueryString["name"];
+            actionTemp.description = context.Request.QueryString["description"];
+            long thisTempId = 0;
+            var result = new ContactBLL().SaveActionTemp(actionTemp, LoginUserId, ref thisTempId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+
+        /// <summary>
+        /// 模板名称校验
+        /// </summary>
+        private void CheckTempName(HttpContext context)
+        {
+            var result = false;
+            var name = context.Request.QueryString["name"];
+            if (!string.IsNullOrEmpty(name))
+            {
+                long id=0;
+                if (!string.IsNullOrEmpty(context.Request.QueryString["tempId"]))
+                    id = long.Parse(context.Request.QueryString["tempId"]);
+                result = new ContactBLL().CheckActionTempName(name,id);
+            }
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 获取模板信息
+        /// </summary>
+        private void GetTempInfo(HttpContext context)
+        {
+            if (!string.IsNullOrEmpty(context.Request.QueryString["tempId"]))
+            {
+                var temp = new ContactBLL().GetTempById(long.Parse(context.Request.QueryString["tempId"]));
+                if (temp != null)
+                {
+                    context.Response.Write(new Tools.Serialize().SerializeJson(temp));
+                }
+            }
+        }
+        /// <summary>
+        /// 从联系人组中移除联系人
+        /// </summary>
+        private void RemoveContactFromGroup(HttpContext context)
+        {
+            var ids = context.Request.QueryString["ids"];
+            var groupId = context.Request.QueryString["groupId"];
+            var result = false;
+            if (!string.IsNullOrEmpty(groupId) && !string.IsNullOrEmpty(ids))
+                result = new ContactBLL().RemoveContactFromGroup(long.Parse(groupId), ids,LoginUserId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 获取联系人组信息
+        /// </summary>
+        private void GetContactGroup(HttpContext context)
+        {
+            var id = context.Request.QueryString["id"];
+            if (!string.IsNullOrEmpty(id))
+            {
+                var thisGroup = new ContactBLL().GetGroupById(long.Parse(id));
+                if(thisGroup!=null)
+                    context.Response.Write(new Tools.Serialize().SerializeJson(thisGroup));
+            }
+        }
+
+        /// <summary>
+        /// 删除联系人组
+        /// </summary>
+        private void DeleteContactGroup(HttpContext context)
+        {
+            var groupId = context.Request.QueryString["groupId"];
+            var result = false;
+            if (!string.IsNullOrEmpty(groupId))
+                result = new ContactBLL().DeleteContactGroup(long.Parse(groupId),LoginUserId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        ///  激活/失活 联系人组
+        /// </summary>
+        /// <param name="context"></param>
+        private void ActiveContactGroup(HttpContext context)
+        {
+            var groupId = context.Request.QueryString["groupId"];
+            var result = false;
+            var isActive = true;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["inActive"]))
+                isActive = false;
+            if (!string.IsNullOrEmpty(groupId))
+                result = new ContactBLL().ActiveContactGroup(long.Parse(groupId), isActive, LoginUserId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 删除联系人活动模板
+        /// </summary>
+        private void DeleteContactActionTemp(HttpContext context)
+        {
+            var tempId = context.Request.QueryString["tempId"];
+            var result = false;
+            if (!string.IsNullOrEmpty(tempId))
+                result = new ContactBLL().DeleteContactActionTemp(long.Parse(tempId), LoginUserId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+
     }
 }

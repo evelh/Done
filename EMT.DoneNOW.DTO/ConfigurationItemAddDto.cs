@@ -24,12 +24,12 @@ namespace EMT.DoneNOW.DTO
         public string location;                     // 区域-- 安装位置
         public int? contract_id;                        // 合同
         public int? service_id;               // 服务/服务包
-        public bool reviewed_for_contract;          //        待确认
         public string materal_code;                 // 物料成本代码
         public int? vendor_id;                          // 供应商(类型为供应商的客户)
         public string manufacturer;                 // 制造商
         public string notes;                        // 备注
         public long? contract_cost_id;              // 合同成本ID
+        public sbyte reviewByContract;
         public List<UserDefinedFieldValue> udf;     // 自定义配置项
         public Terms terms;
         public Notice notice;
@@ -52,5 +52,8 @@ namespace EMT.DoneNOW.DTO
         public int notification_template;         // 通知模板
         public string subject;                    // 主题
         public string additional_email_text;      // 附加信息
+        public bool ckToMe = false;               // 抄送给我
+        public bool ckToAccMan = false;           // 抄送给客户经理
+        public bool ckSendBySys = false;          // 系统邮箱发送
     }
 }

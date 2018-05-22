@@ -62,6 +62,13 @@ namespace EMT.DoneNOW.DAL
         {
             return FindListBySql<crm_installed_product>($"SELECT cip.* from crm_installed_product cip INNER JOIN ivt_product ip on cip.product_id = ip.id where ip.delete_time = 0 and cip.delete_time = 0 and cip.account_id = {accountId} ORDER BY ip.name");
         }
+        /// <summary>
+        /// 获取子配置项信息
+        /// </summary>
+        public List<crm_installed_product> GetChildInsPro(long parentId)
+        {
+            return FindListBySql<crm_installed_product>($"select * from crm_installed_product where parent_id ={parentId} and delete_time = 0");
+        }
    
     }
 }
