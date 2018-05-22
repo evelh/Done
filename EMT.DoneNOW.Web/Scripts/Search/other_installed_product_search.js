@@ -148,12 +148,12 @@ function Edit() {
 }
 
 function Copy() {
-
+    window.open("../ConfigurationItem/AddOrEditConfigItem.aspx?id=" + entityid + "&isCopy=1", windowObj.configurationItem + windowType.add, 'left=200,top=200,width=1080,height=800', false);
 }
 
 
 function Swap() {
-
+    window.open("../ConfigurationItem/SwapConfigItemWizard.aspx?insProId=" + entityid, 'SwapInsPro', 'left=200,top=200,width=1080,height=800', false);
 }
 
 function Move() {

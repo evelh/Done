@@ -916,12 +916,18 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.InstalledProductView:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "替换", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "替换", click_function = "Swap()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新建工单", click_function = "NewTicket()" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活当前记录", click_function = "",id="ActiveThis" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活选中记录", click_function = "", id = "ActiveChoose" });
                     contextMenu.Add(new PageContextMenuDto { text = "停用当前记录", click_function = "", id = "NoActiveThis" });
                     contextMenu.Add(new PageContextMenuDto { text = "停用选中记录", click_function = "", id = "NoActiveChoose" });
+                    contextMenu.Add(new PageContextMenuDto { text = "当前记录经过合同审核", click_function = "ReViewByContract()", id = "ReViewByContractMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "当前记录不经过合同审核", click_function = "NoReViewByContract()", id = "NoReViewByContractMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "选中记录经过合同审核", click_function = "ReViewByContractSelect()", id = "ReViewByContractSelectMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "选中记录不经过合同审核", click_function = "NoReViewByContractSelect()", id = "NoReViewByContractSelectMenu" });
+
                     contextMenu.Add(new PageContextMenuDto { text = "删除当前配置项", click_function = "DeleteIProduct()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除选中配置项", click_function = "DeleteIProducts()" });
                     break;

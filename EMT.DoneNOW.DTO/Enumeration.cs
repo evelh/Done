@@ -96,6 +96,7 @@ namespace EMT.DoneNOW.DTO
         DASHBOARD_COLOR_THEME = 184,            // 仪表板色系
         WIDGET_TYPE = 189,                      // 小窗口类型
         WIDGET_ENTITY = 190,                    // 小窗口实体
+        SYS_TICKET_RESOLUTION_METRICS = 206,    // 工单解决参数设置
     }
 
     /// <summary>
@@ -1678,6 +1679,17 @@ namespace EMT.DoneNOW.DTO
             GUAGE = 2583,           // 进度指示
             GRID = 2584,            // 表格
             HTML = 2585,            // HTML
+        }
+        /// <summary>
+        /// 工单解决参数设置 - 206
+        /// </summary>
+        public enum SYS_TICKET_RESOLUTION_METRICS
+        {
+            MAXIMUM_DEAL_DAY=3084,                        // 严重工单最大平均解决天数
+            MAXIMUM_OPEN_CRITICAL_TICKETS =3085,          // 最大未解决严重工单数
+            MAXIMUM_OPEN_TICKETS = 3086,                  // 最大未解决工单数
+            MAXIMUM_NEW_TICKETS = 3087,                   // 最大新建工单数
+            MAXIMUM_AVERAGE_TICKETS_PER_RESOURCE = 3088,  // 人均最大平均工单数
         }
     }
 

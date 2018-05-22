@@ -1602,25 +1602,32 @@ namespace EMT.DoneNOW.BLL
             
         }
         /// <summary>
-        /// 配置项是否需要合同审核
+        /// 设置配置项是否需要合同审核
         /// </summary>
-        public bool ReviewInsPro(long insProId,bool isReview,long userId)
+        public bool ReviewInsPro(string insProIds,bool isReview,long userId)
         {
-            var thisInsPro = _dal.FindNoDeleteById(insProId);
-            if (thisInsPro == null)
+            if (string.IsNullOrEmpty(insProIds))
                 return false;
-            if (thisInsPro.contract_id != null)
-                isReview = true;
-            sbyte isView = (sbyte)(isReview?1:0);
-            if(thisInsPro.reviewed_for_contract!= isView)
+            var idArr = insProIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+            foreach (var insProId in idArr)
             {
-                var oldInsPro = _dal.FindNoDeleteById(insProId);
-                thisInsPro.reviewed_for_contract = isView;
-                thisInsPro.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-                thisInsPro.update_user_id = userId;
-                _dal.Update(thisInsPro);
-                OperLogBLL.OperLogUpdate<crm_installed_product>(thisInsPro, oldInsPro, thisInsPro.id, userId, OPER_LOG_OBJ_CATE.CONFIGURAITEM, "");
-
+                var thisInsPro = _dal.FindNoDeleteById(long.Parse(insProId));
+                if (thisInsPro == null)
+                    continue;
+                if (thisInsPro.contract_id != null)
+                    isReview = true;
+                sbyte isView = (sbyte)(isReview ? 1 : 0);
+                if (thisInsPro.contract_id != null && !isReview)
+                    continue;
+                if (thisInsPro.reviewed_for_contract != isView)
+                {
+                    var oldInsPro = _dal.FindNoDeleteById(thisInsPro.id);
+                    thisInsPro.reviewed_for_contract = isView;
+                    thisInsPro.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    thisInsPro.update_user_id = userId;
+                    _dal.Update(thisInsPro);
+                    OperLogBLL.OperLogUpdate<crm_installed_product>(thisInsPro, oldInsPro, thisInsPro.id, userId, OPER_LOG_OBJ_CATE.CONFIGURAITEM, "");
+                }
             }
             return true;
         }

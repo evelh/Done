@@ -61,6 +61,13 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 {
                     thisContract = new ctt_contract_dal().FindNoDeleteById(long.Parse(contractId));
                 }
+                var insProId = Request.QueryString["insProId"];
+                if (!string.IsNullOrEmpty(insProId))
+                {
+                    insPro = new crm_installed_product_dal().FindNoDeleteById(long.Parse(insProId));
+                    if (insPro != null&&insPro.account_id!=null)
+                        thisAccount = new CompanyBLL().GetCompany((long)insPro.account_id);
+                }
 
                 var taskId = Request.QueryString["id"];
                 if (!string.IsNullOrEmpty(taskId))

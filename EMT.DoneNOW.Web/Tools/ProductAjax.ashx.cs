@@ -711,11 +711,11 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void ReviewInsPro(HttpContext context)
         {
-            var insProId = context.Request.QueryString["insProId"];
+            var insProId = context.Request.QueryString["insProId"];  // 需要变更的ID 的集合
             var isView = !string.IsNullOrEmpty(context.Request.QueryString["isView"]);
             bool result = false;
             if (!string.IsNullOrEmpty(insProId) )
-                result = new InstalledProductBLL().ReviewInsPro(long.Parse(insProId), isView, LoginUserId);
+                result = new InstalledProductBLL().ReviewInsPro(insProId, isView, LoginUserId);
             context.Response.Write(new Tools.Serialize().SerializeJson(result));
         }
     }

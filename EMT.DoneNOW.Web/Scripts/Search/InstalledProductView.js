@@ -232,38 +232,136 @@ $(".dn_tr").bind("contextmenu", function (event) {
             NoActiveIProducts();
         })
     }
-
+    var isHasContract = "";  // 该配置项是否有合同
+    var isReview = "";       // 该配置项是否需要合同审核
     $.ajax({
         type: "GET",
-        url: "../Tools/ProductAjax.ashx?act=property&property=is_active&iProduct_id=" + entityid,
         async: false,
+        url: "../Tools/ProductAjax.ashx?act=GetInsProInfo&insProId=" + entityid,
+        dataType: 'json',
         success: function (data) {
+            if (data != "") {
+                if (data.contract_id != "" && data.contract_id != undefined && data.contract_id != null) {
+                    isHasContract = "1";
+                }
+                if (data.reviewed_for_contract == "1") {
+                    isReview = "1";
+                }
+                if (data.is_active =="1") {
+                    $("#ActiveThis").css("color", "grey");
+                    $("#NoActiveThis").css("color", "");
+                    $("#ActiveThis").removeAttr('onclick');
 
-            if (data == "1") {
-                $("#ActiveThis").css("color", "grey");
-                $("#NoActiveThis").css("color", "");
-                $("#ActiveThis").removeAttr('onclick');
+                    $("#NoActiveThis").click(function () {
+                        NoActiveIProduct();
+                    })
+                }
+                else if (data.is_active == "0") {
+                    $("#ActiveThis").css("color", "");
+                    $("#NoActiveThis").css("color", "grey");
 
-                $("#NoActiveThis").click(function () {
-                    NoActiveIProduct();
-                })
+                    $("#NoActiveThis").removeAttr('onclick');
 
-
-            } else if (data == "0") {
-                $("#ActiveThis").css("color", "");
-                $("#NoActiveThis").css("color", "grey");
-
-                $("#NoActiveThis").removeAttr('onclick');
-
-                $("#ActiveThis").click(function () {
-                    ActiveIProduct();
-                })
+                    $("#ActiveThis").click(function () {
+                        ActiveIProduct();
+                    })
+                }
             }
+        },
+    });
 
+    if (isHasContract != "") {
+        $("#ReViewByContractMenu").hide();
+        $("#NoReViewByContractMenu").hide();
+    }
+    else {
+        if (isReview == "1") {
+            $("#NoReViewByContractMenu").show();
+            $("#ReViewByContractMenu").hide();
         }
-    })
-
-
+        else {
+            $("#NoReViewByContractMenu").hide();
+            $("#ReViewByContractMenu").show();
+        }
+    }
 
     return false;
 });
+
+
+function Copy() {
+    window.open("../ConfigurationItem/AddOrEditConfigItem.aspx?id=" + entityid + "&isCopy=1", windowObj.configurationItem + windowType.add, 'left=200,top=200,width=1080,height=800', false);
+}
+
+
+function Swap() {
+    window.open("../ConfigurationItem/SwapConfigItemWizard.aspx?insProId=" + entityid, 'SwapInsPro', 'left=200,top=200,width=1080,height=800', false);
+}
+
+function NewTicket() {
+    window.open("../ServiceDesk/TicketManage?insProId=" + entityid, windowType.ticket + windowType.add, 'left=200,top=200,width=1280,height=800', false);
+}
+
+function ReViewByContract() {
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: "../Tools/ProductAjax.ashx?act=ReviewInsPro&insProId=" + entityid + "&isView=1",
+        dataType: 'json',
+        success: function (data) {
+            history.go(0);
+        },
+    });
+}
+
+function NoReViewByContract() {
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: "../Tools/ProductAjax.ashx?act=ReviewInsPro&insProId=" + entityid,
+        dataType: 'json',
+        success: function (data) {
+            history.go(0);
+        },
+    });
+}
+
+function ReViewByContractSelect() {
+    var ids = "";
+    $(".IsChecked").each(function () {
+        if ($(this).is(":checked")) {
+            ids += $(this).val() + ',';
+        }
+    })
+    if (ids != "") {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/ProductAjax.ashx?act=ReviewInsPro&insProId=" + ids + "&isView=1",
+            dataType: 'json',
+            success: function (data) {
+                history.go(0);
+            },
+        });
+    }
+}
+
+function NoReViewByContractSelect() {
+    var ids = "";
+    $(".IsChecked").each(function () {
+        if ($(this).is(":checked")) {
+            ids += $(this).val() + ',';
+        }
+    })
+    if (ids != "") {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/ProductAjax.ashx?act=ReviewInsPro&insProId=" + ids,
+            dataType: 'json',
+            success: function (data) {
+                history.go(0);
+            },
+        });
+    }
+}

@@ -54,14 +54,7 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                     {
                         account = new CompanyBLL().GetCompany((long)iProduct.account_id);
                         var product = new ivt_product_dal().FindNoDeleteById(iProduct.product_id);
-                        #region 记录浏览历史
-                        var history = new sys_windows_history()
-                        {
-                            title = "配置项:" + (product==null?"":product.name) + account.name,
-                            url = Request.RawUrl,
-                        };
-                        new IndexBLL().BrowseHistory(history, LoginUserId);
-                        #endregion
+                   
                     }
                 }
                 var account_id = Request.QueryString["account_id"];
@@ -103,7 +96,24 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                 {
                     //account_id = iProduct.account_id.ToString();
                     iProduct_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.CONFIGURATION_ITEMS, iProduct.id, iProduct_udfList);
+                    var isCopy = Request.QueryString["isCopy"];
+                    
                     isAdd = false;
+                    if (!string.IsNullOrEmpty(isCopy) && isCopy == "1")
+                        isAdd = true;
+                    if (!isAdd)
+                    {
+                        #region 记录浏览历史
+                        var history = new sys_windows_history()
+                        {
+                            title = "配置项:" + (product == null ? "" : product.name) + account.name,
+                            url = Request.RawUrl,
+                        };
+                        new IndexBLL().BrowseHistory(history, LoginUserId);
+                        #endregion
+                    }
+
+
                     if (iProduct.contract_id != null)
                     {
                         contract = new ctt_contract_dal().FindNoDeleteById((long)iProduct.contract_id);
@@ -124,9 +134,12 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                     // todo 订阅的通用查询
                     // "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT_COMPANY_VIEW + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.ContactCompanyView + "&id=" + id;
                     thisNoteAtt = new com_attachment_dal().GetAttListByOid(iProduct.id);
-                    if (iProduct.parent_id != null)
-                        parentInsPro = new crm_installed_product_dal().GetInstalledProduct((long)iProduct.parent_id);
-                    childInsProList = new crm_installed_product_dal().GetChildInsPro(iProduct.id);
+                    if (!isAdd)
+                    {
+                        if (iProduct.parent_id != null)
+                            parentInsPro = new crm_installed_product_dal().GetInstalledProduct((long)iProduct.parent_id);
+                        childInsProList = new crm_installed_product_dal().GetChildInsPro(iProduct.id);
+                    }
                 }
                 if (!IsPostBack)
                 {

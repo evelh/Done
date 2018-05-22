@@ -468,7 +468,7 @@
                                 <img src="../Images/copy.png" alt=""/>
                             </td>
                             <td class="RightClickMenuItemText">
-                                <span class="lblNormalClass">复制</span>
+                                <span class="lblNormalClass" onclick="Copy()">复制</span>
                             </td>
                         </tr>
                     </tbody>
@@ -482,7 +482,7 @@
                                 <img src="../Images/refresh.png" alt=""/>
                             </td>
                             <td class="RightClickMenuItemText">
-                                <span class="lblNormalClass">替换</span>
+                                <span class="lblNormalClass" onclick="Swap()">替换</span>
                             </td>
                         </tr>
                     </tbody>
@@ -545,7 +545,7 @@
                                                         <td class="FieldLabel">
                                                             <%--<input type="hidden" id="id" name="id" value="<%=!isAdd?iProduct.id.ToString():"" %>"/>--%>
                                                             <%
-                                                                if (!isAdd)
+                                                                if (iProduct!=null)
                                                                 {
                                                                     product = new EMT.DoneNOW.BLL.ProductBLL().GetProduct(iProduct.product_id);
                                                                 }
@@ -676,7 +676,7 @@
                                                         <td class="FieldLabel">序列号 
                                                     <div>
                                                         <span style="display: inline-block;">
-                                                            <input type="text" style="width: 250px;" name="serial_number" id="serial_number" value="<%=(!isAdd) && iProduct.serial_number != null ? iProduct.serial_number : "" %>" /></span>
+                                                            <input type="text" style="width: 250px;" name="serial_number" id="serial_number" value="<%=(iProduct!=null) && iProduct.serial_number != null ? iProduct.serial_number : "" %>" /></span>
                                                     </div>
                                                         </td>
                                                         <td class="FieldLabel">服务/服务集
@@ -691,7 +691,7 @@
                                                         <td class="FieldLabel">参考号 
                                                     <div>
                                                         <span style="display: inline-block;">
-                                                            <input type="text" style="width: 250px;" name="reference_number" id="reference_number" value="<%=(!isAdd) && iProduct.reference_number != null ? iProduct.reference_number : "" %>" /></span>
+                                                            <input type="text" style="width: 250px;" name="reference_number" id="reference_number" value="<%=(iProduct!=null) && iProduct.reference_number != null ? iProduct.reference_number : "" %>" /></span>
                                                     </div>
                                                         </td>
                                                         <td class="FieldLabel" style="cursor: pointer; margin-left: 2px; margin-bottom: -3px;">
@@ -713,7 +713,7 @@
                                                         <td class="FieldLabel">参考名称 
                                                     <div>
                                                         <span style="display: inline-block;">
-                                                            <input type="text" style="width: 250px;" name="reference_name" id="reference_name" value="<%=(!isAdd) && iProduct.reference_name != null ? iProduct.reference_name : "" %>" /></span>
+                                                            <input type="text" style="width: 250px;" name="reference_name" id="reference_name" value="<%=(iProduct!=null) && iProduct.reference_name != null ? iProduct.reference_name : "" %>" /></span>
                                                     </div>
                                                         </td>
                                                         <td>物料成本
@@ -725,7 +725,7 @@
                                                         <td class="FieldLabel">用户数 
                                                     <div>
                                                         <span style="display: inline-block;">
-                                                            <input type="text" style="width: 250px;" name="number_of_users" id="number_of_users" value="<%=(!isAdd) && iProduct.number_of_users != null ? ((decimal)iProduct.number_of_users).ToString("0") : "" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" class="Number" /></span>
+                                                            <input type="text" style="width: 250px;" name="number_of_users" id="number_of_users" value="<%=(iProduct!=null) && iProduct.number_of_users != null ? ((decimal)iProduct.number_of_users).ToString("0") : "" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" class="Number" /></span>
                                                     </div>
                                                         </td>
                                                         <td class="FieldLabel">供应商
@@ -750,7 +750,7 @@
                                                     <tr>
                                                         <td colspan="4" class="FieldLabel">备注
                                                     <div>
-                                                        <textarea style="height: 80px; width: 640px; resize: none;" name="notes"><%=isAdd ? "" : iProduct.remark %></textarea>
+                                                        <textarea style="height: 80px; width: 640px; resize: none;" name="notes"><%=iProduct==null ? "" : iProduct.remark %></textarea>
                                                     </div>
                                                         </td>
                                                     </tr>
@@ -1403,7 +1403,7 @@
         <%}%>
 
 
-       <%if (isAdd)
+       <%if (iProduct==null)
     { %>
             $("#EditProduct").css("display", "");
         <%}
@@ -1434,7 +1434,7 @@
         }
     }%>
        //  GetDaraByProduct();
-        <%if (!isAdd)
+        <%if (iProduct!=null)
     { %>
             var product_id = $("#product_idHidden").val();
             if (product_id != "") {
@@ -1961,6 +1961,21 @@
         <%if (iProduct != null)
     { %>
         window.open("../ConfigurationItem/OtherConfigItem.aspx?insProId=<%=iProduct.id %>", '_blank', 'left=200,top=200,width=1080,height=800', false);
+        <%} %>
+    }
+
+    function Copy() {
+     <%if (iProduct != null)
+    { %>
+        // isCopy=1
+        window.open("../ConfigurationItem/AddOrEditConfigItem.aspx?id=<%=iProduct.id %>&isCopy=1", windowObj.configurationItem + windowType.add, 'left=200,top=200,width=1080,height=800', false);
+        <%} %>
+    }
+
+    function Swap() {
+     <%if (iProduct != null)
+    { %>
+        window.open("../ConfigurationItem/SwapConfigItemWizard.aspx?insProId=<%=iProduct.id %>", 'SwapInsPro', 'left=200,top=200,width=1080,height=800', false);
         <%} %>
     }
 </script>
