@@ -21,6 +21,9 @@ namespace EMT.DoneNOW.Web
         protected string param2;
         protected string param3;
         protected string param4;
+        protected string param5;
+        protected string param6;
+        protected string param7;
         protected void Page_Load(object sender, EventArgs e)
         {
             var bll = new BLL.QueryCommonBLL();
@@ -55,6 +58,9 @@ namespace EMT.DoneNOW.Web
             param2 = string.IsNullOrEmpty(Request.QueryString["param2"]) ? "" : Request.QueryString["param2"];
             param3 = string.IsNullOrEmpty(Request.QueryString["param3"]) ? "" : Request.QueryString["param3"];
             param4 = string.IsNullOrEmpty(Request.QueryString["param4"]) ? "" : Request.QueryString["param4"];
+            param5 = string.IsNullOrEmpty(Request.QueryString["param5"]) ? "" : Request.QueryString["param5"];
+            param6 = string.IsNullOrEmpty(Request.QueryString["param6"]) ? "" : Request.QueryString["param6"];
+            param7 = string.IsNullOrEmpty(Request.QueryString["param7"]) ? "" : Request.QueryString["param7"];
             if (Request.QueryString["isShow"] == "Search")
                 isShow = "";
             var condition = bll.GetConditionParaVisiable(GetLoginUserId(), paraGroupId);

@@ -493,6 +493,16 @@
                 <input name="con<%=param1 %>" type="hidden" class="sl_cdt" value="<%=param2 %>" />
             <%} %>
             <%} %>
+            <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH && param4 == "AddHidden")
+                { %>
+            <input name="<%=param1 %>" type="hidden" class="sl_cdt" value="<%=param2 %>" />
+            <%if (!string.IsNullOrEmpty(param5) && !string.IsNullOrEmpty(param6)&&string.IsNullOrEmpty(Request.QueryString["param7"]))
+                { %>
+             <input name="<%=param5 %>" type="hidden" class="sl_cdt" value="<%=param6 %>" />
+            <%} %>
+            <%
+                    
+                } %>
             
 
 		</div>
@@ -568,13 +578,22 @@
     {
         if (param3 == "SearchNow")
         {
+            if (!string.IsNullOrEmpty(Request.QueryString["param5"])&&!string.IsNullOrEmpty(Request.QueryString["param6"]))
+            {%>
+        $("input[name = '<%=Request.QueryString["param5"] %>']").val('<%=Request.QueryString["param6"] %>');
+            <%}
             if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
             {%>
         if ($("input[name = '<%=param1 %>']").val() != undefined) {
             $("input[name = '<%=param1 %>']").val("<%=param2 %>");
+           
+        }
+        if ($("select[name = '<%=param1 %>']").val() != undefined) {
+            $("select[name = '<%=param1 %>']").val("<%=param2 %>");
         }
         else if ($("input[name = '<%=param1 %>_l']").val() != undefined) {
             $("input[name = '<%=param1 %>_l']").val("<%=param2 %>");
+            
         }
         <%}%>
             $("#SearchBtn").trigger("click");

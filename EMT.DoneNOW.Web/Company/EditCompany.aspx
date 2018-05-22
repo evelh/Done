@@ -713,7 +713,7 @@
                     <td>
                         <div class="clear">
                             <label><%=udf.name %></label>
-                            <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
+                            <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id)!=null?site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
                         </div>
                     </td>
                 </tr>
@@ -724,7 +724,7 @@
                     <td>
                         <div class="clear">
                             <label><%=udf.name %></label>
-                            <textarea name="<%=udf.id %>" rows="2" cols="20"><%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %></textarea>
+                            <textarea name="<%=udf.id %>" rows="2" cols="20"><%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id)!=null?site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %></textarea>
 
                         </div>
                     </td>
@@ -736,7 +736,7 @@
                     <td>
                         <div class="clear">
                             <label><%=udf.name %></label>
-                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
+                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id)!=null?site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
                         </div>
                     </td>
                 </tr>
@@ -747,7 +747,7 @@
                     <td>
                         <div class="clear">
                             <label><%=udf.name %></label>
-                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" ondblclick="" />
+                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id)!=null?site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" ondblclick="" />
                         </div>
                     </td>
                 </tr>

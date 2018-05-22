@@ -24,6 +24,8 @@ namespace EMT.DoneNOW.Web
         protected string param2;
         protected string param3;
         protected string param4;
+        protected string param5;
+        protected string param6;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!int.TryParse(Request.QueryString["cat"], out catId))
@@ -41,6 +43,8 @@ namespace EMT.DoneNOW.Web
             param2 = string.IsNullOrEmpty(Request.QueryString["param2"]) ? "" : Request.QueryString["param2"];
             param3 = string.IsNullOrEmpty(Request.QueryString["param3"]) ? "" : Request.QueryString["param3"];
             param4 = string.IsNullOrEmpty(Request.QueryString["param4"]) ? "" : Request.QueryString["param4"];
+            param5 = string.IsNullOrEmpty(Request.QueryString["param5"]) ? "" : Request.QueryString["param5"];
+            param6 = string.IsNullOrEmpty(Request.QueryString["param6"]) ? "" : Request.QueryString["param6"];
             InitData();
             condition = bll.GetConditionParaVisiable(GetLoginUserId(), paraGroupId);
         }

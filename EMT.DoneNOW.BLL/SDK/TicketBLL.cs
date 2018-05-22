@@ -4515,5 +4515,32 @@ namespace EMT.DoneNOW.BLL
             }
             return avgDays;
         }
+        /// <summary>
+        /// 获取服务台仪表板相关数量统计
+        /// </summary>
+        public Dictionary<string,int> GetServiceDeskCount()
+        {
+            var dayNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd")));
+            var dayEnd = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")));
+            var yesStart = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")));
+            var yesEnd = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")+" 23:59:59"));
+            Dictionary<string, int> dic = new Dictionary<string, int>();
+            dic.Add("ticketDueToday",Convert.ToInt32(_dal.GetSingle($"SELECT COUNT(1) from sdk_task t where t.delete_time =0 and t.type_id = 1809 and t.estimated_end_time >={dayNow} and t.estimated_end_time<{dayEnd}")));
+            dic.Add("ticketDueOver", Convert.ToInt32(_dal.GetSingle($"SELECT COUNT(1) from sdk_task t where t.delete_time =0 and t.type_id = 1809 and t.estimated_end_time <={dayNow} ")));
+            dic.Add("ticketCreateToday", Convert.ToInt32(_dal.GetSingle($"SELECT COUNT(1) from sdk_task t where t.delete_time =0 and t.type_id = 1809 and t.create_time  >={dayNow} ")));
+            dic.Add("ticketCreateYes", Convert.ToInt32(_dal.GetSingle($"SELECT COUNT(1) from sdk_task t where t.delete_time =0 and t.type_id = 1809 and t.create_time >={yesStart} and t.create_time<={yesEnd}")));
+            dic.Add("ticketDoneToday", Convert.ToInt32(_dal.GetSingle($"SELECT COUNT(1) from sdk_task t where t.delete_time =0 and t.type_id = 1809 and t.date_completed >={dayNow} and t.date_completed<={dayEnd}")));
+            dic.Add("ticketDoneYes", Convert.ToInt32(_dal.GetSingle($"SELECT COUNT(1) from sdk_task t where t.delete_time =0 and t.type_id = 1809 and t.date_completed >={yesStart} and t.date_completed<={yesEnd}")));
+            dic.Add("ticketNullRes", Convert.ToInt32(_dal.GetSingle($"SELECT COUNT(1) from sdk_task t where t.delete_time =0 and t.type_id = 1809 and owner_resource_id is NULL")));
+
+
+            dic.Add("recTicketDueToday", Convert.ToInt32(_dal.GetSingle($"SELECT COUNT(1) from sdk_task t where t.delete_time =0 and t.type_id = 1809 and t.estimated_end_time >={dayNow} and t.estimated_end_time<{dayEnd} and t.recurring_ticket_id is not null")));
+            dic.Add("recTicketDueOver", Convert.ToInt32(_dal.GetSingle($"SELECT COUNT(1) from sdk_task t where t.delete_time =0 and t.type_id = 1809 and t.estimated_end_time <={dayNow}  and t.recurring_ticket_id is not null")));
+            dic.Add("recTicketDoneToday", Convert.ToInt32(_dal.GetSingle($"SELECT COUNT(1) from sdk_task t where t.delete_time =0 and t.type_id = 1809 and t.date_completed >={dayNow} and t.date_completed<={dayEnd} and t.recurring_ticket_id is not null")));
+            dic.Add("recTicketDoneYes", Convert.ToInt32(_dal.GetSingle($"SELECT COUNT(1) from sdk_task t where t.delete_time =0 and t.type_id = 1809 and t.date_completed >={yesStart} and t.date_completed<={yesEnd} and t.recurring_ticket_id is not null")));
+            // t.recurring_ticket_id is not null
+            // 负责人为空 SELECT COUNT(1) from sdk_task t where t.delete_time =0 and t.type_id = 1809 and owner_resource_id is NULL
+            return dic;
+        }
     }
 }

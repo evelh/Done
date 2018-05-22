@@ -52,9 +52,9 @@
                                                 <tbody>
                                                     <tr>
                                                         <td style="font-size: 0px;" width="1%" height="1">
-                                                            <img src="/images/clearpixel.gif?v=49725" width="75" height="1"></td>
+                                                            </td>
                                                         <td style="font-size: 0px;" width="1%" height="1">
-                                                            <img src="/images/clearpixel.gif?v=49725" width="8" height="1"></td>
+                                                            </td>
                                                         <td style="font-size: 0px;" height="1">&nbsp;</td>
                                                     </tr>
                                                     <tr>
@@ -68,23 +68,23 @@
                                                                 <tbody>
                                                                     <tr valign="top">
                                                                         <td width="1%" align="right"></td>
-                                                                        <td width="99%">工单截止日期<a class="PrimaryLink" href="#" onclick="Search('SearchTicketsDueToday')">今天</a> (0) | <a class="PrimaryLink" id="errorSmall" href="#" onclick="Search('SearchTicketsOverdue')">过期</a> (84)</td>
+                                                                        <td width="99%">工单截止日期<a class="PrimaryLink" onclick="Search('SearchTicketsDueToday')">今天</a> (<%=countDic["ticketDueToday"] %>) | <a class="PrimaryLink" id="errorSmall" onclick="Search('SearchTicketsOverdue')">过期</a> (<%=countDic["ticketDueOver"] %>)</td>
                                                                     </tr>
                                                                     <tr valign="top">
                                                                         <td width="1%" align="right"></td>
-                                                                        <td width="99%">已创建工单<a class="PrimaryLink" href="#" onclick="Search('SearchTicketsSubmittedToday')">今天</a> (1) | <a class="PrimaryLink" href="#" onclick="Search('SearchTicketsSubmittedYesterday')">昨天</a> (0)</td>
+                                                                        <td width="99%">已创建工单<a class="PrimaryLink"   onclick="Search('SearchTicketsSubmittedToday')">今天</a> (<%=countDic["ticketCreateToday"] %>) | <a class="PrimaryLink"   onclick="Search('SearchTicketsSubmittedYesterday')">昨天</a> (<%=countDic["ticketCreateYes"] %>)</td>
                                                                     </tr>
                                                                     <tr valign="top">
                                                                         <td width="1%" align="right"></td>
-                                                                        <td width="99%">已完成工单<a class="PrimaryLink" href="#" onclick="Search('SearchTicketsCompletedToday')">今天</a> (0) | <a class="PrimaryLink" href="#" onclick="Search('SearchTicketsCompletedYesterday')">昨天</a> (0)</td>
+                                                                        <td width="99%">已完成工单<a class="PrimaryLink"   onclick="Search('SearchTicketsCompletedToday')">今天</a> (<%=countDic["ticketDoneToday"] %>) | <a class="PrimaryLink"   onclick="Search('SearchTicketsCompletedYesterday')">昨天</a> (<%=countDic["ticketDoneYes"] %>)</td>
                                                                     </tr>
                                                                     <tr valign="top">
                                                                         <td width="1%" align="right"></td>
-                                                                        <td width="99%"><a class="PrimaryLink" href="#" onclick="Search('SearchUnassignedTickets')">未分配的工单</a> (32)</td>
+                                                                        <td width="99%"><a class="PrimaryLink"   onclick="Search('SearchUnassignedTickets')">未分配的工单</a> (<%=countDic["ticketNullRes"] %>)</td>
                                                                     </tr>
                                                                     <tr valign="top">
                                                                         <td align="right"></td>
-                                                                        <td><a class="PrimaryLink" href="#" onclick="resUtilReport();">工作量报表</a></td>
+                                                                        <td><a class="PrimaryLink"   onclick="resUtilReport();">工作量报表</a></td>
                                                                     </tr>
 
                                                                 </tbody>
@@ -103,9 +103,9 @@
                                                 <tbody>
                                                     <tr>
                                                         <td width="1%" id="txtBlack8">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="75" height="1"></td>
+                                                            </td>
                                                         <td width="1%">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="12" height="1"></td>
+                                                            </td>
                                                         <td id="txtBlack8">&nbsp;</td>
                                                     </tr>
                                                     <tr valign="top">
@@ -126,7 +126,7 @@
                                                             </table>
                                                         </td>
                                                         <td width="1%">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="12" height="1"></td>
+                                                            </td>
                                                         <td width="98%">
                                                             <table cellspacing="0" width="100%" class="TicketCountTable">
                                                                 <tbody>
@@ -135,10 +135,10 @@
                                                                             <br>
                                                                             优先级</td>
                                                                         <td style="white-space: nowrap;" align="center" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             新建</td>
                                                                         <td style="white-space: nowrap;" align="center" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             活动的</td>
                                                                         <td style="" align="center" class="FieldLabels">
                                                                             <br>
@@ -159,8 +159,8 @@
                                                                     %>
                                                                     <tr>
                                                                         <td style="padding-right: 10px;" id="txtBlack8"><span class="ColorSwatch Color34 ColorText"><%=priority.name %></span></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="Search()"><%=thisNew.Count %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="Search()"><%=thisOpen.Count %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('priority','<%=priority.id.ToString() %>','new')"><%=thisNew.Count %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('priority','<%=priority.id.ToString() %>','open')"><%=thisOpen.Count %></a></td>
                                                                         <td align="center" id="txtBlack8"><%=ticBll.DoneTicketAvgDay(thisDone) %></td>
                                                                     </tr>
                                                                     <%
@@ -172,7 +172,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="3">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="14" height="8"></td>
+                                                            </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -181,9 +181,9 @@
                                                 <tbody>
                                                     <tr>
                                                         <td width="1%" id="txtBlack8">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="75" height="1"></td>
+                                                            </td>
                                                         <td width="1%">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="12" height="1"></td>
+                                                            </td>
                                                         <td id="txtBlack8">&nbsp;</td>
                                                     </tr>
                                                     <tr valign="top">
@@ -204,7 +204,7 @@
                                                             </table>
                                                         </td>
                                                         <td width="1%">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="12" height="1"></td>
+                                                            </td>
                                                         <td width="98%">
                                                             <table cellspacing="0" border="0" width="100%" class="TicketCountTable">
                                                                 <tbody>
@@ -213,10 +213,10 @@
                                                                             <br>
                                                                             状态</td>
                                                                         <td style="white-space: nowrap;" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             总数</td>
                                                                         <td style="" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             严重</td>
                                                                     </tr>
                                                                     <tr>
@@ -230,8 +230,8 @@
                                                                             {%>
                                                                     <tr>
                                                                         <td style="padding-right: 10px;" id="txtBlack8"><span class="ColorSwatch Color19 ColorText"><%=status.name %></span></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="Search()"><%=allTicketList.Where(_=>_.status_id==status.id).Count() %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="Search()"><%=allTicketList.Where(_=>_.status_id==status.id&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('status','<%=status.id.ToString() %>','new')()"><%=allTicketList.Where(_=>_.status_id==status.id).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('status','<%=status.id.ToString() %>','open')()"><%=allTicketList.Where(_=>_.status_id==status.id&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count() %></a></td>
                                                                     </tr>
                                                                     <%}
                                                                         } %>
@@ -241,7 +241,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="3">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="14" height="8"></td>
+                                                            </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -250,9 +250,9 @@
                                                 <tbody>
                                                     <tr>
                                                         <td width="1%" id="txtBlack8">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="75" height="1"></td>
+                                                            </td>
                                                         <td width="1%">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="12" height="1"></td>
+                                                            </td>
                                                         <td id="txtBlack8">&nbsp;</td>
                                                     </tr>
                                                     <tr valign="top">
@@ -273,25 +273,25 @@
                                                             </table>
                                                         </td>
                                                         <td width="1%">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="12" height="1"></td>
+                                                            </td>
                                                         <td width="98%">
                                                             <table cellspacing="0" width="100%" class="TicketCountTable">
                                                                 <tbody>
                                                                     <tr>
                                                                         <td class="FieldLabels" style="white-space: nowrap;">
                                                                             <br>
-                                                                            主负责人姓名</td>
+                                                                            主负责人</td>
                                                                         <td align="center" style="white-space: nowrap" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             新建</td>
                                                                         <td align=" center" style="white-space: nowrap" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             活动的</td>
                                                                         <td align="center" style="white-space: nowrap" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             严重</td>
                                                                         <td align="center" style="" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             平均持续时间</td>
                                                                     </tr>
                                                                     <tr>
@@ -304,9 +304,9 @@
                                                                     %>
                                                                     <tr>
                                                                         <td style="padding-right: 10px;" id="txtBlack8"><i>无</i></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="Search('')"><%=allTicketList.Where(_=>_.owner_resource_id==null&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count() %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="Search('')"><%=allTicketList.Where(_=>_.owner_resource_id==null&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count() %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="Search('')"><%=allTicketList.Where(_=>_.owner_resource_id==null&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('noPriRes','','new')"><%=allTicketList.Where(_=>_.owner_resource_id==null&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('noPriRes','','open')"><%=allTicketList.Where(_=>_.owner_resource_id==null&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('noPriRes','','serious')"><%=allTicketList.Where(_=>_.owner_resource_id==null&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count() %></a></td>
                                                                         <td align="center" id="txtBlack8"><%=ticBll.DoneTicketAvgDay(allTicketList.Where(_=>_.owner_resource_id==null&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).ToList()) %></td>
                                                                     </tr>
                                                                     <%
@@ -316,9 +316,9 @@
                                                                             {%>
                                                                     <tr>
                                                                         <td style="padding-right: 10px;" id="txtBlack8"><%=thisRes.name %></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="Search('SearchNewTicketsByPrimaryResource?PrimaryResourceId=29682886')"><%=allTicketList.Where(_=>_.owner_resource_id==thisRes.id&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count() %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="Search()"><%=allTicketList.Where(_=>_.owner_resource_id==thisRes.id&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count() %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="Search()"><%=allTicketList.Where(_=>_.owner_resource_id==thisRes.id&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('priRes','<%=thisRes.id.ToString() %>','new')"><%=allTicketList.Where(_=>_.owner_resource_id==thisRes.id&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('priRes','<%=thisRes.id.ToString() %>','open')"><%=allTicketList.Where(_=>_.owner_resource_id==thisRes.id&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('priRes','<%=thisRes.id.ToString() %>','serious')"><%=allTicketList.Where(_=>_.owner_resource_id==thisRes.id&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count() %></a></td>
                                                                         <td align="center" id="txtBlack8"><%=ticBll.DoneTicketAvgDay(allTicketList.Where(_=>_.owner_resource_id==thisRes.id&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).ToList()) %></td>
                                                                     </tr>
                                                                     <%}
@@ -330,7 +330,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="3">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="14" height="8"></td>
+                                                            </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -339,9 +339,9 @@
                                                 <tbody>
                                                     <tr>
                                                         <td width="1%" id="txtBlack8">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="75" height="1"></td>
+                                                            </td>
                                                         <td width="1%">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="12" height="1"></td>
+                                                            </td>
                                                         <td id="txtBlack8">&nbsp;</td>
                                                     </tr>
                                                     <tr valign="top">
@@ -362,7 +362,7 @@
                                                             </table>
                                                         </td>
                                                         <td width="1%">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="12" height="1"></td>
+                                                            </td>
                                                         <td width="98%">
                                                             <table cellspacing="0" width="100%" class="TicketCountTable">
                                                                 <tbody>
@@ -371,16 +371,16 @@
                                                                             <br>
                                                                             问题类型</td>
                                                                         <td align="center" style="white-space: nowrap" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             新建</td>
                                                                         <td align="center" style="white-space: nowrap" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             活动的</td>
                                                                         <td align="center" style="white-space: nowrap" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             严重</td>
                                                                         <td align="center" style="" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             平均持续时间</td>
                                                                     </tr>
                                                                     <tr>
@@ -393,9 +393,9 @@
                                                                     %>
                                                                     <tr>
                                                                         <td id="txtBlack8"><i>无</i></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=allTicketList.Where(_=>_.issue_type_id==null&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count() %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=allTicketList.Where(_=>_.issue_type_id==null&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count() %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=allTicketList.Where(_=>_.issue_type_id==null&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('noIssueType','','new')"><%=allTicketList.Where(_=>_.issue_type_id==null&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('noIssueType','','open')"><%=allTicketList.Where(_=>_.issue_type_id==null&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('noIssueType','','serious')"><%=allTicketList.Where(_=>_.issue_type_id==null&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count() %></a></td>
                                                                         <td align="center" id="txtBlack8"><%=ticBll.DoneTicketAvgDay(allTicketList.Where(_=>_.issue_type_id==null&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).ToList()) %></td>
                                                                     </tr>
                                                                     <%
@@ -407,9 +407,9 @@
                                                                             {%>
                                                                     <tr>
                                                                         <td id="txtBlack8"><%=issueType.name %></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=allTicketList.Where(_=>_.issue_type_id==issueType.id&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count() %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=allTicketList.Where(_=>_.issue_type_id==issueType.id&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count() %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=allTicketList.Where(_=>_.issue_type_id==issueType.id&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('issueType','<%=issueType.id.ToString() %>','new')"><%=allTicketList.Where(_=>_.issue_type_id==issueType.id&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('issueType','<%=issueType.id.ToString() %>','open')"><%=allTicketList.Where(_=>_.issue_type_id==issueType.id&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('issueType','<%=issueType.id.ToString() %>','serious')"><%=allTicketList.Where(_=>_.issue_type_id==issueType.id&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count() %></a></td>
                                                                         <td align="center" id="txtBlack8"><%=ticBll.DoneTicketAvgDay(allTicketList.Where(_=>_.issue_type_id==issueType.id&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).ToList()) %></td>
                                                                     </tr>
                                                                     <%}
@@ -421,7 +421,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="3">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="14" height="8"></td>
+                                                            </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -430,9 +430,9 @@
                                                 <tbody>
                                                     <tr>
                                                         <td width="1%" id="txtBlack8">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="75" height="1"></td>
+                                                            </td>
                                                         <td width="1%">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="12" height="1"></td>
+                                                            </td>
                                                         <td id="txtBlack8">&nbsp;</td>
                                                     </tr>
                                                     <tr valign="top">
@@ -453,7 +453,7 @@
                                                             </table>
                                                         </td>
                                                         <td width="1%">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="12" height="1"></td>
+                                                            </td>
                                                         <td width="98%">
                                                             <table cellspacing="0" width="100%" class="TicketCountTable">
                                                                 <tbody>
@@ -462,16 +462,16 @@
                                                                             <br>
                                                                             来源</td>
                                                                         <td align="center" style="white-space: nowrap" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             新建</td>
                                                                         <td align="center" style="white-space: nowrap" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             活动的</td>
                                                                         <td align="center" style="white-space: nowrap" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             严重</td>
                                                                         <td align="center" style="" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             平均持续时间</td>
                                                                     </tr>
                                                                     <tr>
@@ -485,9 +485,9 @@
                                                                     %>
                                                                     <tr>
                                                                         <td id="txtBlack8"><i>无</i></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=allTicketList.Where(_=>_.source_type_id==null&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count() %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=allTicketList.Where(_=>_.source_type_id==null&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count() %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=allTicketList.Where(_=>_.source_type_id==null&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('noSourceType','','new')"><%=allTicketList.Where(_=>_.source_type_id==null&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('noSourceType','','open')"><%=allTicketList.Where(_=>_.source_type_id==null&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('noSourceType','','serious')"><%=allTicketList.Where(_=>_.source_type_id==null&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count() %></a></td>
                                                                         <td align="center" id="txtBlack8"><%=ticBll.DoneTicketAvgDay(allTicketList.Where(_=>_.source_type_id==null&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).ToList()) %></td>
                                                                     </tr>
                                                                     <%
@@ -497,9 +497,9 @@
                                                                             {%>
                                                                     <tr>
                                                                         <td id="txtBlack8"><%=sourceType.name %></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=allTicketList.Where(_=>_.source_type_id==sourceType.id&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count() %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=allTicketList.Where(_=>_.source_type_id==sourceType.id&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count() %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=allTicketList.Where(_=>_.source_type_id==sourceType.id&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink"   onclick="SearchByType('sourceType','<%=sourceType.id.ToString() %>','new')"><%=allTicketList.Where(_=>_.source_type_id==sourceType.id&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink"   onclick="SearchByType('sourceType','<%=sourceType.id.ToString() %>','open')"><%=allTicketList.Where(_=>_.source_type_id==sourceType.id&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink"   onclick="SearchByType('sourceType','<%=sourceType.id.ToString() %>','serious')"><%=allTicketList.Where(_=>_.source_type_id==sourceType.id&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count() %></a></td>
                                                                         <td align="center" id="txtBlack8"><%=ticBll.DoneTicketAvgDay(allTicketList.Where(_=>_.source_type_id==sourceType.id&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).ToList()) %></td>
                                                                     </tr>
                                                                     <%}
@@ -511,7 +511,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="3">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="14" height="8"></td>
+                                                            </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -520,9 +520,9 @@
                                                 <tbody>
                                                     <tr>
                                                         <td width="1%" id="txtBlack8">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="75" height="1"></td>
+                                                            </td>
                                                         <td width="1%">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="12" height="1"></td>
+                                                            </td>
                                                         <td id="txtBlack8">&nbsp;</td>
                                                     </tr>
                                                     <tr valign="top">
@@ -530,7 +530,7 @@
                                                             <table cellspacing="0" cellpadding="0" border="0">
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td style="text-align: right; vertical-align: bottom; height: 60px;" class="FieldLabels">工单客户类别</td>
+                                                                        <td style="text-align: right; vertical-align: bottom;" class="FieldLabels">工单客户类别</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td style="text-align: right;">
@@ -543,7 +543,7 @@
                                                             </table>
                                                         </td>
                                                         <td width="1%">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="12" height="1"></td>
+                                                            </td>
                                                         <td width="98%">
                                                             <table cellspacing="0" width="100%" class="TicketCountTable">
                                                                 <tbody>
@@ -552,16 +552,16 @@
                                                                             <br>
                                                                             客户类别</td>
                                                                         <td align="center" style="white-space: nowrap" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             新建</td>
                                                                         <td align="center" style="white-space: nowrap" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             活动的</td>
                                                                         <td align="center" style="white-space: nowrap" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             严重</td>
                                                                         <td align="center" style="" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             平均持续时间</td>
                                                                     </tr>
                                                                     <tr>
@@ -575,9 +575,9 @@
                                                                     %>
                                                                     <tr>
                                                                         <td id="txtBlack8"><i>无</i></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=classTickDic.ContainsKey(0)?classTickDic[0].Where(_=>_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count():0 %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=classTickDic.ContainsKey(0)?classTickDic[0].Where(_=>_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count():0 %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=classTickDic.ContainsKey(0)?classTickDic[0].Where(_=>_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count():0 %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink"   onclick="SearchByType('noClassType','','new')"><%=classTickDic.ContainsKey(0)?classTickDic[0].Where(_=>_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count():0 %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink"   onclick="SearchByType('noClassType','','open')"><%=classTickDic.ContainsKey(0)?classTickDic[0].Where(_=>_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count():0 %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink"   onclick="SearchByType('noClassType','','serious')"><%=classTickDic.ContainsKey(0)?classTickDic[0].Where(_=>_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count():0 %></a></td>
                                                                         <td align="center" id="txtBlack8"><%=ticBll.DoneTicketAvgDay(classTickDic.ContainsKey(0)?classTickDic[0].Where(_=>_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).ToList():null) %></td>
                                                                     </tr>
                                                                     <%
@@ -591,9 +591,9 @@
                                                                             <img src="<%=thisClass.icon_path %>" border="0" hspace="0" vspace="0" alt="" />
                                                                             <%} %>
                                                                             <%=thisClass.name %></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="Search()"><%=classTickDic.ContainsKey(thisClass.id)?classTickDic[thisClass.id].Where(_=>_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count():0 %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="Search()"><%=classTickDic.ContainsKey(thisClass.id)?classTickDic[thisClass.id].Where(_=>_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count():0 %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="Search()"><%=classTickDic.ContainsKey(thisClass.id)?classTickDic[thisClass.id].Where(_=>_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count():0 %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('classType','<%=thisClass.id.ToString() %>','new')"><%=classTickDic.ContainsKey(thisClass.id)?classTickDic[thisClass.id].Where(_=>_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count():0 %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('classType','<%=thisClass.id.ToString() %>','open')"><%=classTickDic.ContainsKey(thisClass.id)?classTickDic[thisClass.id].Where(_=>_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count():0 %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('classType','<%=thisClass.id.ToString() %>','serious')"><%=classTickDic.ContainsKey(thisClass.id)?classTickDic[thisClass.id].Where(_=>_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count():0 %></a></td>
                                                                         <td align="center" id="txtBlack8"><%=ticBll.DoneTicketAvgDay(classTickDic.ContainsKey(thisClass.id)?classTickDic[thisClass.id].Where(_=>_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).ToList():null) %></td>
                                                                     </tr>
                                                                     <%}
@@ -604,7 +604,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="3">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="14" height="8"></td>
+                                                            </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -613,9 +613,9 @@
                                                 <tbody>
                                                     <tr>
                                                         <td width="1%" id="txtBlack8">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="75" height="1"></td>
+                                                            </td>
                                                         <td width="1%">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="12" height="1"></td>
+                                                            </td>
                                                         <td id="txtBlack8">&nbsp;</td>
                                                     </tr>
                                                     <tr valign="top">
@@ -636,7 +636,7 @@
                                                             </table>
                                                         </td>
                                                         <td width="1%">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="12" height="1"></td>
+                                                            </td>
                                                         <td width="98%">
                                                             <table cellspacing="0" width="100%" class="TicketCountTable">
                                                                 <tbody>
@@ -645,16 +645,16 @@
                                                                             <br>
                                                                             产品名称</td>
                                                                         <td align="center" style="white-space: nowrap" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             新建</td>
                                                                         <td align="center" style="white-space: nowrap" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             活动的</td>
                                                                         <td align="center" style="white-space: nowrap" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             严重</td>
                                                                         <td align="center" style="" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             平均持续时间</td>
                                                                     </tr>
                                                                     <tr>
@@ -667,17 +667,17 @@
                                                                     %>
                                                                     <tr>
                                                                         <td id="txtBlack8"><i>无</i></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=classTickDic.ContainsKey(0)?classTickDic[0].Where(_=>_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count():0 %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=classTickDic.ContainsKey(0)?classTickDic[0].Where(_=>_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count():0 %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=classTickDic.ContainsKey(0)?classTickDic[0].Where(_=>_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count():0 %></a></td>
-                                                                        <td align="center" id="txtBlack8"><%=ticBll.DoneTicketAvgDay(classTickDic.ContainsKey(0)?classTickDic[0].Where(_=>_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).ToList():null) %></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('noProduct','','new')"><%=productTickDic.ContainsKey(0)?productTickDic[0].Where(_=>_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count():0 %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('noProduct','','open')"><%=productTickDic.ContainsKey(0)?productTickDic[0].Where(_=>_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count():0 %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('noProduct','','serious')"><%=productTickDic.ContainsKey(0)?productTickDic[0].Where(_=>_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count():0 %></a></td>
+                                                                        <td align="center" id="txtBlack8"><%=ticBll.DoneTicketAvgDay(productTickDic.ContainsKey(0)?productTickDic[0].Where(_=>_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).ToList():null) %></td>
                                                                     </tr>
                                                                     <%
                                                                         if (proList != null && proList.Count > 0)
                                                                         {
                                                                             foreach (var product in proList)
                                                                             {
-                                                                                if (!classTickDic.ContainsKey(product.id))
+                                                                                if (!productTickDic.ContainsKey(product.id))
                                                                                 {
                                                                                     continue;
                                                                                 }
@@ -685,10 +685,10 @@
                                                                     <tr>
                                                                         <td id="txtBlack8">
                                                                             <%=product.name %></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="Search()"><%=classTickDic.ContainsKey(product.id)?classTickDic[product.id].Where(_=>_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count():0 %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="Search()"><%=classTickDic.ContainsKey(product.id)?classTickDic[product.id].Where(_=>_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count():0 %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="Search()"><%=classTickDic.ContainsKey(product.id)?classTickDic[product.id].Where(_=>_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count():0 %></a></td>
-                                                                        <td align="center" id="txtBlack8"><%=ticBll.DoneTicketAvgDay(classTickDic.ContainsKey(product.id)?classTickDic[product.id].Where(_=>_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).ToList():null) %></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('product','<%=product.id.ToString() %>','new')"><%=productTickDic.ContainsKey(product.id)?productTickDic[product.id].Where(_=>_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count():0 %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('product','<%=product.id.ToString() %>','open')"><%=productTickDic.ContainsKey(product.id)?productTickDic[product.id].Where(_=>_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count():0 %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('product','<%=product.id.ToString() %>','serious')"><%=productTickDic.ContainsKey(product.id)?productTickDic[product.id].Where(_=>_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count():0 %></a></td>
+                                                                        <td align="center" id="txtBlack8"><%=ticBll.DoneTicketAvgDay(productTickDic.ContainsKey(product.id)?productTickDic[product.id].Where(_=>_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).ToList():null) %></td>
                                                                     </tr>
                                                                     <%}
                                                                             }
@@ -699,7 +699,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="3">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="14" height="8"></td>
+                                                            </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -708,9 +708,9 @@
                                                 <tbody>
                                                     <tr>
                                                         <td width="1%" id="txtBlack8">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="75" height="1"></td>
+                                                            </td>
                                                         <td width="1%">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="12" height="1"></td>
+                                                            </td>
                                                         <td id="txtBlack8">&nbsp;</td>
                                                     </tr>
                                                     <tr valign="top">
@@ -731,7 +731,7 @@
                                                             </table>
                                                         </td>
                                                         <td width="1%">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="12" height="1"></td>
+                                                            </td>
                                                         <td width="98%">
                                                             <table cellspacing="0" width="100%" class="TicketCountTable">
                                                                 <tbody>
@@ -740,16 +740,16 @@
                                                                             <br>
                                                                             队列名称</td>
                                                                         <td align="center" style="white-space: nowrap" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             新建</td>
                                                                         <td align="center" style="white-space: nowrap" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             活动的</td>
                                                                         <td align="center" style="white-space: nowrap" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             严重</td>
                                                                         <td align="center" style="" class="FieldLabels">
-                                                                            <img src="/images/clearPixel.gif?v=49725" width="60" height="1"><br>
+                                                                            <br>
                                                                             平均持续时间</td>
                                                                     </tr>
                                                                     <tr>
@@ -762,9 +762,9 @@
                                                                     %>
                                                                     <tr>
                                                                         <td id="txtBlack8"><i>无</i></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=allTicketList.Where(_=>_.department_id==null&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count() %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=allTicketList.Where(_=>_.department_id==null&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count() %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=allTicketList.Where(_=>_.department_id==null&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('noQueue','','new')"><%=allTicketList.Where(_=>_.department_id==null&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('noQueue','','open')"><%=allTicketList.Where(_=>_.department_id==null&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('noQueue','','serious')"><%=allTicketList.Where(_=>_.department_id==null&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count() %></a></td>
                                                                         <td align="center" id="txtBlack8"><%=ticBll.DoneTicketAvgDay(allTicketList.Where(_=>_.department_id==null&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).ToList()) %></td>
                                                                     </tr>
                                                                     <%
@@ -774,9 +774,9 @@
                                                                             {%>
                                                                     <tr>
                                                                         <td id="txtBlack8"><%=queue.name %></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=allTicketList.Where(_=>_.department_id==queue.id&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count() %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=allTicketList.Where(_=>_.department_id==queue.id&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count() %></a></td>
-                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" href="#" onclick="Search()"><%=allTicketList.Where(_=>_.department_id==queue.id&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('queue','<%=queue.id.ToString() %>','new')"><%=allTicketList.Where(_=>_.department_id==queue.id&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('queue','<%=queue.id.ToString() %>','open')"><%=allTicketList.Where(_=>_.department_id==queue.id&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).Count() %></a></td>
+                                                                        <td align="center" id="txtBlack8"><a class="PrimaryLink" onclick="SearchByType('queue','<%=queue.id.ToString() %>','serious')"><%=allTicketList.Where(_=>_.department_id==queue.id&&_.status_id!=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE&&_.priority_type_id==(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious).Count() %></a></td>
                                                                         <td align="center" id="txtBlack8"><%=ticBll.DoneTicketAvgDay(allTicketList.Where(_=>_.department_id==queue.id&&_.status_id==(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.DONE).ToList()) %></td>
                                                                     </tr>
                                                                     <%}
@@ -788,7 +788,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="3">
-                                                            <img src="/images/clearPixel.gif?v=49725" width="14" height="8"></td>
+                                                            </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -803,7 +803,9 @@
                 </td>
 
                 <td width="1">
-                    <img src="/images/clearPixel.gif?v=49725" width="1" height="1"></td>
+                    <img src="/images/clearPixel.gif?v=49725" width="1" height="1">
+
+                </td>
 
                 <td valign="top">
 
@@ -942,10 +944,10 @@
                             <table width="100%" cellspacing="0" cellpadding="3" border="0" id="Table2">
                                 <tbody>
                                     <tr valign="top">
-                                        <td style="padding-bottom: 5px;">截止日期 <a class="PrimaryLink" href="#" onclick="ToRecurringTicket('1631','<%=DateTime.Now.ToString("yyyy-MM-dd") %>')">今天</a> (0) | <a class="PrimaryLink" id="errorSmall" href="#" onclick="ToRecurringTicket('1631','<%=DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") %>')">过期</a> (51)</td>
+                                        <td style="padding-bottom: 5px;">截止日期 <a class="PrimaryLink"   onclick="ToRecurringTicket('1631','<%=DateTime.Now.ToString("yyyy-MM-dd") %>')">今天</a> (<%=countDic["recTicketDueToday"] %>) | <a class="PrimaryLink" id="errorSmall"   onclick="ToRecurringTicket('1631','<%=DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") %>')">过期</a> (<%=countDic["recTicketDueOver"] %>)</td>
                                     </tr>
                                     <tr valign="top">
-                                        <td>已完成的定期工单 <a class="PrimaryLink" href="#" onclick="ToRecurringTicket('1632','<%=DateTime.Now.ToString("yyyy-MM-dd") %>')">今天</a> (0) | <a class="PrimaryLink" href="#" onclick="ToRecurringTicket('1632','<%=DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") %>')">昨天</a> (0)</td>
+                                        <td>已完成的定期工单 <a class="PrimaryLink"   onclick="ToRecurringTicket('1632','<%=DateTime.Now.ToString("yyyy-MM-dd") %>')">今天</a> (<%=countDic["recTicketDoneToday"] %>) | <a class="PrimaryLink"   onclick="ToRecurringTicket('1632','<%=DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") %>')">昨天</a> (<%=countDic["recTicketDoneYes"] %>)</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1022,6 +1024,183 @@
 <script src="../Scripts/common.js"></script>
 <script>
     function ToRecurringTicket(type, date) {
-        location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=" + type + "&param2=" + date +"&param3=SearchNow";
+        location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=" + type + "&param2=" + date +"&param3=SearchNow&param5=1639&param6=1";
+    }
+
+    function Search(type) {
+        if (type == "SearchTicketsDueToday") {
+            // 截止日期为今天
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1631&param2=<%=DateTime.Now.ToString("yyyy-MM-dd") %>&param3=SearchNow";
+        }
+        else if (type == "SearchTicketsOverdue") {
+            // 截止日期小于等于昨天
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1631&param2=<%=DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") %>&param3=SearchNow";
+        } 
+        else if (type == "SearchTicketsSubmittedToday") {
+            // 今天创建
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1630&param2=<%=DateTime.Now.ToString("yyyy-MM-dd") %>&param3=SearchNow";
+        } 
+        else if (type == "SearchTicketsSubmittedYesterday") {
+            // 昨天创建
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1630&param2=<%=DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") %>&param3=SearchNow";
+        } 
+        else if (type == "SearchTicketsCompletedToday") {
+            // 完成日期为今天
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1632&param2=<%=DateTime.Now.ToString("yyyy-MM-dd") %>&param3=SearchNow";
+        } 
+        else if (type == "SearchTicketsCompletedYesterday") {
+            // 完成日期为昨天
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1632&param2=<%=DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") %>&param3=SearchNow";
+        } 
+        else if (type == "SearchUnassignedTickets") {
+            // 主负责人为空
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=3985&param2=1&param3=SearchNow&param4=AddHidden";
+        }
+    }
+
+    function SearchByType(searchType, searchTypeValue,paramType) {
+        var url = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>";
+        if (searchType == "priority") {
+            url += "&param1=1637&param2=" + searchTypeValue + "&param3=SearchNow";
+            if (paramType == "new") {
+                url += "&param5=1638&param6=<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW %>";
+            }
+            else if (paramType == "open") {
+                url += "&param5=3986&param6=2&param4=AddHidden";
+            }
+        }
+        else if (searchType == "status") {
+            url += "&param1=1638&param2=" + searchTypeValue + "&param3=SearchNow";
+            if (paramType == "open") {
+                url += "&param5=1637&param6=<%=(int)EMT.DoneNOW.DTO.DicEnum.TASK_PRIORITY_TYPE.serious %>";
+            }
+        }
+        else if (searchType == "priRes" || searchType == "noPriRes") {
+            if (searchType == "priRes") {
+                url += "&param1=1625&param2=" + searchTypeValue + "&param3=SearchNow";
+            }
+            else {
+                url += "&param1=3985&param2=1&param3=SearchNow";
+            }
+            
+            if (paramType == "new") {
+                url += "&param5=1638&param6=<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW %>";
+                if (searchType == "noPriRes") {
+                    url += "&param7=1&param4=AddHidden";
+                }
+            }
+            else if (paramType == "open") {
+                url += "&param5=3986&param6=2&param4=AddHidden";
+            }
+            else if (paramType == "serious") {
+                url += "&param5=3986&param6=3&param4=AddHidden";
+            }
+        }
+        else if (searchType == "issueType" || searchType == "noIssueType") {
+            if (searchType == "issueType") {
+                url += "&param1=1614&param2=" + searchTypeValue + "&param3=SearchNow";
+            }
+            else {
+                url += "&param1=1730&param2=1&param3=SearchNow";
+            }
+            
+            if (paramType == "new") {
+                url += "&param5=1638&param6=<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW %>";
+                if (searchType == "noIssueType") {
+                    url += "&param7=1&param4=AddHidden";
+                }
+            }
+            else if (paramType == "open") {
+                url += "&param5=3986&param6=2&param4=AddHidden";
+            }
+            else if (paramType == "serious") {
+                url += "&param5=3986&param6=3&param4=AddHidden";
+            }
+        }
+        else if (searchType == "sourceType" || searchType == "noSourceType") {
+            
+            if (searchType == "sourceType") {
+                url += "&param1=1617&param2=" + searchTypeValue + "&param3=SearchNow";
+            }
+            else {
+                url += "&param1=1729&param2=1&param3=SearchNow";
+            }
+            if (paramType == "new") {
+                url += "&param5=1638&param6=<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW %>";
+                if (searchType == "noSourceType") {
+                    url += "&param7=1&param4=AddHidden";
+                }
+            }
+            else if (paramType == "open") {
+                url += "&param5=3986&param6=2&param4=AddHidden";
+            }
+            else if (paramType == "serious") {
+                url += "&param5=3986&param6=3&param4=AddHidden";
+            }
+        }
+        else if (searchType == "classType" || searchType == "noClassType") {
+            if (searchType == "classType") {
+                url += "&param1=1640&param2=" + searchTypeValue + "&param3=SearchNow";
+            }
+            else {
+                url += "&param1=1728&param2=1&param3=SearchNow";
+            }
+            
+            if (paramType == "new") {
+                url += "&param5=1638&param6=<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW %>";
+                if (searchType == "noClassType") {
+                    url += "&param7=1&param4=AddHidden";
+                }
+            }
+            else if (paramType == "open") {
+                url += "&param5=3986&param6=2&param4=AddHidden";
+            }
+            else if (paramType == "serious") {
+                url += "&param5=3986&param6=3&param4=AddHidden";
+            }
+        }
+        else if (searchType == "product" || searchType == "noProduct") {
+            if (searchType == "product") {
+                url += "&param1=1616&param2=" + searchTypeValue + "&param3=SearchNow";
+            }
+            else {
+                url += "&param1=1727&param2=1&param3=SearchNow";
+            }
+            
+            if (paramType == "new") {
+                url += "&param5=1638&param6=<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW %>";
+                if (searchType == "noProduct") {
+                    url += "&param7=1&param4=AddHidden";
+                }
+            }
+            else if (paramType == "open") {
+                url += "&param5=3986&param6=2&param4=AddHidden";
+            }
+            else if (paramType == "serious") {
+                url += "&param5=3986&param6=3&param4=AddHidden";
+            }
+        }
+        else if (searchType == "queue" || searchType == "noQueue") {
+            if (searchType == "queue") {
+                url += "&param1=1636&param2=" + searchTypeValue + "&param3=SearchNow";
+            }
+            else {
+                url += "&param1=1726&param2=1&param3=SearchNow";
+            }
+            
+            if (paramType == "new") {
+                url += "&param5=1638&param6=<%=(int)EMT.DoneNOW.DTO.DicEnum.TICKET_STATUS.NEW %>";
+                if (searchType =="noQueue"){
+                    url += "&param7=1&param4=AddHidden";
+                }
+            }
+            else if (paramType == "open") {
+                url += "&param5=3986&param6=2&param4=AddHidden";
+            }
+            else if (paramType == "serious") {
+                url += "&param5=3986&param6=3&param4=AddHidden";
+            }
+        }
+        location.href = url; 
     }
 </script>

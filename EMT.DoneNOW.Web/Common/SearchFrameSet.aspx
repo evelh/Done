@@ -18,8 +18,8 @@
 
     <%if (conditionHeight > 0) { %>
 <frameset id="SearchFrameSet" name="SearchFrameSet" rows="<%=conditionHeight %>,*" cols="100%" framespacing="0" border="0">
-    <frame src="SearchConditionFrame.aspx?cat=<%=this.catId %>&type=<%=this.queryTypeId %>&group=<%=paraGroupId %>&isCheck=<%=isCheck %>&param1=<%=param1 %>&param2=<%=param2 %>&param3=<%=param3 %>&param4=<%=param4 %>" id="SearchCondition"></frame>
-    <frame src="SearchBodyFrame.aspx?cat=<%=this.catId %>&type=<%=this.queryTypeId %>&group=<%=paraGroupId %>&show=<%=isShow %>&isCheck=<%=isCheck %>&param1=<%=param1 %>&param2=<%=param2 %>&param3=<%=param3 %>&param4=<%=param4 %>" id="SearchBody" name="SearchBody"></frame>
+    <frame src="SearchConditionFrame.aspx?cat=<%=this.catId %>&type=<%=this.queryTypeId %>&group=<%=paraGroupId %>&isCheck=<%=isCheck %>&param1=<%=param1 %>&param2=<%=param2 %>&param3=<%=param3 %>&param4=<%=param4 %>&param5=<%=param5 %>&param6=<%=param6 %>&param7=<%=param7 %>" id="SearchCondition"></frame>
+    <frame src="SearchBodyFrame.aspx?cat=<%=this.catId %>&type=<%=this.queryTypeId %>&group=<%=paraGroupId %>&show=<%=isShow %>&isCheck=<%=isCheck %>&param1=<%=param1 %>&param2=<%=param2 %>&param3=<%=param3 %>&param4=<%=param4 %>&param5=<%=param5 %>&param6=<%=param6 %>" id="SearchBody" name="SearchBody"></frame>
 </frameset>
     <%} else { %>
 <frameset id="SearchFrameSet" name="SearchFrameSet" rows="0,*" cols="100%" framespacing="0" border="0">

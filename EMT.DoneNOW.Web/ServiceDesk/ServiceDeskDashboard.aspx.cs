@@ -30,11 +30,13 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected List<d_general> ticSolPer = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.SYS_TICKET_RESOLUTION_METRICS);     // 工单解决参数
         protected Dictionary<long, List<sdk_task>> classTickDic = new Dictionary<long, List<sdk_task>>();    // 客户类别分组
         protected Dictionary<long, List<sdk_task>> productTickDic = new Dictionary<long, List<sdk_task>>();  // 产品分组
+        protected Dictionary<string, int> countDic = new Dictionary<string, int>();
         protected void Page_Load(object sender, EventArgs e)
         {
             refreshMin = Request.QueryString["refreshMin"];
-            allTicketList = new TicketBLL().GetAllTicket();
-            if(allTicketList!=null&& allTicketList.Count > 0)
+            allTicketList = ticBll.GetAllTicket();
+            countDic = ticBll.GetServiceDeskCount();
+            if (allTicketList!=null&& allTicketList.Count > 0)
             {
                 classTickDic = allTicketList.GroupBy(_ =>
                 {
