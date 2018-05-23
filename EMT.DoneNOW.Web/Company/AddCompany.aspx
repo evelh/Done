@@ -851,7 +851,7 @@
             var province = $("#province_id").val();                                    // 省份
             var city = $("#city_id").val();                                            // 城市
             var district = $("#district_id").val();
-            if (country == "" || province == "" || city == "") {
+            if (country == "" || province == "" || city == "" || district=="") {
                 alert("请选择省市县");                                           // 地址下拉框的必填校验
                 return false;
             }
@@ -955,6 +955,17 @@
                 alert("请输入电话名称");
                 return false;
             }
+            var company_type = $("#company_type").val();
+            if (company_type == "" || company_type == "0") {
+                alert("请选择客户类型！");
+                return false;
+            }
+
+            var account_manage = $("#account_manage").val();
+            if (account_manage == "" || account_manage == "0") {
+                alert("请选择客户经理！");
+                return false;
+            }
             //if (!checkPhone(phone)) {
             //    alert("请输入正确格式的电话！");
             //    return false;
@@ -965,7 +976,7 @@
             var province = $("#province_id").val();                                    // 省份
             var city = $("#city_id").val();                                            // 城市
             var district = $("#district_id").val();
-            if (country == "" || province == "" || city == "") {
+            if (country == "" || province == "" || city == "" || district=="") {
                 alert("请填写选择地址");                                           // 地址下拉框的必填校验
                 return false;
             }

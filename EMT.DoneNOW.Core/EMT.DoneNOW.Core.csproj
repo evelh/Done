@@ -152,6 +152,7 @@
     <Compile Include="SDK\sdk_work_entry_report.cs" />
     <Compile Include="SDK\sdk_work_record.cs" />
     <Compile Include="SDK\v_task_all.cs" />
+    <Compile Include="SDK\v_ticket.cs" />
     <Compile Include="SYS\sys_bookmark.cs" />
     <Compile Include="SYS\sys_dashboard.cs" />
     <Compile Include="SYS\sys_dashboard_publish.cs" />

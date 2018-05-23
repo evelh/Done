@@ -17,13 +17,15 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int32 id { get; set; }
         [DataMember]
+        public Int64 oid { get; set; }
+        [DataMember]
         public Int32 form_type_id { get; set; }
         [DataMember]
         public String tmpl_name { get; set; }
         [DataMember]
         public String speed_code { get; set; }
         [DataMember]
-        public SByte tmpl_is_active { get; set; }
+        public SByte is_active { get; set; }
         [DataMember]
         public String remark { get; set; }
         [DataMember]

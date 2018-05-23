@@ -18,7 +18,7 @@
             <li style="border: 0px; background: linear-gradient(to bottom,#fff 0,#fff 100%);list-style: none;">
                 <span>刷新：</span>
                 <select id="queryType" style="height: 24px">
-                    <option>不刷新</option>
+                    <option value="">不刷新</option>
                     <option value="5">5分钟</option>
                     <option value="10">10分钟</option>
                     <option value="30">30分钟</option>
@@ -961,54 +961,22 @@
                         <div class="Content">
                             <table width="100%" cellspacing="2" cellpadding="0" border="0" class="ResourceTable">
                                 <tbody>
-                                    <tr>
-                                        <td>ds, liude</td>
-                                        <td class="ResourceOfficePhone">x</td>
+                                    <% if (limitResList != null && limitResList.Count > 0) {
+                                            foreach (var limitRes in limitResList)
+                                            {%>
+                                     <tr>
+                                        <td><%=limitRes.name %></td>
+                                        <td class="ResourceOfficePhone"><%=limitRes.mobile_phone %></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2" title="Click to Send E-Mail" style="padding-bottom: 3px;"><a href="mailto:397906180@qq.com">397906180@qq.com</a></td>
-                                    </tr>
-                                    <!-- display horizontal rule -->
-                                    <tr>
-                                        <td colspan="3"></td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Li, Hong, xiaojie</td>
-                                        <td class="ResourceOfficePhone">12345678 x1212</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2" title="Click to Send E-Mail" style="padding-bottom: 3px;"><a href="mailto:hong.li@itcat.net.cn">hong.li@itcat.net.cn</a></td>
+                                        <td colspan="2" title="Click to Send E-Mail" style="padding-bottom: 3px;"><a href="mailto:<%=limitRes.email %>"><%=limitRes.email %></a></td>
                                     </tr>
                                     <!-- display horizontal rule -->
                                     <tr>
                                         <td colspan="3"></td>
                                     </tr>
-
-                                    <tr>
-                                        <td>li, li</td>
-                                        <td class="ResourceOfficePhone">x</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2" title="Click to Send E-Mail" style="padding-bottom: 3px;"><a href="mailto:liude2@hotmail.com">liude2@hotmail.com</a></td>
-                                    </tr>
-                                    <!-- display horizontal rule -->
-                                    <tr>
-                                        <td colspan="3"></td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>liu, liu</td>
-                                        <td class="ResourceOfficePhone">x</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2" title="Click to Send E-Mail" style="padding-bottom: 3px;"><a href="mailto:liude2@hotmail.com">liude2@hotmail.com</a></td>
-                                    </tr>
-                                    <!-- display horizontal rule -->
-                                    <tr>
-                                        <td colspan="3"></td>
-                                    </tr>
-
+                                            <%}
+                                        } %>
                                 </tbody>
                             </table>
                         </div>
@@ -1023,34 +991,66 @@
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
 <script src="../Scripts/common.js"></script>
 <script>
+    var tmid;
+    $(function () {
+        $("#queryType").val(<%=refreshMin %>);
+        <%if (!string.IsNullOrEmpty(refreshMin))
+    { %>
+        tmid = setTimeout(function () {
+            location.href = "ServiceDeskDashboard?refreshMin=<%=refreshMin %>";
+        }, Number(<%=refreshMin %>) * 60*1000);
+        <% }
+    else
+    {%>
+        //window.clearTimeout(tmid);
+        <%} %>
+    })
+    $("#queryType").change(function () {
+        window.clearTimeout(tmid);
+        var thisValue = $(this).val();
+        if (thisValue != "") {
+            tmid =  window.setTimeout(function () {
+                location.href = "ServiceDeskDashboard?refreshMin=" + thisValue;
+            }, Number(thisValue) * 60*1000);
+        }
+    })
+</script>
+<script>
     function ToRecurringTicket(type, date) {
-        location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=" + type + "&param2=" + date +"&param3=SearchNow&param5=1639&param6=1";
+        var url = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=" + type + "&param2=" + date + "&param3=SearchNow&param5=1639&param6=1";
+        if (type == "1631" &&date=='<%=DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") %>') {
+            url += "&param4=isEndTime";
+        } else {
+            url += "&param4=addOne";
+        }
+
+        location.href = url ;
     }
 
     function Search(type) {
         if (type == "SearchTicketsDueToday") {
             // 截止日期为今天
-            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1631&param2=<%=DateTime.Now.ToString("yyyy-MM-dd") %>&param3=SearchNow";
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1631&param2=<%=DateTime.Now.ToString("yyyy-MM-dd") %>&param3=SearchNow&param4=addOne";
         }
         else if (type == "SearchTicketsOverdue") {
             // 截止日期小于等于昨天
-            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1631&param2=<%=DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") %>&param3=SearchNow";
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1631&param2=<%=DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") %>&param3=SearchNow&param4=isEndTime";
         } 
         else if (type == "SearchTicketsSubmittedToday") {
             // 今天创建
-            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1630&param2=<%=DateTime.Now.ToString("yyyy-MM-dd") %>&param3=SearchNow";
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1630&param2=<%=DateTime.Now.ToString("yyyy-MM-dd") %>&param3=SearchNow&param4=addOne";
         } 
         else if (type == "SearchTicketsSubmittedYesterday") {
             // 昨天创建
-            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1630&param2=<%=DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") %>&param3=SearchNow";
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1630&param2=<%=DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") %>&param3=SearchNow&param4=addOne";
         } 
         else if (type == "SearchTicketsCompletedToday") {
             // 完成日期为今天
-            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1632&param2=<%=DateTime.Now.ToString("yyyy-MM-dd") %>&param3=SearchNow";
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1632&param2=<%=DateTime.Now.ToString("yyyy-MM-dd") %>&param3=SearchNow&param4=addOne";
         } 
         else if (type == "SearchTicketsCompletedYesterday") {
             // 完成日期为昨天
-            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1632&param2=<%=DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") %>&param3=SearchNow";
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.TICKET_SEARCH %>&param1=1632&param2=<%=DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") %>&param3=SearchNow&param4=addOne";
         } 
         else if (type == "SearchUnassignedTickets") {
             // 主负责人为空

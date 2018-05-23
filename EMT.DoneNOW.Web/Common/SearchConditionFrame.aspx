@@ -581,6 +581,7 @@
             if (!string.IsNullOrEmpty(Request.QueryString["param5"])&&!string.IsNullOrEmpty(Request.QueryString["param6"]))
             {%>
         $("input[name = '<%=Request.QueryString["param5"] %>']").val('<%=Request.QueryString["param6"] %>');
+        $("select[name = '<%=Request.QueryString["param5"] %>']").val('<%=Request.QueryString["param6"] %>');
             <%}
             if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
             {%>
@@ -593,8 +594,21 @@
         }
         else if ($("input[name = '<%=param1 %>_l']").val() != undefined) {
             $("input[name = '<%=param1 %>_l']").val("<%=param2 %>");
+               <%if (Request.QueryString["param4"] == "addOne")
+    {%>
+            $("input[name = '<%=param1 %>_h']").val(getNewDay('<%=param2 %>','1'));
+            <%} %>
+            
             
         }
+    <%if (Request.QueryString["param4"] == "isEndTime")
+    {%>
+        if ($("input[name = '<%=param1 %>_h']").val() != undefined) {
+            $("input[name = '<%=param1 %>_h']").val("<%=param2 %>");
+            $("input[name = '<%=param1 %>_l']").val("");
+        }
+        
+    <%} %>
         <%}%>
             $("#SearchBtn").trigger("click");
         <%

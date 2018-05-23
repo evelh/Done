@@ -208,7 +208,7 @@ namespace EMT.DoneNOW.BLL
             tmplDto.speed_code = tmpl.speed_code;
             tmplDto.remark = tmpl.remark;
             tmplDto.tmpl_name = tmpl.tmpl_name;
-            tmplDto.tmpl_is_active = tmpl.tmpl_is_active;
+            tmplDto.tmpl_is_active = tmpl.is_active;
 
             return tmplDto;
         }
@@ -238,7 +238,7 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public sys_form_tmpl_opportunity GetOpportunityTmpl(int formTmplId)
         {
-            var tmpl = _dal.FindSignleBySql<sys_form_tmpl_opportunity>(_dal.QueryStringDeleteFlag($"SELECT * FROM sys_form_tmpl_opportunity WHERE form_tmpl_id={formTmplId}"));
+            var tmpl = _dal.FindSignleBySql<sys_form_tmpl_opportunity>(_dal.QueryStringDeleteFlag($"SELECT * FROM sys_form_tmpl_opportunity WHERE delete_time = 0 and form_tmpl_id={formTmplId}"));
             return tmpl;
         }
 
@@ -253,5 +253,28 @@ namespace EMT.DoneNOW.BLL
             string sql = $"SELECT * FROM sys_form_tmpl WHERE form_type_id={(int)DicEnum.FORM_TMPL_TYPE.OPPORTUNITY} AND (range_type_id={(int)DicEnum.RANG_TYPE.ALL} OR (create_user_id={userId} AND range_type_id={(int)DicEnum.RANG_TYPE.OWN}))";   // TODO: 部门可见的模板
             return _dal.FindListBySql(_dal.QueryStringDeleteFlag(sql));
         }
+        /// <summary>
+        /// 模板的快速代码是否通过校验  true 通过校验
+        /// </summary>
+        public bool CheckTempCode(string code,long id = 0)
+        {
+            if (!string.IsNullOrEmpty(code))
+                return false;
+            sys_form_tmpl temp = _dal.GetByCode(code);
+            if (temp == null)
+                return true;
+            if (temp != null && temp.id == id)
+                return true;
+            return false;
+        }
+
+        /// <summary>
+        /// 通过Id 获取模板
+        /// </summary>
+        public sys_form_tmpl GetTempById(long id)
+        {
+            return _dal.FindNoDeleteById(id);
+        }
+
     }
 }
