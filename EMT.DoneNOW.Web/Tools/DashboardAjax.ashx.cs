@@ -27,6 +27,12 @@ namespace EMT.DoneNOW.Web
                 case "GetDashboard":
                     GetDashborad();
                     break;
+                case "DashboardSettingInfo":
+                    GetDashboradInfo();
+                    break;
+                case "GetDashboardFilter":
+                    GetDashboardFilter();
+                    break;
                 case "GetWidgetInfo":
                     GetWidgetInfo();
                     break;
@@ -104,6 +110,23 @@ namespace EMT.DoneNOW.Web
             long id = long.Parse(request.QueryString["id"]);
             var dsbd = bll.GetDashboardInfoById(id, LoginUserId);
             WriteResponseJson(dsbd);
+        }
+
+        /// <summary>
+        /// 获取仪表板的设置信息
+        /// </summary>
+        private void GetDashboradInfo()
+        {
+            var id = long.Parse(request.QueryString["id"]);
+            WriteResponseJson(bll.GetDashboardInfo(id, LoginUserId));
+        }
+
+        /// <summary>
+        /// 仪表板过滤信息
+        /// </summary>
+        private void GetDashboardFilter()
+        {
+            WriteResponseJson(bll.GetDashboardFilterPara());
         }
 
         /// <summary>

@@ -394,7 +394,7 @@
                                                                     <div>
                                                                         <span>
                                                                             <span class="txtBlack8Class" style="margin-top: 5px">
-                                                                                <asp:CheckBox ID="ACTIVE" runat="server" disabled="disabled" Style="vertical-align: middle;" Checked="True" />
+                                                                                <asp:CheckBox ID="ACTIVE" runat="server" Style="vertical-align: middle;" Checked="True" />
                                                                                 <label>激活</label>
                                                                             </span>
                                                                         </span>

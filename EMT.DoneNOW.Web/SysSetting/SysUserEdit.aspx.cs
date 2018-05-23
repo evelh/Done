@@ -86,20 +86,28 @@ namespace EMT.DoneNOW.Web
                         this.EmailType2.SelectedValue = resourcedata.email2_type_id.ToString();
 
                     this.name.Text = string.IsNullOrEmpty(userdata.name) ? "" : userdata.name.ToString();//用户名
-                    if (resourcedata.is_active > 0)//是否激活
-                        this.ACTIVE.Checked = true;
+                    //if (resourcedata.is_active > 0)//是否激活
+                    //    this.ACTIVE.Checked = true;
+                    this.ACTIVE.Checked = resourcedata.is_active == 1;
+
                     if (resourcedata.security_level_id != null && !string.IsNullOrEmpty(resourcedata.security_level_id.ToString()))//权限级别
                         this.Security_Level.SelectedValue = resourcedata.security_level_id.ToString();
                     //this.password.Text = userdata.password.ToString();
                     //this.password2.Text= userdata.password.ToString();
-                    if (resourcedata.can_edit_skills > 0)//编辑技能
-                        this.CanEditSkills.Checked = true;
-                    if (resourcedata.can_manage_kb_articles > 0)//编辑或删除知识库文章
-                        this.CanManagekbarticles.Checked = true;
-                    if (resourcedata.allow_send_bulk_email > 0)//允许员工群发邮件
-                        this.AllowSendbulkemail.Checked = true;
-                    if (resourcedata.required_to_submit_timesheets > 0)//不要求用户提交工时表
-                        this.IsRequiredtosubmittimesheets.Checked = true;
+                    //if (resourcedata.can_edit_skills > 0)//编辑技能
+                    //    this.CanEditSkills.Checked = true;
+                    //if (resourcedata.can_manage_kb_articles > 0)//编辑或删除知识库文章
+                    //    this.CanManagekbarticles.Checked = true;
+                    //if (resourcedata.allow_send_bulk_email > 0)//允许员工群发邮件
+                    //    this.AllowSendbulkemail.Checked = true;
+                    //if (resourcedata.required_to_submit_timesheets > 0)//不要求用户提交工时表
+                    //    this.IsRequiredtosubmittimesheets.Checked = true;
+
+                    this.CanEditSkills.Checked = resourcedata.can_edit_skills == 1;
+                    this.CanManagekbarticles.Checked = resourcedata.can_manage_kb_articles == 1;
+                    this.AllowSendbulkemail.Checked = resourcedata.allow_send_bulk_email == 1;
+                    this.IsRequiredtosubmittimesheets.Checked = resourcedata.required_to_submit_timesheets == 1;
+
                     if (resourcedata.outsource_security_role_type_id != null && !string.IsNullOrEmpty(resourcedata.outsource_security_role_type_id.ToString()))//外部权限
                         this.Outsource_Security.SelectedValue = resourcedata.outsource_security_role_type_id.ToString();
 

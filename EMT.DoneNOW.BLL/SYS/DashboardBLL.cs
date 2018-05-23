@@ -48,6 +48,69 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 获取仪表板的设置信息
+        /// </summary>
+        /// <param name="dsbdId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public DashboardInfoDto GetDashboardInfo(long dsbdId, long userId)
+        {
+            var dto = dal.FindSignleBySql<DashboardInfoDto>($"select id,name,theme_id,widget_auto_place as auto_place from sys_dashboard where id={dsbdId} and (select count(0) from sys_dashboard_resource where resource_id={userId} and dashboard_id={dsbdId} and delete_time=0)=1 and delete_time=0");
+
+            var filterList = GetDashboardFilterPara();
+            if (dto.filter_id != null)
+            {
+                var para = filterList.Find(_ => _.id == dto.filter_id.Value);
+                if (para == null)
+                    return null;
+
+                if (para.data_type == (int)DicEnum.QUERY_PARA_TYPE.CALLBACK)
+                {
+                    if (dto.filter_default_value != null)
+                    {
+                        dto.filter_default_value_show = dal.FindSignleBySql<string>($"{para.ref_url_name_sel} in ({dto.filter_default_value})");
+                    }
+                    if (!string.IsNullOrEmpty(dto.limit_value))
+                    {
+                        dto.limit_value_show = dal.FindSignleBySql<string>($"{para.ref_url_name_sel} in ({dto.limit_value})");
+                    }
+                }
+            }
+            
+            return dto;
+        }
+
+        /// <summary>
+        /// 获取仪表板的过滤条件信息
+        /// </summary>
+        /// <returns></returns>
+        public List<DashboardFilterPataDto> GetDashboardFilterPara()
+        {
+            string sql = $"select id,data_type_id as data_type,default_value as defaultValue,col_name,col_comment as description,ref_sql,ref_url,operator_type_id,ref_url_name_sel from d_query_para where query_type_id={(int)QueryType.DASHBOARD_FILTER} and is_visible=1 ";
+            var paras = new d_query_para_dal().FindListBySql<DashboardFilterPataDto>(sql);
+
+            foreach (var para in paras)
+            {
+                if (para.data_type == (int)DicEnum.QUERY_PARA_TYPE.DROPDOWN
+                    || para.data_type == (int)DicEnum.QUERY_PARA_TYPE.MULTI_DROPDOWN
+                    || para.data_type == (int)DicEnum.QUERY_PARA_TYPE.DYNAMIC)
+                {
+                    var dt = new d_query_para_dal().ExecuteDataTable(para.ref_sql);
+                    if (dt != null)
+                    {
+                        para.values = new List<DictionaryEntryDto>();
+                        foreach (System.Data.DataRow row in dt.Rows)
+                        {
+                            para.values.Add(new DictionaryEntryDto(row[0].ToString(), row[1].ToString()));
+                        }
+                    }
+                }
+            }
+
+            return paras;
+        }
+
+        /// <summary>
         /// 修改小窗口位置
         /// </summary>
         /// <param name="dsbdId"></param>
@@ -96,12 +159,13 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public List<string> GetWidgetColorThemeList(long userId)
+        public List<DictionaryEntryDto> GetWidgetColorThemeList(long userId)
         {
-            var list = new GeneralBLL().GetGeneralList((int)GeneralTableEnum.DASHBOARD_COLOR_THEME);
-            var themeList = from theme in list orderby theme.sort_order ascending select theme.name;
-
-            return themeList.ToList();
+            //var list = new GeneralBLL().GetGeneralList((int)GeneralTableEnum.DASHBOARD_COLOR_THEME);
+            //var themeList = from theme in list orderby theme.sort_order ascending select theme.name;
+            //return themeList.ToList();
+            var list = new GeneralBLL().GetDicValues(GeneralTableEnum.DASHBOARD_COLOR_THEME);
+            return list;
         }
         #endregion
 

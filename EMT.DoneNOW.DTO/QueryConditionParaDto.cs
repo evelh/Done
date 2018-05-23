@@ -43,4 +43,12 @@ namespace EMT.DoneNOW.DTO
     public class WidgetFilterPataDto : WorkflowConditionParaDto
     {
     }
+
+    /// <summary>
+    /// 仪表板的过滤条件参数
+    /// </summary>
+    public class DashboardFilterPataDto : WorkflowConditionParaDto
+    {
+        public string ref_url_name_sel;     // 查找带回的显示内容查询语句
+    }
 }

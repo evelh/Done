@@ -12,6 +12,7 @@ var ColorTheme = [
 //选中配色;
 var SelectTheme;
 var ThemeIdx;
+var ThemeArry;
 //var ThemeArry = ['AutotaskTheme', 'CoastalTheme', 'CollegiateTheme', 'LivelyTheme', 'ModernTheme', 'PrismTheme', 'TechTheme', 'TrendTheme'];
 //$('#ThemeList').change(function () {
 //    for (var i = 0; i < ThemeArry.length; i++) {
@@ -221,7 +222,7 @@ $(function () {
             time = new Date().getTime();
         } else if (document[state] == "visible") {
             var sc = new Date().getTime() - time;
-            if (sc > 300000) {
+            if (sc > 1800000) {
                 RefreshDashboard();
             }
         }
@@ -237,7 +238,128 @@ function ManageDashboard() {
 }
 var dashboardFilters;
 function SettingDashboard() {
+    if (CurrentDashboardId() == 0) return;
+    LayerLoad();
+    requestData("/Tools/DashboardAjax.ashx?act=DashboardSettingInfo&id=" + CurrentDashboardId(), null, function (data) {
+        InitDashboardInfo(data);
+        LayerLoadClose();
+    })
+}
+function InitDashboardInfo(data) {
+    if (data != null) {
+        $("#dashboardName").val(data.name);
+        if (data.widget_auto_place == 1)
+            $("#dashboardAutoPlace").prop("checked", true);
+        else
+            $("#dashboardAutoPlace").prop("checked", false);
+        if (ThemeArry == null) {
+            requestData("/Tools/DashboardAjax.ashx?act=GetColorThemeList", null, function (data) {
+                var str = "";
+                for (var i = 0; i < data.length; i++) {
+                    str += '<option value="' + data[i].val + '">' + data[i].show + '</option>';
+                }
+                $("#dashboardTheme")[0].innerHTML = str;
+                $("#dashboardTheme").val(data.theme_id);
+            })
+        } else {
+            $("#dashboardTheme").val(data.theme_id);
+        }
+        if (dashboardFilters == null) {
+            requestData("/Tools/DashboardAjax.ashx?act=GetDashboardFilter", null, function (data) {
+                dashboardFilters = data;
+                var str = '<option value=""></option>';
+                for (var i = 0; i < data.length; i++) {
+                    str += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
+                }
+                $("#dashboardFilter")[0].innerHTML = str;
+                if (data.filter_id == null)
+                    $("#dashboardFilter").val("");
+                else
+                    $("#dashboardFilter").val(data.theme_id);
 
+                $("#dashboardFilter").unbind("change").bind("change", function () {
+                    dsbdFilterChange();
+                })
+
+            })
+        } else {
+            if (data.filter_id == null)
+                $("#dashboardFilter").val("");
+            else
+                $("#dashboardFilter").val(data.theme_id);
+            dsbdFilterChange();
+        }
+    } else {
+        
+    }
+
+    $("#settings").show();
+
+
+    function dsbdFilterChange() {
+        if ($("#dashboardFilter").val() == "") {
+            $("#dashboardDftValDiv").hide();
+            $("#dashboardMuiltFilter2").hide();
+            $("#dashboardMuiltFilter1").hide();
+            $("#dashboardLimitType1").prop("checked", true);
+            $("#dashboardLimitType2").prop("checked", false);
+            $("#dashboardLimitType3").prop("checked", false);
+            $("#dashboardLimitType2").attr("disabled", "disabled");
+            return;
+        }
+        for (var i = 0; i < dashboardFilters.length; i++) {
+            if (dashboardFilters[i].id != $("#dashboardFilter").val()) continue;
+            if (dashboardFilters[i].data_type == 809) {
+                var str = '<option value=""></option>';
+                for (var j = 0; j < dashboardFilters[i].values.length; j++) {
+                    str += '<option value="' + dashboardFilters[i].values[j].val + '">' + dashboardFilters[i].values[j].show + '</option>';
+                }
+                $("#dashboardDftValDiv")[0].innerHTML = '<p>默认值<span style="color: red;">*</span></p><select name="dashboardDftVal" id="dashboardDftVal"></select>';
+                $("#dashboardDftVal")[0].innerHTML = str;
+                str = '';
+                for (var j = 0; j < dashboardFilters[i].values.length; j++) {
+                    str += '<option value="' + dashboardFilters[i].values[j].val + '">' + dashboardFilters[i].values[j].show + '</option>';
+                }
+                $("#dmultiselect").empty();
+                $("#dmultiselect")[0].innerHTML = str;
+                $('#dmultiselect').multiselect({
+                    sort: false
+                });
+                $("#dmultiselect_to").empty();
+                $("#dashboardMuiltFilter1").show();
+                $("#dashboardMuiltFilter2").hide();
+            } else {
+                $("#dashboardDftValDiv")[0].innerHTML = '<input type="text" id="dashboardSingleFilter" disabled="disabled" style="float:left;" /><input type="hidden" id="dashboardSingleFilterHidden" /><i class="icon-dh" onclick="window.open(\'' + dashboardFilters[i].ref_url +'dashboardSingleFilter\', \'_blank\', \'left= 200, top = 200, width = 600, height = 800\', false)" style="height:16px;margin-top:3px;margin-left:3px;float:left;"></i>';
+                $("#dashboardMuiltFilter1").hide();
+                $("#dashboardMuiltFilter2").show();
+                $("#dashboardMuiltFilter").val("");
+                $("#dashboardMuiltFilterHidden").val("");
+                $("#dashboardMuiltFilterClick").unbind("click").bind("click", function () {
+                    window.open(dashboardFilters[i].ref_url +'dashboardMuiltFilter&muilt=1', '_blank', 'left= 200, top = 200, width = 600, height = 800', false);
+                })
+            }
+            break;
+        }
+    }
+}
+function ChangeDashboardLimit(idx) {
+    if ($("#dashboardFilter").val() == "") return;
+    for (var i = 0; i < dashboardFilters.length; i++) {
+        if (dashboardFilters[i].id != $("#dashboardFilter").val()) continue;
+        if (dashboardFilters[i].data_type == 809) {
+            if (idx == 2522) {
+                $("#dashboardMuiltFilter1").show();
+            } else {
+                $("#dashboardMuiltFilter1").hide();
+            }
+        } else {
+            if (idx == 2522) {
+                $("#dashboardMuiltFilter2").show();
+            } else {
+                $("#dashboardMuiltFilter2").hide();
+            }
+        }
+    }
 }
 
 

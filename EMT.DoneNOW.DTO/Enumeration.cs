@@ -1920,6 +1920,8 @@ namespace EMT.DoneNOW.DTO
         CONTACT_ACTION_TEMP = 272,                     // 联系人活动 模板
         ACCOUNT_CONTACT_GROUP_SEARCH = 273,
         OTHER_INSTALLED_PRODUCT_SEARCH=274,
+
+        DASHBOARD_FILTER = 276,                         // 仪表板过滤条件
   
        
 

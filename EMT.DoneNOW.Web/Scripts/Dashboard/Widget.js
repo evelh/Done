@@ -2273,7 +2273,8 @@ function InitWidgetFilter(data, sub, widget, filters) {
                 } else if (cdt.data_type == 805 || cdt.data_type == 816 || cdt.data_type == 818) {
                     $("#wgt" + sub + "Filter" + idx + "ValDiv")[0].innerHTML = '<input id="wgt' + sub + 'Filter' + idx + 'Val1" name="wgt' + sub + 'Filter' + idx + 'Val1" style="width:184px;" class="widgetFilterValue" />';
                 } else if (cdt.data_type == 810) {
-                    $("#wgt" + sub + "Filter" + idx + "ValDiv")[0].innerHTML = '<div id="mlt' + sub + idx + '" class="multiplebox widgetFilterValue" style="border:0;"><input type= "hidden" id= "wgt' + sub + 'Filter' + idx + 'Val1" name= "wgt' + sub + 'Filter' + idx + 'Val1" class="sl_cdt" /><select id="mltslt' + sub + idx + '" multiple="multiple" ></select></div >';
+                    $("#wgt" + sub + "Filter" + idx + "ValDiv")[0].innerHTML = '<div id="mlt' + sub + idx + '" class="multiplebox widgetFilterValue" style="border:0;"><input type= "hidden" id= "wgt'
+                        + sub + 'Filter' + idx + 'Val1" name= "wgt' + sub + 'Filter' + idx + 'Val1" class="sl_cdt" /><select id="mltslt' + sub + idx + '" multiple="multiple" ></select></div >';
                     $("#mltslt" + sub + idx)[0].innerHTML = sltVals;
                     $("#mltslt" + sub + idx).change(function () {
                         $("#wgt" + sub + "Filter" + idx + "Val1").val($(this).val());
@@ -2281,9 +2282,13 @@ function InitWidgetFilter(data, sub, widget, filters) {
                         width: '100%'
                     })
                 } else if (cdt.data_type == 812 || cdt.data_type == 814) {
-                    $("#wgt" + sub + "Filter" + idx + "ValDiv")[0].innerHTML = '<input id="wgt' + sub + 'Filter' + idx + 'Val1" disabled="disabled" style="width:164px;" class="widgetFilterValue" /><input type="hidden" name="wgt' + sub + 'Filter' + idx + 'Val1" id="wgt' + sub + 'Filter' + idx + 'Val1Hidden" /><i class="icon-dh" style="height:16px;margin-top:3px;margin-left:3px;float:left;" onclick="window.open(\'' + cdt.ref_url + 'wgt' + sub + 'Filter' + idx + 'Val1\', \'_blank\', \'left= 200, top = 200, width = 600, height = 800\', false)"></i>';
+                    $("#wgt" + sub + "Filter" + idx + "ValDiv")[0].innerHTML = '<input id="wgt' + sub + 'Filter' + idx + 'Val1" disabled="disabled" style="width:164px;" class="widgetFilterValue" /><input type="hidden" name="wgt'
+                        + sub + 'Filter' + idx + 'Val1" id="wgt' + sub + 'Filter' + idx + 'Val1Hidden" /><i class="icon-dh" style="height:16px;margin-top:3px;margin-left:3px;float:left;" onclick="window.open(\'' + cdt.ref_url + 'wgt'
+                        + sub + 'Filter' + idx + 'Val1\', \'_blank\', \'left= 200, top = 200, width = 600, height = 800\', false)"></i>';
                 } else if (cdt.data_type == 803) {
-                    $("#wgt" + sub + "Filter" + idx + "ValDiv")[0].innerHTML = '<input id="wgt' + sub + 'Filter' + idx + 'Val1" disabled="disabled" style="width:164px;" class="widgetFilterValue" /><input type="hidden" name="wgt' + sub + 'Filter' + idx + 'Val1" id="wgt' + sub + 'Filter' + idx + 'Val1Hidden" /><i class="icon-dh" style="height:16px;margin-top:3px;margin-left:3px;float:left;background-image:url(../Images/edit.png) !important" onclick="ChooseDynamicDate(\'' + proValue + '\',\'wgt' + sub + 'Filter' + idx + 'Val1\')"></i>';
+                    $("#wgt" + sub + "Filter" + idx + "ValDiv")[0].innerHTML = '<input id="wgt' + sub + 'Filter' + idx + 'Val1" disabled="disabled" style="width:164px;" class="widgetFilterValue" /><input type="hidden" name="wgt'
+                        + sub + 'Filter' + idx + 'Val1" id="wgt' + sub + 'Filter' + idx + 'Val1Hidden" /><i class="icon-dh" style="height:16px;margin-top:3px;margin-left:3px;float:left;background-image:url(../Images/edit.png) !important" onclick="ChooseDynamicDate(\'' + proValue + '\',\'wgt'
+                        + sub + 'Filter' + idx + 'Val1\')"></i>';
                 } else if (cdt.data_type == 807 || cdt.data_type == 817) {
                     var fltHtml = '<input id="wgt' + sub + 'Filter' + idx + 'Val1" name="wgt' + sub + 'Filter' + idx + 'Val1" class="widgetFilterValue Wdate" style="width:83px;border:solid 1px #D7D7D7;" onclick="WdatePicker()" />';
                     fltHtml += '<span style="float:left;margin:0 4px 0 4px">-</span>';
