@@ -1659,7 +1659,7 @@
                         <span style="color: #666;font-size: 12px;display: block;">仪表板级过滤器允许您同时将相同的过滤器应用于多个小窗口。要将单个小窗口配置为使用仪表板级别过滤器，您必须编辑该小窗口的设置并为“[字段名称]等于仪表板级别过滤器”添加一个过滤器？</span>
                         <div class="item">
                             <p>过滤</p>
-                            <select name="" id="">
+                            <select name="dashboardFilter" id="dashboardFilter">
                             </select>
                         </div>
                         <div class="item" id="dashboardDftValDiv">
@@ -1682,8 +1682,43 @@
                                <label for="dashboardLimitType3">自定义</label>
                            </div>
                         </div>
-                        <div class="item" style="width:100%;" id="dashboardMuiltFilter">
+                        <div class="item" style="width:100%;display:none;" id="dashboardMuiltFilter1">
 
+                            <div class="rowtitle" style="width:100%;">
+                            <div class="col-xs-5" style="width:41.7%;position:relative;padding-right:15px;float:left;">可选择列</div>
+                            <div class="col-xs-1" style="width:8.3%;position:relative;padding-left:15px;padding-right:15px;float:left;"></div>
+                            <div class="col-xs-5"style="padding-left:56px;width:41.7%;position:relative;padding-right:15px;float:left;">已选择列</div>
+                            <div class="col-xs-1" style="width:8.3%;position:relative;padding-left:15px;padding-right:15px;float:left;"></div>
+                            </div>
+                            <div class="row"  style="width:100%;">
+                            <div class="col-sm-5" style="width:38.7%;position:relative;float:left;">
+                            <select name="from[]" id="dmultiselect" class="form-control" size="8" style="height:320px;width:100%;" multiple="multiple">
+                            </select>
+                            </div>
+                            <div class="col-sm-1" style="width:8.3%;position:relative;padding-left:2%;padding-right:2%;float:left;">
+                            <button type="button"  class="btn btn-block AddWidgetTableColumnBtn" style="background: #fff;pointer-events:none;cursor:not-allowed;" disabled="disabled"><i class="glyphicon AddWidgetTableColumnGly"></i></button>
+                            <button type="button"  class="btn btn-block AddWidgetTableColumnBtn" style= "background: #fff;pointer-events:none;cursor:not-allowed;" disabled= "disabled" > <i class="glyphicon AddWidgetTableColumnGly"></i></button >
+                            <button type="button" id="dmultiselect_rightAll" class="btn btn-block AddWidgetTableColumnBtn"><i style="display:block;width:16px;height:16px;margin-left:10px;" class="glyphicon glyphicon-forward AddWidgetTableColumnGly"><img src="../Images/arrowrighttow.png"></i></button>
+                            <button type="button" id="dmultiselect_rightSelected" class="btn btn-block AddWidgetTableColumnBtn"><i style="display:block;width:16px;height:16px;margin-left:10px;" class="glyphicon glyphicon-chevron-right AddWidgetTableColumnGly"><img src="../Images/arrowright.png"></i></button>
+                            <button type="button" id="dmultiselect_leftSelected" class="btn btn-block AddWidgetTableColumnBtn"><i style="display:block;width:16px;height:16px;margin-left:10px;" class="glyphicon glyphicon-chevron-left AddWidgetTableColumnGly"><img src="../Images/arrowleft.png"></i></button>
+                            <button type="button" id="dmultiselect_leftAll" class="btn btn-block AddWidgetTableColumnBtn"><i style="display:block;width:16px;height:16px;margin-left:10px;" class="glyphicon glyphicon-backward AddWidgetTableColumnGly"><img src="../Images/arrowlefttwo.png"></i></button>
+                            </div>
+                            <div class="col-sm-5" style="width:38.7%;position:relative;float:left;">
+                            <select name="to[]" id="dmultiselect_to" class="form-control" size="8" style="height:320px;width:100%;" multiple="multiple">
+                            </select>
+                            </div>
+                            <div class="col-xs-1" style="width:8.3%;position:relative;padding-left:2%;float:left;">
+                            <button type="button" class="btn btn-block AddWidgetTableColumnBtn" style= "background: #fff;pointer-events:none;cursor:not-allowed;" disabled= "disabled" > <i class="glyphicon AddWidgetTableColumnGly"></i></button >
+                            <button type="button" class="btn btn-block AddWidgetTableColumnBtn" style="background: #fff;pointer-events:none;cursor:not-allowed;" disabled="disabled"><i class="glyphicon AddWidgetTableColumnGly"></i></button>
+                            <button type="button" class="btn btn-block AddWidgetTableColumnBtn" style="background: #fff;pointer-events:none;cursor:not-allowed;" disabled="disabled"><i class="glyphicon AddWidgetTableColumnGly"></i></button>
+                            <button type="button" id="dmultiselect_move_up" class="btn btn-block AddWidgetTableColumnBtn"><i style="display:block;width:16px;height:16px;margin-left:10px;" class="glyphicon glyphicon-arrow-up AddWidgetTableColumnGly"><img src="../Images/arrowup.png"></i></button>
+                            <button type="button" id="dmultiselect_move_down" class="btn btn-block col-sm-6 AddWidgetTableColumnBtn"><i style="display:block;width:16px;height:16px;margin-left:10px;" class="glyphicon glyphicon-arrow-down AddWidgetTableColumnGly"><img src="../Images/arrowdown.png"></i></button>
+                            <button type="button" class="btn btn-block AddWidgetTableColumnBtn" style="background: #fff;pointer-events:none;cursor:not-allowed;" disabled="disabled"><i class="glyphicon AddWidgetTableColumnGly"></i></button>
+                            </div >
+                            </div >
+                        </div>
+                        <div class="item" style="width:100%;display:none;" id="dashboardMuiltFilter2">
+                            <input type="text" id="dashboardMuiltFilter" disabled="disabled" style="float:left;" /><input type="hidden" id="dashboardMuiltFilterHidden" /><i class="icon-dh" id="dashboardMuiltFilterClick" style="height:16px;margin-top:3px;margin-left:3px;float:left;"></i>
                         </div>
                     </div>
                 </div>
