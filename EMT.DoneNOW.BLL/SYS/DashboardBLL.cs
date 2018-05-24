@@ -55,7 +55,7 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public DashboardInfoDto GetDashboardInfo(long dsbdId, long userId)
         {
-            var dto = dal.FindSignleBySql<DashboardInfoDto>($"select id,name,theme_id,widget_auto_place as auto_place from sys_dashboard where id={dsbdId} and (select count(0) from sys_dashboard_resource where resource_id={userId} and dashboard_id={dsbdId} and delete_time=0)=1 and delete_time=0");
+            var dto = dal.FindSignleBySql<DashboardInfoDto>($"select id,name,theme_id,widget_auto_place from sys_dashboard where id={dsbdId} and (select count(0) from sys_dashboard_resource where resource_id={userId} and dashboard_id={dsbdId} and delete_time=0)=1 and delete_time=0");
 
             var filterList = GetDashboardFilterPara();
             if (dto.filter_id != null)
@@ -166,6 +166,89 @@ namespace EMT.DoneNOW.BLL
             //return themeList.ToList();
             var list = new GeneralBLL().GetDicValues(GeneralTableEnum.DASHBOARD_COLOR_THEME);
             return list;
+        }
+
+        /// <summary>
+        /// 删除仪表板
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool DeleteDashboard(long id, long userId)
+        {
+            var dashboard = dal.FindNoDeleteById(id);
+            if (dashboard == null)
+                return false;
+
+            dashboard.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            dashboard.delete_user_id = userId;
+            dal.Update(dashboard);
+            OperLogBLL.OperLogDelete<sys_dashboard>(dashboard, dashboard.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD, "删除仪表板");
+
+            var pbDal = new sys_dashboard_publish_dal();
+            var publish = dal.FindListBySql<sys_dashboard_publish>($"select * from sys_dashboard_publish where dashboard_id={id} and delete_time=0");
+            foreach (var pb in publish)
+            {
+                pb.delete_time = dashboard.delete_time;
+                pb.delete_user_id = userId;
+                pbDal.Update(pb);
+                OperLogBLL.OperLogDelete<sys_dashboard_publish>(pb, pb.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_PUBLISH, "删除共享仪表板");
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 新增编辑仪表板
+        /// </summary>
+        /// <param name="dashboard"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool AddEditDashboard(sys_dashboard dashboard, long userId)
+        {
+            dashboard.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            dashboard.update_user_id = userId;
+            if (dashboard.id == 0)
+            {
+                dashboard.id = dal.GetNextIdCom();
+                dashboard.create_time = dashboard.update_time;
+                dashboard.create_user_id = userId;
+
+                dal.Insert(dashboard);
+                OperLogBLL.OperLogAdd<sys_dashboard>(dashboard, dashboard.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD, "新增仪表板");
+
+                var duDal = new sys_dashboard_resource_dal();
+                sys_dashboard_resource du = new sys_dashboard_resource();
+                du.id = duDal.GetNextIdCom();
+                du.dashboard_id = dashboard.id;
+                du.resource_id = userId;
+                du.is_visible = 1;
+                du.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                du.update_user_id = userId;
+                du.create_time = du.update_time;
+                du.create_user_id = userId;
+                var sort = duDal.FindSignleBySql<decimal?>($"select max(sort_order) from sys_dashboard_resource where resource_id={userId}");
+                if (sort == null)
+                    du.sort_order = 1;
+                else
+                    du.sort_order = sort.Value + 1;
+
+                duDal.Insert(du);
+                OperLogBLL.OperLogAdd<sys_dashboard_resource>(du, du.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_USER, "新增用户仪表板");
+            }
+            else
+            {
+                var dold = dal.FindNoDeleteById(dashboard.id);
+                if (dold == null)
+                    return false;
+                var desc = OperLogBLL.CompareValue<sys_dashboard>(dold, dashboard);
+                if (!string.IsNullOrEmpty(desc))
+                {
+                    dal.Update(dashboard);
+                    OperLogBLL.OperLogUpdate(desc, dashboard.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD, "编辑仪表板");
+                }
+            }
+            return true;
         }
         #endregion
 

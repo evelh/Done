@@ -14,15 +14,15 @@ var SelectTheme;
 var ThemeIdx;
 var ThemeArry;
 //var ThemeArry = ['AutotaskTheme', 'CoastalTheme', 'CollegiateTheme', 'LivelyTheme', 'ModernTheme', 'PrismTheme', 'TechTheme', 'TrendTheme'];
-//$('#ThemeList').change(function () {
-//    for (var i = 0; i < ThemeArry.length; i++) {
-//        if ($('#ThemeList').val() == ThemeArry[i]) {
-//            $('.colors').css('background-position-x', i * 105);
-//            var a = ThemeArry[i];
-//            SelectTheme = ColorTheme[i];
-//        }
-//    }
-//})
+$('#dashboardTheme').change(function () {
+    for (var i = 0; i < ThemeArry.length; i++) {
+        if ($('#dashboardTheme').val() == ThemeArry[i].val) {
+            $('.colors').css('background-position-x', i * 105);
+            //var a = ThemeArry[i];
+            //SelectTheme = ColorTheme[i];
+        }
+    }
+})
 function RefreshDashboard() {
     var id = CurrentDashboardId();
     if (id == null)
@@ -195,7 +195,7 @@ $(function () {
             AddDashboardList(data[0]);
             InitDashboard(data[1]);
         })
-    }, 500)
+    }, 100)
 });
 $(function () {
     var hidden, state, visibilityChange, time;
@@ -230,7 +230,8 @@ $(function () {
     }, false);
 })
 function AddDashboard() {
-
+    $("#cover").show();
+    InitDashboardInfo(null);
 }
 
 function ManageDashboard() {
@@ -239,83 +240,137 @@ function ManageDashboard() {
 var dashboardFilters;
 function SettingDashboard() {
     if (CurrentDashboardId() == 0) return;
-    LayerLoad();
+    $("#cover").show();
     requestData("/Tools/DashboardAjax.ashx?act=DashboardSettingInfo&id=" + CurrentDashboardId(), null, function (data) {
         InitDashboardInfo(data);
-        LayerLoadClose();
     })
 }
 function InitDashboardInfo(data) {
     if (data != null) {
         $("#dashboardName").val(data.name);
+        $("#dashboardId").val(data.id);
         if (data.widget_auto_place == 1)
             $("#dashboardAutoPlace").prop("checked", true);
         else
             $("#dashboardAutoPlace").prop("checked", false);
         if (ThemeArry == null) {
-            requestData("/Tools/DashboardAjax.ashx?act=GetColorThemeList", null, function (data) {
+            requestData("/Tools/DashboardAjax.ashx?act=GetColorThemeList", null, function (dataTheme) {
+                ThemeArry = dataTheme;
                 var str = "";
-                for (var i = 0; i < data.length; i++) {
-                    str += '<option value="' + data[i].val + '">' + data[i].show + '</option>';
+                for (var i = 0; i < dataTheme.length; i++) {
+                    str += '<option value="' + dataTheme[i].val + '">' + dataTheme[i].show + '</option>';
                 }
                 $("#dashboardTheme")[0].innerHTML = str;
                 $("#dashboardTheme").val(data.theme_id);
+                for (var i = 0; i < ThemeArry.length; i++) {
+                    if ($('#dashboardTheme').val() == ThemeArry[i].val) {
+                        $('.colors').css('background-position-x', i * 105);
+                    }
+                }
             })
         } else {
             $("#dashboardTheme").val(data.theme_id);
+            for (var i = 0; i < ThemeArry.length; i++) {
+                if ($('#dashboardTheme').val() == ThemeArry[i].val) {
+                    $('.colors').css('background-position-x', i * 105);
+                }
+            }
         }
         if (dashboardFilters == null) {
-            requestData("/Tools/DashboardAjax.ashx?act=GetDashboardFilter", null, function (data) {
-                dashboardFilters = data;
+            requestData("/Tools/DashboardAjax.ashx?act=GetDashboardFilter", null, function (dataFlt) {
+                dashboardFilters = dataFlt;
                 var str = '<option value=""></option>';
-                for (var i = 0; i < data.length; i++) {
-                    str += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
+                for (var i = 0; i < dataFlt.length; i++) {
+                    str += '<option value="' + dataFlt[i].id + '">' + dataFlt[i].description + '</option>';
                 }
                 $("#dashboardFilter")[0].innerHTML = str;
                 if (data.filter_id == null)
                     $("#dashboardFilter").val("");
                 else
-                    $("#dashboardFilter").val(data.theme_id);
+                    $("#dashboardFilter").val(data.filter_id);
 
                 $("#dashboardFilter").unbind("change").bind("change", function () {
                     dsbdFilterChange();
                 })
-
+                dsbdFilterChange();
             })
         } else {
             if (data.filter_id == null)
                 $("#dashboardFilter").val("");
             else
-                $("#dashboardFilter").val(data.theme_id);
+                $("#dashboardFilter").val(data.filter_id);
             dsbdFilterChange();
         }
     } else {
-        
+        $("#dashboardId").val(0);
+        $("#dashboardName").val("");
+        $("#dashboardAutoPlace").prop("checked", true);
+        if (ThemeArry == null) {
+            requestData("/Tools/DashboardAjax.ashx?act=GetColorThemeList", null, function (dataTheme) {
+                ThemeArry = dataTheme;
+                var str = "";
+                for (var i = 0; i < dataTheme.length; i++) {
+                    str += '<option value="' + dataTheme[i].val + '">' + dataTheme[i].show + '</option>';
+                }
+                $("#dashboardTheme")[0].innerHTML = str;
+                $('.colors').css('background-position-x', 0);
+            })
+        }
+        if (dashboardFilters == null) {
+            requestData("/Tools/DashboardAjax.ashx?act=GetDashboardFilter", null, function (dataFlt) {
+                dashboardFilters = dataFlt;
+                var str = '<option value=""></option>';
+                for (var i = 0; i < dataFlt.length; i++) {
+                    str += '<option value="' + dataFlt[i].id + '">' + dataFlt[i].description + '</option>';
+                }
+                $("#dashboardFilter")[0].innerHTML = str;
+
+                $("#dashboardFilter").unbind("change").bind("change", function () {
+                    dsbdFilterChange();
+                })
+                dsbdFilterChange();
+            })
+        } else {
+            $("#dashboardFilter").val("");
+            dsbdFilterChange();
+        }
     }
 
     $("#settings").show();
 
 
     function dsbdFilterChange() {
-        if ($("#dashboardFilter").val() == "") {
+        var fltVal = $("#dashboardFilter").val();
+        if (fltVal == "") {
             $("#dashboardDftValDiv").hide();
             $("#dashboardMuiltFilter2").hide();
             $("#dashboardMuiltFilter1").hide();
-            $("#dashboardLimitType1").prop("checked", true);
-            $("#dashboardLimitType2").prop("checked", false);
-            $("#dashboardLimitType3").prop("checked", false);
+            if ($("#dashboardLimitType2").prop("checked")) {
+                $("#dashboardLimitType1").prop("checked", true);
+                $("#dashboardLimitType2").prop("checked", false);
+            }
             $("#dashboardLimitType2").attr("disabled", "disabled");
             return;
         }
+        if (fltVal == 3975 || fltVal == 3978 || fltVal == 3980 || fltVal == 3981 || fltVal == 3982) {
+            if ($("#dashboardLimitType2").prop("checked")) {
+                $("#dashboardLimitType1").prop("checked", true);
+                $("#dashboardLimitType2").prop("checked", false);
+            }
+            $("#dashboardLimitType2").attr("disabled", "disabled");
+        } else {
+            $("#dashboardLimitType2").removeAttr("disabled");
+        }
+        $("#dashboardDftValDiv").show();
         for (var i = 0; i < dashboardFilters.length; i++) {
-            if (dashboardFilters[i].id != $("#dashboardFilter").val()) continue;
+            if (dashboardFilters[i].id != fltVal) continue;
             if (dashboardFilters[i].data_type == 809) {
                 var str = '<option value=""></option>';
                 for (var j = 0; j < dashboardFilters[i].values.length; j++) {
                     str += '<option value="' + dashboardFilters[i].values[j].val + '">' + dashboardFilters[i].values[j].show + '</option>';
                 }
-                $("#dashboardDftValDiv")[0].innerHTML = '<p>默认值<span style="color: red;">*</span></p><select name="dashboardDftVal" id="dashboardDftVal"></select>';
-                $("#dashboardDftVal")[0].innerHTML = str;
+                $("#dashboardDftValDiv")[0].innerHTML = '<p>默认值<span style="color: red;">*</span></p><select id="dashboardSingleFilterHidden"></select>';
+                $("#dashboardSingleFilterHidden")[0].innerHTML = str;
                 str = '';
                 for (var j = 0; j < dashboardFilters[i].values.length; j++) {
                     str += '<option value="' + dashboardFilters[i].values[j].val + '">' + dashboardFilters[i].values[j].show + '</option>';
@@ -329,7 +384,7 @@ function InitDashboardInfo(data) {
                 $("#dashboardMuiltFilter1").show();
                 $("#dashboardMuiltFilter2").hide();
             } else {
-                $("#dashboardDftValDiv")[0].innerHTML = '<input type="text" id="dashboardSingleFilter" disabled="disabled" style="float:left;" /><input type="hidden" id="dashboardSingleFilterHidden" /><i class="icon-dh" onclick="window.open(\'' + dashboardFilters[i].ref_url +'dashboardSingleFilter\', \'_blank\', \'left= 200, top = 200, width = 600, height = 800\', false)" style="height:16px;margin-top:3px;margin-left:3px;float:left;"></i>';
+                $("#dashboardDftValDiv")[0].innerHTML = '<p>默认值<span style="color: red;">*</span></p><input type="text" id="dashboardSingleFilter" disabled="disabled" style="float:left;" /><input type="hidden" id="dashboardSingleFilterHidden" /><i class="icon-dh" onclick="window.open(\'' + dashboardFilters[i].ref_url +'dashboardSingleFilter\', \'_blank\', \'left= 200, top = 200, width = 600, height = 800\', false)" style="height:16px;margin-top:3px;margin-left:3px;float:left;"></i>';
                 $("#dashboardMuiltFilter1").hide();
                 $("#dashboardMuiltFilter2").show();
                 $("#dashboardMuiltFilter").val("");
@@ -360,6 +415,68 @@ function ChangeDashboardLimit(idx) {
             }
         }
     }
+}
+function SaveDashboard() {
+    if ($("#dashboardName").val() == "") {
+        LayerMsg("请输入仪表板名称");
+        return;
+    }
+    var fltVal = $("#dashboardFilter").val();
+    var fltStr = "";
+    if (fltVal != "") {
+        if ($("#dashboardSingleFilterHidden").val() == "") {
+            LayerMsg("请过滤条件默认值");
+            return;
+        }
+        fltStr += "&filter_id=" + fltVal + "&default=" + $("#dashboardSingleFilterHidden").val() + "&limit_type=" + $('input:radio[name="dashboardLimitType"]:checked').val() + "&limit_value=";
+        for (var i = 0; i < dashboardFilters.length; i++) {
+            if (dashboardFilters[i].id != fltVal) continue;
+            if (dashboardFilters[i].data_type == 809) {
+                var ids = "";
+                $("#dmultiselect_to option").each(function () {
+                    ids += $(this).val() + ',';
+                });
+                ids = ids.substr(0, ids.length - 1);
+                fltStr += ids;
+            } else {
+                fltStr += $("#dashboardMuiltFilterHidden").val();
+            }
+        }
+    }
+    ShowLoading();
+    requestData("/Tools/DashboardAjax.ashx?act=SaveDashboard&id=" + $("#dashboardId").val() + "&name=" + $("#dashboardName").val() + "&widget_auto_place=" + ($("#dashboardAutoPlace").prop("checked") ? 1 : 0) + "&theme_id=" + $('#dashboardTheme').val() + fltStr, null, function (data) {
+        if ($("#dashboardId").val()==0){
+            setTimeout(function () {
+                requestData("/Tools/DashboardAjax.ashx?act=GetInitailDashboard", null, function (data) {
+                    if (data == null) {
+                        HideLoading();
+                        return;
+                    }
+                    AddDashboardList(data[0]);
+                    InitDashboard(data[1]);
+                })
+                }, 100)
+        } else {
+            RefreshDashboard();
+        }
+    })
+}
+function DleteDashboard() {
+    LayerConfirmOk("删除操作将不能恢复，是否继续?", "确定", "取消", function () {
+        requestData("/Tools/DashboardAjax.ashx?act=DeleteDashboard&id=" + id, null, function (data) {
+            ShowLoading();
+            setTimeout(function () {
+                requestData("/Tools/DashboardAjax.ashx?act=GetInitailDashboard", null, function (data) {
+                    if (data == null) {
+                        HideLoading();
+                        return;
+                    }
+                    AddDashboardList(data[0]);
+                    InitDashboard(data[1]);
+                })
+            }, 100)
+        })
+    })
 }
 
 

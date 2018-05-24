@@ -48,6 +48,12 @@ namespace EMT.DoneNOW.Web
                 case "ChangeWidgetPosition":
                     ChangeWidgetPosition();
                     break;
+                case "SaveDashboard":
+                    SaveDashboard();
+                    break;
+                case "DeleteDashboard":
+                    DeleteDashboard();
+                    break;
 
                 case "GetWidgetEntityList":
                     GetWidgetEntityList();
@@ -136,6 +142,47 @@ namespace EMT.DoneNOW.Web
         {
             var id = long.Parse(request.QueryString["id"]);
             var info = bll.GetWidgetDetail(id, LoginUserId);
+            WriteResponseJson(info);
+        }
+
+        /// <summary>
+        /// 新增修改仪表板
+        /// </summary>
+        private void SaveDashboard()
+        {
+            sys_dashboard dashboard = new sys_dashboard();
+            dashboard.id = 0;
+
+            long id;
+            if (long.TryParse(request.QueryString["id"], out id))
+                dashboard.id = id;
+            else
+                WriteResponseJson(null);
+
+            dashboard.name = request.QueryString["name"];
+            dashboard.theme_id = int.Parse(request.QueryString["theme_id"]);
+            dashboard.widget_auto_place = sbyte.Parse(request.QueryString["widget_auto_place"]);
+            if (!string.IsNullOrEmpty(request.QueryString["filter_id"]))
+            {
+                dashboard.filter_id = long.Parse(request.QueryString["filter_id"]);
+                dashboard.filter_default_value= long.Parse(request.QueryString["default"]);
+                dashboard.limit_type_id = int.Parse(request.QueryString["limit_type"]);
+                if (dashboard.limit_type_id == (int)DicEnum.DASHBOARD_FILTER_TYPE.CUSTOM)
+                {
+                    dashboard.limit_value = request.QueryString["limit_value"];
+                }
+            }
+
+            WriteResponseJson(bll.AddEditDashboard(dashboard, LoginUserId));
+        }
+
+        /// <summary>
+        /// 删除仪表板
+        /// </summary>
+        private void DeleteDashboard()
+        {
+            var id = long.Parse(request.QueryString["id"]);
+            var info = bll.DeleteDashboard(id, LoginUserId);
             WriteResponseJson(info);
         }
 

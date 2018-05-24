@@ -919,6 +919,9 @@ namespace EMT.DoneNOW.DTO
             SDK_KONWLEDGE = 1429,                       // 知识库
             SDK_KONWLEDGE_COMMENT = 1430,               // 知识库评论
             SDK_KONWLEDGE_TICKET = 1431,                // 知识库关联工单
+            DASHBOARD = 1433,                           // 仪表板
+            DASHBOARD_USER = 1434,                      // 仪表板用户
+            DASHBOARD_PUBLISH = 1435,                   // 共享仪表板
             DASHBOARD_WIDGET = 1436,                    // 仪表板小窗口
             DASHBOARD_WIDGET_GUAGE = 1437,              // 仪表板小窗口部件
             TICKET_SLA_EVENT,                           // 工单sla 事件
@@ -1648,7 +1651,17 @@ namespace EMT.DoneNOW.DTO
         }
 
         /// <summary>
-        /// 小窗口图形类型
+        /// 仪表板过滤类型 - 186
+        /// </summary>
+        public enum DASHBOARD_FILTER_TYPE
+        {
+            ALL = 2520,         // 全部
+            MINE = 2521,        // 我的
+            CUSTOM = 2522,      // 自定义
+        }
+
+        /// <summary>
+        /// 小窗口图形类型 - 188
         /// </summary>
         public enum WIDGET_CHART_VISUAL_TYPE
         {

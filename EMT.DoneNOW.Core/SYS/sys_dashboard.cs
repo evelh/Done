@@ -25,7 +25,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public SByte widget_auto_place { get; set; }
         [DataMember]
-        public Int32? filter_id { get; set; }
+        public Int64? filter_id { get; set; }
         [DataMember]
         public Int64? filter_default_value { get; set; }
         [DataMember]

@@ -1613,13 +1613,13 @@
         </div>
         <div class="SettingsPOP">
             <h3>仪表板设置</h3>
-            <div class="content">
+            <div class="content" style="overflow-y:auto;height:530px;">
                 <div class="button">
-                    <div class="save" onclick="">
+                    <div class="save" onclick="SaveDashboard()">
                         <img src="Images/save.png" alt="">
                         保存并关闭
                     </div>
-                    <div class="delete">
+                    <div class="delete" onclick="DleteDashboard()">
                         <img src="Images/delete.png" alt="">
                         删除标签
                     </div>
@@ -1630,6 +1630,7 @@
                         <div class="item">
                             <p>仪表板名称<span style="color: red;">*</span></p>
                             <input type="text" id="dashboardName" name="dashboardName">
+                            <input type="hidden" id="dashboardId" name="dashboardId" />
                         </div>
                         <div class="item" style="line-height: 57px;">
                             <input type="checkbox" checked="checked" id="dashboardAutoPlace" name="dashboardAutoPlace">
@@ -1662,7 +1663,7 @@
                             <select name="dashboardFilter" id="dashboardFilter">
                             </select>
                         </div>
-                        <div class="item" id="dashboardDftValDiv">
+                        <div class="item" id="dashboardDftValDiv" style="display:none;">
                             <p>默认值<span style="color: red;">*</span></p>
                             <select name="dashboardDftVal" id="dashboardDftVal">
                             </select>
@@ -1682,7 +1683,7 @@
                                <label for="dashboardLimitType3">自定义</label>
                            </div>
                         </div>
-                        <div class="item" style="width:100%;display:none;" id="dashboardMuiltFilter1">
+                        <div class="item" style="width:100%;display:none;overflow:hidden;height:auto;" id="dashboardMuiltFilter1">
 
                             <div class="rowtitle" style="width:100%;">
                             <div class="col-xs-5" style="width:41.7%;position:relative;padding-right:15px;float:left;">可选择列</div>
@@ -1690,7 +1691,7 @@
                             <div class="col-xs-5"style="padding-left:56px;width:41.7%;position:relative;padding-right:15px;float:left;">已选择列</div>
                             <div class="col-xs-1" style="width:8.3%;position:relative;padding-left:15px;padding-right:15px;float:left;"></div>
                             </div>
-                            <div class="row"  style="width:100%;">
+                            <div class="row"  style="width:100%;overflow:hidden;">
                             <div class="col-sm-5" style="width:38.7%;position:relative;float:left;">
                             <select name="from[]" id="dmultiselect" class="form-control" size="8" style="height:320px;width:100%;" multiple="multiple">
                             </select>
