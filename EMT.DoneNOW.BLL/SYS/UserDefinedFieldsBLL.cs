@@ -29,7 +29,7 @@ namespace EMT.DoneNOW.BLL
             {
                 if (udf.data_type == (int)DicEnum.UDF_DATA_TYPE.LIST)
                 {
-                    var valList = udfListDal.FindListBySql<DictionaryEntryDto>(udfListDal.QueryStringDeleteFlag($"SELECT id as 'val',name as 'show',is_default as 'select' FROM sys_udf_list WHERE udf_field_id={udf.id} and status_id=0"));
+                    var valList = udfListDal.FindListBySql<DictionaryEntryDto>(udfListDal.QueryStringDeleteFlag($"SELECT id as 'val',name as 'show',is_default as 'select' FROM sys_udf_list WHERE udf_field_id={udf.id} and status_id=0 ORDER BY sort_order"));
                     if (valList != null && valList.Count != 0)
                         udf.value_list = valList;
                 }

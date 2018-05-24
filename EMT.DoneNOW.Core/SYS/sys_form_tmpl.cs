@@ -32,6 +32,18 @@ namespace EMT.DoneNOW.Core
         public Int32 range_type_id { get; set; }
         [DataMember]
         public Int32? range_department_id { get; set; }
+        [DataMember]
+        public String quick_email_object_ids { get; set; }
+        [DataMember]
+        public String other_emails { get; set; }
+        [DataMember]
+        public Int64? notify_tmpl_id { get; set; }
+        [DataMember]
+        public String subject { get; set; }
+        [DataMember]
+        public String additional_email_text { get; set; }
+        [DataMember]
+        public SByte from_sys_email { get; set; }
 
 
     }

@@ -258,7 +258,7 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         public bool CheckTempCode(string code,long id = 0)
         {
-            if (!string.IsNullOrEmpty(code))
+            if (string.IsNullOrEmpty(code))
                 return false;
             sys_form_tmpl temp = _dal.GetByCode(code);
             if (temp == null)
@@ -284,6 +284,7 @@ namespace EMT.DoneNOW.BLL
             if (!AddFormTmpl(tmpl, userId))
                 return false;
             tmplOppo.id = _dal.GetNextIdCom();
+            tmplOppo.form_tmpl_id = tmpl.id;
             tmplOppo.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             tmplOppo.create_user_id = userId;
             tmplOppo.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -333,6 +334,82 @@ namespace EMT.DoneNOW.BLL
             tmpl.update_user_id = userId;
             _dal.Update(tmpl);
             //OperLogBLL.OperLogAdd<sys_form_tmpl>();
+            return true;
+        }
+        /// <summary>
+        /// 激活/失活 模板
+        /// </summary>
+        public bool ActiveTmpl(long id,bool isActive,long userId)
+        {
+            var tmpl = _dal.FindNoDeleteById(id);
+            if (tmpl == null)
+                return false;
+            sbyte active = (sbyte)(isActive ? 1 : 0);
+            if(tmpl.is_active!= active)
+            {
+                tmpl.is_active = active;
+                tmpl.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                tmpl.update_user_id = userId;
+                _dal.Update(tmpl);
+            }
+            return true;
+        }
+        /// <summary>
+        /// 删除模板
+        /// </summary>
+        public bool DeleteTmpl(long id,long userId)
+        {
+            var tmpl = _dal.FindNoDeleteById(id);
+            if (tmpl == null)
+                return true;
+            _dal.SoftDelete(tmpl,userId);
+            if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.OPPORTUNITY)
+            {
+                var oppoTmp = GetOpportunityTmpl(tmpl.id);
+                if (oppoTmp != null)
+                    new sys_form_tmpl_opportunity_dal().SoftDelete(oppoTmp,userId);
+            }
+            else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.PROJECT_NOTE)
+            {
+
+            }
+            else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.QUICK_CALL)
+            {
+
+            }
+            else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.QUOTE)
+            {
+
+            }
+            else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.RECURRING_TICKET)
+            {
+
+            }
+            else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.SERVICE_CALL)
+            {
+
+            }
+            else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.TASK_NOTE)
+            {
+
+            }
+            else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.TASK_TIME_ENTRY)
+            {
+
+            }
+            else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.TICKET)
+            {
+
+            }
+            else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.TICKET_NOTE)
+            {
+
+            }
+            else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.TICKET_TIME_ENTRY)
+            {
+
+            }
+
             return true;
         }
 

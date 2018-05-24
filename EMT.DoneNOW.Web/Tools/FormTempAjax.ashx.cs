@@ -21,6 +21,9 @@ namespace EMT.DoneNOW.Web
                 case "CheckTempCode":
                     CheckTempCode(context);
                     break;
+                case "ActiveTmpl":
+                    ActiveTmpl(context);
+                    break;
                 default:break;
             }
         }
@@ -39,6 +42,23 @@ namespace EMT.DoneNOW.Web
             context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
         }
 
-    
+        /// <summary>
+        ///  激活/失活 模板
+        /// </summary>
+        public void ActiveTmpl(HttpContext context)
+        {
+            var id = context.Request.QueryString["id"];
+            var result = false;
+            bool isActive = false;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["active"]))
+                isActive = true;
+            if (!string.IsNullOrEmpty(id))
+                result = tempBll.ActiveTmpl(long.Parse(id), isActive,LoginUserId);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+
+
+
+
     }
 }

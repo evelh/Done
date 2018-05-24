@@ -99,6 +99,7 @@ namespace EMT.DoneNOW.DTO
         DYNAMIC_START_DATE_TYPE = 196,          // 动态日期开始日期类型
         DYNAMIC_END_DATE_TYPE = 197,            // 动态日期结束日期类型
         SYS_TICKET_RESOLUTION_METRICS = 206,    // 工单解决参数设置
+        FORM_TMPL_QUICK_EMAIL_OBJECT = 207,     // 表单模板：发送对象
     }
 
     /// <summary>

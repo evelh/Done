@@ -29,9 +29,12 @@ namespace EMT.DoneNOW.Web.SysSetting
         protected List<d_general> oppoComperList;
         protected crm_account thisAccount;
         protected crm_contact thisContact;
-        protected ivt_product thisProduct;
-        protected List<sys_notify_tmpl> tempList ;
-
+        protected ivt_product thisProduct;  
+        protected List<sys_notify_tmpl> tempNotiList ;  // 通知模板
+        protected List<d_general> pushList = new DAL.d_general_dal().GetGeneralByTableId((int) GeneralTableEnum.NOTE_PUBLISH_TYPE);   // 备注发布对象
+        protected List<d_general> actList = new DAL.d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.ACTION_TYPE);
+        protected List<d_general> notifyList = new DAL.d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.FORM_TMPL_QUICK_EMAIL_OBJECT);  // 邮件通知对象
+        protected string[] notiIds;
         protected FormTemplateBLL tempBll = new FormTemplateBLL();
         protected CompanyBLL accountBll = new CompanyBLL();
         protected ContactBLL contactBll = new ContactBLL();
@@ -46,6 +49,8 @@ namespace EMT.DoneNOW.Web.SysSetting
                     if(string.IsNullOrEmpty(Request.QueryString["isCopy"]))
                         isAdd = false;
                     formTypeId = temp.form_type_id;
+                    if (!string.IsNullOrEmpty(temp.quick_email_object_ids))
+                        notiIds = temp.quick_email_object_ids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     if (temp.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.OPPORTUNITY)
                     {
                         tempOppo = tempBll.GetOpportunityTmpl(temp.id);
@@ -67,6 +72,8 @@ namespace EMT.DoneNOW.Web.SysSetting
             var thisFromType = tempTypeList.FirstOrDefault(_=>_.id==formTypeId);
             if (thisFromType != null)
                 typeName = thisFromType.name;
+            if (notifyList != null&& notifyList.Count>0)
+                notifyList = notifyList.Where(_ => _.parent_id == formTypeId).ToList();
             if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.OPPORTUNITY)
             {
                 typeName = "商机";
@@ -75,9 +82,36 @@ namespace EMT.DoneNOW.Web.SysSetting
                 oppoStatusList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.OPPORTUNITY_STATUS);
                 oppoIntDegList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.OPPORTUNITY_INTEREST_DEGREE);
                 oppoComperList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.COMPETITOR);
-                tempList = new DAL.sys_notify_tmpl_dal().GetTempByEvent(((int)DicEnum.NOTIFY_EVENT.OPPORTUNITY_CREATEDOREDITED).ToString());
+                tempNotiList = new DAL.sys_notify_tmpl_dal().GetTempByEvent(((int)DicEnum.NOTIFY_EVENT.OPPORTUNITY_CREATEDOREDITED).ToString());
             }
-           
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.PROJECT_NOTE)
+            {
+                typeName = "项目备注";
+                if (pushList!=null&& pushList.Count > 0)
+                    pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.PROJECT_NOTE).ToString()).ToList();
+                if(actList!=null&& actList.Count>0)
+                    actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.PROJECT_NOTE).ToString()).ToList();
+
+            }
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TASK_NOTE)
+            {
+                typeName = "任务备注";
+                if (pushList != null && pushList.Count > 0)
+                    pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
+                if (actList != null && actList.Count > 0)
+                    actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
+
+            }
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TICKET_NOTE)
+            {
+                typeName = "工单备注";
+                if (pushList != null && pushList.Count > 0)
+                    pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TICKET_NOTE).ToString()).ToList();
+                if (actList != null && actList.Count > 0)
+                    actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TICKET_NOTE).ToString()).ToList();
+            }
+
+
         }
         /// <summary>
         /// 获取模板参数
@@ -103,6 +137,22 @@ namespace EMT.DoneNOW.Web.SysSetting
             {
                 formTemp.range_type_id = (int)DicEnum.RANG_TYPE.ALL;
             }
+            var ids = string.Empty;
+            if (notifyList != null && notifyList.Count>0)
+            {
+                notifyList.ForEach(_ => {
+                    if (!string.IsNullOrEmpty(Request.Form["noti" + _.id.ToString()]) && Request.Form["noti" + _.id.ToString()].Equals("on"))
+                        ids += _.id.ToString()+',';
+                });
+                if (!string.IsNullOrEmpty(ids))
+                    ids = ids.Substring(0, ids.Length-1);
+            }
+            formTemp.quick_email_object_ids = ids;
+            if (!string.IsNullOrEmpty(Request.Form["from_sys_email"]) && Request.Form["from_sys_email"].Equals("on"))
+                formTemp.from_sys_email = 1;
+            else
+                formTemp.from_sys_email = 0;
+            
             if (!isAdd)
             {
                 temp.tmpl_name = formTemp.tmpl_name;
@@ -111,6 +161,13 @@ namespace EMT.DoneNOW.Web.SysSetting
                 temp.remark = formTemp.remark;
                 temp.range_type_id = formTemp.range_type_id;
                 temp.range_department_id = formTemp.range_department_id;
+                temp.form_type_id = formTemp.form_type_id;
+                temp.quick_email_object_ids = formTemp.quick_email_object_ids;
+                temp.from_sys_email = formTemp.from_sys_email;
+                temp.other_emails = formTemp.other_emails;
+                temp.notify_tmpl_id = formTemp.notify_tmpl_id;
+                temp.subject = formTemp.subject;
+                temp.additional_email_text = formTemp.additional_email_text;
                 return temp;
             }
             return formTemp;
@@ -193,13 +250,18 @@ namespace EMT.DoneNOW.Web.SysSetting
                     pageTempOppo.ext3 = tempOppo.ext3;
                     pageTempOppo.ext4 = tempOppo.ext4;
                     pageTempOppo.ext5 = tempOppo.ext5;
+                    return pageTempOppo;
                 }
                 else
                     return pageTempOppo;
 
                 #endregion
+            }
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.PROJECT_NOTE)
+            {
 
             }
+           
 
             return null;
         }
@@ -209,12 +271,19 @@ namespace EMT.DoneNOW.Web.SysSetting
             var formTmpl = GetTemp();
             var obj = GetParam();
             var result = false;
-            if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.OPPORTUNITY)
+            if(formTmpl!=null&& obj != null)
             {
-                if (isAdd)
-                    result = tempBll.AddOpportunityTmpl(formTmpl,obj as sys_form_tmpl_opportunity,LoginUserId);
-                else
-                    result = tempBll.EditOpportunityTmpl(formTmpl, obj as sys_form_tmpl_opportunity, LoginUserId);
+                if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.OPPORTUNITY)
+                {
+                    if (isAdd)
+                        result = tempBll.AddOpportunityTmpl(formTmpl, obj as sys_form_tmpl_opportunity, LoginUserId);
+                    else
+                        result = tempBll.EditOpportunityTmpl(formTmpl, obj as sys_form_tmpl_opportunity, LoginUserId);
+                }
+            }
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.PROJECT_NOTE)
+            {
+
             }
             ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存{(result?"成功":"失败")}！');window.close();self.opener.location.reload();</script>");
 

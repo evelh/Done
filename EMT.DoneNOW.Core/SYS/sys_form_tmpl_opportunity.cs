@@ -17,7 +17,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64 id { get; set; }
         [DataMember]
-        public Int32 form_tmpl_id { get; set; }
+        public Int64 form_tmpl_id { get; set; }
         [DataMember]
         public String opportunity_no { get; set; }
         [DataMember]
