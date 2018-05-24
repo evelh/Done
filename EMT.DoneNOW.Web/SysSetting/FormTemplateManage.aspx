@@ -20,7 +20,7 @@
         <div class="header">表单模板(<%=typeName %>)</div>
         <div class="header-title" style="width: 480px;">
             <ul>
-                <li onclick="SaveClose()"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -128px -32px;" class="icon-1"></i>保存并关闭</li>
+                <li onclick="SaveClose()"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -128px -32px;" class="icon-1"></i><asp:Button ID="SaveClose" runat="server" Text="保存并关闭" BorderStyle="None" OnClick="SaveClose_Click" /></li>
                 <li onclick="javascript:window.close()"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>关闭</li>
             </ul>
         </div>

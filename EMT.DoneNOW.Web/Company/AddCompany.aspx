@@ -445,7 +445,27 @@
                             <%}
                                 else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
                                 {%>
-
+                            <tr>
+                                <td>
+                                    <div class="FieldLabels">
+                                        <label><%=udf.name %></label>
+                                        <select>
+                                            <%if (udf.required != 1)
+                                            { %>
+                                            <option></option>
+                                            <%} %>
+                                            <% if (udf.value_list != null && udf.value_list.Count > 0)
+                                                {
+                                                foreach (var thisValeList in udf.value_list)
+                                                {%>
+                                            <option value="<%=thisValeList.val %>"><%=thisValeList.show %></option>
+                                            <%
+                                                    }
+                                                } %>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
                             <%}
                                     }
                                 } %>
@@ -505,7 +525,27 @@
                             <%}
                                 else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
                                 {%>
-
+                             <tr>
+                                <td>
+                                    <div class="FieldLabels">
+                                        <label><%=udf.name %></label>
+                                        <select>
+                                            <%if (udf.required != 1)
+                                            { %>
+                                            <option></option>
+                                            <%} %>
+                                            <% if (udf.value_list != null && udf.value_list.Count > 0)
+                                                {
+                                                foreach (var thisValeList in udf.value_list)
+                                                {%>
+                                            <option value="<%=thisValeList.val %>"><%=thisValeList.show %></option>
+                                            <%
+                                                    }
+                                                } %>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
                             <%}
                                     }
                                 } %>
@@ -644,8 +684,8 @@
             <div class="content clear" style="display: none;">
 
                 <div class="searchSelected clear">
-                    <p>子客户列表</p>
-                    <span class="on"><i class="icon-dh" onclick="OpenSubCompany()"></i></span>
+                    <p style="margin-left:10px;">子客户列表</p>
+                    <span class="on"><i class="icon-dh" onclick="OpenSubCompany()" style="margin-left:15px;"></i></span>
                     <input type="hidden" id="SubCompany" />
                     <input type="hidden" id="SubCompanyHidden" name="subCompanyIds" />
                     <div class="Selected fl">
@@ -696,7 +736,27 @@
                     <%}
                         else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
                         {%>
-
+                    <tr>
+                                <td>
+                                    <div class="FieldLabels">
+                                        <label><%=udf.name %></label>
+                                        <select>
+                                            <%if (udf.required != 1)
+                                            { %>
+                                            <option></option>
+                                            <%} %>
+                                            <% if (udf.value_list != null && udf.value_list.Count > 0)
+                                                {
+                                                foreach (var thisValeList in udf.value_list)
+                                                {%>
+                                            <option value="<%=thisValeList.val %>"><%=thisValeList.show %></option>
+                                            <%
+                                                    }
+                                                } %>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
                     <%}
                             }
                         } %>

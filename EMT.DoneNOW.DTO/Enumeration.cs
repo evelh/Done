@@ -239,7 +239,16 @@ namespace EMT.DoneNOW.DTO
             DEPARTMENT = 89,    // 指定部门
             ALL = 90,           // 任何人
         }
-
+        /// <summary>
+        /// 商机模板项目关闭日期 - 19
+        /// </summary>
+        public enum PROJECTED_CLOSE_DATE
+        {
+            TODAY=91,               // 今天
+            FROM_TODAY=92,          // 距离今天天数
+            FROM_CREATE=93,         // 距离计划开始天数
+            LAST_DAY_OF_MONTH =94,  // 月底
+        }
         /// <summary>
         /// 通知大类-20
         /// </summary>

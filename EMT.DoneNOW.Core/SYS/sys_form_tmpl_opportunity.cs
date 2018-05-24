@@ -15,7 +15,7 @@ namespace EMT.DoneNOW.Core
 
         [Key]
         [DataMember]
-        public Int32 id { get; set; }
+        public Int64 id { get; set; }
         [DataMember]
         public Int32 form_tmpl_id { get; set; }
         [DataMember]

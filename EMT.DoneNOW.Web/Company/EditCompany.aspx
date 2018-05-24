@@ -658,7 +658,33 @@
                 <%}
                     else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
                     {%>
-
+                   <tr>
+                                <td>
+                                    <div class="FieldLabels">
+                                        <label><%=udf.name %></label>
+                                        <select>
+                                            <%if (udf.required != 1)
+                                            { %>
+                                            <option></option>
+                                            <%} %>
+                                            <% if (udf.value_list != null && udf.value_list.Count > 0)
+                                                {
+                                                    var thisValue = "";
+                                                    if (company_udfValueList!=null&&company_udfValueList.Count>0&&company_udfValueList.FirstOrDefault(_ => _.id == udf.id) != null)
+                                                    {
+                                                        thisValue = company_udfValueList.FirstOrDefault(_ => _.id == udf.id).value.ToString();
+                                                    }
+                                                   
+                                                foreach (var thisValeList in udf.value_list)
+                                                {%>
+                                            <option value="<%=thisValeList.val %>" <%=thisValue==thisValeList.val?"selected='selected'":"" %>><%=thisValeList.show %></option>
+                                            <%
+                                                    }
+                                                } %>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
                 <%}
                         }
                     } %>

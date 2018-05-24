@@ -36,7 +36,7 @@
                     <td>
                         <div class="clear">
                             <label><%=udf.name %></label>
-                            <label><%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %></label>
+                            <label><%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id)!=null?site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %></label>
 
                         </div>
                     </td>
@@ -48,7 +48,7 @@
                     <td>
                         <div class="clear">
                             <label><%=udf.name %></label>
-                            <textarea id="<%=udf.id %>" rows="2" cols="20" disabled="disabled"><%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %></textarea>
+                            <textarea id="<%=udf.id %>" rows="2" cols="20" disabled="disabled"><%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id)!=null?site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %></textarea>
                         </div>
                     </td>
                 </tr>
@@ -60,7 +60,7 @@
                         <div class="clear">
                             <label><%=udf.name %></label>
 
-                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" disabled="disabled" />
+                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id)!=null?site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" disabled="disabled" />
 
                         </div>
                     </td>
@@ -72,14 +72,40 @@
                     <td>
                         <div class="clear">
                             <label><%=udf.name %></label>
-                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" ondblclick="" disabled="disabled" />
+                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id)!=null?site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" ondblclick="" disabled="disabled" />
                         </div>
                     </td>
                 </tr>
                 <%}
                     else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
                     {%>
-
+                  <tr>
+                                <td>
+                                    <div class="FieldLabels">
+                                        <label><%=udf.name %></label>
+                                        <select disabled="disabled">
+                                            <%if (udf.required != 1)
+                                            { %>
+                                            <option></option>
+                                            <%} %>
+                                            <% if (udf.value_list != null && udf.value_list.Count > 0)
+                                                {
+                                                    var thisValue = "";
+                                                    if (site_udfValueList!=null&&site_udfValueList.Count>0&&site_udfValueList.FirstOrDefault(_ => _.id == udf.id) != null)
+                                                    {
+                                                        thisValue = site_udfValueList.FirstOrDefault(_ => _.id == udf.id).value.ToString();
+                                                    }
+                                                   
+                                                foreach (var thisValeList in udf.value_list)
+                                                {%>
+                                            <option value="<%=thisValeList.val %>" <%=thisValue==thisValeList.val?"selected='selected'":"" %>><%=thisValeList.show %></option>
+                                            <%
+                                                    }
+                                                } %>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
                 <%}
                         }
                     } %>
@@ -101,7 +127,7 @@
                     <td>
                         <div class="clear">
                             <label><%=udf.name %></label>
-                            <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
+                            <input type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id)!=null?site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
 
                         </div>
                     </td>
@@ -114,7 +140,7 @@
                         <div class="clear">
                             <label><%=udf.name %></label>
                             <textarea id="<%=udf.id %>" rows="2" cols="20">
-                                <%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>
+                                <%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id)!=null?site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>
 
                             </textarea>
 
@@ -128,7 +154,7 @@
                     <td>
                         <div class="clear">
                             <label><%=udf.name %></label>
-                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" />
+                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id)!=null?site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" />
                         </div>
                     </td>
                 </tr>
@@ -139,14 +165,40 @@
                     <td>
                         <div class="clear">
                             <label><%=udf.name %></label>
-                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value %>" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" ondblclick="" />
+                            <input onclick="WdatePicker()" type="text" name="<%=udf.id %>" class="sl_cdt" value="<%=site_udfValueList.FirstOrDefault(_=>_.id==udf.id)!=null?site_udfValueList.FirstOrDefault(_=>_.id==udf.id).value:"" %>" maxlength="11" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" ondblclick="" />
                         </div>
                     </td>
                 </tr>
                 <%}
                     else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
                     {%>
-
+                  <tr>
+                                <td>
+                                    <div class="FieldLabels">
+                                        <label><%=udf.name %></label>
+                                        <select  name="<%=udf.id %>" class="sl_cdt" >
+                                            <%if (udf.required != 1)
+                                            { %>
+                                            <option></option>
+                                            <%} %>
+                                            <% if (udf.value_list != null && udf.value_list.Count > 0)
+                                                {
+                                                    var thisValue = "";
+                                                    if (site_udfValueList!=null&&site_udfValueList.Count>0&&site_udfValueList.FirstOrDefault(_ => _.id == udf.id) != null)
+                                                    {
+                                                        thisValue = site_udfValueList.FirstOrDefault(_ => _.id == udf.id).value.ToString();
+                                                    }
+                                                   
+                                                foreach (var thisValeList in udf.value_list)
+                                                {%>
+                                            <option value="<%=thisValeList.val %>" <%=thisValue==thisValeList.val?"selected='selected'":"" %>><%=thisValeList.show %></option>
+                                            <%
+                                                    }
+                                                } %>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
                 <%}
                         }
                     } %>

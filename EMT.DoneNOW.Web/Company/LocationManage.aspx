@@ -36,7 +36,7 @@
              <div class="header">修改地址</div>
         <%} %>
           <div class="header-title">
-            <ul style="list-style:none; ">
+            <ul style="list-style:none;margin-left:10px; ">
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
                     <asp:Button ID="save" runat="server" Text="保存"  BorderStyle="None" OnClick="save_Click" />
                 </li>
@@ -50,7 +50,7 @@
             <input type="hidden" name="id" id="id" value="<%=location.id %>"/>
             <%} %>
             <input type="hidden" name="account_id" id="account_id" value="<%=account_id %>"/>
-            <table class="table table-bordered table-hover" style="width:40%;">
+            <table class="table table-bordered table-hover" style="width:40%;margin-left:20px;">
                 <tr>
                     <td>
                         <label>是否默认</label></td>
@@ -66,7 +66,7 @@
                        <%-- <asp:CheckBox ID="is_default" data-val="1" value="1" runat="server" />--%></td>
                 </tr>
                 <tr>
-                    <td>国家</td>
+                    <td>国家<span style="color:red;">*</span></td>
                     <td>
                         <input id="country_idInit" value='1' type="hidden" runat="server" />
                         <select id="country_id" name="country_id">
@@ -75,7 +75,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>省份</td>
+                    <td>省份<span style="color:red;">*</span></td>
                     <td>
                         <input id="province_idInit" value='' type="hidden" runat="server" />
                         <select id="province_id" name="province_id">
@@ -83,7 +83,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>城市</td>
+                    <td>城市<span style="color:red;">*</span></td>
                     <td>
                         <input id="city_idInit" value='' type="hidden" runat="server" />
                         <select id="city_id" name="city_id">
@@ -91,7 +91,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>区县</td>
+                    <td>区县<span style="color:red;">*</span></td>
                     <td>
                         <input id="district_idInit" value='' type="hidden" runat="server" />
                         <select id="district_id" name="district_id">
@@ -100,7 +100,7 @@
 
                 </tr>
                 <tr>
-                    <td>地址</td>
+                    <td>地址<span style="color:red;">*</span></td>
                     <td>
                         <asp:TextBox ID="address" runat="server"></asp:TextBox></td>
                 </tr>
@@ -133,6 +133,8 @@
     </form>
 </body>
 </html>
+<script src="../Scripts/jquery-3.1.0.min.js"></script>
+<script src="../Scripts/common.js"></script>
 <script>
     $("#close").click(function () {
         if (navigator.userAgent.indexOf("MSIE") > 0) {
@@ -151,5 +153,28 @@
             window.open('', '_self', '');
             window.close();
         }
-    }); 
+    });
+    $("#save").click(function () {
+        var province_id = $("#province_id").val();
+        if (province_id == "") {
+            LayerMsg("请选择相关省份！");
+            return false;
+        }
+        var city_id = $("#city_id").val();
+        if (city_id == "") {
+            LayerMsg("请选择相关城市！");
+            return false;
+        }
+        var district_id = $("#district_id").val();
+        if (district_id == "") {
+            LayerMsg("请选择相关区县！");
+            return false;
+        }
+        var address = $("#address").val();
+        if (address == "") {
+            LayerMsg("请填写相关地址！");
+            return false;
+        }
+        return true;
+    })
 </script>

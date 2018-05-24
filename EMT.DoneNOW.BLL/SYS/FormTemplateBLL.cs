@@ -97,7 +97,7 @@ namespace EMT.DoneNOW.BLL
             opportunityTmpl.update_time = opportunityTmpl.create_time;
             opportunityTmpl.update_user_id = opportunityTmpl.create_user_id;
             opportunityTmpl.id = (int)_dal.GetNextIdSys();
-            opportunityTmpl.form_tmpl_id = formTmpl.id;
+            //opportunityTmpl.form_tmpl_id = formTmpl.id;
             new sys_form_tmpl_opportunity_dal().Insert(opportunityTmpl);
 
             return true;
@@ -201,7 +201,7 @@ namespace EMT.DoneNOW.BLL
             if (tmplDto == null)
                 return null;
             var tmpl = _dal.FindById(tmplId);
-            tmplDto.id = tmpl.id;
+            //tmplDto.id = tmpl.id;
             tmplDto.form_type_id = tmpl.form_type_id;
             tmplDto.range_type_id = tmpl.range_type_id;
             tmplDto.range_department_id = tmpl.range_department_id;
@@ -236,7 +236,7 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="formTmplId">表单模板id</param>
         /// <returns></returns>
-        public sys_form_tmpl_opportunity GetOpportunityTmpl(int formTmplId)
+        public sys_form_tmpl_opportunity GetOpportunityTmpl(long formTmplId)
         {
             var tmpl = _dal.FindSignleBySql<sys_form_tmpl_opportunity>(_dal.QueryStringDeleteFlag($"SELECT * FROM sys_form_tmpl_opportunity WHERE delete_time = 0 and form_tmpl_id={formTmplId}"));
             return tmpl;
@@ -275,6 +275,67 @@ namespace EMT.DoneNOW.BLL
         {
             return _dal.FindNoDeleteById(id);
         }
+
+        /// <summary>
+        /// 新增商机模板
+        /// </summary>
+        public bool AddOpportunityTmpl(sys_form_tmpl tmpl,sys_form_tmpl_opportunity tmplOppo,long userId)
+        {
+            if (!AddFormTmpl(tmpl, userId))
+                return false;
+            tmplOppo.id = _dal.GetNextIdCom();
+            tmplOppo.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplOppo.create_user_id = userId;
+            tmplOppo.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplOppo.update_user_id = userId;
+            new sys_form_tmpl_opportunity_dal().Insert(tmplOppo);
+            return true;
+        }
+        /// <summary>
+        /// 编辑商机模板
+        /// </summary>
+        public bool EditOpportunityTmpl(sys_form_tmpl tmpl, sys_form_tmpl_opportunity tmplOppo, long userId)
+        {
+            if (!EditFormTmpl(tmpl, userId))
+                return false;
+            tmplOppo.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplOppo.update_user_id = userId;
+            new sys_form_tmpl_opportunity_dal().Update(tmplOppo);
+            return true;
+        }
+
+        /// <summary>
+        /// 新增模板
+        /// </summary>
+        public bool AddFormTmpl(sys_form_tmpl tmpl,long userId)
+        {
+            if (!CheckTempCode(tmpl.speed_code))
+                return false;
+            tmpl.id = _dal.GetNextIdCom();
+            tmpl.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmpl.create_user_id = userId;
+            tmpl.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmpl.update_user_id = userId;
+            _dal.Insert(tmpl);
+            return true;
+        }
+        /// <summary>
+        /// 编辑模板
+        /// </summary>
+        public bool EditFormTmpl(sys_form_tmpl tmpl, long userId)
+        {
+            var oldTemp = _dal.FindNoDeleteById(tmpl.id);
+            if (oldTemp == null)
+                return false;
+            if (!CheckTempCode(tmpl.speed_code,tmpl.id))
+                return false;
+            tmpl.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmpl.update_user_id = userId;
+            _dal.Update(tmpl);
+            //OperLogBLL.OperLogAdd<sys_form_tmpl>();
+            return true;
+        }
+
 
     }
 }
