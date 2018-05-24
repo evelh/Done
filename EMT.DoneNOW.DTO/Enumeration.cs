@@ -320,7 +320,18 @@ namespace EMT.DoneNOW.DTO
         /// </summary>
         public enum FORM_TMPL_TYPE
         {
-            OPPORTUNITY = 451,      // 商机
+            OPPORTUNITY = 451,       // 商机
+            PROJECT_NOTE = 452,      // 项目备注 
+            QUICK_CALL = 453,        // 快速服务预定
+            QUOTE = 454,             // 报价
+            RECURRING_TICKET = 455,  // 定期工单
+            SERVICE_CALL = 456,      // 服务预定
+            TASK_NOTE = 457,         // 任务备注
+            TASK_TIME_ENTRY = 458,   // 任务工时
+            TICKET = 459,            // 工单
+            TICKET_NOTE = 460,       // 工单备注
+            TICKET_TIME_ENTRY = 461, // 工单工时
+
         }
         /// <summary>
         /// 销售订单状态-28

@@ -31,6 +31,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected Dictionary<long, List<sdk_task>> classTickDic = new Dictionary<long, List<sdk_task>>();    // 客户类别分组
         protected Dictionary<long, List<sdk_task>> productTickDic = new Dictionary<long, List<sdk_task>>();  // 产品分组
         protected Dictionary<string, int> countDic = new Dictionary<string, int>();
+        protected List<sys_resource> limitResList;  // 权限过滤后的工单负责人
         protected void Page_Load(object sender, EventArgs e)
         {
             refreshMin = Request.QueryString["refreshMin"];
@@ -58,7 +59,21 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     return productId;
                 }).OrderBy(_ => _.Key).ToDictionary(_ => _.Key, _ => _.ToList());
             }
-                
+            // {"row":8,"t1":"t","col1":"71,72","col2":"71,72,73"}
+            var ticketLimtJson = "{\"row\":\"8\",\"t1\":\"t\",\"col1\":\"71,72\",\"col2\":\"71,72,73\"}";
+            var ticketLimitSql = Convert.ToString(new DAL.sdk_task_dal().GetSingle($"select f_rpt_getsql_limit('{ticketLimtJson}',{LoginUserId.ToString()})"));
+            var limitTicket = new DAL.v_ticket_dal().FindListBySql("SELECT * from v_ticket t where t.type_id = 1809 "+ ticketLimitSql); 
+            var resIdList = ticBll.ReturnResIdsByTicket(limitTicket);
+            if (resIdList != null && resIdList.Count > 0 && resList != null && resList.Count > 0)
+            {
+                limitResList = new List<sys_resource>();
+                resIdList.ForEach(_ =>
+                {
+                    var thisRes = resList.FirstOrDefault(r => r.id.ToString() == _);
+                    if (thisRes != null)
+                        limitResList.Add(thisRes);
+                });
+            }
 
         }
     }

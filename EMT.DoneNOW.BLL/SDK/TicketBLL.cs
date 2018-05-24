@@ -4487,9 +4487,9 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 获取到所有的工单信息
         /// </summary>
-        public List<sdk_task> GetAllTicket()
+        public List<sdk_task> GetAllTicket(string where="")
         {
-            return _dal.FindListBySql("SELECT * from sdk_task where type_id = 1809 and delete_time = 0");
+            return _dal.FindListBySql("SELECT * from sdk_task t where t.type_id = 1809 and t.delete_time = 0 "+ where);
         }
 
         /// <summary>
@@ -4541,6 +4541,31 @@ namespace EMT.DoneNOW.BLL
             // t.recurring_ticket_id is not null
             // 负责人为空 SELECT COUNT(1) from sdk_task t where t.delete_time =0 and t.type_id = 1809 and owner_resource_id is NULL
             return dic;
+        }
+        /// <summary>
+        /// 获取工单中的联系人信息
+        /// </summary>
+        public List<string> ReturnResIdsByTicket(List<v_ticket> ticketList)
+        {
+            List<string> resList = new List<string>();
+            if(ticketList!=null&& ticketList.Count > 0)
+            {
+                var strDal = new sdk_task_resource_dal(); //GetTaskResByTaskId
+                foreach (var ticket in ticketList)
+                {
+                    if (ticket.owner_resource_id != null && (!resList.Contains(ticket.owner_resource_id.ToString())))
+                        resList.Add(ticket.owner_resource_id.ToString());
+                    var thisResList = strDal.GetTaskResByTaskId(ticket.id);
+                    if(thisResList != null && thisResList.Count > 0)
+                    {
+                        thisResList.ForEach(_ => {
+                            if(_.resource_id!=null&& (!resList.Contains(_.resource_id.ToString())))
+                                resList.Add(_.resource_id.ToString());
+                        });
+                    }
+                }
+            }
+            return resList;
         }
     }
 }
