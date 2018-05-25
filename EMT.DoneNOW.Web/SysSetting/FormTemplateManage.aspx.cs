@@ -17,11 +17,33 @@ namespace EMT.DoneNOW.Web.SysSetting
         protected long objId;
         protected int formTypeId;
         protected string typeName;
-        protected sys_form_tmpl_opportunity tempOppo;
+        protected sys_form_tmpl_opportunity tempOppo;      // 商机模板
+        protected sys_form_tmpl_activity tempNote;         // 备注模板
+        protected sys_form_tmpl_quick_call tempQuickCall;  // 快速服务预定模板
+        protected sys_form_tmpl_quote tempQuote;           // 报价模板
+        protected sys_form_tmpl_recurring_ticket tempRecTicket;           // 定期工单模板
+
         protected List<d_general> tempRangList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.FORM_TEMPLATE_RANGE_TYPE);          // 模板范围
         protected List<d_general> tempTypeList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.FORM_TEMPLATE_TYPE);          // 模板类型
         protected List<sys_department> depList = new DAL.sys_department_dal().GetDepartment("", (int)DTO.DicEnum.DEPARTMENT_CATE.DEPARTMENT);
+        protected List<sys_department> queueList = new DAL.sys_department_dal().GetDepartment("", (int)DTO.DicEnum.DEPARTMENT_CATE.SERVICE_QUEUE);
         protected List<sys_resource> resList = new DAL.sys_resource_dal().GetSourceList(false);
+
+        protected List<d_general> ticStaList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.TICKET_STATUS);          // 工单状态集合
+        protected List<d_general> priorityList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.TASK_PRIORITY_TYPE);   // 工单优先级集合
+        protected List<d_general> issueTypeList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.TASK_ISSUE_TYPE);     // 工单问题类型
+        protected List<d_general> sourceTypeList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.TASK_SOURCE_TYPES);     // 工单来源
+        protected List<d_general> ticketCateList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.TICKET_CATE);     // 工单种类
+        protected List<d_general> ticketTypeList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.TICKET_TYPE);     // 工单类型
+        protected List<sys_role> roleList = new DAL.sys_role_dal().GetList();
+        protected List<ResRole> resRoleList;
+
+        protected List<d_general> taxRegionList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.TAX_REGION);          // 模板范围
+        protected List<sys_quote_tmpl> quoteTempList = new DAL.sys_quote_tmpl_dal().GetQuoteTemp();  // 报价模板
+        protected List<d_general> payTermList;
+        protected List<d_general> payTypeList;
+        protected List<d_general> shipTypeList ;
+
         protected List<d_general> oppoStageList;
         protected List<d_general> oppoSourceList;
         protected List<d_general> oppoStatusList;
@@ -29,7 +51,12 @@ namespace EMT.DoneNOW.Web.SysSetting
         protected List<d_general> oppoComperList;
         protected crm_account thisAccount;
         protected crm_contact thisContact;
-        protected ivt_product thisProduct;  
+        protected ivt_product thisProduct;
+        protected ctt_contract thisContract;
+        protected d_cost_code thisCostCode;
+        protected crm_opportunity thisOppo;
+        protected crm_installed_product thisInsPro;
+
         protected List<sys_notify_tmpl> tempNotiList ;  // 通知模板
         protected List<d_general> pushList = new DAL.d_general_dal().GetGeneralByTableId((int) GeneralTableEnum.NOTE_PUBLISH_TYPE);   // 备注发布对象
         protected List<d_general> actList = new DAL.d_general_dal().GetGeneralByTableId((int)GeneralTableEnum.ACTION_TYPE);
@@ -56,7 +83,6 @@ namespace EMT.DoneNOW.Web.SysSetting
                         tempOppo = tempBll.GetOpportunityTmpl(temp.id);
                         if (tempOppo != null)
                         {
-                            
                             if (tempOppo.account_id!=null)
                                 thisAccount = accountBll.GetCompany((long)tempOppo.account_id);
                             if (tempOppo.contact_id != null)
@@ -65,6 +91,61 @@ namespace EMT.DoneNOW.Web.SysSetting
                                 thisProduct = new DAL.ivt_product_dal().FindNoDeleteById((long)tempOppo.primary_product_id);
                         }
                     }
+                    else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.PROJECT_NOTE || formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TICKET_NOTE || formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TASK_NOTE)
+                    {
+                        tempNote = tempBll.GetNoteTmpl(temp.id);
+                    }
+                    else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.QUICK_CALL)
+                    {
+                        tempQuickCall = tempBll.GetQuickCallTmpl(temp.id);
+                        if (tempQuickCall != null)
+                        {
+                            if (tempQuickCall.account_id != null)
+                                thisAccount = accountBll.GetCompany((long)tempQuickCall.account_id);
+                            if (tempQuickCall.contact_id != null)
+                                thisContact = contactBll.GetContact((long)tempQuickCall.contact_id);
+                            if (tempQuickCall.contract_id != null)
+                                thisContract = new ContractBLL().GetContract((long)tempQuickCall.contract_id);
+                            if (tempQuickCall.cost_code_id != null)
+                                thisCostCode = new DAL.d_cost_code_dal().FindNoDeleteById((long)tempQuickCall.cost_code_id);
+                        }
+                    }
+                    else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.QUOTE)
+                    {
+                        tempQuote = tempBll.GetQuoteTmpl(temp.id);
+                        if (tempQuote != null)
+                        {
+                            if (tempQuote.account_id != null)
+                                thisAccount = accountBll.GetCompany((long)tempQuote.account_id);
+                            if (tempQuote.contact_id != null)
+                                thisContact = contactBll.GetContact((long)tempQuote.contact_id);
+                            if (tempQuote.opportunity_id != null)
+                                thisOppo = new DAL.crm_opportunity_dal().FindNoDeleteById((long)tempQuote.opportunity_id);
+                        }
+                    }
+                    else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.RECURRING_TICKET)
+                    {
+                        tempRecTicket = tempBll.GetRecTicketTmpl(temp.id);
+                        if (tempRecTicket != null)
+                        {
+                            if(tempRecTicket.account_id!=null)
+                                thisAccount = accountBll.GetCompany((long)tempRecTicket.account_id);
+                            if (tempRecTicket.contact_id != null)
+                                thisContact = contactBll.GetContact((long)tempRecTicket.contact_id);
+                            if (tempRecTicket.contract_id != null)
+                                thisContract = new ContractBLL().GetContract((long)tempRecTicket.contract_id);
+                            if (tempRecTicket.cost_code_id != null)
+                                thisCostCode = new DAL.d_cost_code_dal().FindNoDeleteById((long)tempRecTicket.cost_code_id);
+                            if (tempRecTicket.installed_product_id != null)
+                            {
+                                thisInsPro = new InstalledProductBLL().GetById((long)tempRecTicket.installed_product_id);
+                                if (thisInsPro != null)
+                                    thisProduct = new ProductBLL().GetProduct(thisInsPro.product_id);
+                            }
+
+                        }
+                    }
+
                 }
             }
             if (!string.IsNullOrEmpty(Request.QueryString["formTypeId"]))
@@ -87,6 +168,7 @@ namespace EMT.DoneNOW.Web.SysSetting
             else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.PROJECT_NOTE)
             {
                 typeName = "项目备注";
+                tempNotiList = new DAL.sys_notify_tmpl_dal().GetTempByEvent(((int)DicEnum.NOTIFY_EVENT.PROJECT_NOTE_CREATED_OR_EDITED).ToString());
                 if (pushList!=null&& pushList.Count > 0)
                     pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.PROJECT_NOTE).ToString()).ToList();
                 if(actList!=null&& actList.Count>0)
@@ -96,6 +178,7 @@ namespace EMT.DoneNOW.Web.SysSetting
             else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TASK_NOTE)
             {
                 typeName = "任务备注";
+                tempNotiList = new DAL.sys_notify_tmpl_dal().GetTempByEvent(((int)DicEnum.NOTIFY_EVENT.TASK_NOTE_CREATED_EDITED).ToString());
                 if (pushList != null && pushList.Count > 0)
                     pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
                 if (actList != null && actList.Count > 0)
@@ -105,10 +188,28 @@ namespace EMT.DoneNOW.Web.SysSetting
             else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TICKET_NOTE)
             {
                 typeName = "工单备注";
+                tempNotiList = new DAL.sys_notify_tmpl_dal().GetTempByEvent(((int)DicEnum.NOTIFY_EVENT.TICKET_NOTE_CREATED_EDITED).ToString());
                 if (pushList != null && pushList.Count > 0)
                     pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TICKET_NOTE).ToString()).ToList();
                 if (actList != null && actList.Count > 0)
                     actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TICKET_NOTE).ToString()).ToList();
+            }
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.QUICK_CALL)
+            {
+                typeName = "快速服务预定";
+                resRoleList =  new DAL.sys_resource_department_dal().FindListBySql<ResRole>("select DISTINCT resource_id,role_id from sys_resource_department");
+            }
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.QUOTE)
+            {
+                typeName = "报价";
+                payTermList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.PAYMENT_TERM);
+                payTypeList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.PAYMENT_TYPE);
+                shipTypeList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.PAYMENT_SHIP_TYPE);
+            }
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.RECURRING_TICKET)
+            {
+                typeName = "定期工单";
+                resRoleList = new DAL.sys_resource_department_dal().FindListBySql<ResRole>("select DISTINCT resource_id,role_id from sys_resource_department");
             }
 
 
@@ -259,9 +360,89 @@ namespace EMT.DoneNOW.Web.SysSetting
             }
             else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.PROJECT_NOTE)
             {
+                #region 项目备注相关
+                sys_form_tmpl_activity pageTempNote = AssembleModel<sys_form_tmpl_activity>();
+                if (!string.IsNullOrEmpty(Request.Form["isAnnounce"]) && Request.Form["isAnnounce"].Equals("on"))
+                    pageTempNote.announce = 1;
+                else
+                    pageTempNote.announce = 0;
+                if (!isAdd)
+                {
+                    tempNote.action_type_id = pageTempNote.action_type_id;
+                    tempNote.announce = pageTempNote.announce;
+                    tempNote.publish_type_id = pageTempNote.publish_type_id;
+                    tempNote.name = pageTempNote.name;
+                    tempNote.description = pageTempNote.description;
+                    return tempNote;
+                }
+                else
+                    return pageTempNote;
+
+                #endregion
 
             }
-           
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.QUICK_CALL)
+            {
+                #region 快速服务预定
+                sys_form_tmpl_quick_call pageTempQuickCall = AssembleModel<sys_form_tmpl_quick_call>();
+                if (!string.IsNullOrEmpty(Request.Form["resRoleId"]))
+                {
+                    var resArr = Request.Form["resRoleId"].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (resArr.Count() == 2)
+                    {
+                        pageTempQuickCall.owner_resource_id = long.Parse(resArr[0]);
+                        pageTempQuickCall.role_id = long.Parse(resArr[1]);
+                    }
+                }
+                if (!isAdd)
+                {
+                    tempQuickCall.account_id = pageTempQuickCall.account_id;
+                    tempQuickCall.contact_id = pageTempQuickCall.contact_id;
+                    tempQuickCall.title = pageTempQuickCall.title;
+                    tempQuickCall.description = pageTempQuickCall.description;
+                    tempQuickCall.priority_type_id = pageTempQuickCall.priority_type_id;
+                    tempQuickCall.issue_type_id = pageTempQuickCall.issue_type_id;
+                    tempQuickCall.sub_issue_type_id = pageTempQuickCall.sub_issue_type_id;
+                    tempQuickCall.cate_id = pageTempQuickCall.cate_id;
+                    tempQuickCall.contract_id = pageTempQuickCall.contract_id;
+                    tempQuickCall.cost_code_id = pageTempQuickCall.cost_code_id;
+                    tempQuickCall.department_id = pageTempQuickCall.department_id;
+                    tempQuickCall.owner_resource_id = pageTempQuickCall.owner_resource_id;
+                    tempQuickCall.role_id = pageTempQuickCall.role_id;
+                    tempQuickCall.second_resource_ids = pageTempQuickCall.second_resource_ids;
+                    tempQuickCall.estimated_begin_time = pageTempQuickCall.estimated_begin_time;
+                    tempQuickCall.estimated_end_time = pageTempQuickCall.estimated_end_time;
+                    return tempQuickCall;
+                }
+                else return pageTempQuickCall;
+                #endregion
+            }
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.QUOTE)
+            {
+                #region 报价预定
+                sys_form_tmpl_quote pageTempQuote = AssembleModel<sys_form_tmpl_quote>();
+                if (!string.IsNullOrEmpty(Request.Form["isActive"]) && Request.Form["isActive"].Equals("on"))
+                    pageTempQuote.is_active = 1;
+                else pageTempQuote.is_active = 0;
+                if (!string.IsNullOrEmpty(Request.Form["isBillTo"]) && Request.Form["isBillTo"].Equals("on"))
+                    pageTempQuote.bill_to_as_sold_to = 1;
+                else pageTempQuote.bill_to_as_sold_to = 0;
+                if (!string.IsNullOrEmpty(Request.Form["isShipTo"]) && Request.Form["isShipTo"].Equals("on"))
+                    pageTempQuote.ship_to_as_sold_to = 1;
+                else pageTempQuote.ship_to_as_sold_to = 0;
+                if (!isAdd)
+                {
+                    pageTempQuote.id = tempQuote.id;
+                    pageTempQuote.oid = tempQuote.oid;
+                    pageTempQuote.form_tmpl_id = tempQuote.form_tmpl_id;
+                    pageTempQuote.create_time = tempQuote.create_time;
+                    pageTempQuote.create_user_id = tempQuote.create_user_id;
+                    pageTempQuote.update_time = tempQuote.update_time;
+                    pageTempQuote.update_user_id = tempQuote.update_user_id;
+                }
+                return pageTempQuote;
+                #endregion
+            }
 
             return null;
         }
@@ -280,13 +461,38 @@ namespace EMT.DoneNOW.Web.SysSetting
                     else
                         result = tempBll.EditOpportunityTmpl(formTmpl, obj as sys_form_tmpl_opportunity, LoginUserId);
                 }
+                else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.PROJECT_NOTE|| formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TICKET_NOTE|| formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TASK_NOTE)
+                {
+                    if (isAdd)
+                        result = tempBll.AddNoteTmpl(formTmpl, obj as sys_form_tmpl_activity, LoginUserId);
+                    else
+                        result = tempBll.EditNoteTmpl(formTmpl, obj as sys_form_tmpl_activity, LoginUserId);
+                }
+                else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.QUICK_CALL)
+                {
+                    if (isAdd)
+                        result = tempBll.AddQuickCallTmpl(formTmpl, obj as sys_form_tmpl_quick_call, LoginUserId);
+                    else
+                        result = tempBll.EditQuickCallTmpl(formTmpl, obj as sys_form_tmpl_quick_call, LoginUserId);
+                }
+                else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.QUOTE)
+                {
+                    if (isAdd)
+                        result = tempBll.AddQuoteTmpl(formTmpl, obj as sys_form_tmpl_quote, LoginUserId);
+                    else
+                        result = tempBll.EditQuoteTmpl(formTmpl, obj as sys_form_tmpl_quote, LoginUserId);
+                }
             }
-            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.PROJECT_NOTE)
-            {
+            
 
-            }
             ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存{(result?"成功":"失败")}！');window.close();self.opener.location.reload();</script>");
 
         }
+    }
+
+    public class ResRole
+    {
+       public long resource_id;
+        public long role_id;
     }
 }

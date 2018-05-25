@@ -707,6 +707,9 @@ namespace EMT.DoneNOW.BLL
                 {
                     // 预估偏差将会变更为：实际时间 - （预估时间+变更单时间）+剩余时间
                     thisTask.projected_variance = (thisVt.worked_hours == null ? 0 : (decimal)thisVt.worked_hours) - (thisTask.estimated_hours + (thisVt.change_Order_Hours == null ? 0 : (decimal)thisVt.change_Order_Hours));
+
+                    thisTask.reason = "";
+                    thisTask.date_completed = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 }
             }
             OperLogBLL.OperLogUpdate<sdk_task>(thisTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
@@ -2712,8 +2715,16 @@ namespace EMT.DoneNOW.BLL
                         {
                             choTask.status_id = para.status_id;
                             choTask.projected_variance += para.remain_hours - (v_task.remain_hours == null ? 0 : (decimal)v_task.remain_hours);
+                            if (para.status_id == (int)DicEnum.TICKET_STATUS.DONE)
+                            {
+                                choTask.date_completed = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                                choTask.projected_variance -= (choTask.estimated_hours - (v_task.worked_hours != null ? (decimal)v_task.worked_hours : 0));
+                            }
+                           
+                            
                             OperLogBLL.OperLogUpdate<sdk_task>(choTask, _dal.FindNoDeleteById(choTask.id), choTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "更改task");
                             _dal.Update(choTask);
+                           
 
                         }
                     }

@@ -241,6 +241,42 @@ namespace EMT.DoneNOW.BLL
             var tmpl = _dal.FindSignleBySql<sys_form_tmpl_opportunity>(_dal.QueryStringDeleteFlag($"SELECT * FROM sys_form_tmpl_opportunity WHERE delete_time = 0 and form_tmpl_id={formTmplId}"));
             return tmpl;
         }
+        /// <summary>
+        /// 获取备注模板
+        /// </summary>
+        public sys_form_tmpl_activity GetNoteTmpl(long formTmplId)
+        {
+            var tmpl = _dal.FindSignleBySql<sys_form_tmpl_activity>($"SELECT * FROM sys_form_tmpl_activity WHERE delete_time = 0 and form_tmpl_id={formTmplId}");
+            return tmpl;
+        }
+        /// <summary>
+        /// 获取快速服务预定模板
+        /// </summary>
+        public sys_form_tmpl_quick_call GetQuickCallTmpl(long formTmplId)
+        {
+            var tmpl = _dal.FindSignleBySql<sys_form_tmpl_quick_call>($"SELECT * FROM sys_form_tmpl_quick_call WHERE delete_time = 0 and form_tmpl_id={formTmplId}");
+            return tmpl;
+        }
+
+        /// <summary>
+        /// 获取报价模板
+        /// </summary>
+        public sys_form_tmpl_quote GetQuoteTmpl(long formTmplId)
+        {
+            var tmpl = _dal.FindSignleBySql<sys_form_tmpl_quote>($"SELECT * FROM sys_form_tmpl_quote WHERE delete_time = 0 and form_tmpl_id={formTmplId}");
+            return tmpl;
+        }
+        
+        /// <summary>
+        /// 获取定期工单模板
+        /// </summary>
+        public sys_form_tmpl_recurring_ticket GetRecTicketTmpl(long formTmplId)
+        {
+            var tmpl = _dal.FindSignleBySql<sys_form_tmpl_recurring_ticket>($"SELECT * FROM sys_form_tmpl_recurring_ticket WHERE delete_time = 0 and form_tmpl_id={formTmplId}");
+            return tmpl;
+        }
+
+
 
         /// <summary>
         /// 获取一个用户可见的商机表单模板（包括该用户个人可见模板、该用户所在部门可见模板和所有人可见模板）
@@ -276,6 +312,8 @@ namespace EMT.DoneNOW.BLL
             return _dal.FindNoDeleteById(id);
         }
 
+
+        #region 商机模板管理
         /// <summary>
         /// 新增商机模板
         /// </summary>
@@ -290,6 +328,7 @@ namespace EMT.DoneNOW.BLL
             tmplOppo.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             tmplOppo.update_user_id = userId;
             new sys_form_tmpl_opportunity_dal().Insert(tmplOppo);
+            OperLogBLL.OperLogAdd<sys_form_tmpl_opportunity>(tmplOppo, tmpl.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_OPPORTUNITY, "");
             return true;
         }
         /// <summary>
@@ -299,11 +338,19 @@ namespace EMT.DoneNOW.BLL
         {
             if (!EditFormTmpl(tmpl, userId))
                 return false;
+            sys_form_tmpl_opportunity_dal sftoDal = new sys_form_tmpl_opportunity_dal();
+            var oldtmplOpp = sftoDal.FindNoDeleteById(tmplOppo.id);
+            if (oldtmplOpp == null)
+                return false;
             tmplOppo.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             tmplOppo.update_user_id = userId;
             new sys_form_tmpl_opportunity_dal().Update(tmplOppo);
+            OperLogBLL.OperLogUpdate<sys_form_tmpl_opportunity>(tmplOppo, oldtmplOpp, tmpl.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_OPPORTUNITY, "");
             return true;
         }
+        #endregion
+
+        #region 模板管理
 
         /// <summary>
         /// 新增模板
@@ -318,6 +365,7 @@ namespace EMT.DoneNOW.BLL
             tmpl.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             tmpl.update_user_id = userId;
             _dal.Insert(tmpl);
+            OperLogBLL.OperLogAdd<sys_form_tmpl>(tmpl, tmpl.id,userId,OPER_LOG_OBJ_CATE.FROM,"");
             return true;
         }
         /// <summary>
@@ -333,7 +381,7 @@ namespace EMT.DoneNOW.BLL
             tmpl.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             tmpl.update_user_id = userId;
             _dal.Update(tmpl);
-            //OperLogBLL.OperLogAdd<sys_form_tmpl>();
+            OperLogBLL.OperLogUpdate<sys_form_tmpl>(tmpl, oldTemp, tmpl.id, userId, OPER_LOG_OBJ_CATE.FROM, "");
             return true;
         }
         /// <summary>
@@ -347,10 +395,12 @@ namespace EMT.DoneNOW.BLL
             sbyte active = (sbyte)(isActive ? 1 : 0);
             if(tmpl.is_active!= active)
             {
+                var oldTemp = _dal.FindNoDeleteById(tmpl.id);
                 tmpl.is_active = active;
                 tmpl.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 tmpl.update_user_id = userId;
                 _dal.Update(tmpl);
+                OperLogBLL.OperLogUpdate<sys_form_tmpl>(tmpl, oldTemp, tmpl.id, userId, OPER_LOG_OBJ_CATE.FROM, "");
             }
             return true;
         }
@@ -363,27 +413,54 @@ namespace EMT.DoneNOW.BLL
             if (tmpl == null)
                 return true;
             _dal.SoftDelete(tmpl,userId);
+            OperLogBLL.OperLogDelete<sys_form_tmpl>(tmpl, tmpl.id, userId, OPER_LOG_OBJ_CATE.FROM, "");
             if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.OPPORTUNITY)
             {
                 var oppoTmp = GetOpportunityTmpl(tmpl.id);
                 if (oppoTmp != null)
-                    new sys_form_tmpl_opportunity_dal().SoftDelete(oppoTmp,userId);
+                {
+                    new sys_form_tmpl_opportunity_dal().SoftDelete(oppoTmp, userId);
+                    OperLogBLL.OperLogDelete<sys_form_tmpl_opportunity>(oppoTmp, oppoTmp.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_OPPORTUNITY, "");
+                }
+                    
             }
             else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.PROJECT_NOTE)
             {
+                var noteTmp = GetNoteTmpl(tmpl.id);
+                if (noteTmp != null)
+                {
+                    new sys_form_tmpl_activity_dal().SoftDelete(noteTmp, userId);
+                    OperLogBLL.OperLogDelete<sys_form_tmpl_activity>(noteTmp, noteTmp.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_ACTIVITY, "");
+                }
 
             }
             else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.QUICK_CALL)
             {
+                var quickCallTmp = GetQuickCallTmpl(tmpl.id);
+                if (quickCallTmp != null)
+                {
+                    new sys_form_tmpl_quick_call_dal().SoftDelete(quickCallTmp, userId);
+                    OperLogBLL.OperLogDelete<sys_form_tmpl_quick_call>(quickCallTmp, quickCallTmp.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_QUICK_CALL, "");
+                }
 
             }
             else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.QUOTE)
             {
-
+                var quoteTmp = GetQuoteTmpl(tmpl.id);
+                if (quoteTmp != null)
+                {
+                    new sys_form_tmpl_quote_dal().SoftDelete(quoteTmp, userId);
+                    OperLogBLL.OperLogDelete<sys_form_tmpl_quote>(quoteTmp, quoteTmp.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_QUOTE, "");
+                }
             }
             else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.RECURRING_TICKET)
             {
-
+                var recTicketTmp = GetRecTicketTmpl(tmpl.id);
+                if (recTicketTmp != null)
+                {
+                    new sys_form_tmpl_recurring_ticket_dal().SoftDelete(recTicketTmp, userId);
+                    OperLogBLL.OperLogDelete<sys_form_tmpl_recurring_ticket>(recTicketTmp, recTicketTmp.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_RECURRING_TICKET, "");
+                }
             }
             else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.SERVICE_CALL)
             {
@@ -413,6 +490,134 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
 
+        #endregion
 
+        #region 备注管理
+        public bool AddNoteTmpl(sys_form_tmpl tmpl, sys_form_tmpl_activity tmplNote, long userId)
+        {
+            if (!AddFormTmpl(tmpl, userId))
+                return false;
+            tmplNote.id = _dal.GetNextIdCom();
+            tmplNote.form_tmpl_id = tmpl.id;
+            tmplNote.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplNote.create_user_id = userId;
+            tmplNote.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplNote.update_user_id = userId;
+            new sys_form_tmpl_activity_dal().Insert(tmplNote);
+            OperLogBLL.OperLogAdd<sys_form_tmpl_activity>(tmplNote, tmplNote.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_ACTIVITY, "");
+            return true;
+        }
+
+        public bool EditNoteTmpl(sys_form_tmpl tmpl, sys_form_tmpl_activity tmplNote, long userId)
+        {
+            sys_form_tmpl_activity_dal sftaDal = new sys_form_tmpl_activity_dal();
+            var oldtmplNote = sftaDal.FindNoDeleteById(tmplNote.id);
+            if (oldtmplNote == null)
+                return false;
+            if (!EditFormTmpl(tmpl, userId))
+                return false;
+            tmplNote.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplNote.update_user_id = userId;
+            sftaDal.Update(tmplNote);
+            OperLogBLL.OperLogUpdate<sys_form_tmpl_activity>(tmplNote, oldtmplNote, oldtmplNote.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_ACTIVITY, "");
+            return true;
+        }
+        #endregion
+
+        #region 快速服务预定管理
+        public bool AddQuickCallTmpl(sys_form_tmpl tmpl, sys_form_tmpl_quick_call tmplQuickCall, long userId)
+        {
+            if (!AddFormTmpl(tmpl, userId))
+                return false;
+            tmplQuickCall.id = _dal.GetNextIdCom();
+            tmplQuickCall.form_tmpl_id = tmpl.id;
+            tmplQuickCall.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplQuickCall.create_user_id = userId;
+            tmplQuickCall.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplQuickCall.update_user_id = userId;
+            new sys_form_tmpl_quick_call_dal().Insert(tmplQuickCall);
+            OperLogBLL.OperLogAdd<sys_form_tmpl_quick_call>(tmplQuickCall, tmplQuickCall.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_QUICK_CALL, "");
+            return true;
+        }
+
+        public bool EditQuickCallTmpl(sys_form_tmpl tmpl, sys_form_tmpl_quick_call tmplQuickCall, long userId)
+        {
+            sys_form_tmpl_quick_call_dal sftqDal = new sys_form_tmpl_quick_call_dal();
+            var oldtmplQuickCall = sftqDal.FindNoDeleteById(tmplQuickCall.id);
+            if (oldtmplQuickCall == null)
+                return false;
+            if (!EditFormTmpl(tmpl, userId))
+                return false;
+            tmplQuickCall.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplQuickCall.update_user_id = userId;
+            sftqDal.Update(tmplQuickCall);
+            OperLogBLL.OperLogUpdate<sys_form_tmpl_quick_call>(tmplQuickCall, oldtmplQuickCall, tmplQuickCall.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_ACTIVITY, "");
+            return true;
+        }
+        #endregion
+        
+        #region 报价模板管理
+        public bool AddQuoteTmpl(sys_form_tmpl tmpl, sys_form_tmpl_quote tmplQuote, long userId)
+        {
+            if (!AddFormTmpl(tmpl, userId))
+                return false;
+            tmplQuote.id = _dal.GetNextIdCom();
+            tmplQuote.form_tmpl_id = tmpl.id;
+            tmplQuote.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplQuote.create_user_id = userId;
+            tmplQuote.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplQuote.update_user_id = userId;
+            new sys_form_tmpl_quote_dal().Insert(tmplQuote);
+            OperLogBLL.OperLogAdd<sys_form_tmpl_quote>(tmplQuote, tmplQuote.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_QUOTE, "");
+            return true;
+        }
+
+        public bool EditQuoteTmpl(sys_form_tmpl tmpl, sys_form_tmpl_quote tmplQuote, long userId)
+        {
+            sys_form_tmpl_quote_dal sftqDal = new sys_form_tmpl_quote_dal();
+            var oldtmplQuote = sftqDal.FindNoDeleteById(tmplQuote.id);
+            if (oldtmplQuote == null)
+                return false;
+            if (!EditFormTmpl(tmpl, userId))
+                return false;
+            tmplQuote.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplQuote.update_user_id = userId;
+            sftqDal.Update(tmplQuote);
+            OperLogBLL.OperLogUpdate<sys_form_tmpl_quote>(tmplQuote, oldtmplQuote, tmplQuote.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_QUOTE, "");
+            return true;
+        }
+        #endregion
+
+        #region 定期工单管理
+        public bool AddRecTicketTmpl(sys_form_tmpl tmpl, sys_form_tmpl_recurring_ticket tmplRecTicket, long userId)
+        {
+            if (!AddFormTmpl(tmpl, userId))
+                return false;
+            tmplRecTicket.id = _dal.GetNextIdCom();
+            tmplRecTicket.form_tmpl_id = tmpl.id;
+            tmplRecTicket.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplRecTicket.create_user_id = userId;
+            tmplRecTicket.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplRecTicket.update_user_id = userId;
+            new sys_form_tmpl_recurring_ticket_dal().Insert(tmplRecTicket);
+            OperLogBLL.OperLogAdd<sys_form_tmpl_recurring_ticket>(tmplRecTicket, tmplRecTicket.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_RECURRING_TICKET, "");
+            return true;
+        }
+
+        public bool EditRecTicketTmpl(sys_form_tmpl tmpl, sys_form_tmpl_recurring_ticket tmplRecTicket, long userId)
+        {
+            sys_form_tmpl_recurring_ticket_dal sftrtDal = new sys_form_tmpl_recurring_ticket_dal();
+            var oldtmplTicket = sftrtDal.FindNoDeleteById(tmplRecTicket.id);
+            if (oldtmplTicket == null)
+                return false;
+            if (!EditFormTmpl(tmpl, userId))
+                return false;
+            tmplRecTicket.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplRecTicket.update_user_id = userId;
+            sftrtDal.Update(tmplRecTicket);
+            OperLogBLL.OperLogUpdate<sys_form_tmpl_recurring_ticket>(tmplRecTicket, oldtmplTicket, tmplRecTicket.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_RECURRING_TICKET, "");
+            return true;
+        }
+        #endregion
     }
 }

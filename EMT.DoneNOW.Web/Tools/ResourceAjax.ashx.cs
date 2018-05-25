@@ -114,6 +114,9 @@ namespace EMT.DoneNOW.Web
                     case "GetWorkList":
                         GetWorkList(context);
                         break;
+                    case "ChechByResRole":
+                        ChechByResRole(context);
+                        break;
                     default:
                         break;
                 }
@@ -731,6 +734,39 @@ namespace EMT.DoneNOW.Web
                 }
             }
         }
+
+        private void ChechByResRole(HttpContext context)
+        {
+            bool isRepeat = false;  //是否有重复
+            var priResRole = context.Request.QueryString["ResRole"];
+            var otherIds = context.Request.QueryString["OtherIds"];
+            if(!string.IsNullOrEmpty(priResRole)&& !string.IsNullOrEmpty(otherIds))
+            {
+                otherIds = ClearRepeatRes(otherIds);
+                var priArr = priResRole.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                var resDepList = new sys_resource_department_dal().GetListByIds(otherIds);
+                if(priArr.Count()==2&& resDepList!=null&& resDepList.Count > 0)
+                {
+                    var thisResDep = resDepList.FirstOrDefault(_ => _.resource_id.ToString() == priArr[0]);
+                    if (thisResDep != null)
+                    {
+                        isRepeat = true;
+                        resDepList.Remove(thisResDep);
+                        otherIds = string.Empty;
+                        resDepList.ForEach(_ => {
+                            otherIds += _.id.ToString() + ',';
+                        });
+                        if (!string.IsNullOrEmpty(otherIds))
+                            otherIds = otherIds.Substring(0, otherIds.Length-1);
+                    }
+                   
+                }
+            }
+            context.Response.Write(new Tools.Serialize().SerializeJson(new { isRepeat = isRepeat, newDepResIds = otherIds }));
+
+
+        }
+        // CheckResInResDepIds
 
 
         /// <summary>

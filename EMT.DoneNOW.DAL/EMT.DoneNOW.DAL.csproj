@@ -183,6 +183,10 @@
     <Compile Include="SYS\sys_dashboard_publish_dal.cs" />
     <Compile Include="SYS\sys_dashboard_resource_dal.cs" />
     <Compile Include="SYS\sys_department_dal.cs" />
+    <Compile Include="SYS\sys_form_tmpl_activity_dal.cs" />
+    <Compile Include="SYS\sys_form_tmpl_quick_call_dal.cs" />
+    <Compile Include="SYS\sys_form_tmpl_quote_dal.cs" />
+    <Compile Include="SYS\sys_form_tmpl_recurring_ticket_dal.cs" />
     <Compile Include="SYS\sys_notice_dal.cs" />
     <Compile Include="SYS\sys_notice_resource_dal.cs" />
     <Compile Include="SYS\sys_notify_tmpl_email_dal.cs" />

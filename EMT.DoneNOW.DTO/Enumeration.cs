@@ -946,7 +946,19 @@ namespace EMT.DoneNOW.DTO
             DASHBOARD_WIDGET = 1436,                    // 仪表板小窗口
             DASHBOARD_WIDGET_GUAGE = 1437,              // 仪表板小窗口部件
             TICKET_SLA_EVENT,                           // 工单sla 事件
-            
+		    SYS_FORM_TMPL_ACTIVITY= 1446,               // 表单模板-
+	        SYS_FORM_TMPL_OPPORTUNITY= 1447,            // 表单模板-商机
+            SYS_FORM_TMPL_QUICK_CALL = 1448,            // 表单模板-快速服务预定
+            SYS_FORM_TMPL_QUOTE = 1449,                 // 表单模板-报价
+            SYS_FORM_TMPL_RECURRING_TICKET = 1450,      // 表单模板-定期工单
+            SYS_FORM_TMPL_SERVICE_CALL = 1451,          // 表单模板-服务预定
+            SYS_FORM_TMPL_TICKET = 1452,                // 表单模板-工单
+            SYS_FORM_TMPL_WORK_ENTRY = 1453,            // 表单模板-工时
+            SYS_FORM_TMPL_RECURRING_TICKET_EXT = 1454,  // 表单模板-定期工单自定义
+            SYS_FORM_TMPL_TICKET_EXT = 1455,            // 表单模板-工单自定义
+            SYS_FORM_TMPL_TICKET_CHECKLIST = 1456,      // 表单模板-工单检查单
+
+
         }
 
         /// <summary>

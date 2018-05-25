@@ -782,11 +782,16 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <select name="" id="" class="txtBlack8Class">
-
-                                                <option selected="selected" value="1">All Autotask Users</option>
-                                                <option value="2">Internal Project Team</option>
-                                                <option value="3">Project Team</option>
+                                            <select name="publish_type_id" id="publish_type_id" class="txtBlack8Class">
+                                                <% if (pushList != null && pushList.Count > 0)
+                                                    {
+                                                        foreach (var puish in pushList)
+                                                        { %>
+                                                <option value="<%=puish.id %>" <%if (tempNote != null && tempNote.publish_type_id != null && tempNote.publish_type_id == puish.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=puish.name %></option>
+                                                <%  }
+                                                    } %>
                                             </select></span>
                                     </div>
                                 </td>
@@ -795,8 +800,9 @@
                                 <td></td>
                                 <td class="input">
                                     <div>
-                                        <span id="EditControlFormProjectNoteEntryFavEditor.ascx_JournalUse" class="FieldLabel"><span class="txtBlack8Class">
-                                            <input id="" type="checkbox" name="" style="vertical-align: middle;" /><label style="vertical-align: middle;">Announce</label></span></span>
+                                        <span class="FieldLabel"><span class="txtBlack8Class">
+                                            <input id="" type="checkbox" name="isAnnounce" style="vertical-align: middle;" <%if (tempNote != null && tempNote.announce == 1)
+                                                { %> checked="checked" <%} %> /><label style="vertical-align: middle;">公告</label></span></span>
                                     </div>
                                 </td>
                             </tr>
@@ -808,12 +814,17 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <select name="" id="" class="txtBlack8Class">
-                                                <option selected="selected" value=""></option>
-                                                <option value="8">Email</option>
-                                                <option value="5">Project Notes</option>
-                                                <option value="12">Project Status</option>
-
+                                            <select name="action_type_id" id="action_type_id" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                   <% if (actList != null && actList.Count > 0)
+                                                    {
+                                                        foreach (var act in actList)
+                                                        { %>
+                                                <option value="<%=act.id %>" <%if (tempNote != null && tempNote.action_type_id == act.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=act.name %></option>
+                                                <%  }
+                                                    } %>
                                             </select></span>
                                     </div>
                                 </td>
@@ -826,7 +837,7 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="" type="text" id="" class="txtBlack8Class" /></span>
+                                            <input name="name" type="text" id="name" class="txtBlack8Class" value="<%=tempNote!=null?tempNote.name:"" %>" /></span>
                                     </div>
                                 </td>
                             </tr>
@@ -837,7 +848,7 @@
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">描述</span>
                                     </div>
                                     <div>
-                                        <textarea name="" id="" rows="3" cols="55" style="height: 100px"></textarea>
+                                        <textarea name="description" id="" rows="3" cols="55" style="height: 100px"><%=tempNote!=null?tempNote.description:"" %></textarea>
                                     </div>
                                 </td>
                             </tr>
@@ -908,7 +919,7 @@
                                                     } %>
                                             </select></span>
                                         <br>
-                                        <span id="" class="FieldLevelInstruction" style="font-weight: normal;">The selected Notification Template's "Send From" setting will override the Form Template's setting</span>
+                                        <span id="" class="FieldLevelInstruction" style="font-weight: normal;"></span>
                                     </div>
                                 </td>
                             </tr>
@@ -945,9 +956,12 @@
                                         客户名称 
                                     </div>
                                     <div id="">
-                                        <input name="" type="hidden" id="" /><nobr><span id="" style="display:inline-block;">
-                                            <input name="" type="text" id="" class="txtBlack8Class"  style="width:360px;" /></span>&nbsp;
-                                            <i onclick="chooseCompany()" style="width: 16px; height: 16px; float: right; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;"></i></nobr>
+                                         <span id="" style="display: inline-block;">
+                                            <input name="account_id" type="hidden" id="accountIdHidden" value="<%=thisAccount != null ? thisAccount.id.ToString() : "" %>" />
+                                            <input name="" type="text" value="<%=thisAccount != null ? thisAccount.name : "" %>" id="accountId" class="txtBlack8Class" />
+                                            <i onclick="chooseCompany()" style="width: 16px; height: 16px; float: right; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;"></i>
+
+                                        </span>
                                     </div>
                                 </td>
                             </tr>
@@ -963,7 +977,7 @@
                                             <tbody>
                                                 <tr>
                                                     <td id=""><span id="" style="display: inline-block;">
-                                                        <select name="contact_id" id="contact_id" class="txtBlack8Class" style="width: 374px;"></select></span></td>
+                                                        <select name="contact_id" id="contact_id" class="txtBlack8Class" style="width: 374px;" disabled="disabled"></select></span></td>
 
                                                     <td id=""></td>
                                                 </tr>
@@ -982,7 +996,7 @@
                                     </div>
                                     <div>
                                         <span id="" class="ticketTitleInput" style="display: inline-block;">
-                                            <input name="" type="text" id="" class="txtBlack8Class" style="width: 100%;" /></span>
+                                            <input name="title" type="text" id="title" class="txtBlack8Class" style="width: 100%;" value="<%=tempQuickCall!=null?tempQuickCall.title:"" %>" /></span>
                                     </div>
                                 </td>
                             </tr>
@@ -993,7 +1007,7 @@
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">工单描述</span>
                                     </div>
                                     <div>
-                                        <textarea name="" id="" rows="3" cols="55" style="width: 360px; height: 50px"></textarea>
+                                        <textarea name="description" id="description" rows="3" cols="55" style="width: 360px; height: 50px"><%=tempQuickCall!=null?tempQuickCall.description:"" %></textarea>
                                     </div>
                                 </td>
                             </tr>
@@ -1005,8 +1019,17 @@
                                     </div>
                                     <div>
                                         <span id="" class="editDD">
-                                            <select name="" id="" class="txtBlack8Class">
-                                                <option selected="selected" value=""></option>
+                                            <select name="priority_type_id" id="priority_type_id" class="txtBlack8Class">
+                                                         <option value=""></option>
+                                                <% if (priorityList != null && priorityList.Count > 0)
+                                                    {
+                                                        foreach (var priority in priorityList)
+                                                        { %>
+                                                <option value="<%=priority.id %>" <%if (tempQuickCall != null && tempQuickCall.priority_type_id != null && tempQuickCall.priority_type_id == priority.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=priority.name %></option>
+                                                <%  }
+                                                    } %>
 
                                             </select></span>
                                     </div>
@@ -1020,9 +1043,17 @@
                                     </div>
                                     <div>
                                         <span id="" class="editDD">
-                                            <select name="" id="" class="txtBlack8Class">
-                                                <option selected="selected" value=""></option>
-
+                                            <select name="issue_type_id" id="issue_type_id" class="txtBlack8Class">
+                                                     <option value=""></option>
+                                                <% if (issueTypeList != null && issueTypeList.Count > 0)
+                                                    {
+                                                        foreach (var issueType in issueTypeList)
+                                                        { %>
+                                                <option value="<%=issueType.id %>" <%if (tempQuickCall != null && tempQuickCall.issue_type_id != null && tempQuickCall.issue_type_id == issueType.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=issueType.name %></option>
+                                                <%  }
+                                                    } %>
 
                                             </select></span>
                                     </div>
@@ -1036,7 +1067,7 @@
                                     </div>
                                     <div>
                                         <span id="" class="editDD">
-                                            <select name="" id="" class="txtBlack8Class">
+                                            <select name="sub_issue_type_id" id="sub_issue_type_id" class="txtBlack8Class">
                                                 <option selected="selected" value=""></option>
 
                                             </select></span>
@@ -1051,12 +1082,17 @@
                                     </div>
                                     <div>
                                         <span id="" class="editDD">
-                                            <select name="" id="" class="txtBlack8Class">
-                                                <option selected="selected" value=""></option>
-                                                <option value="3">Standard</option>
-                                                <option value="1">Standard (non-editable)</option>
-                                                <option value="2">AEM Alert</option>
-
+                                            <select name="cate_id" id="cate_id" class="txtBlack8Class">
+                                                  <option value=""></option>
+                                                <% if (ticketCateList != null && ticketCateList.Count > 0)
+                                                    {
+                                                        foreach (var ticketCate in ticketCateList)
+                                                        { %>
+                                                <option value="<%=ticketCate.id %>" <%if (tempQuickCall != null && tempQuickCall.cate_id != null && tempQuickCall.cate_id == ticketCate.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=ticketCate.name %></option>
+                                                <%  }
+                                                    } %>
                                             </select></span>
                                     </div>
                                 </td>
@@ -1076,10 +1112,12 @@
                                 <td></td>
                                 <td class="inputLabel">
                                     <div class="FieldLabel">
-                                        <span id="" class="lblNormalClass" style="font-weight: bold;">Contract</span>
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">合同</span>
                                     </div>
-                                    <div id="">
-                                        <input name="" type="hidden" id="" /><nobr><span id=""  style="display:inline-block;"><input name="" type="text" id="" disabled="disabled" class="txtBlack8Class" autocomplete="off" style="width:360px;" /></span>&nbsp;</nobr>
+                                    <div id=""> 
+                                        <input name="contract_id" type="hidden" id="contractIdHidden" value="<%=thisContract!=null?thisContract.id.ToString():"" %>" /><span id=""  style="display:inline-block;"><input name="" type="text" id="contractId" disabled="disabled" class="txtBlack8Class"  style="width:360px;" value="<%=thisContract!=null?thisContract.name:"" %>" /></span>&nbsp;
+                                        <i onclick="ContractCallBack()" style="width: 16px; height: 16px; float: right; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;"></i>
+
                                     </div>
                                 </td>
                             </tr>
@@ -1090,7 +1128,8 @@
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">工作类型</span>
                                     </div>
                                     <div id="">
-                                        <input name="" type="hidden" id="" /><nobr><span id=""  style="display:inline-block;"><input name="" type="text" id="" class="txtBlack8Class" style="width:360px;" /></span>&nbsp;</nobr>
+                                        <input name="cost_code_id" type="hidden" id="costCodeIdHidden" value="<%=thisCostCode!=null?thisCostCode.id.ToString():"" %>" /><span id=""  style="display:inline-block;"><input name="" type="text" id="costCodeId" disabled="disabled" class="txtBlack8Class"  style="width:360px;" value="<%=thisCostCode!=null?thisCostCode.name:"" %>" /></span>&nbsp;
+                                        <i onclick="WorkTypeCallBack()" style="width: 16px; height: 16px; float: right; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;"></i>
                                     </div>
                                 </td>
                             </tr>
@@ -1113,14 +1152,18 @@
                                     </div>
                                     <div>
                                         <span id="" class="ResourceQueueDD">
-                                            <select name="" id="" class="txtBlack8Class">
-                                                <option selected="selected" value=""></option>
-                                                <option value="29683378">Administration</option>
-                                                <option value="5">Client Portal</option>
-                                                <option value="29682833">Level I Support</option>
-                                                <option value="8">Monitoring Alert</option>
-                                                <option value="6">Post Sale</option>
-                                                <option value="29683354">Recurring Tickets</option>
+                                            <select name="department_id" id="department_id" class="txtBlack8Class">
+                                                      <option value=""></option>
+                                                <% if (queueList != null && queueList.Count > 0)
+                                                    {
+                                                        foreach (var queue in queueList)
+                                                        { %>
+                                                <option value="<%=queue.id %>" <%if (tempQuickCall != null && tempQuickCall.department_id != null && tempQuickCall.department_id == queue.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=queue.name %></option>
+                                                <%  }
+                                                    } %>
+
 
                                             </select></span>
                                     </div>
@@ -1134,9 +1177,28 @@
                                     </div>
                                     <div>
                                         <span id="" class="ResourceQueueDD">
-                                            <select name="" id="" class="txtBlack8Class">
-                                                <option selected="selected" value=""></option>
-
+                                            <select name="resRoleId" id="resRoleId" class="txtBlack8Class">
+                                             <option value=""></option>
+                                                <% if (resRoleList != null && resRoleList.Count > 0)
+                                                    {
+                                                        foreach (var resRole in resRoleList)
+                                                        {
+                                                            if (resList == null || resList.Count == 0 || roleList == null || roleList.Count == 0)
+                                                            {
+                                                                continue;
+                                                            }
+                                                            var thisRes = resList.FirstOrDefault(_=>_.id==resRole.resource_id);
+                                                            var thisRole = roleList.FirstOrDefault(_=>_.id==resRole.role_id);
+                                                            if (thisRes == null || thisRole == null)
+                                                            {
+                                                                continue;
+                                                            }
+                                                            %>
+                                                <option value="<%=resRole.resource_id.ToString()+","+resRole.role_id.ToString() %>" <%if (tempQuickCall != null && tempQuickCall.owner_resource_id == resRole.resource_id && tempQuickCall.role_id == resRole.role_id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=thisRes.name+$"[{thisRole.name}]" %></option>
+                                                <%  }
+                                                    } %>
                                             </select></span>
                                     </div>
                                 </td>
@@ -1146,9 +1208,13 @@
                                 <td class="inputLabel">
                                     <span id="" class="FieldLabel" style="font-weight: bold; width: 85px;">其他负责人</span>
                                     <div>
+                                        
+                                        <input type="hidden" id="OtherResIdHidden" name="second_resource_ids" value="<%=tempQuickCall!=null?tempQuickCall.second_resource_ids:"" %>"/>
+                                        <input type="hidden" id="OtherResId"/>
                                         <span id="" style="display: inline-block;">
-                                            <select size="4" name="" id="" class="txtBlack8Class" style="height: 50px; width: 374px;">
+                                            <select size="4" name="" id="otherRes" class="txtBlack8Class" style="height: 50px; width: 374px;">
                                             </select></span>
+                                        <i onclick="OtherResCallBack()" style="width: 16px; height: 16px; float: right; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;"></i>
 
                                     </div>
                                 </td>
@@ -1161,7 +1227,7 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="" type="text" id="" class="txtBlack8Class" style="width: 76px" />&nbsp;</span>
+                                            <input name="estimated_begin_time" type="text" id="" onclick="WdatePicker({ dateFmt: 'HH:mm' })" class="txtBlack8Class" style="width: 76px" value="<%=tempQuickCall!=null?tempQuickCall.estimated_begin_time:"" %>" />&nbsp;</span>
                                     </div>
                                 </td>
                             </tr>
@@ -1173,7 +1239,7 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="" type="text" id="" class="txtBlack8Class" style="width: 76px" />&nbsp;</span>
+                                            <input name="estimated_end_time" type="text" onclick="WdatePicker({ dateFmt: 'HH:mm' })" id="" class="txtBlack8Class" style="width: 76px" value="<%=tempQuickCall!=null?tempQuickCall.estimated_end_time:"" %>"/>&nbsp;</span>
                                     </div>
                                 </td>
                             </tr>
@@ -1202,14 +1268,23 @@
                                    <% }
                                 } %>
                             <tr>
-                                <td></td>
                                 <td class="inputLabel" colspan="2">
                                     <div class="FieldLabel">
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">通知模板</span>
                                     </div>
                                     <div>
                                         <span id="" class="editDD">
-                                            <select name="" id="" class="txtBlack8Class">
+                                            <select name="notify_tmpl_id" id="notify_tmpl_id" class="txtBlack8Class">
+                                                         <option value=""></option>
+                                                <% if (tempNotiList != null && tempNotiList.Count > 0)
+                                                    {
+                                                        foreach (var tempNoti in tempNotiList)
+                                                        { %>
+                                                <option value="<%=tempNoti.id %>" <%if (temp != null && temp.notify_tmpl_id != null && temp.notify_tmpl_id == tempNoti.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=tempNoti.name %></option>
+                                                <%  }
+                                                    } %>
                                             </select></span>
                                     </div>
                                 </td>
@@ -1223,7 +1298,7 @@
                 { %>
             <div class="DivSectionWithHeader">
                 <div class="HeaderRow">
-                    <span id="EditControlFormQuoteEntryFavEditor.ascx_QuoteLabel" class="lblNormalClass" style="font-weight: bold; font-weight: bold;">Quote</span>
+                    <span id="EditControlFormQuoteEntryFavEditor.ascx_QuoteLabel" class="lblNormalClass" style="font-weight: bold; font-weight: bold;">报价</span>
                 </div>
                 <div class="Content">
                     <table id="entireThing" cellpadding="0" cellspacing="0">
@@ -1235,9 +1310,12 @@
                                         客户名称 
                                     </div>
                                     <div id="">
-                                        <input name="" type="hidden" id="" /><nobr><span id="" style="display:inline-block;">
-                                            <input name="" type="text" id="" class="txtBlack8Class"  style="width:360px;" /></span>&nbsp;
-                                            <i onclick="" style="width: 16px; height: 16px; float: right; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;"></i></nobr>
+                                        <span id="" style="display: inline-block;">
+                                            <input name="account_id" type="hidden" id="accountIdHidden" value="<%=thisAccount != null ? thisAccount.id.ToString() : "" %>" />
+                                            <input name="" type="text" value="<%=thisAccount != null ? thisAccount.name : "" %>" id="accountId" class="txtBlack8Class" />
+                                            <i onclick="chooseCompany()" style="width: 16px; height: 16px; float: right; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;"></i>
+
+                                        </span>
                                     </div>
                                 </td>
                             </tr>
@@ -1249,7 +1327,7 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <select name="" id="" class="txtBlack8Class" disabled="disabled">
+                                            <select name="opportunity_id" id="opportunity_id" class="txtBlack8Class" disabled="disabled">
                                             </select></span>
                                     </div>
                                 </td>
@@ -1262,7 +1340,7 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="" type="text" maxlength="200" id="" class="txtBlack8Class" /></span>
+                                            <input name="name" type="text" maxlength="200" id="" value="<%=tempQuote!=null?tempQuote.name:"" %>" class="txtBlack8Class" /></span>
                                     </div>
                                 </td>
                             </tr>
@@ -1273,7 +1351,7 @@
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">报价描述</span>
                                     </div>
                                     <div>
-                                        <textarea name="" id="" maxlength="1000" rows="3" cols="55"></textarea>
+                                        <textarea name="description" id="" maxlength="1000" rows="3" cols="55"><%=tempQuote!=null?tempQuote.description:"" %></textarea>
                                     </div>
                                 </td>
                             </tr>
@@ -1285,7 +1363,7 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="" type="text" id="" class="txtBlack8Class" style="width: 76px; text-align: right;" /></span> 距离现在
+                                            <input name="effective_date" type="text" id="" class="txtBlack8Class" style="width: 76px; text-align: right;" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" value="<%=tempQuote!=null?tempQuote.effective_date.ToString():"" %>" /></span> 距离现在
                                     </div>
                                 </td>
                             </tr>
@@ -1297,7 +1375,7 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="" type="text" id="" class="txtBlack8Class" style="width: 76px; text-align: right;" /></span> 距离现在
+                                            <input name="expiration_date" type="text" id="" class="txtBlack8Class" style="width: 76px; text-align: right;" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" value="<%=tempQuote!=null?tempQuote.expiration_date.ToString():"" %>" /></span> 距离现在
                                     </div>
                                 </td>
                             </tr>
@@ -1313,10 +1391,9 @@
                                             <tbody>
                                                 <tr>
                                                     <td id=""><span style="display: inline-block;">
-                                                        <select name="contact_id" id="contact_id" class="txtBlack8Class" style="width: 374px;">
+                                                        <select name="contact_id" id="contact_id" class="txtBlack8Class" style="width: 374px;" disabled="disabled">
                                                         </select>
                                                     </span></td>
-                                                    <td id="" style="display: none;"></td>
                                                     <td id=""></td>
                                                 </tr>
                                             </tbody>
@@ -1334,11 +1411,17 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <select name="" id="" class="txtBlack8Class">
-                                                <option selected="selected" value=""></option>
-                                                <option value="1">shanghai</option>
-                                                <option value="2">zimaoqu</option>
-
+                                            <select name="tax_region_id" id="" class="txtBlack8Class">
+                                                <option value=""></option>
+                                               <% if (taxRegionList != null && taxRegionList.Count > 0)
+                                                    {
+                                                        foreach (var taxRegion in taxRegionList)
+                                                        { %>
+                                                <option value="<%=taxRegion.id %>" <%if (tempQuote != null && tempQuote.tax_region_id != null && tempQuote.tax_region_id == taxRegion.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=taxRegion.name %></option>
+                                                <%  }
+                                                    } %>
                                             </select></span>
                                     </div>
                                 </td>
@@ -1348,7 +1431,8 @@
                                 <td class="input">
                                     <div>
                                         <span id="" class="FieldLabel"><span class="txtBlack8Class">
-                                            <input id="" type="checkbox" name="" style="vertical-align: middle;" /><label style="vertical-align: middle;">报价激活</label></span></span>
+                                            <input id="" type="checkbox" name="isActive" <% if (tempQuote != null && tempQuote.is_active == 1)
+                                                { %> checked="checked" <%} %> style="vertical-align: middle;" /><label style="vertical-align: middle;">报价激活</label></span></span>
                                     </div>
                                 </td>
                             </tr>
@@ -1356,11 +1440,20 @@
                                 <td></td>
                                 <td class="inputLabel">
                                     <div class="FieldLabel">
-                                        <span id="" class="lblNormalClass" style="font-weight: bold;"></span>
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">报价模板</span>
                                     </div>
                                     <div>
                                         <span id="">
                                             <select name="" id="" class="txtBlack8Class">
+                                                 <% if (quoteTempList != null && quoteTempList.Count > 0)
+                                                    {
+                                                        foreach (var quoteTemp in quoteTempList)
+                                                        { %>
+                                                <option value="<%=quoteTemp.id %>" <%if (tempQuote != null && tempQuote.quote_tmpl_id != null && tempQuote.quote_tmpl_id == quoteTemp.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=quoteTemp.name %></option>
+                                                <%  }
+                                                    } %>
                                             </select></span>
                                     </div>
                                 </td>
@@ -1369,11 +1462,11 @@
                                 <td></td>
                                 <td class="inputLabel">
                                     <div class="FieldLabel">
-                                        <span id="" class="lblNormalClass" style="font-weight: bold;">External Quote Number</span>
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">外部报价编号</span>
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="" type="text" id="" class="txtBlack8Class" /></span>
+                                            <input name="external_quote_no" type="text" id="" class="txtBlack8Class" value="<%=tempQuote!=null?tempQuote.external_quote_no:"" %>" /></span>
                                     </div>
                                 </td>
                             </tr>
@@ -1384,7 +1477,7 @@
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">报价内容</span>
                                     </div>
                                     <div>
-                                        <textarea name="" id="" rows="3" cols="55"></textarea>
+                                        <textarea name="quote_comment" id="" rows="3" cols="55"><%=tempQuote!=null?tempQuote.quote_comment:"" %></textarea>
                                     </div>
                                 </td>
                             </tr>
@@ -1394,7 +1487,7 @@
             </div>
             <div class="DivSectionWithHeader">
                 <div class="HeaderRow">
-                    <span id="" class="lblNormalClass" style="font-weight: bold; font-weight: bold;">Terms</span>
+                    <span id="" class="lblNormalClass" style="font-weight: bold; font-weight: bold;">条款</span>
                 </div>
                 <div class="Content">
                     <table id="Table1" cellpadding="0" cellspacing="0">
@@ -1403,28 +1496,21 @@
                                 <td></td>
                                 <td class="inputLabel">
                                     <div class="FieldLabel">
-                                        <span class="lblNormalClass" style="font-weight: bold;">Payment Terms</span>
+                                        <span class="lblNormalClass" style="font-weight: bold;">付款期限</span>
                                     </div>
                                     <div>
                                         <span id="">
-                                            <select name="" id="" class="txtBlack8Class">
-                                                <option selected="selected" value=""></option>
-
-
-                                            </select></span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="inputRow">
-                                <td></td>
-                                <td class="inputLabel">
-                                    <div class="FieldLabel">
-                                        <span id="" class="lblNormalClass" style="font-weight: bold;">Payment Type</span>
-                                    </div>
-                                    <div>
-                                        <span id="">
-                                            <select name="" id="" class="txtBlack8Class">
-                                                <option selected="selected" value=""></option>
+                                            <select name="payment_term_id" id="" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                  <% if (payTermList != null && payTermList.Count > 0)
+                                                    {
+                                                        foreach (var payTerm in payTermList)
+                                                        { %>
+                                                <option value="<%=payTerm.id %>" <%if (tempQuote != null && tempQuote.payment_term_id != null && tempQuote.payment_term_id == payTerm.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=payTerm.name %></option>
+                                                <%  }
+                                                    } %>
 
                                             </select></span>
                                     </div>
@@ -1434,11 +1520,23 @@
                                 <td></td>
                                 <td class="inputLabel">
                                     <div class="FieldLabel">
-                                        <span id="" class="lblNormalClass" style="font-weight: bold;">Purchase Order Number</span>
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">付款类型</span>
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="" type="text" id="" class="txtBlack8Class" /></span>
+                                            <select name="payment_type_id" id="" class="txtBlack8Class">
+                                              <option value=""></option>
+                                                  <% if (payTypeList != null && payTypeList.Count > 0)
+                                                    {
+                                                        foreach (var payType in payTypeList)
+                                                        { %>
+                                                <option value="<%=payType.id %>" <%if (tempQuote != null && tempQuote.payment_type_id != null && tempQuote.payment_type_id == payType.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=payType.name %></option>
+                                                <%  }
+                                                    } %>
+
+                                            </select></span>
                                     </div>
                                 </td>
                             </tr>
@@ -1446,13 +1544,34 @@
                                 <td></td>
                                 <td class="inputLabel">
                                     <div class="FieldLabel">
-                                        <span id="" class="lblNormalClass" style="font-weight: bold;">Shipping Type</span>
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">采购订单编号</span>
                                     </div>
                                     <div>
                                         <span id="">
-                                            <select name="" id="" class="txtBlack8Class">
-                                                <option selected="selected" value=""></option>
-
+                                            <input name="purchase_order_no" type="text" id="" class="txtBlack8Class" value="<%=tempQuote!=null?tempQuote.purchase_order_no:"" %>" /></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">配送类型</span>
+                                    </div>
+                                    <div>
+                                        <span id="">
+                                            <select name="shipping_type_id" id="" class="txtBlack8Class">
+                                               <option value=""></option>
+                                                  <% if (shipTypeList != null && shipTypeList.Count > 0)
+                                                    {
+                                                        foreach (var shipType in shipTypeList)
+                                                        { %>
+                                                <option value="<%=shipType.id %>" <%if (tempQuote != null && tempQuote.shipping_type_id != null && tempQuote.shipping_type_id == shipType.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=shipType.name %></option>
+                                                <%  }
+                                                    } %>
+                                                
                                             </select></span>
                                     </div>
                                 </td>
@@ -1462,7 +1581,8 @@
                                 <td class="input">
                                     <div>
                                         <span id="" class="FieldLabel"><span class="txtBlack8Class">
-                                            <input id="" type="checkbox" name="" style="vertical-align: middle;" /><label style="vertical-align: middle;">Bill To Address same as Sold To Address</label></span></span>
+                                            <input id="" type="checkbox" name="isBillTo" style="vertical-align: middle;" <%if (tempQuote != null && tempQuote.bill_to_as_sold_to == 1)
+                                                { %> checked="checked" <%} %> /><label style="vertical-align: middle;">发票寄送地址同销售地址</label></span></span>
                                     </div>
                                 </td>
                             </tr>
@@ -1471,7 +1591,8 @@
                                 <td class="input">
                                     <div>
                                         <span id="" class="FieldLabel"><span class="txtBlack8Class">
-                                            <input id="" type="checkbox" name="" style="vertical-align: middle;" /><label style="vertical-align: middle;">Ship To Address same as Sold To Address</label></span></span>
+                                            <input id="" type="checkbox" name="isShipTo" style="vertical-align: middle;" <%if (tempQuote != null && tempQuote.ship_to_as_sold_to == 1)
+                                                { %> checked="checked" <%} %>  /><label style="vertical-align: middle;">收货地址同销售地址</label></span></span>
                                     </div>
                                 </td>
                             </tr>
@@ -1481,7 +1602,7 @@
             </div>
             <div class="DivSectionWithHeader">
                 <div class="HeaderRow">
-                    <span id="" class="lblNormalClass" style="font-weight: bold; font-weight: bold;">Notification</span>
+                    <span id="" class="lblNormalClass" style="font-weight: bold; font-weight: bold;">通知</span>
                 </div>
                 <div class="Content">
                     <table cellpadding="0" cellspacing="0">
@@ -1491,25 +1612,19 @@
                                 <td class="input">
                                     <table class="input" cellpadding="0" cellspacing="0">
                                         <tbody>
-                                            <tr class="inputRow">
-                                                <td class="input CheckboxPadding" style="width: 210px">
-                                                    <span id="" class="FieldLabel"><span class="txtBlack8Class">
-                                                        <input id="" type="checkbox" name="" style="vertical-align: middle;" />
-                                                        <label style="vertical-align: middle;">CC Me</label></span></span>
-                                                </td>
-                                                <td class="input CheckboxPadding">
-                                                    <span id="" class="FieldLabel"><span class="txtBlack8Class">
-                                                        <input id="" type="checkbox" name="" style="vertical-align: middle;" /><labe style="vertical-align: middle;">Account Manager</labe></span></span>
-                                                </td>
-                                            </tr>
-
-                                            <tr class="inputRow">
-                                                <td class="input CheckboxPadding">
-                                                    <span id="" class="FieldLabel"><span class="txtBlack8Class">
-                                                        <input id="" type="checkbox" name="" style="vertical-align: middle;" /><label style="vertical-align: middle;">Quote Contact</label></span></span>
-                                                </td>
-                                                <td class="input CheckboxPadding"></td>
-                                            </tr>
+                                                  <% if (notifyList != null && notifyList.Count > 0) {
+                                    foreach (var notify in notifyList)
+                                    {%>
+                            <tr>
+                                <td class="input CheckboxPadding">
+                                    <span class="FieldLabel"><span class="txtBlack8Class">
+                                        <input id="" type="checkbox" name="noti<%=notify.id %>" style="vertical-align: middle;" <%if (notiIds != null && notiIds.Contains(notify.id.ToString()))
+                                            { %> checked="checked"  <%} %>  />
+                                        <label style="vertical-align: middle;"><%=notify.name %></label></span></span>
+                                </td>
+                            </tr>
+                                   <% }
+                                } %>
                                         </tbody>
                                     </table>
                                 </td>
@@ -1518,23 +1633,33 @@
                                 <td></td>
                                 <td class="inputLabel">
                                     <div class="FieldLabel">
-                                        <span id="" class="lblNormalClass" style="font-weight: bold;">Other Email(s)</span>
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">其他邮箱</span>
                                     </div>
                                     <div>
-                                        <span id="">
-                                            <input name="" type="text" maxlength="2000" id="" class="txtBlack8Class" /></span>
+                                             <span id="" class="editDD" style="display: inline-block;">
+                                            <input name="other_emails" type="text" maxlength="2000" id="" class="txtBlack8Class" style="width: 360px;" value="<%=temp!=null?temp.other_emails:"" %>" /></span>
                                     </div>
                                 </td>
                             </tr>
                             <tr id="" class="ExtraPaddingInputRow">
                                 <td></td>
                                 <td class="inputLabel">
-                                    <div class="FieldLabel">
-                                        <span id="" class="lblNormalClass" style="font-weight: bold;">Notification Template</span>
+                                   <div class="FieldLabel">
+                                        通知模板
                                     </div>
                                     <div>
                                         <span id="" class="editDD">
-                                            <select name="" id="" class="txtBlack8Class">
+                                            <select name="notify_tmpl_id" id="notify_tmpl_id" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (tempNotiList != null && tempNotiList.Count > 0)
+                                                    {
+                                                        foreach (var tempNoti in tempNotiList)
+                                                        { %>
+                                                <option value="<%=tempNoti.id %>" <%if (temp != null && temp.notify_tmpl_id != null && temp.notify_tmpl_id == tempNoti.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=tempNoti.name %></option>
+                                                <%  }
+                                                    } %>
                                             </select></span>
                                     </div>
                                 </td>
@@ -1544,22 +1669,22 @@
                                 <td></td>
                                 <td class="inputLabel">
                                     <div class="FieldLabel">
-                                        <span id="" class="lblNormalClass" style="font-weight: bold;">Subject</span>
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">主题</span>
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="" type="text" maxlength="100" id="" class="txtBlack8Class" /></span>
+                                            <input name="subject" type="text" maxlength="100" id="" class="txtBlack8Class" value="<%=temp!=null?temp.subject:"" %>" /></span>
                                     </div>
                                 </td>
                             </tr>
                             <tr class="ExtraPaddingInputRow">
                                 <td></td>
                                 <td class="inputLabel3">
-                                    <div class="FieldLabel">
-                                        <span id="" class="lblNormalClass" style="font-weight: bold;">Additional Email Text</span>
+                                     <div class="FieldLabel">
+                                        附加文本
                                     </div>
                                     <div>
-                                        <textarea name="" id="" rows="3" cols="55"></textarea>
+                                        <textarea name="additional_email_text" id="additional_email_text" rows="3" cols="67" class="oppText2" style="resize: vertical; width: 374px;"><%=temp!=null?temp.additional_email_text:"" %></textarea>
                                     </div>
                                 </td>
                             </tr>
@@ -2257,6 +2382,7 @@
 </html>
 <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="../Scripts/common.js"></script>
+<script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
 <script>
     $(function () {
         <%if (temp != null)
@@ -2324,6 +2450,39 @@
         }
         return true;
     })
+    // 客户查找带回
+    function chooseCompany() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=accountId&callBack=GetContactList", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+    // 产品查找带回
+    function chooseProduct() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CALLBACK %>&field=productId", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProductSelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+    $("#issue_type_id").change(function () {
+        GetSubIssueType();
+    })
+
+    // 根据 问题类型，返回相应的子问题类型
+    function GetSubIssueType() {
+        var subIssTypeHtml = "<option value=''> </option>";
+        var issue_type_id = $("#issue_type_id").val();
+        if (issue_type_id != "" && issue_type_id != null && issue_type_id != undefined) {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/GeneralAjax.ashx?act=GetGeneralByParentId&parent_id=" + issue_type_id,
+                dataType: "json",
+                success: function (data) {
+                    if (data != "") {
+                        for (var i = 0; i < data.length; i++) {
+                            subIssTypeHtml += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        }
+                    }
+                },
+            });
+        }
+        $("#sub_issue_type_id").html(subIssTypeHtml);
+    }
 </script>
 <!--商机JS -->
 <script>
@@ -2404,10 +2563,8 @@
         }
 
     })
-    // 客户查找带回
-    function chooseCompany() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=accountId&callBack=GetContactList", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
-    }
+      <% if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.OPPORTUNITY)
+    { %>
     function GetContactList() {
         var account_id = $("#accountIdHidden").val();
         if (account_id != "") {
@@ -2424,14 +2581,236 @@
                     }
                 },
             });
+
         } else {
             $("#contact_id").prop("disabled", true);
         }
 
     }
-    // 产品查找带回
-    function chooseProduct() {
-        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CALLBACK %>&field=productId", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProductSelect %>', 'left=200,top=200,width=600,height=800', false);
-    }
+    <%}%>
+   
 
 </script>
+<!--快速服务预定JS -->
+<script>
+    $(function () {
+        <% if (tempQuickCall != null)
+    { %>
+        <%if (tempQuickCall.account_id != null)
+    { %>
+        GetContactList();
+        <%}%>
+        <% if (tempQuickCall.contact_id != null) {%>
+        $("#contact_id").val('<%=tempQuickCall.contact_id %>');
+        <% }%>
+        $("#issue_type_id").trigger("change");
+        <%if (tempQuickCall.sub_issue_type_id != null)
+    { %>
+        $("#sub_issue_type_id").val('<%=tempQuickCall.sub_issue_type_id %>');
+        <%} %>
+        GetResDepByIds();
+        <%} %>
+    })
+    $("#resRoleId").change(function () {
+        var resRoleId = $("#resRoleId").val();
+        var OtherResId = $("#OtherResIdHidden").val();
+        if (resRoleId != "") {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ResourceAjax.ashx?act=ChechByResRole&ResRole=" + resRoleId + "&OtherIds=" + OtherResId,
+                dataType: "json",
+                success: function (data) {
+                    if (data != "") {
+                        if (data.isRepeat) {
+                            $("#OtherResIdHidden").val(data.newDepResIds);
+                        }
+
+                    }
+                },
+            });
+            GetResDepByIds();
+        }
+    })
+    
+    // 其他负责人的查找带回- 带回的其他负责人包含主负责人时，提示 主负责人已经包含该员工 是 删除主负责人信息，否 从其他负责人中删除该联系人
+    function OtherResCallBack() {
+        var url = "../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RES_ROLE_DEP_CALLBACK %>&muilt=1&field=OtherResId&callBack=GetOtherResData";
+        window.open(url, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+     }
+     // 获取到其他负责人的相应信息
+     function GetOtherResData() {
+         // 检查是否有重复员工
+         // 检查带回员工是否与主负责人有冲突
+         // 
+         var OtherResId = $("#OtherResIdHidden").val();
+         if (OtherResId != "") {
+             var resRoleId = $("#resRoleId").val();
+             $.ajax({
+                 type: "GET",
+                 async: false,
+                 url: "../Tools/ResourceAjax.ashx?act=ChechByResRole&ResRole=" + resRoleId + "&OtherIds=" + OtherResId,
+                 dataType: "json",
+                 success: function (data) {
+                     if (data != "") {
+                         if (data.isRepeat) {
+                             $("#resRoleId").val("");
+                             //$("#OtherResIdHidden").val(data.newDepResIds);
+                         }
+
+                     }
+                 },
+             });
+             GetResDepByIds();
+         }
+     }
+
+     // 其他负责人的数据返回（此方法不做员工重复校验）
+     function GetResDepByIds() {
+         var resDepIds = $("#OtherResIdHidden").val();
+         if (resDepIds != "") {
+             $.ajax({
+                 type: "GET",
+                 url: "../Tools/RoleAjax.ashx?act=GetResDepList&resDepIds=" + resDepIds,
+                 async: false,
+                 //dataType:"json",
+                 success: function (data) {
+                     if (data != "") {
+                         $("#otherRes").html(data);
+                         $("#otherRes option").dblclick(function () {
+                             RemoveResDep(this);
+                         })
+                     }
+                 }
+
+             })
+         } else {
+             $("#otherRes").html("");
+         }
+
+     }
+     function RemoveResDep(val) {
+         $(val).remove();
+         var ids = "";
+         $("#otherRes option").each(function () {
+             ids += $(this).val() + ',';
+         })
+         if (ids != "") {
+             ids = ids.substr(0, ids.length - 1);
+         }
+         $("#OtherResIdHidden").val(ids);
+     }
+     <% if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.QUICK_CALL)
+    { %>
+     function GetContactList() {
+         var account_id = $("#accountIdHidden").val();
+         if (account_id != "") {
+             $("#contact_id").prop("disabled", false);
+             $("#contact_id").html("");
+             $.ajax({
+                 type: "GET",
+                 async: false,
+                 url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + account_id,
+                 // data: { CompanyName: companyName },
+                 success: function (data) {
+                     if (data != "") {
+                         $("#contact_id").html(data);
+                     }
+                 },
+             });
+             $("#contractId").prop("disabled", false);
+             $("#contractId").val("");
+             $("#contractIdHidden").val("");
+         } else {
+             $("#contact_id").prop("disabled", true);
+             $("#contractId").prop("disabled", true);
+             $("#contractId").val("");
+             $("#contractIdHidden").val("");
+         }
+
+     }
+    <%}%>
+     function ContractCallBack() {
+         var account_idHidden = $("#accountIdHidden").val();
+         if (account_idHidden != "" && account_idHidden != null && account_idHidden != undefined) {
+             window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACTMANAGE_CALLBACK %>&con626=1&con627=" + account_idHidden + "&field=contractId", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>", 'left=200,top=200,width=600,height=800', false);
+        }
+        else {
+            LayerMsg("请先选择客户");
+        }
+     }
+     function WorkTypeCallBack() {
+         window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&con439=<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.GENERAL_ALLOCATION_CODE %>&field=costCodeId", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CostCodeSelect %>', 'left=200,top=200,width=600,height=800', false);
+     }
+     
+
+</script>
+
+<!--报价JS -->
+<script>
+     $(function () {
+         <%if (tempQuote != null)
+        { %>
+         GetContactList();
+          <% if (tempQuote.contact_id != null) {%>
+         $("#contact_id").val('<%=tempQuote.contact_id %>');
+        <% }%>
+         <% if (tempQuote.opportunity_id != null) {%>
+         $("#opportunity_id").val('<%=tempQuote.opportunity_id %>');
+        <% }%>
+
+         <%} %>
+     })
+
+      <% if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.QUOTE)
+    { %>
+     function GetContactList() {
+         var account_id = $("#accountIdHidden").val();
+         if (account_id != "") {
+             $("#contact_id").prop("disabled", false);
+             $("#contact_id").html("");
+             $.ajax({
+                 type: "GET",
+                 async: false,
+                 url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + account_id,
+                 // data: { CompanyName: companyName },
+                 success: function (data) {
+                     if (data != "") {
+                         $("#contact_id").html(data);
+                     }
+                 },
+             });
+             $("#opportunity_id").html("");
+             // $("#opportunity_idHidden").val("");
+             $.ajax({
+                 type: "GET",
+                 async: false,
+                 url: "../Tools/CompanyAjax.ashx?act=opportunity&account_id=" + account_id,
+                 // data: { CompanyName: companyName },
+                 success: function (data) {
+                     if (data != "") {
+                         $("#opportunity_id").html(data);
+                         $("#opportunity_id option[value='0']").remove(); 
+                     }
+                 },
+             });
+             document.getElementById("opportunity_id").options.add(new Option(" ", ""), 0);
+             //$("#opportunity_id").append("<option value=''> </option>"); 
+             $("#opportunity_id").val('');
+             $("#opportunity_id").prop("disabled", false);
+          
+         } else {
+             $("#contact_id").prop("disabled", true);
+             $("#opportunity_id").prop("disabled", true);
+             $("#opportunity_id").html("");
+         }
+
+     }
+    <%}%>
+</script>
+
+<!--定期工单JS -->
+<script>
+
+</script>
+
