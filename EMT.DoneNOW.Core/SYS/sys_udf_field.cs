@@ -48,6 +48,8 @@ namespace EMT.DoneNOW.Core
         public Int32? decimal_length { get; set; }
         [DataMember]
         public SByte? is_visible_in_portal { get; set; }
+        [DataMember]
+        public SByte is_encrypted { get; set; }
 
 
     }

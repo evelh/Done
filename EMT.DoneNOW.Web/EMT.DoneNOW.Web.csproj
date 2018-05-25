@@ -647,6 +647,7 @@
     <Content Include="SysSetting\ResourceAssPolicyEdit.aspx" />
     <Content Include="SysSetting\Service.aspx" />
     <Content Include="SysSetting\ServiceBundle.aspx" />
+    <Content Include="SysSetting\UserDefinedField.aspx" />
     <Content Include="SysSetting\WorkflowRule.aspx" />
     <Content Include="TimeSheet\ExpenseReportDetail.aspx" />
     <Content Include="TimeSheet\MyTimeoffBalance.aspx" />
@@ -2445,6 +2446,13 @@
     </Compile>
     <Compile Include="SysSetting\ServiceBundle.aspx.designer.cs">
       <DependentUpon>ServiceBundle.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\UserDefinedField.aspx.cs">
+      <DependentUpon>UserDefinedField.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\UserDefinedField.aspx.designer.cs">
+      <DependentUpon>UserDefinedField.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\WorkflowRule.aspx.cs">
       <DependentUpon>WorkflowRule.aspx</DependentUpon>
