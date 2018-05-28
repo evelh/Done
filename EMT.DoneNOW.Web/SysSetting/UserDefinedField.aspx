@@ -38,25 +38,33 @@
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tbody>
                         <tr>
+                            <td class="FieldLabels">对象
+                                <div>
+                                    <select id="cate_id" name="cate_id" <%if (udfField != null) { %> style="display:none;" <%} else { %> style="width: 250px; padding: 0;" <%} %> ></select>
+                                    <input type="text" id="cate" <%if (udfField != null) { %>  style="width: 248px; padding: 0;" value="<%=udfField.description %>" <%} else { %> style="display:none;" <%} %> />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
                             <td>
                                 <span class="FieldLabels" style="font-weight: bold;">名称<span class="errorSmall">*</span></span>
                                 <div>
                                     <input type="hidden" id="fieldId" name="fieldId" <%if (udfField != null){ %> value="<%=udfField.id %>" <%} %> />
-                                    <input type="text" id="col_comment" name="col_comment" style="width: 248px; padding: 0;" <%if (udfField != null){ %> value="<%=udfField.col_comment %>" <%} %> />
+                                    <input type="text" id="col_comment" name="col_comment" style="width: 248px; padding: 0;" <%if (udfField != null){ %> value="<%=udfField.name %>" <%} %> />
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td class="FieldLabels">描述
                                 <div>
-                                    <input type="text" id="description" name="description" <%if (udfField != null){ %> value="<%=udfField.description %>" <%} %> />
+                                    <input type="text" id="description" name="description" style="width: 248px; padding: 0;" <%if (udfField != null){ %> value="<%=udfField.description %>" <%} %> />
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td class="FieldLabels">
                                 <div>
-                                    <input type="checkbox" id="require" name="require" <%if (udfField == null || udfField.is_required == 1) { %> checked="checked" <%} %> />
+                                    <input type="checkbox" id="require" name="require" <%if (udfField == null || udfField.required == 1) { %> checked="checked" <%} %> />
                                     <label for="require">必填</label><asp:Label ID="requireDesc" runat="server"></asp:Label>
                                 </div>
                             </td>
@@ -80,7 +88,7 @@
                         <tr>
                             <td class="FieldLabels">字段类型
                                 <div>
-                                    <select id="data_type_id" name="data_type_id">
+                                    <select id="data_type_id" name="data_type_id" style="width: 250px; padding: 0;">
 
                                     </select>
                                 </div>
@@ -89,21 +97,21 @@
                         <tr>
                             <td class="FieldLabels">默认值
                                 <div>
-                                    <input type="text" id="default_value" name="default_value" <%if (udfField != null){ %> value="<%=udfField.default_value %>" <%} %> />
+                                    <input type="text" id="default_value" name="default_value" style="width: 248px; padding: 0;" <%if (udfField != null){ %> value="<%=udfField.default_value %>" <%} %> />
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td class="FieldLabels">变量名
                                 <div>
-                                    <input type="text" id="merge_variable_name" name="merge_variable_name" <%if (udfField != null){ %> value="<%=udfField.merge_variable_name %>" <%} %> />
+                                    <input type="text" id="merge_variable_name" name="merge_variable_name" style="width: 248px; padding: 0;" <%if (udfField != null){ %> value="<%=udfField.merge_variable_name %>" <%} %> />
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td class="FieldLabels">与商机字段映射
                                 <div>
-                                    <select id="crm_to_project_udf_id" name="crm_to_project_udf_id">
+                                    <select id="crm_to_project_udf_id" name="crm_to_project_udf_id" style="width: 250px; padding: 0;">
 
                                     </select>
                                 </div>

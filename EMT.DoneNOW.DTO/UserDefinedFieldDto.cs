@@ -28,6 +28,10 @@ namespace EMT.DoneNOW.DTO
         [DataMember]
         public SByte is_protected;  // 是否保护字段
         [DataMember]
+        public SByte is_encrypted;  // 是否加密
+        [DataMember]
+        public SByte? is_visible_in_portal; // 是否显示在客户门户上
+        [DataMember]
         public SByte required;      // 是否必填
         [DataMember]
         public int? decimal_length; // 小数位数
