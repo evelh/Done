@@ -39,6 +39,23 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 获取自定义字段信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public UserDefinedFieldDto GetUdfInfo(long id)
+        {
+            var dal = new sys_udf_field_dal();
+            var udf = dal.FindNoDeleteById(id);
+            if (udf == null)
+                return null;
+
+            UserDefinedFieldDto dto = new UserDefinedFieldDto();
+
+            return dto;
+        }
+
+        /// <summary>
         /// 增加自定义字段
         /// </summary>
         /// <param name="cate"></param>
@@ -59,6 +76,8 @@ namespace EMT.DoneNOW.BLL
             field.default_value = udf.default_value;
             field.is_protected = 0;
             field.is_required = udf.required;
+            field.is_encrypted = udf.is_encrypted;
+            field.is_visible_in_portal = udf.is_visible_in_portal;
             field.is_active = 1;
             field.display_format_id = udf.display_format;
             field.decimal_length = udf.decimal_length;

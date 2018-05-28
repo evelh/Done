@@ -5,12 +5,13 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using EMT.DoneNOW.Core;
+using EMT.DoneNOW.DTO;
 
 namespace EMT.DoneNOW.Web.SysSetting
 {
     public partial class UserDefinedField : BasePage
     {
-        protected sys_udf_field udfField;
+        protected UserDefinedFieldDto udfField;
 
         protected void Page_Load(object sender, EventArgs e)
         {
