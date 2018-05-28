@@ -422,12 +422,14 @@ namespace EMT.DoneNOW.Web.Opportunity
         /// <returns></returns>
         protected OpportunityAddOrUpdateDto GetParam()
         {
+            var general = AssembleModel<crm_opportunity>();
+            general.use_quote = (sbyte)(is_use_quote.Checked ? 1 : 0);
             var param = new OpportunityAddOrUpdateDto()
             {
-                general = AssembleModel<crm_opportunity>(),
+               
                 notify = AssembleModel<com_notify_email>(),
             };
-            param.general.use_quote = (sbyte)(is_use_quote.Checked ? 1 : 0);
+           
             if (opportunity_udfList != null && opportunity_udfList.Count > 0)                      // 首先判断是否有自定义信息
             {
                 var list = new List<UserDefinedFieldValue>();
@@ -441,6 +443,57 @@ namespace EMT.DoneNOW.Web.Opportunity
                     list.Add(new_udf);
                 }
                 param.udf = list;
+            }
+            if (!isAdd)
+            {
+                opportunity.name = general.name;
+                opportunity.account_id = general.account_id;
+                opportunity.contact_id = general.contact_id;
+                opportunity.source_id = general.source_id;
+                opportunity.stage_id = general.stage_id;
+                opportunity.resource_id = general.resource_id;
+                opportunity.status_id = general.status_id;
+                opportunity.competitor_id = general.competitor_id;
+                opportunity.projected_begin_date = general.projected_begin_date;
+                opportunity.projected_close_date = general.projected_close_date;
+                opportunity.probability = general.probability;
+                opportunity.interest_degree_id = general.interest_degree_id;
+                opportunity.primary_product_id = general.primary_product_id;
+                opportunity.promotion_name = general.promotion_name;
+                opportunity.spread_value = general.spread_value;
+                opportunity.spread_unit = general.spread_unit;
+                opportunity.number_months = general.number_months;
+                opportunity.one_time_revenue = general.one_time_revenue;
+                opportunity.one_time_cost = general.one_time_cost;
+                opportunity.monthly_revenue = general.monthly_revenue;
+                opportunity.monthly_cost = general.monthly_cost;
+                opportunity.quarterly_revenue = general.quarterly_revenue;
+                opportunity.quarterly_cost = general.quarterly_cost;
+                opportunity.semi_annual_revenue = general.semi_annual_revenue;
+                opportunity.semi_annual_cost = general.semi_annual_cost;
+                opportunity.yearly_revenue = general.yearly_revenue;
+                opportunity.yearly_cost = general.yearly_cost;
+                opportunity.help_needed = general.help_needed;
+                opportunity.use_quote = general.use_quote;
+                opportunity.ext1 = general.ext1;
+                opportunity.ext2 = general.ext2;
+                opportunity.ext3 = general.ext3;
+                opportunity.ext4 = general.ext4;
+                opportunity.ext5 = general.ext5;
+                opportunity.start_date = general.start_date;
+                opportunity.end_date = general.end_date;
+                opportunity.market = general.market;
+                opportunity.barriers = general.barriers;
+                opportunity.next_step = general.next_step;
+                opportunity.win_reason_type_id = general.win_reason_type_id;
+                opportunity.win_reason = general.win_reason;
+                opportunity.loss_reason_type_id = general.loss_reason_type_id;
+                opportunity.loss_reason = general.loss_reason;
+                param.general = opportunity;
+            }
+            else
+            {
+                param.general = general;
             }
             return param;
         }

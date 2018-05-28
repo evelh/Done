@@ -22,6 +22,7 @@ namespace EMT.DoneNOW.Web.SysSetting
         protected sys_form_tmpl_quick_call tempQuickCall;  // 快速服务预定模板
         protected sys_form_tmpl_quote tempQuote;           // 报价模板
         protected sys_form_tmpl_recurring_ticket tempRecTicket;           // 定期工单模板
+        protected sys_form_tmpl_service_call tempSerCall;           // 服务预定模板
 
         protected List<d_general> tempRangList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.FORM_TEMPLATE_RANGE_TYPE);          // 模板范围
         protected List<d_general> tempTypeList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.FORM_TEMPLATE_TYPE);          // 模板类型
@@ -56,6 +57,10 @@ namespace EMT.DoneNOW.Web.SysSetting
         protected d_cost_code thisCostCode;
         protected crm_opportunity thisOppo;
         protected crm_installed_product thisInsPro;
+        protected List<UserDefinedFieldDto> tickUdfList = null;// 
+        protected List<UserDefinedFieldValue> ticketUdfValueList = null;
+
+        protected List<d_general> callStatusList;
 
         protected List<sys_notify_tmpl> tempNotiList ;  // 通知模板
         protected List<d_general> pushList = new DAL.d_general_dal().GetGeneralByTableId((int) GeneralTableEnum.NOTE_PUBLISH_TYPE);   // 备注发布对象
@@ -142,7 +147,18 @@ namespace EMT.DoneNOW.Web.SysSetting
                                 if (thisInsPro != null)
                                     thisProduct = new ProductBLL().GetProduct(thisInsPro.product_id);
                             }
-
+                            tickUdfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TICKETS);
+                            ticketUdfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.FORM_RECTICKET, tempRecTicket.id, tickUdfList);
+                        }
+                        
+                    }
+                    else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.SERVICE_CALL)
+                    {
+                        tempSerCall = tempBll.GetServiceCallTmpl(temp.id);
+                        if (tempSerCall != null)
+                        {
+                            if (tempSerCall.account_id != null)
+                                thisAccount = accountBll.GetCompany((long)tempSerCall.account_id);
                         }
                     }
 
@@ -209,7 +225,13 @@ namespace EMT.DoneNOW.Web.SysSetting
             else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.RECURRING_TICKET)
             {
                 typeName = "定期工单";
+                tickUdfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TICKETS);
                 resRoleList = new DAL.sys_resource_department_dal().FindListBySql<ResRole>("select DISTINCT resource_id,role_id from sys_resource_department");
+            }
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.SERVICE_CALL)
+            {
+                typeName = "服务预定";
+                callStatusList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.SERVICE_CALL_STATUS);
             }
 
 
@@ -443,8 +465,175 @@ namespace EMT.DoneNOW.Web.SysSetting
                 return pageTempQuote;
                 #endregion
             }
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.RECURRING_TICKET)
+            {
+                #region 定期工单
+
+                sys_form_tmpl_recurring_ticket pageTempRecTicket = AssembleModel<sys_form_tmpl_recurring_ticket>();
+                if(Request.Form["EndType"]== "radioEndDaysFromNow")
+                    pageTempRecTicket.recurring_instances = null;
+                else
+                    pageTempRecTicket.recurring_end_date = null;
+                if (!string.IsNullOrEmpty(Request.Form["resRoleId"]))
+                {
+                    var resArr = Request.Form["resRoleId"].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (resArr.Count() == 2)
+                    {
+                        pageTempRecTicket.owner_resource_id = long.Parse(resArr[0]);
+                        pageTempRecTicket.role_id = long.Parse(resArr[1]);
+                    }
+                }
+                string recurring_define = string.Empty;
+                if (Request.Form["FreType"] == "radioDaily")
+                {
+                    int every = 1;
+                    if (!string.IsNullOrEmpty(Request.Form["every"]))
+                        int.TryParse(Request.Form["every"],out every);
+                    int no_sat = 0;   // 
+                    if (!string.IsNullOrEmpty(Request.Form["day_no_sat"]) && Request.Form["day_no_sat"].Equals("on"))
+                        no_sat = 1;
+                    int no_sun = 0;
+                    if (!string.IsNullOrEmpty(Request.Form["day_no_sun"]) && Request.Form["day_no_sun"].Equals("on"))
+                        no_sun = 1;
+                    TicketRecurrDayDto dayDto = new TicketRecurrDayDto()
+                    {every = every,
+                    no_sat = no_sat,
+                    no_sun = no_sun,
+                    };
+                    recurring_define = new Tools.Serialize().SerializeJson(dayDto);
+                    pageTempRecTicket.recurring_frequency = (int)DicEnum.RECURRING_TICKET_FREQUENCY_TYPE.DAY;
+                }
+                else if(Request.Form["FreType"] == "radioWeekly")
+                {
+                    int week_eve_week = 1;
+                    if (!string.IsNullOrEmpty(Request.Form["week_eve_week"]))
+                        int.TryParse(Request.Form["week_eve_week"], out week_eve_week);
+                    List<int> intArr = new List<int>();
+                    if (!string.IsNullOrEmpty(Request.Form["ckWeekSun"]) && Request.Form["ckWeekSun"].Equals("on"))
+                        intArr.Add(0);
+                    if (!string.IsNullOrEmpty(Request.Form["ckWeekMon"]) && Request.Form["ckWeekMon"].Equals("on"))
+                        intArr.Add(1);
+                    if (!string.IsNullOrEmpty(Request.Form["ckWeekTus"]) && Request.Form["ckWeekTus"].Equals("on"))
+                        intArr.Add(2);
+                    if (!string.IsNullOrEmpty(Request.Form["ckWeekWed"]) && Request.Form["ckWeekWed"].Equals("on"))
+                        intArr.Add(3);
+                    if (!string.IsNullOrEmpty(Request.Form["ckWeekThu"]) && Request.Form["ckWeekThu"].Equals("on"))
+                        intArr.Add(4);
+                    if (!string.IsNullOrEmpty(Request.Form["ckWeekFri"]) && Request.Form["ckWeekFri"].Equals("on"))
+                        intArr.Add(5);
+                    if (!string.IsNullOrEmpty(Request.Form["ckWeekSat"]) && Request.Form["ckWeekSat"].Equals("on"))
+                        intArr.Add(6);
+                    TicketRecurrWeekDto weekDto = new TicketRecurrWeekDto()
+                    {
+                       every = week_eve_week,
+                       dayofweek  = intArr.ToArray(),
+                    };
+                    recurring_define = new Tools.Serialize().SerializeJson(weekDto);
+                    pageTempRecTicket.recurring_frequency = (int)DicEnum.RECURRING_TICKET_FREQUENCY_TYPE.WEEK;
+                }
+                else if (Request.Form["FreType"] == "radioMonthly")
+                {
+                    TicketRecurrMonthDto monthDto = new TicketRecurrMonthDto();
+                    if (Request.Form["monthType"] == "radioSpecificDay")
+                    {
+                        if (!string.IsNullOrEmpty(Request.Form["month_month_day"]))
+                            int.TryParse(Request.Form["month_month_day"],out monthDto.month);
+                        if (!string.IsNullOrEmpty(Request.Form["month_day_num"]))
+                            int.TryParse(Request.Form["month_day_num"], out monthDto.day);
+                    }
+                    else if (Request.Form["monthType"] == "radioRelativeDay")
+                    {
+                        monthDto.day = -1;
+                        if (!string.IsNullOrEmpty(Request.Form["month_month_eve_num"]))
+                            int.TryParse(Request.Form["month_month_eve_num"], out monthDto.month);
+                        monthDto.no = Request.Form["month_1_month"];
+                        monthDto.dayofweek = Request.Form["month_1_week"];
+                    }
+                    recurring_define = new Tools.Serialize().SerializeJson(monthDto);
+                    pageTempRecTicket.recurring_frequency = (int)DicEnum.RECURRING_TICKET_FREQUENCY_TYPE.MONTH;
+                }
+                else if (Request.Form["FreType"] == "radioYearly")
+                {
+                    TicketRecurrMonthDto yearDto = new TicketRecurrMonthDto();
+                    if (Request.Form["YearType"] == "radioYearlySpecific")
+                    {
+                        if (!string.IsNullOrEmpty(Request.Form["year_every_month"]))
+                            int.TryParse(Request.Form["year_every_month"], out yearDto.month);
+                        if (!string.IsNullOrEmpty(Request.Form["year_month_day"]))
+                            int.TryParse(Request.Form["year_month_day"], out yearDto.day);
+                    }
+                    else if (Request.Form["YearType"] == "radioRelativeDay")
+                    {
+                        yearDto.day = -1;
+                        if (!string.IsNullOrEmpty(Request.Form["year_the_month"]))
+                            int.TryParse(Request.Form["year_the_month"], out yearDto.month);
+                        yearDto.no = Request.Form["year_month_week_num"];
+                        yearDto.dayofweek = Request.Form["year_the_week"];
+                    }
+                    recurring_define = new Tools.Serialize().SerializeJson(yearDto);
+                    pageTempRecTicket.recurring_frequency = (int)DicEnum.RECURRING_TICKET_FREQUENCY_TYPE.YEAR;
+                }
+                pageTempRecTicket.recurring_define = recurring_define;
+
+              
+
+                if (!isAdd)
+                {
+                    pageTempRecTicket.id = tempRecTicket.id;
+                    pageTempRecTicket.oid = tempRecTicket.oid;
+                    pageTempRecTicket.form_tmpl_id = tempRecTicket.form_tmpl_id;
+                    pageTempRecTicket.create_time = tempRecTicket.create_time;
+                    pageTempRecTicket.create_user_id = tempRecTicket.create_user_id;
+                    pageTempRecTicket.update_time = tempRecTicket.update_time;
+                    pageTempRecTicket.update_user_id = tempRecTicket.update_user_id;
+                }
+                return pageTempRecTicket;
+
+                #endregion
+            }
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.SERVICE_CALL)
+            {
+                #region 服务预定
+                sys_form_tmpl_service_call pageTempCall = AssembleModel<sys_form_tmpl_service_call>();
+               
+                if (!isAdd)
+                {
+                    tempSerCall.account_id = pageTempCall.account_id;
+                    tempSerCall.start_time = pageTempCall.start_time;
+                    tempSerCall.end_time = pageTempCall.end_time;
+                    tempSerCall.description = pageTempCall.description;
+                    tempSerCall.status_id = pageTempCall.status_id;
+                    return tempSerCall;
+                }
+                else
+                    return pageTempCall;
+                #endregion
+            }
+
+
 
             return null;
+        }
+        /// <summary>
+        /// 获取自定义信息
+        /// </summary>
+        protected List<UserDefinedFieldValue> GetUdfValue()
+        {
+            var list = new List<UserDefinedFieldValue>();
+            if (tickUdfList != null && tickUdfList.Count > 0)
+            {
+                foreach (var udf in tickUdfList)                            // 循环添加
+                {
+                    var new_udf = new UserDefinedFieldValue()
+                    {
+                        id = udf.id,
+                        value = Request.Form[udf.id.ToString()] == "" ? null : Request.Form[udf.id.ToString()],
+                    };
+                    list.Add(new_udf);
+
+                }
+            }
+            return list;
         }
 
         protected void SaveClose_Click(object sender, EventArgs e)
@@ -481,6 +670,20 @@ namespace EMT.DoneNOW.Web.SysSetting
                         result = tempBll.AddQuoteTmpl(formTmpl, obj as sys_form_tmpl_quote, LoginUserId);
                     else
                         result = tempBll.EditQuoteTmpl(formTmpl, obj as sys_form_tmpl_quote, LoginUserId);
+                }
+                else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.RECURRING_TICKET)
+                {
+                    if (isAdd)
+                        result = tempBll.AddRecTicketTmpl(formTmpl, obj as sys_form_tmpl_recurring_ticket, GetUdfValue(),LoginUserId);
+                    else
+                        result = tempBll.EditRecTicketTmpl(formTmpl, obj as sys_form_tmpl_recurring_ticket, GetUdfValue(), LoginUserId);
+                }
+                else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.SERVICE_CALL)
+                {
+                    if (isAdd)
+                        result = tempBll.AddServiceCallTmpl(formTmpl, obj as sys_form_tmpl_service_call,  LoginUserId);
+                    else
+                        result = tempBll.EditServiceCallTmpl(formTmpl, obj as sys_form_tmpl_service_call,  LoginUserId);
                 }
             }
             

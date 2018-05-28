@@ -698,7 +698,8 @@
                 <div class="Content">
                     <table id="Table1" cellpadding="0" cellspacing="0">
                         <tbody>
-                            <% if (notifyList != null && notifyList.Count > 0) {
+                            <% if (notifyList != null && notifyList.Count > 0)
+                                {
                                     foreach (var notify in notifyList)
                                     {%>
                             <tr>
@@ -706,13 +707,14 @@
                                 <td class="input CheckboxPadding">
                                     <span class="FieldLabel"><span class="txtBlack8Class">
                                         <input id="" type="checkbox" name="noti<%=notify.id %>" style="vertical-align: middle;" <%if (notiIds != null && notiIds.Contains(notify.id.ToString()))
-                                            { %> checked="checked"  <%} %>  />
+                                            { %>
+                                            checked="checked" <%} %> />
                                         <label style="vertical-align: middle;"><%=notify.name %></label></span></span>
                                 </td>
                             </tr>
-                                   <% }
+                            <% }
                                 } %>
-                          
+
                             <tr class="ExtraPaddingInputRow">
                                 <td></td>
                                 <td class="inputLabel">
@@ -721,7 +723,7 @@
                                     </div>
                                     <div>
                                         <span id="" class="editDD" style="display: inline-block;">
-                                            <input name="other_emails" type="text" maxlength="2000" id="" class="txtBlack8Class" style="width: 360px;" value="<%=temp!=null?temp.other_emails:"" %>" /></span>
+                                            <input name="other_emails" type="text" maxlength="2000" id="" class="txtBlack8Class" style="width: 360px;" value="<%=temp != null ? temp.other_emails : "" %>" /></span>
                                     </div>
                                 </td>
                             </tr>
@@ -756,7 +758,7 @@
                                         附加文本
                                     </div>
                                     <div>
-                                        <textarea name="additional_email_text" id="additional_email_text" rows="3" cols="67" class="oppText2" style="resize: vertical; width: 374px;"><%=temp!=null?temp.additional_email_text:"" %></textarea>
+                                        <textarea name="additional_email_text" id="additional_email_text" rows="3" cols="67" class="oppText2" style="resize: vertical; width: 374px;"><%=temp != null ? temp.additional_email_text : "" %></textarea>
                                     </div>
                                 </td>
                             </tr>
@@ -802,7 +804,8 @@
                                     <div>
                                         <span class="FieldLabel"><span class="txtBlack8Class">
                                             <input id="" type="checkbox" name="isAnnounce" style="vertical-align: middle;" <%if (tempNote != null && tempNote.announce == 1)
-                                                { %> checked="checked" <%} %> /><label style="vertical-align: middle;">公告</label></span></span>
+                                                { %>
+                                                checked="checked" <%} %> /><label style="vertical-align: middle;">公告</label></span></span>
                                     </div>
                                 </td>
                             </tr>
@@ -816,7 +819,7 @@
                                         <span id="">
                                             <select name="action_type_id" id="action_type_id" class="txtBlack8Class">
                                                 <option value=""></option>
-                                                   <% if (actList != null && actList.Count > 0)
+                                                <% if (actList != null && actList.Count > 0)
                                                     {
                                                         foreach (var act in actList)
                                                         { %>
@@ -837,7 +840,7 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="name" type="text" id="name" class="txtBlack8Class" value="<%=tempNote!=null?tempNote.name:"" %>" /></span>
+                                            <input name="name" type="text" id="name" class="txtBlack8Class" value="<%=tempNote != null ? tempNote.name : "" %>" /></span>
                                     </div>
                                 </td>
                             </tr>
@@ -848,7 +851,7 @@
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">描述</span>
                                     </div>
                                     <div>
-                                        <textarea name="description" id="" rows="3" cols="55" style="height: 100px"><%=tempNote!=null?tempNote.description:"" %></textarea>
+                                        <textarea name="description" id="" rows="3" cols="55" style="height: 100px"><%=tempNote != null ? tempNote.description : "" %></textarea>
                                     </div>
                                 </td>
                             </tr>
@@ -868,20 +871,22 @@
                                 <td class="input">
                                     <table class="input" cellpadding="0" cellspacing="0">
                                         <tbody>
-                                             <% if (notifyList != null && notifyList.Count > 0) {
-                                    foreach (var notify in notifyList)
-                                    {%>
-                            <tr>
-                                
-                                <td class="input CheckboxPadding">
-                                    <span class="FieldLabel"><span class="txtBlack8Class">
-                                        <input id="" type="checkbox" name="noti<%=notify.id %>" style="vertical-align: middle;" <%if (notiIds != null && notiIds.Contains(notify.id.ToString()))
-                                            { %> checked="checked"  <%} %>  />
-                                        <label style="vertical-align: middle;"><%=notify.name %></label></span></span>
-                                </td>
-                            </tr>
-                                   <% }
-                                } %>
+                                            <% if (notifyList != null && notifyList.Count > 0)
+                                                {
+                                                    foreach (var notify in notifyList)
+                                                    {%>
+                                            <tr>
+
+                                                <td class="input CheckboxPadding">
+                                                    <span class="FieldLabel"><span class="txtBlack8Class">
+                                                        <input id="" type="checkbox" name="noti<%=notify.id %>" style="vertical-align: middle;" <%if (notiIds != null && notiIds.Contains(notify.id.ToString()))
+                                                            { %>
+                                                            checked="checked" <%} %> />
+                                                        <label style="vertical-align: middle;"><%=notify.name %></label></span></span>
+                                                </td>
+                                            </tr>
+                                            <% }
+                                                } %>
                                         </tbody>
                                     </table>
                                 </td>
@@ -894,7 +899,7 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                             <input name="other_emails" type="text" maxlength="2000" id="" class="txtBlack8Class" style="width: 360px;" value="<%=temp!=null?temp.other_emails:"" %>" /></span>
+                                            <input name="other_emails" type="text" maxlength="2000" id="" class="txtBlack8Class" style="width: 360px;" value="<%=temp != null ? temp.other_emails : "" %>" /></span>
                                     </div>
                                 </td>
                             </tr>
@@ -931,7 +936,7 @@
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">附加邮件文本</span>
                                     </div>
                                     <div>
-                                       <textarea name="additional_email_text" id="additional_email_text" rows="3" cols="67" class="oppText2" style="resize: vertical; width: 374px;"><%=temp!=null?temp.additional_email_text:"" %></textarea>
+                                        <textarea name="additional_email_text" id="additional_email_text" rows="3" cols="67" class="oppText2" style="resize: vertical; width: 374px;"><%=temp != null ? temp.additional_email_text : "" %></textarea>
                                     </div>
                                 </td>
                             </tr>
@@ -956,7 +961,7 @@
                                         客户名称 
                                     </div>
                                     <div id="">
-                                         <span id="" style="display: inline-block;">
+                                        <span id="" style="display: inline-block;">
                                             <input name="account_id" type="hidden" id="accountIdHidden" value="<%=thisAccount != null ? thisAccount.id.ToString() : "" %>" />
                                             <input name="" type="text" value="<%=thisAccount != null ? thisAccount.name : "" %>" id="accountId" class="txtBlack8Class" />
                                             <i onclick="chooseCompany()" style="width: 16px; height: 16px; float: right; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;"></i>
@@ -996,7 +1001,7 @@
                                     </div>
                                     <div>
                                         <span id="" class="ticketTitleInput" style="display: inline-block;">
-                                            <input name="title" type="text" id="title" class="txtBlack8Class" style="width: 100%;" value="<%=tempQuickCall!=null?tempQuickCall.title:"" %>" /></span>
+                                            <input name="title" type="text" id="title" class="txtBlack8Class" style="width: 100%;" value="<%=tempQuickCall != null ? tempQuickCall.title : "" %>" /></span>
                                     </div>
                                 </td>
                             </tr>
@@ -1007,7 +1012,7 @@
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">工单描述</span>
                                     </div>
                                     <div>
-                                        <textarea name="description" id="description" rows="3" cols="55" style="width: 360px; height: 50px"><%=tempQuickCall!=null?tempQuickCall.description:"" %></textarea>
+                                        <textarea name="description" id="description" rows="3" cols="55" style="width: 360px; height: 50px"><%=tempQuickCall != null ? tempQuickCall.description : "" %></textarea>
                                     </div>
                                 </td>
                             </tr>
@@ -1020,7 +1025,7 @@
                                     <div>
                                         <span id="" class="editDD">
                                             <select name="priority_type_id" id="priority_type_id" class="txtBlack8Class">
-                                                         <option value=""></option>
+                                                <option value=""></option>
                                                 <% if (priorityList != null && priorityList.Count > 0)
                                                     {
                                                         foreach (var priority in priorityList)
@@ -1030,7 +1035,6 @@
                                                     selected="selected" <%} %>><%=priority.name %></option>
                                                 <%  }
                                                     } %>
-
                                             </select></span>
                                     </div>
                                 </td>
@@ -1044,7 +1048,7 @@
                                     <div>
                                         <span id="" class="editDD">
                                             <select name="issue_type_id" id="issue_type_id" class="txtBlack8Class">
-                                                     <option value=""></option>
+                                                <option value=""></option>
                                                 <% if (issueTypeList != null && issueTypeList.Count > 0)
                                                     {
                                                         foreach (var issueType in issueTypeList)
@@ -1054,7 +1058,6 @@
                                                     selected="selected" <%} %>><%=issueType.name %></option>
                                                 <%  }
                                                     } %>
-
                                             </select></span>
                                     </div>
                                 </td>
@@ -1083,7 +1086,7 @@
                                     <div>
                                         <span id="" class="editDD">
                                             <select name="cate_id" id="cate_id" class="txtBlack8Class">
-                                                  <option value=""></option>
+                                                <option value=""></option>
                                                 <% if (ticketCateList != null && ticketCateList.Count > 0)
                                                     {
                                                         foreach (var ticketCate in ticketCateList)
@@ -1114,8 +1117,8 @@
                                     <div class="FieldLabel">
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">合同</span>
                                     </div>
-                                    <div id=""> 
-                                        <input name="contract_id" type="hidden" id="contractIdHidden" value="<%=thisContract!=null?thisContract.id.ToString():"" %>" /><span id=""  style="display:inline-block;"><input name="" type="text" id="contractId" disabled="disabled" class="txtBlack8Class"  style="width:360px;" value="<%=thisContract!=null?thisContract.name:"" %>" /></span>&nbsp;
+                                    <div id="">
+                                        <input name="contract_id" type="hidden" id="contractIdHidden" value="<%=thisContract != null ? thisContract.id.ToString() : "" %>" /><span id="" style="display: inline-block;"><input name="" type="text" id="contractId" disabled="disabled" class="txtBlack8Class" style="width: 360px;" value="<%=thisContract != null ? thisContract.name : "" %>" /></span>&nbsp;
                                         <i onclick="ContractCallBack()" style="width: 16px; height: 16px; float: right; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;"></i>
 
                                     </div>
@@ -1128,7 +1131,7 @@
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">工作类型</span>
                                     </div>
                                     <div id="">
-                                        <input name="cost_code_id" type="hidden" id="costCodeIdHidden" value="<%=thisCostCode!=null?thisCostCode.id.ToString():"" %>" /><span id=""  style="display:inline-block;"><input name="" type="text" id="costCodeId" disabled="disabled" class="txtBlack8Class"  style="width:360px;" value="<%=thisCostCode!=null?thisCostCode.name:"" %>" /></span>&nbsp;
+                                        <input name="cost_code_id" type="hidden" id="costCodeIdHidden" value="<%=thisCostCode != null ? thisCostCode.id.ToString() : "" %>" /><span id="" style="display: inline-block;"><input name="" type="text" id="costCodeId" disabled="disabled" class="txtBlack8Class" style="width: 360px;" value="<%=thisCostCode != null ? thisCostCode.name : "" %>" /></span>&nbsp;
                                         <i onclick="WorkTypeCallBack()" style="width: 16px; height: 16px; float: right; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;"></i>
                                     </div>
                                 </td>
@@ -1153,7 +1156,7 @@
                                     <div>
                                         <span id="" class="ResourceQueueDD">
                                             <select name="department_id" id="department_id" class="txtBlack8Class">
-                                                      <option value=""></option>
+                                                <option value=""></option>
                                                 <% if (queueList != null && queueList.Count > 0)
                                                     {
                                                         foreach (var queue in queueList)
@@ -1163,8 +1166,6 @@
                                                     selected="selected" <%} %>><%=queue.name %></option>
                                                 <%  }
                                                     } %>
-
-
                                             </select></span>
                                     </div>
                                 </td>
@@ -1178,7 +1179,7 @@
                                     <div>
                                         <span id="" class="ResourceQueueDD">
                                             <select name="resRoleId" id="resRoleId" class="txtBlack8Class">
-                                             <option value=""></option>
+                                                <option value=""></option>
                                                 <% if (resRoleList != null && resRoleList.Count > 0)
                                                     {
                                                         foreach (var resRole in resRoleList)
@@ -1187,16 +1188,16 @@
                                                             {
                                                                 continue;
                                                             }
-                                                            var thisRes = resList.FirstOrDefault(_=>_.id==resRole.resource_id);
-                                                            var thisRole = roleList.FirstOrDefault(_=>_.id==resRole.role_id);
+                                                            var thisRes = resList.FirstOrDefault(_ => _.id == resRole.resource_id);
+                                                            var thisRole = roleList.FirstOrDefault(_ => _.id == resRole.role_id);
                                                             if (thisRes == null || thisRole == null)
                                                             {
                                                                 continue;
                                                             }
-                                                            %>
-                                                <option value="<%=resRole.resource_id.ToString()+","+resRole.role_id.ToString() %>" <%if (tempQuickCall != null && tempQuickCall.owner_resource_id == resRole.resource_id && tempQuickCall.role_id == resRole.role_id)
+                                                %>
+                                                <option value="<%=resRole.resource_id.ToString() + "," + resRole.role_id.ToString() %>" <%if (tempQuickCall != null && tempQuickCall.owner_resource_id == resRole.resource_id && tempQuickCall.role_id == resRole.role_id)
                                                     {  %>
-                                                    selected="selected" <%} %>><%=thisRes.name+$"[{thisRole.name}]" %></option>
+                                                    selected="selected" <%} %>><%=thisRes.name + $"[{thisRole.name}]" %></option>
                                                 <%  }
                                                     } %>
                                             </select></span>
@@ -1208,9 +1209,9 @@
                                 <td class="inputLabel">
                                     <span id="" class="FieldLabel" style="font-weight: bold; width: 85px;">其他负责人</span>
                                     <div>
-                                        
-                                        <input type="hidden" id="OtherResIdHidden" name="second_resource_ids" value="<%=tempQuickCall!=null?tempQuickCall.second_resource_ids:"" %>"/>
-                                        <input type="hidden" id="OtherResId"/>
+
+                                        <input type="hidden" id="OtherResIdHidden" name="second_resource_ids" value="<%=tempQuickCall != null ? tempQuickCall.second_resource_ids : "" %>" />
+                                        <input type="hidden" id="OtherResId" />
                                         <span id="" style="display: inline-block;">
                                             <select size="4" name="" id="otherRes" class="txtBlack8Class" style="height: 50px; width: 374px;">
                                             </select></span>
@@ -1227,7 +1228,7 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="estimated_begin_time" type="text" id="" onclick="WdatePicker({ dateFmt: 'HH:mm' })" class="txtBlack8Class" style="width: 76px" value="<%=tempQuickCall!=null?tempQuickCall.estimated_begin_time:"" %>" />&nbsp;</span>
+                                            <input name="estimated_begin_time" type="text" id="" onclick="WdatePicker({ dateFmt: 'HH:mm' })" class="txtBlack8Class" style="width: 76px" value="<%=tempQuickCall != null ? tempQuickCall.estimated_begin_time : "" %>" />&nbsp;</span>
                                     </div>
                                 </td>
                             </tr>
@@ -1239,7 +1240,7 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="estimated_end_time" type="text" onclick="WdatePicker({ dateFmt: 'HH:mm' })" id="" class="txtBlack8Class" style="width: 76px" value="<%=tempQuickCall!=null?tempQuickCall.estimated_end_time:"" %>"/>&nbsp;</span>
+                                            <input name="estimated_end_time" type="text" onclick="WdatePicker({ dateFmt: 'HH:mm' })" id="" class="txtBlack8Class" style="width: 76px" value="<%=tempQuickCall != null ? tempQuickCall.estimated_end_time : "" %>" />&nbsp;</span>
                                     </div>
                                 </td>
                             </tr>
@@ -1254,18 +1255,20 @@
                 <div class="Content">
                     <table cellpadding="0">
                         <tbody>
-                                <% if (notifyList != null && notifyList.Count > 0) {
+                            <% if (notifyList != null && notifyList.Count > 0)
+                                {
                                     foreach (var notify in notifyList)
                                     {%>
                             <tr>
                                 <td class="input CheckboxPadding">
                                     <span class="FieldLabel"><span class="txtBlack8Class">
                                         <input id="" type="checkbox" name="noti<%=notify.id %>" style="vertical-align: middle;" <%if (notiIds != null && notiIds.Contains(notify.id.ToString()))
-                                            { %> checked="checked"  <%} %>  />
+                                            { %>
+                                            checked="checked" <%} %> />
                                         <label style="vertical-align: middle;"><%=notify.name %></label></span></span>
                                 </td>
                             </tr>
-                                   <% }
+                            <% }
                                 } %>
                             <tr>
                                 <td class="inputLabel" colspan="2">
@@ -1275,7 +1278,7 @@
                                     <div>
                                         <span id="" class="editDD">
                                             <select name="notify_tmpl_id" id="notify_tmpl_id" class="txtBlack8Class">
-                                                         <option value=""></option>
+                                                <option value=""></option>
                                                 <% if (tempNotiList != null && tempNotiList.Count > 0)
                                                     {
                                                         foreach (var tempNoti in tempNotiList)
@@ -1340,7 +1343,7 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="name" type="text" maxlength="200" id="" value="<%=tempQuote!=null?tempQuote.name:"" %>" class="txtBlack8Class" /></span>
+                                            <input name="name" type="text" maxlength="200" id="" value="<%=tempQuote != null ? tempQuote.name : "" %>" class="txtBlack8Class" /></span>
                                     </div>
                                 </td>
                             </tr>
@@ -1351,7 +1354,7 @@
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">报价描述</span>
                                     </div>
                                     <div>
-                                        <textarea name="description" id="" maxlength="1000" rows="3" cols="55"><%=tempQuote!=null?tempQuote.description:"" %></textarea>
+                                        <textarea name="description" id="" maxlength="1000" rows="3" cols="55"><%=tempQuote != null ? tempQuote.description : "" %></textarea>
                                     </div>
                                 </td>
                             </tr>
@@ -1363,7 +1366,7 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="effective_date" type="text" id="" class="txtBlack8Class" style="width: 76px; text-align: right;" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" value="<%=tempQuote!=null?tempQuote.effective_date.ToString():"" %>" /></span> 距离现在
+                                            <input name="effective_date" type="text" id="" class="txtBlack8Class" style="width: 76px; text-align: right;" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" value="<%=tempQuote != null ? tempQuote.effective_date.ToString() : "" %>" /></span> 距离现在
                                     </div>
                                 </td>
                             </tr>
@@ -1375,7 +1378,7 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="expiration_date" type="text" id="" class="txtBlack8Class" style="width: 76px; text-align: right;" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" value="<%=tempQuote!=null?tempQuote.expiration_date.ToString():"" %>" /></span> 距离现在
+                                            <input name="expiration_date" type="text" id="" class="txtBlack8Class" style="width: 76px; text-align: right;" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" value="<%=tempQuote != null ? tempQuote.expiration_date.ToString() : "" %>" /></span> 距离现在
                                     </div>
                                 </td>
                             </tr>
@@ -1413,7 +1416,7 @@
                                         <span id="">
                                             <select name="tax_region_id" id="" class="txtBlack8Class">
                                                 <option value=""></option>
-                                               <% if (taxRegionList != null && taxRegionList.Count > 0)
+                                                <% if (taxRegionList != null && taxRegionList.Count > 0)
                                                     {
                                                         foreach (var taxRegion in taxRegionList)
                                                         { %>
@@ -1432,7 +1435,8 @@
                                     <div>
                                         <span id="" class="FieldLabel"><span class="txtBlack8Class">
                                             <input id="" type="checkbox" name="isActive" <% if (tempQuote != null && tempQuote.is_active == 1)
-                                                { %> checked="checked" <%} %> style="vertical-align: middle;" /><label style="vertical-align: middle;">报价激活</label></span></span>
+                                                { %>
+                                                checked="checked" <%} %> style="vertical-align: middle;" /><label style="vertical-align: middle;">报价激活</label></span></span>
                                     </div>
                                 </td>
                             </tr>
@@ -1445,7 +1449,7 @@
                                     <div>
                                         <span id="">
                                             <select name="" id="" class="txtBlack8Class">
-                                                 <% if (quoteTempList != null && quoteTempList.Count > 0)
+                                                <% if (quoteTempList != null && quoteTempList.Count > 0)
                                                     {
                                                         foreach (var quoteTemp in quoteTempList)
                                                         { %>
@@ -1466,7 +1470,7 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="external_quote_no" type="text" id="" class="txtBlack8Class" value="<%=tempQuote!=null?tempQuote.external_quote_no:"" %>" /></span>
+                                            <input name="external_quote_no" type="text" id="" class="txtBlack8Class" value="<%=tempQuote != null ? tempQuote.external_quote_no : "" %>" /></span>
                                     </div>
                                 </td>
                             </tr>
@@ -1477,7 +1481,7 @@
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">报价内容</span>
                                     </div>
                                     <div>
-                                        <textarea name="quote_comment" id="" rows="3" cols="55"><%=tempQuote!=null?tempQuote.quote_comment:"" %></textarea>
+                                        <textarea name="quote_comment" id="" rows="3" cols="55"><%=tempQuote != null ? tempQuote.quote_comment : "" %></textarea>
                                     </div>
                                 </td>
                             </tr>
@@ -1502,7 +1506,7 @@
                                         <span id="">
                                             <select name="payment_term_id" id="" class="txtBlack8Class">
                                                 <option value=""></option>
-                                                  <% if (payTermList != null && payTermList.Count > 0)
+                                                <% if (payTermList != null && payTermList.Count > 0)
                                                     {
                                                         foreach (var payTerm in payTermList)
                                                         { %>
@@ -1511,7 +1515,6 @@
                                                     selected="selected" <%} %>><%=payTerm.name %></option>
                                                 <%  }
                                                     } %>
-
                                             </select></span>
                                     </div>
                                 </td>
@@ -1525,8 +1528,8 @@
                                     <div>
                                         <span id="">
                                             <select name="payment_type_id" id="" class="txtBlack8Class">
-                                              <option value=""></option>
-                                                  <% if (payTypeList != null && payTypeList.Count > 0)
+                                                <option value=""></option>
+                                                <% if (payTypeList != null && payTypeList.Count > 0)
                                                     {
                                                         foreach (var payType in payTypeList)
                                                         { %>
@@ -1535,7 +1538,6 @@
                                                     selected="selected" <%} %>><%=payType.name %></option>
                                                 <%  }
                                                     } %>
-
                                             </select></span>
                                     </div>
                                 </td>
@@ -1548,7 +1550,7 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="purchase_order_no" type="text" id="" class="txtBlack8Class" value="<%=tempQuote!=null?tempQuote.purchase_order_no:"" %>" /></span>
+                                            <input name="purchase_order_no" type="text" id="" class="txtBlack8Class" value="<%=tempQuote != null ? tempQuote.purchase_order_no : "" %>" /></span>
                                     </div>
                                 </td>
                             </tr>
@@ -1561,8 +1563,8 @@
                                     <div>
                                         <span id="">
                                             <select name="shipping_type_id" id="" class="txtBlack8Class">
-                                               <option value=""></option>
-                                                  <% if (shipTypeList != null && shipTypeList.Count > 0)
+                                                <option value=""></option>
+                                                <% if (shipTypeList != null && shipTypeList.Count > 0)
                                                     {
                                                         foreach (var shipType in shipTypeList)
                                                         { %>
@@ -1571,7 +1573,6 @@
                                                     selected="selected" <%} %>><%=shipType.name %></option>
                                                 <%  }
                                                     } %>
-                                                
                                             </select></span>
                                     </div>
                                 </td>
@@ -1582,7 +1583,8 @@
                                     <div>
                                         <span id="" class="FieldLabel"><span class="txtBlack8Class">
                                             <input id="" type="checkbox" name="isBillTo" style="vertical-align: middle;" <%if (tempQuote != null && tempQuote.bill_to_as_sold_to == 1)
-                                                { %> checked="checked" <%} %> /><label style="vertical-align: middle;">发票寄送地址同销售地址</label></span></span>
+                                                { %>
+                                                checked="checked" <%} %> /><label style="vertical-align: middle;">发票寄送地址同销售地址</label></span></span>
                                     </div>
                                 </td>
                             </tr>
@@ -1592,7 +1594,8 @@
                                     <div>
                                         <span id="" class="FieldLabel"><span class="txtBlack8Class">
                                             <input id="" type="checkbox" name="isShipTo" style="vertical-align: middle;" <%if (tempQuote != null && tempQuote.ship_to_as_sold_to == 1)
-                                                { %> checked="checked" <%} %>  /><label style="vertical-align: middle;">收货地址同销售地址</label></span></span>
+                                                { %>
+                                                checked="checked" <%} %> /><label style="vertical-align: middle;">收货地址同销售地址</label></span></span>
                                     </div>
                                 </td>
                             </tr>
@@ -1612,19 +1615,21 @@
                                 <td class="input">
                                     <table class="input" cellpadding="0" cellspacing="0">
                                         <tbody>
-                                                  <% if (notifyList != null && notifyList.Count > 0) {
-                                    foreach (var notify in notifyList)
-                                    {%>
-                            <tr>
-                                <td class="input CheckboxPadding">
-                                    <span class="FieldLabel"><span class="txtBlack8Class">
-                                        <input id="" type="checkbox" name="noti<%=notify.id %>" style="vertical-align: middle;" <%if (notiIds != null && notiIds.Contains(notify.id.ToString()))
-                                            { %> checked="checked"  <%} %>  />
-                                        <label style="vertical-align: middle;"><%=notify.name %></label></span></span>
-                                </td>
-                            </tr>
-                                   <% }
-                                } %>
+                                            <% if (notifyList != null && notifyList.Count > 0)
+                                                {
+                                                    foreach (var notify in notifyList)
+                                                    {%>
+                                            <tr>
+                                                <td class="input CheckboxPadding">
+                                                    <span class="FieldLabel"><span class="txtBlack8Class">
+                                                        <input id="" type="checkbox" name="noti<%=notify.id %>" style="vertical-align: middle;" <%if (notiIds != null && notiIds.Contains(notify.id.ToString()))
+                                                            { %>
+                                                            checked="checked" <%} %> />
+                                                        <label style="vertical-align: middle;"><%=notify.name %></label></span></span>
+                                                </td>
+                                            </tr>
+                                            <% }
+                                                } %>
                                         </tbody>
                                     </table>
                                 </td>
@@ -1636,15 +1641,15 @@
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">其他邮箱</span>
                                     </div>
                                     <div>
-                                             <span id="" class="editDD" style="display: inline-block;">
-                                            <input name="other_emails" type="text" maxlength="2000" id="" class="txtBlack8Class" style="width: 360px;" value="<%=temp!=null?temp.other_emails:"" %>" /></span>
+                                        <span id="" class="editDD" style="display: inline-block;">
+                                            <input name="other_emails" type="text" maxlength="2000" id="" class="txtBlack8Class" style="width: 360px;" value="<%=temp != null ? temp.other_emails : "" %>" /></span>
                                     </div>
                                 </td>
                             </tr>
                             <tr id="" class="ExtraPaddingInputRow">
                                 <td></td>
                                 <td class="inputLabel">
-                                   <div class="FieldLabel">
+                                    <div class="FieldLabel">
                                         通知模板
                                     </div>
                                     <div>
@@ -1673,18 +1678,18 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="subject" type="text" maxlength="100" id="" class="txtBlack8Class" value="<%=temp!=null?temp.subject:"" %>" /></span>
+                                            <input name="subject" type="text" maxlength="100" id="" class="txtBlack8Class" value="<%=temp != null ? temp.subject : "" %>" /></span>
                                     </div>
                                 </td>
                             </tr>
                             <tr class="ExtraPaddingInputRow">
                                 <td></td>
                                 <td class="inputLabel3">
-                                     <div class="FieldLabel">
+                                    <div class="FieldLabel">
                                         附加文本
                                     </div>
                                     <div>
-                                        <textarea name="additional_email_text" id="additional_email_text" rows="3" cols="67" class="oppText2" style="resize: vertical; width: 374px;"><%=temp!=null?temp.additional_email_text:"" %></textarea>
+                                        <textarea name="additional_email_text" id="additional_email_text" rows="3" cols="67" class="oppText2" style="resize: vertical; width: 374px;"><%=temp != null ? temp.additional_email_text : "" %></textarea>
                                     </div>
                                 </td>
                             </tr>
@@ -1697,12 +1702,12 @@
                 { %>
             <div class="DivSectionWithHeader">
                 <div class="HeaderRow">
-                    <span id="EditControlFormRecurringTicketEntryFavEditor.ascx_RecurringTicketLabel" class="lblNormalClass" style="font-weight: bold; font-weight: bold;">Recurring Ticket</span>
+                    <span class="lblNormalClass" style="font-weight: bold; font-weight: bold;">定期工单</span>
                 </div>
                 <div class="Content">
                     <table id="entireThing" cellpadding="0" cellspacing="0" class="entireThing">
                         <tbody>
-                           <tr class="inputRow">
+                            <tr class="inputRow">
                                 <td></td>
                                 <td class="inputLabel">
                                     <div class="FieldLabel">
@@ -1722,10 +1727,12 @@
                                 <td></td>
                                 <td class="inputLabel">
                                     <div class="FieldLabel">
-                                        <span id="EditControlFormRecurringTicketEntryFavEditor.ascx_ContractLabel" class="lblNormalClass" style="font-weight: bold;">合同</span>
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">合同</span>
                                     </div>
-                                    <div id="" >
-                                        <input name="" type="hidden" id="" /><nobr><span id="" disabled="disabled"  style="display:inline-block;"><input name="" type="text" id="" disabled="disabled" class="txtBlack8Class" style="width:360px;" /></span>&nbsp;<i onclick="" style="width: 16px; height: 16px; float: right; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;"></i></nobr>
+                                    <div id="" style="width: 400px;">
+                                        <input name="contract_id" type="hidden" id="contractIdHidden" value="<%=thisContract != null ? thisContract.id.ToString() : "" %>" /><span id="" style="display: inline-block;"><input name="" type="text" id="contractId" disabled="disabled" class="txtBlack8Class" style="width: 374px;" value="<%=thisContract != null ? thisContract.name : "" %>" /></span>&nbsp;
+                                        <i onclick="ContractCallBack()" style="width: 16px; height: 16px; float: right; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;"></i>
+
                                     </div>
                                 </td>
                             </tr>
@@ -1735,8 +1742,9 @@
                                     <div class="FieldLabel">
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">工作类型</span>
                                     </div>
-                                    <div id="" class="tickettitletext">
-                                        <input name="" type="hidden" id="" /><nobr><span id="" style="display:inline-block;"><input name="" type="text" id="" class="txtBlack8Class" style="width:360px;" /></span>&nbsp;<i onclick="" style="width: 16px; height: 16px; float: right; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;"></i></nobr>
+                                    <div id="" style="width: 400px;">
+                                        <input name="cost_code_id" type="hidden" id="costCodeIdHidden" value="<%=thisCostCode != null ? thisCostCode.id.ToString() : "" %>" /><span id="" style="display: inline-block;"><input name="" type="text" id="costCodeId" disabled="disabled" class="txtBlack8Class" style="width: 374px;" value="<%=thisCostCode != null ? thisCostCode.name : "" %>" /></span>&nbsp;
+                                        <i onclick="WorkTypeCallBack()" style="width: 16px; height: 16px; float: right; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;"></i>
                                     </div>
                                 </td>
                             </tr>
@@ -1746,12 +1754,12 @@
                                     <div class="FieldLabel">
                                         配置项
                                     </div>
-                                    <div id="">
-                                        <input name="" type="hidden" id="" /><nobr><span id=""><input name="" type="text" id="" disabled="disabled" class="txtBlack8Class"  style="width:360px;" /></span>&nbsp;<i onclick="" style="width: 16px; height: 16px; float: right; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;"></i></nobr>
+                                    <div id="" style="width: 400px;">
+                                        <input name="installed_product_id" type="hidden" id="insProIdHidden" value="<%=tempRecTicket != null ? tempRecTicket.installed_product_id.ToString() : "" %>" /><span id=""><input name="" type="text" id="insProId" disabled="disabled" class="txtBlack8Class" style="width: 374px;" value="<%=thisProduct != null ? thisProduct.name : "" %>" /></span>&nbsp;<i onclick="InsProCallBack()" style="width: 16px; height: 16px; float: right; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;"></i>
                                     </div>
                                 </td>
                             </tr>
-                             <tr class="inputRow">
+                            <tr class="inputRow">
                                 <td></td>
                                 <td class="inputLabel">
                                     <div class="FieldLabel">
@@ -1766,6 +1774,8 @@
                                                         <select name="contact_id" id="contact_id" class="txtBlack8Class" style="width: 374px;">
                                                         </select>
                                                     </span></td>
+                                                    <td id="" style="display: none;"></td>
+                                                    <td id=""></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -1778,14 +1788,21 @@
                                 <td></td>
                                 <td class="inputLabel">
                                     <div class="FieldLabel">
-                                        <span id="" class="lblNormalClass" style="font-weight: bold;">Source</span>
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">来源</span>
                                     </div>
                                     <div>
                                         <span id="" class="editDD">
-                                            <select name="" id="" class="txtBlack8Class">
-                                                <option selected="selected" value=""></option>
-                                             
-
+                                            <select name="source_type_id" id="" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (sourceTypeList != null && sourceTypeList.Count > 0)
+                                                    {
+                                                        foreach (var sourceType in sourceTypeList)
+                                                        { %>
+                                                <option value="<%=sourceType.id %>" <%if (tempRecTicket != null && tempRecTicket.source_type_id != null && tempRecTicket.source_type_id == sourceType.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=sourceType.name %></option>
+                                                <%  }
+                                                    } %>
                                             </select></span>
                                     </div>
                                 </td>
@@ -1797,8 +1814,8 @@
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">工单标题</span>
                                     </div>
                                     <div>
-                                        <span id="" class="tickettitletext">
-                                            <input name="" type="text" id="" class="txtBlack8Class" /></span>
+                                        <span id="" class="ticketTitleInput" style="display: inline-block;">
+                                            <input name="title" type="text" id="title" class="txtBlack8Class" style="width: 374px;" value="<%=tempRecTicket != null ? tempRecTicket.title : "" %>" /></span>
                                     </div>
                                 </td>
                             </tr>
@@ -1809,7 +1826,9 @@
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">工单描述</span>
                                     </div>
                                     <div>
-                                        <textarea name="" id="" rows="3" cols="55" style="width: 360px; height: 50px" ></textarea>
+                                        <div>
+                                            <textarea name="description" id="description" rows="3" cols="55" style="width: 374px; height: 50px; resize: vertical;"><%=tempRecTicket != null ? tempRecTicket.description : "" %></textarea>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
@@ -1817,11 +1836,20 @@
                                 <td></td>
                                 <td class="inputLabel" style="padding-top: 5px">
                                     <div class="FieldLabel">
-                                        <span id="" class="lblNormalClass" style="font-weight:bold;">队列</span>
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">队列</span>
                                         <div>
                                             <span id="" class="ResourceQueueDD">
-                                                <select name="ascx:" id="" class="txtBlack8Class">
-
+                                                <select name="department_id" id="department_id" class="txtBlack8Class">
+                                                    <option value=""></option>
+                                                    <% if (queueList != null && queueList.Count > 0)
+                                                        {
+                                                            foreach (var queue in queueList)
+                                                            { %>
+                                                    <option value="<%=queue.id %>" <%if (tempRecTicket != null && tempRecTicket.department_id != null && tempRecTicket.department_id == queue.id)
+                                                        {  %>
+                                                        selected="selected" <%} %>><%=queue.name %></option>
+                                                    <%  }
+                                                        } %>
                                                 </select></span>
                                         </div>
                                     </div>
@@ -1834,8 +1862,28 @@
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">主负责人 </span>
                                         <div>
                                             <span id="" class="ResourceQueueDD">
-                                                <select name="" id="" class="txtBlack8Class" >
-                                                    <option selected="selected" value=""></option>
+                                                <select name="resRoleId" id="resRoleId" class="txtBlack8Class">
+                                                    <option value=""></option>
+                                                    <% if (resRoleList != null && resRoleList.Count > 0)
+                                                        {
+                                                            foreach (var resRole in resRoleList)
+                                                            {
+                                                                if (resList == null || resList.Count == 0 || roleList == null || roleList.Count == 0)
+                                                                {
+                                                                    continue;
+                                                                }
+                                                                var thisRes = resList.FirstOrDefault(_ => _.id == resRole.resource_id);
+                                                                var thisRole = roleList.FirstOrDefault(_ => _.id == resRole.role_id);
+                                                                if (thisRes == null || thisRole == null)
+                                                                {
+                                                                    continue;
+                                                                }
+                                                    %>
+                                                    <option value="<%=resRole.resource_id.ToString() + "," + resRole.role_id.ToString() %>" <%if (tempRecTicket != null && tempRecTicket.owner_resource_id == resRole.resource_id && tempRecTicket.role_id == resRole.role_id)
+                                                        {  %>
+                                                        selected="selected" <%} %>><%=thisRes.name + $"[{thisRole.name}]" %></option>
+                                                    <%  }
+                                                        } %>
                                                 </select></span>
                                         </div>
                                     </div>
@@ -1848,12 +1896,12 @@
                                         <span id="" class="lblNormalClass" style="font-weight: bold;">截止日期</span>
                                     </div>
                                     <div>
-                                        <span  id="">
-                                            <input name="" type="text" id="" class="txtBlack8Class" style="width: 76px" />&nbsp;</span>
-                                        <br>
-                                        <br>
                                         <span id="">
-                                            <input name="" type="text" id="" class="txtBlack8Class"  style="width: 76px; text-align: right;" /></span>
+                                            <input name="estimated_end_time" type="text" id="" class="txtBlack8Class" style="width: 76px" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=tempRecTicket != null ? tempRecTicket.estimated_end_time : "" %>" />&nbsp;</span>
+                                        <br />
+                                        <br />
+                                        <span id="">
+                                            <input name="estimated_end_time_from_now" type="text" id="" class="txtBlack8Class" style="width: 76px; text-align: right;" value="<%=tempRecTicket != null ? tempRecTicket.estimated_end_time_from_now : "" %>" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /></span>
                                         &nbsp;<span style="height: 100%"><span id="" class="FieldLevelInstruction" style="font-weight: normal;">分钟距离现在</span></span>
                                     </div>
                                 </td>
@@ -1866,8 +1914,17 @@
                                     </div>
                                     <div>
                                         <span id="" class="editDD">
-                                            <select name="" id="" class="txtBlack8Class">
-
+                                            <select name="priority_type_id" id="priority_type_id" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (priorityList != null && priorityList.Count > 0)
+                                                    {
+                                                        foreach (var priority in priorityList)
+                                                        { %>
+                                                <option value="<%=priority.id %>" <%if (tempRecTicket != null && tempRecTicket.priority_type_id != null && tempRecTicket.priority_type_id == priority.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=priority.name %></option>
+                                                <%  }
+                                                    } %>
                                             </select></span>
                                     </div>
                                 </td>
@@ -1880,9 +1937,17 @@
                                     </div>
                                     <div>
                                         <span id="" class="editDD">
-                                            <select name="" id="" class="txtBlack8Class">
-                                                <option selected="selected" value=""></option>
-
+                                            <select name="status_id" id="" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (ticStaList != null && ticStaList.Count > 0)
+                                                    {
+                                                        foreach (var ticSta in ticStaList)
+                                                        { %>
+                                                <option value="<%=ticSta.id %>" <%if (tempRecTicket != null && tempRecTicket.status_id != null && tempRecTicket.status_id == ticSta.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=ticSta.name %></option>
+                                                <%  }
+                                                    } %>
                                             </select></span>
                                     </div>
                                 </td>
@@ -1895,7 +1960,7 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <input name="" type="text" maxlength="12" id="" class="txtBlack8Class" style="text-align: right;" /></span>
+                                            <input name="estimated_hours" type="text" maxlength="12" id="" class="txtBlack8Class ToDec2" style="text-align: right;" value="<%=tempRecTicket != null && tempRecTicket.estimated_hours != null ? ((decimal)tempRecTicket.estimated_hours).ToString("#0.00") : "" %>" /></span>
                                     </div>
                                 </td>
                             </tr>
@@ -1907,8 +1972,17 @@
                                     </div>
                                     <div>
                                         <span id="" class="editDD">
-                                            <select name="" id="" class="txtBlack8Class">
-
+                                            <select name="cate_id" id="cate_id" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (ticketCateList != null && ticketCateList.Count > 0)
+                                                    {
+                                                        foreach (var ticketCate in ticketCateList)
+                                                        { %>
+                                                <option value="<%=ticketCate.id %>" <%if (tempRecTicket != null && tempRecTicket.cate_id != null && tempRecTicket.cate_id == ticketCate.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=ticketCate.name %></option>
+                                                <%  }
+                                                    } %>
                                             </select></span>
                                     </div>
                                 </td>
@@ -1921,8 +1995,17 @@
                                     </div>
                                     <div>
                                         <span id="" class="editDD">
-                                            <select name="" id="" class="txtBlack8Class">
-
+                                            <select name="issue_type_id" id="issue_type_id" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (issueTypeList != null && issueTypeList.Count > 0)
+                                                    {
+                                                        foreach (var issueType in issueTypeList)
+                                                        { %>
+                                                <option value="<%=issueType.id %>" <%if (tempRecTicket != null && tempRecTicket.issue_type_id != null && tempRecTicket.issue_type_id == issueType.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=issueType.name %></option>
+                                                <%  }
+                                                    } %>
                                             </select></span>
                                     </div>
                                 </td>
@@ -1935,7 +2018,7 @@
                                     </div>
                                     <div>
                                         <span id="" class="editDD">
-                                            <select name="" id="" class="txtBlack8Class" >
+                                            <select name="sub_issue_type_id" id="sub_issue_type_id" class="txtBlack8Class">
                                                 <option selected="selected" value=""></option>
 
                                             </select></span>
@@ -1948,7 +2031,7 @@
             </div>
             <div class="DivSectionWithHeader">
                 <div class="HeaderRow">
-                    <span id="" class="lblNormalClass" style="font-weight: bold; font-weight: bold;">Duration</span>
+                    <span id="" class="lblNormalClass" style="font-weight: bold; font-weight: bold;">持续时间</span>
                 </div>
                 <div class="Content">
                     <div id="" class="searchpanel" style="width: 100%;">
@@ -1966,29 +2049,31 @@
                                         <td>
                                             <div class="FieldLabel">
                                                 <span id="" class="oppNumber">
-                                                    <input name="" type="text" id="" class="txtBlack8Class" style="text-align: right;" /></span>
+                                                    <input name="recurring_start_date" type="text" id="" class="txtBlack8Class" style="text-align: right; width: 55px;" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" value="<%=tempRecTicket != null && tempRecTicket.recurring_start_date != null ? tempRecTicket.recurring_start_date.ToString() : "" %>" /></span>
                                                 <span class="txtBlack8Class">距离现在天数
                                                 </span>
                                             </div>
                                         </td>
                                         <td class="CheckboxPadding">
                                             <span id="" class="FieldLabel"><span class="txtBlack8Class">
-                                                <input id="" type="checkbox" name="" checked="checked" style="vertical-align: middle;" /><label style="vertical-align: middle;">Active (only impacts Recurrence Master Search)</label></span></span>
+                                                <input id="" type="checkbox" name="isActive" <% if ((tempRecTicket == null) || (tempRecTicket.is_active == 1))
+                                                    {%>
+                                                    checked="checked" <%} %> style="vertical-align: middle;" /><label style="vertical-align: middle;">激活 (只影响主工单)</label></span></span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <div class="FieldLabel">
-                                                End Date / End After (# instances)
+                                                结束日期 / 实例数
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <div class="FieldLabel">
-                                                <input id="" type="radio" name="" value="radioEndDaysFromNow" checked="checked" />
+                                                <input id="rdEnd" type="radio" name="EndType" value="radioEndDaysFromNow" checked="checked" />
                                                 <span class="oppNumber">
-                                                    <input name="" type="text" id="" class="txtBlack8Class" style="text-align: right;" /></span>
+                                                    <input name="recurring_end_date" type="text" id="recurring_end_date" class="txtBlack8Class" style="text-align: right; width: 55px;" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" value="<%=tempRecTicket != null && tempRecTicket.recurring_end_date != null ? tempRecTicket.recurring_end_date.ToString() : "" %>" /></span>
                                                 <span class="txtBlack8Class">距离现在时间
                                                 </span>
                                             </div>
@@ -1997,10 +2082,10 @@
                                     <tr>
                                         <td>
                                             <div class="FieldLabel">
-                                                <input id="" type="radio" name="" value="radioEndInstances"/>
+                                                <input id="rdIns" type="radio" name="EndType" value="radioEndInstances" />
                                                 <span id="" class="oppNumber">
-                                                    <input name="" type="text" id="" class="txtBlack8Class" style="text-align: right;"  disabled="" /></span>
-                                                <span class="txtBlack8Class">instances
+                                                    <input name="recurring_instances" type="text" id="recurring_instances" class="txtBlack8Class" style="text-align: right; width: 55px;" disabled="" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" value="<%=tempRecTicket != null && tempRecTicket.recurring_instances != null ? tempRecTicket.recurring_instances.ToString() : "" %>" /></span>
+                                                <span class="txtBlack8Class">实例数
                                                 </span>
                                             </div>
                                         </td>
@@ -2022,21 +2107,21 @@
                         <table class="radioTable" style="height: 143px">
                             <tbody>
                                 <tr>
-                                    <td style="height: 100%;">
+                                    <td style="height: 100%; min-width: 50px;">
                                         <table>
                                             <tbody>
                                                 <tr>
                                                     <td>
-                                                        <div>
-                                                            <input id="" type="radio" name="" value="radioDaily" />
+                                                        <div style="height: 25px;">
+                                                            <input id="rdDay" type="radio" name="FreType" value="radioDaily" />
                                                             <span class="txtBlack8Class">天</span>
                                                         </div>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <div>
-                                                            <input id="" type="radio" name="" value="radioWeekly" />
+                                                        <div style="height: 25px;">
+                                                            <input id="rdWeek" type="radio" name="FreType" value="radioWeekly" />
                                                             <span class="txtBlack8Class">周</span>
                                                         </div>
                                                     </td>
@@ -2044,16 +2129,16 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <div>
-                                                            <input id="" type="radio" name="" value="radioMonthly" checked="checked" />
+                                                        <div style="height: 25px;">
+                                                            <input id="rdMonth" type="radio" name="FreType" value="radioMonthly" checked="checked" />
                                                             <span class="txtBlack8Class">月</span>
                                                         </div>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <div>
-                                                            <input id="" type="radio" name="" value="radioYearly" />
+                                                        <div style="height: 25px;">
+                                                            <input id="rdYear" type="radio" name="FreType" value="radioYearly" />
                                                             <span class="txtBlack8Class">年
                                                             </span>
                                                         </div>
@@ -2063,25 +2148,23 @@
                                         </table>
                                     </td>
                                     <td class="FieldLabel" style="padding-top: 0px; padding-left: 50px;">
-                                        <div id="" style="display: none;">
-
+                                        <div id="pnlDaily" class="FrequencyClass" style="display: none;">
                                             <div>
                                                 每隔
 									<span id="" class="oppNumber">
-                                        <input name="" type="text" value="1" id="" class="txtBlack8Class"  style="text-align: right;" /></span>
+                                        <input name="every" type="text" value="1" id="day_every" class="txtBlack8Class" style="text-align: right; width: 55px;" /></span>
                                                 天
                                             </div>
                                             <div>
                                                 <span id="" class="FieldLabel"><span class="txtBlack8Class">
-                                                    <input id="" type="checkbox" name="" style="vertical-align: middle;" /><label style="vertical-align: middle;">周六不创建</label></span></span>
+                                                    <input id="day_no_sat" type="checkbox" name="day_no_sat" style="vertical-align: middle;" /><label style="vertical-align: middle;">周六不创建</label></span></span>
                                             </div>
                                             <div>
                                                 <span id="" class="FieldLabel"><span class="txtBlack8Class">
-                                                    <input id="" type="checkbox" name="" style="vertical-align: middle;" /><label  style="vertical-align: middle;">周日不创建</label></span></span>
+                                                    <input id="day_no_sun" type="checkbox" name="day_no_sun" style="vertical-align: middle;" /><label style="vertical-align: middle;">周日不创建</label></span></span>
                                             </div>
-
                                         </div>
-                                        <div id="" style="display: none;">
+                                        <div id="pnlWeekly" class="FrequencyClass" style="display: none;">
 
                                             <table>
                                                 <tbody>
@@ -2090,7 +2173,7 @@
                                                             <div>
                                                                 每隔
 												<span id="" class="oppNumber">
-                                                    <input name="" type="text" value="1" id="" class="txtBlack8Class"  style="text-align: right;" /></span>
+                                                    <input name="week_eve_week" type="text" value="1" id="week_eve_week" class="txtBlack8Class" style="text-align: right; width: 55px;" /></span>
                                                                 周:
                                                             </div>
                                                         </td>
@@ -2099,168 +2182,263 @@
 
                                                         <td style="width: 100px">
                                                             <span id="" class="FieldLabel"><span class="txtBlack8Class">
-                                                                <input id="" type="checkbox" name="" style="vertical-align: middle;" /><label  style="vertical-align: middle;">周日</label></span></span>
+                                                                <input id="ckWeekSun" type="checkbox" name="ckWeekSun" style="vertical-align: middle;" /><label style="vertical-align: middle;">周日</label></span></span>
                                                         </td>
-                                                         <td style="width: 100px">
+                                                        <td style="width: 100px">
                                                             <span id="" class="FieldLabel"><span class="txtBlack8Class">
-                                                                <input id="" type="checkbox" name="" style="vertical-align: middle;" /><label  style="vertical-align: middle;">周三</label></span></span>
+                                                                <input id="ckWeekWed" type="checkbox" name="ckWeekWed" style="vertical-align: middle;" /><label style="vertical-align: middle;">周三</label></span></span>
                                                         </td>
-                                                         <td style="width: 100px">
+                                                        <td style="width: 100px">
                                                             <span id="" class="FieldLabel"><span class="txtBlack8Class">
-                                                                <input id="" type="checkbox" name="" style="vertical-align: middle;" /><label  style="vertical-align: middle;">周六</label></span></span>
+                                                                <input id="ckWeekSat" type="checkbox" name="ckWeekSat" style="vertical-align: middle;" /><label style="vertical-align: middle;">周六</label></span></span>
                                                         </td>
 
                                                     </tr>
                                                     <tr>
-                                                         <td style="width: 100px">
+                                                        <td style="width: 100px">
                                                             <span id="" class="FieldLabel"><span class="txtBlack8Class">
-                                                                <input id="" type="checkbox" name="" style="vertical-align: middle;" /><label  style="vertical-align: middle;">周一</label></span></span>
-                                                        </td>
-                                                       <td style="width: 100px">
-                                                            <span id="" class="FieldLabel"><span class="txtBlack8Class">
-                                                                <input id="" type="checkbox" name="" style="vertical-align: middle;" /><label  style="vertical-align: middle;">周四</label></span></span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                         <td style="width: 100px">
-                                                            <span id="" class="FieldLabel"><span class="txtBlack8Class">
-                                                                <input id="" type="checkbox" name="" style="vertical-align: middle;" /><label  style="vertical-align: middle;">周二</label></span></span>
+                                                                <input id="ckWeekMon" type="checkbox" name="ckWeekMon" style="vertical-align: middle;" /><label style="vertical-align: middle;">周一</label></span></span>
                                                         </td>
                                                         <td style="width: 100px">
                                                             <span id="" class="FieldLabel"><span class="txtBlack8Class">
-                                                                <input id="" type="checkbox" name="" style="vertical-align: middle;" /><label  style="vertical-align: middle;">周五</label></span></span>
+                                                                <input id="ckWeekThu" type="checkbox" name="ckWeekThu" style="vertical-align: middle;" /><label style="vertical-align: middle;">周四</label></span></span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="width: 100px">
+                                                            <span id="" class="FieldLabel"><span class="txtBlack8Class">
+                                                                <input id="ckWeekTus" type="checkbox" name="ckWeekTus" style="vertical-align: middle;" /><label style="vertical-align: middle;">周二</label></span></span>
+                                                        </td>
+                                                        <td style="width: 100px">
+                                                            <span id="" class="FieldLabel"><span class="txtBlack8Class">
+                                                                <input id="ckWeekFri" type="checkbox" name="ckWeekFri" style="vertical-align: middle;" /><label style="vertical-align: middle;">周五</label></span></span>
                                                         </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
 
                                         </div>
-                                        <div id="" style="display:inline;">
-                                          到期
+                                        <div id="pnlMonthly" class="FrequencyClass" style="display: inline;">
+                                            到期
 								<div>
-                                    <input id="" type="radio" name="" value="radioSpecificDay" checked="checked" />
+                                    <input id="rdMonth0" type="radio" name="monthType" value="radioSpecificDay" checked="checked" />
                                     <span class="lblNormalClass" style="font-weight: normal;">天  </span><span id="" class="oppNumber">
-                                        <input name="" type="text" id="" class="txtBlack8Class" style="text-align: right;" /></span><span class="lblNormalClass" style="font-weight: normal;">  每  </span><span id="" class="oppNumber">
-                                            <input name="" type="text" value="1" id="" class="txtBlack8Class"  style="text-align: right;" /></span><span class="lblNormalClass" style="font-weight: normal;"> 月</span>
+                                        <input name="month_day_num" type="text" id="month_day_num" class="txtBlack8Class" style="text-align: right; width: 55px;" /></span><span class="lblNormalClass" style="font-weight: normal;">  每  </span><span id="" class="oppNumber">
+                                            <input name="month_month_day" type="text" value="1" id="month_month_day" class="txtBlack8Class" style="text-align: right; width: 55px;" /></span><span class="lblNormalClass" style="font-weight: normal;"> 月</span>
                                 </div>
                                             <div>
-                                                <input id="" type="radio" name="a" value="radioRelativeDay" />
-                                                <span class="lblNormalClass" style="font-weight: normal;">The  </span><span id="">
-                                                    <select name="" id="" class="txtBlack8Class" style="width: 100px" disabled="">
-                                                        <option value="0"></option>
+                                                <input id="rdMonth1" type="radio" name="monthType" value="radioRelativeDay" />
+                                                <span class="lblNormalClass" style="font-weight: normal;">每  </span>
+                                                <span id="" class="oppNumber">
+                                                    <input name="month_month_eve_num" type="text" value="1" id="month_month_eve_num" class="txtBlack8Class" style="text-align: right; width: 55px;" disabled="" /></span><span class="lblNormalClass" style="font-weight: normal;">  月 </span>
+                                                <span id="">
+                                                    <select name="month_1_month" id="month_1_month" class="txtBlack8Class" style="width: 100px" disabled="">
+                                                        <option selected="selected" value="1st">第一个</option>
+                                                        <option value="2nd">第二个</option>
+                                                        <option value="3rd">第三个</option>
+                                                        <option value="4th">第四个</option>
+                                                        <option value="last">最后一个</option>
 
-                                                    </select></span><span class="lblNormalClass" style="font-weight: normal;"> </span><span id="">
-                                                        <select name="" id="" class="txtBlack8Class" style="width: 100px" disabled="">
-                                                            <option value="0"></option>
+                                                    </select></span>
 
-                                                        </select></span><span class="lblNormalClass" style="font-weight: normal;">  of every  </span><span id="" class="oppNumber">
-                                                            <input name="" type="text" value="1" id="" class="txtBlack8Class"  style="text-align: right;"  disabled="" /></span><span class="lblNormalClass" style="font-weight: normal;">  month(s) </span>
+                                                <span class="lblNormalClass" style="font-weight: normal;"></span><span id="">
+                                                    <select name="month_1_week" id="month_1_week" class="txtBlack8Class" style="width: 100px" disabled="">
+                                                        <option selected="selected" value="1">星期一</option>
+                                                        <option value="2">星期二</option>
+                                                        <option value="3">星期三</option>
+                                                        <option value="4">星期四</option>
+                                                        <option value="5">星期五</option>
+                                                        <option value="6">星期六</option>
+                                                        <option value="0">星期日</option>
+                                                        <option value="7">天</option>
+                                                        <option value="8">工作日</option>
+
+                                                    </select></span><span class="lblNormalClass" style="font-weight: normal;">  </span>
+
                                             </div>
 
                                         </div>
-                                        <div id="" style="display: none;">
-
+                                        <div id="pnlYearly" class="FrequencyClass" style="display: none;">
                                             <div>
-                                                <input id="" type="radio" name="" value="radioYearlySpecific" checked="checked" />
-                                                <span class="lblNormalClass" style="font-weight: normal;">Due every  </span><span id="">
-                                                    <select name="" id="" class="txtBlack8Class" style="width: 100px">
-                                                        <option value="0"></option>
-                                                        <option selected="selected" value="1">January</option>
-                                                        <option value="2">February</option>
-                                                        <option value="3">March</option>
-                                                        <option value="4">April</option>
-                                                        <option value="5">May</option>
-                                                        <option value="6">June</option>
-                                                        <option value="7">July</option>
-                                                        <option value="8">August</option>
-                                                        <option value="9">September</option>
-                                                        <option value="10">October</option>
-                                                        <option value="11">November</option>
-                                                        <option value="12">December</option>
+                                                <input id="rdYear0" type="radio" name="YearType" value="radioYearlySpecific" checked="checked" />
+                                                <span class="lblNormalClass" style="font-weight: normal;">每  </span><span id="">
+                                                    <select name="year_every_month" id="year_every_month" class="txtBlack8Class" style="width: 100px">
+                                                        <option value=""></option>
+                                                        <option selected="selected" value="1">一月</option>
+                                                        <option value="2">二月</option>
+                                                        <option value="3">三月</option>
+                                                        <option value="4">四月</option>
+                                                        <option value="5">五月</option>
+                                                        <option value="6">六月</option>
+                                                        <option value="7">七月</option>
+                                                        <option value="8">八月</option>
+                                                        <option value="9">九月</option>
+                                                        <option value="10">十月</option>
+                                                        <option value="11">十一月</option>
+                                                        <option value="12">十二月</option>
 
                                                     </select></span><span class="lblNormalClass" style="font-weight: normal;">   </span><span id="" class="oppNumber">
-                                                        <input name="" type="text" id="" class="txtBlack8Class"  style="text-align: right;" /></span><span class="lblNormalClass" style="font-weight: normal;">  </span>
+                                                        <input name="year_month_day" type="text" id="year_month_day" class="txtBlack8Class" style="text-align: right; width: 55px;" /></span><span class="lblNormalClass" style="font-weight: normal;"> 日 </span>
                                             </div>
                                             <div>
-                                                <input id="" type="radio" name="" value="radioYearlyRelative" />
-                                                <span class="lblNormalClass" style="font-weight: normal;">The  </span><span id="">
-                                                    <select name="" id="" class="txtBlack8Class" style="width: 100px" disabled="">
-                                                        <option value="0"></option>
-                                                       
-
+                                                <input id="rdYear1" type="radio" name="YearType" value="radioYearlyRelative" />
+                                                <span class="lblNormalClass" style="font-weight: normal;">每  </span><span id="">
+                                                    <select name="year_the_month" id="year_the_month" class="txtBlack8Class" style="width: 100px" disabled="">
+                                                        <option selected="selected" value="1">一月</option>
+                                                        <option value="2">二月</option>
+                                                        <option value="3">三月</option>
+                                                        <option value="4">四月</option>
+                                                        <option value="5">五月</option>
+                                                        <option value="6">六月</option>
+                                                        <option value="7">七月</option>
+                                                        <option value="8">八月</option>
+                                                        <option value="9">九月</option>
+                                                        <option value="10">十月</option>
+                                                        <option value="11">十一月</option>
+                                                        <option value="12">十二月</option>
                                                     </select></span><span class="lblNormalClass" style="font-weight: normal;">   </span><span id="">
-                                                        <select name="" id="" class="txtBlack8Class" style="width: 100px" disabled="">
-                                                            <option value="0"></option>
-                                                            <option selected="selected" value="1">Monday</option>
-                                                            <option value="2">Tuesday</option>
-                                                            <option value="4">Wednesday</option>
-                                                            <option value="8">Thursday</option>
-                                                            <option value="16">Friday</option>
-                                                            <option value="32">Saturday</option>
-                                                            <option value="64">Sunday</option>
-                                                            <option value="128">Day</option>
-                                                            <option value="256">Weekday</option>
+                                                        <select name="year_month_week_num" id="year_month_week_num" class="txtBlack8Class" style="width: 100px" disabled="">
+                                                            <option value=""></option>
+                                                            <option selected="selected" value="1st">第一个</option>
+                                                            <option value="2nd">第二个</option>
+                                                            <option value="3rd">第三个</option>
+                                                            <option value="4th">第四个</option>
+                                                            <option value="last">最后一个</option>
 
-                                                        </select></span><span class="lblNormalClass" style="font-weight: normal;">  in  </span><span id=">
-                                                            <select name="" id="" class="txtBlack8Class" style="width: 100px" disabled="">
-                                                                <option value="0"></option>
-                                                                <option selected="selected" value="1">January</option>
-                                                                <option value="2">February</option>
-                                                                <option value="3">March</option>
-                                                                <option value="4">April</option>
-                                                                <option value="5">May</option>
-                                                                <option value="6">June</option>
-                                                                <option value="7">July</option>
-                                                                <option value="8">August</option>
-                                                                <option value="9">September</option>
-                                                                <option value="10">October</option>
-                                                                <option value="11">November</option>
-                                                                <option value="12">December</option>
+                                                        </select></span><span class="lblNormalClass" style="font-weight: normal;">  的  </span><span id="">
+                                                            <select name="year_the_week" id="year_the_week" class="txtBlack8Class" style="width: 100px" disabled="">
+                                                                <option value=""></option>
+                                                                <option selected="selected" value="1">星期一</option>
+                                                                <option value="2">星期二</option>
+                                                                <option value="3">星期三</option>
+                                                                <option value="4">星期四</option>
+                                                                <option value="5">星期五</option>
+                                                                <option value="6">星期六</option>
+                                                                <option value="0">星期日</option>
+                                                                <option value="7">天</option>
+                                                                <option value="8">工作日</option>
 
                                                             </select></span><span class="lblNormalClass" style="font-weight: normal;">  </span>
                                             </div>
 
                                         </div>
-
                                     </td>
                                 </tr>
-
                             </tbody>
                         </table>
-
-
-
                     </div>
                 </div>
             </div>
             <div class="DivSectionWithHeader">
                 <div class="HeaderRow">
-                    <span id="EditControlFormRecurringTicketEntryFavEditor.ascx_UDFLabel" class="lblNormalClass" style="font-weight: bold; font-weight: bold;">User-Defined Fields</span>
+                    <span id="" class="lblNormalClass" style="font-weight: bold; font-weight: bold;">自定义字段</span>
                 </div>
                 <div class="Content">
-                    <div id="EditControlFormRecurringTicketEntryFavEditor.ascx_UDFForm" class="searchpanel" style="width: 100%;">
-
-
+                    <div id="" class="searchpanel" style="width: 100%;">
                         <table style="overflow-y: auto; border-collapse: collapse; border: 0px;" id="udfWrapperTable" class="Neweditsubsection" width="100%">
                             <tbody>
                                 <tr>
                                     <td style="border: 0px;">
-
-                                        <div id="EditControlFormRecurringTicketEntryFavEditor.ascx_ucTicketFormTemplateUDF_pnlMain" style="border-style: None; padding-bottom: 0px; min-height: 30px;">
+                                        <div id="" style="border-style: None; padding-bottom: 0px; min-height: 30px;">
                                             <table border="0" style="border-collapse: collapse;" width="100%">
                                                 <tbody>
+                                                    <% if (tickUdfList != null && tickUdfList.Count > 0)
+                                                        {
+                                                            foreach (var udf in tickUdfList)
+                                                            {
+                                                                if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)
+                                                                {%>
                                                     <tr>
-                                                        <td valign="top" align="left" width="170px"><span class="Fieldlabel" style="font-weight: bold;">ticket-01</span><span id="EditControlFormRecurringTicketEntryFavEditor.ascx_ucTicketFormTemplateUDF_EditControlFormRecurringTicketEntryFavEditor.ascx_ucTicketFormTemplateUDF_udf_29682911_ATTextEdit_required_span" class="errorSmallClass" style="font-weight: bold;"></span><div>
-                                                            <span id="EditControlFormRecurringTicketEntryFavEditor.ascx_ucTicketFormTemplateUDF_udf_29682911" style="display: inline-block;">
-                                                                <input name="EditControlFormRecurringTicketEntryFavEditor.ascx:ucTicketFormTemplateUDF:udf_29682911:ATTextEdit" type="text" id="EditControlFormRecurringTicketEntryFavEditor.ascx_ucTicketFormTemplateUDF_udf_29682911_ATTextEdit" class="txtBlack8Class" isrequired="0" validationcaption="ticket-01" onkeypress=";SetPageIsDirtyOnKeyPress(event);" onchange=";SetPageIsDirty();" style="width: 170px;"></span>
-                                                        </div>
-                                                        </td>
-                                                        <td valign="top" align="left" width="170px"><span class="Fieldlabel" style="font-weight: bold;">ticket-02</span><span id="EditControlFormRecurringTicketEntryFavEditor.ascx_ucTicketFormTemplateUDF_EditControlFormRecurringTicketEntryFavEditor.ascx_ucTicketFormTemplateUDF_udf_29682912_ATTextEdit_required_span" class="errorSmallClass" style="font-weight: bold;"></span><div>
-                                                            <span image_id="EditControlFormRecurringTicketEntryFavEditor.ascx_ucTicketFormTemplateUDF_udf_29682912_calimage" image_disabled_id="EditControlFormRecurringTicketEntryFavEditor.ascx_ucTicketFormTemplateUDF_udf_29682912_calimagedisabled" id="EditControlFormRecurringTicketEntryFavEditor.ascx_ucTicketFormTemplateUDF_udf_29682912" style="display: inline-block;">
-                                                                <input name="EditControlFormRecurringTicketEntryFavEditor.ascx:ucTicketFormTemplateUDF:udf_29682912:ATTextEdit" type="text" id="EditControlFormRecurringTicketEntryFavEditor.ascx_ucTicketFormTemplateUDF_udf_29682912_ATTextEdit" class="txtBlack8Class" isdate="1" dontvalidateonload="1" isrequired="0" validationcaption="ticket-02" image_id="EditControlFormRecurringTicketEntryFavEditor.ascx_ucTicketFormTemplateUDF_udf_29682912_calimage" image_disabled_id="EditControlFormRecurringTicketEntryFavEditor.ascx_ucTicketFormTemplateUDF_udf_29682912_calimagedisabled" onkeypress=";SetPageIsDirtyOnKeyPress(event);" onchange=";SetPageIsDirty();" style="width: 170px;" title="DD/MM/YYYY">&nbsp;<img id="EditControlFormRecurringTicketEntryFavEditor.ascx_ucTicketFormTemplateUDF_udf_29682912_calimage" class="DateEditImage" onclick="CalendarPopup.Show(event, document.getElementById('EditControlFormRecurringTicketEntryFavEditor.ascx_ucTicketFormTemplateUDF_udf_29682912_ATTextEdit'));" src="/graphics/icons/content/date.png?v=49958" alt="Calendar" border="0" style="cursor: pointer; display: inline-block;"><img id="EditControlFormRecurringTicketEntryFavEditor.ascx_ucTicketFormTemplateUDF_udf_29682912_calimagedisabled" class="DateEditDisabledImage" src="/graphics/icons/content/date-disabled.png?v=49958" border="0" style="display: none;"></span>
+                                                        <td valign="top" align="left" width="170px"><span class="Fieldlabel" style="font-weight: bold;"><%=udf.name %></span><span id="" class="errorSmallClass" style="font-weight: bold;"></span><div>
+                                                            <span style="display: inline-block;">
+                                                                <input name="<%=udf.id %>" type="text" id="" class="txtBlack8Class" style="width: 170px;" value="<%=ticketUdfValueList!=null&&ticketUdfValueList.Count>0&& ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id)!=null?ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id).value.ToString():"" %>" /></span>
                                                         </div>
                                                         </td>
                                                     </tr>
+                                                    <%}
+                                                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)
+                                                        {%>
+                                                    <tr>
+                                                        <td valign="top" align="left" width="170px"><span class="Fieldlabel" style="font-weight: bold;"><%=udf.name %></span><span id="" class="errorSmallClass" style="font-weight: bold;"></span><div>
+                                                            <span style="display: inline-block;">
+                                                                <textarea name="<%=udf.id %>" rows="2" cols="20"><%=ticketUdfValueList!=null&&ticketUdfValueList.Count>0&& ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id)!=null?ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id).value.ToString():""  %></textarea></span>
+                                                        </div>
+                                                        </td>
+                                                    </tr>
+                                                    <%}
+                                                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)
+                                                        {%>
+                                                    <%string val = "";
+                                                        if (ticketUdfValueList != null && ticketUdfValueList.Count > 0 && ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id) != null)
+                                                        {
+                                                            object value = ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id).value;
+                                                            if (value != null && (!string.IsNullOrEmpty(value.ToString())))
+                                                            {
+                                                                val = DateTime.Parse(value.ToString()).ToString("yyyy-MM-dd");
+                                                            }
+                                                        }
+                                                    %><tr>
+                                                        <td valign="top" align="left" width="170px"><span class="Fieldlabel" style="font-weight: bold;"><%=udf.name %></span><span id="" class="errorSmallClass" style="font-weight: bold;"></span><div>
+                                                            <span style="display: inline-block;">
+                                                                <input name="<%=udf.id %>" type="text" id="" class="txtBlack8Class" style="width: 170px;" value="<%=val %>" /></span>
+                                                        </div>
+                                                        </td>
+                                                    </tr>
+                                                    <%
+                                                        }
+                                                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)
+                                                        {%>
+                                                    <%string val = "";
+                                                        if (ticketUdfValueList != null && ticketUdfValueList.Count > 0 && ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id) != null)
+                                                        {
+                                                            object value = ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id).value;
+                                                            if (value != null && (!string.IsNullOrEmpty(value.ToString())))
+                                                            {
+                                                                val = DateTime.Parse(value.ToString()).ToString("yyyy-MM-dd");
+                                                            }
+                                                        }
+                                                    %>
+                                                    <tr>
+                                                        <td valign="top" align="left" width="170px"><span class="Fieldlabel" style="font-weight: bold;"><%=udf.name %></span><span id="" class="errorSmallClass" style="font-weight: bold;"></span><div>
+                                                            <span style="display: inline-block;">
+                                                                <input name="<%=udf.id %>" type="text" id="" class="txtBlack8Class" style="width: 170px;" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" value="<%=ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id).value %>" /></span>
+                                                        </div>
+                                                        </td>
+                                                    </tr>
+                                                    <%
+                                                        }
+                                                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)
+                                                        {%>
+                                                    <tr>
+                                                        <td valign="top" align="left" width="170px"><span class="Fieldlabel" style="font-weight: bold;"><%=udf.name %></span><span id="" class="errorSmallClass" style="font-weight: bold;"></span><div>
+                                                            <span style="display: inline-block;">
+                                                                <select name="<%=udf.id %>">
+                                                                    <%if (udf.required != 1)
+                                                                        { %>
+                                                                    <option></option>
+                                                                    <%} %>
+                                                                    <% if (udf.value_list != null && udf.value_list.Count > 0)
+                                                                        {
+                                                                            var thisValue = "";
+                                                                            if (ticketUdfValueList != null && ticketUdfValueList.Count > 0 && ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id) != null)
+                                                                            {
+                                                                                thisValue = ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id).value.ToString();
+                                                                            }
+
+                                                                            foreach (var thisValeList in udf.value_list)
+                                                                            {%>
+                                                                    <option value="<%=thisValeList.val %>" <%=thisValue==thisValeList.val?"selected='selected'":"" %>><%=thisValeList.show %></option>
+                                                                    <%
+                                                                            }
+                                                                        } %>
+                                                                </select></span>
+                                                        </div>
+                                                        </td>
+                                                    </tr>
+                                                    <%
+                                                                }
+                                                            }
+                                                        }  %>
                                                 </tbody>
                                             </table>
 
@@ -2285,23 +2463,21 @@
                                 <td class="input">
                                     <table class="input" cellpadding="0" cellspacing="0" style="padding-bottom: 10px;">
                                         <tbody>
+                                            <% if (notifyList != null && notifyList.Count > 0)
+                                                {
+                                                    foreach (var notify in notifyList)
+                                                    {%>
                                             <tr>
-                                                <td class="CheckboxPadding">
-                                                    <span id="" class="FieldLabel"><span class="txtBlack8Class">
-                                                        <input id="" type="checkbox" name="" style="vertical-align: middle;" origchecked="true"><label for="EditControlFormRecurringTicketEntryFavEditor.ascx_ccME_ATCheckBox" style="vertical-align: middle;">CC Me</label></span></span>
-                                                </td>
-                                                <td class="CheckboxPadding">
-                                                    <span id="EditControlFormRecurringTicketEntryFavEditor.ascx_chkAcctMgr" class="FieldLabel"><span class="txtBlack8Class">
-                                                        <input id="EditControlFormRecurringTicketEntryFavEditor.ascx_chkAcctMgr_ATCheckBox" type="checkbox" name="EditControlFormRecurringTicketEntryFavEditor.ascx:chkAcctMgr:ATCheckBox" style="vertical-align: middle;" origchecked="true"><label for="EditControlFormRecurringTicketEntryFavEditor.ascx_chkAcctMgr_ATCheckBox" style="vertical-align: middle;">Account Manager</label></span></span>
+                                                <td class="input CheckboxPadding">
+                                                    <span class="FieldLabel"><span class="txtBlack8Class">
+                                                        <input id="" type="checkbox" name="noti<%=notify.id %>" style="vertical-align: middle;" <%if (notiIds != null && notiIds.Contains(notify.id.ToString()))
+                                                            { %>
+                                                            checked="checked" <%} %> />
+                                                        <label style="vertical-align: middle;"><%=notify.name %></label></span></span>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td class="CheckboxPadding">
-                                                    <span id="EditControlFormRecurringTicketEntryFavEditor.ascx_fromHelpDesk" class="FieldLabel"><span class="txtBlack8Class">
-                                                        <input id="EditControlFormRecurringTicketEntryFavEditor.ascx_fromHelpDesk_ATCheckBox" type="checkbox" name="EditControlFormRecurringTicketEntryFavEditor.ascx:fromHelpDesk:ATCheckBox" style="vertical-align: middle;" origchecked="true"><label for="EditControlFormRecurringTicketEntryFavEditor.ascx_fromHelpDesk_ATCheckBox" style="vertical-align: middle;">Send Email from hong.li@itcat.net.cn</label></span></span>
-                                                </td>
-                                                <td class="CheckboxPadding"></td>
-                                            </tr>
+                                            <% }
+                                                } %>
                                         </tbody>
                                     </table>
                                 </td>
@@ -2314,7 +2490,7 @@
                                     </div>
                                     <div>
                                         <span id="" class="editDD" style="display: inline-block;">
-                                              <input name="other_emails" type="text" maxlength="2000" id="other_emails" class="txtBlack8Class" style="width: 360px;" value="<%=temp!=null?temp.other_emails:"" %>" /></span>
+                                            <input name="other_emails" type="text" maxlength="2000" id="other_emails" class="txtBlack8Class" style="width: 360px;" value="<%=temp!=null?temp.other_emails:"" %>" /></span>
                                     </div>
                                 </td>
                             </tr>
@@ -2342,7 +2518,7 @@
                                 </td>
                             </tr>
 
-                             <tr class="ExtraPaddingInputRow">
+                            <tr class="ExtraPaddingInputRow">
                                 <td></td>
                                 <td class="inputLabel3">
                                     <div class="FieldLabel">
@@ -2360,6 +2536,172 @@
             <%}
                 else if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.SERVICE_CALL)
                 { %>
+            <div class="DivSectionWithHeader">
+                <div class="HeaderRow">
+                    <span id="" class="lblNormalClass" style="font-weight: bold; font-weight: bold;">服务预定</span>
+                </div>
+                <div class="Content">
+                    <table id="entireThing" cellpadding="0" cellspacing="0">
+                        <tbody>
+                           <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        客户名称 
+                                    </div>
+                                    <div id="">
+                                        <span id="" style="display: inline-block;">
+                                            <input name="account_id" type="hidden" id="accountIdHidden" value="<%=thisAccount != null ? thisAccount.id.ToString() : "" %>" />
+                                            <input name="" type="text" value="<%=thisAccount != null ? thisAccount.name : "" %>" id="accountId" class="txtBlack8Class" />
+                                            <i onclick="chooseCompany()" style="width: 16px; height: 16px; float: right; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -192px -48px;"></i>
+
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span  class="lblNormalClass" style="font-weight: bold;">开始时间</span>
+                                    </div>
+                                    <div>
+                                        <span ">
+                                            <input name="start_time" type="text" id="start_time" onclick="WdatePicker({ dateFmt: 'HH:mm' })" class="txtBlack8Class" value="<%=tempSerCall!=null?tempSerCall.start_time:"" %>" style="width: 76px" />&nbsp;</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span  class="lblNormalClass" style="font-weight: bold;">结束时间</span>
+                                    </div>
+                                    <div>
+                                        <span >
+                                            <input name="end_time" type="text" id="end_time" class="txtBlack8Class" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=tempSerCall!=null?tempSerCall.end_time:"" %>" style="width: 76px" />&nbsp;</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel3">
+                                    <div class="FieldLabel">
+                                        <span  class="lblNormalClass" style="font-weight: bold;">描述</span>
+                                    </div>
+                                    <div>
+                                        <textarea name="description" id="description" rows="3" cols="55" style="resize: vertical;"><%=tempSerCall!=null?tempSerCall.description:"" %></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">状态</span>
+                                    </div>
+                                    <div>
+                                        <span id="">
+                                            <select name="status_id" id="status_id" class="txtBlack8Class" style="width: 76px">
+                                                 <% if (callStatusList != null && callStatusList.Count > 0)
+                                                    {
+                                                        foreach (var callStatu in callStatusList)
+                                                        { %>
+                                                <option value="<%=callStatu.id %>" <%if (tempSerCall != null && tempSerCall.status_id != null && tempSerCall.status_id == callStatu.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=callStatu.name %></option>
+                                                <%  }
+                                                    } %>
+
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="DivSectionWithHeader">
+                <div class="HeaderRow">
+                    <span class="lblNormalClass" style="font-weight: bold; font-weight: bold;">Notification</span>
+                </div>
+                <div class="Content">
+                    <table id="notficationTable" class="entireThing" cellpadding="0" cellspacing="0" width="100%">
+                        <tbody>
+                            <tr>
+                                <td class="input">
+                                    <table class="input" cellpadding="0" cellspacing="0" style="padding-bottom: 10px;">
+                                        <tbody>
+                                           <% if (notifyList != null && notifyList.Count > 0)
+                                                {
+                                                    foreach (var notify in notifyList)
+                                                    {%>
+                                            <tr>
+                                                <td class="input CheckboxPadding">
+                                                    <span class="FieldLabel"><span class="txtBlack8Class">
+                                                        <input id="" type="checkbox" name="noti<%=notify.id %>" style="vertical-align: middle;" <%if (notiIds != null && notiIds.Contains(notify.id.ToString()))
+                                                            { %>
+                                                            checked="checked" <%} %> />
+                                                        <label style="vertical-align: middle;"><%=notify.name %></label></span></span>
+                                                </td>
+                                            </tr>
+                                            <% }
+                                                } %>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr class="ExtraPaddingInputRow">
+                                
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span class="lblNormalClass" style="font-weight: bold;">其他邮箱</span>
+                                    </div>
+                                    <div>
+                                        <span id="" class="editDD" style="display: inline-block;">
+                                            <input name="other_emails" type="text" maxlength="2000" id="" class="txtBlack8Class" style="width: 360px;" value="<%=temp!=null?temp.other_emails:"" %>" /></span>
+                                    </div>
+                                </td>
+                            </tr>
+                           <tr id="" class="ExtraPaddingInputRow">
+                             
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        通知模板
+                                    </div>
+                                    <div>
+                                        <span id="" class="editDD">
+                                            <select name="notify_tmpl_id" id="notify_tmpl_id" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (tempNotiList != null && tempNotiList.Count > 0)
+                                                    {
+                                                        foreach (var tempNoti in tempNotiList)
+                                                        { %>
+                                                <option value="<%=tempNoti.id %>" <%if (temp != null && temp.notify_tmpl_id != null && temp.notify_tmpl_id == tempNoti.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=tempNoti.name %></option>
+                                                <%  }
+                                                    } %>
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                             <tr class="ExtraPaddingInputRow">
+                                
+                                <td class="inputLabel3">
+                                    <div class="FieldLabel">
+                                        附加文本
+                                    </div>
+                                    <div>
+                                        <textarea name="additional_email_text" id="additional_email_text" rows="3" cols="67" class="oppText2" style="resize: vertical; width: 374px;"><%=temp!=null?temp.additional_email_text:"" %></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <%}
                 else if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.TASK_NOTE)
                 { %>
@@ -2509,6 +2851,7 @@
     else if (tempOppo.projected_close_date_type_id == (int)EMT.DoneNOW.DTO.DicEnum.PROJECTED_CLOSE_DATE.LAST_DAY_OF_MONTH)
     {%>
         $("#ckDayMonth").trigger("click");
+        $("#selOppoDayMonth").val("<%=tempOppo.projected_close_date_type_value.ToString() %>");
 <%    } %>
         <%if (tempOppo.use_quote_revenue_and_cost == 1)
     { %>
@@ -2588,7 +2931,7 @@
 
     }
     <%}%>
-   
+
 
 </script>
 <!--快速服务预定JS -->
@@ -2600,7 +2943,8 @@
     { %>
         GetContactList();
         <%}%>
-        <% if (tempQuickCall.contact_id != null) {%>
+        <% if (tempQuickCall.contact_id != null)
+    {%>
         $("#contact_id").val('<%=tempQuickCall.contact_id %>');
         <% }%>
         $("#issue_type_id").trigger("change");
@@ -2611,6 +2955,8 @@
         GetResDepByIds();
         <%} %>
     })
+       <% if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.RECURRING_TICKET)
+    { %>
     $("#resRoleId").change(function () {
         var resRoleId = $("#resRoleId").val();
         var OtherResId = $("#OtherResIdHidden").val();
@@ -2632,74 +2978,74 @@
             GetResDepByIds();
         }
     })
-    
+    <%}%>
     // 其他负责人的查找带回- 带回的其他负责人包含主负责人时，提示 主负责人已经包含该员工 是 删除主负责人信息，否 从其他负责人中删除该联系人
     function OtherResCallBack() {
         var url = "../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RES_ROLE_DEP_CALLBACK %>&muilt=1&field=OtherResId&callBack=GetOtherResData";
         window.open(url, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
-     }
-     // 获取到其他负责人的相应信息
-     function GetOtherResData() {
-         // 检查是否有重复员工
-         // 检查带回员工是否与主负责人有冲突
-         // 
-         var OtherResId = $("#OtherResIdHidden").val();
-         if (OtherResId != "") {
-             var resRoleId = $("#resRoleId").val();
-             $.ajax({
-                 type: "GET",
-                 async: false,
-                 url: "../Tools/ResourceAjax.ashx?act=ChechByResRole&ResRole=" + resRoleId + "&OtherIds=" + OtherResId,
-                 dataType: "json",
-                 success: function (data) {
-                     if (data != "") {
-                         if (data.isRepeat) {
-                             $("#resRoleId").val("");
-                             //$("#OtherResIdHidden").val(data.newDepResIds);
-                         }
+    }
+    // 获取到其他负责人的相应信息
+    function GetOtherResData() {
+        // 检查是否有重复员工
+        // 检查带回员工是否与主负责人有冲突
+        // 
+        var OtherResId = $("#OtherResIdHidden").val();
+        if (OtherResId != "") {
+            var resRoleId = $("#resRoleId").val();
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ResourceAjax.ashx?act=ChechByResRole&ResRole=" + resRoleId + "&OtherIds=" + OtherResId,
+                dataType: "json",
+                success: function (data) {
+                    if (data != "") {
+                        if (data.isRepeat) {
+                            $("#resRoleId").val("");
+                            //$("#OtherResIdHidden").val(data.newDepResIds);
+                        }
 
-                     }
-                 },
-             });
-             GetResDepByIds();
-         }
-     }
+                    }
+                },
+            });
+            GetResDepByIds();
+        }
+    }
 
-     // 其他负责人的数据返回（此方法不做员工重复校验）
-     function GetResDepByIds() {
-         var resDepIds = $("#OtherResIdHidden").val();
-         if (resDepIds != "") {
-             $.ajax({
-                 type: "GET",
-                 url: "../Tools/RoleAjax.ashx?act=GetResDepList&resDepIds=" + resDepIds,
-                 async: false,
-                 //dataType:"json",
-                 success: function (data) {
-                     if (data != "") {
-                         $("#otherRes").html(data);
-                         $("#otherRes option").dblclick(function () {
-                             RemoveResDep(this);
-                         })
-                     }
-                 }
+    // 其他负责人的数据返回（此方法不做员工重复校验）
+    function GetResDepByIds() {
+        var resDepIds = $("#OtherResIdHidden").val();
+        if (resDepIds != "") {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/RoleAjax.ashx?act=GetResDepList&resDepIds=" + resDepIds,
+                async: false,
+                //dataType:"json",
+                success: function (data) {
+                    if (data != "") {
+                        $("#otherRes").html(data);
+                        $("#otherRes option").dblclick(function () {
+                            RemoveResDep(this);
+                        })
+                    }
+                }
 
-             })
-         } else {
-             $("#otherRes").html("");
-         }
+            })
+        } else {
+            $("#otherRes").html("");
+        }
 
-     }
-     function RemoveResDep(val) {
-         $(val).remove();
-         var ids = "";
-         $("#otherRes option").each(function () {
-             ids += $(this).val() + ',';
-         })
-         if (ids != "") {
-             ids = ids.substr(0, ids.length - 1);
-         }
-         $("#OtherResIdHidden").val(ids);
-     }
+    }
+    function RemoveResDep(val) {
+        $(val).remove();
+        var ids = "";
+        $("#otherRes option").each(function () {
+            ids += $(this).val() + ',';
+        })
+        if (ids != "") {
+            ids = ids.substr(0, ids.length - 1);
+        }
+        $("#OtherResIdHidden").val(ids);
+    }
      <% if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.QUICK_CALL)
     { %>
      function GetContactList() {
@@ -2734,15 +3080,15 @@
          var account_idHidden = $("#accountIdHidden").val();
          if (account_idHidden != "" && account_idHidden != null && account_idHidden != undefined) {
              window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACTMANAGE_CALLBACK %>&con626=1&con627=" + account_idHidden + "&field=contractId", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>", 'left=200,top=200,width=600,height=800', false);
-        }
-        else {
-            LayerMsg("请先选择客户");
-        }
+         }
+         else {
+             LayerMsg("请先选择客户");
+         }
      }
      function WorkTypeCallBack() {
          window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&con439=<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.GENERAL_ALLOCATION_CODE %>&field=costCodeId", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CostCodeSelect %>', 'left=200,top=200,width=600,height=800', false);
      }
-     
+
 
 </script>
 
@@ -2750,12 +3096,14 @@
 <script>
      $(function () {
          <%if (tempQuote != null)
-        { %>
+    { %>
          GetContactList();
-          <% if (tempQuote.contact_id != null) {%>
+          <% if (tempQuote.contact_id != null)
+    {%>
          $("#contact_id").val('<%=tempQuote.contact_id %>');
         <% }%>
-         <% if (tempQuote.opportunity_id != null) {%>
+         <% if (tempQuote.opportunity_id != null)
+    {%>
          $("#opportunity_id").val('<%=tempQuote.opportunity_id %>');
         <% }%>
 
@@ -2790,7 +3138,7 @@
                  success: function (data) {
                      if (data != "") {
                          $("#opportunity_id").html(data);
-                         $("#opportunity_id option[value='0']").remove(); 
+                         $("#opportunity_id option[value='0']").remove();
                      }
                  },
              });
@@ -2798,7 +3146,7 @@
              //$("#opportunity_id").append("<option value=''> </option>"); 
              $("#opportunity_id").val('');
              $("#opportunity_id").prop("disabled", false);
-          
+
          } else {
              $("#contact_id").prop("disabled", true);
              $("#opportunity_id").prop("disabled", true);
@@ -2811,6 +3159,261 @@
 
 <!--定期工单JS -->
 <script>
+     $(function () {
+         <%if (tempRecTicket != null)
+    { %>
+         GetContactList();
+         $("#contractId").val("<%=thisContract!=null?thisContract.name:"" %>");
+         $("#contractIdHidden").val("<%=thisContract!=null?thisContract.id.ToString():"" %>");
+         $("#insProId").val("<%=thisProduct!=null?thisProduct.name.ToString():"" %>");
+         $("#insProIdHidden").val("<%=thisInsPro!=null?thisInsPro.id.ToString():"" %>");
+          <% if (tempRecTicket.contact_id != null)
+    {%>
+         $("#contact_id").val('<%=tempRecTicket.contact_id %>');
+        <% }%>
+         $("#issue_type_id").trigger("change");
+        <%if (tempRecTicket.sub_issue_type_id != null)
+    { %>
+         $("#sub_issue_type_id").val('<%=tempRecTicket.sub_issue_type_id %>');
+        <%} %>
 
+           <%if (tempRecTicket.recurring_end_date != null)
+    { %>
+           $("#rdEnd").trigger("click");
+         <%}
+    else if (tempRecTicket.recurring_instances != null)
+    { %>
+           $("#rdIns").trigger("click");
+         <%} %>
+
+         <%if (tempRecTicket.recurring_frequency == (int)EMT.DoneNOW.DTO.DicEnum.RECURRING_TICKET_FREQUENCY_TYPE.DAY)
+    {
+        var dayDto = new EMT.Tools.Serialize().DeserializeJson<EMT.DoneNOW.DTO.TicketRecurrDayDto>(tempRecTicket.recurring_define);
+        if (dayDto != null)
+        {%>
+           $("#day_every").val('<%=dayDto.every %>');
+           $("#day_no_sat").prop("checked",<%=dayDto.no_sat == 1 ? "true" : "false" %>);
+           $("#day_no_sun").prop("checked",<%=dayDto.no_sun == 1 ? "true" : "false" %>);
+        <%}
+        %>
+
+           $("#rdDay").trigger("click");
+
+         <%}
+    else if (tempRecTicket.recurring_frequency == (int)EMT.DoneNOW.DTO.DicEnum.RECURRING_TICKET_FREQUENCY_TYPE.WEEK)
+    {  %>
+          <% var weekDto = new EMT.Tools.Serialize().DeserializeJson<EMT.DoneNOW.DTO.TicketRecurrWeekDto>(tempRecTicket.recurring_define);
+    if (weekDto != null)
+    {%>
+           $("#week_eve_week").val('<%=weekDto.every %>');
+        <%
+    if (weekDto.dayofweek != null && weekDto.dayofweek.Count() > 0)
+    {
+        if (weekDto.dayofweek.Any(_ => _ == 1))
+        {%>
+           $("#ckWeekMon").prop("checked", true);
+            <%}
+    if (weekDto.dayofweek.Any(_ => _ == 2))
+    {%>
+            $("#ckWeekTus").prop("checked", true);
+            <%
+    }
+    if (weekDto.dayofweek.Any(_ => _ == 3))
+    { %>
+        $("#ckWeekWed").prop("checked", true);
+            <%
+    }
+    if (weekDto.dayofweek.Any(_ => _ == 4))
+    {%>
+        $("#ckWeekThu").prop("checked", true);
+            <%
+    }
+    if (weekDto.dayofweek.Any(_ => _ == 5))
+    { %>
+        $("#ckWeekFri").prop("checked", true);
+            <%
+    }
+    if (weekDto.dayofweek.Any(_ => _ == 6))
+    {%>
+        $("#ckWeekSat").prop("checked", true);
+            <%
+    }
+    if (weekDto.dayofweek.Any(_ => _ == 7))
+    {%>
+        $("#ckWeekSun").prop("checked", true);
+            <%
+            }
+        }
+    }%>
+        $("#rdWeek").trigger("click");
+         <%}
+    else if (tempRecTicket.recurring_frequency == (int)EMT.DoneNOW.DTO.DicEnum.RECURRING_TICKET_FREQUENCY_TYPE.MONTH)
+    {
+        var monthDto = new EMT.Tools.Serialize().DeserializeJson<EMT.DoneNOW.DTO.TicketRecurrMonthDto>(tempRecTicket.recurring_define);
+        if (monthDto != null)
+        {
+            %>
+         <%if (monthDto.day != -1)
+    { %>
+           $("#rdMonth0").trigger("click");
+           $("#month_month_day").val('<%=monthDto.month %>');
+           $("#month_day_num").val('<%=monthDto.day %>');
+         <%}
+    else
+    {%>
+           $("#rdMonth1").trigger("click");
+           $("#month_month_eve_num").val('<%=monthDto.month %>');
+           $("#month_1_month").val("<%=monthDto.no %>");
+           $("#month_1_week").val("<%=monthDto.dayofweek %>");
+   <% } %>
+
+
+        <%}
+        %>
+           $("#rdMonth").trigger("click");
+         <% }
+    else if (tempRecTicket.recurring_frequency == (int)EMT.DoneNOW.DTO.DicEnum.RECURRING_TICKET_FREQUENCY_TYPE.YEAR)
+    {
+        var yearDto = new EMT.Tools.Serialize().DeserializeJson<EMT.DoneNOW.DTO.TicketRecurrMonthDto>(tempRecTicket.recurring_define);
+        if (yearDto != null)
+        {
+            %>
+         <%if (yearDto.day != -1)
+    { %>
+           $("#rdYear0").trigger("click");
+           $("#year_every_month").val('<%=yearDto.month %>');
+           $("#year_month_day").val('<%=yearDto.day %>');
+         <%}
+    else
+    {%>
+           $("#rdYear1").trigger("click");
+           $("#year_the_month").val('<%=yearDto.month %>');
+           $("#year_month_week_num").val("<%=yearDto.no %>");
+           $("#year_the_week").val("<%=yearDto.dayofweek %>");
+   <% } %>
+        <%}
+        %>
+           $("#rdYear").trigger("click");
+         <%}
+    }%>
+     })
+
+
+     $("#rdEnd").click(function () {
+         $("#recurring_end_date").prop("disabled", false);
+         $("#recurring_instances").prop("disabled", true);
+     })
+     $("#rdIns").click(function () {
+         $("#recurring_end_date").prop("disabled", true);
+         $("#recurring_instances").prop("disabled", false);
+     })
+
+     $("#rdDay").click(function () {
+         $(".FrequencyClass").hide();
+         $("#pnlDaily").show();
+     })
+     $("#rdWeek").click(function () {
+         $(".FrequencyClass").hide();
+         $("#pnlWeekly").show();
+     })
+     $("#rdMonth").click(function () {
+         $(".FrequencyClass").hide();
+         $("#pnlMonthly").show();
+     })
+     $("#rdYear").click(function () {
+         $(".FrequencyClass").hide();
+         $("#pnlYearly").show();
+     })
+     $("#rdMonth0").click(function () {
+         $("#month_day_num").prop("disabled", false);
+         $("#month_month_day").prop("disabled", false);
+         $("#month_month_eve_num").prop("disabled", true);
+         $("#month_1_month").prop("disabled", true);
+         $("#month_1_week").prop("disabled", true);
+     })
+     $("#rdMonth1").click(function () {
+         $("#month_day_num").prop("disabled", true);
+         $("#month_month_day").prop("disabled", true);
+         $("#month_month_eve_num").prop("disabled", false);
+         $("#month_1_month").prop("disabled", false);
+         $("#month_1_week").prop("disabled", false);
+     })
+     $("#rdYear0").click(function () {
+
+         $("#year_the_month").prop("disabled", true);
+         $("#year_month_week_num").prop("disabled", true);
+         $("#year_the_week").prop("disabled", true);
+         $("#year_every_month").prop("disabled", false);
+         $("#year_month_day").prop("disabled", false);
+     })
+     $("#rdYear1").click(function () {
+         $("#year_the_month").prop("disabled", false);
+         $("#year_month_week_num").prop("disabled", false);
+         $("#year_the_week").prop("disabled", false);
+         $("#year_every_month").prop("disabled", true);
+         $("#year_month_day").prop("disabled", true);
+     })
+
+     function ContractCallBack() {
+         var account_idHidden = $("#accountIdHidden").val();
+         if (account_idHidden != "" && account_idHidden != null && account_idHidden != undefined) {
+             window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACTMANAGE_CALLBACK %>&con626=1&con627=" + account_idHidden + "&field=contractId", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>", 'left=200,top=200,width=600,height=800', false);
+         }
+         else {
+             LayerMsg("请先选择客户");
+         }
+     }
+     // 配置项的查找带回
+     function InsProCallBack() {
+         var accountId = $("#accountIdHidden").val();
+         if (accountId != "" && accountId != null && accountId != undefined) {
+             window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INSPRODUCT_CALLBACK %>&con1247=" + accountId + "&field=insProId", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>", 'left=200,top=200,width=600,height=800', false);
+         }
+         else {
+             LayerMsg("请先选择客户");
+         }
+
+     }
+    <% if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.RECURRING_TICKET)
+    {%>
+     function GetContactList() {
+         var account_id = $("#accountIdHidden").val();
+         if (account_id != "") {
+             $("#contact_id").prop("disabled", false);
+             $("#contact_id").html("");
+             $.ajax({
+                 type: "GET",
+                 async: false,
+                 url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + account_id,
+                 // data: { CompanyName: companyName },
+                 success: function (data) {
+                     if (data != "") {
+                         $("#contact_id").html(data);
+                     }
+                 },
+             });
+             $("#contractId").prop("disabled", false);
+             $("#insProId").prop("disabled", false);
+
+         } else {
+             $("#contact_id").prop("disabled", true);
+             $("#contractId").prop("disabled", true);
+             $("#insProId").prop("disabled", true);
+         }
+         $("#contractId").val("");
+         $("#contractIdHidden").val("");
+         $("#insProId").val("");
+         $("#insProIdHidden").val("");
+
+     }
+    <%} %>
+</script>
+<!--服务预定JS -->
+<script>
+     <% if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.SERVICE_CALL)
+    {%>
+     function GetContactList() {
+     }
+    <%} %>
 </script>
 

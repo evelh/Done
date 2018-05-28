@@ -162,6 +162,7 @@
     <Compile Include="SYS\sys_form_tmpl_quick_call.cs" />
     <Compile Include="SYS\sys_form_tmpl_quote.cs" />
     <Compile Include="SYS\sys_form_tmpl_recurring_ticket.cs" />
+    <Compile Include="SYS\sys_form_tmpl_service_call.cs" />
     <Compile Include="SYS\sys_notice.cs" />
     <Compile Include="SYS\sys_notice_resource.cs" />
     <Compile Include="SYS\sys_notify_tmpl_email.cs" />

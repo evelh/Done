@@ -715,8 +715,7 @@
                         }%>
                 </select>
             </div>
-           <input type="hidden" id="OldSubCompany" />
-            <input type="hidden" id="OldSubCompanyHidden" name="subCompanyIds" value="<%=subIds %>" />
+        
                  <input type="hidden" id="SubCompany" />
             <input type="hidden" id="SubCompanyHidden" name="SubCompanyHidden" value="<%=subIds %>" />
          
@@ -1104,11 +1103,7 @@
 
     function ChooseSubCompany() {
         if ($("#SubCompanyHidden").val() != "") {
-            var oldIds = $("#OldSubCompanyHidden").val();
-            if (oldIds != "") {
-                //oldIds = "," + oldIds;
-                $("#SubCompanyHidden").val($("#SubCompanyHidden").val() + "," + oldIds);
-            }
+           
             requestData("../Tools/CompanyAjax.ashx?act=names&ids=" + $("#SubCompanyHidden").val() , null, function (data) {
                 debugger;
                 $(".dblselect").empty();

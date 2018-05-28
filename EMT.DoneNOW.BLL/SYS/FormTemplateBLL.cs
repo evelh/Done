@@ -276,6 +276,15 @@ namespace EMT.DoneNOW.BLL
             return tmpl;
         }
 
+        /// <summary>
+        /// 获取服务预定模板
+        /// </summary>
+        public sys_form_tmpl_service_call GetServiceCallTmpl(long formTmplId)
+        {
+            var tmpl = _dal.FindSignleBySql<sys_form_tmpl_service_call>($"SELECT * FROM sys_form_tmpl_service_call WHERE delete_time = 0 and form_tmpl_id={formTmplId}");
+            return tmpl;
+        }
+
 
 
         /// <summary>
@@ -589,7 +598,7 @@ namespace EMT.DoneNOW.BLL
         #endregion
 
         #region 定期工单管理
-        public bool AddRecTicketTmpl(sys_form_tmpl tmpl, sys_form_tmpl_recurring_ticket tmplRecTicket, long userId)
+        public bool AddRecTicketTmpl(sys_form_tmpl tmpl, sys_form_tmpl_recurring_ticket tmplRecTicket, List<UserDefinedFieldValue> udfValue, long userId)
         {
             if (!AddFormTmpl(tmpl, userId))
                 return false;
@@ -601,14 +610,20 @@ namespace EMT.DoneNOW.BLL
             tmplRecTicket.update_user_id = userId;
             new sys_form_tmpl_recurring_ticket_dal().Insert(tmplRecTicket);
             OperLogBLL.OperLogAdd<sys_form_tmpl_recurring_ticket>(tmplRecTicket, tmplRecTicket.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_RECURRING_TICKET, "");
+
+            // tmplRecTicket
+            var udf_ticket_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TICKETS);  // 获取到所有的自定义的字段信息
+                    //new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.COMPANY, udf_account_list, new_company_value.id, udf_account, user, DicEnum.OPER_LOG_OBJ_CATE.CUSTOMER_EXTENSION_INFORMATION);
+            new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.FORM_RECTICKET, userId, tmplRecTicket.id, udf_ticket_list, udfValue, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_RECURRING_TICKET); // 保存自定义字段，保存成功，插入日志
             return true;
         }
 
-        public bool EditRecTicketTmpl(sys_form_tmpl tmpl, sys_form_tmpl_recurring_ticket tmplRecTicket, long userId)
+        public bool EditRecTicketTmpl(sys_form_tmpl tmpl, sys_form_tmpl_recurring_ticket tmplRecTicket, List<UserDefinedFieldValue> udfValue, long userId)
         {
+            var user = UserInfoBLL.GetUserInfo(userId);
             sys_form_tmpl_recurring_ticket_dal sftrtDal = new sys_form_tmpl_recurring_ticket_dal();
             var oldtmplTicket = sftrtDal.FindNoDeleteById(tmplRecTicket.id);
-            if (oldtmplTicket == null)
+            if (oldtmplTicket == null|| user==null)
                 return false;
             if (!EditFormTmpl(tmpl, userId))
                 return false;
@@ -616,6 +631,44 @@ namespace EMT.DoneNOW.BLL
             tmplRecTicket.update_user_id = userId;
             sftrtDal.Update(tmplRecTicket);
             OperLogBLL.OperLogUpdate<sys_form_tmpl_recurring_ticket>(tmplRecTicket, oldtmplTicket, tmplRecTicket.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_RECURRING_TICKET, "");
+            var udf_ticket_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TICKETS);
+            if(udf_ticket_list!=null&& udf_ticket_list.Count > 0)
+            {
+                new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.FORM_RECTICKET, udf_ticket_list, tmplRecTicket.id, udfValue, user, DicEnum.OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_RECURRING_TICKET);
+            }
+            
+            return true;
+        }
+        #endregion
+
+        #region 服务预定管理
+        public bool AddServiceCallTmpl(sys_form_tmpl tmpl, sys_form_tmpl_service_call tmplServiceCall, long userId)
+        {
+            if (!AddFormTmpl(tmpl, userId))
+                return false;
+            tmplServiceCall.id = _dal.GetNextIdCom();
+            tmplServiceCall.form_tmpl_id = tmpl.id;
+            tmplServiceCall.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplServiceCall.create_user_id = userId;
+            tmplServiceCall.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplServiceCall.update_user_id = userId;
+            new sys_form_tmpl_service_call_dal().Insert(tmplServiceCall);
+            OperLogBLL.OperLogAdd<sys_form_tmpl_service_call>(tmplServiceCall, tmplServiceCall.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_SERVICE_CALL, "");
+            return true;
+        }
+
+        public bool EditServiceCallTmpl(sys_form_tmpl tmpl, sys_form_tmpl_service_call tmplServiceCall, long userId)
+        {
+            sys_form_tmpl_service_call_dal sftscDal = new sys_form_tmpl_service_call_dal();
+            var oldtmplServiceCall = sftscDal.FindNoDeleteById(tmplServiceCall.id);
+            if (oldtmplServiceCall == null)
+                return false;
+            if (!EditFormTmpl(tmpl, userId))
+                return false;
+            tmplServiceCall.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplServiceCall.update_user_id = userId;
+            sftscDal.Update(tmplServiceCall);
+            OperLogBLL.OperLogUpdate<sys_form_tmpl_service_call>(tmplServiceCall, oldtmplServiceCall, tmplServiceCall.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_SERVICE_CALL, "");
             return true;
         }
         #endregion

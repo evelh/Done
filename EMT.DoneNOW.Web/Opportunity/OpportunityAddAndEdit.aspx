@@ -993,7 +993,7 @@
         }
 
         var resource_id = $("#resource_id").val();
-        if (resource_id == 0) {
+        if (resource_id == 0 || resource_id=="") {
             alert("请选择商机负责人");
             return false;
         }
