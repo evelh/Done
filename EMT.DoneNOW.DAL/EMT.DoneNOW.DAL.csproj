@@ -188,6 +188,9 @@
     <Compile Include="SYS\sys_form_tmpl_quote_dal.cs" />
     <Compile Include="SYS\sys_form_tmpl_recurring_ticket_dal.cs" />
     <Compile Include="SYS\sys_form_tmpl_service_call_dal.cs" />
+    <Compile Include="SYS\sys_form_tmpl_ticket_checklist_dal.cs" />
+    <Compile Include="SYS\sys_form_tmpl_ticket_dal.cs" />
+    <Compile Include="SYS\sys_form_tmpl_work_entry_dal.cs" />
     <Compile Include="SYS\sys_notice_dal.cs" />
     <Compile Include="SYS\sys_notice_resource_dal.cs" />
     <Compile Include="SYS\sys_notify_tmpl_email_dal.cs" />

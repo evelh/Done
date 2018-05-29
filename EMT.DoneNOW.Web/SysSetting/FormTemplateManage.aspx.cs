@@ -23,6 +23,9 @@ namespace EMT.DoneNOW.Web.SysSetting
         protected sys_form_tmpl_quote tempQuote;           // 报价模板
         protected sys_form_tmpl_recurring_ticket tempRecTicket;           // 定期工单模板
         protected sys_form_tmpl_service_call tempSerCall;           // 服务预定模板
+        protected sys_form_tmpl_work_entry tempEntry;           // 工时模板
+        protected sys_form_tmpl_ticket tempTicket;           // 工单模板
+        protected List<sys_form_tmpl_ticket_checklist> tempCheckList;   //  工单检查单
 
         protected List<d_general> tempRangList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.FORM_TEMPLATE_RANGE_TYPE);          // 模板范围
         protected List<d_general> tempTypeList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.FORM_TEMPLATE_TYPE);          // 模板类型
@@ -37,6 +40,7 @@ namespace EMT.DoneNOW.Web.SysSetting
         protected List<d_general> ticketCateList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.TICKET_CATE);     // 工单种类
         protected List<d_general> ticketTypeList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.TICKET_TYPE);     // 工单类型
         protected List<sys_role> roleList = new DAL.sys_role_dal().GetList();
+        protected List<d_sla> slaList = new DAL.d_sla_dal().GetList();
         protected List<ResRole> resRoleList;
 
         protected List<d_general> taxRegionList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.TAX_REGION);          // 模板范围
@@ -56,11 +60,13 @@ namespace EMT.DoneNOW.Web.SysSetting
         protected ctt_contract thisContract;
         protected d_cost_code thisCostCode;
         protected crm_opportunity thisOppo;
+        protected sys_resource_department proResDep = null; // 工单的主负责人
         protected crm_installed_product thisInsPro;
         protected List<UserDefinedFieldDto> tickUdfList = null;// 
         protected List<UserDefinedFieldValue> ticketUdfValueList = null;
 
         protected List<d_general> callStatusList;
+        protected List<d_cost_code> workTypeList;
 
         protected List<sys_notify_tmpl> tempNotiList ;  // 通知模板
         protected List<d_general> pushList = new DAL.d_general_dal().GetGeneralByTableId((int) GeneralTableEnum.NOTE_PUBLISH_TYPE);   // 备注发布对象
@@ -161,6 +167,51 @@ namespace EMT.DoneNOW.Web.SysSetting
                                 thisAccount = accountBll.GetCompany((long)tempSerCall.account_id);
                         }
                     }
+                    else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TASK_TIME_ENTRY|| formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TICKET_TIME_ENTRY)
+                    {
+                        tempEntry = tempBll.GetWorkEntryTmpl(temp.id);
+                        if (tempEntry != null)
+                        {
+                            if (tempEntry.cost_code_id != null)
+                                thisCostCode = new DAL.d_cost_code_dal().FindNoDeleteById((long)tempEntry.cost_code_id);
+                        }
+                    }
+                    else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TICKET)
+                    {
+                        tempTicket = tempBll.GetTicketTmpl(temp.id);
+                        if (tempTicket != null)
+                        {
+                            if (tempTicket.account_id != null)
+                                thisAccount = accountBll.GetCompany((long)tempTicket.account_id);
+                            if (tempTicket.contact_id != null)
+                                thisContact = contactBll.GetContact((long)tempTicket.contact_id);
+                            if (tempTicket.contract_id != null)
+                                thisContract = new ContractBLL().GetContract((long)tempTicket.contract_id);
+                            if (tempTicket.cost_code_id != null)
+                                thisCostCode = new DAL.d_cost_code_dal().FindNoDeleteById((long)tempTicket.cost_code_id);
+                            if (tempTicket.installed_product_id != null)
+                            {
+                                thisInsPro = new InstalledProductBLL().GetById((long)tempTicket.installed_product_id);
+                                if (thisInsPro != null)
+                                    thisProduct = new ProductBLL().GetProduct(thisInsPro.product_id);
+                            }
+                            if (tempTicket.owner_resource_id != null && tempTicket.role_id != null)
+                            {
+                                var resDepList = new DAL.sys_resource_department_dal().GetResDepByResAndRole((long)tempTicket.owner_resource_id, (long)tempTicket.role_id);
+                                if (resDepList != null && resDepList.Count > 0)
+                                {
+                                    proResDep = resDepList[0];
+                                    
+                                }
+                            }
+                               
+
+                            tickUdfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TICKETS);
+                            ticketUdfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.FORM_TICKET, tempTicket.id, tickUdfList);
+                        }
+                    }
+
+                    // GetTicketTmpl
 
                 }
             }
@@ -233,6 +284,22 @@ namespace EMT.DoneNOW.Web.SysSetting
                 typeName = "服务预定";
                 callStatusList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.SERVICE_CALL_STATUS);
             }
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TASK_TIME_ENTRY)
+            {
+                typeName = "任务工时";
+                workTypeList = new DAL.d_cost_code_dal().GetListCostCode((int)DicEnum.COST_CODE_CATE.GENERAL_ALLOCATION_CODE);
+            }
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TICKET)
+            {
+                typeName = "工单";
+                tickUdfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TICKETS);
+            }
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TICKET_TIME_ENTRY)
+            {
+                typeName = "工单工时";
+                workTypeList = new DAL.d_cost_code_dal().GetListCostCode((int)DicEnum.COST_CODE_CATE.GENERAL_ALLOCATION_CODE);
+            }
+
 
 
         }
@@ -609,6 +676,162 @@ namespace EMT.DoneNOW.Web.SysSetting
                     return pageTempCall;
                 #endregion
             }
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TASK_NOTE)
+            {
+                #region 任务备注相关
+                sys_form_tmpl_activity pageTempNote = AssembleModel<sys_form_tmpl_activity>();
+                if (!isAdd)
+                {
+                    tempNote.action_type_id = pageTempNote.action_type_id;
+                    tempNote.status_id = pageTempNote.status_id;
+                    tempNote.publish_type_id = pageTempNote.publish_type_id;
+                    tempNote.name = pageTempNote.name;
+                    tempNote.description = pageTempNote.description;
+                    return tempNote;
+                }
+                else
+                    return pageTempNote;
+                #endregion
+            }
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TASK_TIME_ENTRY|| formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TICKET_TIME_ENTRY)
+            {
+                #region 工时相关
+                sys_form_tmpl_work_entry pageTempEntry = AssembleModel<sys_form_tmpl_work_entry>();
+
+                if (!string.IsNullOrEmpty(Request.Form["isNoBill"]) && Request.Form["isNoBill"].Equals("on"))
+                    pageTempEntry.is_billable = 0;
+                else
+                    pageTempEntry.is_billable = 1;
+                if(pageTempEntry.is_billable == 1)
+                    pageTempEntry.show_on_invoice = 1;
+                else
+                {
+                    if (!string.IsNullOrEmpty(Request.Form["isShowOnInvoice"]) && Request.Form["isShowOnInvoice"].Equals("on"))
+                        pageTempEntry.show_on_invoice = 1;
+                    else
+                        pageTempEntry.show_on_invoice = 0;
+                }
+                decimal? hours_worked = null;
+                if(!string.IsNullOrEmpty(Request.Form["hours"])|| !string.IsNullOrEmpty(Request.Form["mins"]))
+                {
+                    int hours = 0;
+                    if (!string.IsNullOrEmpty(Request.Form["hours"]))
+                        int.TryParse(Request.Form["hours"],out hours);
+                    int mins = 0;
+                    if (!string.IsNullOrEmpty(Request.Form["mins"]))
+                        int.TryParse(Request.Form["mins"], out mins);
+                    decimal myMin = (decimal)mins / 60;
+                    hours_worked = hours + myMin;
+
+                }
+                if(formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TICKET_TIME_ENTRY)
+                {
+                    if (!string.IsNullOrEmpty(Request.Form["ckAppSlo"]) && Request.Form["ckAppSlo"].Equals("on"))
+                        pageTempEntry.append_to_resolution = 1;
+                    else
+                        pageTempEntry.append_to_resolution = 0;
+                    if (!string.IsNullOrEmpty(Request.Form["ckAppSloInc"]) && Request.Form["ckAppSloInc"].Equals("on"))
+                        pageTempEntry.append_to_resolution_incidents = 1;
+                    else
+                        pageTempEntry.append_to_resolution_incidents = 0;
+                    if (!string.IsNullOrEmpty(Request.Form["ckCreateNote"]) && Request.Form["ckCreateNote"].Equals("on"))
+                        pageTempEntry.apply_note_incidents = 1;
+                    else
+                        pageTempEntry.apply_note_incidents = 0;
+                }
+
+
+
+                pageTempEntry.hours_worked = hours_worked;
+
+                if (!isAdd)
+                {
+                    tempEntry.status_id = pageTempEntry.status_id;
+                    tempEntry.role_id = pageTempEntry.role_id;
+                    tempEntry.hours_worked = pageTempEntry.hours_worked;
+                    tempEntry.cost_code_id = pageTempEntry.cost_code_id;
+                    tempEntry.is_billable = pageTempEntry.is_billable;
+                    tempEntry.show_on_invoice = pageTempEntry.show_on_invoice;
+                    tempEntry.summary_notes = pageTempEntry.summary_notes;
+                    tempEntry.internal_notes = pageTempEntry.internal_notes;
+                    if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TICKET_TIME_ENTRY)
+                    {
+                        tempEntry.append_to_resolution = pageTempEntry.append_to_resolution;
+                        tempEntry.append_to_resolution_incidents = pageTempEntry.append_to_resolution_incidents;
+                        tempEntry.apply_note_incidents = pageTempEntry.apply_note_incidents;
+                    }
+                    return tempEntry;
+                }
+                else
+                    return pageTempEntry;
+                #endregion
+            }
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TICKET_NOTE)
+            {
+                #region 工单备注相关
+                sys_form_tmpl_activity pageTempNote = AssembleModel<sys_form_tmpl_activity>();
+                if (!string.IsNullOrEmpty(Request.Form["ckAppSlo"]) && Request.Form["ckAppSlo"].Equals("on"))
+                    pageTempNote.append_to_resolution = 1;
+                else
+                    pageTempNote.append_to_resolution = 0;
+                if (!string.IsNullOrEmpty(Request.Form["ckAppSloInc"]) && Request.Form["ckAppSloInc"].Equals("on"))
+                    pageTempNote.append_to_resolution_incidents = 1;
+                else
+                    pageTempNote.append_to_resolution_incidents = 0;
+                if (!string.IsNullOrEmpty(Request.Form["ckCreateNote"]) && Request.Form["ckCreateNote"].Equals("on"))
+                    pageTempNote.apply_note_incidents = 1;
+                else
+                    pageTempNote.apply_note_incidents = 0;
+
+                if (!isAdd)
+                {
+                    tempNote.action_type_id = pageTempNote.action_type_id;
+                    tempNote.status_id = pageTempNote.status_id;
+                    tempNote.publish_type_id = pageTempNote.publish_type_id;
+                    tempNote.name = pageTempNote.name;
+                    tempNote.description = pageTempNote.description;
+                    return tempNote;
+                }
+                else
+                    return pageTempNote;
+                #endregion
+            }
+            else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TICKET)
+            {
+                #region 工单相关
+                sys_form_tmpl_ticket pageTempTicket = AssembleModel<sys_form_tmpl_ticket>();
+                long? owner_resource_id = null;
+                long? role_id = null;
+                var priResString = Request.Form["redDepId"];
+                if (!string.IsNullOrEmpty(priResString))
+                {
+                    var resDep = new DAL.sys_resource_department_dal().FindById(long.Parse(priResString));
+                    if (resDep != null)
+                    {
+                        owner_resource_id = resDep.resource_id;
+                        role_id = resDep.role_id;
+                    }
+                }
+                pageTempTicket.owner_resource_id = owner_resource_id;
+                pageTempTicket.role_id = role_id;
+
+                if (!isAdd)
+                {
+                    pageTempTicket.id = tempTicket.id;
+                    pageTempTicket.oid = tempTicket.oid;
+                    pageTempTicket.create_time = tempTicket.create_time;
+                    pageTempTicket.create_user_id = tempTicket.create_user_id;
+                    pageTempTicket.update_time = tempTicket.update_time;
+                    pageTempTicket.update_user_id = tempTicket.update_user_id;
+                    pageTempTicket.form_tmpl_id = tempTicket.form_tmpl_id;
+                }
+                return pageTempTicket;
+
+                #endregion
+
+            }
+
+
 
 
 
@@ -634,6 +857,45 @@ namespace EMT.DoneNOW.Web.SysSetting
                 }
             }
             return list;
+        }
+        /// <summary>
+        /// 获取检查单相关
+        /// </summary>
+        protected List<CheckListDto> GetCheckList()
+        {
+            List<CheckListDto> ckList = new List<CheckListDto>();
+            #region 检查单相关
+            var CheckListIds = Request.Form["CheckListIds"];  // 检查单Id
+            if (!string.IsNullOrEmpty(CheckListIds))
+            {
+                
+                var checkIdArr = CheckListIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var checkId in checkIdArr)
+                {
+                    if (string.IsNullOrEmpty(Request.Form[checkId + "_item_name"]))  // 条目名称为空 不添加
+                        continue;
+                    var is_complete = Request.Form[checkId + "_is_complete"];
+                    var is_import = Request.Form[checkId + "_is_import"];
+                    var sortOrder = Request.Form[checkId + "_sort_order"];
+                    decimal? sort = null;
+                    if (!string.IsNullOrEmpty(sortOrder))
+                    {
+                        sort = decimal.Parse(sortOrder);
+                    }
+                    var thisCheck = new CheckListDto()
+                    {
+                        ckId = long.Parse(checkId),
+                        isComplete = is_complete == "on",
+                        itemName = Request.Form[checkId + "_item_name"],
+                        isImport = is_import == "on",
+                        sortOrder = sort,
+                    };
+                    ckList.Add(thisCheck);
+                }
+               
+            }
+            #endregion
+            return ckList;
         }
 
         protected void SaveClose_Click(object sender, EventArgs e)
@@ -685,8 +947,21 @@ namespace EMT.DoneNOW.Web.SysSetting
                     else
                         result = tempBll.EditServiceCallTmpl(formTmpl, obj as sys_form_tmpl_service_call,  LoginUserId);
                 }
+                else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TASK_TIME_ENTRY|| formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TICKET_TIME_ENTRY)
+                {
+                    if (isAdd)
+                        result = tempBll.AddWorkEntryTmpl(formTmpl, obj as sys_form_tmpl_work_entry, LoginUserId);
+                    else
+                        result = tempBll.EditWorkEntryTmpl(formTmpl, obj as sys_form_tmpl_work_entry, LoginUserId);
+                }
+                else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.TICKET)
+                {
+                    if (isAdd)
+                        result = tempBll.AddTicketTmpl(formTmpl, obj as sys_form_tmpl_ticket, GetUdfValue(), GetCheckList(), LoginUserId);
+                    else
+                        result = tempBll.EditTicketTmpl(formTmpl, obj as sys_form_tmpl_ticket, GetUdfValue(), GetCheckList(), LoginUserId);
+                }
             }
-            
 
             ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存{(result?"成功":"失败")}！');window.close();self.opener.location.reload();</script>");
 

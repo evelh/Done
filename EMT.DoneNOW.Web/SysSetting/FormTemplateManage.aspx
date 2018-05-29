@@ -2543,7 +2543,7 @@
                 <div class="Content">
                     <table id="entireThing" cellpadding="0" cellspacing="0">
                         <tbody>
-                           <tr class="inputRow">
+                            <tr class="inputRow">
                                 <td></td>
                                 <td class="inputLabel">
                                     <div class="FieldLabel">
@@ -2563,10 +2563,10 @@
                                 <td></td>
                                 <td class="inputLabel">
                                     <div class="FieldLabel">
-                                        <span  class="lblNormalClass" style="font-weight: bold;">开始时间</span>
+                                        <span class="lblNormalClass" style="font-weight: bold;">开始时间</span>
                                     </div>
                                     <div>
-                                        <span ">
+                                        <span>
                                             <input name="start_time" type="text" id="start_time" onclick="WdatePicker({ dateFmt: 'HH:mm' })" class="txtBlack8Class" value="<%=tempSerCall!=null?tempSerCall.start_time:"" %>" style="width: 76px" />&nbsp;</span>
                                     </div>
                                 </td>
@@ -2575,10 +2575,10 @@
                                 <td></td>
                                 <td class="inputLabel">
                                     <div class="FieldLabel">
-                                        <span  class="lblNormalClass" style="font-weight: bold;">结束时间</span>
+                                        <span class="lblNormalClass" style="font-weight: bold;">结束时间</span>
                                     </div>
                                     <div>
-                                        <span >
+                                        <span>
                                             <input name="end_time" type="text" id="end_time" class="txtBlack8Class" onclick="WdatePicker({ dateFmt: 'HH:mm' })" value="<%=tempSerCall!=null?tempSerCall.end_time:"" %>" style="width: 76px" />&nbsp;</span>
                                     </div>
                                 </td>
@@ -2587,7 +2587,7 @@
                                 <td></td>
                                 <td class="inputLabel3">
                                     <div class="FieldLabel">
-                                        <span  class="lblNormalClass" style="font-weight: bold;">描述</span>
+                                        <span class="lblNormalClass" style="font-weight: bold;">描述</span>
                                     </div>
                                     <div>
                                         <textarea name="description" id="description" rows="3" cols="55" style="resize: vertical;"><%=tempSerCall!=null?tempSerCall.description:"" %></textarea>
@@ -2603,7 +2603,7 @@
                                     <div>
                                         <span id="">
                                             <select name="status_id" id="status_id" class="txtBlack8Class" style="width: 76px">
-                                                 <% if (callStatusList != null && callStatusList.Count > 0)
+                                                <% if (callStatusList != null && callStatusList.Count > 0)
                                                     {
                                                         foreach (var callStatu in callStatusList)
                                                         { %>
@@ -2612,7 +2612,6 @@
                                                     selected="selected" <%} %>><%=callStatu.name %></option>
                                                 <%  }
                                                     } %>
-
                                             </select></span>
                                     </div>
                                 </td>
@@ -2623,7 +2622,7 @@
             </div>
             <div class="DivSectionWithHeader">
                 <div class="HeaderRow">
-                    <span class="lblNormalClass" style="font-weight: bold; font-weight: bold;">Notification</span>
+                    <span class="lblNormalClass" style="font-weight: bold; font-weight: bold;">通知</span>
                 </div>
                 <div class="Content">
                     <table id="notficationTable" class="entireThing" cellpadding="0" cellspacing="0" width="100%">
@@ -2632,7 +2631,7 @@
                                 <td class="input">
                                     <table class="input" cellpadding="0" cellspacing="0" style="padding-bottom: 10px;">
                                         <tbody>
-                                           <% if (notifyList != null && notifyList.Count > 0)
+                                            <% if (notifyList != null && notifyList.Count > 0)
                                                 {
                                                     foreach (var notify in notifyList)
                                                     {%>
@@ -2652,7 +2651,7 @@
                                 </td>
                             </tr>
                             <tr class="ExtraPaddingInputRow">
-                                
+
                                 <td class="inputLabel">
                                     <div class="FieldLabel">
                                         <span class="lblNormalClass" style="font-weight: bold;">其他邮箱</span>
@@ -2663,8 +2662,8 @@
                                     </div>
                                 </td>
                             </tr>
-                           <tr id="" class="ExtraPaddingInputRow">
-                             
+                            <tr id="" class="ExtraPaddingInputRow">
+
                                 <td class="inputLabel">
                                     <div class="FieldLabel">
                                         通知模板
@@ -2687,8 +2686,8 @@
                                 </td>
                             </tr>
 
-                             <tr class="ExtraPaddingInputRow">
-                                
+                            <tr class="ExtraPaddingInputRow">
+
                                 <td class="inputLabel3">
                                     <div class="FieldLabel">
                                         附加文本
@@ -2705,18 +2704,1725 @@
             <%}
                 else if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.TASK_NOTE)
                 { %>
+            <div class="DivSectionWithHeader">
+                <div class="HeaderRow">
+                    <span class="lblNormalClass" style="font-weight: bold; font-weight: bold;">任务备注</span>
+                </div>
+                <div class="Content">
+                    <table id="entireThing" cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span class="lblNormalClass" style="font-weight: bold;">发布对象</span>
+                                    </div>
+                                    <div>
+                                        <span id="">
+                                            <select name="publish_type_id" id="publish_type_id" class="txtBlack8Class">
+                                                <% if (pushList != null && pushList.Count > 0)
+                                                    {
+                                                        foreach (var puish in pushList)
+                                                        { %>
+                                                <option value="<%=puish.id %>" <%if (tempNote != null && tempNote.publish_type_id != null && tempNote.publish_type_id == puish.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=puish.name %></option>
+                                                <%  }
+                                                    } %>
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">备注类型</span>
+                                    </div>
+                                    <div>
+                                        <span id="">
+                                            <select name="action_type_id" id="action_type_id" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (actList != null && actList.Count > 0)
+                                                    {
+                                                        foreach (var act in actList)
+                                                        { %>
+                                                <option value="<%=act.id %>" <%if (tempNote != null && tempNote.action_type_id == act.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=act.name %></option>
+                                                <%  }
+                                                    } %>
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span class="lblNormalClass" style="font-weight: bold;">状态</span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            <select name="status_id" id="" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (ticStaList != null && ticStaList.Count > 0)
+                                                    {
+                                                        foreach (var ticSta in ticStaList)
+                                                        { %>
+                                                <option value="<%=ticSta.id %>" <%if (tempNote != null && tempNote.status_id != null && tempNote.status_id == ticSta.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=ticSta.name %></option>
+                                                <%  }
+                                                    } %>
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">标题</span>
+                                    </div>
+                                    <div>
+                                        <span id="">
+                                            <input name="name" type="text" id="name" class="txtBlack8Class" value="<%=tempNote != null ? tempNote.name : "" %>" /></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel3">
+                                    <div class="FieldLabel">
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">描述</span>
+                                    </div>
+                                    <div>
+                                        <textarea name="description" id="" rows="3" cols="55" style="height: 100px"><%=tempNote != null ? tempNote.description : "" %></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="DivSectionWithHeader">
+                <div class="HeaderRow">
+                    <span class="lblNormalClass" style="font-weight: bold; font-weight: bold;">通知</span>
+                </div>
+                <div class="Content">
+                    <table id="notficationTable" class="entireThing" cellpadding="0" cellspacing="0" width="100%">
+                        <tbody>
+                            <tr>
+                                <td class="input">
+                                    <table class="input" cellpadding="0" cellspacing="0" style="padding-bottom: 10px;">
+                                        <tbody>
+                                            <% if (notifyList != null && notifyList.Count > 0)
+                                                {
+                                                    foreach (var notify in notifyList)
+                                                    {%>
+                                            <tr>
+                                                <td class="input CheckboxPadding">
+                                                    <span class="FieldLabel"><span class="txtBlack8Class">
+                                                        <input id="" type="checkbox" name="noti<%=notify.id %>" style="vertical-align: middle;" <%if (notiIds != null && notiIds.Contains(notify.id.ToString()))
+                                                            { %>
+                                                            checked="checked" <%} %> />
+                                                        <label style="vertical-align: middle;"><%=notify.name %></label></span></span>
+                                                </td>
+                                            </tr>
+                                            <% }
+                                                } %>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr class="ExtraPaddingInputRow">
+
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span class="lblNormalClass" style="font-weight: bold;">其他邮箱</span>
+                                    </div>
+                                    <div>
+                                        <span id="" class="editDD" style="display: inline-block;">
+                                            <input name="other_emails" type="text" maxlength="2000" id="" class="txtBlack8Class" style="width: 360px;" value="<%=temp!=null?temp.other_emails:"" %>" /></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr id="" class="ExtraPaddingInputRow">
+
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        通知模板
+                                    </div>
+                                    <div>
+                                        <span id="" class="editDD">
+                                            <select name="notify_tmpl_id" id="notify_tmpl_id" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (tempNotiList != null && tempNotiList.Count > 0)
+                                                    {
+                                                        foreach (var tempNoti in tempNotiList)
+                                                        { %>
+                                                <option value="<%=tempNoti.id %>" <%if (temp != null && temp.notify_tmpl_id != null && temp.notify_tmpl_id == tempNoti.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=tempNoti.name %></option>
+                                                <%  }
+                                                    } %>
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="ExtraPaddingInputRow">
+
+                                <td class="inputLabel3">
+                                    <div class="FieldLabel">
+                                        附加文本
+                                    </div>
+                                    <div>
+                                        <textarea name="additional_email_text" id="additional_email_text" rows="3" cols="67" class="oppText2" style="resize: vertical; width: 374px;"><%=temp!=null?temp.additional_email_text:"" %></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <%}
                 else if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.TASK_TIME_ENTRY)
                 { %>
+            <div class="DivSectionWithHeader">
+                <div class="HeaderRow">
+                    <span class="lblNormalClass" style="font-weight: bold; font-weight: bold;">任务工时</span>
+                </div>
+                <div class="Content">
+                    <table id="entireThing" cellspacing="0" cellpadding="0">
+                        <tbody>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span class="lblNormalClass" style="font-weight: bold;">状态</span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            <select name="status_id" id="" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (ticStaList != null && ticStaList.Count > 0)
+                                                    {
+                                                        foreach (var ticSta in ticStaList)
+                                                        { %>
+                                                <option value="<%=ticSta.id %>" <%if (tempEntry != null && tempEntry.status_id != null && tempEntry.status_id == ticSta.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=ticSta.name %></option>
+                                                <%  }
+                                                    } %>
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span class="lblNormalClass" style="font-weight: bold;">角色</span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            <select name="role_id" id="" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (roleList != null && roleList.Count > 0)
+                                                    {
+                                                        foreach (var role in roleList)
+                                                        { %>
+                                                <option value="<%=role.id %>" <%if (tempEntry != null && tempEntry.role_id != null && tempEntry.role_id == role.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=role.name %></option>
+                                                <%  }
+                                                    } %>
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span class="lblNormalClass" style="font-weight: bold;">默认时长</span>
+                                    </div>
+                                    <div class="FieldLabel">
+                                        <%
+                                            int hours = 0;
+                                            int mins = 0;
+                                            if (tempEntry != null && tempEntry.hours_worked != null)
+                                            {
+                                                hours = (int)Math.Floor((decimal)tempEntry.hours_worked);
+                                                var thisMin = tempEntry.hours_worked - hours;
+                                                if (thisMin != 0)
+                                                {
+                                                    mins = Convert.ToInt32(thisMin * 60);
+                                                }
+                                            }
+                                        %>
+
+
+                                        <span style="display: inline-block;">
+                                            <input name="hours" type="text" value="<%=hours %>" id="hours" class="txtBlack8Class" style="width: 49px; text-align: right;" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /></span>
+                                        &nbsp;<span class="FieldLevelInstruction" style="font-weight: normal;">小时</span>&nbsp;&nbsp;
+			<span style="display: inline-block;">
+                <input name="mins" type="text" value="<%=mins %>" id="mins" class="txtBlack8Class" style="width: 49px; text-align: right;" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /></span>
+                                        &nbsp;<span class="FieldLevelInstruction" style="font-weight: normal;">分钟</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="FieldLevelInstruction">对于起止时间，开始时间将默认为：结束时间 - 默认时长
+					<br>
+                                    <br>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <span class="FieldLabel" style="font-weight: bold;">工作类型</span>
+                                    <div>
+                                        <span class="editDD">
+                                            <select name="cost_code_id" id="" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (workTypeList != null && workTypeList.Count > 0)
+                                                    {
+                                                        foreach (var workType in workTypeList)
+                                                        { %>
+                                                <option value="<%=workType.id %>" <%if (tempEntry != null && tempEntry.cost_code_id != null && tempEntry.cost_code_id == workType.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=workType.name %></option>
+                                                <%  }
+                                                    } %>
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="input">
+                                <td></td>
+                                <td style="padding-bottom: 10px;">
+                                    <span id="" class="FieldLabel"><span class="txtBlack8Class">
+                                        <input id="isNoBill" type="checkbox" name="isNoBill" style="vertical-align: middle;" <% if (tempEntry != null && tempEntry.is_billable == 0)
+                                            { %>
+                                            checked="checked" <%} %> /><label style="vertical-align: middle;">不计费</label></span></span>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="FieldLabel"><span class="txtBlack8Class">
+                <input id="isShowOnInvoice" type="checkbox" name="isShowOnInvoice" style="vertical-align: middle;" checked="checked" disabled="" /><label style="vertical-align: middle;">展示在发票上</label></span></span>
+
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel3">
+                                    <div class="FieldLabel">
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">工时说明</span>
+                                    </div>
+                                    <div>
+                                        <textarea name="summary_notes" id="" rows="3" cols="55"><%=tempEntry!=null?tempEntry.summary_notes:"" %></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel3">
+                                    <div class="FieldLabel">
+                                        <span class="lblNormalClass" style="font-weight: bold;">内部说明</span>
+                                    </div>
+                                    <div>
+                                        <textarea name="internal_notes" id="" rows="3" cols="55"><%=tempEntry!=null?tempEntry.internal_notes:"" %></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="DivSectionWithHeader">
+                <div class="HeaderRow">
+                    <span class="lblNormalClass" style="font-weight: bold; font-weight: bold;">通知</span>
+                </div>
+                <div class="Content">
+                    <table id="notficationTable" class="entireThing" cellpadding="0" cellspacing="0" width="100%">
+                        <tbody>
+                            <tr>
+                                <td class="input">
+                                    <table class="input" cellpadding="0" cellspacing="0" style="padding-bottom: 10px;">
+                                        <tbody>
+                                            <% if (notifyList != null && notifyList.Count > 0)
+                                                {
+                                                    foreach (var notify in notifyList)
+                                                    {%>
+                                            <tr>
+                                                <td class="input CheckboxPadding">
+                                                    <span class="FieldLabel"><span class="txtBlack8Class">
+                                                        <input id="" type="checkbox" name="noti<%=notify.id %>" style="vertical-align: middle;" <%if (notiIds != null && notiIds.Contains(notify.id.ToString()))
+                                                            { %>
+                                                            checked="checked" <%} %> />
+                                                        <label style="vertical-align: middle;"><%=notify.name %></label></span></span>
+                                                </td>
+                                            </tr>
+                                            <% }
+                                                } %>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr class="ExtraPaddingInputRow">
+
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span class="lblNormalClass" style="font-weight: bold;">其他邮箱</span>
+                                    </div>
+                                    <div>
+                                        <span id="" class="editDD" style="display: inline-block;">
+                                            <input name="other_emails" type="text" maxlength="2000" id="" class="txtBlack8Class" style="width: 360px;" value="<%=temp!=null?temp.other_emails:"" %>" /></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr id="" class="ExtraPaddingInputRow">
+
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        通知模板
+                                    </div>
+                                    <div>
+                                        <span id="" class="editDD">
+                                            <select name="notify_tmpl_id" id="notify_tmpl_id" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (tempNotiList != null && tempNotiList.Count > 0)
+                                                    {
+                                                        foreach (var tempNoti in tempNotiList)
+                                                        { %>
+                                                <option value="<%=tempNoti.id %>" <%if (temp != null && temp.notify_tmpl_id != null && temp.notify_tmpl_id == tempNoti.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=tempNoti.name %></option>
+                                                <%  }
+                                                    } %>
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="ExtraPaddingInputRow">
+
+                                <td class="inputLabel3">
+                                    <div class="FieldLabel">
+                                        附加文本
+                                    </div>
+                                    <div>
+                                        <textarea name="additional_email_text" id="additional_email_text" rows="3" cols="67" class="oppText2" style="resize: vertical; width: 374px;"><%=temp!=null?temp.additional_email_text:"" %></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <%}
                 else if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.TICKET)
                 { %>
+            <div class="Normal Section" id="">
+                <div class="Heading" data-toggle-enabled="true">
+                    <div class="Toggle Collapse">
+                        <div class="Vertical"></div>
+                        <div class="Horizontal"></div>
+                    </div>
+                    <div class="Left">
+                        <span class="Text">工单
+                        </span>
+                    </div>
+                    <div class="Middle"></div>
+                    <div class="Spacer"></div>
+                    <div class="Right"></div>
+                </div>
+                <div class="Content">
+                    <div class="Large Column">
+                        <div class="Normal Column">
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>
+                                        工单种类
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="Editor SingleSelect">
+                                <div class="InputField">
+                                    <select name="cate_id" id="cate_id">
+                                        <option value=""></option>
+                                        <% if (ticketCateList != null && ticketCateList.Count > 0)
+                                            {
+                                                foreach (var ticketCate in ticketCateList)
+                                                { %>
+                                        <option value="<%=ticketCate.id %>" <%if (tempTicket != null && tempTicket.cate_id != null && tempTicket.cate_id == ticketCate.id)
+                                            {  %>
+                                            selected="selected" <%} %>><%=ticketCate.name %></option>
+                                        <%  }
+                                            } %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>客户</label>
+                                </div>
+                            </div>
+                            <div class="Editor DataSelector">
+                                <div class="InputField">
+                                    <input name="" type="text" value="<%=thisAccount != null ? thisAccount.name : "" %>" id="accountId" class="" />
+                                    <a class="Button ButtonIcon IconOnly DataSelector NormalState" onclick="chooseCompany()"> <span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -191px -44px;"></span><span class="Text"></span></a>
+                                    <input name="account_id" type="hidden" id="accountIdHidden" value="<%=thisAccount != null ? thisAccount.id.ToString() : "" %>" />
+                                </div>
+                            </div>
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>联系人</label>
+                                </div>
+                            </div>
+                            <div class="Editor SingleDataSelector" id="">
+                                <div class="ContentContainer">
+                                    <div class="ValueContainer">
+
+                                        <div class="InputContainer">
+                                            
+                                            <input id="contactId" type="text" value="<%=thisContact!=null?thisContact.name:"" %>" name="" />
+                                            <input id="contactIdHidden" type="hidden" value="<%=thisContact!=null?thisContact.id.ToString():"" %>" name="contact_id" />
+                                            <a class="Button ButtonIcon IconOnly DataSelector NormalState" id="" onclick="CallBackContact()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -191px -44px;"></span><span class="Text"></span></a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                
+
+                            </div>
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>其他联系人</label>
+                                </div>
+                            </div>
+                            <div class="Editor MultipleDataSelector">
+                                <div class="ContentContainer">
+                                    <div class="ValueContainer">
+                                        <div class="InputContainer">
+
+                                            <input type="text" disabled="disabled"/>
+                                            <input id="contactIds" type="hidden" value="" name="" />
+                                            <input id="contactIdsHidden" type="hidden" value="<%=tempTicket!=null?tempTicket.additional_contact_ids:"" %>" name="additional_contact_ids" />
+<a class="Button ButtonIcon IconOnly DataSelector NormalState" id="" onclick="ContactsCallBack()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -191px -44px;"></span><span class="Text"></span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <select size="4" name="" id="otherContactIds" class="txtBlack8Class" style="height: 50px; width: 374px;">
+                                </select>
+                            </div>
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>状态</label>
+                                </div>
+                            </div>
+                            <div class="Editor ItemSelector DisplayMode">
+                                <select name="status_id" id="" class="txtBlack8Class">
+                                    <option value=""></option>
+                                    <% if (ticStaList != null && ticStaList.Count > 0)
+                                        {
+                                            foreach (var ticSta in ticStaList)
+                                            { %>
+                                    <option value="<%=ticSta.id %>" <%if (tempTicket != null && tempTicket.status_id != null && tempTicket.status_id == ticSta.id)
+                                        {  %>
+                                        selected="selected" <%} %>><%=ticSta.name %></option>
+                                    <%  }
+                                        } %>
+                                </select>
+                            </div>
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>优先级</label>
+                                </div>
+                            </div>
+                            <div class="Editor ItemSelector DisplayMode">
+                                <select name="priority_type_id" id="priority_type_id" class="txtBlack8Class">
+                                    <option value=""></option>
+                                    <% if (priorityList != null && priorityList.Count > 0)
+                                        {
+                                            foreach (var priority in priorityList)
+                                            { %>
+                                    <option value="<%=priority.id %>" <%if (tempTicket != null && tempTicket.priority_type_id != null && tempTicket.priority_type_id == priority.id)
+                                        {  %>
+                                        selected="selected" <%} %>><%=priority.name %></option>
+                                    <%  }
+                                        } %>
+                                </select>
+
+                            </div>
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>工单类型</label>
+                                </div>
+                            </div>
+                            <div class="Editor SingleSelect">
+                                <div class="InputField">
+                                    <select id="ticket_type_id" name="ticket_type_id">
+                                        <option value=""></option>
+                                        <% if (ticketTypeList != null && ticketTypeList.Count > 0)
+                                            {
+                                                foreach (var ticketType in ticketTypeList)
+                                                { %>
+                                        <option value="<%=ticketType.id %>" <%if (tempTicket != null && tempTicket.ticket_type_id != null && tempTicket.ticket_type_id == ticketType.id)
+                                            {  %>
+                                            selected="selected" <%} %>><%=ticketType.name %></option>
+                                        <%  }
+                                            } %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>工单标题</label>
+                                </div>
+                            </div>
+                            <div class="Editor TextBox">
+                                <div class="InputField">
+                                    <input name="title" type="text" id="title" class="txtBlack8Class" style="width: 374px;" value="<%=tempTicket != null ? tempTicket.title : "" %>" />
+                                </div>
+                            </div>
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>工单描述</label>
+                                </div>
+                            </div>
+                            <div class="Editor TextArea">
+                                <div class="InputField">
+                                    <textarea name="description" id="description" rows="3" cols="55" style="width: 374px; height: 50px; resize: vertical;"><%=tempTicket != null ? tempTicket.description : "" %></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="Normal Column">
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>合同</label>
+                                </div>
+                            </div>
+                            <div class="Editor DataSelector">
+                                <div class="InputField">
+                                    <input name="contract_id" type="hidden" id="contractIdHidden" value="<%=thisContract != null ? thisContract.id.ToString() : "" %>" />
+                                    <input name="" type="text" id="contractId" disabled="disabled" class="txtBlack8Class" style="width: 350px;" value="<%=thisContract != null ? thisContract.name : "" %>" />
+                                    <a class="Button ButtonIcon IconOnly DataSelector NormalState" onclick="ContractCallBack()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -191px -44px;"></span><span class="Text"></span></a>
+                                </div>
+                            </div>
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>工作类型</label>
+                                </div>
+                            </div>
+                            <div class="Editor DataSelector">
+                                <div class="InputField">
+                                    <input name="cost_code_id" type="hidden" id="costCodeIdHidden" value="<%=thisCostCode != null ? thisCostCode.id.ToString() : "" %>" />
+                                    <input name="" type="text" id="costCodeId" disabled="disabled" class="txtBlack8Class" style="width: 350px;" value="<%=thisCostCode != null ? thisCostCode.name : "" %>" />
+                                    <a class="Button ButtonIcon IconOnly DataSelector NormalState" onclick="WorkTypeCallBack()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -191px -44px;"></span><span class="Text"></span></a>
+                                </div>
+                            </div>
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>配置项</label>
+                                </div>
+                            </div>
+                            <div class="Editor DataSelector">
+                                <div class="InputField">
+                                    <input name="installed_product_id" type="hidden" id="insProIdHidden" value="<%=tempRecTicket != null ? tempRecTicket.installed_product_id.ToString() : "" %>" />
+                                    <input name="" type="text" id="insProId" disabled="disabled" class="txtBlack8Class" style="width: 350px;" value="<%=thisProduct != null ? thisProduct.name : "" %>" />
+                                    <a class="Button ButtonIcon IconOnly DataSelector NormalState" onclick="InsProCallBack()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -191px -44px;"></span><span class="Text"></span></a>
+                                </div>
+                            </div>
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>来源</label>
+                                </div>
+                            </div>
+                            <div class="Editor SingleSelect">
+                                <div class="InputField">
+                                    <select name="source_type_id" id="" class="txtBlack8Class">
+                                        <option value=""></option>
+                                        <% if (sourceTypeList != null && sourceTypeList.Count > 0)
+                                            {
+                                                foreach (var sourceType in sourceTypeList)
+                                                { %>
+                                        <option value="<%=sourceType.id %>" <%if (tempTicket != null && tempTicket.source_type_id != null && tempTicket.source_type_id == sourceType.id)
+                                            {  %>
+                                            selected="selected" <%} %>><%=sourceType.name %></option>
+                                        <%  }
+                                            } %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>队列</label>
+                                </div>
+                            </div>
+                            <div class="Editor ItemSelector DisplayMode">
+                                <select name="department_id" id="department_id" class="txtBlack8Class">
+                                    <option value=""></option>
+                                    <% if (queueList != null && queueList.Count > 0)
+                                        {
+                                            foreach (var queue in queueList)
+                                            { %>
+                                    <option value="<%=queue.id %>" <%if (tempTicket != null && tempTicket.department_id != null && tempTicket.department_id == queue.id)
+                                        {  %>
+                                        selected="selected" <%} %>><%=queue.name %></option>
+                                    <%  }
+                                        } %>
+                                </select>
+                            </div>
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>主负责人</label>
+                                </div>
+                            </div>
+                            <div class="Editor SingleDataSelector">
+                                <div class="ContentContainer">
+                                    <div class="ValueContainer">
+                                        <div class="InputContainer">
+                                            <% string res = "";
+                                                string role = "";
+                                                if (proResDep != null&&resList!=null&&roleList!=null)
+                                                {
+                                                    var thisRes = resList.FirstOrDefault(_ => _.id == proResDep.resource_id);
+                                                    var thisRole = roleList.FirstOrDefault(_ => _.id == proResDep.role_id);
+                                                    if (thisRes != null && thisRole != null)
+                                                    {
+                                                        res = thisRes.name;role = thisRole.name;
+                                                    }
+                                                }
+                                                %>
+                                            <input id="owner_resource_id" type="text" value="<%=!string.IsNullOrEmpty(res)&&!string.IsNullOrEmpty(role)?res+$"({role})":"" %>" name="" style="width: 350px;" />
+                                            <input type="hidden" id="owner_resource_idHidden" name="redDepId" value="<%=proResDep!=null?proResDep.id.ToString():"" %>" />  <a class="Button ButtonIcon IconOnly DataSelector NormalState" id="" onclick="ChoosePriRes()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -191px -44px;"></span><span class="Text"></span></a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                              
+
+                            </div>
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>其他负责人</label>
+                                </div>
+                            </div>
+                            <div class="Editor MultipleDataSelector">
+                                <div class="ContentContainer">
+                                    <div class="ValueContainer">
+                                        <div class="InputContainer">
+                                            <input id="" type="text" value="" name="SecondaryResources" style="width: 350px;" />
+                                             <input id="OtherResId" type="hidden" />
+                                <input id="OtherResIdHidden" name="second_resource_ids" type="hidden" value="<%=tempTicket!=null?tempTicket.second_resource_ids:"" %>" />
+                                <a class="Button ButtonIcon IconOnly DataSelector NormalState" id="" onclick="OtherResCallBack()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -191px -44px;"></span><span class="Text"></span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                                 <select multiple="multiple" id="otherRes" style="height: 110px; width: 85%; float: left;">
+                            </select>
+                            </div>
+                            <div class="EditorLabelContainer" style="clear:both;">
+                                <div class="Label">
+                                    <label>预估时间</label>
+                                </div>
+                            </div>
+                            <div class="Editor DecimalBox">
+                                <div class="InputField">
+                                    <input id="" type="text" value="<%=tempTicket!=null&&tempTicket.estimated_hours!=null?((decimal)tempTicket.estimated_hours).ToString("#0.00"):"" %>" name="estimated_hours" maxlength="14" class="ToDec2" />
+                                </div>
+                            </div>
+                            <div class="Medium Column">
+                                <div class="EditorLabelContainer">
+                                    <div class="Label">
+                                        <label>问题类型</label>
+                                    </div>
+                                </div>
+                                <div class="Editor SingleSelect">
+                                    <div class="InputField">
+                                        <select name="issue_type_id" id="issue_type_id" class="txtBlack8Class" style="width:128px;">
+                                            <option value=""></option>
+                                            <% if (issueTypeList != null && issueTypeList.Count > 0)
+                                                {
+                                                    foreach (var issueType in issueTypeList)
+                                                    { %>
+                                            <option value="<%=issueType.id %>" <%if (tempTicket != null && tempTicket.issue_type_id != null && tempTicket.issue_type_id == issueType.id)
+                                                {  %>
+                                                selected="selected" <%} %>><%=issueType.name %></option>
+                                            <%  }
+                                                } %>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="Medium Column">
+                                <div class="EditorLabelContainer">
+                                    <div class="Label">
+                                        <label>子问题类型</label>
+                                    </div>
+                                </div>
+                                <div class="Editor SingleSelect">
+                                    <div class="InputField">
+                                        <select name="sub_issue_type_id" id="sub_issue_type_id" class="txtBlack8Class" style="width:128px;" >
+                                            <option selected="selected" value=""></option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="EditorLabelContainer">
+                                <div class="Label">
+                                    <label>服务等级协议(SLA)</label>
+                                </div>
+                            </div>
+                            <div class="Editor SingleSelect">
+                                <div class="InputField">
+                                    <select name="sla_id" id="sla_id" class="txtBlack8Class">
+                                        <option value=""></option>
+                                        <% if (slaList != null && slaList.Count > 0)
+                                            {
+                                                foreach (var sla in slaList)
+                                                { %>
+                                        <option value="<%=sla.id %>" <%if (tempTicket != null && tempTicket.sla_id != null && tempTicket.sla_id == sla.id)
+                                            {  %>
+                                            selected="selected" <%} %>><%=sla.name %></option>
+                                        <%  }
+                                            } %>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ReplaceableColumnContainer">
+                        <div class="Large Column">
+                            <div class="ReadOnlyData">
+                                <div class="LabelContainer"><span class="Label">截止日期</span></div>
+                                <div class="Value">
+                                    <div class="FormatPreservation">
+                                        Due Date: No default (user entry required)
+Due Time: No default (user entry required)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Large Column">
+                        <div class="ButtonContainer"><a class="Button ButtonIcon Link NormalState" id="zdedaf020e1c84417bfab71f7c4998049" tabindex="0">Edit</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="Normal Section">
+                <div class="Heading" data-toggle-enabled="true">
+                    <div class="Toggle Collapse">
+                        <div class="Vertical"></div>
+                        <div class="Horizontal"></div>
+                    </div>
+                    <div class="Left"><span class="Text">自定义字段</span></div>
+                    <div class="Middle"></div>
+                    <div class="Spacer"></div>
+                    <div class="Right"></div>
+                </div>
+                <div class="Content">
+                    <div class="Large Column">
+                        <div id="" style="border-style: None; padding-bottom: 0px; min-height: 30px;">
+                            <table border="0" style="border-collapse: collapse;" width="100%">
+                                <tbody>
+                                    <% if (tickUdfList != null && tickUdfList.Count > 0)
+                                        {
+                                            foreach (var udf in tickUdfList)
+                                            {
+                                                if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)
+                                                {%>
+                                    <tr>
+                                        <td valign="top" align="left" width="170px"><span class="Fieldlabel" style="font-weight: bold;"><%=udf.name %></span><span id="" class="errorSmallClass" style="font-weight: bold;"></span><div>
+                                            <span style="display: inline-block;">
+                                                <input name="<%=udf.id %>" type="text" id="" class="txtBlack8Class" style="width: 170px;" value="<%=ticketUdfValueList!=null&&ticketUdfValueList.Count>0&& ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id)!=null?ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id).value.ToString():"" %>" /></span>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                    <%}
+                                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)
+                                        {%>
+                                    <tr>
+                                        <td valign="top" align="left" width="170px"><span class="Fieldlabel" style="font-weight: bold;"><%=udf.name %></span><span id="" class="errorSmallClass" style="font-weight: bold;"></span><div>
+                                            <span style="display: inline-block;">
+                                                <textarea name="<%=udf.id %>" rows="2" cols="20"><%=ticketUdfValueList!=null&&ticketUdfValueList.Count>0&& ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id)!=null?ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id).value.ToString():""  %></textarea></span>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                    <%}
+                                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.DATETIME)
+                                        {%>
+                                    <%string val = "";
+                                        if (ticketUdfValueList != null && ticketUdfValueList.Count > 0 && ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id) != null)
+                                        {
+                                            object value = ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id).value;
+                                            if (value != null && (!string.IsNullOrEmpty(value.ToString())))
+                                            {
+                                                val = DateTime.Parse(value.ToString()).ToString("yyyy-MM-dd");
+                                            }
+                                        }
+                                    %><tr>
+                                        <td valign="top" align="left" width="170px"><span class="Fieldlabel" style="font-weight: bold;"><%=udf.name %></span><span id="" class="errorSmallClass" style="font-weight: bold;"></span><div>
+                                            <span style="display: inline-block;">
+                                                <input name="<%=udf.id %>" type="text" id="" class="txtBlack8Class" style="width: 170px;" value="<%=val %>" /></span>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                    <%
+                                        }
+                                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.NUMBER)
+                                        {%>
+                                    <%string val = "";
+                                        if (ticketUdfValueList != null && ticketUdfValueList.Count > 0 && ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id) != null)
+                                        {
+                                            object value = ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id).value;
+                                            if (value != null && (!string.IsNullOrEmpty(value.ToString())))
+                                            {
+                                                val = DateTime.Parse(value.ToString()).ToString("yyyy-MM-dd");
+                                            }
+                                        }
+                                    %>
+                                    <tr>
+                                        <td valign="top" align="left" width="170px"><span class="Fieldlabel" style="font-weight: bold;"><%=udf.name %></span><span id="" class="errorSmallClass" style="font-weight: bold;"></span><div>
+                                            <span style="display: inline-block;">
+                                                <input name="<%=udf.id %>" type="text" id="" class="txtBlack8Class" style="width: 170px;" onkeyup="value=value.replace(/[^\d]/g,'') " onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" value="<%=ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id).value %>" /></span>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                    <%
+                                        }
+                                        else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)
+                                        {%>
+                                    <tr>
+                                        <td valign="top" align="left" width="170px"><span class="Fieldlabel" style="font-weight: bold;"><%=udf.name %></span><span id="" class="errorSmallClass" style="font-weight: bold;"></span><div>
+                                            <span style="display: inline-block;">
+                                                <select name="<%=udf.id %>">
+                                                    <%if (udf.required != 1)
+                                                        { %>
+                                                    <option></option>
+                                                    <%} %>
+                                                    <% if (udf.value_list != null && udf.value_list.Count > 0)
+                                                        {
+                                                            var thisValue = "";
+                                                            if (ticketUdfValueList != null && ticketUdfValueList.Count > 0 && ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id) != null)
+                                                            {
+                                                                thisValue = ticketUdfValueList.FirstOrDefault(_ => _.id == udf.id).value.ToString();
+                                                            }
+
+                                                            foreach (var thisValeList in udf.value_list)
+                                                            {%>
+                                                    <option value="<%=thisValeList.val %>" <%=thisValue==thisValeList.val?"selected='selected'":"" %>><%=thisValeList.show %></option>
+                                                    <%
+                                                            }
+                                                        } %>
+                                                </select></span>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                    <%
+                                                }
+                                            }
+                                        }  %>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="Normal Section">
+                <div class="Heading" data-toggle-enabled="true">
+                    <div class="Toggle Collapse">
+                        <div class="Vertical"></div>
+                        <div class="Horizontal"></div>
+                    </div>
+                    <div class="Left"><span class="Text">变更信息</span></div>
+                    <div class="Middle"></div>
+                    <div class="Spacer"></div>
+                    <div class="Right"></div>
+                </div>
+                <div class="Content">
+                    <div class="Large Column">
+                        <div class="EditorLabelContainer">
+                            <div class="Label">
+                                <label>影响分析</label>
+                            </div>
+                        </div>
+                        <div class="Editor TextArea">
+                            <div class="InputField">
+                                <textarea class="Medium" id="" name="impact_analysis" placeholder=""><%=tempTicket!=null?tempTicket.impact_analysis:"" %></textarea>
+                            </div>
+                        </div>
+                        <div class="EditorLabelContainer">
+                            <div class="Label">
+                                <label>实施计划</label>
+                            </div>
+                        </div>
+                        <div class="Editor TextArea">
+                            <div class="InputField">
+                               <textarea class="Medium" id="" name="implementation_plan" placeholder=""><%=tempTicket!=null?tempTicket.implementation_plan:"" %></textarea>
+                            </div>
+                        </div>
+                        <div class="EditorLabelContainer">
+                            <div class="Label">
+                                <label>版本计划</label>
+                            </div>
+                        </div>
+                        <div class="Editor TextArea">
+                            <div class="InputField">
+                                <textarea class="Medium" id="" name="roll_out_plan" placeholder=""><%=tempTicket!=null?tempTicket.roll_out_plan:"" %></textarea>
+                            </div>
+                        </div>
+                        <div class="EditorLabelContainer">
+                            <div class="Label">
+                                <label>回滚计划</label>
+                            </div>
+                        </div>
+                        <div class="Editor TextArea">
+                            <div class="InputField">
+                               <textarea class="Medium" id="" name="back_out_plan" placeholder=""><%=tempTicket!=null?tempTicket.back_out_plan:"" %></textarea>
+                            </div>
+                        </div>
+                        <div class="EditorLabelContainer">
+                            <div class="Label">
+                                <label>审阅记录</label>
+                            </div>
+                        </div>
+                        <div class="Editor TextArea">
+                            <div class="InputField">
+                                <textarea class="Medium" id="" name="review_notes" placeholder=""><%=tempTicket!=null?tempTicket.review_notes:"" %></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="Normal Section">
+                <div class="Heading" data-toggle-enabled="true">
+                    <div class="Toggle Collapse">
+                        <div class="Vertical"></div>
+                        <div class="Horizontal"></div>
+                    </div>
+                    <div class="Left"><span class="Text">检查单</span></div>
+                    <div class="Middle"></div>
+                    <div class="Spacer"></div>
+                    <div class="Right"></div>
+                </div>
+                <div class="DescriptionText">你最多可以输入20个条目.</div>
+                <div class="Content">
+                 
+                       <div class="ToolBar">
+                                    <div class="ToolBarItem Left ButtonGroupStart"><a class="Button ButtonIcon New NormalState" id="AddCheckListButton" tabindex="0" style="color:black;"><span class="Icon"></span><span class="Text">新增检查单</span></a></div>
+                                    <div class="ToolBarItem Left"><a class="Button ButtonIcon NormalState" id="AddCheckListFromLibraryButton" tabindex="0"  style="color:black;"><span class="Icon"></span><span class="Text">从知识库添加</span></a></div>
+                                    <div class="ToolBarItem Left ButtonGroupEnd"><a class="Button ButtonIcon NormalState" id="SaveToLibraryButton" tabindex="0" style="color:black;"><span class="Icon"></span><span class="Text">保存到知识库</span></a></div>
+                                    <div class="Spacer"></div>
+                                </div>
+                         <div class="Grid Small" id="TicketChecklistItemsGrid">
+                                    <div class="HeaderContainer">
+                                        <table cellpadding="0" style="min-width:650px;">
+                                            <thead class="HeaderContainer">
+                                                <tr class="HeadingRow">
+                                                    <td class=" Interaction DragEnabled" style="width: 60px;">
+                                                        <div class="Standard"></div>
+                                                    </td>
+                                                    <td class=" Context" style="width: 20px;">
+                                                        <div class="Standard">
+                                                            <div></div>
+                                                        </div>
+                                                    </td>
+                                                    <td class=" Image" style="width: 20px;">
+                                                        <div class="Standard">
+                                                            <div class="BookOpen ButtonIcon">
+                                                                <div class="Icon"></div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class=" Boolean" style="text-align: center;">
+                                                        <div class="Standard">
+                                                            <div class="Heading">完成</div>
+                                                        </div>
+                                                    </td>
+                                                    <td class=" Text Dynamic">
+                                                        <div class="Standard">
+                                                            <div class="Heading">条目</div>
+                                                        </div>
+                                                    </td>
+                                                    <td class=" Boolean" style="text-align: center;">
+                                                        <div class="Standard">
+                                                            <div class="Heading">重要</div>
+                                                        </div>
+                                                    </td>
+                                                    <%--<td class="ScrollBarSpacer" style="width: 19px;"></td>--%>
+                                                </tr>
+                                            </thead>
+                                            <div class="cover"></div>
+                                            <tbody id="Drap" class="Drap RowContainer BodyContainer">
+                                                <div class="border_left">
+                                                </div>
+                                                <div class="border_right">
+                                                </div>
+                                                <div class="border-line"></div>
+                                                <% if (tempCheckList != null && tempCheckList.Count > 0)
+                                                    {
+                                                        int num = 0;
+                                                        foreach (var item in tempCheckList)
+                                                        {
+                                                            num++;
+                                                %>
+                                                <tr data-val="<%=item.id %>" id="<%=item.id %>" class="HighImportance D" draggable="true">
+                                                    <td class="Interaction">
+                                                        <div>
+                                                            <div class="Decoration Icon DragHandle">
+                                                            </div>
+                                                            <div class="Num"><%=item.sort_order==null?"":((decimal)item.sort_order).ToString("#0") %></div>
+                                                            <input type="hidden" id="<%=item.id %>_sort_order" name="<%=item.id %>_sort_order" value="<%=item.sort_order==null?"":((decimal)item.sort_order).ToString("#0") %>" />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <a class="ButtonIcon Button ContextMenu NormalState ">
+                                                            <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -193px -97px; width: 15px; height: 15px;">
+                                                            </div>
+                                                        </a>
+                                                    </td>
+                                                    <td></td>
+                                                    <td>
+                                                        <%if (item.is_competed == 1)
+                                                            { %>
+                                                        <input type="checkbox" id="<%=item.id %>_is_complete" name="<%=item.id %>_is_complete" checked="checked" />
+                                                        <%}
+                                                            else
+                                                            { %>
+                                                        <input type="checkbox" id="<%=item.id %>_is_complete" name="<%=item.id %>_is_complete" />
+                                                        <%} %>
+                                                     
+
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="<%=item.id %>_item_name" name="<%=item.id %>_item_name" value="<%=item.item_name %>" /></td>
+                                                    <td>
+                                                        <%if (item.is_important == 1)
+                                                            { %>
+                                                        <input type="checkbox" id="<%=item.id %>_is_import" name="<%=item.id %>_is_import" checked="checked" />
+                                                        <%}
+                                                            else
+                                                            { %>
+                                                        <input type="checkbox" id="<%=item.id %>_is_import" name="<%=item.id %>_is_import" />
+                                                        <%} %>
+                                                    </td>
+                                                </tr>
+                                                <%
+                                                        }
+                                                    }
+                                                    else
+                                                    { %>
+                                                <tr data-val="-1" id="-1" class="HighImportance D" draggable="true">
+                                                    <td class="Interaction">
+                                                        <div>
+                                                            <div class="Decoration Icon DragHandle">
+                                                            </div>
+                                                            <div class="Num">1</div>
+                                                            <input type="hidden" id="-1_sort_order" name="-1_sort_order" value="1" />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <a class="ButtonIcon Button ContextMenu NormalState ">
+                                                            <div class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -193px -97px; width: 15px; height: 15px;">
+                                                            </div>
+                                                        </a>
+                                                    </td>
+                                                    <td></td>
+                                                    <td>
+                                                        <input type="checkbox" id="-1_is_complete" name="-1_is_complete" /></td>
+                                                    <td>
+                                                        <input type="text" id="-1_item_name" name="-1_item_name" /></td>
+                                                    <td>
+                                                        <input type="checkbox" id="-1_is_import" name="-1_is_import" /></td>
+
+                                                </tr>
+                                                <%} %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="ScrollingContentContainer">
+                                        <div class="NoDataMessage">未查询到相关数据</div>
+                                        <input type="hidden" id="CheckListIds" name="CheckListIds" />
+                                    </div>
+                                    <div class="FooterContainer"></div>
+                                </div>
+                </div>
+            </div>
+
+             <div class="DivSectionWithHeader">
+                <div class="HeaderRow">
+                    <span class="lblNormalClass" style="font-weight: bold; font-weight: bold;">通知</span>
+                </div>
+                <div class="Content">
+                    <table id="notficationTable" class="entireThing" cellpadding="0" cellspacing="0" width="100%">
+                        <tbody>
+                            <tr>
+                                <td class="input">
+                                    <table class="input" cellpadding="0" cellspacing="0" style="padding-bottom: 10px;">
+                                        <tbody>
+                                            <% if (notifyList != null && notifyList.Count > 0)
+                                                {
+                                                    foreach (var notify in notifyList)
+                                                    {%>
+                                            <tr>
+                                                <td class="input CheckboxPadding">
+                                                    <span class="FieldLabel"><span class="txtBlack8Class">
+                                                        <input id="" type="checkbox" name="noti<%=notify.id %>" style="vertical-align: middle;" <%if (notiIds != null && notiIds.Contains(notify.id.ToString()))
+                                                            { %>
+                                                            checked="checked" <%} %> />
+                                                        <label style="vertical-align: middle;"><%=notify.name %></label></span></span>
+                                                </td>
+                                            </tr>
+                                            <% }
+                                                } %>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr class="ExtraPaddingInputRow">
+
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span class="lblNormalClass" style="font-weight: bold;">其他邮箱</span>
+                                    </div>
+                                    <div>
+                                        <span id="" class="editDD" style="display: inline-block;">
+                                            <input name="other_emails" type="text" maxlength="2000" id="" class="txtBlack8Class" style="width: 360px;" value="<%=temp!=null?temp.other_emails:"" %>" /></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr id="" class="ExtraPaddingInputRow">
+
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        通知模板
+                                    </div>
+                                    <div>
+                                        <span id="" class="editDD">
+                                            <select name="notify_tmpl_id" id="notify_tmpl_id" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (tempNotiList != null && tempNotiList.Count > 0)
+                                                    {
+                                                        foreach (var tempNoti in tempNotiList)
+                                                        { %>
+                                                <option value="<%=tempNoti.id %>" <%if (temp != null && temp.notify_tmpl_id != null && temp.notify_tmpl_id == tempNoti.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=tempNoti.name %></option>
+                                                <%  }
+                                                    } %>
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="ExtraPaddingInputRow">
+
+                                <td class="inputLabel3">
+                                    <div class="FieldLabel">
+                                        附加文本
+                                    </div>
+                                    <div>
+                                        <textarea name="additional_email_text" id="additional_email_text" rows="3" cols="67" class="oppText2" style="resize: vertical; width: 374px;"><%=temp!=null?temp.additional_email_text:"" %></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="menu" id="menu" style="background-color: #f8f8f8;">
+            <%--菜单--%>
+            <ul style="width: 220px;" id="menuUl">
+                <li id="AddToAbove" onclick="AddAbove()">添加到条目上面</li>
+                <li id="AddToBelow" onclick="AddBelow()">添加到条目下面</li>
+                <li id="CopyItem" onclick="CopyThisItem()">复制</li>
+                <li id="AssKonw">关联知识库</li>
+                <li id="DeleteItem" onclick="Delete()">删除</li>
+            </ul>
+        </div>
+
             <%}
                 else if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.TICKET_NOTE)
                 { %>
+            <div class="DivSectionWithHeader">
+                <div class="HeaderRow">
+                    <span class="lblNormalClass" style="font-weight: bold; font-weight: bold;">工单备注</span>
+                </div>
+                <div class="Content">
+                    <table id="entireThing" cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span class="lblNormalClass" style="font-weight: bold;">发布对象</span>
+                                    </div>
+                                    <div>
+                                        <span id="">
+                                            <select name="publish_type_id" id="publish_type_id" class="txtBlack8Class">
+                                                <% if (pushList != null && pushList.Count > 0)
+                                                    {
+                                                        foreach (var puish in pushList)
+                                                        { %>
+                                                <option value="<%=puish.id %>" <%if (tempNote != null && tempNote.publish_type_id != null && tempNote.publish_type_id == puish.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=puish.name %></option>
+                                                <%  }
+                                                    } %>
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">备注类型</span>
+                                    </div>
+                                    <div>
+                                        <span id="">
+                                            <select name="action_type_id" id="action_type_id" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (actList != null && actList.Count > 0)
+                                                    {
+                                                        foreach (var act in actList)
+                                                        { %>
+                                                <option value="<%=act.id %>" <%if (tempNote != null && tempNote.action_type_id == act.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=act.name %></option>
+                                                <%  }
+                                                    } %>
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span class="lblNormalClass" style="font-weight: bold;">状态</span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            <select name="status_id" id="" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (ticStaList != null && ticStaList.Count > 0)
+                                                    {
+                                                        foreach (var ticSta in ticStaList)
+                                                        { %>
+                                                <option value="<%=ticSta.id %>" <%if (tempNote != null && tempNote.status_id != null && tempNote.status_id == ticSta.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=ticSta.name %></option>
+                                                <%  }
+                                                    } %>
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">标题</span>
+                                    </div>
+                                    <div>
+                                        <span id="">
+                                            <input name="name" type="text" id="name" class="txtBlack8Class" value="<%=tempNote != null ? tempNote.name : "" %>" /></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel3">
+                                    <div class="FieldLabel">
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">描述</span>
+                                    </div>
+                                    <div>
+                                        <textarea name="description" id="" rows="3" cols="55" style="height: 100px"><%=tempNote != null ? tempNote.description : "" %></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="input CheckboxPadding">
+                                    <span class="FieldLabel"><span class="txtBlack8Class">
+                                        <input id="" type="checkbox" name="ckCreateNote" style="vertical-align: middle;" <%if (tempNote != null && tempNote.apply_note_incidents == 1)
+                                            { %>
+                                            checked="checked" <%} %> /><label style="vertical-align: middle;">本次新增的备注、附件信息同时在相关的事故上（共n个关联的事故）增加</label></span></span>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="input CheckboxPadding">
+                                    <span class="FieldLabel"><span class="txtBlack8Class">
+                                        <input id="" type="checkbox" name="ckAppSlo" style="vertical-align: middle;" <%if (tempNote != null && tempNote.append_to_resolution == 1)
+                                            { %>
+                                            checked="checked" <%} %> /><label style="vertical-align: middle;">描述信息附加到解决方案</label></span></span>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<span id="" class="FieldLabel"><span class="txtBlack8Class">
+                        <input id="" type="checkbox" name="ckAppSloInc" style="vertical-align: middle;" <%if (tempNote != null && tempNote.append_to_resolution_incidents == 1)
+                            { %>
+                            checked="checked" <%} %> /><label style="vertical-align: middle;">描述信息附加到相关事故（共n个关联的事故）的解决方案</label></span></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="DivSectionWithHeader">
+                <div class="HeaderRow">
+                    <span class="lblNormalClass" style="font-weight: bold; font-weight: bold;">通知</span>
+                </div>
+                <div class="Content">
+                    <table id="notficationTable" class="entireThing" cellpadding="0" cellspacing="0" width="100%">
+                        <tbody>
+                            <tr>
+                                <td class="input">
+                                    <table class="input" cellpadding="0" cellspacing="0" style="padding-bottom: 10px;">
+                                        <tbody>
+                                            <% if (notifyList != null && notifyList.Count > 0)
+                                                {
+                                                    foreach (var notify in notifyList)
+                                                    {%>
+                                            <tr>
+                                                <td class="input CheckboxPadding">
+                                                    <span class="FieldLabel"><span class="txtBlack8Class">
+                                                        <input id="" type="checkbox" name="noti<%=notify.id %>" style="vertical-align: middle;" <%if (notiIds != null && notiIds.Contains(notify.id.ToString()))
+                                                            { %>
+                                                            checked="checked" <%} %> />
+                                                        <label style="vertical-align: middle;"><%=notify.name %></label></span></span>
+                                                </td>
+                                            </tr>
+                                            <% }
+                                                } %>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr class="ExtraPaddingInputRow">
+
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span class="lblNormalClass" style="font-weight: bold;">其他邮箱</span>
+                                    </div>
+                                    <div>
+                                        <span id="" class="editDD" style="display: inline-block;">
+                                            <input name="other_emails" type="text" maxlength="2000" id="" class="txtBlack8Class" style="width: 360px;" value="<%=temp!=null?temp.other_emails:"" %>" /></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr id="" class="ExtraPaddingInputRow">
+
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        通知模板
+                                    </div>
+                                    <div>
+                                        <span id="" class="editDD">
+                                            <select name="notify_tmpl_id" id="notify_tmpl_id" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (tempNotiList != null && tempNotiList.Count > 0)
+                                                    {
+                                                        foreach (var tempNoti in tempNotiList)
+                                                        { %>
+                                                <option value="<%=tempNoti.id %>" <%if (temp != null && temp.notify_tmpl_id != null && temp.notify_tmpl_id == tempNoti.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=tempNoti.name %></option>
+                                                <%  }
+                                                    } %>
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="ExtraPaddingInputRow">
+
+                                <td class="inputLabel3">
+                                    <div class="FieldLabel">
+                                        附加文本
+                                    </div>
+                                    <div>
+                                        <textarea name="additional_email_text" id="additional_email_text" rows="3" cols="67" class="oppText2" style="resize: vertical; width: 374px;"><%=temp!=null?temp.additional_email_text:"" %></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <%}
                 else if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.TICKET_TIME_ENTRY)
                 { %>
+            <div class="DivSectionWithHeader">
+                <div class="HeaderRow">
+                    <span class="lblNormalClass" style="font-weight: bold; font-weight: bold;">工单工时</span>
+                </div>
+                <div class="Content">
+                    <table id="entireThing" cellspacing="0" cellpadding="0">
+                        <tbody>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span class="lblNormalClass" style="font-weight: bold;">状态</span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            <select name="status_id" id="" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (ticStaList != null && ticStaList.Count > 0)
+                                                    {
+                                                        foreach (var ticSta in ticStaList)
+                                                        { %>
+                                                <option value="<%=ticSta.id %>" <%if (tempEntry != null && tempEntry.status_id != null && tempEntry.status_id == ticSta.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=ticSta.name %></option>
+                                                <%  }
+                                                    } %>
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span class="lblNormalClass" style="font-weight: bold;">角色</span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            <select name="role_id" id="" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (roleList != null && roleList.Count > 0)
+                                                    {
+                                                        foreach (var role in roleList)
+                                                        { %>
+                                                <option value="<%=role.id %>" <%if (tempEntry != null && tempEntry.role_id != null && tempEntry.role_id == role.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=role.name %></option>
+                                                <%  }
+                                                    } %>
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span class="lblNormalClass" style="font-weight: bold;">默认时长</span>
+                                    </div>
+                                    <div class="FieldLabel">
+                                        <%
+                                            int hours = 0;
+                                            int mins = 0;
+                                            if (tempEntry != null && tempEntry.hours_worked != null)
+                                            {
+                                                hours = (int)Math.Floor((decimal)tempEntry.hours_worked);
+                                                var thisMin = tempEntry.hours_worked - hours;
+                                                if (thisMin != 0)
+                                                {
+                                                    mins = Convert.ToInt32(thisMin * 60);
+                                                }
+                                            }
+                                        %>
+
+
+                                        <span style="display: inline-block;">
+                                            <input name="hours" type="text" value="<%=hours %>" id="hours" class="txtBlack8Class" style="width: 49px; text-align: right;" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /></span>
+                                        &nbsp;<span class="FieldLevelInstruction" style="font-weight: normal;">小时</span>&nbsp;&nbsp;
+			<span style="display: inline-block;">
+                <input name="mins" type="text" value="<%=mins %>" id="mins" class="txtBlack8Class" style="width: 49px; text-align: right;" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /></span>
+                                        &nbsp;<span class="FieldLevelInstruction" style="font-weight: normal;">分钟</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="FieldLevelInstruction">对于起止时间，开始时间将默认为：结束时间 - 默认时长
+					<br>
+                                    <br>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel">
+                                    <span class="FieldLabel" style="font-weight: bold;">工作类型</span>
+                                    <div>
+                                        <span class="editDD">
+                                            <select name="cost_code_id" id="" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (workTypeList != null && workTypeList.Count > 0)
+                                                    {
+                                                        foreach (var workType in workTypeList)
+                                                        { %>
+                                                <option value="<%=workType.id %>" <%if (tempEntry != null && tempEntry.cost_code_id != null && tempEntry.cost_code_id == workType.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=workType.name %></option>
+                                                <%  }
+                                                    } %>
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="input">
+                                <td></td>
+                                <td style="padding-bottom: 10px;">
+                                    <span id="" class="FieldLabel"><span class="txtBlack8Class">
+                                        <input id="isNoBill" type="checkbox" name="isNoBill" style="vertical-align: middle;" <% if (tempEntry != null && tempEntry.is_billable == 0)
+                                            { %>
+                                            checked="checked" <%} %> /><label style="vertical-align: middle;">不计费</label></span></span>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="FieldLabel"><span class="txtBlack8Class">
+                <input id="isShowOnInvoice" type="checkbox" name="isShowOnInvoice" style="vertical-align: middle;" checked="checked" disabled="" /><label style="vertical-align: middle;">展示在发票上</label></span></span>
+
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel3">
+                                    <div class="FieldLabel">
+                                        <span id="" class="lblNormalClass" style="font-weight: bold;">工时说明</span>
+                                    </div>
+                                    <div>
+                                        <textarea name="summary_notes" id="" rows="3" cols="55"><%=tempEntry!=null?tempEntry.summary_notes:"" %></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="input" style="padding-bottom: 10px;">
+                                    <span class="FieldLabel"><span class="txtBlack8Class">
+                                        <input id="" type="checkbox" name="ckAppSlo" style="vertical-align: middle;" <%if (tempEntry != null && tempEntry.append_to_resolution == 1)
+                                            { %>
+                                            checked="checked" <%} %> /><label style="vertical-align: middle;">附加到解决方案</label></span></span>
+
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<span class="FieldLabel"><span class="txtBlack8Class">
+                        <input id="" type="checkbox" name="ckAppSloInc" style="vertical-align: middle;" <%if (tempEntry != null && tempEntry.append_to_resolution_incidents == 1)
+                            { %>
+                            checked="checked" <%} %> /><label style="vertical-align: middle;">附件到相关事故（n个事故）的解决方案</label></span></span>
+                                </td>
+                            </tr>
+                            <tr class="inputRow">
+                                <td></td>
+                                <td class="inputLabel3">
+                                    <div class="FieldLabel">
+                                        <span class="lblNormalClass" style="font-weight: bold;">内部说明</span>
+                                    </div>
+                                    <div>
+                                        <textarea name="internal_notes" id="" rows="3" cols="55"><%=tempEntry!=null?tempEntry.internal_notes:"" %></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="input">
+                                    <span class="FieldLabel"><span class="txtBlack8Class">
+                                        <input id="" type="checkbox" name="ckCreateNote" style="vertical-align: middle;" <%if (tempEntry != null && tempEntry.apply_note_incidents == 1)
+                                            { %>
+                                            checked="checked" <%} %> /><label style="vertical-align: middle;">为相关事故（n个事故）创建备注，并更新状态</label></span></span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="DivSectionWithHeader">
+                <div class="HeaderRow">
+                    <span class="lblNormalClass" style="font-weight: bold; font-weight: bold;">通知</span>
+                </div>
+                <div class="Content">
+                    <table id="notficationTable" class="entireThing" cellpadding="0" cellspacing="0" width="100%">
+                        <tbody>
+                            <tr>
+                                <td class="input">
+                                    <table class="input" cellpadding="0" cellspacing="0" style="padding-bottom: 10px;">
+                                        <tbody>
+                                            <% if (notifyList != null && notifyList.Count > 0)
+                                                {
+                                                    foreach (var notify in notifyList)
+                                                    {%>
+                                            <tr>
+                                                <td class="input CheckboxPadding">
+                                                    <span class="FieldLabel"><span class="txtBlack8Class">
+                                                        <input id="" type="checkbox" name="noti<%=notify.id %>" style="vertical-align: middle;" <%if (notiIds != null && notiIds.Contains(notify.id.ToString()))
+                                                            { %>
+                                                            checked="checked" <%} %> />
+                                                        <label style="vertical-align: middle;"><%=notify.name %></label></span></span>
+                                                </td>
+                                            </tr>
+                                            <% }
+                                                } %>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr class="ExtraPaddingInputRow">
+
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        <span class="lblNormalClass" style="font-weight: bold;">其他邮箱</span>
+                                    </div>
+                                    <div>
+                                        <span id="" class="editDD" style="display: inline-block;">
+                                            <input name="other_emails" type="text" maxlength="2000" id="" class="txtBlack8Class" style="width: 360px;" value="<%=temp!=null?temp.other_emails:"" %>" /></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr id="" class="ExtraPaddingInputRow">
+
+                                <td class="inputLabel">
+                                    <div class="FieldLabel">
+                                        通知模板
+                                    </div>
+                                    <div>
+                                        <span id="" class="editDD">
+                                            <select name="notify_tmpl_id" id="notify_tmpl_id" class="txtBlack8Class">
+                                                <option value=""></option>
+                                                <% if (tempNotiList != null && tempNotiList.Count > 0)
+                                                    {
+                                                        foreach (var tempNoti in tempNotiList)
+                                                        { %>
+                                                <option value="<%=tempNoti.id %>" <%if (temp != null && temp.notify_tmpl_id != null && temp.notify_tmpl_id == tempNoti.id)
+                                                    {  %>
+                                                    selected="selected" <%} %>><%=tempNoti.name %></option>
+                                                <%  }
+                                                    } %>
+                                            </select></span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="ExtraPaddingInputRow">
+
+                                <td class="inputLabel3">
+                                    <div class="FieldLabel">
+                                        附加文本
+                                    </div>
+                                    <div>
+                                        <textarea name="additional_email_text" id="additional_email_text" rows="3" cols="67" class="oppText2" style="resize: vertical; width: 374px;"><%=temp!=null?temp.additional_email_text:"" %></textarea>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <%} %>
         </div>
     </form>
@@ -2790,6 +4496,10 @@
             LayerMsg("快速代码重复，请重新填写！");
             return false;
         }
+        <%  if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.TICKET)
+    {%>
+        GetCheckIds();
+        <%} %>
         return true;
     })
     // 客户查找带回
@@ -3048,122 +4758,122 @@
     }
      <% if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.QUICK_CALL)
     { %>
-     function GetContactList() {
-         var account_id = $("#accountIdHidden").val();
-         if (account_id != "") {
-             $("#contact_id").prop("disabled", false);
-             $("#contact_id").html("");
-             $.ajax({
-                 type: "GET",
-                 async: false,
-                 url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + account_id,
-                 // data: { CompanyName: companyName },
-                 success: function (data) {
-                     if (data != "") {
-                         $("#contact_id").html(data);
-                     }
-                 },
-             });
-             $("#contractId").prop("disabled", false);
-             $("#contractId").val("");
-             $("#contractIdHidden").val("");
-         } else {
-             $("#contact_id").prop("disabled", true);
-             $("#contractId").prop("disabled", true);
-             $("#contractId").val("");
-             $("#contractIdHidden").val("");
-         }
+    function GetContactList() {
+        var account_id = $("#accountIdHidden").val();
+        if (account_id != "") {
+            $("#contact_id").prop("disabled", false);
+            $("#contact_id").html("");
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + account_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "") {
+                        $("#contact_id").html(data);
+                    }
+                },
+            });
+            $("#contractId").prop("disabled", false);
+            $("#contractId").val("");
+            $("#contractIdHidden").val("");
+        } else {
+            $("#contact_id").prop("disabled", true);
+            $("#contractId").prop("disabled", true);
+            $("#contractId").val("");
+            $("#contractIdHidden").val("");
+        }
 
-     }
+    }
     <%}%>
-     function ContractCallBack() {
-         var account_idHidden = $("#accountIdHidden").val();
-         if (account_idHidden != "" && account_idHidden != null && account_idHidden != undefined) {
-             window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACTMANAGE_CALLBACK %>&con626=1&con627=" + account_idHidden + "&field=contractId", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>", 'left=200,top=200,width=600,height=800', false);
-         }
-         else {
-             LayerMsg("请先选择客户");
-         }
-     }
-     function WorkTypeCallBack() {
-         window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&con439=<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.GENERAL_ALLOCATION_CODE %>&field=costCodeId", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CostCodeSelect %>', 'left=200,top=200,width=600,height=800', false);
-     }
+    function ContractCallBack() {
+        var account_idHidden = $("#accountIdHidden").val();
+        if (account_idHidden != "" && account_idHidden != null && account_idHidden != undefined) {
+            window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACTMANAGE_CALLBACK %>&con626=1&con627=" + account_idHidden + "&field=contractId", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>", 'left=200,top=200,width=600,height=800', false);
+        }
+        else {
+            LayerMsg("请先选择客户");
+        }
+    }
+    function WorkTypeCallBack() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MATERIALCODE_CALLBACK %>&con439=<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.GENERAL_ALLOCATION_CODE %>&field=costCodeId", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CostCodeSelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
 
 
 </script>
 
 <!--报价JS -->
 <script>
-     $(function () {
+    $(function () {
          <%if (tempQuote != null)
     { %>
-         GetContactList();
+        GetContactList();
           <% if (tempQuote.contact_id != null)
     {%>
-         $("#contact_id").val('<%=tempQuote.contact_id %>');
+        $("#contact_id").val('<%=tempQuote.contact_id %>');
         <% }%>
          <% if (tempQuote.opportunity_id != null)
     {%>
-         $("#opportunity_id").val('<%=tempQuote.opportunity_id %>');
+        $("#opportunity_id").val('<%=tempQuote.opportunity_id %>');
         <% }%>
 
          <%} %>
-     })
+    })
 
       <% if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.QUOTE)
     { %>
-     function GetContactList() {
-         var account_id = $("#accountIdHidden").val();
-         if (account_id != "") {
-             $("#contact_id").prop("disabled", false);
-             $("#contact_id").html("");
-             $.ajax({
-                 type: "GET",
-                 async: false,
-                 url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + account_id,
-                 // data: { CompanyName: companyName },
-                 success: function (data) {
-                     if (data != "") {
-                         $("#contact_id").html(data);
-                     }
-                 },
-             });
-             $("#opportunity_id").html("");
-             // $("#opportunity_idHidden").val("");
-             $.ajax({
-                 type: "GET",
-                 async: false,
-                 url: "../Tools/CompanyAjax.ashx?act=opportunity&account_id=" + account_id,
-                 // data: { CompanyName: companyName },
-                 success: function (data) {
-                     if (data != "") {
-                         $("#opportunity_id").html(data);
-                         $("#opportunity_id option[value='0']").remove();
-                     }
-                 },
-             });
-             document.getElementById("opportunity_id").options.add(new Option(" ", ""), 0);
-             //$("#opportunity_id").append("<option value=''> </option>"); 
-             $("#opportunity_id").val('');
-             $("#opportunity_id").prop("disabled", false);
+    function GetContactList() {
+        var account_id = $("#accountIdHidden").val();
+        if (account_id != "") {
+            $("#contact_id").prop("disabled", false);
+            $("#contact_id").html("");
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + account_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "") {
+                        $("#contact_id").html(data);
+                    }
+                },
+            });
+            $("#opportunity_id").html("");
+            // $("#opportunity_idHidden").val("");
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/CompanyAjax.ashx?act=opportunity&account_id=" + account_id,
+                // data: { CompanyName: companyName },
+                success: function (data) {
+                    if (data != "") {
+                        $("#opportunity_id").html(data);
+                        $("#opportunity_id option[value='0']").remove();
+                    }
+                },
+            });
+            document.getElementById("opportunity_id").options.add(new Option(" ", ""), 0);
+            //$("#opportunity_id").append("<option value=''> </option>"); 
+            $("#opportunity_id").val('');
+            $("#opportunity_id").prop("disabled", false);
 
-         } else {
-             $("#contact_id").prop("disabled", true);
-             $("#opportunity_id").prop("disabled", true);
-             $("#opportunity_id").html("");
-         }
+        } else {
+            $("#contact_id").prop("disabled", true);
+            $("#opportunity_id").prop("disabled", true);
+            $("#opportunity_id").html("");
+        }
 
-     }
+    }
     <%}%>
 </script>
 
 <!--定期工单JS -->
 <script>
-     $(function () {
+    $(function () {
          <%if (tempRecTicket != null)
     { %>
-         GetContactList();
-         $("#contractId").val("<%=thisContract!=null?thisContract.name:"" %>");
+        GetContactList();
+        $("#contractId").val("<%=thisContract!=null?thisContract.name:"" %>");
          $("#contractIdHidden").val("<%=thisContract!=null?thisContract.id.ToString():"" %>");
          $("#insProId").val("<%=thisProduct!=null?thisProduct.name.ToString():"" %>");
          $("#insProIdHidden").val("<%=thisInsPro!=null?thisInsPro.id.ToString():"" %>");
@@ -3179,11 +4889,11 @@
 
            <%if (tempRecTicket.recurring_end_date != null)
     { %>
-           $("#rdEnd").trigger("click");
+         $("#rdEnd").trigger("click");
          <%}
     else if (tempRecTicket.recurring_instances != null)
     { %>
-           $("#rdIns").trigger("click");
+         $("#rdIns").trigger("click");
          <%} %>
 
          <%if (tempRecTicket.recurring_frequency == (int)EMT.DoneNOW.DTO.DicEnum.RECURRING_TICKET_FREQUENCY_TYPE.DAY)
@@ -3191,13 +4901,13 @@
         var dayDto = new EMT.Tools.Serialize().DeserializeJson<EMT.DoneNOW.DTO.TicketRecurrDayDto>(tempRecTicket.recurring_define);
         if (dayDto != null)
         {%>
-           $("#day_every").val('<%=dayDto.every %>');
-           $("#day_no_sat").prop("checked",<%=dayDto.no_sat == 1 ? "true" : "false" %>);
-           $("#day_no_sun").prop("checked",<%=dayDto.no_sun == 1 ? "true" : "false" %>);
+         $("#day_every").val('<%=dayDto.every %>');
+         $("#day_no_sat").prop("checked",<%=dayDto.no_sat == 1 ? "true" : "false" %>);
+         $("#day_no_sun").prop("checked",<%=dayDto.no_sun == 1 ? "true" : "false" %>);
         <%}
         %>
 
-           $("#rdDay").trigger("click");
+         $("#rdDay").trigger("click");
 
          <%}
     else if (tempRecTicket.recurring_frequency == (int)EMT.DoneNOW.DTO.DicEnum.RECURRING_TICKET_FREQUENCY_TYPE.WEEK)
@@ -3205,7 +4915,7 @@
           <% var weekDto = new EMT.Tools.Serialize().DeserializeJson<EMT.DoneNOW.DTO.TicketRecurrWeekDto>(tempRecTicket.recurring_define);
     if (weekDto != null)
     {%>
-           $("#week_eve_week").val('<%=weekDto.every %>');
+         $("#week_eve_week").val('<%=weekDto.every %>');
         <%
     if (weekDto.dayofweek != null && weekDto.dayofweek.Count() > 0)
     {
@@ -3215,37 +4925,37 @@
             <%}
     if (weekDto.dayofweek.Any(_ => _ == 2))
     {%>
-            $("#ckWeekTus").prop("checked", true);
+           $("#ckWeekTus").prop("checked", true);
             <%
     }
     if (weekDto.dayofweek.Any(_ => _ == 3))
     { %>
-        $("#ckWeekWed").prop("checked", true);
+           $("#ckWeekWed").prop("checked", true);
             <%
     }
     if (weekDto.dayofweek.Any(_ => _ == 4))
     {%>
-        $("#ckWeekThu").prop("checked", true);
+           $("#ckWeekThu").prop("checked", true);
             <%
     }
     if (weekDto.dayofweek.Any(_ => _ == 5))
     { %>
-        $("#ckWeekFri").prop("checked", true);
+           $("#ckWeekFri").prop("checked", true);
             <%
     }
     if (weekDto.dayofweek.Any(_ => _ == 6))
     {%>
-        $("#ckWeekSat").prop("checked", true);
+           $("#ckWeekSat").prop("checked", true);
             <%
     }
     if (weekDto.dayofweek.Any(_ => _ == 7))
     {%>
-        $("#ckWeekSun").prop("checked", true);
+           $("#ckWeekSun").prop("checked", true);
             <%
             }
         }
     }%>
-        $("#rdWeek").trigger("click");
+            $("#rdWeek").trigger("click");
          <%}
     else if (tempRecTicket.recurring_frequency == (int)EMT.DoneNOW.DTO.DicEnum.RECURRING_TICKET_FREQUENCY_TYPE.MONTH)
     {
@@ -3255,22 +4965,22 @@
             %>
          <%if (monthDto.day != -1)
     { %>
-           $("#rdMonth0").trigger("click");
-           $("#month_month_day").val('<%=monthDto.month %>');
-           $("#month_day_num").val('<%=monthDto.day %>');
+        $("#rdMonth0").trigger("click");
+        $("#month_month_day").val('<%=monthDto.month %>');
+        $("#month_day_num").val('<%=monthDto.day %>');
          <%}
     else
     {%>
-           $("#rdMonth1").trigger("click");
-           $("#month_month_eve_num").val('<%=monthDto.month %>');
-           $("#month_1_month").val("<%=monthDto.no %>");
-           $("#month_1_week").val("<%=monthDto.dayofweek %>");
+        $("#rdMonth1").trigger("click");
+        $("#month_month_eve_num").val('<%=monthDto.month %>');
+        $("#month_1_month").val("<%=monthDto.no %>");
+        $("#month_1_week").val("<%=monthDto.dayofweek %>");
    <% } %>
 
 
         <%}
         %>
-           $("#rdMonth").trigger("click");
+        $("#rdMonth").trigger("click");
          <% }
     else if (tempRecTicket.recurring_frequency == (int)EMT.DoneNOW.DTO.DicEnum.RECURRING_TICKET_FREQUENCY_TYPE.YEAR)
     {
@@ -3280,8 +4990,8 @@
             %>
          <%if (yearDto.day != -1)
     { %>
-           $("#rdYear0").trigger("click");
-           $("#year_every_month").val('<%=yearDto.month %>');
+        $("#rdYear0").trigger("click");
+        $("#year_every_month").val('<%=yearDto.month %>');
            $("#year_month_day").val('<%=yearDto.day %>');
          <%}
     else
@@ -3296,84 +5006,84 @@
            $("#rdYear").trigger("click");
          <%}
     }%>
-     })
+    })
 
 
-     $("#rdEnd").click(function () {
-         $("#recurring_end_date").prop("disabled", false);
-         $("#recurring_instances").prop("disabled", true);
-     })
-     $("#rdIns").click(function () {
-         $("#recurring_end_date").prop("disabled", true);
-         $("#recurring_instances").prop("disabled", false);
-     })
+    $("#rdEnd").click(function () {
+        $("#recurring_end_date").prop("disabled", false);
+        $("#recurring_instances").prop("disabled", true);
+    })
+    $("#rdIns").click(function () {
+        $("#recurring_end_date").prop("disabled", true);
+        $("#recurring_instances").prop("disabled", false);
+    })
 
-     $("#rdDay").click(function () {
-         $(".FrequencyClass").hide();
-         $("#pnlDaily").show();
-     })
-     $("#rdWeek").click(function () {
-         $(".FrequencyClass").hide();
-         $("#pnlWeekly").show();
-     })
-     $("#rdMonth").click(function () {
-         $(".FrequencyClass").hide();
-         $("#pnlMonthly").show();
-     })
-     $("#rdYear").click(function () {
-         $(".FrequencyClass").hide();
-         $("#pnlYearly").show();
-     })
-     $("#rdMonth0").click(function () {
-         $("#month_day_num").prop("disabled", false);
-         $("#month_month_day").prop("disabled", false);
-         $("#month_month_eve_num").prop("disabled", true);
-         $("#month_1_month").prop("disabled", true);
-         $("#month_1_week").prop("disabled", true);
-     })
-     $("#rdMonth1").click(function () {
-         $("#month_day_num").prop("disabled", true);
-         $("#month_month_day").prop("disabled", true);
-         $("#month_month_eve_num").prop("disabled", false);
-         $("#month_1_month").prop("disabled", false);
-         $("#month_1_week").prop("disabled", false);
-     })
-     $("#rdYear0").click(function () {
+    $("#rdDay").click(function () {
+        $(".FrequencyClass").hide();
+        $("#pnlDaily").show();
+    })
+    $("#rdWeek").click(function () {
+        $(".FrequencyClass").hide();
+        $("#pnlWeekly").show();
+    })
+    $("#rdMonth").click(function () {
+        $(".FrequencyClass").hide();
+        $("#pnlMonthly").show();
+    })
+    $("#rdYear").click(function () {
+        $(".FrequencyClass").hide();
+        $("#pnlYearly").show();
+    })
+    $("#rdMonth0").click(function () {
+        $("#month_day_num").prop("disabled", false);
+        $("#month_month_day").prop("disabled", false);
+        $("#month_month_eve_num").prop("disabled", true);
+        $("#month_1_month").prop("disabled", true);
+        $("#month_1_week").prop("disabled", true);
+    })
+    $("#rdMonth1").click(function () {
+        $("#month_day_num").prop("disabled", true);
+        $("#month_month_day").prop("disabled", true);
+        $("#month_month_eve_num").prop("disabled", false);
+        $("#month_1_month").prop("disabled", false);
+        $("#month_1_week").prop("disabled", false);
+    })
+    $("#rdYear0").click(function () {
 
-         $("#year_the_month").prop("disabled", true);
-         $("#year_month_week_num").prop("disabled", true);
-         $("#year_the_week").prop("disabled", true);
-         $("#year_every_month").prop("disabled", false);
-         $("#year_month_day").prop("disabled", false);
-     })
-     $("#rdYear1").click(function () {
-         $("#year_the_month").prop("disabled", false);
-         $("#year_month_week_num").prop("disabled", false);
-         $("#year_the_week").prop("disabled", false);
-         $("#year_every_month").prop("disabled", true);
-         $("#year_month_day").prop("disabled", true);
-     })
+        $("#year_the_month").prop("disabled", true);
+        $("#year_month_week_num").prop("disabled", true);
+        $("#year_the_week").prop("disabled", true);
+        $("#year_every_month").prop("disabled", false);
+        $("#year_month_day").prop("disabled", false);
+    })
+    $("#rdYear1").click(function () {
+        $("#year_the_month").prop("disabled", false);
+        $("#year_month_week_num").prop("disabled", false);
+        $("#year_the_week").prop("disabled", false);
+        $("#year_every_month").prop("disabled", true);
+        $("#year_month_day").prop("disabled", true);
+    })
 
-     function ContractCallBack() {
-         var account_idHidden = $("#accountIdHidden").val();
-         if (account_idHidden != "" && account_idHidden != null && account_idHidden != undefined) {
-             window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACTMANAGE_CALLBACK %>&con626=1&con627=" + account_idHidden + "&field=contractId", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>", 'left=200,top=200,width=600,height=800', false);
+    function ContractCallBack() {
+        var account_idHidden = $("#accountIdHidden").val();
+        if (account_idHidden != "" && account_idHidden != null && account_idHidden != undefined) {
+            window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTRACTMANAGE_CALLBACK %>&con626=1&con627=" + account_idHidden + "&field=contractId", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>", 'left=200,top=200,width=600,height=800', false);
+        }
+        else {
+            LayerMsg("请先选择客户");
+        }
+    }
+    // 配置项的查找带回
+    function InsProCallBack() {
+        var accountId = $("#accountIdHidden").val();
+        if (accountId != "" && accountId != null && accountId != undefined) {
+            window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INSPRODUCT_CALLBACK %>&con1247=" + accountId + "&field=insProId", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>", 'left=200,top=200,width=600,height=800', false);
          }
          else {
              LayerMsg("请先选择客户");
          }
-     }
-     // 配置项的查找带回
-     function InsProCallBack() {
-         var accountId = $("#accountIdHidden").val();
-         if (accountId != "" && accountId != null && accountId != undefined) {
-             window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INSPRODUCT_CALLBACK %>&con1247=" + accountId + "&field=insProId", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractSelectCallBack %>", 'left=200,top=200,width=600,height=800', false);
-         }
-         else {
-             LayerMsg("请先选择客户");
-         }
 
-     }
+    }
     <% if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.RECURRING_TICKET)
     {%>
      function GetContactList() {
@@ -3416,4 +5126,455 @@
      }
     <%} %>
 </script>
+<!--任务工时JS -->
+<script>
+     $(function () {
+         <% if (tempEntry != null)
+    { %>
+         <% if (tempEntry.is_billable == 0)
+    { %>
+         $("#isShowOnInvoice").prop("disabled", false);
+         <%}
+    else
+    { %>
+         $("#isShowOnInvoice").prop("disabled", true);
+          <%} %>
+            <% if (tempEntry.show_on_invoice == 1)
+    { %>
+         $("#isShowOnInvoice").prop("checked", true);
+         <%}
+    else
+    { %>
+         $("#isShowOnInvoice").prop("checked", false);
+          <%} %>
+
+         <%} %>
+     })
+
+     $("#hours").blur(function () {
+         var hours = $(this).val();
+         if (!isNaN(hours) && hours != "") {
+             if (Number(hours) > 23) {
+                 LayerMsg("默认小时不能超过23小时");
+                 $(this).val("23");
+             }
+             else if (Number(hours) < 0) {
+                 LayerMsg("默认小时不能小于0小时");
+                 $(this).val("0");
+             }
+         }
+         else {
+             $(this).val("");
+         }
+     })
+     $("#mins").blur(function () {
+         var mins = $(this).val();
+         if (!isNaN(mins) && mins != "") {
+             if (Number(mins) > 59) {
+                 LayerMsg("默认分钟不能超过59分钟");
+                 $(this).val("59");
+             }
+             else if (Number(mins) < 0) {
+                 LayerMsg("默认分钟不能小于0分钟");
+                 $(this).val("0");
+             }
+         }
+         else {
+             $(this).val("");
+         }
+     })
+     $("#isNoBill").click(function () {
+         if ($(this).is(":checked")) {
+             $("#isShowOnInvoice").prop("disabled", false);
+             $("#isShowOnInvoice").prop("checked", false);
+         }
+         else {
+             $("#isShowOnInvoice").prop("disabled", true);
+             $("#isShowOnInvoice").prop("checked", true);
+         }
+     })
+</script>
+
+<!--工单JS -->
+<script>
+     $(function () {
+
+         <%if (tempTicket != null)
+    { %>
+         $("#issue_type_id").trigger("change");
+        <%if (tempTicket.sub_issue_type_id != null)
+    { %>
+          $("#sub_issue_type_id").val('<%=tempTicket.sub_issue_type_id %>');
+        <%} %>
+          GetContactByIds();
+          GetResDepByIds();
+
+         <%} %>
+
+     })
+
+
+
+
+     // 联系人的查找带回
+     function CallBackContact() {
+         var account_idHidden = $("#accountIdHidden").val();
+         if (account_idHidden != "" && account_idHidden != null && account_idHidden != undefined) {
+             window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT_CALLBACK %>&con628=" + account_idHidden + "&field=contactId&callBack=SingContactDeal", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>", 'left=200,top=200,width=600,height=800', false);
+        }
+        else {
+            LayerMsg("请先选择客户");
+        }
+
+     }
+
+     function ContactsCallBack() {
+         var account_idHidden = $("#accountIdHidden").val();
+         if (account_idHidden != "" && account_idHidden != null && account_idHidden != undefined) {
+             window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.CONTACT_CALLBACK %>&con628=" + account_idHidden + "&field=contactIds&muilt=1&callBack=ManyContactDeal", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>", 'left=200,top=200,width=600,height=800', false);
+         }
+         else {
+             LayerMsg("请先选择客户");
+         }
+     }
+     function ManyContactDeal() {
+         var contactId = $("#contactIdHidden").val();
+         var contactIds = $("#contactIdsHidden").val();
+         if (contactId != "" && contactIds != "") {
+             var conArr = contactIds.split(',');
+             if (conArr.indexOf(contactId) != -1) {
+                 LayerConfirm("是否将主要联系人更改为附加联系人", "是", "否", function () {
+                     $("#contactId").val("");
+                     $("#contactIdHidden").val("");
+                     GetContactByIds();
+                 }, function () { SingContactDeal(); });
+             }
+         }
+         else {
+             GetContactByIds();
+         }
+     }
+     function SingContactDeal() {
+         var contactId = $("#contactIdHidden").val();
+         var contactIds = $("#contactIdsHidden").val();
+         if (contactId != "" && contactIds != "") {
+             var conArr = contactIds.split(',');
+             if (conArr.indexOf(contactId) != -1) {
+                 var newIds = "";
+                 for (var i = 0; i < conArr.length; i++) {
+                     if (conArr[i] != contactId) {
+                         newIds += conArr[i] + ',';
+                     }
+                 }
+                 if (newIds != "")
+                     newIds = newIds.substring(0, newIds.length - 1);
+                 $("#contactIdsHidden").val(newIds);
+                 GetContactByIds();
+             }
+         }
+     }
+     function GetContactByIds() {
+         var contactIds = $("#contactIdsHidden").val();
+         debugger;
+         if (contactIds != "") {
+             $.ajax({
+                 type: "GET",
+                 url: "../Tools/ContactAjax.ashx?act=GetConList&ids=" + contactIds,
+                 async: false,
+                 //dataType:"json",
+                 success: function (data) {
+                     if (data != "") {
+                         $("#otherContactIds").html(data);
+                         $("#otherContactIds option").dblclick(function () {
+                             RemoveContact(this);
+                         })
+                     }
+                 }
+
+             })
+         }
+         else {
+             $("#otherContactIds").html("");
+             
+         }
+         
+     }
+     function RemoveContact(val) {
+         $(val).remove();
+         var ids = "";
+         $("#otherContactIds option").each(function () {
+             ids += $(this).val() + ',';
+         })
+         if (ids != "") {
+             ids = ids.substr(0, ids.length - 1);
+         }
+         $("#contactIdsHidden").val(ids);
+     }
+
+    <%if (formTypeId == (int)EMT.DoneNOW.DTO.DicEnum.FORM_TMPL_TYPE.TICKET)
+    { %>
+     function GetContactList() {
+         var accountId = $("#accountIdHidden").val();
+         if (accountId != "") {
+             $("#contactId").prop("disabled", false);
+             $("#contractId").prop("disabled", false);
+             $("#insProId").prop("disabled", false);
+         }
+         else {
+             $("#contactId").prop("disabled", true);
+             $("#contractId").prop("disabled", true);
+             $("#insProId").prop("disabled", true);
+         }
+         
+     }  // 主负责人查找带回
+     function ChoosePriRes() {
+         var url = "../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RES_ROLE_DEP_CALLBACK %>&field=owner_resource_id&callBack=GetResByCallBack";
+        window.open(url, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+     }
+     // 主负责人查找带回事件 - 当带回的主负责人在其他负责人中出现的时候-从其他负责人中删除，然后带回主负责人
+     function GetResByCallBack() {
+         var owner_resource_id = $("#owner_resource_idHidden").val();
+         if (owner_resource_id != "") {
+             var OtherResId = $("#OtherResIdHidden").val();
+             if (OtherResId != "") {  //
+                 $.ajax({
+                     type: "GET",
+                     async: false,
+                     url: "../Tools/ResourceAjax.ashx?act=CheckResInResDepIds&isDelete=1&resDepIds=" + OtherResId + "&resDepId=" + owner_resource_id,
+                     dataType: "json",
+                     success: function (data) {
+                         if (data != "") {
+                             if (data.isRepeat) {
+                                 $("#OtherResIdHidden").val(data.newDepResIds);
+                                 GetResDepByIds();
+                             }
+                         }
+                     },
+                 });
+             }  // 检查主负责人是否与其他负责人冲突
+
+         } else {
+             $("#owner_resource_id").val("");
+         }
+     }
+     // 其他负责人的查找带回- 带回的其他负责人包含主负责人时，提示 主负责人已经包含该员工 是 删除主负责人信息，否 从其他负责人中删除该联系人
+     function OtherResCallBack() {
+         var url = "../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RES_ROLE_DEP_CALLBACK %>&muilt=1&field=OtherResId&callBack=GetOtherResData";
+        window.open(url, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+    // 获取到其他负责人的相应信息
+    function GetOtherResData() {
+        // 检查是否有重复员工
+        // 检查带回员工是否与主负责人有冲突
+        // 
+        var OtherResId = $("#OtherResIdHidden").val();
+        if (OtherResId != "") {
+            var owner_resource_id = $("#owner_resource_idHidden").val();
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ResourceAjax.ashx?act=CheckResInResDepIds&resDepIds=" + OtherResId + "&resDepId=" + owner_resource_id,
+                dataType: "json",
+                success: function (data) {
+                    if (data != "") {
+                        $("#OtherResIdHidden").val(data.newDepResIds);
+                        if (data.isRepeat) {
+                            LayerConfirm("选择员工已经是主负责人，是否将其置为其他负责人", "是", "否", function () { $("#owner_resource_idHidden").val(""); $("#owner_resource_id").val(""); }, function () { GetResByCallBack(); });
+                        }
+
+                    }
+                },
+            });
+            GetResDepByIds();
+        }
+    }
+
+    // 其他负责人的数据返回（此方法不做员工重复校验）
+    function GetResDepByIds() {
+        var resDepIds = $("#OtherResIdHidden").val();
+        if (resDepIds != "") {
+            $.ajax({
+                type: "GET",
+                url: "../Tools/RoleAjax.ashx?act=GetResDepList&resDepIds=" + resDepIds,
+                async: false,
+                //dataType:"json",
+                success: function (data) {
+                    if (data != "") {
+                        $("#otherRes").html(data);
+                        $("#otherRes option").dblclick(function () {
+                            RemoveResDep(this);
+                        })
+                    }
+                }
+
+            })
+        } else {
+            $("#otherRes").html("");
+        }
+
+    }
+    function RemoveResDep(val) {
+        $(val).remove();
+        var ids = "";
+        $("#otherRes option").each(function () {
+            ids += $(this).val() + ',';
+        })
+        if (ids != "") {
+            ids = ids.substr(0, ids.length - 1);
+        }
+        $("#OtherResIdHidden").val(ids);
+    }
+    <%} %>
+   
+
+</script>
+
+<!--检查单信息js操作 -->
+<script>
+    var pageCheckId = -1;
+    // 新增检查单
+    function AddCheckList(copyNum, upOrDown, upOrDownId) {
+        // copyNum 复制的Id 没有代表新增不复制--（复制不考虑其他，名称复制后名称加入‘复制’）
+        pageCheckId--;
+        var newCheckHtml = "<tr data-val='" + pageCheckId + "' id='" + pageCheckId + "'  class='HighImportance D' draggable='true'><td class='Interaction' ><div><div class='Decoration Icon DragHandle'></div><div class='Num'></div> <input type='hidden' id='" + pageCheckId + "_sort_order' name='" + pageCheckId + "_sort_order' value=''/></div></td ><td><a class='ButtonIcon Button ContextMenu NormalState'><div class='Icon' style='background: url(../Images/ButtonBarIcons.png) no-repeat -193px -97px; width: 15px;height:15px;'></div></a></td><td></td><td><input type='checkbox' id='" + pageCheckId + "_is_complete' name='" + pageCheckId + "_is_complete' /></td><td><input type='text' id='" + pageCheckId + "_item_name' name='" + pageCheckId + "_item_name' /></td><td><input type='checkbox' id='" + pageCheckId + "_is_import' name='" + pageCheckId + "_is_import' /></td></tr>";
+
+
+
+        if (upOrDownId != "" && upOrDown != "") {
+            if (upOrDown == "Up") {
+                $("#" + upOrDownId).before(newCheckHtml);
+            }
+            else {
+                $("#" + upOrDownId).after(newCheckHtml);
+            }
+        } else {
+            $("#Drap").append(newCheckHtml);
+        }
+
+        SortNum();
+        if (copyNum != "")  // 复制的  相关赋值  todo 关联的知识库的赋值
+        {
+            if ($("#" + copyNum + "_is_complete").is(":checked")) {
+                $("#" + pageCheckId + "_is_complete").prop("checked", true);
+            }
+            if ($("#" + copyNum + "_is_import").is(":checked")) {
+                $("#" + pageCheckId + "_is_import").prop("checked", true);
+            }
+            $("#" + pageCheckId + "_item_name").val($("#" + copyNum + "_item_name").val() + "(复制)");
+        }
+        BindMenu();
+
+    }
+    // 为页面的检查单数字排序
+    function SortNum() {
+        var sortNum = 1;
+        $(".HighImportance").each(function () {
+            $(this).find('.Num').text(sortNum);
+            $(this).find('.Num').next().val(sortNum);
+            sortNum++;
+        })
+    }
+
+    $("#AddCheckListButton").click(function () {
+        AddCheckList("", "", "");
+    })
+    var entityid = "";
+    var Times = 0;
+    function BindMenu() {
+        $(".ContextMenu").bind("click", function (event) {
+            clearInterval(Times);
+            var oEvent = event;
+            entityid = $(this).parent().parent().data("val");// data("val");
+            var menu = document.getElementById("menu");
+            (function () {
+                menu.style.display = "block";
+                Times = setTimeout(function () {
+                    menu.style.display = "none";
+                }, 800);
+            }());
+            menu.onmouseenter = function () {
+                clearInterval(Times);
+                menu.style.display = "block";
+            };
+            menu.onmouseleave = function () {
+                Times = setTimeout(function () {
+                    menu.style.display = "none";
+                }, 800);
+            };
+            var Left = $(document).scrollLeft() + oEvent.clientX;
+            var Top = $(document).scrollTop() + oEvent.clientY;
+            var winWidth = window.innerWidth;
+            var winHeight = window.innerHeight;
+            var menuWidth = menu.clientWidth;
+            var menuHeight = menu.clientHeight;
+            var scrLeft = $(document).scrollLeft();
+            var scrTop = $(document).scrollTop();
+            var clientWidth = Left + menuWidth;
+            var clientHeight = Top + menuHeight;
+            var rightWidth = winWidth - oEvent.clientX;
+            var bottomHeight = winHeight - oEvent.clientY;
+            if (winWidth < clientWidth && rightWidth < menuWidth) {
+                menu.style.left = winWidth - menuWidth - 18 + 103 + scrLeft + "px";
+            } else {
+                menu.style.left = Left + 13 + "px";
+            }
+
+
+            if (winHeight < clientHeight && bottomHeight < menuHeight) {
+                menu.style.top = winHeight - menuHeight - 55 + scrTop + "px";
+            } else {
+                menu.style.top = Top - 85 + "px";
+            }
+            document.onclick = function () {
+                menu.style.display = "none";
+            }
+            return false;
+        });
+    }
+
+    BindMenu();
+
+    // 添加到上面
+    function AddAbove() {
+
+        if (entityid != "") {
+            AddCheckList("", "Up", entityid);
+        }
+    }
+    // 添加到下面
+    function AddBelow() {
+        if (entityid != "") {
+            AddCheckList("", "Down", entityid);
+        }
+    }
+    // 复制操作
+    function CopyThisItem() {
+        if (entityid != "") {
+            AddCheckList(entityid, "", "");
+        }
+    }
+    // 删除任务单
+    function Delete() {
+        if (entityid != "") {
+            LayerConfirm("删除不可恢复，是否继续删除？", "是", "否", function () { $("#" + entityid).remove(); }, function () { });
+            SortNum();
+        }
+    }
+    // 获取到页面的检查单的Id
+    function GetCheckIds() {
+        var ckIds = "";
+        $(".HighImportance").each(function () {
+            var thisVal = $(this).data("val");
+            if (thisVal != "" && thisVal != null && thisVal != undefined) {
+                ckIds += thisVal + ',';
+            }
+        })
+        if (ckIds != "") {
+            ckIds = ckIds.substring(0, ckIds.length - 1);
+        }
+        $("#CheckListIds").val(ckIds);
+    }
+</script>
+
+
 

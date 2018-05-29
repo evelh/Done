@@ -285,6 +285,26 @@ namespace EMT.DoneNOW.BLL
             return tmpl;
         }
 
+        /// <summary>
+        /// 获取工时模板
+        /// </summary>
+        public sys_form_tmpl_work_entry GetWorkEntryTmpl(long formTmplId)
+        {
+            var tmpl = _dal.FindSignleBySql<sys_form_tmpl_work_entry>($"SELECT * FROM sys_form_tmpl_work_entry WHERE delete_time = 0 and form_tmpl_id={formTmplId}");
+            return tmpl;
+        }
+        /// <summary>
+        /// 获取工单模板
+        /// </summary>
+        public sys_form_tmpl_ticket GetTicketTmpl(long formTmplId)
+        {
+            var tmpl = _dal.FindSignleBySql<sys_form_tmpl_ticket>($"SELECT * FROM sys_form_tmpl_ticket WHERE delete_time = 0 and form_tmpl_id={formTmplId}");
+            return tmpl;
+        }
+        
+
+
+
 
 
         /// <summary>
@@ -611,10 +631,8 @@ namespace EMT.DoneNOW.BLL
             new sys_form_tmpl_recurring_ticket_dal().Insert(tmplRecTicket);
             OperLogBLL.OperLogAdd<sys_form_tmpl_recurring_ticket>(tmplRecTicket, tmplRecTicket.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_RECURRING_TICKET, "");
 
-            // tmplRecTicket
             var udf_ticket_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TICKETS);  // 获取到所有的自定义的字段信息
-                    //new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.COMPANY, udf_account_list, new_company_value.id, udf_account, user, DicEnum.OPER_LOG_OBJ_CATE.CUSTOMER_EXTENSION_INFORMATION);
-            new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.FORM_RECTICKET, userId, tmplRecTicket.id, udf_ticket_list, udfValue, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_RECURRING_TICKET); // 保存自定义字段，保存成功，插入日志
+            new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.FORM_RECTICKET, userId, tmplRecTicket.id, udf_ticket_list, udfValue, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_RECURRING_TICKET_EXT); // 保存自定义字段，保存成功，插入日志
             return true;
         }
 
@@ -634,7 +652,7 @@ namespace EMT.DoneNOW.BLL
             var udf_ticket_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TICKETS);
             if(udf_ticket_list!=null&& udf_ticket_list.Count > 0)
             {
-                new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.FORM_RECTICKET, udf_ticket_list, tmplRecTicket.id, udfValue, user, DicEnum.OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_RECURRING_TICKET);
+                new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.FORM_RECTICKET, udf_ticket_list, tmplRecTicket.id, udfValue, user, DicEnum.OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_RECURRING_TICKET_EXT);
             }
             
             return true;
@@ -672,5 +690,183 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
         #endregion
+
+        #region 工时管理
+        public bool AddWorkEntryTmpl(sys_form_tmpl tmpl, sys_form_tmpl_work_entry tmplEntry, long userId)
+        {
+            if (!AddFormTmpl(tmpl, userId))
+                return false;
+            tmplEntry.id = _dal.GetNextIdCom();
+            tmplEntry.form_tmpl_id = tmpl.id;
+            tmplEntry.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplEntry.create_user_id = userId;
+            tmplEntry.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplEntry.update_user_id = userId;
+            new sys_form_tmpl_work_entry_dal().Insert(tmplEntry);
+            OperLogBLL.OperLogAdd<sys_form_tmpl_work_entry>(tmplEntry, tmplEntry.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_WORK_ENTRY, "");
+            return true;
+        }
+
+        public bool EditWorkEntryTmpl(sys_form_tmpl tmpl, sys_form_tmpl_work_entry tmplEntry, long userId)
+        {
+            sys_form_tmpl_work_entry_dal sftweDal = new sys_form_tmpl_work_entry_dal();
+            var oldtmplEntry = sftweDal.FindNoDeleteById(tmplEntry.id);
+            if (oldtmplEntry == null)
+                return false;
+            if (!EditFormTmpl(tmpl, userId))
+                return false;
+            tmplEntry.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplEntry.update_user_id = userId;
+            sftweDal.Update(tmplEntry);
+            OperLogBLL.OperLogUpdate<sys_form_tmpl_work_entry>(tmplEntry, oldtmplEntry, tmplEntry.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_WORK_ENTRY, "");
+            return true;
+        }
+        #endregion
+
+        #region 工单管理
+
+        public bool AddTicketTmpl(sys_form_tmpl tmpl, sys_form_tmpl_ticket tmplTicket, List<UserDefinedFieldValue> udfValue, List<CheckListDto> checkList, long userId)
+        {
+            if (!AddFormTmpl(tmpl, userId))
+                return false;
+            tmplTicket.id = _dal.GetNextIdCom();
+            tmplTicket.form_tmpl_id = tmpl.id;
+            tmplTicket.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplTicket.create_user_id = userId;
+            tmplTicket.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplTicket.update_user_id = userId;
+            new sys_form_tmpl_ticket_dal().Insert(tmplTicket);
+            OperLogBLL.OperLogAdd<sys_form_tmpl_ticket>(tmplTicket, tmplTicket.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_TICKET, "");
+
+            var udf_ticket_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TICKETS);  // 获取到所有的自定义的字段信息
+            new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.FORM_TICKET, userId, tmplTicket.id, udf_ticket_list, udfValue, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_TICKET_EXT); // 保存自定义字段，保存成功，插入日志
+
+            CheckManage(checkList, tmplTicket.id,userId);
+            return true;
+        }
+
+        public void CheckManage(List<CheckListDto> ckList, long ticketId, long userId)
+        {
+            sys_form_tmpl_ticket_checklist_dal stcDal = new sys_form_tmpl_ticket_checklist_dal();
+            var thisTicket = new sys_form_tmpl_ticket_dal().FindNoDeleteById(ticketId);
+            if (thisTicket == null)
+                return;
+            var oldCheckList = stcDal.GetCheckByTicket(ticketId);
+            var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            if (oldCheckList != null && oldCheckList.Count > 0)
+            {
+                if (ckList != null && ckList.Count > 0)
+                {
+                    var editList = ckList.Where(_ => _.ckId > 0).ToList();
+                    var addList = ckList.Where(_ => _.ckId < 0).ToList();
+                    if (editList != null && editList.Count > 0)
+                    {
+                        foreach (var thisEnt in editList)
+                        {
+                            var oldThisEdit = oldCheckList.FirstOrDefault(_ => _.id == thisEnt.ckId);
+                            var thisEdit = stcDal.FindNoDeleteById(thisEnt.ckId);
+                            if (oldThisEdit != null && thisEdit != null)
+                            {
+                                oldCheckList.Remove(oldThisEdit);
+                                thisEdit.is_competed = (sbyte)(thisEnt.isComplete ? 1 : 0);
+                                thisEdit.is_important = (sbyte)(thisEnt.isImport ? 1 : 0);
+                                thisEdit.item_name = thisEnt.itemName;
+                                thisEdit.kb_article_id = thisEnt.realKnowId;
+                                thisEdit.sort_order = thisEnt.sortOrder;
+                                thisEdit.update_user_id = userId;
+                                thisEdit.update_time = timeNow;
+                                stcDal.Update(thisEdit);
+                                OperLogBLL.OperLogUpdate<sys_form_tmpl_ticket_checklist>(thisEdit, oldThisEdit, thisEdit.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_TICKET_CHECKLIST, "");
+                            }
+                        }
+                    }
+                    if (addList != null && addList.Count > 0)
+                    {
+                        foreach (var thisEnt in addList)
+                        {
+                            var thisCheck = new sys_form_tmpl_ticket_checklist()
+                            {
+                                id = stcDal.GetNextIdCom(),
+                                is_competed = (sbyte)(thisEnt.isComplete ? 1 : 0),
+                                is_important = (sbyte)(thisEnt.isImport ? 1 : 0),
+                                item_name = thisEnt.itemName,
+                                kb_article_id = thisEnt.realKnowId,
+                                update_user_id = userId,
+                                update_time = timeNow,
+                                create_time = timeNow,
+                                create_user_id = userId,
+                                form_tmpl_ticket_id = ticketId,
+                                sort_order = thisEnt.sortOrder,
+                            };
+                            stcDal.Insert(thisCheck);
+                            OperLogBLL.OperLogAdd<sys_form_tmpl_ticket_checklist>(thisCheck, thisCheck.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_TICKET_CHECKLIST, "");
+                        }
+                    }
+                }
+                if (oldCheckList.Count > 0)
+                {
+                    oldCheckList.ForEach(_ =>
+                    {
+                        stcDal.SoftDelete(_, userId);
+                        OperLogBLL.OperLogDelete<sys_form_tmpl_ticket_checklist>(_, _.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_TICKET_CHECKLIST, "");
+                    });
+                }
+            }
+            else
+            {
+                if (ckList != null && ckList.Count > 0)
+                {
+                    foreach (var thisEnt in ckList)
+                    {
+                        var thisCheck = new sys_form_tmpl_ticket_checklist()
+                        {
+                            id = stcDal.GetNextIdCom(),
+                            is_competed = (sbyte)(thisEnt.isComplete ? 1 : 0),
+                            is_important = (sbyte)(thisEnt.isImport ? 1 : 0),
+                            item_name = thisEnt.itemName,
+                            kb_article_id = thisEnt.realKnowId,
+                            update_user_id = userId,
+                            update_time = timeNow,
+                            create_time = timeNow,
+                            create_user_id = userId,
+                            form_tmpl_ticket_id = ticketId,
+                            sort_order = thisEnt.sortOrder,
+                        };
+                        stcDal.Insert(thisCheck);
+                        OperLogBLL.OperLogAdd<sys_form_tmpl_ticket_checklist>(thisCheck, thisCheck.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_TICKET_CHECKLIST, "");
+                    }
+                }
+            }
+        }
+
+
+        public bool EditTicketTmpl(sys_form_tmpl tmpl, sys_form_tmpl_ticket tmplTicket, List<UserDefinedFieldValue> udfValue, List<CheckListDto> checkList, long userId)
+        {
+            var user = UserInfoBLL.GetUserInfo(userId);
+            sys_form_tmpl_ticket_dal sfttDal = new sys_form_tmpl_ticket_dal();
+            var oldtmplTicket = sfttDal.FindNoDeleteById(tmplTicket.id);
+            if (oldtmplTicket == null || user == null)
+                return false;
+            if (!EditFormTmpl(tmpl, userId))
+                return false;
+            tmplTicket.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            tmplTicket.update_user_id = userId;
+            sfttDal.Update(tmplTicket);
+            OperLogBLL.OperLogUpdate<sys_form_tmpl_ticket>(tmplTicket, oldtmplTicket, tmplTicket.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_TICKET, "");
+
+            var udf_ticket_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TICKETS);
+            if (udf_ticket_list != null && udf_ticket_list.Count > 0)
+            {
+                new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.FORM_TICKET, udf_ticket_list, tmplTicket.id, udfValue, user, DicEnum.OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_TICKET_EXT);
+            }
+
+            CheckManage(checkList, tmplTicket.id, userId);
+
+            return true;
+        }
+
+        #endregion
+
+
     }
 }
