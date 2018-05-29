@@ -550,6 +550,7 @@ namespace EMT.DoneNOW.BLL
                     new_company_value.parent_id = parent_id;
                 }
             }
+           
 
             if (!string.IsNullOrEmpty(param.additional_info.asset_value))
             {
@@ -575,7 +576,8 @@ namespace EMT.DoneNOW.BLL
                     remark = "修改客户信息",
                 });
             } // crm_account 更新数据结束
-
+            
+            SubAccountManage(new_company_value.id, param.general_update.SubCompanyHidden, user_id);
             #endregion
 
             #region 2.保存客户扩展信息 
@@ -1109,8 +1111,77 @@ namespace EMT.DoneNOW.BLL
             }
             return similar_names;
         }
-
-
+        
+        /// <summary>
+        /// 客户的子客户管理
+        /// </summary>
+        public bool SubAccountManage(long accId,string subIds,long userId)
+        {
+            var thisAcc = GetCompany(accId);
+            if (thisAcc == null)
+                return false;
+            var subAccList = _dal.GetMyCompany(accId);
+            if(subAccList!=null&& subAccList.Count > 0)
+            {
+                if (!string.IsNullOrEmpty(subIds))
+                {
+                    var subIdArr = subIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var subId in subIdArr)
+                    {
+                        var subAcc = subAccList.FirstOrDefault(_=>_.id==long.Parse(subId));
+                        if (subAcc != null)
+                        {
+                            subAccList.Remove(subAcc);
+                            continue;
+                        }
+                        subAcc = GetCompany(long.Parse(subId));
+                        if (subAcc == null)
+                            continue;
+                        var thisSubSubList = _dal.GetMyCompany(subAcc.id);
+                        if (thisSubSubList != null && thisSubSubList.Count > 0)
+                            continue;
+                        subAcc.parent_id = accId;
+                        EditAccount(subAcc, userId);
+                    }
+                }
+                subAccList.ForEach(_ => {
+                    _.parent_id = null;
+                    EditAccount(_, userId);
+                });
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(subIds) && thisAcc.parent_id == null)
+                {
+                    var subIdArr = subIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var subId in subIdArr)
+                    {
+                        var subAcc = GetCompany(long.Parse(subId));
+                        if (subAcc == null)
+                            continue;
+                        var thisSubSubList= _dal.GetMyCompany(subAcc.id);
+                        if (thisSubSubList != null && thisSubSubList.Count > 0)
+                            continue;
+                        subAcc.parent_id= accId;
+                        EditAccount(subAcc,userId);
+                    }
+                }
+            }
+            return true;
+        }
+        /// <summary>
+        /// 编辑客户
+        /// </summary>
+        public void EditAccount(crm_account account,long userId)
+        {
+            var oldAcc = GetCompany(account.id);
+            if (oldAcc == null)
+                return;
+            account.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            account.update_user_id = userId;
+            _dal.Update(account);
+            OperLogBLL.OperLogUpdate<crm_account>(account, oldAcc, account.id, userId,OPER_LOG_OBJ_CATE.CUSTOMER,"");
+        }
 
 
 

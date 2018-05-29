@@ -392,6 +392,8 @@ namespace EMT.DoneNOW.DTO
             ORDERS = 521,
             PROJECTS = 522,
             CONFIGURATION_ITEMS = 523,// 配置项
+            FORM_RECTICKET,          // 模板定期工单
+            FORM_TICKET              // 模板工单
         }
 
         /// <summary>

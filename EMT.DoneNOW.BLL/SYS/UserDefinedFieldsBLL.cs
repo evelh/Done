@@ -23,7 +23,7 @@ namespace EMT.DoneNOW.BLL
         {
             var dal = new sys_udf_field_dal();
             var udfListDal = new sys_udf_list_dal();
-            string sql=dal.QueryStringDeleteFlag($"SELECT id,col_name,col_comment as name,description,data_type_id as data_type,default_value,decimal_length,is_required as required,is_protected FROM sys_udf_field WHERE is_active=1 and cate_id = {(int)cate}");
+            string sql=dal.QueryStringDeleteFlag($"SELECT id,col_name,col_comment as name,description,data_type_id as data_type,default_value,decimal_length,is_required as required,is_protected FROM sys_udf_field WHERE is_active=1 and cate_id = {(int)cate} ORDER BY sort_order");
             var list = dal.FindListBySql<UserDefinedFieldDto>(sql);
             foreach (var udf in list)
             {
@@ -346,6 +346,12 @@ namespace EMT.DoneNOW.BLL
                 case DicEnum.UDF_CATE.TASK:
                 case DicEnum.UDF_CATE.TICKETS:
                     table = "sdk_task_ext";
+                    break;
+                case DicEnum.UDF_CATE.FORM_RECTICKET:
+                    table = "sys_form_tmpl_recurring_ticket_ext";
+                    break;
+                case DicEnum.UDF_CATE.FORM_TICKET:
+                    table = "sys_form_tmpl_ticket_ext";
                     break;
                 // TODO: 其他类别
                 default:

@@ -160,3 +160,9 @@ select {
     bottom: 0;
     top: 314px;
 }
+.DivSection div, .DivSectionWithHeader .Content div {
+    padding-bottom: 17px;
+}
+.searchpanel {
+    background-color: #FFF;
+}

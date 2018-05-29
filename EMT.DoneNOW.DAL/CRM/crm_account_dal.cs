@@ -171,7 +171,9 @@ namespace EMT.DoneNOW.DAL
             else
                 return FindListBySql($"SELECT * from crm_account where id not in(SELECT a.id from crm_account a ,crm_account a2 where a.id = a2.parent_id) and id not in (SELECT id from crm_account where parent_id is not null) and delete_time=0 and id <> {id}");
         }
-
+        /// <summary>
+        /// 获取子客户
+        /// </summary>
         public List<crm_account> GetMyCompany(long id)
         {
             return FindListBySql($"select * from crm_account where parent_id={id} and delete_time = 0 ");

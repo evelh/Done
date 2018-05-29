@@ -278,6 +278,18 @@ namespace EMT.DoneNOW.BLL
                 param.general.loss_reason_type_id = null;
                 param.general.loss_reason = "";
             }
+            if (param.general.status_id!= old_opportunity.status_id)
+            {
+                if(param.general.status_id==(int)DicEnum.OPPORTUNITY_STATUS.CLOSED|| param.general.status_id == (int)DicEnum.OPPORTUNITY_STATUS.LOST || param.general.status_id == (int)DicEnum.OPPORTUNITY_STATUS.IMPLEMENTED)
+                {
+                    param.general.actual_closed_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                }
+                else
+                {
+                    param.general.actual_closed_time = null;
+                }
+            }
+
             param.general.update_user_id = user_id;
             param.general.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             _dal.Update(param.general);    // 更改商机

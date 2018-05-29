@@ -664,7 +664,7 @@
                                     <div class="FieldLabels">
                                         <span class="filed"><%=udf.name %></span>
                                         <br />
-                                        <select>
+                                        <select name="<%=udf.id %>">
                                             <%if (udf.required != 1)
                                                 { %>
                                             <option></option>
