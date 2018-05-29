@@ -218,14 +218,6 @@
                                                 <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_PROJECT_PROJECT_LIST %>" target="PageFrame1">项目清单</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -339,14 +331,6 @@
                                                 <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_SERVICEDESK_TICKETBYACCOUNT %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">工单和任务按客户</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -377,18 +361,6 @@
                                 <div class="Large Column">
                                     <div class="PageNavigationLinkGroup">
                                         <div class="PageNavigationLinkColumn">
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -412,14 +384,6 @@
                                                 <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CONTRACT_BILLED %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">已计费信息</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -439,44 +403,8 @@
                                 <div class="Large Column">
                                     <div class="PageNavigationLinkGroup">
                                         <div class="PageNavigationLinkColumn">
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
                                         </div>
                                         <div class="PageNavigationLinkColumn">
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -513,10 +441,6 @@
                                             </div>
                                             <div class="PageNavigationLink">
                                                 <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_OTHER_SYSTEM_OPERLOG %>" target="PageFrame1">操作日志</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
                                         </div>

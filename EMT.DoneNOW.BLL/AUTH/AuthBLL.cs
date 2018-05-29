@@ -358,9 +358,9 @@ namespace EMT.DoneNOW.BLL
             if (note == null || note.account_id == null)
                 return dto;
 
-            var companyAuth = GetUserCompanyAuth(userId, secLevelId, (long)note.account_id);   // 客户可见才能操作
-            if (companyAuth.CanView == false)
-                return dto;
+            //var companyAuth = GetUserCompanyAuth(userId, secLevelId, (long)note.account_id);   // 客户可见才能操作
+            //if (companyAuth.CanView == false)
+            //    return dto;
 
             dto.CanView = true;     // 客户可见备注就可见
             var limitEdit = GetLimitValue(secLevelId, AuthLimitEnum.CRMNotesEdit);
@@ -398,9 +398,9 @@ namespace EMT.DoneNOW.BLL
             if (todo == null || todo.account_id == null)
                 return dto;
 
-            var companyAuth = GetUserCompanyAuth(userId, secLevelId, (long)todo.account_id);   // 客户可见才能操作
-            if (companyAuth.CanView == false)
-                return dto;
+            //var companyAuth = GetUserCompanyAuth(userId, secLevelId, (long)todo.account_id);   // 客户可见才能操作
+            //if (companyAuth.CanView == false)
+            //    return dto;
 
             dto.CanView = true;     // 客户可见备注就可见
             var limitEdit = GetLimitValue(secLevelId, AuthLimitEnum.CRMTodoEdit);

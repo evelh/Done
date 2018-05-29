@@ -46,11 +46,14 @@ namespace EMT.DoneNOW.BLL
         public UserDefinedFieldDto GetUdfInfo(long id)
         {
             var dal = new sys_udf_field_dal();
-            var udf = dal.FindNoDeleteById(id);
-            if (udf == null)
+            var dto = dal.FindSignleBySql<UserDefinedFieldDto>($"select *,col_comment as `name`,cate_id as cate,data_type_id as data_type,is_required as required from sys_udf_field where id={id} and delete_time=0");
+            if (dto == null)
                 return null;
 
-            UserDefinedFieldDto dto = new UserDefinedFieldDto();
+            if (dto.data_type == (int)DicEnum.UDF_DATA_TYPE.LIST)
+            {
+                dto.list = dal.FindListBySql<sys_udf_list>($"select * from sys_udf_list where udf_field_id={dto.id} and status_id=0 and delete_time=0");
+            }
 
             return dto;
         }
@@ -61,31 +64,33 @@ namespace EMT.DoneNOW.BLL
         /// <param name="cate"></param>
         /// <param name="udf"></param>
         /// <returns></returns>
-        public bool AddUdf(DicEnum.UDF_CATE cate, UserDefinedFieldDto udf, string token)
+        public bool AddUdf(DicEnum.UDF_CATE cate, UserDefinedFieldDto udf, long userId)
         {
             string table = GetTableName(cate);
             var dal = new sys_udf_field_dal();
 
             var field = new sys_udf_field();
-            field.id = dal.GetNextIdSys();
+            field.id = dal.GetNextIdCom();
             field.col_name = GetNextColName();
             field.col_comment = udf.name;
             field.description = udf.description;
             field.cate_id = udf.cate;
             field.data_type_id = udf.data_type;
             field.default_value = udf.default_value;
-            field.is_protected = 0;
+            field.is_protected = udf.is_protected;
             field.is_required = udf.required;
             field.is_encrypted = udf.is_encrypted;
             field.is_visible_in_portal = udf.is_visible_in_portal;
-            field.is_active = 1;
+            field.sort_order = udf.sort_order;
+            field.is_active = udf.is_active;
             field.display_format_id = udf.display_format;
             field.decimal_length = udf.decimal_length;
-            field.create_user_id = CachedInfoBLL.GetUserInfo(token).id;
-            field.update_user_id = field.create_user_id;
+            field.create_user_id = userId;
+            field.update_user_id = userId;
             field.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             field.update_time = field.create_time;
             dal.Insert(field);
+            OperLogBLL.OperLogAdd<sys_udf_field>(field, field.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SYS_UDF_FILED, "新增自定义字段");
 
             if (udf.data_type == (int)DicEnum.UDF_DATA_TYPE.LIST)       // 字段为列表类型，保存列表值
             {
@@ -95,7 +100,7 @@ namespace EMT.DoneNOW.BLL
                     foreach(var listVal in udf.value_list)
                     {
                         sys_udf_list val = new sys_udf_list();
-                        val.id = listDal.GetNextIdSys();
+                        val.id = listDal.GetNextIdCom();
                         val.is_default = (sbyte)listVal.select;
                         val.name = listVal.show;
                         val.status_id = 0;

@@ -39,7 +39,7 @@ function SettingWidget(id) {
 }
 
 function CopyWidget(id) {
-    if ($('#dshli' + CurrentDashboardId()).children('.WidgetShell').length >= 12) {
+    if ($('#dshli' + CurrentDashboardId()).children('.WidgetShell').length > 12) {
         $('#cover').show();
         $("#AddWidgetRemind").show();
         return;
@@ -1531,6 +1531,8 @@ function AddWidgetStep1(widgetData, copy) {
             $("#addWgtContent")[0].innerHTML = '<div class="button" style="bottom:auto;position:initial;"><div class="save" onclick= "AddWidgetFinish(' + showType + ');" ><img src="Images/save.png" alt="">保存并关闭</div>'
                 + '<div class="delete" onclick="DeleteWidget(' + widget.id + ')"><img src="Images/delete.png" alt="">删除小窗口</div></div>' + $("#addWgtContent")[0].innerHTML;
             $("#addWgtContent").css("bottom", "0px");
+        } else {
+            $("#AddWidgetBefore").children(".AddWidgetBeforePOP").children(".button")[0].innerHTML = '<div class="pev" onclick="BackAddWidgetStep0();"><span></span>上一步</div><div class="next" >完成</div>';
         }
         if (copy == 1) {
             $("#addWidgetId").val(0);
@@ -1982,6 +1984,7 @@ function AddWidgetFinish(showType) {
             },
             success: function (data) {
                 LayerLoadClose();
+                $("#cover").hide();
                 if (data != 0) {
                     RefreshDashboard();
                     $('#AddWidgetBefore').hide();

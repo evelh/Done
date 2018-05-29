@@ -33,14 +33,17 @@ namespace EMT.DoneNOW.DTO
         public SByte? is_visible_in_portal; // 是否显示在客户门户上
         [DataMember]
         public SByte required;      // 是否必填
+        public SByte is_active;     // 是否激活
         [DataMember]
         public int? decimal_length; // 小数位数
         [DataMember]
         public string default_value;// 默认值
         [DataMember]
         public string description;  // 字段描述
+        public string sort_order;   // 排序值
         [DataMember]
         public List<DictionaryEntryDto> value_list;   // 字段类型为列表时的列表键值
+        public List<Core.sys_udf_list> list;        // 字段类型为列表时的列表键值
     }
     public class RootDefinedField {
         public List<ConfigUserDefinedFieldDto> UDFGROUP;

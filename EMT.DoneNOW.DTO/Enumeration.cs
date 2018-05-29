@@ -34,6 +34,8 @@ namespace EMT.DoneNOW.DTO
         PAYMENT_TERM = 29,                         // 报价：付款期限           
         PAYMENT_TYPE = 30,                         // 报价：付款类型
         PAYMENT_SHIP_TYPE = 31,                    // 报价：配送类型
+        UDF_FIELD_CATE = 32,                       // 用户自定义字段对象
+        UDF_FIELD_TYPE = 33,                       // 用户自定义字段值的类型
         DATE_DISPLAY_FORMAT = 35,
         TIME_DISPLAY_FORMAT = 36,
         NUMBER_DISPLAY_FORMAT = 37,
@@ -946,7 +948,9 @@ namespace EMT.DoneNOW.DTO
             DASHBOARD_WIDGET = 1436,                    // 仪表板小窗口
             DASHBOARD_WIDGET_GUAGE = 1437,              // 仪表板小窗口部件
             TICKET_SLA_EVENT,                           // 工单sla 事件
-		    SYS_FORM_TMPL_ACTIVITY= 1446,               // 表单模板-
+            SYS_UDF_FILED = 1443,                       // 自定义字段
+            SYS_UDF_FILED_LIST = 1444,                  // 自定义字段列表值
+            SYS_FORM_TMPL_ACTIVITY = 1446,              // 表单模板-
 	        SYS_FORM_TMPL_OPPORTUNITY= 1447,            // 表单模板-商机
             SYS_FORM_TMPL_QUICK_CALL = 1448,            // 表单模板-快速服务预定
             SYS_FORM_TMPL_QUOTE = 1449,                 // 表单模板-报价
