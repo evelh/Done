@@ -791,6 +791,20 @@ namespace EMT.DoneNOW.DTO
             ACCOUNT_CONTACT_GROUP_SEARCH = 1663,            // 查看客户-联系人组
             OTHER_INSTALLED_PRODUCT_SEARCH=1664, 
             WAREHOUSE_PRODUCT_CALLBACK= 1665,               // 配置项管理-配置项替换-库存产品查找带回
+            PROJECT_DASHBOARD_OVER_TASK = 1667,             // 报表-项目-任务-过期任务
+            PROJECT_DASHBOARD_MY_PROJECT = 1668,            // 项目-仪表板-我负责的项目
+            PROJECT_DASHBOARD_PROJECT_STATUS = 1669,        // 项目-项目组合状态
+            PROJECT_DASHBOARD_AGAIN_RESOURCE = 1670,        // 项目-仪表板-任务分配（员工）
+            PROJECT_DASHBOARD_AGAIN_PROJECT = 1671,         // 项目-仪表板-任务分配（项目）
+            PROJECT_DASHBOARD_MONEY_DATE = 1672,            // 项目-仪表板-员工带薪休假日程
+            REPORT_CONTRACT_BILL_TOBILL=1673,                // 报表-合同-计费-待计费详情报表
+            REPORT_CONTRACT_BILL_TOBILL_BY_RES =1674,        // 报表-合同-计费-待计费详情报表（按员工分组）
+            REPORT_CONTRACT_BILL_TOBILL_BY_PROJECT = 1675,   // 报表-合同-计费-待计费详情报表（按项目分组）
+            REPORT_PROJECT_TASK_RES_ACHIEVEMENTS = 1676,     // 报表-项目-任务-任务员工绩效分析
+            REPORT_CONTRACT_BILL_PROJECT_PROFIT = 1677,      // 报表-合同-计费-项目利润率摘要报表
+            PROJECT_DASHBOARD_TIMESHEET = 1678,              // 项目-仪表板-漏工时表
+            PROJECT_DASHBOARD_MY_PROJECT_ISSUE = 1679,       // 项目-仪表板-我的项目问题
+
 
 
 
@@ -1974,8 +1988,21 @@ namespace EMT.DoneNOW.DTO
         OTHER_INSTALLED_PRODUCT_SEARCH=274,
 
         DASHBOARD_FILTER = 276,                         // 仪表板过滤条件
-  
-       
+        PROJECT_DASHBOARD_OVER_TASK = 277,             // 报表-项目-任务-过期任务
+        PROJECT_DASHBOARD_MY_PROJECT = 278,            // 项目-仪表板-我负责的项目
+        PROJECT_DASHBOARD_PROJECT_STATUS = 279,        // 项目-项目组合状态
+        PROJECT_DASHBOARD_AGAIN_RESOURCE = 280,        // 项目-仪表板-任务分配（员工）
+        PROJECT_DASHBOARD_AGAIN_PROJECT = 281,         // 项目-仪表板-任务分配（项目）
+        PROJECT_DASHBOARD_MONEY_DATE = 282,            // 项目-仪表板-员工带薪休假日程
+        REPORT_CONTRACT_BILL_TOBILL = 283,                // 报表-合同-计费-待计费详情报表
+        REPORT_CONTRACT_BILL_TOBILL_BY_RES = 284,        // 报表-合同-计费-待计费详情报表（按员工分组）
+        REPORT_CONTRACT_BILL_TOBILL_BY_PROJECT = 285,   // 报表-合同-计费-待计费详情报表（按项目分组）
+        REPORT_PROJECT_TASK_RES_ACHIEVEMENTS = 286,     // 报表-项目-任务-任务员工绩效分析
+        REPORT_CONTRACT_BILL_PROJECT_PROFIT = 287,      // 报表-合同-计费-项目利润率摘要报表
+        PROJECT_DASHBOARD_TIMESHEET = 288,              // 项目-仪表板-漏工时表
+        PROJECT_DASHBOARD_MY_PROJECT_ISSUE = 289,       // 项目-仪表板-我的项目问题
+
+
 
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理

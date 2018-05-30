@@ -134,7 +134,7 @@ select {
 
 .Section {
     border: 1px solid #d3d3d3;
-    margin: 0 0 12px 0;
+    margin: 0 0 12px 10px;
     padding: 4px 0 4px 0;
     width: 836px;
 }
@@ -660,7 +660,9 @@ span.Icon {
         .menu ul .disabled {
             color: #AAAAAA;
         }
-
+.InputField select {
+    width: 160px;
+}
 
 
 

@@ -264,7 +264,7 @@ namespace EMT.DoneNOW.Web
                 }
                 else
                 {
-                    Response.Write("<script>alert('修改客户成功！');window.close();window.open('UpdateContact.aspx?account_id=" + param.general_update.id + "&updateLocationContact=" + updateLocationContact + "&updateFaxPhoneContact=" + updateFaxPhoneContact+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd + "','left= 200, top = 200, width = 960, height = 750', false);</script>");  //  
+                    Response.Write("<script>alert('修改客户成功！');window.open('UpdateContact.aspx?account_id=" + param.general_update.id + "&updateLocationContact=" + updateLocationContact + "&updateFaxPhoneContact=" + updateFaxPhoneContact+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd + "','left= 200, top = 200, width = 960, height = 750', false);window.close();</script>");  //  
                     //Response.Redirect("UpdateContact.aspx?account_id=" + param.general_update.id + "&updateLocationContact=" + updateLocationContact + "&updateFaxPhoneContact=" + updateFaxPhoneContact);
                 }
 

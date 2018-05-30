@@ -19,40 +19,37 @@ namespace EMT.DoneNOW.Web.Project
         protected DateTime showDate = DateTime.Now;
         protected bool isSeven = false;
         protected bool isShowDetai = false;
+        protected bool isAll = false;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
                 var id = Request.QueryString["id"];
                 if (!string.IsNullOrEmpty(id))
-                {
                     thisProject = new pro_project_dal().FindNoDeleteById(long.Parse(id));
-                    if (thisProject != null)
-                    {
-                        var chooseDateString = Request.QueryString["chooseDate"];
-                        if (!string.IsNullOrEmpty(chooseDateString))
-                        {
-                            chooseDate = DateTime.Parse(chooseDateString);
-                        }
+                if (!string.IsNullOrEmpty(Request.QueryString["isAll"]))
+                    isAll = true;
+                var chooseDateString = Request.QueryString["chooseDate"];
+                if (!string.IsNullOrEmpty(chooseDateString))
+                {
+                    chooseDate = DateTime.Parse(chooseDateString);
+                }
 
-                        var showDateString = Request.QueryString["showDate"];
-                        if (!string.IsNullOrEmpty(showDateString))
-                        {
-                            showDate = DateTime.Parse(showDateString);
-                        }
+                var showDateString = Request.QueryString["showDate"];
+                if (!string.IsNullOrEmpty(showDateString))
+                {
+                    showDate = DateTime.Parse(showDateString);
+                }
 
-                        calendar.Text = GetTableByDate(showDate);
+                calendar.Text = GetTableByDate(showDate);
 
-                        if (!string.IsNullOrEmpty(Request.QueryString["isSeven"]))
-                        {
-                            isSeven = true;
-                        }
-                        if (!string.IsNullOrEmpty(Request.QueryString["isShowDetai"]))
-                        {
-                            isShowDetai = true;
-                        }
-
-                    }
+                if (!string.IsNullOrEmpty(Request.QueryString["isSeven"]))
+                {
+                    isSeven = true;
+                }
+                if (!string.IsNullOrEmpty(Request.QueryString["isShowDetai"]))
+                {
+                    isShowDetai = true;
                 }
             }
             catch (Exception msg)
