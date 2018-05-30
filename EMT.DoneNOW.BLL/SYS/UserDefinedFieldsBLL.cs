@@ -59,6 +59,96 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 新增编辑自定义字段
+        /// </summary>
+        /// <param name="cate"></param>
+        /// <param name="udf"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool EditUdf(DicEnum.UDF_CATE cate, UserDefinedFieldDto udf, long userId)
+        {
+            if (udf.id == 0)
+                return AddUdf(cate, udf, userId);
+
+            var dal = new sys_udf_field_dal();
+            var field = dal.FindNoDeleteById(udf.id);
+            if (field == null)
+                return false;
+            
+            field.col_comment = udf.name;
+            field.description = udf.description;
+            field.data_type_id = udf.data_type;
+            field.default_value = udf.default_value;
+            field.is_protected = udf.is_protected;
+            field.is_required = udf.required;
+            field.is_encrypted = udf.is_encrypted;
+            field.is_visible_in_portal = udf.is_visible_in_portal;
+            field.crm_to_project_udf_id = udf.crm_to_project;
+            field.sort_order = udf.sort_order;
+            field.is_active = udf.is_active;
+            field.display_format_id = udf.display_format;
+            field.decimal_length = udf.decimal_length;
+            field.update_user_id = userId;
+            field.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+
+            var fieldOld = dal.FindById(field.id);
+            var desc = OperLogBLL.CompareValue<sys_udf_field>(fieldOld, field);
+            if (!string.IsNullOrEmpty(desc))
+            {
+                dal.Update(field);
+                OperLogBLL.OperLogUpdate(desc, field.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SYS_UDF_FILED, "编辑自定义字段");
+            }
+
+            var listDal = new sys_udf_list_dal();
+            var list = dal.FindListBySql<sys_udf_list>($"select * from sys_udf_list where udf_field_id={field.id} and status_id=0 and delete_time=0");
+            //var find=udf.list.Find(_=>_.is_default==1)
+            foreach (var ufv in udf.list)
+            {
+                var find = list.Find(_ => _.id == ufv.id);
+                if (find == null)
+                {
+                    sys_udf_list val = new sys_udf_list();
+                    val.id = listDal.GetNextIdCom();
+                    val.is_default = ufv.is_default;
+                    val.name = ufv.name;
+                    val.sort_order = ufv.sort_order;
+                    val.status_id = 0;
+                    val.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    val.update_time = val.create_time;
+                    val.create_user_id = field.create_user_id;
+                    val.update_user_id = val.create_user_id;
+                    listDal.Insert(val);
+
+                    OperLogBLL.OperLogAdd<sys_udf_list>(val, val.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SYS_UDF_FILED_LIST, "新增自定义字段值");
+                }
+                else
+                {
+                    if (find.is_default != ufv.is_default)
+                    {
+                        find.is_default = ufv.is_default;
+                        find.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        find.update_user_id = userId;
+
+                        var old = listDal.FindById(find.id);
+                        listDal.Update(find);
+                        OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<sys_udf_list>(old, find), find.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SYS_UDF_FILED_LIST, "编辑自定义字段值");
+                    }
+                    list.Remove(find);
+                }
+            }
+
+            foreach (var ufv in list)
+            {
+                ufv.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                ufv.delete_user_id = userId;
+                listDal.Update(ufv);
+                OperLogBLL.OperLogDelete<sys_udf_list>(ufv, ufv.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SYS_UDF_FILED_LIST, "删除自定义字段值");
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// 增加自定义字段
         /// </summary>
         /// <param name="cate"></param>
@@ -81,6 +171,7 @@ namespace EMT.DoneNOW.BLL
             field.is_required = udf.required;
             field.is_encrypted = udf.is_encrypted;
             field.is_visible_in_portal = udf.is_visible_in_portal;
+            field.crm_to_project_udf_id = udf.crm_to_project;
             field.sort_order = udf.sort_order;
             field.is_active = udf.is_active;
             field.display_format_id = udf.display_format;
@@ -94,24 +185,59 @@ namespace EMT.DoneNOW.BLL
 
             if (udf.data_type == (int)DicEnum.UDF_DATA_TYPE.LIST)       // 字段为列表类型，保存列表值
             {
-                if (udf.value_list != null && udf.value_list.Count > 0)
+                if (udf.list != null && udf.list.Count > 0)
                 {
                     var listDal = new sys_udf_list_dal();
-                    foreach(var listVal in udf.value_list)
+                    foreach(var listVal in udf.list)
                     {
                         sys_udf_list val = new sys_udf_list();
                         val.id = listDal.GetNextIdCom();
-                        val.is_default = (sbyte)listVal.select;
-                        val.name = listVal.show;
+                        val.is_default = listVal.is_default;
+                        val.name = listVal.name;
+                        val.sort_order = listVal.sort_order;
                         val.status_id = 0;
                         val.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                         val.update_time = val.create_time;
                         val.create_user_id = field.create_user_id;
                         val.update_user_id = val.create_user_id;
                         listDal.Insert(val);
+
+                        OperLogBLL.OperLogAdd<sys_udf_list>(val, val.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SYS_UDF_FILED_LIST, "新增自定义字段值");
                     }
                 }
             }
+
+            string sql = $"alter table {table} add {field.col_name} varchar(";
+            if (field.data_type_id == (int)DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)
+                sql += "200)";
+            else if (field.data_type_id == (int)DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)
+                sql += "2000)";
+            else
+                sql += "20)";
+            dal.ExecuteSQL(sql);
+            if (field.cate_id == (int)DicEnum.UDF_CATE.TICKETS)
+            {
+                table = GetTableName(DicEnum.UDF_CATE.FORM_RECTICKET);
+                sql = $"alter table {table} add {field.col_name} varchar(";
+                if (field.data_type_id == (int)DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)
+                    sql += "200)";
+                else if (field.data_type_id == (int)DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)
+                    sql += "2000)";
+                else
+                    sql += "20)";
+                dal.ExecuteSQL(sql);
+
+                table = GetTableName(DicEnum.UDF_CATE.FORM_TICKET);
+                sql = $"alter table {table} add {field.col_name} varchar(";
+                if (field.data_type_id == (int)DicEnum.UDF_DATA_TYPE.SINGLE_TEXT)
+                    sql += "200)";
+                else if (field.data_type_id == (int)DicEnum.UDF_DATA_TYPE.MUILTI_TEXT)
+                    sql += "2000)";
+                else
+                    sql += "20)";
+                dal.ExecuteSQL(sql);
+            }
+
             return true;
         }
 

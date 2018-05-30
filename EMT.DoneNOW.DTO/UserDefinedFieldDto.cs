@@ -41,6 +41,7 @@ namespace EMT.DoneNOW.DTO
         [DataMember]
         public string description;  // 字段描述
         public string sort_order;   // 排序值
+        public int? crm_to_project;
         [DataMember]
         public List<DictionaryEntryDto> value_list;   // 字段类型为列表时的列表键值
         public List<Core.sys_udf_list> list;        // 字段类型为列表时的列表键值

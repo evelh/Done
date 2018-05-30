@@ -8,6 +8,10 @@
     <title>用户自定义字段</title>
     <link rel="stylesheet" href="../Content/reset.css" />
     <link rel="stylesheet" href="../Content/Roles.css" />
+    <style>
+        .listTable td{padding:2px 20px 2px 0;}
+        .listTable tr{height:18px;}
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -33,6 +37,8 @@
                     </li>
                 </ul>
                 <input type="hidden" id="act" name="act" />
+                <input type="hidden" id="ids" name="ids" />
+                <input type="hidden" id="dftid" name="dftid" />
             </div>
             <div class="DivSection" style="border: none; padding-left: 20px; width: 560px;">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -56,7 +62,6 @@
                             <td>
                                 <span class="FieldLabels" style="font-weight: bold;">名称<span class="errorSmall">*</span></span>
                                 <div>
-                                    <input type="hidden" id="fieldId" name="fieldId" <%if (udfField != null){ %> value="<%=udfField.id %>" <%} %> />
                                     <input type="text" id="col_comment" name="col_comment" style="width: 248px; padding: 0;" <%if (udfField != null){ %> value="<%=udfField.name %>" <%} %> />
                                 </div>
                             </td>
@@ -125,7 +130,7 @@
                         <tr <%if (udfField == null || udfField.data_type != (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST) { %> style="display:none;" <%} %> id="listValTr">
                             <td class="FieldLabels">列表值
                                 <div>
-                                    <table id="listTable">
+                                    <table id="listTable" class="listTable" style="border:1px solid #D7D7D7;">
                                         <tr>
                                             <th>显示值</th>
                                             <th>排序号</th>
@@ -180,10 +185,50 @@
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/common.js"></script>
     <script>
+        $("#CancelBtn").click(function () {
+            window.close();
+        })
+        $("#SaveCloseBtn").click(function () {
+            $("#act").val("close");
+            <%if (udfField == null) { %>
+            if ($("#cate_id").val() == "") {
+                LayerMsg("请选择对象");
+                return;
+            }
+            <%}%>
+            if ($("#col_comment").val() == "") {
+                LayerMsg("请输入字段名称");
+                return;
+            }
+            $("#ids").val(ids);
+            $("#dftid").val(deftIdx);
+            $("#form1").submit();
+        })
+        $("#SaveNewBtn").click(function () {
+            $("#act").val("new");
+            <%if (udfField == null) { %>
+            if ($("#cate_id").val() == "") {
+                LayerMsg("请选择对象");
+                return;
+            }
+            <%}%>
+            if ($("#col_comment").val() == "") {
+                LayerMsg("请输入字段名称");
+                return;
+            }
+            $("#ids").val(ids);
+            $("#dftid").val(deftIdx);
+            $("#form1").submit();
+        })
         function CateChange(idx) {
             if (idx == 0) {
                 idx = $("#cate_id").val();
             }
+            $("#projectTr").hide();
+            $("#protectTr").hide();
+            $("#encryptedTr").hide();
+            $("#requireTr").show();
+            $("#showinportalTr").hide();
             if (idx == 522) {
                 $("#projectTr").show();
             }
@@ -211,6 +256,12 @@
         })
         var listIdx = 1;
         var deftIdx = 0;
+        <%if (udfField != null) {
+            var find = udfField.list.Find(_ => _.is_default == 1);
+            if (find != null) { %>
+        deftIdx=<%=find.id%>
+        <%}
+        }%>
         var ids = '';
         function AddListVal() {
             if ($("#displayVal").val() == "") {
@@ -223,8 +274,9 @@
                 }
                 deftIdx = listIdx;
             }
-            var addTr = $("#listTable").remove();
-            $("#listTable").append('<tr id="listVal' + listIdx + '"><td>' + $("#displayVal").val() + '<input type="hidden" name="listValShow' + listIdx + '" value="' + $("#displayVal").val() + '" /></td><td>' + $("#sortVal").val() + '<input type="hidden" name="listValOrder' + listIdx + '" value="' + $("#sortVal").val() + '" /></td><td id="dft' + listIdx + '">' + $("#is_dft").prop("checked") ? "是" : "否" + '</td><td><input type="button" value="删除" onclick="DeleteListVal(' + listIdx + ')" /></td></tr>');
+            var str = '<tr id="listVal' + listIdx + '"><td>' + $("#displayVal").val() + '<input type="hidden" name="listValShow' + listIdx + '" value="' + $("#displayVal").val() + '" /></td><td>' + $("#sortVal").val() + '<input type="hidden" name="listValOrder' + listIdx + '" value="' + $("#sortVal").val() + '" /></td><td id="dft' + listIdx + '">' + (($("#is_dft").prop("checked")) ? "是" : "否") + '</td><td><input type="button" value="删除" onclick="DeleteListVal(' + listIdx + ')" /></td></tr>';
+            var addTr = $("#listAdd").remove();
+            $("#listTable").children().append(str);
             ids += listIdx + ',';
             listIdx++;
             $("#listTable").append(addTr);
