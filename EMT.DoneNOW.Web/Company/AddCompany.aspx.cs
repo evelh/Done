@@ -20,6 +20,7 @@ namespace EMT.DoneNOW.Web
         protected List<crm_account> searchCompany = null;     // 查询出的所有没有父客户的客户
         protected string CallBack = "";
         protected sys_bookmark thisBookMark;
+        protected List<d_country> counList = new DAL.d_country_dal().FindAll().ToList();
         protected void Page_Load(object sender, EventArgs e)
         {
             thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl,LoginUserId);

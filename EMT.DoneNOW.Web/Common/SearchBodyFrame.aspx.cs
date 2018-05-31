@@ -1597,6 +1597,13 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑联系人活动模板", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除联系人活动模板", click_function = "Delete()" });
                     break;
+                case (long)QueryType.SYS_FORM_TEMP_SEARCH:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑模板", click_function = "EditTemp()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活模板", click_function = "Active()",id="LiActive" });
+                    contextMenu.Add(new PageContextMenuDto { text = "失活模板", click_function = "InActive()",id= "LiInActive" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制模板", click_function = "Copy()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除模板", click_function = "Delete()" });
+                    break;
                 default:
                     break;
             }

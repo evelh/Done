@@ -4513,7 +4513,7 @@
         $.ajax({
             type: "GET",
             async: false,
-            url: "../Tools/FormTempAjax.ashx?act=CheckTempCode&code=" + speed_code +"&id=<%=temp!=null?temp.id.ToString():"" %>",
+            url: "../Tools/FormTempAjax.ashx?act=CheckTempCode&code=" + speed_code +"&id=<%=temp!=null&&(!isAdd)?temp.id.ToString():"" %>",
             dataType: "json",
             success: function (data) {
                 if (data) {

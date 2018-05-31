@@ -46,6 +46,31 @@
                             <span class="Text">折叠所有</span>
                         </a>
                     </div>
+                         <!--第一个框-->
+                    <div class="Normal Section Collapsed Normal1" id="b1">
+                        <div class="Heading">
+                            <div class="Toggle Expand Toggle1" id="a1">
+                                <div class="Vertical Vertical1"></div>
+                                <div class="Horizontal"></div>
+                            </div>
+                            <span class="Text">共享功能设置</span>
+                            <span></span>
+                        </div>
+                        <div class="Content Content1" id="c1">
+                            <div class="Large Column">
+                                <div class="PageNavigationLinkGroup">
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_FORM_TEMP_SEARCH %>" target="PageFrame1">表单模板</a>
+                                            <div class="StandardText"></div>  
+                                        </div>
+                                    </div>
+                               
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </div>
                     <!--第三个框-->
                   <%if (CheckAuth("SYS_FEATURES_RESOURCES")) { %>
                     <div class="Normal Section Collapsed Normal1" id="b3">

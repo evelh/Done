@@ -116,6 +116,12 @@ namespace EMT.DoneNOW.Web
                         break;
                     case "ChechByResRole":
                         ChechByResRole(context);
+                        break;  
+                    case "ChangeResourceGoal":
+                        ChangeResourceGoal(context);
+                        break;  
+                    case "ChangeUserDataProtected":
+                        ChangeUserDataProtected(context);
                         break;
                     default:
                         break;
@@ -922,6 +928,36 @@ namespace EMT.DoneNOW.Web
             long id = long.Parse(context.Request.QueryString["id"]);
             new BLL.AttachmentBLL().DeleteAttachment(id, LoginUserId);
             context.Response.Write(new Tools.Serialize().SerializeJson(true));
+        }
+        /// <summary>
+        /// 更改用户的周目标设置
+        /// </summary>
+        private void ChangeResourceGoal(HttpContext context)
+        {
+            long resAvaId; decimal goal;
+            long.TryParse(context.Request.QueryString["id"],out resAvaId);
+            decimal.TryParse(context.Request.QueryString["goal"], out goal);
+            bool result = false;
+            if (resAvaId != 0)
+                result = new BLL.UserResourceBLL().EditResAvaGoal(resAvaId, goal,LoginUserId);
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 编辑用户的被保护权限
+        /// </summary>
+        private void ChangeUserDataProtected(HttpContext context)
+        {
+            long resId=0;
+            bool result = false;
+            if (long.TryParse(context.Request.QueryString["id"], out resId))
+            {
+                var thisRes = new BLL.UserResourceBLL().GetResourceById(resId);
+                if (thisRes != null)
+                {
+                    result = new BLL.UserResourceBLL().EditResProtected(resId, context.Request.QueryString["isEdit"] =="1", context.Request.QueryString["isView"] == "1", context.Request.QueryString["isEditUn"] == "1", context.Request.QueryString["isViewUn"] == "1", LoginUserId);
+                }
+            }
+            context.Response.Write(new Tools.Serialize().SerializeJson(result));
         }
     }
    

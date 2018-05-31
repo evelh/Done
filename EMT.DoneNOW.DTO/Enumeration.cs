@@ -805,6 +805,8 @@ namespace EMT.DoneNOW.DTO
             PROJECT_DASHBOARD_TIMESHEET = 1678,              // 项目-仪表板-漏工时表
             PROJECT_DASHBOARD_MY_PROJECT_ISSUE = 1679,       // 项目-仪表板-我的项目问题
 
+            SYS_FORM_TEMP_SEARCH = 1684,             // 系统设置-表单模板查询
+
 
 
 
@@ -1999,10 +2001,10 @@ namespace EMT.DoneNOW.DTO
         REPORT_CONTRACT_BILL_TOBILL_BY_PROJECT = 285,   // 报表-合同-计费-待计费详情报表（按项目分组）
         REPORT_PROJECT_TASK_RES_ACHIEVEMENTS = 286,     // 报表-项目-任务-任务员工绩效分析
         REPORT_CONTRACT_BILL_PROJECT_PROFIT = 287,      // 报表-合同-计费-项目利润率摘要报表
-        PROJECT_DASHBOARD_TIMESHEET = 288,              // 项目-仪表板-漏工时表
-        PROJECT_DASHBOARD_MY_PROJECT_ISSUE = 289,       // 项目-仪表板-我的项目问题
+        PROJECT_DASHBOARD_TIMESHEET = 288,              // 项目-仪表板-漏工时表     
+        PROJECT_DASHBOARD_MY_PROJECT_ISSUE = 289,       // 项目-仪表板-我的项目问题      
 
-
+        SYS_FORM_TEMP_SEARCH = 294,             // 系统设置-表单模板查询
 
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理

@@ -3815,6 +3815,16 @@ namespace EMT.DoneNOW.BLL
             var oldSer = sscDal.FindNoDeleteById(param.call.id);
             if (oldSer == null)
                 return false;
+            if(oldSer.status_id!=(int)DicEnum.SERVICE_CALL_STATUS.CANCEL&& param.call.status_id == (int)DicEnum.SERVICE_CALL_STATUS.CANCEL)
+            {
+                param.call.canceled_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                param.call.canceled_user_id = userId;
+            }
+            if (oldSer.status_id == (int)DicEnum.SERVICE_CALL_STATUS.CANCEL && param.call.status_id != (int)DicEnum.SERVICE_CALL_STATUS.CANCEL)
+            {
+                param.call.canceled_time = null;
+                param.call.canceled_user_id = null;
+            }
             param.call.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             param.call.update_user_id = userId;
             sscDal.Update(param.call);

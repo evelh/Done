@@ -9,7 +9,7 @@
     <link href="../Content/crmDashboard.css" rel="stylesheet" />
     <title></title>
     <style>
-        a#link12 {
+        a{
     color: #376597;
     font-size: 12px;
     text-decoration: none;
@@ -50,7 +50,7 @@
                                                     <tr>
                                                         <td id="linkTd"><a id="link12" onclick="ShowOtherPage('overTask');">过期或可能超出预估时间的任务</a></td>
                                                     </tr>
-                                                    <tr>
+                                                    <tr style="display:none;">
                                                         <td id="linkTd"><a id="link12" onclick="showProjectProfitabilityForecastReport();">项目利润率预测报表</a></td>
                                                     </tr>
                                                     <tr>
@@ -137,17 +137,17 @@
 
                                             <table width="100%" cellspacing="0" cellpadding="3" border="0">
                                                 <tbody>
-                                                    <tr>
+                                                    <tr style="display:none;">
                                                         <td id="linkTd"><a id="link12" onclick="showDailyStatusReport();">每日状态报表</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td id="linkTd"><a id="link12" onclick="showWorktoApprove();">待审批的工作</a></td>
+                                                        <td id="linkTd"><a id="link12" onclick="ShowOtherPage('waitApprol');">待审批的工作</a></td>
                                                     </tr>
                                                     <tr>
                                                         <td id="linkTd"><a id="link12" onclick="ShowOtherPage('resAchievements');">员工绩效分析与评估</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showProjectSummaryReport();">项目利润率摘要报表</a></td>
+                                                        <td id="linkTd"><a id="link12" onclick="ShowOtherPage('projectProfit');">项目利润率摘要报表</a></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -184,16 +184,16 @@
 
                                                 <tbody>
                                                     <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showTimesheetDueIn();">工时表还有<%=6-(int)DateTime.Now.DayOfWeek %>天截止</a></td>
+                                                        <td id="linkTd"><a id="link12" onclick="ShowOtherPage('dueSheet');">工时表还有<%=6-(int)DateTime.Now.DayOfWeek %>天截止</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showTimesheetstoApprove();">待审批的工时表</a></td>
+                                                        <td id="linkTd"><a id="link12" onclick="ShowOtherPage('waitAppSheet');">待审批的工时表</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showExpenseReportstoApprove();">待审批的费用报表</a></td>
+                                                        <td id="linkTd"><a id="link12" onclick="ShowOtherPage('waitAppExpense');">待审批的费用报表</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showMissingTimesheets();">遗漏工时表</a></td>
+                                                        <td id="linkTd"><a id="link12" onclick="ShowOtherPage('timeSheet');">遗漏工时表</a></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -214,11 +214,11 @@
 
                             <table width="100%" cellspacing="3" cellpadding="0" border="0">
                                 <tbody>
-                                    <tr style="cursor: pointer;" onclick="showMyIssues();">
+                                    <tr style="cursor: pointer;" onclick="ShowOtherPage('myIssue');">
                                         <td width="22px">
                                             <img src="../Images/alert.png" /></td>
-                                        <td style="border-bottom: 1px solid #d3d3d3;">打开问题</td>
-                                        <td style="border-bottom: 1px solid #d3d3d3; text-align: right;">8</td>
+                                        <td style="border-bottom: 1px solid #d3d3d3;"><a>打开问题</a></td>
+                                        <td style="border-bottom: 1px solid #d3d3d3; text-align: right;"><%=openIssueCount %></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -416,18 +416,26 @@
         else if (type == "resAchievements") {
             location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_PROJECT_TASK_RES_ACHIEVEMENTS %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.REPORT_PROJECT_TASK_RES_ACHIEVEMENTS %>";
         }
-        else if (type == "") {
-
+        else if (type == "waitApprol") {
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CONTRACT_BILL_TOBILL %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.REPORT_CONTRACT_BILL_TOBILL %>";
         }
-        else if (type == "") {
-
+        else if (type == "projectProfit") {
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CONTRACT_BILL_PROJECT_PROFIT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.REPORT_CONTRACT_BILL_PROJECT_PROFIT %>";
         }
-        else if (type == "") {
-
-
+        else if (type == "dueSheet") {
+            location.href = "../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_MY_CURRENT %>&con2735=<%=LoginUserId %>";
         }
-        else if (type == "") {
-
+        else if (type == "waitAppSheet") {
+            location.href = "../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_WAIT_APPROVE %>&isCheck=1";
+        }
+        else if (type == "waitAppExpense") {
+            location.href = "../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MYAPPROVE_EXPENSE_REPORT %>&isCheck=1";
+        }
+        else if (type == "timeSheet") {
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_DASHBOARD_TIMESHEET %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_DASHBOARD_TIMESHEET %>";
+        }
+        else if (type == "myIssue") {
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_DASHBOARD_MY_PROJECT_ISSUE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_DASHBOARD_MY_PROJECT_ISSUE %>";
         }
         
     }

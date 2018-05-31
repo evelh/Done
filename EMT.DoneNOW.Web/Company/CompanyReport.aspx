@@ -258,7 +258,7 @@
                                 {
                                     if (udf.value_list != null && udf.value_list.Count > 0 && thisValue != null && !string.IsNullOrEmpty(thisValue.ToString()))
                                     {
-                                        var selectValue = udf.value_list.FirstOrDefault(_ => _.val == thisValue.ToString());
+                                        var selectValue = udf.value_list.FirstOrDefault(_ => _.val == thisValue.value.ToString());
                             %>
                             <%=selectValue == null ? "" : selectValue.show %>
                             <%
@@ -579,7 +579,7 @@
                                 {
                                     if (udf.value_list != null && udf.value_list.Count > 0 && thisValue != null && !string.IsNullOrEmpty(thisValue.ToString()))
                                     {
-                                        var selectValue = udf.value_list.FirstOrDefault(_ => _.val == thisValue.ToString());
+                                        var selectValue = udf.value_list.FirstOrDefault(_ => _.val == thisValue.value.ToString());
                             %>
                             <%=selectValue == null ? "" : selectValue.show %>
                             <%

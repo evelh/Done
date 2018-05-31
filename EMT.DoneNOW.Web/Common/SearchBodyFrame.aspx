@@ -414,9 +414,16 @@
                     <li id="CreateTodoLi" style="width:80px;padding-left:5px;">创建待办<i class="icon-2" style="background: url(../Images/ButtonBarIcons.png) no-repeat -180px -50px;width: 10px;height: 10px;display: block;float: right;margin-top: 8px;margin-left: 10px;"></i>
                     </li>
                     <%} %>
-                    <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_ACCOUNT_PROFIT_MARGIN||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_MONTH_PROFIT_MARGIN||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_MONTH_PROFIT_MARGIN_BYDATE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_CONTRACT_PROFIT||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_CONTRACT_PROFIT_BYDATE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_CONTRACT_PROFIT_MARGIN||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_PROJECT_PROFIT||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_PROJECT_PROFIT_BYDATE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_RES_WORKHOUR||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_RES_WORKHOUR_BYDATE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_ACCOUNT_OVERVIEW||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_ACCOUNT_OVERVIEW_BYDATE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_PROJECT_PROFIT_MARGIN){ %> 
+                    <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_ACCOUNT_PROFIT_MARGIN || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_MONTH_PROFIT_MARGIN || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_MONTH_PROFIT_MARGIN_BYDATE || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_CONTRACT_PROFIT || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_CONTRACT_PROFIT_BYDATE || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_CONTRACT_PROFIT_MARGIN || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_PROJECT_PROFIT || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_PROJECT_PROFIT_BYDATE || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_RES_WORKHOUR || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_RES_WORKHOUR_BYDATE || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_ACCOUNT_OVERVIEW || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_ACCOUNT_OVERVIEW_BYDATE || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_PROJECT_PROFIT_MARGIN) { %> 
                     <li style="width:28px;" id="ReturnUpper"><i style="background: url(../Images/Icons.png) no-repeat -6px -11px;width: 16px;height: 21px;margin-left: 5px;"></i></li>
+                    <%} else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_FORM_TEMP_SEARCH){ %>
+                    <li class="Button ButtonIcon NormalState f1" id="options" tabindex="0"> 
+                    <span class="Icon" style="width: 0; margin: 0;"></span>
+                    <span class="Text">新增</span>
+                    <img src="../Images/dropdown.png" alt="" class="ButtonRightImg1" />  
+                         </li>
                     <%} %>
+                    
 
                     <li id="PrintLi" class="General"><i style="background-image: url(../Images/print.png);"></i></li>
                     <li id="SelectLi" class="General" onclick="javascript:window.open('../Common/ColumnSelector.aspx?type=<%=queryTypeId %>&group=<%=paraGroupId %>', 'ColumnSelect', 'left=200,top=200,width=820,height=470', false);"><i style="background-image: url(../Images/column-chooser.png);"></i></li>
@@ -508,6 +515,21 @@
                     <ul>
                         <li><span class='DropDownMenuItemText' onclick="CreateTodoSelect()">为选择联系人创建待办</span></li> 
                         <li><span class='DropDownMenuItemText' onclick="CreateTodoAll()">为全部联系人创建待办</span></li> 
+                    </ul>
+                </div>
+                <%} else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_FORM_TEMP_SEARCH) {
+                        var typeList = new EMT.DoneNOW.DAL.d_general_dal().GetGeneralByTableId((long)EMT.DoneNOW.DTO.GeneralTableEnum.FORM_TEMPLATE_TYPE);
+                        %>
+                <div class="DropDownMenu" id="D1" style=" background-color: #FFF;padding: 5px;border: 1px solid #BCBCBC;cursor: pointer;box-shadow: 1px 3px 4px rgba(0,0,0,0.33);position: fixed;top: 36px;left:10px;border-top:white;display:none;">
+                    <ul>
+                        <% if (typeList != null && typeList.Count > 0) {
+                                foreach (var type in typeList)
+                                {%>
+                        <li><span class='DropDownMenuItemText' onclick="NewTemp('<%=type.id %>')"><%=type.name %></span></li> 
+                                <%}
+                            } %>
+                        
+                       
                     </ul>
                 </div>
                 <%} %>

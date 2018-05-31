@@ -51,7 +51,7 @@ namespace EMT.DoneNOW.Web.Project
                     resList = resList.Distinct().ToList();
             }
             
-            openIssueCount = Convert.ToInt32(ppDal.GetSingle("SELECT count(1) from sdk_task st INNER join pro_project p on st.project_id = p.id  where st.delete_time = 0 and p.delete_time = 0 and st.type_id = 1808 and st.status_id <> 1894 and p.status_id <> 1352 "));
+            openIssueCount = Convert.ToInt32(ppDal.GetSingle("SELECT count(1) from sdk_task st INNER join pro_project p on st.project_id = p.id  where st.delete_time = 0 and p.delete_time = 0 and st.is_project_issue=1 and st.status_id <> 1894 and p.status_id <> 1352 "));
         }
     }
 }
