@@ -1275,7 +1275,42 @@ namespace EMT.DoneNOW.BLL
             var thisAcc = _dal.FindSignleBySql<crm_account>("SELECT * from crm_account where oid = 0 and delete_time = 0");
             return thisAcc;
         }
+        /// <summary>
+        /// 根据相关SQl 获取相关 客户信息
+        /// </summary>
+        public List<crm_account> GetAccountBySql(string sql)
+        {
+            return _dal.FindListBySql(sql);
+        }
 
+        public bool MergeAccount(long fromAccId, long toAccId, long userId, bool isDelete = false)
+        {
+            crm_account fromAcc = GetCompany(fromAccId);
+            crm_account toAcc = GetCompany(toAccId);
+            if (fromAcc == null || toAcc == null)
+                return false;
+            //  联系人
+            // 销售订单
+            // 采购订单
+            // 待办
+            // 活动
+            // 配置项
+            // 项目
+            // 费用
+            // 工单
+            // 调查
+            // 任务/工单备注
+            // 备注
+            // 合同
+            // 附件
+            // 服务
+            // 创建时间早于目标客户 创建时间 更改目标客户的创建时间
+
+
+            if (isDelete)
+                DeleteCompany(fromAccId,userId);
+            return true;
+        }
 
     }
 }

@@ -333,7 +333,9 @@ var windowObj = {
     contactGroup: "contactGroup",
     opportunity: "opportunity",
     contactActionTemp: "contactActionTemp",
-    formTemp:"formTemp",
+    formTemp: "formTemp",
+    general: "general",
+    generalCate: "generalCate",
 }
 var windowType = {
     blank: '_blank',

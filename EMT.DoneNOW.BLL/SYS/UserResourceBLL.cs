@@ -688,5 +688,41 @@ namespace EMT.DoneNOW.BLL
             
             return true;
         }
+        /// <summary>
+        /// 转移员工(更改员工的客户，商机，待办，活动)
+        /// </summary>
+        public bool TransResource(long fromResId,long toResId,long userId)
+        {
+            if (fromResId == toResId)
+                return true;
+            var fromRes = GetResourceById(fromResId);
+            var toRes = GetResourceById(toResId);
+            if (fromRes == null || toRes == null)
+                return false;
+            CompanyBLL accBll = new CompanyBLL();
+            List<crm_account> accList = accBll.GetAccountBySql("SELECT * from crm_account a where a.delete_time =0 and a.resource_id = " + fromResId.ToString());
+            if (accList != null && accList.Count > 0)
+                accList.ForEach(_=> {
+                    _.resource_id = toResId;
+                    accBll.EditAccount(_,userId);
+                });
+
+            OpportunityBLL oppoBll = new OpportunityBLL();
+            List<crm_opportunity> oppoList = oppoBll.GetOppoBySql($"SELECT * from crm_opportunity where delete_time =0 and resource_id = {fromResId.ToString()} and status_id not in ({(int)DicEnum.OPPORTUNITY_STATUS.LOST},{(int)DicEnum.OPPORTUNITY_STATUS.CLOSED},{(int)DicEnum.OPPORTUNITY_STATUS.IMPLEMENTED})");
+            if (oppoList != null && oppoList.Count > 0)
+                oppoList.ForEach(_ => {
+                    _.resource_id = toResId;
+                    oppoBll.EdotOpportunity(_, userId);
+                });
+
+            ActivityBLL actBll = new ActivityBLL();
+            List<com_activity> actList = actBll.GetToListBySql($"select id,name,description from com_activity where delete_time =0 and resource_id = {fromResId.ToString()} and status_id={(int)DicEnum.ACTIVITY_STATUS.NOT_COMPLETED}");
+            if (actList != null && actList.Count > 0)
+                actList.ForEach(_ => {
+                    _.resource_id = toResId;
+                    actBll.EditActivity(_, userId);
+                });
+            return true;
+        }
     }
 }

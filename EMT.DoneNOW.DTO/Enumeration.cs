@@ -53,6 +53,7 @@ namespace EMT.DoneNOW.DTO
         PAYROLL_TYPE = 53,                      // 薪资类型
         TRAVEL_RESTRICTIONS = 54,               // 员工出差限度
         TIME_OFF_PERIOD_TYPE = 56,              // 休假策略：累计增长周期类型
+        RESOURCE_SKILL_TYPE = 60,               // 员工：技能类型
         ATTACHMENT_TYPE = 62,                   // 附件类型
         DEPARTMENT_CATE = 64,                     //部门：类型
         ACCOUNT_SUFFIX = 75,                     // 客户名称后缀

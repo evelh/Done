@@ -1967,5 +1967,26 @@ namespace EMT.DoneNOW.BLL
             }
             return month;
         }
+
+        /// <summary>
+        /// 根据相关SQl 获取相关 商机信息
+        /// </summary>
+        public List<crm_opportunity> GetOppoBySql(string sql)
+        {
+            return _dal.FindListBySql(sql);
+        }
+
+        public bool EdotOpportunity(crm_opportunity oppo,long userId)
+        {
+            var oldOppo = GetOpportunityById(oppo.id);
+            if (oldOppo == null)
+                return false;
+            oppo.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            oppo.update_user_id = userId;
+            _dal.Update(oppo);
+            OperLogBLL.OperLogUpdate<crm_opportunity>(oppo, oldOppo, oppo.id, userId, OPER_LOG_OBJ_CATE.OPPORTUNITY, "");
+            return true;
+
+        }
     }
 }

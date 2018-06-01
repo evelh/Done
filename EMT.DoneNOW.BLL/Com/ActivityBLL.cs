@@ -2054,7 +2054,26 @@ namespace EMT.DoneNOW.BLL
             var thisTimeStamp = Tools.Date.DateHelper.ToUniversalTimeStamp(date);
             return dal.FindListBySql($"SELECT * from com_activity where delete_time = 0 and cate_id = {(int)DicEnum.ACTIVITY_CATE.TODO} and resource_id ={resId.ToString()} and (FROM_UNIXTIME(start_date/1000,'%Y-%m-%d') = '{date.ToString("yyyy-MM-dd")}' or (start_date<={thisTimeStamp} and end_date>={thisTimeStamp}))");
         }
-            
-            //
+        /// <summary>
+        /// 根据SQl 获取相关活动
+        /// </summary>
+        public List<com_activity> GetToListBySql(string sql)
+        {
+            return dal.FindListBySql(sql);
+        }
+
+
+        public bool EditActivity(com_activity activity, long userId)
+        {
+            var oldOAct = GetActivity(activity.id);
+            if (oldOAct == null)
+                return false;
+            activity.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            activity.update_user_id = userId;
+            dal.Update(activity);
+            OperLogBLL.OperLogUpdate<com_activity>(activity, oldOAct, activity.id, userId, DicEnum.OPER_LOG_OBJ_CATE.TODO, "");
+            return true;
+
+        }
     }
 }
