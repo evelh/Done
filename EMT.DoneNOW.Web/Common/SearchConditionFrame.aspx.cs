@@ -279,6 +279,45 @@ namespace EMT.DoneNOW.Web
                     }
                     currentQuery.page_name = name;
                     break;
+                case (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_DASHBOARD_OVER_TASK:
+                    currentQuery.page_name = "过期任务";
+                    break;
+                case (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_DASHBOARD_MY_PROJECT:
+                    currentQuery.page_name = "我是负责人的项目";
+                    break;
+                case (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_DASHBOARD_PROJECT_STATUS:
+                    currentQuery.page_name = "项目组合状态";
+                    break;
+                case (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_DASHBOARD_AGAIN_RESOURCE:
+                    currentQuery.page_name = "任务分配-员工";
+                    break;
+                case (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_DASHBOARD_AGAIN_PROJECT:
+                    currentQuery.page_name = "任务分配-项目";
+                    break;
+                case (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_DASHBOARD_MONEY_DATE:
+                    currentQuery.page_name = "员工带薪休假日程";
+                    break;
+                case (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CONTRACT_BILL_TOBILL:
+                    currentQuery.page_name = "待审批的工作 ";
+                    break;
+                case (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CONTRACT_BILL_TOBILL_BY_RES:
+                    currentQuery.page_name = "待审批的工作";
+                    break;
+                case (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CONTRACT_BILL_TOBILL_BY_PROJECT:
+                    currentQuery.page_name = "待审批的工作";
+                    break;
+                case (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_PROJECT_TASK_RES_ACHIEVEMENTS:
+                    currentQuery.page_name = "员工绩效分析与评估";
+                    break;
+                case (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CONTRACT_BILL_PROJECT_PROFIT:
+                    currentQuery.page_name = "项目利润率摘要报表";
+                    break;
+                case (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_DASHBOARD_TIMESHEET:
+                    currentQuery.page_name = "遗漏工时表";
+                    break;
+                case (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_DASHBOARD_MY_PROJECT_ISSUE:
+                    currentQuery.page_name = "我的项目问题";
+                    break;
                 default:
                     currentQuery.page_name = "";
                     break;

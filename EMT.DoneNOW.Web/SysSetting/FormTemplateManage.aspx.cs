@@ -204,7 +204,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                                     
                                 }
                             }
-                               
+                            tempCheckList = new DAL.sys_form_tmpl_ticket_checklist_dal().GetCheckByTicket(tempTicket.id);
 
                             tickUdfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TICKETS);
                             ticketUdfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.FORM_TICKET, tempTicket.id, tickUdfList);
@@ -259,7 +259,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                 if (pushList != null && pushList.Count > 0)
                     pushList = pushList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TICKET_NOTE).ToString()).ToList();
                 if (actList != null && actList.Count > 0)
-                    actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TICKET_NOTE).ToString()).ToList();
+                    actList = actList.Where(_ => _.ext2 == ((int)DicEnum.ACTIVITY_CATE.TASK_NOTE).ToString()).ToList();
             }
             else if (formTypeId == (int)DicEnum.FORM_TMPL_TYPE.QUICK_CALL)
             {
@@ -870,6 +870,7 @@ namespace EMT.DoneNOW.Web.SysSetting
             {
                 
                 var checkIdArr = CheckListIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                int sort = 1;
                 foreach (var checkId in checkIdArr)
                 {
                     if (string.IsNullOrEmpty(Request.Form[checkId + "_item_name"]))  // 条目名称为空 不添加
@@ -877,11 +878,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                     var is_complete = Request.Form[checkId + "_is_complete"];
                     var is_import = Request.Form[checkId + "_is_import"];
                     var sortOrder = Request.Form[checkId + "_sort_order"];
-                    decimal? sort = null;
-                    if (!string.IsNullOrEmpty(sortOrder))
-                    {
-                        sort = decimal.Parse(sortOrder);
-                    }
+                    
                     var thisCheck = new CheckListDto()
                     {
                         ckId = long.Parse(checkId),
@@ -891,6 +888,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                         sortOrder = sort,
                     };
                     ckList.Add(thisCheck);
+                    sort++;
                 }
                
             }

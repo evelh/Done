@@ -65,6 +65,16 @@ namespace EMT.DoneNOW.DAL
             sql += show;
             return FindListBySql<pro_project>(sql);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public List<long> GetRes(string sql)
+        {
+            // SELECT DISTINCT owner_resource_id from pro_project where delete_time =0 and owner_resource_id is not NULL
+            return FindListBySql<long>(sql);
+        }
 
     }
 }

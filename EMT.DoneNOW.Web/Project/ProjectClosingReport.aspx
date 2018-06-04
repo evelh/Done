@@ -93,7 +93,7 @@
 
     $(function () {
 
-        var url = "ProjectReportDetail?id=<%=thisProject.id %>&chooseDate=<%=chooseDate.ToString("yyyy-MM-dd") %>"
+        var url = "ProjectReportDetail?isAll=<%=isAll?"1":"" %>&id=<%=thisProject!=null?thisProject.id.ToString():"" %>&chooseDate=<%=chooseDate.ToString("yyyy-MM-dd") %>"
         <%if (isSeven)
     { %>
         $("#week").prop("checked", true);
@@ -122,7 +122,7 @@
 
     function changeView() {
         debugger;
-        var url = "ProjectReportDetail?id=<%=thisProject.id %>&chooseDate=<%=chooseDate.ToString("yyyy-MM-dd") %>";
+        var url = "ProjectReportDetail?isAll=<%=isAll?"1":"" %>&id=<%=thisProject!=null?thisProject.id.ToString():"" %>&chooseDate=<%=chooseDate.ToString("yyyy-MM-dd") %>";
         var week = $("#week").is(":checked");
         if (week) {
             url += "&isSeven=1";
@@ -136,7 +136,7 @@
     }
     // 选择时间
     function ChooseDate(chooseDate) {
-        var url = 'ProjectClosingReport?id=<%=thisProject.id %>&chooseDate=' + chooseDate + '&showDate=' + chooseDate;
+        var url = 'ProjectClosingReport?isAll=<%=isAll?"1":"" %>&id=<%=thisProject!=null?thisProject.id.ToString():"" %>&chooseDate=' + chooseDate + '&showDate=' + chooseDate;
         var week = $("#week").is(":checked");
         if (week) {
             url += "&isSeven=1";
@@ -151,7 +151,7 @@
 
     }
     function ChooseNewDate(showDate) {
-        var url = 'ProjectClosingReport?id=<%=thisProject.id %>&chooseDate=<%=chooseDate.ToString("yyyy-MM-dd") %>&showDate=' + showDate;
+        var url = 'ProjectClosingReport?isAll=<%=isAll?"1":"" %>&id=<%=thisProject!=null?thisProject.id.ToString():"" %>&chooseDate=<%=chooseDate.ToString("yyyy-MM-dd") %>&showDate=' + showDate;
         var week = $("#week").is(":checked");
         if (week) {
             url += "&isSeven=1";

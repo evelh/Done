@@ -272,6 +272,10 @@
     <Content Include="Scripts\Search\Invoice_Email_Tmpl.js" />
     <Content Include="Scripts\Search\other_installed_product_search.js" />
     <Content Include="Scripts\Search\Quote_Email_Tmpl.js" />
+    <Content Include="Scripts\Search\report_contract_bill_tobill.js" />
+    <Content Include="Scripts\Search\report_contract_bill_tobill_by_project.js" />
+    <Content Include="Scripts\Search\report_contract_bill_tobill_by_res.js" />
+    <Content Include="Scripts\Search\sys_form_temp_search.js" />
     <Content Include="Scripts\Search\view_contact_group_search.js" />
     <Content Include="Scripts\Search\WidgetDrillCompany.js" />
     <Content Include="Scripts\Search\WidgetDrillConfiguration.js" />
@@ -642,14 +646,20 @@
     <Content Include="ServiceDesk\TicketView.aspx" />
     <Content Include="SysSetting\AddTimeOffPolicy.aspx" />
     <Content Include="ServiceDesk\TicketManage.aspx" />
+    <Content Include="SysSetting\AdjustResourceGoal.aspx" />
     <Content Include="SysSetting\EditServiceAlert.aspx" />
     <Content Include="SysSetting\FormTemplateManage.aspx" />
     <Content Include="SysSetting\Holiday.aspx" />
     <Content Include="SysSetting\HolidaySet.aspx" />
+    <Content Include="SysSetting\MergeAccount.aspx" />
     <Content Include="SysSetting\ResourceAssPolicy.aspx" />
     <Content Include="SysSetting\ResourceAssPolicyEdit.aspx" />
+    <Content Include="SysSetting\ResourceDicCateForm.aspx" />
+    <Content Include="SysSetting\ResourceDicForm.aspx" />
+    <Content Include="SysSetting\ResourceProtectedData.aspx" />
     <Content Include="SysSetting\Service.aspx" />
     <Content Include="SysSetting\ServiceBundle.aspx" />
+    <Content Include="SysSetting\TransResource.aspx" />
     <Content Include="SysSetting\UserDefinedField.aspx" />
     <Content Include="SysSetting\WorkflowRule.aspx" />
     <Content Include="TimeSheet\ExpenseReportDetail.aspx" />
@@ -2394,6 +2404,13 @@
     <Compile Include="ServiceDesk\TicketManage.aspx.designer.cs">
       <DependentUpon>TicketManage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\AdjustResourceGoal.aspx.cs">
+      <DependentUpon>AdjustResourceGoal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\AdjustResourceGoal.aspx.designer.cs">
+      <DependentUpon>AdjustResourceGoal.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SysSetting\EditServiceAlert.aspx.cs">
       <DependentUpon>EditServiceAlert.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2422,6 +2439,13 @@
     <Compile Include="SysSetting\HolidaySet.aspx.designer.cs">
       <DependentUpon>HolidaySet.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\MergeAccount.aspx.cs">
+      <DependentUpon>MergeAccount.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\MergeAccount.aspx.designer.cs">
+      <DependentUpon>MergeAccount.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SysSetting\ResourceAssPolicy.aspx.cs">
       <DependentUpon>ResourceAssPolicy.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2436,6 +2460,27 @@
     <Compile Include="SysSetting\ResourceAssPolicyEdit.aspx.designer.cs">
       <DependentUpon>ResourceAssPolicyEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\ResourceDicCateForm.aspx.cs">
+      <DependentUpon>ResourceDicCateForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\ResourceDicCateForm.aspx.designer.cs">
+      <DependentUpon>ResourceDicCateForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\ResourceDicForm.aspx.cs">
+      <DependentUpon>ResourceDicForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\ResourceDicForm.aspx.designer.cs">
+      <DependentUpon>ResourceDicForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\ResourceProtectedData.aspx.cs">
+      <DependentUpon>ResourceProtectedData.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\ResourceProtectedData.aspx.designer.cs">
+      <DependentUpon>ResourceProtectedData.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SysSetting\Service.aspx.cs">
       <DependentUpon>Service.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2449,6 +2494,13 @@
     </Compile>
     <Compile Include="SysSetting\ServiceBundle.aspx.designer.cs">
       <DependentUpon>ServiceBundle.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\TransResource.aspx.cs">
+      <DependentUpon>TransResource.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\TransResource.aspx.designer.cs">
+      <DependentUpon>TransResource.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\UserDefinedField.aspx.cs">
       <DependentUpon>UserDefinedField.aspx</DependentUpon>

@@ -8,6 +8,13 @@
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
     <link href="../Content/crmDashboard.css" rel="stylesheet" />
     <title></title>
+    <style>
+        a{
+    color: #376597;
+    font-size: 12px;
+    text-decoration: none;
+}
+    </style>
 </head>
 <body>
     <div class="header">项目仪表板-<span id="SelectTypeSpan"><%=LoginUser.name %></span>-<%=DateTime.Now.ToString("yyyy-MM-dd") %> <%=weekName[(int)DateTime.Now.DayOfWeek] %></div>
@@ -16,7 +23,7 @@
             <tr>
                 <td width="50%" align="center" valign="top">
                     <div class="DivSectionWithHeader">
-                        <div class="Heading" style="text-align: left;"><span class="Text">My Projects Summary</span></div>
+                        <div class="Heading" style="text-align: left;"><span class="Text">我的项目摘要</span></div>
                         <div class="Content">
                             <table width="100%" cellspacing="0" cellpadding="3" border="0">
                                 <tbody>
@@ -25,7 +32,7 @@
                                             <table width="100%" cellspacing="0" cellpadding="3" border="0">
                                                 <tbody>
                                                     <tr>
-                                                        <td id="txtblue10" style="text-align: right;" class="FieldLabels">Team Deadlines &amp; Due Dates</td>
+                                                        <td id="txtblue10" style="text-align: right;" class="FieldLabels">团队最后期限</td>
                                                     </tr>
                                                     <tr>
                                                         <td style="text-align: right; padding-top: 11px;">
@@ -38,19 +45,19 @@
                                             <table width="100%" cellspacing="0" cellpadding="3" border="0">
                                                 <tbody>
                                                     <tr>
-                                                        <td id="linkTd">What's Due <a style="margin-left: 4px; margin-right: 4px;" id="link12" href="#" onclick="showWhatsDue('byday');">Today</a> | <a style="margin-left: 4px; margin-right: 4px;" id="link12" href="#" onclick="showWhatsDue('byweek');">This Week</a></td>
+                                                        <td id="linkTd">截止日期<a style="margin-left: 4px; margin-right: 4px;" id="link12" onclick="showWhatsDue('byday');">今天</a> | <a style="margin-left: 4px; margin-right: 4px;" id="link12" onclick="showWhatsDue('byweek');">这周</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showAtRiskTasks();">Overdue Tasks or At-Risk of Exceeding Estimate</a></td>
+                                                        <td id="linkTd"><a id="link12" onclick="ShowOtherPage('overTask');">过期或可能超出预估时间的任务</a></td>
+                                                    </tr>
+                                                    <tr style="display:none;">
+                                                        <td id="linkTd"><a id="link12" onclick="showProjectProfitabilityForecastReport();">项目利润率预测报表</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showProjectProfitabilityForecastReport();">Project Profitability Forecast</a></td>
+                                                        <td id="linkTd"><a id="link12" onclick="ShowOtherPage('myProject');">我是负责人的项目</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showMyLeadProjects();">Projects Where I Am the Project Lead</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showProjectPortfolioReport();">Project Portfolio Status</a></td>
+                                                        <td id="linkTd"><a id="link12" onclick="ShowOtherPage('projectStatus');">项目组合状态报表</a></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -71,7 +78,7 @@
                                             <table width="100%" cellspacing="0" cellpadding="3" border="0">
                                                 <tbody>
                                                     <tr>
-                                                        <td id="txtblue10" style="text-align: right;" class="FieldLabels">Resources</td>
+                                                        <td id="txtblue10" style="text-align: right;" class="FieldLabels">员工</td>
                                                     </tr>
                                                     <tr>
                                                         <td style="text-align: right;">
@@ -85,15 +92,15 @@
                                             <table width="100%" cellspacing="0" cellpadding="3" border="0">
                                                 <tbody>
                                                     <tr>
-                                                        <td id="linkTd">Assignments by <a style="margin-left: 4px; margin-right: 4px;" id="link12" href="#" onclick="showAssignmentsBy('resource');">Resource</a> | <a id="link12" style="margin-left: 4px; margin-right: 4px;" href="#" onclick="showAssignmentsBy('project');">Project</a></td>
+                                                        <td id="linkTd">任务分配<a style="margin-left: 4px; margin-right: 4px;" id="link12" onclick="ShowOtherPage('againRes');">员工</a> | <a id="link12" style="margin-left: 4px; margin-right: 4px;" onclick="ShowOtherPage('againProject');">项目</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showWorkloadReport();">Workload Report</a></td>
+                                                        <td id="linkTd"><a id="link12" href="#" onclick="showWorkloadReport();">工作量报表</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showResourceUtilizationReport();">Resource Utilization Detail Report (retired)</a></td>
+                                                        <td id="linkTd"><a id="link12" onclick="ShowOtherPage('moneyDate');">员工带薪休假日程</a></td>
                                                     </tr>
-                                                    <tr>
+                                                    <tr style="display:none;">
                                                         <td id="linkTd"><a id="link12" href="#" onclick="showVacationSchedule();">Vacation Schedule for My Resources</a></td>
                                                     </tr>
                                                 </tbody>
@@ -115,7 +122,7 @@
                                             <table width="100%" cellspacing="0" cellpadding="3" border="0">
                                                 <tbody>
                                                     <tr>
-                                                        <td id="txtblue10" style="text-align: right;" class="FieldLabels">Completed</td>
+                                                        <td id="txtblue10" style="text-align: right;" class="FieldLabels">已完成</td>
                                                     </tr>
                                                     <tr>
                                                         <td style="text-align: right; padding-top: 5px;">
@@ -130,17 +137,17 @@
 
                                             <table width="100%" cellspacing="0" cellpadding="3" border="0">
                                                 <tbody>
-                                                    <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showDailyStatusReport();">Daily Status Report</a></td>
+                                                    <tr style="display:none;">
+                                                        <td id="linkTd"><a id="link12" onclick="showDailyStatusReport();">每日状态报表</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showWorktoApprove();">Work Ready to Approve</a></td>
+                                                        <td id="linkTd"><a id="link12" onclick="ShowOtherPage('waitApprol');">待审批的工作</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showResourcePerformanceReport();">Analyze Individual Performance vs Estimate</a></td>
+                                                        <td id="linkTd"><a id="link12" onclick="ShowOtherPage('resAchievements');">员工绩效分析与评估</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showProjectSummaryReport();">Project Profitability Summary Report</a></td>
+                                                        <td id="linkTd"><a id="link12" onclick="ShowOtherPage('projectProfit');">项目利润率摘要报表</a></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -161,7 +168,7 @@
                                             <table width="100%" cellspacing="0" cellpadding="3" border="0">
                                                 <tbody>
                                                     <tr>
-                                                        <td id="txtblue10" style="text-align: right;" class="FieldLabels">Administration</td>
+                                                        <td id="txtblue10" style="text-align: right;" class="FieldLabels">管理</td>
                                                     </tr>
                                                     <tr>
                                                         <td style="text-align: right; padding-top: 5px;">
@@ -177,16 +184,16 @@
 
                                                 <tbody>
                                                     <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showTimesheetDueIn();">Timesheet Due in 4 Day(s)</a></td>
+                                                        <td id="linkTd"><a id="link12" onclick="ShowOtherPage('dueSheet');">工时表还有<%=6-(int)DateTime.Now.DayOfWeek %>天截止</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showTimesheetstoApprove();">Timesheets to Approve</a></td>
+                                                        <td id="linkTd"><a id="link12" onclick="ShowOtherPage('waitAppSheet');">待审批的工时表</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showExpenseReportstoApprove();">Expense Reports to Approve</a></td>
+                                                        <td id="linkTd"><a id="link12" onclick="ShowOtherPage('waitAppExpense');">待审批的费用报表</a></td>
                                                     </tr>
                                                     <tr>
-                                                        <td id="linkTd"><a id="link12" href="#" onclick="showMissingTimesheets();">Unsubmitted / Missing Timesheets</a></td>
+                                                        <td id="linkTd"><a id="link12" onclick="ShowOtherPage('timeSheet');">遗漏工时表</a></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -202,16 +209,16 @@
                 <td width="50%" align="center" valign="top">
 
                     <div class="DivSectionWithHeader">
-                        <div class="Heading" style="text-align: left;"><span class="Text">My Project Issues</span></div>
+                        <div class="Heading" style="text-align: left;"><span class="Text">我的项目问题</span></div>
                         <div class="Content" style="padding-left: 6px; padding-right: 20px;">
 
                             <table width="100%" cellspacing="3" cellpadding="0" border="0">
                                 <tbody>
-                                    <tr style="cursor: pointer;" onclick="showMyIssues();">
+                                    <tr style="cursor: pointer;" onclick="ShowOtherPage('myIssue');">
                                         <td width="22px">
-                                            <img src="/images/icons/icn_issue.png?v=49725"></td>
-                                        <td style="border-bottom: 1px solid #d3d3d3;">Open Issues</td>
-                                        <td style="border-bottom: 1px solid #d3d3d3; text-align: right;">8</td>
+                                            <img src="../Images/alert.png" /></td>
+                                        <td style="border-bottom: 1px solid #d3d3d3;"><a>打开问题</a></td>
+                                        <td style="border-bottom: 1px solid #d3d3d3; text-align: right;"><%=openIssueCount %></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -220,15 +227,13 @@
                     </div>
 
                     <div class="DivSectionWithHeader">
-                        <div class="Heading" style="text-align: left;"><span class="Text">My Projects</span></div>
+                        <div class="Heading" style="text-align: left;"><span class="Text">我的项目</span></div>
                         <div class="Content" style="padding-left: 6px; padding-right: 20px;">
 
                             <table width="100%" cellspacing="3" cellpadding="0" border="0" style="margin-top: 6px; margin-bottom: 6px">
                                 <tbody>
                                     <tr>
-
-                                        <td colspan="3" class="FieldLabels">Lead</td>
-
+                                        <td colspan="3" class="FieldLabels">负责人</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -236,76 +241,27 @@
 
                                 <tbody>
                                     <tr>
-                                        <td valign="bottom" class="FieldLabels" style="padding-bottom: 2px;">Project Name</td>
-                                        <td width="20%" valign="bottom" class="FieldLabels" style="text-align: right; padding-bottom: 2px;">Remaining Days</td>
-                                        <td width="25%" valign="bottom" class="FieldLabels" style="text-align: right; padding-bottom: 2px;">% Complete - Tasks</td>
+                                        <td valign="bottom" class="FieldLabels" style="padding-bottom: 2px;">项目名称</td>
+                                        <td width="20%" valign="bottom" class="FieldLabels" style="text-align: right; padding-bottom: 2px;">剩余时间</td>
+                                        <td width="25%" valign="bottom" class="FieldLabels" style="text-align: right; padding-bottom: 2px;">完成百分比</td>
                                     </tr>
 
+                                  <% if (myProjectList != null && myProjectList.Count > 0) {
+                                          foreach (var myProject in myProjectList)
+                                          {
+                                              var thisVp = vpDal.GetById(myProject.id);
+                                              if (thisVp == null)
+                                                  continue;
+                                              %>
                                     <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="">????? (SDDDDDD)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-121</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
+                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a onclick="openProject('<%=myProject.id %>')"><%=myProject.name %></a></td>
+                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall"><%=(thisVp.remain_days??0) %></td>
+                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;"><%=proBll.CompleteTaskPercent(myProject.id).ToString("#0.00") %>%</td>
                                     </tr>
+                                         <% }
+                                      } %>
 
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="">0105test (111111)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-125</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="">1222ProTesr (abc_sub)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-143</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('72')">13112 (test01)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-138</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('68')">20171205Test (02170918)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-155</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('64')">myTest1113 (02170918)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-182</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('53')">project_abc_sub-110601 (abc_sub)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-189</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('66')">project_abc_sub-1115 (abc_sub)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-180</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('70')">proporal (02170918)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-150</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('77')">tmpl_20180306 (chaho)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-45</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('78')">tmpl_20180306-2 (Burberry)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-41</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
+                                    
 
                                     <tr height="10">
                                         <td colspan="3"></td>
@@ -317,7 +273,7 @@
                                 <tbody>
                                     <tr>
 
-                                        <td colspan="3" class="FieldLabels">Team Member</td>
+                                        <td colspan="3" class="FieldLabels">团队成员</td>
 
                                     </tr>
                                 </tbody>
@@ -325,95 +281,27 @@
                             <table width="100%" cellspacing="3" cellpadding="0" border="0" style="padding-left: 22px">
 
                                 <tbody>
-                                    <tr>
-                                        <td valign="bottom" class="FieldLabels" style="padding-bottom: 2px;">Project Name</td>
-                                        <td width="20%" valign="bottom" class="FieldLabels" style="text-align: right; padding-bottom: 2px;">Remaining Days</td>
-                                        <td width="25%" valign="bottom" class="FieldLabels" style="text-align: right; padding-bottom: 2px;">% Complete - Tasks</td>
+                                     <tr>
+                                        <td valign="bottom" class="FieldLabels" style="padding-bottom: 2px;">项目名称</td>
+                                        <td width="20%" valign="bottom" class="FieldLabels" style="text-align: right; padding-bottom: 2px;">剩余时间</td>
+                                        <td width="25%" valign="bottom" class="FieldLabels" style="text-align: right; padding-bottom: 2px;">完成百分比</td>
                                     </tr>
 
+                                  <% if (myTeamProjectList != null && myTeamProjectList.Count > 0) {
+                                          foreach (var myProject in myTeamProjectList)
+                                          {
+                                              var thisVp = vpDal.GetById(myProject.id);
+                                              if (thisVp == null)
+                                                  continue;
+                                              %>
                                     <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('74')">????? (SDDDDDD)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-121</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
+                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a  onclick="openProject('<%=myProject.id %>')"><%=myProject.name %></a></td>
+                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall"><%=(thisVp.remain_days??0) %></td>
+                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;"><%=proBll.CompleteTaskPercent(myProject.id).ToString("#0.00") %>%</td>
                                     </tr>
+                                         <% }
+                                      } %>
 
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('73')">0105test (111111)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-125</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('71')">1222ProTesr (abc_sub)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-143</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('72')">13112 (test01)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-138</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('68')">20171205Test (02170918)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-155</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('64')">myTest1113 (02170918)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-182</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('19')">p_abc_01 (abcdefg)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-152</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">24%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('28')">p_abc_sub_01 (abc_sub)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-405</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">6%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('33')">p_abc_sub_02 (abc_sub)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-110</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">71%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('53')">project_abc_sub-110601 (abc_sub)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-189</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('66')">project_abc_sub-1115 (abc_sub)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-180</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('70')">proporal (02170918)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-150</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('77')">tmpl_20180306 (chaho)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-45</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a id="link12" href="#" onclick="javascript:openProject('78')">tmpl_20180306-2 (Burberry)</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall">-41</td>
-                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;">0%</td>
-                                    </tr>
 
                                     <tr height="10">
                                         <td colspan="3"></td>
@@ -425,20 +313,33 @@
                                 <tbody>
                                     <tr>
 
-                                        <td colspan="3" class="FieldLabels">Department</td>
+                                        <td colspan="3" class="FieldLabels">部门</td>
 
                                     </tr>
                                 </tbody>
                             </table>
                             <table width="100%" cellspacing="3" cellpadding="0" border="0" style="padding-left: 22px">
-
                                 <tbody>
                                     <tr>
-
-                                        <td id="errorSmall" colspan="3">No Department Projects Available.</td>
-
+                                        <td valign="bottom" class="FieldLabels" style="padding-bottom: 2px;">项目名称</td>
+                                        <td width="20%" valign="bottom" class="FieldLabels" style="text-align: right; padding-bottom: 2px;">剩余时间</td>
+                                        <td width="25%" valign="bottom" class="FieldLabels" style="text-align: right; padding-bottom: 2px;">完成百分比</td>
                                     </tr>
-
+                                    
+                                  <% if (myDepProjectList != null && myDepProjectList.Count > 0) {
+                                          foreach (var myProject in myDepProjectList)
+                                          {
+                                              var thisVp = vpDal.GetById(myProject.id);
+                                              if (thisVp == null)
+                                                  continue;
+                                              %>
+                                    <tr>
+                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;"><a onclick="openProject('<%=myProject.id %>')"><%=myProject.name %></a></td>
+                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;" id="errorSmall"><%=(thisVp.remain_days??0) %></td>
+                                        <td style="border-top: 1px solid #d3d3d3; text-align: right; padding-top: 3px; padding-bottom: 2px;"><%=proBll.CompleteTaskPercent(myProject.id).ToString("#0.00") %>%</td>
+                                    </tr>
+                                         <% }
+                                      } %>
                                     <tr height="10">
                                         <td colspan="3"></td>
                                     </tr>
@@ -449,68 +350,94 @@
                     </div>
 
                     <div class="DivSectionWithHeader">
-                        <div class="Heading" style="text-align: left;"><span class="Text">My Project Resources</span></div>
+                        <div class="Heading" style="text-align: left;"><span class="Text">我的项目员工</span></div>
                         <div class="Content" style="padding-right: 20px;">
-
                             <table width="100%" cellspacing="2" cellpadding="0" border="0">
-
                                 <tbody>
                                     <tr>
-                                        <td valign="bottom" class="FieldLabels" style="padding-bottom: 2px;">Resource Name</td>
-                                        <td valign="bottom" class="FieldLabels" style="padding-bottom: 2px; padding-left: 10px;">Office Phone</td>
-                                        <td valign="bottom" class="FieldLabels" style="padding-bottom: 2px; padding-left: 10px;">E-Mail Address</td>
+                                        <td valign="bottom" class="FieldLabels" style="padding-bottom: 2px;">员工姓名</td>
+                                        <td valign="bottom" class="FieldLabels" style="padding-bottom: 2px; padding-left: 10px;">办公电话</td>
+                                        <td valign="bottom" class="FieldLabels" style="padding-bottom: 2px; padding-left: 10px;">邮件地址</td>
                                     </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;" title="Click for Resource Properties"><a id="link12" href="#" onclick="javascript:openResource('4');">Administrator, Autotask</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; padding-left: 10px;">(518) 720-3500 x</td>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; padding-left: 10px;" title="Click to Send E-Mail"><a id="link12" href="mailto:">
-                                            <img style="vertical-align: middle;" src="/graphics/icons/menus/email.png?v=49725" width="16" height="16" border="0" alt="Click to Send E-Mail">&nbsp;&nbsp;</a></td>
+                                    <%if (resList != null && resList.Count > 0) {
+                                            foreach (var res in resList)
+                                            {%>
+                                     <tr>
+                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;" title="Click for Resource Properties"><a id="link12" href="#" onclick="javascript:openResource('4');"><%=res.name %></a></td>
+                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; padding-left: 10px;"><%=res.office_phone %></td>
+                                         <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; padding-left: 10px;" title="Click to Send E-Mail"><a id="link12" href="mailto:<%=res.email %>">
+                                            <img style="vertical-align: middle;" src="../Images/email.png" width="16" height="16" border="0" alt="Click to Send E-Mail">&nbsp;&nbsp;<%=res.email %></a></td>
                                     </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;" title="Click for Resource Properties"><a id="link12" href="#" onclick="javascript:openResource('29682886');">ds, liude</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; padding-left: 10px;">x</td>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; padding-left: 10px;" title="Click to Send E-Mail"><a id="link12" href="mailto:397906180@qq.com">
-                                            <img style="vertical-align: middle;" src="/graphics/icons/menus/email.png?v=49725" width="16" height="16" border="0" alt="Click to Send E-Mail">&nbsp;&nbsp;397906180@qq.com</a></td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;" title="Click for Resource Properties"><a id="link12" href="#" onclick="javascript:openResource('29682885');">Li, Hong, xiaojie</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; padding-left: 10px;">12345678 x1212</td>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; padding-left: 10px;" title="Click to Send E-Mail"><a id="link12" href="mailto:hong.li@itcat.net.cn">
-                                            <img style="vertical-align: middle;" src="/graphics/icons/menus/email.png?v=49725" width="16" height="16" border="0" alt="Click to Send E-Mail">&nbsp;&nbsp;hong.li@itcat.net.cn</a></td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;" title="Click for Resource Properties"><a id="link12" href="#" onclick="javascript:openResource('29682887');">li, li</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; padding-left: 10px;">x</td>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; padding-left: 10px;" title="Click to Send E-Mail"><a id="link12" href="mailto:liude2@hotmail.com">
-                                            <img style="vertical-align: middle;" src="/graphics/icons/menus/email.png?v=49725" width="16" height="16" border="0" alt="Click to Send E-Mail">&nbsp;&nbsp;liude2@hotmail.com</a></td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; word-break: break-all;" title="Click for Resource Properties"><a id="link12" href="#" onclick="javascript:openResource('29682888');">liu, liu</a></td>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; padding-left: 10px;">x</td>
-                                        <td style="border-top: 1px solid #d3d3d3; padding-top: 3px; padding-bottom: 2px; padding-left: 10px;" title="Click to Send E-Mail"><a id="link12" href="mailto:liude2@hotmail.com">
-                                            <img style="vertical-align: middle;" src="/graphics/icons/menus/email.png?v=49725" width="16" height="16" border="0" alt="Click to Send E-Mail">&nbsp;&nbsp;liude2@hotmail.com</a></td>
-                                    </tr>
-
+                                           <% }
+                                        } %>
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
-
                 </td>
             </tr>
         </tbody>
     </table>
-
 </body>
 </html>
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
 <script src="../Scripts/common.js"></script>
 <script>
+    function openProject(projectId) {
+        window.open("../Project/ProjectView.aspx?id=" + projectId, '_blank', 'left=200,top=200,width=900,height=800', false);
+    }
+    function showWhatsDue(type) {
+        var url = "ProjectClosingReport?isAll=1";
+        if (type == "byweek") {
+            url += "&isSeven=1";
+        }
+        location.href = url;
+    }
+
+    function ShowOtherPage(type) {
+        if (type == "overTask") {
+            location.href = "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_DASHBOARD_OVER_TASK %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_DASHBOARD_OVER_TASK %>";
+        }
+        else if (type == "myProject"){
+            location.href = "../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_DASHBOARD_MY_PROJECT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_DASHBOARD_MY_PROJECT %>&con3989=<%=LoginUserId %>";
+        }
+        else if (type == "projectStatus") {
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_DASHBOARD_PROJECT_STATUS %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_DASHBOARD_PROJECT_STATUS %>";
+        }
+        else if (type == "againRes") {
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_DASHBOARD_AGAIN_RESOURCE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_DASHBOARD_AGAIN_RESOURCE %>";
+        }
+        else if (type == "againProject") {
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_DASHBOARD_AGAIN_PROJECT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_DASHBOARD_AGAIN_PROJECT %>";
+        }
+        else if (type == "moneyDate") {
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_DASHBOARD_MONEY_DATE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_DASHBOARD_MONEY_DATE %>";
+        }
+        else if (type == "resAchievements") {
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_PROJECT_TASK_RES_ACHIEVEMENTS %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.REPORT_PROJECT_TASK_RES_ACHIEVEMENTS %>";
+        }
+        else if (type == "waitApprol") {
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CONTRACT_BILL_TOBILL %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.REPORT_CONTRACT_BILL_TOBILL %>";
+        }
+        else if (type == "projectProfit") {
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CONTRACT_BILL_PROJECT_PROFIT %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.REPORT_CONTRACT_BILL_PROJECT_PROFIT %>";
+        }
+        else if (type == "dueSheet") {
+            location.href = "../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_MY_CURRENT %>&con2735=<%=LoginUserId %>";
+        }
+        else if (type == "waitAppSheet") {
+            location.href = "../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_WAIT_APPROVE %>&isCheck=1";
+        }
+        else if (type == "waitAppExpense") {
+            location.href = "../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MYAPPROVE_EXPENSE_REPORT %>&isCheck=1";
+        }
+        else if (type == "timeSheet") {
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_DASHBOARD_TIMESHEET %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_DASHBOARD_TIMESHEET %>";
+        }
+        else if (type == "myIssue") {
+            location.href = "../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_DASHBOARD_MY_PROJECT_ISSUE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_DASHBOARD_MY_PROJECT_ISSUE %>";
+        }
+        
+    }
 
 </script>

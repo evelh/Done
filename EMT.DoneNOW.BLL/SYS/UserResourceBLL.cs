@@ -347,6 +347,15 @@ namespace EMT.DoneNOW.BLL
             return _dal.FindSignleBySql<sys_resource_availability>($"select * from sys_resource_availability where resource_id={resId} and delete_time=0");
         }
         /// <summary>
+        /// 获取员工每天工作时间
+        /// </summary>
+        /// <param name="resId"></param>
+        /// <returns></returns>
+        public sys_resource_availability GetResourceAvailabilityById(long id)
+        {
+            return new sys_resource_availability_dal().FindNoDeleteById(id); ;
+        }
+        /// <summary>
         /// 获取员工休假策略
         /// </summary>
         /// <param name="resId"></param>
@@ -637,6 +646,83 @@ namespace EMT.DoneNOW.BLL
                 }
             }
             return resList;
+        }
+
+        /// <summary>
+        /// 编辑员工的周目标
+        /// </summary>
+        public bool EditResAvaGoal(long resAvaId,decimal goal,long userId)
+        {
+            sys_resource_availability thisResAva = GetResourceAvailabilityById(resAvaId);
+            if (thisResAva == null)
+                return false;
+            if(thisResAva.goal!= goal)
+            {
+                sys_resource_availability oldResAva = GetResourceAvailabilityById(resAvaId);
+                thisResAva.goal = goal;
+                thisResAva.update_user_id = userId;
+                thisResAva.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                new sys_resource_availability_dal().Update(thisResAva);
+                OperLogBLL.OperLogUpdate<sys_resource_availability>(thisResAva, oldResAva, thisResAva.id,userId,OPER_LOG_OBJ_CATE.RESOURCE,"");
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 编辑员工的周目标
+        /// </summary>
+        public bool EditResProtected(long resId,bool isEdit,bool isView,bool isEditUn,bool isViewUn,long userId)
+        {
+            var thisRes = GetResourceById(resId);
+            if (thisRes == null)
+                return false;
+            sys_resource oldRes = GetResourceById(resId);
+            thisRes.edit_protected_data = (sbyte)(isEdit?1:0);
+            thisRes.view_protected_data = (sbyte)(isView ? 1 : 0);
+            thisRes.edit_unprotected_data = (sbyte)(isEditUn ? 1 : 0);
+            thisRes.view_unprotected_data = (sbyte)(isViewUn ? 1 : 0);
+            thisRes.update_user_id = userId;
+            thisRes.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            _dal.Update(thisRes);
+            OperLogBLL.OperLogUpdate<sys_resource>(thisRes, oldRes, thisRes.id, userId, OPER_LOG_OBJ_CATE.RESOURCE, "");
+            
+            return true;
+        }
+        /// <summary>
+        /// 转移员工(更改员工的客户，商机，待办，活动)
+        /// </summary>
+        public bool TransResource(long fromResId,long toResId,long userId)
+        {
+            if (fromResId == toResId)
+                return true;
+            var fromRes = GetResourceById(fromResId);
+            var toRes = GetResourceById(toResId);
+            if (fromRes == null || toRes == null)
+                return false;
+            CompanyBLL accBll = new CompanyBLL();
+            List<crm_account> accList = accBll.GetAccountBySql("SELECT * from crm_account a where a.delete_time =0 and a.resource_id = " + fromResId.ToString());
+            if (accList != null && accList.Count > 0)
+                accList.ForEach(_=> {
+                    _.resource_id = toResId;
+                    accBll.EditAccount(_,userId);
+                });
+
+            OpportunityBLL oppoBll = new OpportunityBLL();
+            List<crm_opportunity> oppoList = oppoBll.GetOppoBySql($"SELECT * from crm_opportunity where delete_time =0 and resource_id = {fromResId.ToString()} and status_id not in ({(int)DicEnum.OPPORTUNITY_STATUS.LOST},{(int)DicEnum.OPPORTUNITY_STATUS.CLOSED},{(int)DicEnum.OPPORTUNITY_STATUS.IMPLEMENTED})");
+            if (oppoList != null && oppoList.Count > 0)
+                oppoList.ForEach(_ => {
+                    _.resource_id = toResId;
+                    oppoBll.EdotOpportunity(_, userId);
+                });
+
+            ActivityBLL actBll = new ActivityBLL();
+            List<com_activity> actList = actBll.GetToListBySql($"select id,name,description from com_activity where delete_time =0 and resource_id = {fromResId.ToString()} and status_id={(int)DicEnum.ACTIVITY_STATUS.NOT_COMPLETED}");
+            if (actList != null && actList.Count > 0)
+                actList.ForEach(_ => {
+                    _.resource_id = toResId;
+                    actBll.EditActivity(_, userId);
+                });
+            return true;
         }
     }
 }

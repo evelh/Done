@@ -165,7 +165,13 @@
                             <label>国家<span class=" red">*</span></label>
                             <input id="country_idInit" value='1' type="hidden" runat="server" />
                             <select name="country_id" id="country_id">
-                                <option value="1">中国</option>
+                                  <% if (counList != null && counList.Count > 0) {
+                                                foreach (var coun in counList)
+                                                {%>
+                                         <option value="<%=coun.id %>" <%if (location != null && location.country_id == coun.id) {%> selected="selected" <%} %>  ><%=coun.country_name_display %></option>
+                                                <%}
+                                            } %>
+                                       
                             </select>
                         </div>
                     </td>
@@ -662,7 +668,7 @@
                                 <td>
                                     <div class="FieldLabels">
                                         <label><%=udf.name %></label>
-                                        <select>
+                                        <select name="<%=udf.id %>">
                                             <%if (udf.required != 1)
                                             { %>
                                             <option></option>
@@ -779,7 +785,33 @@
                 <%}
                     else if (udf.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST)            /*列表*/
                     {%>
-
+                     <tr>
+                                <td>
+                                    <div class="FieldLabels">
+                                        <label><%=udf.name %></label>
+                                        <select name="<%=udf.id %>">
+                                            <%if (udf.required != 1)
+                                            { %>
+                                            <option></option>
+                                            <%} %>
+                                            <% if (udf.value_list != null && udf.value_list.Count > 0)
+                                                {
+                                                    var thisValue = "";
+                                                    if (site_udfValueList!=null&&site_udfValueList.Count>0&&site_udfValueList.FirstOrDefault(_ => _.id == udf.id) != null)
+                                                    {
+                                                        thisValue = site_udfValueList.FirstOrDefault(_ => _.id == udf.id).value.ToString();
+                                                    }
+                                                   
+                                                foreach (var thisValeList in udf.value_list)
+                                                {%>
+                                            <option value="<%=thisValeList.val %>" <%=thisValue==thisValeList.val?"selected='selected'":"" %>><%=thisValeList.show %></option>
+                                            <%
+                                                    }
+                                                } %>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
                 <%}
                         }
                     } %>

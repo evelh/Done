@@ -22,11 +22,13 @@ namespace EMT.DoneNOW.Web
         protected List<UserDefinedFieldValue> site_udfValueList = null; // 
         protected crm_account account = null;
         protected List<crm_location> location_list = null;   // 用户的所有地址
-                                                             // protected crm_location defaultLocation = null;
+        protected crm_location location;
+        // protected crm_location defaultLocation = null;
         //protected List<crm_account> searchCompany = null;     // 查询出的所有没有父客户的客户
         protected List<crm_account> subCompanyList = null;
         protected Dictionary<string, object> dic = null;
         protected sys_bookmark thisBookMark;
+        protected List<d_country> counList = new DAL.d_country_dal().FindAll().ToList();
         protected void Page_Load(object sender, EventArgs e)
         {
             thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
@@ -140,7 +142,7 @@ namespace EMT.DoneNOW.Web
                     }
                     asset_value.Text = account.asset_value.ToString();
 
-                    var location = new LocationBLL().GetLocationByAccountId(account.id);
+                    location = new LocationBLL().GetLocationByAccountId(account.id);
                     if (location != null)        // 如果该客户的地址是默认地址，不可更改为非默认，只能通过添加别的地址设置为默认这种方式去更改默认地址
                     {
                         country_idInit.Value = location.country_id.ToString();
@@ -264,7 +266,7 @@ namespace EMT.DoneNOW.Web
                 }
                 else
                 {
-                    Response.Write("<script>alert('修改客户成功！');window.close();window.open('UpdateContact.aspx?account_id=" + param.general_update.id + "&updateLocationContact=" + updateLocationContact + "&updateFaxPhoneContact=" + updateFaxPhoneContact+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd + "','left= 200, top = 200, width = 960, height = 750', false);</script>");  //  
+                    Response.Write("<script>alert('修改客户成功！');window.open('UpdateContact.aspx?account_id=" + param.general_update.id + "&updateLocationContact=" + updateLocationContact + "&updateFaxPhoneContact=" + updateFaxPhoneContact+"','" + (int)EMT.DoneNOW.DTO.OpenWindow.OpportunityAdd + "','left= 200, top = 200, width = 960, height = 750', false);window.close();</script>");  //  
                     //Response.Redirect("UpdateContact.aspx?account_id=" + param.general_update.id + "&updateLocationContact=" + updateLocationContact + "&updateFaxPhoneContact=" + updateFaxPhoneContact);
                 }
 

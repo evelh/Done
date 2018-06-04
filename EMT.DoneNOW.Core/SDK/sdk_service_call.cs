@@ -33,6 +33,10 @@ namespace EMT.DoneNOW.Core
         public SByte? recurs_in_outlook { get; set; }
         [DataMember]
         public String outlook_entry_id { get; set; }
+        [DataMember]
+        public Int64? canceled_time { get; set; }
+        [DataMember]
+        public Int64? canceled_user_id { get; set; }
 
 
     }

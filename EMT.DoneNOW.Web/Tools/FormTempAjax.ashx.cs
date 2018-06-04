@@ -24,6 +24,12 @@ namespace EMT.DoneNOW.Web
                 case "ActiveTmpl":
                     ActiveTmpl(context);
                     break;
+                case "GetTemp":
+                    GetTemp(context);
+                    break;
+                case "DeleteTmpl":
+                    DeleteTmpl(context);
+                    break;
                 default:break;
             }
         }
@@ -56,7 +62,31 @@ namespace EMT.DoneNOW.Web
                 result = tempBll.ActiveTmpl(long.Parse(id), isActive,LoginUserId);
             context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
         }
+        /// <summary>
+        /// 获取模板信息
+        /// </summary>
+        public void GetTemp(HttpContext context)
+        {
+            var id = context.Request.QueryString["id"];
+            if (!string.IsNullOrEmpty(id))
+            {
+                var thisTemp = tempBll.GetTempById(long.Parse(id));
+                if(thisTemp!=null)
+                    context.Response.Write(new EMT.Tools.Serialize().SerializeJson(thisTemp));
+            }
+        }
 
+        /// <summary>
+        ///  删除 模板
+        /// </summary>
+        public void DeleteTmpl(HttpContext context)
+        {
+            var id = context.Request.QueryString["id"];
+            var result = false;
+            if (!string.IsNullOrEmpty(id))
+                result = tempBll.DeleteTmpl(long.Parse(id), LoginUserId);
+            context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
 
 
 

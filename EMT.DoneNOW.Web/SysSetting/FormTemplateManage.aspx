@@ -3188,7 +3188,7 @@
 
                                         <div class="InputContainer">
                                             
-                                            <input id="contactId" type="text" value="<%=thisContact!=null?thisContact.name:"" %>" name="" />
+                                            <input id="contactId" type="text" value="<%=thisContact!=null?thisContact.name:"" %>" name=""  disabled="disabled"/>
                                             <input id="contactIdHidden" type="hidden" value="<%=thisContact!=null?thisContact.id.ToString():"" %>" name="contact_id" />
                                             <a class="Button ButtonIcon IconOnly DataSelector NormalState" id="" onclick="CallBackContact()"><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -191px -44px;"></span><span class="Text"></span></a>
                                         </div>
@@ -3364,7 +3364,7 @@
                                 </div>
                             </div>
                             <div class="Editor ItemSelector DisplayMode">
-                                <select name="department_id" id="department_id" class="txtBlack8Class">
+                                <select name="department_id" id="department_id" class="txtBlack8Class" style="width:160px;">
                                     <option value=""></option>
                                     <% if (queueList != null && queueList.Count > 0)
                                         {
@@ -3437,7 +3437,7 @@
                                     <input id="" type="text" value="<%=tempTicket!=null&&tempTicket.estimated_hours!=null?((decimal)tempTicket.estimated_hours).ToString("#0.00"):"" %>" name="estimated_hours" maxlength="14" class="ToDec2" />
                                 </div>
                             </div>
-                            <div class="Medium Column">
+                            <div class="Medium Column" style="width:200px;">
                                 <div class="EditorLabelContainer">
                                     <div class="Label">
                                         <label>问题类型</label>
@@ -3503,16 +3503,49 @@
                             <div class="ReadOnlyData">
                                 <div class="LabelContainer"><span class="Label">截止日期</span></div>
                                 <div class="Value">
-                                    <div class="FormatPreservation">
-                                        Due Date: No default (user entry required)
-Due Time: No default (user entry required)
-                                    </div>
+                                    <div class="FieldLabel">
+                                                <input id="rdNoDate" type="radio" name="DueDateType" value="radioNoDate" checked="checked" />
+                                                <span class="oppNumber"></span>
+                                                <span class="txtBlack8Class">没有默认值
+                                                </span>
+                                        </div>
+                                     <div class="FieldLabel">
+                                                <input id="rdDueDate" type="radio" name="DueDateType" value="radioDueDate" />
+                                                <span class="oppNumber">
+                                                    <input name="due_date" type="text" id="due_date" disabled="disabled" maxlength="4" class="txtBlack8Class" style="text-align: right; width: 55px;" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" value="<%=tempTicket != null && tempTicket.due_date != null ? tempTicket.due_date.ToString() : "" %>" /></span>
+                                                <span class="txtBlack8Class">距离现在时间
+                                                </span>
+                                        </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="Large Column">
-                        <div class="ButtonContainer"><a class="Button ButtonIcon Link NormalState" id="zdedaf020e1c84417bfab71f7c4998049" tabindex="0">Edit</a></div>
+                        <div class="Large Column">
+                            <div class="ReadOnlyData">
+                                <div class="LabelContainer"><span class="Label">截止时间</span></div>
+                                <div class="Value">
+                                    <div class="FieldLabel">
+                                                <input id="rdNoTime" type="radio" name="DueTimeType" value="radioNoTime" checked="checked" />
+                                                <span class="oppNumber"></span>
+                                                <span class="txtBlack8Class">没有默认值
+                                                </span>
+                                        </div>
+                                     <div class="FieldLabel">
+                                                <input id="rdDueTime" type="radio" name="DueTimeType" value="radioDueTime" />
+                                                <span class="oppNumber">
+                                                    <input name="due_time_hours" type="text" id="due_time_hours" maxlength="4" disabled="disabled" class="txtBlack8Class" style="text-align: right; width: 55px;" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" value="<%=tempTicket != null && tempTicket.due_time_hours != null ?((decimal) tempTicket.due_time_hours).ToString("#") : "" %>" /></span>
+                                                <span class="txtBlack8Class">距离现在时间
+                                                </span>
+                                        </div>
+                                     <div class="FieldLabel">
+                                                <input id="rdSpcTime" type="radio" name="DueTimeType" value="radioSpcTime" />
+                                                <span class="oppNumber">
+                                                    <input name="due_time" type="text" id="due_time" disabled="disabled" class="txtBlack8Class" onclick="WdatePicker({ dateFmt: 'HH:mm' })" style="text-align: right; width: 55px;"  value="<%=tempTicket != null? tempTicket.due_time : "" %>" /></span>
+                                                <span class="txtBlack8Class">指定时间
+                                                </span>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -3717,9 +3750,8 @@ Due Time: No default (user entry required)
                     <div class="Spacer"></div>
                     <div class="Right"></div>
                 </div>
-                <div class="DescriptionText">你最多可以输入20个条目.</div>
                 <div class="Content">
-                 
+                  <div class="DescriptionText">你最多可以输入20个条目.</div>
                        <div class="ToolBar">
                                     <div class="ToolBarItem Left ButtonGroupStart"><a class="Button ButtonIcon New NormalState" id="AddCheckListButton" tabindex="0" style="color:black;"><span class="Icon"></span><span class="Text">新增检查单</span></a></div>
                                     <div class="ToolBarItem Left"><a class="Button ButtonIcon NormalState" id="AddCheckListFromLibraryButton" tabindex="0"  style="color:black;"><span class="Icon"></span><span class="Text">从知识库添加</span></a></div>
@@ -4481,7 +4513,7 @@ Due Time: No default (user entry required)
         $.ajax({
             type: "GET",
             async: false,
-            url: "../Tools/FormTempAjax.ashx?act=CheckTempCode&code=" + speed_code +"&id=<%=temp!=null?temp.id.ToString():"" %>",
+            url: "../Tools/FormTempAjax.ashx?act=CheckTempCode&code=" + speed_code +"&id=<%=temp!=null&&(!isAdd)?temp.id.ToString():"" %>",
             dataType: "json",
             success: function (data) {
                 if (data) {
@@ -5209,6 +5241,16 @@ Due Time: No default (user entry required)
           GetContactByIds();
           GetResDepByIds();
 
+          <%if (tempTicket.due_date!= null)
+    { %>
+          $("#rdDueDate").trigger("click");
+          <%} %>
+          <%if (tempTicket.due_time_hours!= null)
+    { %>
+          $("#rdDueTime").trigger("click");
+          <%}else if (!string.IsNullOrEmpty(tempTicket.due_time)){ %>
+          $("#rdSpcTime").trigger("click");
+         <%} %>
          <%} %>
 
      })
@@ -5275,7 +5317,6 @@ Due Time: No default (user entry required)
      }
      function GetContactByIds() {
          var contactIds = $("#contactIdsHidden").val();
-         debugger;
          if (contactIds != "") {
              $.ajax({
                  type: "GET",
@@ -5306,7 +5347,7 @@ Due Time: No default (user entry required)
              ids += $(this).val() + ',';
          })
          if (ids != "") {
-             ids = ids.substr(0, ids.length - 1);
+             ids = ids.substring(0, ids.length - 1);
          }
          $("#contactIdsHidden").val(ids);
      }
@@ -5316,14 +5357,27 @@ Due Time: No default (user entry required)
      function GetContactList() {
          var accountId = $("#accountIdHidden").val();
          if (accountId != "") {
-             $("#contactId").prop("disabled", false);
-             $("#contractId").prop("disabled", false);
-             $("#insProId").prop("disabled", false);
+             //$("#contactId").prop("disabled", false);
+             //$("#contractId").prop("disabled", false);
+             //$("#insProId").prop("disabled", false);
+             $("#contactIdHidden").val("");
+             $("#contactId").val("");
+             $("#contractId").val("");
+             $("#contractIdHidden").val("");
+             $("#insProId").val("");
+             $("#insProIdHidden").val("");
          }
          else {
              $("#contactId").prop("disabled", true);
              $("#contractId").prop("disabled", true);
              $("#insProId").prop("disabled", true);
+             $("#contactIdHidden").val("");
+             $("#contactId").val("");
+             $("#contractId").val("");
+             $("#contractIdHidden").val("");
+             $("#insProId").val("");
+             $("#insProIdHidden").val("");
+
          }
          
      }  // 主负责人查找带回
@@ -5425,7 +5479,33 @@ Due Time: No default (user entry required)
         $("#OtherResIdHidden").val(ids);
     }
     <%} %>
-   
+
+
+    $(".Toggle").click(function () {
+        $(this).children().first().toggle();
+        $(this).parent().next().toggle();
+    })
+
+    $("#rdNoDate").click(function () {
+            $("#due_date").prop("disabled", true);
+    })
+    $("#rdDueDate").click(function () {
+        $("#due_date").prop("disabled", false);
+    })
+    // rdNoTime   rdDueTime  rdSpcTime
+    //  due_time_hours  due_time
+    $("#rdNoTime").click(function () {
+        $("#due_time_hours").prop("disabled", true);
+        $("#due_time").prop("disabled", true);
+    })
+    $("#rdDueTime").click(function () {
+        $("#due_time_hours").prop("disabled", false);
+        $("#due_time").prop("disabled", true);
+    })
+    $("#rdSpcTime").click(function () {
+        $("#due_time_hours").prop("disabled", true);
+        $("#due_time").prop("disabled", false);
+    })
 
 </script>
 

@@ -297,45 +297,12 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public bool DeleteContact(long id, long user_id)
         {
-
-            // var user = CachedInfoBLL.GetUserInfo(token);
-            var user = new UserInfoDto()
-            {
-                id = 1,
-                email = "zhufei@test.com",
-                mobile = "10086",
-                name = "zhufei_test",
-                security_Level_id = 0
-            };
-            if (user == null)
-                return false;
-
             crm_contact contact = GetContact(id);
-            if (contact.delete_time!= 0||contact.delete_user_id!=0)        // 预防并发操作时，别的员工已经将此用户删除
-            {
+            if (contact==null)        
                 return false;
-            }
-            //contact.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            //contact.delete_user_id = user.id;
-            if (_dal.SoftDelete(contact, user.id))
-            {
-                new sys_oper_log_dal().Insert(new sys_oper_log()
-                {
-                    user_cate = "用户",
-                    user_id = (int)user.id,
-                    name = user.name,
-                    phone = user.mobile == null ? "" : user.mobile,
-                    oper_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                    oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CONTACTS,
-                    oper_object_id = contact.id,// 操作对象id
-                    oper_type_id = (int)OPER_LOG_TYPE.DELETE,
-                    oper_description = @"{""delete_time"":""0→" + Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now).ToString() + @""",""delete_user_id"":""0→" + user.id.ToString() + @"""}",
-                    remark = "删除联系人"
-                });       // 插入日志
-            }
-           
+            if (_dal.SoftDelete(contact, user_id))
+                OperLogBLL.OperLogDelete<crm_contact>(contact, contact.id, user_id, OPER_LOG_OBJ_CATE.CONTACTS,"");
             return true;
-
 
             //   该联系人是公司的外包联系人（工单中的外包人员）
             //   该联系人有关联的工单或任务
@@ -797,6 +764,27 @@ namespace EMT.DoneNOW.BLL
             {
                 new crm_contact_action_tmpl_dal().SoftDelete(thisTemp,userId);
             }
+            return true;
+        }
+
+        public bool MergeContact(long fromConId, long toConId, long userId, bool isDelete = false)
+        {
+            crm_contact fromCon = GetContact(fromConId);
+            crm_contact toCon = GetContact(toConId);
+            if (fromCon == null || toCon == null)
+                return false;
+            // 商机
+            // 销售订单
+            // 待办
+            // 活动
+            // 工单
+            // 调查
+            // 任务
+            // 联系人群组
+            // 合同
+
+            if (isDelete)
+                DeleteContact(fromConId, userId);
             return true;
         }
 

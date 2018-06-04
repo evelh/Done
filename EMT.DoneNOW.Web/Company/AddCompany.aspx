@@ -146,7 +146,13 @@
                                     <label>国家<span class=" red">*</span></label>
                                     <%--<input id="country_idInit" value='1' type="hidden" runat="server" />--%>
                                     <select name="country_id" id="country_id">
-                                        <option value="1">中国</option>
+                                        <% if (counList != null && counList.Count > 0) {
+                                                foreach (var coun in counList)
+                                                {%>
+                                         <option value="<%=coun.id %>"><%=coun.country_name_display %></option>
+                                                <%}
+                                            } %>
+                                       
                                     </select>
                                 </div>
                             </td>
@@ -449,7 +455,7 @@
                                 <td>
                                     <div class="FieldLabels">
                                         <label><%=udf.name %></label>
-                                        <select>
+                                        <select  name="<%=udf.id %>">
                                             <%if (udf.required != 1)
                                             { %>
                                             <option></option>
@@ -529,7 +535,7 @@
                                 <td>
                                     <div class="FieldLabels">
                                         <label><%=udf.name %></label>
-                                        <select>
+                                        <select name="<%=udf.id %>">
                                             <%if (udf.required != 1)
                                             { %>
                                             <option></option>
@@ -740,7 +746,7 @@
                                 <td>
                                     <div class="FieldLabels">
                                         <label><%=udf.name %></label>
-                                        <select>
+                                        <select name="<%=udf.id %>">
                                             <%if (udf.required != 1)
                                             { %>
                                             <option></option>

@@ -453,7 +453,7 @@ namespace EMT.DoneNOW.BLL
                 }
                     
             }
-            else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.PROJECT_NOTE)
+            else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.PROJECT_NOTE|| tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.TASK_NOTE|| tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.TICKET_NOTE)
             {
                 var noteTmp = GetNoteTmpl(tmpl.id);
                 if (noteTmp != null)
@@ -493,27 +493,41 @@ namespace EMT.DoneNOW.BLL
             }
             else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.SERVICE_CALL)
             {
-
+                var callTmp = GetServiceCallTmpl(tmpl.id);
+                if (callTmp != null)
+                {
+                    new sys_form_tmpl_service_call_dal().SoftDelete(callTmp, userId);
+                    OperLogBLL.OperLogDelete<sys_form_tmpl_service_call>(callTmp, callTmp.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_SERVICE_CALL, "");
+                }
             }
-            else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.TASK_NOTE)
+            
+            else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.TASK_TIME_ENTRY|| tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.TICKET_TIME_ENTRY)
             {
-
-            }
-            else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.TASK_TIME_ENTRY)
-            {
-
+                var entryTmpl = GetWorkEntryTmpl(tmpl.id);
+                if (entryTmpl != null)
+                {
+                    new sys_form_tmpl_work_entry_dal().SoftDelete(entryTmpl, userId);
+                    OperLogBLL.OperLogDelete<sys_form_tmpl_work_entry>(entryTmpl, entryTmpl.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_WORK_ENTRY, "");
+                }
             }
             else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.TICKET)
             {
-
-            }
-            else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.TICKET_NOTE)
-            {
-
-            }
-            else if (tmpl.form_type_id == (int)DicEnum.FORM_TMPL_TYPE.TICKET_TIME_ENTRY)
-            {
-
+                var ticketTmpl = GetTicketTmpl(tmpl.id);
+                if (ticketTmpl != null)
+                {
+                    new sys_form_tmpl_ticket_dal().SoftDelete(ticketTmpl, userId);
+                    OperLogBLL.OperLogDelete<sys_form_tmpl_ticket>(ticketTmpl, ticketTmpl.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_TICKET, "");
+                    sys_form_tmpl_ticket_checklist_dal stcDal = new sys_form_tmpl_ticket_checklist_dal();
+                    var oldCheckList = stcDal.GetCheckByTicket(ticketTmpl.id);
+                    if (oldCheckList.Count > 0)
+                    {
+                        oldCheckList.ForEach(_ =>
+                        {
+                            stcDal.SoftDelete(_, userId);
+                            OperLogBLL.OperLogDelete<sys_form_tmpl_ticket_checklist>(_, _.id, userId, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_TICKET_CHECKLIST, "");
+                        });
+                    }
+                }
             }
 
             return true;

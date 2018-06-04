@@ -1298,7 +1298,7 @@ namespace EMT.DoneNOW.BLL
                 var comTask = taskList.Where(_ => _.status_id == (int)TICKET_STATUS.DONE).ToList();
                 if (comTask != null && comTask.Count > 0)
                 {
-                    percent = comTask.Count / taskList.Count;
+                    percent = ((decimal)comTask.Count*100) / taskList.Count;
                 }
             }
 

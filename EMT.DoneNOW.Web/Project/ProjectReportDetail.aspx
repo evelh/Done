@@ -74,19 +74,28 @@
                         <%=DateTime.Now.ToShortTimeString().ToString() %> &nbsp;&nbsp;&nbsp;  <%=DateTime.Now.Hour<12?"上午":"下午" %><br>
                     </td>
                 </tr>
+                <% if (thisProject != null)
+                         { %>
                 <tr>
                     <%  TimeSpan ts1 = new TimeSpan(((DateTime)thisProject.end_date).Ticks);
-                        TimeSpan ts2 = new TimeSpan(DateTime.Now.Ticks);
-                        TimeSpan ts = ts1.Subtract(ts2).Duration(); %>
+                         TimeSpan ts2 = new TimeSpan(DateTime.Now.Ticks);
+                         TimeSpan ts = ts1.Subtract(ts2).Duration(); %>
                     <td><%=thisProject.name %>:距离项目结束还有<%=ts.Days %>天</td>
                     <td></td>
                 </tr>
+                <%} %>
             </tbody>
         </table>
 
         <table width="98%" border="1" cellspacing="0" cellpadding="3" style="border-collapse: collapse; margin-top: 20px;" id="tblReport">
             <tbody>
-                <% for (int i = 0; i < 7; i++)
+                <% 
+                    int j = 1;
+                    if (isSeven)
+                    {
+                        j=7;
+                    }
+                    for (int i = 0; i < j; i++)
                     {
                 %>
                 <tr>
@@ -107,6 +116,15 @@
                                 isHasData = true;
                                 foreach (var thisTask in thisTaskList)
                                 {
+                                    EMT.DoneNOW.Core.pro_project project = null;
+                                    if (projectList != null && projectList.Count > 0)
+                                    {
+                                        project = projectList.FirstOrDefault(_=>_.id==thisTask.project_id);
+                                    }
+                                    if (project == null)
+                                    {
+                                        continue;
+                                    }
                                     string imgSrc = "../Images/";
                                     string type = "";
                                     switch (thisTask.type_id)
@@ -120,7 +138,7 @@
                                             type = "任务";
                                             break;
                                         case (int)EMT.DoneNOW.DTO.DicEnum.TASK_TYPE.PROJECT_ISSUE:
-                                           // imgSrc = "";// ISSUE
+                                            // imgSrc = "";// ISSUE
                                             imgSrc += "task.png";
                                             // type = "问题";
                                             break;
@@ -128,6 +146,16 @@
                                             break;
                                     }
                 %>
+                <% if (isAll)
+                         { %>
+                <tr>
+                    <%  TimeSpan ts1 = new TimeSpan(((DateTime)project.end_date).Ticks);
+                         TimeSpan ts2 = new TimeSpan(DateTime.Now.Ticks);
+                         TimeSpan ts = ts1.Subtract(ts2).Duration(); %>
+                    <td colspan="6" style="padding-left:10px;"><%=project.name %>:距离项目结束还有<%=ts.Days %>天</td>
+                  
+                </tr>
+                <%} %>
                 <tr>
                     <td id="txtBlack8" style="text-algin: left; padding-left: 10px; border-top: none; border-bottom: none; border-right: none" width="1%" align="right"></td>
                     <td id="txtBlack8" width="1%" style="text-algin: left; border: none">
@@ -161,7 +189,26 @@
                             {
                                 string type = "日历条目";
                                 var thisUser = EMT.DoneNOW.BLL.UserInfoBLL.GetUserInfo(thisProCal.create_user_id);
+                                EMT.DoneNOW.Core.pro_project project = null;
+                                    if (projectList != null && projectList.Count > 0)
+                                    {
+                                        project = projectList.FirstOrDefault(_=>_.id==thisProCal.project_id);
+                                    }
+                                    if (project == null)
+                                    {
+                                        continue;
+                                    }
                 %>
+                 <% if (isAll)
+                         { %>
+                <tr>
+                    <%  TimeSpan ts1 = new TimeSpan(((DateTime)project.end_date).Ticks);
+                         TimeSpan ts2 = new TimeSpan(DateTime.Now.Ticks);
+                         TimeSpan ts = ts1.Subtract(ts2).Duration(); %>
+                    <td colspan="6" style="padding-left:10px;"><%=project.name %>:距离项目结束还有<%=ts.Days %>天</td>
+                    
+                </tr>
+                <%} %>
                 <tr>
                     <td id="txtBlack8" style="text-algin: left; padding-left: 10px; border-top: none; border-bottom: none; border-right: none" width="1%" align="right"></td>
                     <td id="txtBlack8" width="1%" style="text-algin: left; border: none"></td>
@@ -202,10 +249,7 @@
                 <%
                         }
 
-                        if (!isSeven)
-                        {
-                            break;
-                        }
+                        
                     } %>
             </tbody>
         </table>

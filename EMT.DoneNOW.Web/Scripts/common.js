@@ -333,7 +333,10 @@ var windowObj = {
     resourcePolicy: "resourcePolicy",
     contactGroup: "contactGroup",
     opportunity: "opportunity",
-    contactActionTemp:"contactActionTemp",
+    contactActionTemp: "contactActionTemp",
+    formTemp: "formTemp",
+    general: "general",
+    generalCate: "generalCate",
 }
 var windowType = {
     blank: '_blank',
