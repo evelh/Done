@@ -243,6 +243,7 @@
     <Content Include="Images\arrowleft.png" />
     <Content Include="Images\arrowrighttow.png" />
     <Content Include="Project\ProjectDashboard.aspx" />
+    <Content Include="RichText\uploader.swf" />
     <Content Include="Scripts\clipboard.js" />
     <Content Include="Scripts\clipboard.min.js" />
     <Content Include="Scripts\Dashboard\Dashboard.js" />
@@ -268,7 +269,9 @@
     <Content Include="Scripts\Search\company_view_res_workhour_bydate.js" />
     <Content Include="Scripts\Search\contacr_group_search.js" />
     <Content Include="Scripts\Search\contact_action_temp.js" />
+    <Content Include="Scripts\Search\Invoice_Email_Tmpl.js" />
     <Content Include="Scripts\Search\other_installed_product_search.js" />
+    <Content Include="Scripts\Search\Quote_Email_Tmpl.js" />
     <Content Include="Scripts\Search\report_contract_bill_tobill.js" />
     <Content Include="Scripts\Search\report_contract_bill_tobill_by_project.js" />
     <Content Include="Scripts\Search\report_contract_bill_tobill_by_res.js" />
@@ -3039,6 +3042,9 @@
     <Compile Include="Tools\TimesheetAjax.ashx.cs">
       <DependentUpon>TimesheetAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\UploadAjax.ashx.cs">
+      <DependentUpon>UploadAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\WareHouseAjax.ashx.cs">
       <DependentUpon>WareHouseAjax.ashx</DependentUpon>
     </Compile>
@@ -3103,6 +3109,7 @@
     <Content Include="Tools\DashboardAjax.ashx" />
     <Content Include="Tools\WareHouseAjax.ashx" />
     <Content Include="Tools\FormTempAjax.ashx" />
+    <Content Include="Tools\UploadAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

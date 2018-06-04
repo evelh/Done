@@ -809,7 +809,8 @@ namespace EMT.DoneNOW.DTO
             SYS_FORM_TEMP_SEARCH = 1684,             // 系统设置-表单模板查询
 
 
-
+            QUOTE_EMAIL_TEMPLATE = 1682,                    // 报价邮件模板
+            INVOICE_EMAIL_TEMPLATE = 1683,                  // 发票邮件模板
 
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
@@ -1989,7 +1990,6 @@ namespace EMT.DoneNOW.DTO
         CONTACT_ACTION_TEMP = 272,                     // 联系人活动 模板
         ACCOUNT_CONTACT_GROUP_SEARCH = 273,
         OTHER_INSTALLED_PRODUCT_SEARCH=274,
-
         DASHBOARD_FILTER = 276,                         // 仪表板过滤条件
         PROJECT_DASHBOARD_OVER_TASK = 277,             // 报表-项目-任务-过期任务
         PROJECT_DASHBOARD_MY_PROJECT = 278,            // 项目-仪表板-我负责的项目
@@ -2005,6 +2005,8 @@ namespace EMT.DoneNOW.DTO
         PROJECT_DASHBOARD_TIMESHEET = 288,              // 项目-仪表板-漏工时表     
         PROJECT_DASHBOARD_MY_PROJECT_ISSUE = 289,       // 项目-仪表板-我的项目问题      
 
+        Quote_Email_Tmpl = 292,                         //报价邮件模板
+        Invoice_Email_Tmpl = 293,                       //发票邮件模板
         SYS_FORM_TEMP_SEARCH = 294,             // 系统设置-表单模板查询
 
         //以下是还没有配查询语句的枚举（系统管理）
@@ -2015,8 +2017,6 @@ namespace EMT.DoneNOW.DTO
         Payment_Term,                    //付款期限
         Payment_Type,                    //付款类型
         Payment_Ship_Type,               //配送类型
-        Quote_Email_Tmpl,                //报价邮件模板
-        Invoice_Email_Tmpl,              //发票邮件模板
     }
     /// <summary>
     /// 打开新窗口的名称

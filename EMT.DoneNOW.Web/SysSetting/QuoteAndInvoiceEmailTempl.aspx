@@ -573,6 +573,7 @@
 
             //        富文本编辑器
             var ue = UE.getEditor('containerHead', {
+                serverUrl: '../Tools/UploadAjax.ashx',
                 toolbars: [
                     ['source', 'fontfamily', 'fontsize', 'bold', 'italic', 'underline', 'fontcolor', 'backcolor', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist', 'insertunorderedlist', 'insertimage', 'undo', 'redo']
                 ],
@@ -582,6 +583,7 @@
                 elementPathEnabled : false,
                 autoHeightEnabled: false  //设置滚动条
             });
+            $(".upload-img").InitUploader({ filesize: "10240", sendurl: "../Tools/UploadAjax.ashx", swf: "../RichText/uploader.swf", filetypes: "gif,jpg,jpeg,png,bmp" });
             var _this;
             $("#AddButton").on("click", function () {
                 _this = $(this).previousSbiling;

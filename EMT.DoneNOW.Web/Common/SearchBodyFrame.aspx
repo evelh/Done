@@ -2746,19 +2746,7 @@
                  });
              }
          }
-               <%}
-        else if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Quote_Email_Tmpl||queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Invoice_Email_Tmpl)
-        { %>//报价和发票的邮件模板（10-17，还未配置查询）
-         function Edit() {
-             window.open('../SysSetting/QuoteAndInvoiceEmailTempl.aspx?id=' + entityid + '&type=' +<%=queryTypeId%>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.EmailTemp %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-         }
-         function Add() {
-             window.open('../SysSetting/QuoteAndInvoiceEmailTempl.aspx?type=' +<%=queryTypeId%>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.EmailTemp %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-         }
-         function View(id) {
-             window.open('../SysSetting/QuoteAndInvoiceEmailTempl.aspx?id=' + id + 'type=' +<%=queryTypeId%>, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.EmailTemp %>', 'left=0,top=0,location=no,status=no,width=900,height=750', false);
-         }
-        <%}%>
+               <%}%>
         function openopenopen() {
             alert("暂未实现");
          }

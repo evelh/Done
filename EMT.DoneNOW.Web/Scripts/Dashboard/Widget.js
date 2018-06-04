@@ -1371,7 +1371,7 @@ function GeneralAddWidgetForm(type) {
             + '</div>'
             + '<div class="Column">'
             + '<div class="item">'
-            + '<p>排序</p>'
+            + '<p>排序<span style="color: red;">*</span></p>'
             + '<select name="wgtSortType" id="wgtSortType">'
             + '</select>'
             + '</div>'
@@ -1518,6 +1518,11 @@ function AddWidgetStep1(widgetData, copy) {
         }
         $("#addWgtContent")[0].innerHTML = GeneralAddWidgetForm(showType);
         if (widget != null) {
+            // 修改按钮
+            $("#AddWidgetBefore").children(".AddWidgetBeforePOP").children(".button").remove();
+            $("#addWgtContent")[0].innerHTML = '<div class="button" style="bottom:auto;position:initial;"><div class="save" onclick= "AddWidgetFinish(' + showType + ');" ><img src="Images/save.png" alt="">保存并关闭</div>'
+                + '<div class="delete" onclick="DeleteWidget(' + widget.id + ')"><img src="Images/delete.png" alt="">删除小窗口</div></div>' + $("#addWgtContent")[0].innerHTML;
+            $("#addWgtContent").css("bottom", "0px");
             $("#addWidgetId").val(widget.id);
             $("#addWidgetName").val(widget.name);
             $("#wgtDesc").text(widget.description);
@@ -1526,13 +1531,8 @@ function AddWidgetStep1(widgetData, copy) {
                     $(this).addClass("widgetSizeListNow").siblings().removeClass("widgetSizeListNow");
                 }
             })
-            // 修改按钮
-            $("#AddWidgetBefore").children(".AddWidgetBeforePOP").children(".button").remove();
-            $("#addWgtContent")[0].innerHTML = '<div class="button" style="bottom:auto;position:initial;"><div class="save" onclick= "AddWidgetFinish(' + showType + ');" ><img src="Images/save.png" alt="">保存并关闭</div>'
-                + '<div class="delete" onclick="DeleteWidget(' + widget.id + ')"><img src="Images/delete.png" alt="">删除小窗口</div></div>' + $("#addWgtContent")[0].innerHTML;
-            $("#addWgtContent").css("bottom", "0px");
         } else {
-            $("#AddWidgetBefore").children(".AddWidgetBeforePOP").children(".button")[0].innerHTML = '<div class="pev" onclick="BackAddWidgetStep0();"><span></span>上一步</div><div class="next" >完成</div>';
+            $("#AddWidgetBefore").children(".AddWidgetBeforePOP")[0].innerHTML = $("#AddWidgetBefore").children(".AddWidgetBeforePOP")[0].innerHTML + '<div class="button"><div class="pev" onclick="BackAddWidgetStep0();"><span></span>上一步</div><div class="next" >完成</div></div>';
         }
         if (copy == 1) {
             $("#addWidgetId").val(0);
@@ -1759,13 +1759,14 @@ function AddWidgetStep1(widgetData, copy) {
                 sort: false
             });
             requestData("/Tools/DashboardAjax.ashx?act=GetWidgetFilter&id=" + entityType, null, function (data) {
-                InitWidgetFilter(data, "");
+                InitWidgetFilter(data, "", widget, filters);
             });
             requestData("/Tools/DashboardAjax.ashx?act=GetWidgetTableColumn&id=" + entityType, null, function (data) {
                 var str1 = '';
                 var strto1 = '';
                 var str2 = '';
                 var strto2 = '';
+                var strem = '';
                 for (var i = 0; i < data.length; i++) {
                     var opt='<option value="' + data[i].val + '">' + data[i].show + '</option>';
                     if (widget != null && widget.primary_column_ids != null) {
@@ -1778,6 +1779,7 @@ function AddWidgetStep1(widgetData, copy) {
                         str1 += opt;
                     }
                     if (widget != null && widget.other_column_ids != null) {
+                        strem += opt;
                         if ($.inArray(data[i].val, widget.other_column_ids.split(",")) != -1) {
                             strto2 += opt;
                         } else {
@@ -1791,6 +1793,10 @@ function AddWidgetStep1(widgetData, copy) {
                 $("#multiselect2").html(str2);
                 $("#multiselect_to").html(strto1);
                 $("#multiselect2_to").html(strto2);
+                if (widget != null && widget.other_column_ids != null) {
+                    $("#wgtEmphasis").html(strem);
+                    $("#wgtEmphasis").val(widget.emphasis_column_id);
+                }
             });
             requestData("/Tools/DashboardAjax.ashx?act=GetWidgetTableSort&id=" + entityType, null, function (data) {
                 var str = '<option value=""></option>';
@@ -1804,13 +1810,16 @@ function AddWidgetStep1(widgetData, copy) {
             });
             $("#wgtEmphasis").focus(function () {
                 var optstr = '<option value=""></option>';
+                var selval = $("#wgtEmphasis").val();
+                var fndval = '';
                 $("#multiselect2_to option").each(function () {
                     optstr += '<option value="' + $(this).val() + '">' + $(this).text() + '</option>';
+                    if (selval == $(this).val()) { fndval = selval; }
                 });
                 $("#wgtEmphasis").html(optstr);
+                $("#wgtEmphasis").val(fndval);
             })
             if (widget != null) {
-                $("#wgtEmphasis").val(widget.emphasis_column_id);
                 $("#wgtShowType").val(widget.display_type_id);
                 if (widget.show_action_column == 1) {
                     $("#wgtShowAction").prop("checked", true);
@@ -1958,6 +1967,10 @@ function AddWidgetFinish(showType) {
     } else if (showType == 2584) {
         if ($("#multiselect_to option").length == 0) {
             LayerMsg("列表首字段请至少选择一列");
+            return;
+        }
+        if ($("#wgtSortType").val() == "") {
+            LayerMsg("请选择排序");
             return;
         }
         var ids = "";

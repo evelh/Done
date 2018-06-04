@@ -299,6 +299,12 @@
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
                                       <%}%>
+                                </div>
+                                <div class="PageNavigationLinkGroup">
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.QUOTE_EMAIL_TEMPLATE %>" target="PageFrame1">报价邮件模板</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
                                         </div>
                                 </div>
                             </div>
@@ -454,6 +460,28 @@
                         </div>
                     </div>
                   <%}%>
+                    <div class="Normal Section Collapsed Normal1" id="b9">
+                        <div class="Heading">
+                            <div class="Toggle Expand Toggle1" id="a9">
+                                <div class="Vertical Vertical1"></div>
+                                <div class="Horizontal"></div>
+                            </div>
+                            <span class="Text">财务、会计和发票</span>
+                            <span></span>
+                        </div>
+                        <div class="Content Content1" id="c9">
+                            <div class="Large Column">
+                                <div class="PageNavigationLinkGroup">                                   
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVOICE_EMAIL_TEMPLATE %>" target="PageFrame1">发票邮件模板</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!--第二部分-->
                 <div class="TabContainer">
