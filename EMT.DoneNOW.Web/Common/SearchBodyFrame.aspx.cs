@@ -431,7 +431,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.RESOURCE_DEGREE:
                 case (int)DicEnum.QUERY_CATE.RESOURCE_ATTACHMENT:
                 case (int)DicEnum.QUERY_CATE.CONTACR_GROUP_SEARCH:
-                case (int)DicEnum.QUERY_CATE.CONTACT_ACTION_TEMP: 
+                case (int)DicEnum.QUERY_CATE.CONTACT_ACTION_TEMP:
+                case (int)DicEnum.QUERY_CATE.INVOICE_EMAIL_TEMPLATE:
+                case (int)DicEnum.QUERY_CATE.QUOTE_EMAIL_TEMPLATE:
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.KNOWLEDGEBASE_ARTICLE:
@@ -1596,6 +1598,12 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "查看联系人活动模板", click_function = "View()" });
                     contextMenu.Add(new PageContextMenuDto { text = "编辑联系人活动模板", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除联系人活动模板", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.Quote_Email_Tmpl:
+                case (long)QueryType.Invoice_Email_Tmpl:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设置默认", click_function = "Default()", id = "Default" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 default:
                     break;

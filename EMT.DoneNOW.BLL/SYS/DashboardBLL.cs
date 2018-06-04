@@ -677,7 +677,7 @@ namespace EMT.DoneNOW.BLL
             string sql = $"select id,data_type_id as data_type,default_value as defaultValue,col_name,col_comment as description,ref_sql,ref_url,operator_type_id from d_query_para where query_para_group_id={grp.id} and is_visible=1 and operator_type_id is not null";
             var paras = new d_query_para_dal().FindListBySql<WidgetFilterPataDto>(sql);
 
-            sql = $"select distinct(col_comment) from d_query_para where query_para_group_id={grp.id} and is_visible=1 and operator_type_id is not null";
+            sql = $"select distinct(col_comment) from d_query_para where query_para_group_id={grp.id} and is_visible=1 and operator_type_id is not null  order by col_comment asc";
             var cdts = new d_query_para_dal().FindListBySql<string>(sql);
             foreach (var cdt in cdts)
             {
@@ -749,7 +749,7 @@ namespace EMT.DoneNOW.BLL
             if (groupList.Count == 0)
                 return new List<DictionaryEntryDto>();
             
-            return dal.FindListBySql<DictionaryEntryDto>($"select id as `val`,col_comment as `show` from d_query_groupby where query_type_id={groupList[0].query_type_id}");
+            return dal.FindListBySql<DictionaryEntryDto>($"select id as `val`,col_comment as `show` from d_query_groupby where query_type_id={groupList[0].query_type_id} order by col_comment asc");
         }
 
         /// <summary>

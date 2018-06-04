@@ -792,7 +792,8 @@ namespace EMT.DoneNOW.DTO
             OTHER_INSTALLED_PRODUCT_SEARCH=1664, 
             WAREHOUSE_PRODUCT_CALLBACK= 1665,               // 配置项管理-配置项替换-库存产品查找带回
 
-
+            QUOTE_EMAIL_TEMPLATE = 1682,                    // 报价邮件模板
+            INVOICE_EMAIL_TEMPLATE = 1683,                  // 发票邮件模板
 
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
@@ -1972,8 +1973,9 @@ namespace EMT.DoneNOW.DTO
         CONTACT_ACTION_TEMP = 272,                     // 联系人活动 模板
         ACCOUNT_CONTACT_GROUP_SEARCH = 273,
         OTHER_INSTALLED_PRODUCT_SEARCH=274,
-
         DASHBOARD_FILTER = 276,                         // 仪表板过滤条件
+        Quote_Email_Tmpl = 292,                         //报价邮件模板
+        Invoice_Email_Tmpl = 293,                       //发票邮件模板
   
        
 
@@ -1985,8 +1987,6 @@ namespace EMT.DoneNOW.DTO
         Payment_Term,                    //付款期限
         Payment_Type,                    //付款类型
         Payment_Ship_Type,               //配送类型
-        Quote_Email_Tmpl,                //报价邮件模板
-        Invoice_Email_Tmpl,              //发票邮件模板
     }
     /// <summary>
     /// 打开新窗口的名称

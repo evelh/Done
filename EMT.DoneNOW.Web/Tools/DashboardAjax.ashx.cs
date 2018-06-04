@@ -346,6 +346,7 @@ namespace EMT.DoneNOW.Web
                     wgt.display_type_id = int.Parse(request.Form["wgtShowType"]);
                     wgt.show_action_column = (sbyte)(GetCheckBoxValue("wgtShowAction") ? 1 : 0);
                     wgt.show_column_header = (sbyte)(GetCheckBoxValue("wgtShowTitle") ? 1 : 0);
+                    wgt.filter_json = GetFileterJson("", bll.GetWidgetFilterPara(wgt.entity_id, LoginUserId));
                 }
                 else if (wgt.type_id == (int)DicEnum.WIDGET_TYPE.HTML)
                 {
@@ -376,10 +377,19 @@ namespace EMT.DoneNOW.Web
                         wgt.report_on_id2 = long.Parse(request.Form["wgtReport2"]);
                         wgt.aggregation_type_id2 = int.Parse(request.Form["wgtReportType2"]);
                     }
+                    else
+                    {
+                        wgt.report_on_id2 = null;
+                        wgt.aggregation_type_id2 = null;
+                    }
                     wgt.groupby_id = long.Parse(request.Form["wgtGroup1"]);
                     if (!string.IsNullOrEmpty(request.Form["wgtGroup2"]))
                     {
                         wgt.groupby_id2 = long.Parse(request.Form["wgtGroup2"]);
+                    }
+                    else
+                    {
+                        wgt.groupby_id2 = null;
                     }
                     wgt.include_none = (sbyte)(GetCheckBoxValue("wgtShowBlank") ? 1 : 0);
                     wgt.display_type_id = int.Parse(request.Form["wgtShowType"]);
@@ -440,11 +450,16 @@ namespace EMT.DoneNOW.Web
                     wgt.other_column_ids = request.Form["AddWidgetTableColumn2"];
                     if (!string.IsNullOrEmpty(request.Form["wgtSortType"]))
                         wgt.orderby_grid_id = long.Parse(request.Form["wgtSortType"]);
+                    else
+                        wgt.orderby_grid_id = null;
                     if (!string.IsNullOrEmpty(request.Form["wgtEmphasis"]))
                         wgt.emphasis_column_id = long.Parse(request.Form["wgtEmphasis"]);
+                    else
+                        wgt.emphasis_column_id = null;
                     wgt.display_type_id = int.Parse(request.Form["wgtShowType"]);
                     wgt.show_action_column = (sbyte)(GetCheckBoxValue("wgtShowAction") ? 1 : 0);
                     wgt.show_column_header = (sbyte)(GetCheckBoxValue("wgtShowTitle") ? 1 : 0);
+                    wgt.filter_json = GetFileterJson("", bll.GetWidgetFilterPara(wgt.entity_id, LoginUserId));
                 }
                 else if (wgt.type_id == (int)DicEnum.WIDGET_TYPE.HTML)
                 {

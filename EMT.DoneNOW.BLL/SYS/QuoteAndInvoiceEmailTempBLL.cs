@@ -15,14 +15,71 @@ namespace EMT.DoneNOW.BLL
     /// </summary>
    public class QuoteAndInvoiceEmailTempBLL
     {
-        private readonly sys_quote_email_tmpl_dal _dal = new sys_quote_email_tmpl_dal();
+        private readonly sys_quote_email_tmpl_dal dal = new sys_quote_email_tmpl_dal();
+
+        /// <summary>
+        /// 设置邮件模板默认
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="type"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool SetDefault(long id, int type, long userId)
+        {
+            var tmpl = dal.FindNoDeleteById(id);
+            if (tmpl == null || tmpl.is_system_default == 1)
+                return false;
+
+            sys_quote_email_tmpl old;
+            var dft = dal.FindSignleBySql<sys_quote_email_tmpl>($"select * from sys_quote_email_tmpl where is_system_default=1 and cate_id={type}");
+            if (dft != null)
+            {
+                old = dal.FindById(dft.id);
+                dft.is_system_default = 0;
+                dft.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                dft.update_user_id = userId;
+                dal.Update(dft);
+                OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<sys_quote_email_tmpl>(old, dft), dft.id, userId, DicEnum.OPER_LOG_OBJ_CATE.QUOTE_TEMP, "取消邮件模板默认");
+            }
+
+            old = dal.FindById(tmpl.id);
+            tmpl.is_system_default = 1;
+            tmpl.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            tmpl.update_user_id = userId;
+            dal.Update(tmpl);
+            OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<sys_quote_email_tmpl>(old, tmpl), tmpl.id, userId, DicEnum.OPER_LOG_OBJ_CATE.QUOTE_TEMP, "设置邮件模板默认");
+
+            return true;
+        }
+
+        /// <summary>
+        /// 删除邮件模板
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool DeleteTmpl(long id,long userId)
+        {
+            var tmpl= dal.FindNoDeleteById(id);
+            if (tmpl == null)
+                return false;
+
+            var old = dal.FindById(tmpl.id);
+            tmpl.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            tmpl.delete_user_id = userId;
+            dal.Update(tmpl);
+            OperLogBLL.OperLogDelete<sys_quote_email_tmpl>(tmpl, tmpl.id, userId, OPER_LOG_OBJ_CATE.QUOTE_TEMP, "删除邮件模板");
+
+            return true;
+        }
+
         /// <summary>
         /// 获取邮件模板
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         public sys_quote_email_tmpl GetEmailTemp(long id) {
-            return _dal.FindNoDeleteById(id);
+            return dal.FindNoDeleteById(id);
         }
         /// <summary>
         /// 设置下拉框显示变量
@@ -73,10 +130,10 @@ namespace EMT.DoneNOW.BLL
                 // 查询不到用户，用户丢失
                 return ERROR_CODE.PARAMS_ERROR;
             }
-            tmpl.id = _dal.GetNextIdCom();
+            tmpl.id = dal.GetNextIdCom();
             tmpl.create_time = tmpl.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             tmpl.create_user_id = tmpl.update_user_id = user.id;
-            _dal.Insert(tmpl);
+            dal.Insert(tmpl);
             //日志
             var add_log = new sys_oper_log()
             {
@@ -88,7 +145,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE_TEMP,
                 oper_object_id = tmpl.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.ADD,
-                oper_description = _dal.AddValue(tmpl),
+                oper_description = dal.AddValue(tmpl),
                 remark = "添加邮件模板"
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_log);       // 插入日志
@@ -108,7 +165,7 @@ namespace EMT.DoneNOW.BLL
             }
             tmpl.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             tmpl.update_user_id = user.id;
-            if (_dal.Update(tmpl)) {
+            if (dal.Update(tmpl)) {
                 return ERROR_CODE.ERROR;
             }
             //日志
@@ -122,7 +179,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.QUOTE_TEMP,
                 oper_object_id = tmpl.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.CompareValue(_dal.FindNoDeleteById(tmpl.id), tmpl),
+                oper_description = dal.CompareValue(dal.FindNoDeleteById(tmpl.id), tmpl),
                 remark = "修改邮件模板"
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_log);       // 插入日志

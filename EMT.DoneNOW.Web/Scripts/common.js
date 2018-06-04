@@ -313,6 +313,7 @@ var windowObj = {
     projectCalendar: 'projectCalendar',
     projectAttach: 'projectAttach',
     projectUdf: 'projectUdf',
+    quoteEmailTmpl: 'quoteEmailTmpl',
     expense: "expense",
     expenseReport:"expenseReport",
     workEntry: "workEntry",

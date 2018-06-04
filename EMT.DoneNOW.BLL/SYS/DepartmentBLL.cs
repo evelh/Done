@@ -52,6 +52,7 @@ namespace EMT.DoneNOW.BLL
             sd.create_time=sd.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             sd.create_user_id = user_id;
             sd.cate_id =(int)DEPARTMENT_CATE.DEPARTMENT;
+            sd.is_active = 1;
             _dal.Insert(sd);
 
             var add_account_log = new sys_oper_log()

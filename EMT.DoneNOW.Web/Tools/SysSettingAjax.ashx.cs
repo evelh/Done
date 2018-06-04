@@ -27,6 +27,12 @@ namespace EMT.DoneNOW.Web
                 case "GetDics":
                     GetDics(context);
                     break;
+                case "SetQuoteEmailTmplDefault":
+                    SetQuoteEmailTmplDefault();
+                    break;
+                case "DeleteQuoteEmailTmpl":
+                    DeleteQuoteEmailTmpl();
+                    break;
                 default:
                     break;
             }
@@ -78,6 +84,22 @@ namespace EMT.DoneNOW.Web
             long tableId = long.Parse(context.Request.QueryString["id"]);
             var list = new GeneralBLL().GetDicValues(tableId);
             context.Response.Write(new Tools.Serialize().SerializeJson(list));
+        }
+
+        /// <summary>
+        /// 设置邮件模板默认
+        /// </summary>
+        private void SetQuoteEmailTmplDefault()
+        {
+            WriteResponseJson(new QuoteAndInvoiceEmailTempBLL().SetDefault(long.Parse(request.QueryString["id"]), int.Parse(request.QueryString["type"]), LoginUserId));
+        }
+
+        /// <summary>
+        /// 删除邮件模板
+        /// </summary>
+        private void DeleteQuoteEmailTmpl()
+        {
+            WriteResponseJson(new QuoteAndInvoiceEmailTempBLL().DeleteTmpl(long.Parse(request.QueryString["id"]), LoginUserId));
         }
     }
 }

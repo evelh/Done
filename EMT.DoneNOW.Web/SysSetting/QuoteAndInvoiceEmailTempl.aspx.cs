@@ -22,28 +22,31 @@ namespace EMT.DoneNOW.Web
         protected string BodyContent;//主体部分内容
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!long.TryParse(Request.QueryString["type"], out type))
+            if (!int.TryParse(Request.QueryString["type"], out cate))
             {
-                //Response.Write("<script>alert('获取相关信息失败，返回上一页');window.close();</script>");
+                Response.Write("<script>alert('获取相关信息失败，返回上一页');window.close();</script>");
+                Response.End();
+                return;
             }
             if (!long.TryParse(Request.QueryString["id"], out id))
             {
                 id = 0;
             }
-            //测试数据
-            type = 105;
-            //id = 1;
-            switch (type)
+            
+            switch (cate)
             {
-                case (int)QueryType.Quote_Email_Tmpl:
+                case 1:
                     typename = "新增：报价邮件模板";
-                    cate = 1;
+                    type = (int)QueryType.Quote_Email_Tmpl;
                     break;
-                case (int)QueryType.Invoice_Email_Tmpl:
-                    cate = 2;
+                case 2:
+                    type = (int)QueryType.Invoice_Email_Tmpl;
                     typename = "新增：发票邮件模板";
                     break;
-                default: Response.Write("<script>alert('获取相关信息失败，返回上一页');window.close();</script>"); break;
+                default:
+                    Response.Write("<script>alert('获取相关信息失败，返回上一页');window.close();</script>");
+                    Response.End();
+                    break;
             }
             if (!IsPostBack)
             {
