@@ -506,5 +506,20 @@ namespace EMT.DoneNOW.BLL
             #endregion
             return true;
         }
+
+        /// <summary>
+        /// 编辑费用
+        /// </summary>
+        public void EditExpense(sdk_expense expense, long userId)
+        {
+            var expDal = new sdk_expense_dal();
+            var oldExpense = expDal.FindNoDeleteById(expense.id);
+            if (oldExpense == null)
+                return;
+            expense.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            expense.update_user_id = userId;
+            expDal.Update(expense);
+            OperLogBLL.OperLogUpdate<sdk_expense>(expense, oldExpense, expense.id, userId, OPER_LOG_OBJ_CATE.SDK_EXPENSE, "");
+        }
     }
 }

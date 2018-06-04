@@ -209,5 +209,19 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
 
+
+        /// <summary>
+        /// 编辑销售顶大
+        /// </summary>
+        public void EditSaleOrder(crm_sales_order sale, long userId)
+        {
+            var oldSale = GetSaleOrder(sale.id);
+            if (oldSale == null)
+                return;
+            sale.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            sale.update_user_id = userId;
+            _dal.Update(sale);
+            OperLogBLL.OperLogUpdate<crm_sales_order>(sale, oldSale, sale.id, userId, OPER_LOG_OBJ_CATE.SALE_ORDER, "");
+        }
     }
 }

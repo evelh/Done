@@ -1278,34 +1278,134 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 根据相关SQl 获取相关 客户信息
         /// </summary>
-        public List<crm_account> GetAccountBySql(string sql)
+        public List<T> GetBySql<T>(string sql)
         {
-            return _dal.FindListBySql(sql);
+            return _dal.FindListBySql<T>(sql);
         }
-
+        /// <summary>
+        /// 合并客户
+        /// </summary>
         public bool MergeAccount(long fromAccId, long toAccId, long userId, bool isDelete = false)
         {
             crm_account fromAcc = GetCompany(fromAccId);
             crm_account toAcc = GetCompany(toAccId);
             if (fromAcc == null || toAcc == null)
                 return false;
-            //  联系人
-            // 销售订单
-            // 采购订单
-            // 待办
-            // 活动
-            // 配置项
-            // 项目
-            // 费用
-            // 工单
-            // 调查
-            // 任务/工单备注
-            // 备注
-            // 合同
-            // 附件
-            // 服务
-            // 创建时间早于目标客户 创建时间 更改目标客户的创建时间
 
+            //  联系人
+            ContactBLL conBll = new ContactBLL();
+            List<crm_contact> contactList = new ContactBLL().GetContactByCompany(fromAccId);
+            if (contactList != null && contactList.Count > 0)
+                contactList.ForEach(_ =>
+                {
+                    _.account_id = toAccId;
+                    conBll.EditContact(_,userId);
+                });
+
+            //  商机
+            OpportunityBLL oppBll = new OpportunityBLL();
+            List<crm_opportunity> oppoList = GetBySql<crm_opportunity>($"SELECT p.* from  crm_opportunity p  where  p.delete_time =0 and p.account_id = {fromAccId.ToString()} ");
+            if (oppoList != null && oppoList.Count > 0)
+                oppoList.ForEach(_ =>
+                {
+                    _.account_id = toAccId;
+                    oppBll.EdotOpportunity(_,userId);
+                });
+
+            // 采购订单
+            InventoryOrderBLL invBll = new InventoryOrderBLL();
+            List<ivt_order> orderList = GetBySql<ivt_order>($"SELECT * from ivt_order v where v.delete_time = 0 and v.vendor_account_id = {fromAccId.ToString()} ");
+            if (orderList != null && orderList.Count > 0)
+                orderList.ForEach(_ =>
+                {
+                    _.vendor_account_id = toAccId;
+                    invBll.EditOrder(_, userId);
+                });
+
+            // 待办，备注，活动
+            ActivityBLL actBll = new ActivityBLL();
+            List<com_activity> activityList = new ActivityBLL().GetToListBySql($"select * from com_activity where delete_time =0  and account_id = {fromAccId.ToString()} and (status_id <> {(int)DicEnum.ACTIVITY_STATUS.COMPLETED} or status_id is null)");
+            if (activityList != null && activityList.Count > 0)
+                activityList.ForEach(_ =>
+                {
+                    _.account_id = toAccId;
+                    actBll.EditActivity(_, userId);
+                });
+
+            // 配置项
+            InstalledProductBLL insBll = new InstalledProductBLL();
+            List<crm_installed_product> insProList = GetBySql<crm_installed_product>($"SELECT i.* from crm_installed_product i INNER JOIN ivt_product p on i.product_id = p.id and i.delete_time =0 and p.delete_time =0 and i.account_id = {fromAccId.ToString()}");
+            if (insProList != null && insProList.Count > 0)
+                insProList.ForEach(_ =>
+                {
+                    _.account_id = toAccId;
+                    insBll.EditInsPro(_,userId);
+                });
+
+
+            // 项目
+            ProjectBLL proBll = new ProjectBLL();
+            List<pro_project> proList = GetBySql<pro_project>($"SELECT * from pro_project where delete_time= 0 and account_id =  {fromAccId.ToString()}");
+            if (proList != null && proList.Count > 0)
+                proList.ForEach(_ =>
+                {
+                    _.account_id = toAccId;
+                    proBll.EditProjetc(_, userId);
+                });
+
+            // 费用
+            ExpenseBLL expBll = new ExpenseBLL();
+            List<sdk_expense> expList = GetBySql<sdk_expense>($"SELECT * from sdk_expense where delete_time= 0 and account_id =  {fromAccId.ToString()}");
+            if (expList != null && expList.Count > 0)
+                expList.ForEach(_ =>
+                {
+                    _.account_id = toAccId;
+                    expBll.EditExpense(_, userId);
+                });
+
+
+            // 工单 ,任务
+            TicketBLL taskBll = new TicketBLL();
+            List<sdk_task> ticketList = GetBySql<sdk_task>($"SELECT * from sdk_task where type_id in (1809,1807) and delete_time = 0 and account_id =  {fromAccId.ToString()}");
+            if (ticketList != null && ticketList.Count > 0)
+                ticketList.ForEach(_ =>
+                {
+                    _.account_id = toAccId;
+                    taskBll.EditTicket(_, userId);
+                });
+            // 调查  todo
+
+            // 合同
+            ContractBLL contractBll = new ContractBLL();
+            List<ctt_contract> contractList = GetBySql<ctt_contract>($"SELECT * from ctt_contract where delete_time = 0 and account_id = { fromAccId.ToString()}");
+            if (contractList != null && contractList.Count > 0)
+                contractList.ForEach(_ =>
+                {
+                    _.account_id = toAccId;
+                    contractBll.EditContractOnly(_, userId);
+                });
+
+            // 附件
+            AttachmentBLL attBll = new AttachmentBLL();
+            List<com_attachment> attList = GetBySql<com_attachment>($"SELECT * from com_attachment where delete_time =0 and account_id = { fromAccId.ToString()}");
+            if (attList != null && attList.Count > 0)
+                attList.ForEach(_ =>
+                {
+                    _.account_id = toAccId;
+                    attBll.EditAttachment(_, userId);
+                });
+            // 服务
+            List<ivt_service> serviceList = GetBySql<ivt_service>($"SELECT * from ivt_service where delete_time = 0 and vendor_account_id = { fromAccId.ToString()}");
+            if (serviceList != null && serviceList.Count > 0)
+                serviceList.ForEach(_ =>
+                {
+                    _.vendor_account_id = toAccId;
+                    invBll.EditService(_, userId);
+                });
+
+            // 创建时间早于目标客户 创建时间 更改目标客户的创建时间
+            if (fromAcc.create_time < toAcc.create_time)
+                toAcc.create_time = fromAcc.create_time;EditAccount(toAcc,userId);
 
             if (isDelete)
                 DeleteCompany(fromAccId,userId);

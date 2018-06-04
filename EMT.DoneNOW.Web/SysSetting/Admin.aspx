@@ -204,6 +204,31 @@
                                           <%}%>
                                     </div>
                                 </div>
+                                <div class="PageNavigationLinkGroup">
+                                    <div class="Heading">
+                                        <div class="Text">客户</div>
+                                    </div>
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState chaxun">客户和联系人导入(暂未开发)</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState chaxun"  href="TransResource.aspx" target="PageFrame1">客户移交</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
+                                    </div>
+                                    <div class="PageNavigationLinkColumn">
+                                        <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState chaxun" href="../SysSetting/MergeAccount.aspx" target="PageFrame1">客户合并</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
+                                         <div class="PageNavigationLink">
+                                            <a class="Button ButtonIcon Link NormalState chaxun" href="../SysSetting/MergeContact.aspx" target="PageFrame1">联系人合并</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -208,7 +208,7 @@ namespace EMT.DoneNOW.BLL
                 ticket.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 ticket.update_user_id = user_id;
                 _dal.Update(ticket);
-                OperLogBLL.OperLogUpdate<sdk_task>(ticket, oldTicket, ticket.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改工单信息");
+                OperLogBLL.OperLogUpdate<sdk_task>(ticket, oldTicket, ticket.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "");
             }
             return result;
         }

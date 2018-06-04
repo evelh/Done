@@ -700,7 +700,7 @@ namespace EMT.DoneNOW.BLL
             if (fromRes == null || toRes == null)
                 return false;
             CompanyBLL accBll = new CompanyBLL();
-            List<crm_account> accList = accBll.GetAccountBySql("SELECT * from crm_account a where a.delete_time =0 and a.resource_id = " + fromResId.ToString());
+            List<crm_account> accList = accBll.GetBySql<crm_account>("SELECT * from crm_account a where a.delete_time =0 and a.resource_id = " + fromResId.ToString());
             if (accList != null && accList.Count > 0)
                 accList.ForEach(_=> {
                     _.resource_id = toResId;
@@ -716,7 +716,7 @@ namespace EMT.DoneNOW.BLL
                 });
 
             ActivityBLL actBll = new ActivityBLL();
-            List<com_activity> actList = actBll.GetToListBySql($"select id,name,description from com_activity where delete_time =0 and resource_id = {fromResId.ToString()} and status_id={(int)DicEnum.ACTIVITY_STATUS.NOT_COMPLETED}");
+            List<com_activity> actList = actBll.GetToListBySql($"select id,name,description from com_activity where delete_time =0 and resource_id = {fromResId.ToString()} and (status_id <> {(int)DicEnum.ACTIVITY_STATUS.COMPLETED} or status_id is null)");
             if (actList != null && actList.Count > 0)
                 actList.ForEach(_ => {
                     _.resource_id = toResId;

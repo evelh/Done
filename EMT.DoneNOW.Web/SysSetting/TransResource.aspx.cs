@@ -77,7 +77,7 @@ namespace EMT.DoneNOW.Web.SysSetting
 
             #region  客户信息
             html.Append("<tr><td align='left'>客户</td></tr>");
-            List<crm_account> accList = new CompanyBLL().GetAccountBySql("SELECT id,name,phone from crm_account a where a.delete_time =0 and a.resource_id = "+ resId.ToString());
+            List<crm_account> accList = new CompanyBLL().GetBySql<crm_account>("SELECT id,name,phone from crm_account a where a.delete_time =0 and a.resource_id = "+ resId.ToString());
             if (accList != null && accList.Count > 0)
                 accList.ForEach(_ =>
                 {
@@ -98,7 +98,7 @@ namespace EMT.DoneNOW.Web.SysSetting
 
             #region  待办信息
             html.Append("<tr><td align='left' style='padding-top:20px;'>待办</td></tr>");
-            List<com_activity> todoList = new ActivityBLL().GetToListBySql($"select id,name,description from com_activity where delete_time =0 and cate_id = {(int)DicEnum.ACTIVITY_CATE.TODO} and resource_id = {resId.ToString()} and status_id={(int)DicEnum.ACTIVITY_STATUS.NOT_COMPLETED}");
+            List<com_activity> todoList = new ActivityBLL().GetToListBySql($"select id,name,description from com_activity where delete_time =0 and cate_id = {(int)DicEnum.ACTIVITY_CATE.TODO} and resource_id = {resId.ToString()} and (status_id <> {(int)DicEnum.ACTIVITY_STATUS.COMPLETED} or status_id is null)");
             if (todoList != null && todoList.Count > 0)
                 todoList.ForEach(_ =>
                 {
@@ -108,7 +108,7 @@ namespace EMT.DoneNOW.Web.SysSetting
 
             #region  活动信息
             html.Append("<tr><td align='left' style='padding-top:20px;'>活动</td></tr>");
-            List<com_activity> actList = new ActivityBLL().GetToListBySql($"select id,name,description from com_activity where delete_time =0 and cate_id <> {(int)DicEnum.ACTIVITY_CATE.TODO} and resource_id = {resId.ToString()} and status_id={(int)DicEnum.ACTIVITY_STATUS.NOT_COMPLETED}");
+            List<com_activity> actList = new ActivityBLL().GetToListBySql($"select id,name,description from com_activity where delete_time =0 and cate_id <> {(int)DicEnum.ACTIVITY_CATE.TODO} and resource_id = {resId.ToString()} and (status_id <> {(int)DicEnum.ACTIVITY_STATUS.COMPLETED} or status_id is null)");
             if (actList != null && actList.Count > 0)
                 actList.ForEach(_ =>
                 {

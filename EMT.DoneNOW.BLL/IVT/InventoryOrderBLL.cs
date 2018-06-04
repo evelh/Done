@@ -941,5 +941,33 @@ namespace EMT.DoneNOW.BLL
 
             return true;
         }
+
+        /// <summary>
+        /// 编辑采购订单
+        /// </summary>
+        public void EditOrder(ivt_order order, long userId)
+        {
+            var oldOrder = GetPurchaseOrder(order.id);
+            if (oldOrder == null)
+                return;
+            order.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            order.update_user_id = userId;
+            dal.Update(order);
+            OperLogBLL.OperLogUpdate<ivt_order>(order, oldOrder, order.id, userId, DicEnum.OPER_LOG_OBJ_CATE.INVENTORY_ORDER, "");
+        }
+        /// <summary>
+        /// 编辑服务
+        /// </summary>
+        public void EditService(ivt_service service, long userId)
+        {
+            var isDal = new ivt_service_dal();
+            var oldService = isDal.FindNoDeleteById(service.id);
+            if (oldService == null)
+                return;
+            service.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            service.update_user_id = userId;
+            isDal.Update(service);
+            OperLogBLL.OperLogUpdate<ivt_service>(service, oldService, service.id, userId, DicEnum.OPER_LOG_OBJ_CATE.IVT_SERVICE, "");
+        }
     }
 }

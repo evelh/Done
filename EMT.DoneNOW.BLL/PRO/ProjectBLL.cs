@@ -2177,5 +2177,19 @@ namespace EMT.DoneNOW.BLL
             OperLogBLL.OperLogAdd<com_activity>(act, act.id, user_id, OPER_LOG_OBJ_CATE.ACTIVITY, "新增备注");
             return true;
         }
+
+        /// <summary>
+        /// 编辑项目
+        /// </summary>
+        public void EditProjetc(pro_project project, long userId)
+        {
+            var oldProject = _dal.FindNoDeleteById(project.id);
+            if (oldProject == null)
+                return;
+            project.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            project.update_user_id = userId;
+            _dal.Update(project);
+            OperLogBLL.OperLogUpdate<pro_project>(project, oldProject, project.id, userId, OPER_LOG_OBJ_CATE.PROJECT, "");
+        }
     }
 }

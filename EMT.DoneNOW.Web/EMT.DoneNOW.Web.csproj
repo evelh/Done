@@ -649,6 +649,7 @@
     <Content Include="SysSetting\Holiday.aspx" />
     <Content Include="SysSetting\HolidaySet.aspx" />
     <Content Include="SysSetting\MergeAccount.aspx" />
+    <Content Include="SysSetting\MergeContact.aspx" />
     <Content Include="SysSetting\ResourceAssPolicy.aspx" />
     <Content Include="SysSetting\ResourceAssPolicyEdit.aspx" />
     <Content Include="SysSetting\ResourceDicCateForm.aspx" />
@@ -2442,6 +2443,13 @@
     </Compile>
     <Compile Include="SysSetting\MergeAccount.aspx.designer.cs">
       <DependentUpon>MergeAccount.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\MergeContact.aspx.cs">
+      <DependentUpon>MergeContact.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\MergeContact.aspx.designer.cs">
+      <DependentUpon>MergeContact.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\ResourceAssPolicy.aspx.cs">
       <DependentUpon>ResourceAssPolicy.aspx</DependentUpon>

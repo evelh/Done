@@ -10,7 +10,7 @@
 namespace EMT.DoneNOW.Web.SysSetting {
     
     
-    public partial class MergeAccount {
+    public partial class MergeContact {
         
         /// <summary>
         /// form1 控件。

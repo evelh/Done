@@ -72,7 +72,7 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <returns></returns>
         public ERROR_CODE Insert(ContactAddAndUpdateDto contactAddDto, long user_id)
-        {          
+        {
             var user = UserInfoBLL.GetUserInfo(user_id);
 
             if (user == null)
@@ -123,7 +123,7 @@ namespace EMT.DoneNOW.BLL
             if (contactAddDto.contact.is_primary_contact == 1)  // 客户将当前联系人设置为主要联系人，此时将原有的主要联系人更改为普通联系人
             {
                 var old_primary_contact = _dal.GetPrimaryContactByAccountId(contactAddDto.contact.account_id); // 获取到客户的主要联系人
-                if (old_primary_contact != null&&old_primary_contact.id!= contactAddDto.contact.id)
+                if (old_primary_contact != null && old_primary_contact.id != contactAddDto.contact.id)
                 {
                     old_primary_contact.is_primary_contact = 0;
                     if (_dal.Update(old_primary_contact))  // 更改主要联系人，插入操作日志
@@ -148,7 +148,7 @@ namespace EMT.DoneNOW.BLL
 
             #region  保存联系人信息
             //contactAddDto.contact.suffix_id = contactAddDto.contact.suffix_id == 0 ? null : contactAddDto.contact.suffix_id;
-            contactAddDto.contact.id = contactAddDto.contact.id==0? _dal.GetNextIdCom(): contactAddDto.contact.id;
+            contactAddDto.contact.id = contactAddDto.contact.id == 0 ? _dal.GetNextIdCom() : contactAddDto.contact.id;
             contactAddDto.contact.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             contactAddDto.contact.create_user_id = user.id;
             contactAddDto.contact.update_time = contactAddDto.contact.create_time;
@@ -188,7 +188,7 @@ namespace EMT.DoneNOW.BLL
             //contact.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             //contact.update_user_id = CachedInfoBLL.GetUserInfo(token).id;
             var user = UserInfoBLL.GetUserInfo(user_id);
-        
+
             if (user == null)
                 return ERROR_CODE.PARAMS_ERROR;
 
@@ -211,7 +211,7 @@ namespace EMT.DoneNOW.BLL
             #region 对联系人中的唯一性信息进行校验（联系人和移动电话）
             if (!string.IsNullOrEmpty(contact_update.contact.mobile_phone))    // 如果用户填写了移动电话，那么对电话进行唯一检验（全表内未删除的联系人进行检索，不局限于本客户联系人）
             {
-                var same_phone_contact = _dal.GetContactByPhone(contact_update.contact.mobile_phone,contact_update.contact.id);
+                var same_phone_contact = _dal.GetContactByPhone(contact_update.contact.mobile_phone, contact_update.contact.id);
                 if (same_phone_contact != null && same_phone_contact.Count > 0)    // 查询到此手机号已经有联系人在使用，不可重复使用，返回错误
                 {
                     return ERROR_CODE.ERROR;
@@ -257,7 +257,7 @@ namespace EMT.DoneNOW.BLL
             #region 修改联系人
 
             var old_contact_value = _dal.FindById(contact_update.contact.id);
-     
+
             contact_update.contact.update_user_id = user.id;
             contact_update.contact.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             _dal.Update(contact_update.contact);
@@ -279,7 +279,7 @@ namespace EMT.DoneNOW.BLL
             #region 修改联系人的扩展信息          
 
             var udf_contact_list = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTACT); // 联系人的自定义字段
-            if(udf_contact_list !=null && udf_contact_list.Count > 0)
+            if (udf_contact_list != null && udf_contact_list.Count > 0)
             {
                 var udf_con_list = contact_update.udf;                                               // 传过来的联系人的自定义参数
                 new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.CONTACT, udf_contact_list, contact_update.contact.id, udf_con_list, user, DicEnum.OPER_LOG_OBJ_CATE.CONTACTS_EXTENSION_INFORMATION);                         // 修改方法内含有插入日志操作，若无修改将不插入日志
@@ -298,10 +298,10 @@ namespace EMT.DoneNOW.BLL
         public bool DeleteContact(long id, long user_id)
         {
             crm_contact contact = GetContact(id);
-            if (contact==null)        
+            if (contact == null)
                 return false;
             if (_dal.SoftDelete(contact, user_id))
-                OperLogBLL.OperLogDelete<crm_contact>(contact, contact.id, user_id, OPER_LOG_OBJ_CATE.CONTACTS,"");
+                OperLogBLL.OperLogDelete<crm_contact>(contact, contact.id, user_id, OPER_LOG_OBJ_CATE.CONTACTS, "");
             return true;
 
             //   该联系人是公司的外包联系人（工单中的外包人员）
@@ -330,7 +330,7 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public crm_contact GetDefaultByAccountId(long account_id)
         {
-            
+
             return _dal.FindSignleBySql<crm_contact>($"select * from crm_contact where account_id = {account_id} and is_primary_contact = 1 and delete_time = 0");
         }
 
@@ -345,14 +345,14 @@ namespace EMT.DoneNOW.BLL
             return _dal.GetContactByIds(ids);
         }
 
-        public bool UpdateContacts(string updateIds,string phone,string fax,long user_id)
+        public bool UpdateContacts(string updateIds, string phone, string fax, long user_id)
         {
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
                 return false;
             var con_list = updateIds.Split(',');
             var contactList = _dal.GetContactByIds(updateIds);
-            if(contactList!=null&& contactList.Count > 0)
+            if (contactList != null && contactList.Count > 0)
             {
                 foreach (var item in con_list)
                 {
@@ -397,7 +397,7 @@ namespace EMT.DoneNOW.BLL
         {
             return new crm_contact_group_contact_dal().GetGroupContactByGroup(groupId);
         }
-        
+
         /// <summary>
         /// 根据名称获取联系人组(联系人组 名称唯一)
         /// </summary>
@@ -417,7 +417,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 联系人组名称校验
         /// </summary>
-        public bool CheckGroupName(string name,long? id=null)
+        public bool CheckGroupName(string name, long? id = null)
         {
             var group = GetGroupByName(name);
             if (group == null)
@@ -436,23 +436,23 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 客户的联系人组 联系人管理
         /// </summary>
-        public bool AccountContractGroupManage(long accountId,long groupId,string ids,long userId)
+        public bool AccountContractGroupManage(long accountId, long groupId, string ids, long userId)
         {
             var thisGroup = GetGroupById(groupId);
             var thisAccount = new CompanyBLL().GetCompany(accountId);
             if (thisGroup == null || thisAccount == null)
                 return false;
-            var oldConList = GetAccountGroupContact(groupId,accountId);
+            var oldConList = GetAccountGroupContact(groupId, accountId);
             var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             var ccgcDal = new crm_contact_group_contact_dal();
-            if (oldConList!=null&& oldConList.Count > 0)
+            if (oldConList != null && oldConList.Count > 0)
             {
                 if (!string.IsNullOrEmpty(ids))
                 {
                     var idArr = ids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var id in idArr)
                     {
-                        var thisCon = oldConList.FirstOrDefault(_=>_.contact_group_id== groupId&&_.contact_id==long.Parse(id));
+                        var thisCon = oldConList.FirstOrDefault(_ => _.contact_group_id == groupId && _.contact_id == long.Parse(id));
                         if (thisCon != null)
                         {
                             oldConList.Remove(thisCon);
@@ -471,27 +471,30 @@ namespace EMT.DoneNOW.BLL
                         ccgcDal.Insert(thisCon);
                     }
                     if (oldConList.Count > 0)
-                        oldConList.ForEach(_ => {
+                        oldConList.ForEach(_ =>
+                        {
                             ccgcDal.SoftDelete(_, userId);
                         });
 
                 }
                 else
-                    oldConList.ForEach(_ => {
-                        ccgcDal.SoftDelete(_,userId);
+                    oldConList.ForEach(_ =>
+                    {
+                        ccgcDal.SoftDelete(_, userId);
                     });
             }
             else
             {
                 if (!string.IsNullOrEmpty(ids))
                 {
-                    var idArr = ids.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                    var idArr = ids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var id in idArr)
                     {
-                        var thisCon = ccgcDal.GetByGroupContact(groupId,long.Parse(id));
+                        var thisCon = ccgcDal.GetByGroupContact(groupId, long.Parse(id));
                         if (thisCon != null)
                             continue;
-                        thisCon = new crm_contact_group_contact() {
+                        thisCon = new crm_contact_group_contact()
+                        {
                             id = ccgcDal.GetNextIdCom(),
                             contact_group_id = groupId,
                             contact_id = long.Parse(id),
@@ -509,20 +512,21 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 将联系人添加到联系人组
         /// </summary>
-        public bool AddContactsToGroup(long groupId,string conIds,long userId)
+        public bool AddContactsToGroup(long groupId, string conIds, long userId)
         {
             var thisGroup = GetGroupById(groupId);
             if (thisGroup == null || string.IsNullOrEmpty(conIds))
                 return false;
-            var conArr = conIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+            var conArr = conIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             var ccgcDal = new crm_contact_group_contact_dal();
             foreach (var conId in conArr)
             {
-                var thisGroupCon = ccgcDal.GetByGroupContact(thisGroup.id,long.Parse(conId));
+                var thisGroupCon = ccgcDal.GetByGroupContact(thisGroup.id, long.Parse(conId));
                 if (thisGroupCon == null)
                 {
-                    thisGroupCon = new crm_contact_group_contact() {
+                    thisGroupCon = new crm_contact_group_contact()
+                    {
                         id = ccgcDal.GetNextIdCom(),
                         contact_group_id = thisGroup.id,
                         contact_id = long.Parse(conId),
@@ -540,7 +544,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 联系人群组管理
         /// </summary>
-        public bool ContactGroupManage(long? id,string name,sbyte isActive,long userId)
+        public bool ContactGroupManage(long? id, string name, sbyte isActive, long userId)
         {
             if (string.IsNullOrEmpty(name))
                 return false;
@@ -583,7 +587,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 执行联系人活动信息
         /// </summary>
-        public bool ExectueContactAction(ExexuteContactDto param,long userId)
+        public bool ExectueContactAction(ExexuteContactDto param, long userId)
         {
             if (string.IsNullOrEmpty(param.ids))
                 return false;
@@ -654,7 +658,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 保存联系人活动模板信息
         /// </summary>
-        public bool SaveActionTemp(crm_contact_action_tmpl temp,long userId,ref long tempId)
+        public bool SaveActionTemp(crm_contact_action_tmpl temp, long userId, ref long tempId)
         {
             if (!CheckActionTempName(temp.name, temp.id))
                 return false;
@@ -679,7 +683,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 校验联系人活动模板名称唯一性
         /// </summary>
-        public bool CheckActionTempName(string name,long tempId = 0)
+        public bool CheckActionTempName(string name, long tempId = 0)
         {
             var ccatDal = new crm_contact_action_tmpl_dal();
             // GetTempByName
@@ -702,13 +706,13 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 从联系人组中移除联系人
         /// </summary>
-        public bool RemoveContactFromGroup(long groupId,string conIds,long userId)
+        public bool RemoveContactFromGroup(long groupId, string conIds, long userId)
         {
             var thisGroup = GetGroupById(groupId);
             if (thisGroup == null || string.IsNullOrEmpty(conIds))
                 return false;
             var ccgcDal = new crm_contact_group_contact_dal();
-            var conArr = conIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+            var conArr = conIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var conId in conArr)
             {
                 var thisGroupContact = ccgcDal.FindNoDeleteById(long.Parse(conId));
@@ -722,30 +726,31 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 删除联系人组
         /// </summary>
-        public bool DeleteContactGroup(long groupId,long userId)
+        public bool DeleteContactGroup(long groupId, long userId)
         {
             var thisGroup = GetGroupById(groupId);
             var ccgcDal = new crm_contact_group_contact_dal();
             var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             var thisGroupContactList = ccgcDal.GetGroupContactByGroup(groupId);
             if (thisGroup != null)
-                new crm_contact_group_dal().SoftDelete(thisGroup,userId);
+                new crm_contact_group_dal().SoftDelete(thisGroup, userId);
             if (thisGroupContactList != null && thisGroupContactList.Count > 0)
-                thisGroupContactList.ForEach(_ => {
-                    ccgcDal.SoftDelete(_,userId);
+                thisGroupContactList.ForEach(_ =>
+                {
+                    ccgcDal.SoftDelete(_, userId);
                 });
             return true;
         }
         /// <summary>
         /// 激活/失活 联系人组
         /// </summary>
-        public bool ActiveContactGroup(long groupId,bool isActive,long userId)
+        public bool ActiveContactGroup(long groupId, bool isActive, long userId)
         {
             var thisGroup = GetGroupById(groupId);
             if (thisGroup == null)
                 return false;
             var sbyteIsActive = (sbyte)(isActive ? 1 : 0);
-            if(thisGroup.is_active!= sbyteIsActive)
+            if (thisGroup.is_active != sbyteIsActive)
             {
                 thisGroup.is_active = sbyteIsActive;
                 thisGroup.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -757,31 +762,103 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 删除联系人活动模板
         /// </summary>
-        public bool DeleteContactActionTemp(long tempId,long userId)
+        public bool DeleteContactActionTemp(long tempId, long userId)
         {
             var thisTemp = GetTempById(tempId);
             if (thisTemp != null)
             {
-                new crm_contact_action_tmpl_dal().SoftDelete(thisTemp,userId);
+                new crm_contact_action_tmpl_dal().SoftDelete(thisTemp, userId);
             }
             return true;
+        }
+
+        /// <summary>
+        /// 编辑联系人
+        /// </summary>
+        public void EditContact(crm_contact contact, long userId)
+        {
+            var oldcon = _dal.FindNoDeleteById(contact.id);
+            if (oldcon == null)
+                return;
+            contact.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            contact.update_user_id = userId;
+            _dal.Update(contact);
+            OperLogBLL.OperLogUpdate<crm_contact>(contact, oldcon, contact.id, userId, OPER_LOG_OBJ_CATE.CONTACTS, "");
         }
 
         public bool MergeContact(long fromConId, long toConId, long userId, bool isDelete = false)
         {
             crm_contact fromCon = GetContact(fromConId);
             crm_contact toCon = GetContact(toConId);
-            if (fromCon == null || toCon == null)
+            if (fromCon == null || toCon == null|| fromConId== toConId)
                 return false;
-            // 商机
-            // 销售订单
-            // 待办
-            // 活动
-            // 工单
+            CompanyBLL accBll = new CompanyBLL();
+
+
+            // 商机// 销售订单
+            OpportunityBLL oppoBll = new OpportunityBLL();
+            List<crm_opportunity> oppoList = new OpportunityBLL().GetOppoBySql($"SELECT * from crm_opportunity where delete_time =0 and contact_id = {fromConId.ToString()} ");
+            if (oppoList != null && oppoList.Count > 0)
+                oppoList.ForEach(_ =>
+                {
+                    _.contact_id = toConId;
+                    oppoBll.EdotOpportunity(_, userId);
+                });
+
+            // 待办 // 活动
+            ActivityBLL actBll = new ActivityBLL();
+            List<com_activity> activityList = new ActivityBLL().GetToListBySql($"select * from com_activity where delete_time =0 and  contact_id = {fromConId.ToString()} and (status_id <> {(int)DicEnum.ACTIVITY_STATUS.COMPLETED} or status_id is null)");
+            if (activityList != null && activityList.Count > 0)
+                activityList.ForEach(_ =>
+                {
+                    _.contact_id = toConId;
+                    actBll.EditActivity(_, userId);
+                });
+            // 工单 // 任务
+            TicketBLL taskBll = new TicketBLL();
+            List<sdk_task> ticketList = accBll.GetBySql<sdk_task>($"SELECT * from sdk_task where type_id in (1809,1807) and delete_time = 0 and contact_id =  {fromConId.ToString()}");
+            if (ticketList != null && ticketList.Count > 0)
+                ticketList.ForEach(_ =>
+                {
+                    _.contact_id = toConId;
+                    taskBll.EditTicket(_, userId);
+                });
             // 调查
-            // 任务
+
             // 联系人群组
+            List<crm_contact_group> groupList = accBll.GetBySql<crm_contact_group>($"SELECT ccg.* from crm_contact_group ccg INNER JOIN crm_contact_group_contact ccgc on ccg.id = ccgc.contact_group_id where ccg.delete_time =0 and ccgc.delete_time = 0 and ccgc.contact_id =  {fromConId.ToString()}");
+            crm_contact_group_contact_dal ccgcDal = new crm_contact_group_contact_dal();
+            if (groupList != null && groupList.Count > 0)
+                groupList.ForEach(_ =>
+                {
+                    var list = GetGroupContactByGroup(_.id);
+                    if (list != null && list.Count > 0) {
+                        var from = list.FirstOrDefault(l=>l.contact_id==toConId);
+                        if (from != null)
+                        {
+                            if (list.Any(l => l.contact_id == toConId))  // 删除源
+                            {
+                                ccgcDal.SoftDelete(from,userId);
+                            }
+                            else     // 更改源
+                            {
+                                from.contact_id = toConId;
+                                ccgcDal.Update(from);
+                            }
+                        }
+                        
+                    }
+                });
+
             // 合同
+            ContractBLL contractBll = new ContractBLL();
+            List<ctt_contract> contractList = accBll.GetBySql<ctt_contract>($"SELECT id, name from ctt_contract where delete_time = 0 and contact_id = { fromConId.ToString()}");
+            if (contractList != null && contractList.Count > 0)
+                contractList.ForEach(_ =>
+                {
+                    _.contact_id = toConId;
+                    contractBll.EditContractOnly(_, userId);
+                });
 
             if (isDelete)
                 DeleteContact(fromConId, userId);

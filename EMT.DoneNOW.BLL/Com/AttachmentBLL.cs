@@ -253,5 +253,19 @@ namespace EMT.DoneNOW.BLL
             }
             return Math.Round(size) + units[i];
         }
+
+        /// <summary>
+        /// 编辑附件
+        /// </summary>
+        public void EditAttachment(com_attachment att, long userId)
+        {
+            var oldAtt = dal.FindNoDeleteById(att.id);
+            if (oldAtt == null)
+                return;
+            att.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            att.update_user_id = userId;
+            dal.Update(att);
+            OperLogBLL.OperLogUpdate<com_attachment>(att, oldAtt, att.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ATTACHMENT, "");
+        }
     }
 }

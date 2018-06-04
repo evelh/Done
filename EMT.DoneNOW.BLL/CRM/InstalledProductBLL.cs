@@ -1632,5 +1632,19 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
 
+        /// <summary>
+        /// 编辑配置项
+        /// </summary>
+        public void EditInsPro(crm_installed_product insPro, long userId)
+        {
+            var oldInsPro = _dal.FindNoDeleteById(insPro.id);
+            if (oldInsPro == null)
+                return;
+            insPro.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            insPro.update_user_id = userId;
+            _dal.Update(insPro);
+            OperLogBLL.OperLogUpdate<crm_installed_product>(insPro, oldInsPro, insPro.id, userId, OPER_LOG_OBJ_CATE.CONFIGURAITEM, "");
+        }
+
     }
 }

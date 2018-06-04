@@ -1330,5 +1330,19 @@ namespace EMT.DoneNOW.BLL
             }
             return true;
         }
+
+        /// <summary>
+        /// 编辑合同
+        /// </summary>
+        public void EditContractOnly(ctt_contract contract, long userId)
+        {
+            var oldcon = dal.FindNoDeleteById(contract.id);
+            if (oldcon == null)
+                return;
+            contract.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            contract.update_user_id = userId;
+            dal.Update(contract);
+            OperLogBLL.OperLogUpdate<ctt_contract>(contract, oldcon, contract.id, userId, OPER_LOG_OBJ_CATE.CONTACTS, "");
+        }
     }
 }
