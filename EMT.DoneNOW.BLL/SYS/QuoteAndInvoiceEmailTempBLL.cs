@@ -165,7 +165,8 @@ namespace EMT.DoneNOW.BLL
             }
             tmpl.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             tmpl.update_user_id = user.id;
-            if (dal.Update(tmpl)) {
+            if (!dal.Update(tmpl))
+            {
                 return ERROR_CODE.ERROR;
             }
             //日志

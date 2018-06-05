@@ -281,6 +281,9 @@
             width: auto;
             height: 26px;
         }
+        input[type=text]{
+            width:280px;
+        }
     </style>
     <title></title>
 </head>
@@ -314,7 +317,7 @@
                             <div class="Vertical"></div>
                             <div class="Horizontal"></div>
                         </div>
-                        <span class="lblNormalClass">GENERAL INFORMATION</span>
+                        <span class="lblNormalClass">基本信息</span>
                     </div>
                     <div class="Content">
                         <table class="Neweditsubsection" style="width: 780px;" cellpadding="0" cellspacing="0">
@@ -329,10 +332,10 @@
                                                     <span class="Required">*</span>
                                                             <div>
                                                                 <asp:TextBox ID="Name" runat="server"></asp:TextBox>
-                                                                <asp:CheckBox ID="Active" runat="server" Style="vertical-align: middle; margin-left: 122px;" />激活
+                                                                <asp:CheckBox ID="Active" runat="server" Style="vertical-align: middle; margin-left: 50px;" />激活
                                                                <%if (type == (int)EMT.DoneNOW.DTO.QueryType.Quote_Email_Tmpl)
                                                                    { %>
-            <asp:CheckBox ID="AttachPdf" runat="server" Style="vertical-align: middle; margin-left: 50px;" />Attach quote as PDF<%} %>
+                                                                <asp:CheckBox ID="AttachPdf" runat="server" Style="vertical-align: middle; margin-left: 50px;" />将报价附加为PDF<%} %>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -359,7 +362,7 @@
                             <div class="Vertical"></div>
                             <div class="Horizontal"></div>
                         </div>
-                        <span class="lblNormalClass">EMAIL MESSAGE</span>
+                        <span class="lblNormalClass">邮件消息</span>
                     </div>
                     <div class="Content">
                         <table class="Neweditsubsection" style="width: 780px;" cellpadding="0" cellspacing="0">
@@ -392,16 +395,16 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="FieldLabel">           
-                                                    CC
-                                                    <span style="font-weight: normal;">(separate with semi-colon)</span>
+                                                    抄送
+                                                    <span style="font-weight: normal;">(多个使用英文,号分割)</span>
                                                             <div>
                                                                 <asp:TextBox ID="CC" runat="server" TextMode="MultiLine" Style="width: 600px; min-height: 40px;"></asp:TextBox>
                                                             </div>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="FieldLabel">BCC
-                                                    <span style="font-weight: normal;">(separate with semi-colon)</span>
+                                                        <td class="FieldLabel">密送
+                                                    <span style="font-weight: normal;">(多个使用英文,号分割)</span>
                                                             <div>
                                                                 <asp:TextBox ID="BCC" runat="server" TextMode="MultiLine" Style="width: 600px; min-height: 40px;"></asp:TextBox>
                                                             </div>
@@ -411,12 +414,12 @@
                                                         <td class="FieldLabel">
                                                             <div>
                                                                 <asp:CheckBox ID="BccAccountManager" runat="server"></asp:CheckBox>
-                                                                BCC Account Manager
+                                                                密送客户经理
                                                             </div>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="FieldLabel">Email Subject
+                                                        <td class="FieldLabel">邮件主题
                                                     <span class="Required">*</span>
                                                             <div>
                                                                 <asp:TextBox ID="Email_Subject" runat="server"></asp:TextBox><img src="../RichText/img/Dialog.png" style="vertical-align: middle;" id="AddButton" />
@@ -424,25 +427,25 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="FieldLabel">Email Format
+                                                        <td class="FieldLabel">邮件格式
                                                     <div style="padding-bottom: 3px;">
                                                         <input type="radio" name="EmailFormat" id="EmailFormatHtml2" style="vertical-align: middle;"<%if (emailtempl.is_html_format != 2)
                                                             { %>
                                                             checked="checked"
                                                             <%} %> />
-                                                        <label for="EmailFormatHtml" style="cursor: pointer;">html</label>
+                                                        <label for="EmailFormatHtml2" style="cursor: pointer;">Html</label>
                                                     </div>
                                                     <div>
                                                         <input type="radio" name="EmailFormat" id="EmailFormatPlaintext2" style="vertical-align: middle;" <%if (emailtempl.is_html_format == 2)
                                                             { %>
                                                             checked="checked"
                                                             <%} %> />
-                                                        <label for="EmailFormatPlaintext" style="cursor: pointer;">Plain Text</label>
+                                                        <label for="EmailFormatPlaintext2" style="cursor: pointer;">纯文本</label>
                                                     </div>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="FieldLabel">Email Body
+                                                        <td class="FieldLabel">邮件正文
                                                     <div class="Fuwenben">
                                                         <script id="containerHead" name="content" type="text/plain"></script>
                                                         <div class="Dialog">
@@ -452,8 +455,8 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="FieldLabel">Send Test Email to
-                                                    <span style="font-weight: normal;">(separate with semi-colon)</span>
+                                                        <td class="FieldLabel">发送测试邮件到
+                                                    <span style="font-weight: normal;">(多个使用英文,号分割)</span>
                                                             <div>
                                                                 <textarea name="CarbonCopyEmailAddress" style="width: 600px; min-height: 40px;"></textarea>
                                                             </div>
@@ -515,7 +518,7 @@
                             <div class="Medium">
                                 <div class="Content">
                                     <div style="width: 390px; display: inline-block; vertical-align: top;">
-                                        <div class="StandardText">If you switch Email Formats, any text currently entered in the Email Body will be lost. Do you want to continue?</div>
+                                        <div class="StandardText">如果切换邮件格式，当前输入的邮件正文内容将会丢失，要继续吗?</div>
                                         <div class="Confirmation">
                                             <a class="Button ButtonIcon">
                                                 <span class="Text" id="yes">Yes</span>
@@ -536,7 +539,7 @@
           <input type="hidden" id="htmlformat" name="htmlformat" value="<%=emailtempl.is_html_format %>"/>
         </div>
              <!--黑色幕布-->
-           <%-- <div id="BackgroundOverLay"></div>--%>
+            <%--<div id="BackgroundOverLay"></div>--%>
             </div>
         <script src="../Scripts/jquery-3.1.0.min.js"></script>
         <script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
@@ -573,7 +576,7 @@
 
             //        富文本编辑器
             var ue = UE.getEditor('containerHead', {
-                serverUrl: '../Tools/UploadAjax.ashx',
+                //serverUrl: '../Tools/UploadAjax.ashx',
                 toolbars: [
                     ['source', 'fontfamily', 'fontsize', 'bold', 'italic', 'underline', 'fontcolor', 'backcolor', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist', 'insertunorderedlist', 'insertimage', 'undo', 'redo']
                 ],
@@ -583,13 +586,14 @@
                 elementPathEnabled : false,
                 autoHeightEnabled: false  //设置滚动条
             });
-            $(".upload-img").InitUploader({ filesize: "10240", sendurl: "../Tools/UploadAjax.ashx", swf: "../RichText/uploader.swf", filetypes: "gif,jpg,jpeg,png,bmp" });
+            //$(".upload-img").InitUploader({ filesize: "10240", sendurl: "../Tools/UploadAjax.ashx", swf: "../RichText/uploader.swf", filetypes: "gif,jpg,jpeg,png,bmp" });
             var _this;
             $("#AddButton").on("click", function () {
-                _this = $(this).previousSbiling;
+                //_this = $(this).previousSbiling;
+                _this = $("#Email_Subject");
                 $("#BackgroundOverLay").show();
                 $(".AlertBox").show();
-                return _this;
+                //return _this;
             });
             ue.ready(function () {
                 //初始化内容
@@ -599,6 +603,7 @@
                 //获取纯文本内容  返回：内容
                 var txt = ue.getContentTxt();
                 $(".Dialog").on("click", function () {
+                    _this = $("#AlertVariableList");
                     $("#BackgroundOverLay").show();
                     $(".AlertBox").show();
                 });
@@ -609,7 +614,7 @@
             });
             //双击选中事件
             function dbclick(val) {
-                if (_this.id == 'Email_Subject') {
+                if (_this[0].id == 'Email_Subject') {
                     _this.focus();  
                     _this.val(_this.val()+$(val).html());
                     $("#BackgroundOverLay").hide();
@@ -635,12 +640,12 @@
                     $("#bodydata").val($('<div/>').text(html).html());
                     $("#htmlformat").val("1");
                 }
-                if ($("#Name").val() == null || $("#Name").val == '') {
+                if ($("#Name").val() == null || $("#Name").val() == '') {
                     alert("请填写名称！");
                     $("#Name").focus();
                     return false;
                 }
-                if ($("#Email_Subject").val() == null || $("#Email_Subject").val == '') {
+                if ($("#Email_Subject").val() == null || $("#Email_Subject").val() == '') {
                     alert("请填写邮件模板主体！");
                     $("#Email_Subject").focus();
                     return false;
@@ -651,12 +656,12 @@
                 var _this = $(this);
                 $("#BackgroundOverLay").show();
                 $(".AlertMessage").show();
-                $("#yes").on("click", function () {
+                $("#yes").unbind("click").bind("click", function () {
                     ue.setContent('');
                     $("#BackgroundOverLay").hide();
                     $(".AlertMessage").hide();
                 });
-                $("#no").on("click", function () {
+                $("#no").unbind("click").bind("click", function () {
                     $("#BackgroundOverLay").hide();
                     $(".AlertMessage").hide();
                     if (_this[0].id == 'EmailFormatPlaintext2') {
@@ -667,14 +672,14 @@
                         $("#EmailFormatHtml2").prop("checked", false);
                     }
                 });
-                $("#CancelMessage").on("click", function () {
+                $("#CancelMessage").unbind("click").bind("click", function () {
                     $("#BackgroundOverLay").hide();
                     $(".AlertMessage").hide();
                     if (_this[0].id == 'EmailFormatPlaintext2') {
                         $("#EmailFormatHtml2").prop("checked", true);
                         $("#EmailFormatPlaintext2").prop("checked", false);
                     } else if (_this[0].id == 'EmailFormatHtml2') {
-                        $("#EmailFormatPlaintex2t").prop("checked", true);
+                        $("#EmailFormatPlaintext2").prop("checked", true);
                         $("#EmailFormatHtml2").prop("checked", false);
                     }
                 });

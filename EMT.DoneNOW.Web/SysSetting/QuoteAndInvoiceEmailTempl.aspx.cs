@@ -221,13 +221,13 @@ namespace EMT.DoneNOW.Web
             {
                 emailtempl.is_html_format = 1;
                 emailtempl.html_body = bodydata;
-                emailtempl.text_body = "不知道填什么";
+                emailtempl.text_body = "";
             }
             else if (k==2)
             {
                 emailtempl.is_html_format = 2;
                 emailtempl.text_body = bodydata;
-                emailtempl.html_body= "不知道填什么";
+                emailtempl.html_body= "";
             }
             switch (type)
             {
