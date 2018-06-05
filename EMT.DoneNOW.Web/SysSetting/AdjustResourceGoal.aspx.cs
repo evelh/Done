@@ -17,11 +17,15 @@ namespace EMT.DoneNOW.Web.SysSetting
         protected UserResourceBLL userBll = new UserResourceBLL();
         protected void Page_Load(object sender, EventArgs e)
         {
-            long objId = 0;
+            long objId = 0;long resId = 0;
             if (!string.IsNullOrEmpty(Request.QueryString["id"]))
                 long.TryParse(Request.QueryString["id"],out objId);
+            if (!string.IsNullOrEmpty(Request.QueryString["resId"]))
+                long.TryParse(Request.QueryString["resId"], out resId);
             if (objId != 0)
                 resAva = userBll.GetResourceAvailabilityById(objId);
+            if(resId!=0)
+                resAva = userBll.GetAvailabilityByResId(objId);
             if (resAva != null)
                 thisRes = userBll.GetResourceById(resAva.resource_id);
 

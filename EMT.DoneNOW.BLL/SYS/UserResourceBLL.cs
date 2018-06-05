@@ -355,6 +355,10 @@ namespace EMT.DoneNOW.BLL
         {
             return new sys_resource_availability_dal().FindNoDeleteById(id); ;
         }
+        public sys_resource_availability GetAvailabilityByResId(long resId)
+        {
+            return new sys_resource_availability_dal().FindSignleBySql<sys_resource_availability>($"SELECT * from sys_resource_availability where resource_id = {resId.ToString()} and delete_time = 0");
+        }
         /// <summary>
         /// 获取员工休假策略
         /// </summary>

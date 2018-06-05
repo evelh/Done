@@ -28,7 +28,7 @@ namespace EMT.DoneNOW.Web
                     var dIds = context.Request.QueryString["ids"];
                     GetNameByIds(context, dIds);
                     break;
-                case "GetWorkType":   //
+                case "GetWorkType":   
                     var dId = context.Request.QueryString["department_id"];
                     GetWorkType(context, long.Parse(dId));
                     break;
@@ -37,6 +37,16 @@ namespace EMT.DoneNOW.Web
                     var rId = context.Request.QueryString["resource_id"];
                     IsHasRes(context, long.Parse(depId), long.Parse(rId));
                     break;
+                case "GetlocationInfo":
+                    GetlocationInfo(context);
+                    break;
+                case "ResourceManage":ResourceManage(context);break;
+                case "GetDepResource":
+                    GetDepResource(context);break;
+                case "ActiveResManage":
+                    ActiveResManage(context);break;
+                case "DeleteResource":
+                    DeleteResource(context);break;
                 default: break;
 
             }
@@ -122,12 +132,92 @@ namespace EMT.DoneNOW.Web
             var resource = new sys_resource_department_dal().GetSinByDepIdResId(department_id, res_id);
             context.Response.Write(resource == null);
         }
-        public bool IsReusable
+       /// <summary>
+       /// 获取主要地址信息
+       /// </summary>
+        void GetlocationInfo(HttpContext context)
         {
-            get
+            string locaName = string.Empty;
+            string timeName = string.Empty;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
             {
-                return false;
+                var thisLoca = new sys_organization_location_dal().FindNoDeleteById(long.Parse(context.Request.QueryString["id"]));
+                if (thisLoca != null)
+                { locaName = thisLoca.name; timeName = new DepartmentBLL().GetTime_zone((int)thisLoca.id); }
+            }
+            WriteResponseJson(new { locaName = locaName , timeName = timeName });
+        }
+
+        void ResourceManage(HttpContext context)
+        {
+            sys_resource_department resdep = new sys_resource_department();
+            long id = 0;long resId = 0;long roleId = 0;long queId = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
+                if (long.TryParse(context.Request.QueryString["id"], out id))
+                    resdep.id = id;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["resId"]))
+                if (long.TryParse(context.Request.QueryString["resId"], out resId))
+                    resdep.resource_id = resId;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["roleId"]))
+                if (long.TryParse(context.Request.QueryString["roleId"], out roleId))
+                    resdep.role_id = roleId;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["queId"]))
+                if (long.TryParse(context.Request.QueryString["queId"], out queId))
+                    resdep.department_id = queId;
+            
+            if (!string.IsNullOrEmpty(context.Request.QueryString["isActive"]) && context.Request.QueryString["isActive"] == "1")
+                resdep.is_active = 1;
+            else
+                resdep.is_active = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["isLead"]) && context.Request.QueryString["isLead"] == "1")
+                resdep.is_lead = 1;
+            else
+                resdep.is_lead = 0;
+            bool result = false;string faileReason = string.Empty;
+            if (resdep.id == 0)
+                result = new DepartmentBLL().AddQueueResource(resdep,LoginUserId,ref faileReason);
+            else
+                result = new DepartmentBLL().EditQueueResource(resdep, LoginUserId,ref faileReason);
+            WriteResponseJson(new { result = result, reason = faileReason });
+        }
+
+        void GetDepResource(HttpContext context)
+        {
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
+            {
+                var thisDepRes = new sys_resource_department_dal().FindById(long.Parse(context.Request.QueryString["id"]));
+                if (thisDepRes != null)
+                    WriteResponseJson(thisDepRes);
             }
         }
+
+        void ActiveResManage(HttpContext context)
+        {
+            var result = false;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
+            {
+                var thisDepRes = new sys_resource_department_dal().FindById(long.Parse(context.Request.QueryString["id"]));
+                if (thisDepRes != null)
+                {
+                    if(!string.IsNullOrEmpty(context.Request.QueryString["isActive"])&& context.Request.QueryString["isActive"] == "1")
+                        thisDepRes.is_active = 1;
+                    else
+                        thisDepRes.is_active = 0;
+                    string temp = string.Empty;
+                    result = new DepartmentBLL().EditQueueResource(thisDepRes, LoginUserId, ref temp);
+                }
+                  
+            }
+            WriteResponseJson(result);
+        }
+
+        void DeleteResource(HttpContext context)
+        {
+            bool result = false;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
+                result = new DepartmentBLL().DeleteResource(long.Parse(context.Request.QueryString["id"]),LoginUserId);
+            WriteResponseJson(result);
+        }
+
     }
 }

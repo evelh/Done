@@ -806,12 +806,16 @@ namespace EMT.DoneNOW.DTO
             PROJECT_DASHBOARD_TIMESHEET = 1678,              // 项目-仪表板-漏工时表
             PROJECT_DASHBOARD_MY_PROJECT_ISSUE = 1679,       // 项目-仪表板-我的项目问题
 
-            SYS_FORM_TEMP_SEARCH = 1684,             // 系统设置-表单模板查询
-
-
             QUOTE_EMAIL_TEMPLATE = 1682,                    // 报价邮件模板
             INVOICE_EMAIL_TEMPLATE = 1683,                  // 发票邮件模板
-
+            SYS_FORM_TEMP_SEARCH = 1684,             // 系统设置-表单模板查询
+            SYSTEM_RESOURCE_WEEK_GOAL=1685,          // 系统设置-员工周目标设置
+            SYSTEM_SKILL = 1686,                     // 系统设置-技能查询
+            SYSTEM_SKILL_CATE = 1687,                // 系统设置-技能类别查询
+            SYSTEM_CERTIFICATION = 1688,             // 系统设置-证书和培训查询
+            SYSTEM_DEGREE =1689,                     // 系统设置-学位查询
+            SYSTEM_CERTIFICATION_CATE = 1690,        // 系统设置-证书和培训类别查询
+            SYSTEM_DEGREE_CATE = 1691,               // 系统设置-学位类别查询
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -981,7 +985,7 @@ namespace EMT.DoneNOW.DTO
             SYS_FORM_TMPL_RECURRING_TICKET_EXT = 1454,  // 表单模板-定期工单自定义
             SYS_FORM_TMPL_TICKET_EXT = 1455,            // 表单模板-工单自定义
             SYS_FORM_TMPL_TICKET_CHECKLIST = 1456,      // 表单模板-工单检查单
-
+            SYS_RESOURCE_DEPARTMENT = 1457,             // 员工所属队列
 
         }
 
@@ -2008,6 +2012,13 @@ namespace EMT.DoneNOW.DTO
         Quote_Email_Tmpl = 292,                         //报价邮件模板
         Invoice_Email_Tmpl = 293,                       //发票邮件模板
         SYS_FORM_TEMP_SEARCH = 294,             // 系统设置-表单模板查询
+        SYSTEM_RESOURCE_WEEK_GOAL = 295,          // 系统设置-员工周目标设置
+        SYSTEM_SKILL = 296,                     // 系统设置-技能查询
+        SYSTEM_SKILL_CATE = 297,                // 系统设置-技能类别查询  
+        SYSTEM_CERTIFICATION = 298,             // 系统设置-证书和培训查询
+        SYSTEM_DEGREE = 299,                     // 系统设置-学位查询
+        SYSTEM_CERTIFICATION_CATE = 300,        // 系统设置-证书和培训类别查询
+        SYSTEM_DEGREE_CATE = 301,               // 系统设置-学位类别查询
 
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理

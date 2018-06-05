@@ -59,6 +59,9 @@ namespace EMT.DoneNOW.Web
                     case "DeleteHoliday":
                         DeleteHoliday(context);
                         break;
+                    case "DeleteSkillFromGeneral":
+                        DeleteSkillFromGeneral(context);
+                        break;
                     default:
                         break;
                 }
@@ -210,6 +213,17 @@ namespace EMT.DoneNOW.Web
         {
             long id = long.Parse(context.Request.QueryString["id"]);
             context.Response.Write(new Tools.Serialize().SerializeJson(new GeneralBLL().DeleteHoliday(id, LoginUserId)));
+        }
+        /// <summary>
+        /// 删除技能/证书/学位 相关字典表
+        /// </summary>
+        void DeleteSkillFromGeneral(HttpContext context)
+        {
+            bool result = false;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
+                result = new GeneralBLL().DeleteResourceGeneral(long.Parse(context.Request.QueryString["id"]),LoginUserId);
+            WriteResponseJson(result);
+
         }
     }
 }

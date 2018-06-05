@@ -37,6 +37,12 @@ namespace EMT.DoneNOW.Core
         public SByte is_system { get; set; }
         [DataMember]
         public String other_email { get; set; }
+        [DataMember]
+        public String other_email4 { get; set; }
+        [DataMember]
+        public String other_email3 { get; set; }
+        [DataMember]
+        public String other_email2 { get; set; }
 
 
     }

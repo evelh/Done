@@ -267,6 +267,12 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SALES_ORDER_VIEW_ATTACHMENT:
                 case (int)DicEnum.QUERY_CATE.OPPORTUNITY_VIEW_ATTACHMENT:
                 case (int)DicEnum.QUERY_CATE.MASTER_TICKET_SEARCH:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_SKILL:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_SKILL_CATE:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_CERTIFICATION:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_DEGREE:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_CERTIFICATION_CATE:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_DEGREE_CATE:
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
@@ -1611,6 +1617,15 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "失活模板", click_function = "InActive()",id= "LiInActive" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制模板", click_function = "Copy()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除模板", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.SYSTEM_RESOURCE_WEEK_GOAL:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑员工", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设置周目标", click_function = "SetWeek()" });
+                    break;
+                case (long)QueryType.SYSTEM_SKILL:
+                    
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 default:
                     break;
