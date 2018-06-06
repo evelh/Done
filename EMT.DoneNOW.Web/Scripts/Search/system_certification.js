@@ -2,11 +2,11 @@
     $(".General").hide();
 })
 function Add() {
-    window.open("../SysSetting/ResourceDicCateForm.aspx", windowObj.general + windowType.add, 'left=0,top=0,location=no,status=no,width=400,height=350', false);
+    window.open("../SysSetting/ResourceDicForm.aspx?type=Certificate", windowObj.general + windowType.add, 'left=0,top=0,location=no,status=no,width=400,height=350', false);
 }
 
 function Edit() {
-    window.open("../SysSetting/ResourceDicCateForm.aspx?id=" + entityid, windowObj.general + windowType.edit, 'left=0,top=0,location=no,status=no,width=400,height=350', false);
+    window.open("../SysSetting/ResourceDicForm.aspx?id=" + entityid, windowObj.general + windowType.edit, 'left=0,top=0,location=no,status=no,width=400,height=350', false);
 }
 function Delete() {
     $.ajax({

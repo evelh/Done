@@ -25,13 +25,19 @@ namespace EMT.DoneNOW.Web.SysSetting
             if (objId != 0)
                 resAva = userBll.GetResourceAvailabilityById(objId);
             if(resId!=0)
-                resAva = userBll.GetAvailabilityByResId(objId);
+                resAva = userBll.GetAvailabilityByResId(resId);
             if (resAva != null)
                 thisRes = userBll.GetResourceById(resAva.resource_id);
-
-            if (thisRes == null || resAva == null)
+            if(resAva == null)
             {
-                Response.Write("<script>alert('未获取到相关员工信息');window.close();</script>");
+                Response.Write("<script>alert('请先到员工管理中设置员工工作时间！');window.close();</script>");
+                return;
+            }
+
+            if (thisRes == null)
+            {
+                Response.Write("<script>alert('未获取到相关员工信息，请刷新页面后重试');window.close();</script>");
+                return;
             }
         }
     }

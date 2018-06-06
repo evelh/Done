@@ -337,6 +337,7 @@ var windowObj = {
     formTemp: "formTemp",
     general: "general",
     generalCate: "generalCate",
+    resourceWorkGroup:"resourceWorkGroup",
 }
 var windowType = {
     blank: '_blank',

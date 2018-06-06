@@ -48,6 +48,13 @@ namespace EMT.DoneNOW.BLL
         {
             return new d_general_dal().FindListBySql<DictionaryEntryDto>($"SELECT id as val,`name` as `show` FROM d_general WHERE general_table_id={(long)tableId} AND parent_id={parentId} AND delete_time=0 AND is_active=1");
         }
+        /// <summary>
+        /// 根据TableId 获取相关信息
+        /// </summary>
+        public List<d_general> GetGeneralByTable(long tableId)
+        {
+            return _dal.GetGeneralByTableId(tableId);
+        }
 
         /// <summary>
         /// 根据字典项的table name和字典项name获取字典项id
