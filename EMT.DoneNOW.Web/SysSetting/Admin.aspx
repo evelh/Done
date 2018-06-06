@@ -23,13 +23,14 @@
     <form id="form1" runat="server" method="post">
         <div>
             <div id="body">
-                <!--顶部-->
-                <div class="TitleBar">
-                    <div class="Title">
-                        <span class="text1">管理员</span>
-                        <a href="###" class="collection"></a>
-                        <a href="###" class="help"></a>
-                    </div>
+
+            <!--顶部-->
+            <div class="TitleBar">
+                <div class="Title">
+                    <span class="text1">管理员</span>
+                    <a href="###" class="collection"></a>
+                    <a href="###" class="help"></a>
+               </div>
                 </div>
                 <!--选择框-->
                 <div class="TabBar">
@@ -587,6 +588,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -628,6 +630,7 @@
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -650,6 +653,7 @@
                                             <a class="Button ButtonIcon Link NormalState fl">点击这里</a>
                                             <p class="fl">，了解它如何帮助您提高收入，同时更好地服务于客户最大限度地提高效率。</p>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>

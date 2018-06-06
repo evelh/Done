@@ -1834,7 +1834,7 @@
                 </div>
             </div>
             <div class="button">
-                <div onclick="AddWidgetStep1(null)"><span></span>下一步</div>
+                <div onclick="AddWidgetStepSelect()"><span></span>下一步</div>
             </div>
         </div>
     </div>
@@ -1844,82 +1844,25 @@
         <div class="AddWidgetBeforePOP">
             <h3>新增小窗口</h3>
             <div class="content" id="addWgtContent">
-                <%--<div class="normal">
-                    <div class="heading">
-                        <div class="toogle" onclick="Toogle(this)">
-                            <div class="Vertical"></div>
-                            <div class="Horizontal"></div>
-                        </div>
-                        常规
-                    </div>
-                    <div class="Column">
-                        <div class="item">
-                            <p>小窗口标题<span style="color: red;">*</span></p>
-                            <input type="text" name="addWidgetName" id="addWidgetName">
-                        </div>
-                        <div class="item" style="line-height: 20px;">
-                            <p>对象</p>
-                            <span id="addWidgetEntityName"></span>
-                        </div>
-                        <div class="item" style="width: 100%;height: 90px;">
-                            <p>描述</p>
-                            <textarea id="wgtDesc" name="wgtDesc" style="width: 100%;height: 45px;resize: none;"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="normal">
-                    <div class="heading">
-                        <div class="toogle" onclick="Toogle(this)">
-                            <div class="Vertical"></div>
-                            <div class="Horizontal"></div>
-                        </div>
-                        内容
-                    </div>
-                    <div class="Column">
-                        <script id="containerHead" name="content" type="text/plain"></script>
-                        <script src="../RichText/js/ueditor.config.js"></script>
-                        <script src="../RichText/js/ueditor.all.js"></script>
-                    </div>
-                </div>
-                <div class="normal">
-                    <div class="heading">
-                        <div class="toogle" onclick="Toogle(this)">
-                            <div class="Vertical"></div>
-                            <div class="Horizontal"></div>
-                        </div>
-                        选项
-                    </div>
-                    <div class="Column">
-                        <div class="item" style="height: 20px;">
-                            <input type="checkbox" id="wgtDisplayName" name="wgtDisplayName" style="margin-top: 2px;">
-                            <label for="wgtDisplayOth">显示小窗口标题</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="normal">
-                    <div class="heading">
-                        <div class="toogle" onclick="Toogle(this)">
-                            <div class="Vertical"></div>
-                            <div class="Horizontal"></div>
-                        </div>
-                        布局/大小
-                    </div>
-                    <div class="Column">
-                        <div class="item" style="width: 100%;height: auto;">
-                            <p>宽度   <a style="color: #ccc;font-weight: normal;font-size: 11px;">(小窗口占用的列数)</a><input type="hidden" id="wgtSize" name="wgtSize" value="2" /></p>
-                            <ul class="widgetSizeList">
-                                <li title="1列" data-val="1"></li>
-                                <li title="2列" data-val="2" class="widgetSizeListNow"></li>
-                                <li title="3列" data-val="3"></li>
-                                <li title="4列" data-val="4"></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>--%>
+                
             </div>
             <div class="button">
                 <div class="pev" onclick="BackAddWidgetStep0();"><span></span>上一步</div>
                 <div class="next" >完成</div>
+            </div>
+        </div>
+    </div>
+    <div class="POPbox" id="AddWidgetSelect">
+        <div class="shut" onclick="POPClose(this)">
+        </div>
+        <div class="AddWidgetBeforePOP">
+            <h3>新增小窗口</h3>
+            <div class="content">
+                
+            </div>
+            <div class="button">
+                <div class="pev" onclick="BackAddWidgetSelectStep0();"><span></span>上一步</div>
+                <div class="next" >下一步</div>
             </div>
         </div>
     </div>
