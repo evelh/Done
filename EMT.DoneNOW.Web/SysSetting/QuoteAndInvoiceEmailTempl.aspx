@@ -332,7 +332,7 @@
                                                     <span class="Required">*</span>
                                                             <div>
                                                                 <asp:TextBox ID="Name" runat="server"></asp:TextBox>
-                                                                <asp:CheckBox ID="Active" runat="server" Style="vertical-align: middle; margin-left: 50px;" />激活
+                                                                <asp:CheckBox ID="Active" runat="server" Style="vertical-align: middle; margin-left: 50px;" /><label for="Active">激活</label>
                                                                <%if (type == (int)EMT.DoneNOW.DTO.QueryType.Quote_Email_Tmpl)
                                                                    { %>
                                                                 <asp:CheckBox ID="AttachPdf" runat="server" Style="vertical-align: middle; margin-left: 50px;" />将报价附加为PDF<%} %>
@@ -414,7 +414,7 @@
                                                         <td class="FieldLabel">
                                                             <div>
                                                                 <asp:CheckBox ID="BccAccountManager" runat="server"></asp:CheckBox>
-                                                                密送客户经理
+                                                                <label for="BccAccountManager">密送客户经理</label>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -479,32 +479,6 @@
                     </div>
                 </div>
             </div>
-            <!--弹框-->
-            <div class="AlertBox">
-                <div>
-                    <div class="CancelDialogButton"></div>
-                    <div class="AlertTitleBar">
-                        <div class="AlertTitle">
-                            <span>变量</span>
-                        </div>
-                    </div>
-                    <div class="VariableInsertion">
-                        <div class="AlertContent">
-                            <div class="AlertContentTitle">这是弹出的变量内容，可双击选择</div>
-                            <asp:ScriptManager ID="ScriptManager1" runat="server">
-                            </asp:ScriptManager>
-                            <asp:UpdatePanel ID="UpdatePanel2" runat="server" ChildrenAsTriggers="True">
-                                <ContentTemplate>
-                                    <asp:DropDownList ID="AlertVariableFilter" runat="server" OnSelectedIndexChanged="AlertVariableFilter_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList>
-                                    <select name="" multiple="multiple" id="AlertVariableList">
-                                        <asp:Literal ID="VariableList" runat="server"></asp:Literal>
-                                    </select>
-                                </ContentTemplate>
-                            </asp:UpdatePanel>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="AlertMessage">
                 <div>
                     <div class="CancelDialogButton" id="CancelMessage"></div>
@@ -539,7 +513,33 @@
           <input type="hidden" id="htmlformat" name="htmlformat" value="<%=emailtempl.is_html_format %>"/>
         </div>
              <!--黑色幕布-->
-            <%--<div id="BackgroundOverLay"></div>--%>
+            <div id="BackgroundOverLay"></div>
+            <!--弹框-->
+            <div class="AlertBox">
+                <div>
+                    <div class="CancelDialogButton"></div>
+                    <div class="AlertTitleBar">
+                        <div class="AlertTitle">
+                            <span>变量</span>
+                        </div>
+                    </div>
+                    <div class="VariableInsertion">
+                        <div class="AlertContent">
+                            <div class="AlertContentTitle">这是弹出的变量内容，可双击选择</div>
+                            <asp:ScriptManager ID="ScriptManager1" runat="server">
+                            </asp:ScriptManager>
+                            <asp:UpdatePanel ID="UpdatePanel2" runat="server" ChildrenAsTriggers="True">
+                                <ContentTemplate>
+                                    <asp:DropDownList ID="AlertVariableFilter" runat="server" OnSelectedIndexChanged="AlertVariableFilter_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList>
+                                    <select name="" multiple="multiple" id="AlertVariableList">
+                                        <asp:Literal ID="VariableList" runat="server"></asp:Literal>
+                                    </select>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+                        </div>
+                    </div>
+                </div>
+            </div>
             </div>
         <script src="../Scripts/jquery-3.1.0.min.js"></script>
         <script src="../Scripts/My97DatePicker/WdatePicker.js"></script>

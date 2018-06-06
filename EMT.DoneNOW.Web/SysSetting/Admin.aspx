@@ -39,10 +39,10 @@
                 <!--第一部分-->
                 <div class="TabContainer Active">
                     <div class="ButtonContainer">
-                        <a class="Button ButtonIcon NormalState" tabindex="0" id="d1">
+                        <a class="Button ButtonIcon NormalState ShowAll" tabindex="0">
                             <span class="Text">展开所有</span>
                         </a>
-                        <a class="Button ButtonIcon NormalState" tabindex="0" id="d2">
+                        <a class="Button ButtonIcon NormalState HideAll" tabindex="0">
                             <span class="Text">折叠所有</span>
                         </a>
                     </div>
@@ -460,16 +460,16 @@
                         </div>
                     </div>
                   <%}%>
-                    <div class="Normal Section Collapsed Normal1" id="b9">
+                    <div class="Normal Section Collapsed Normal1">
                         <div class="Heading">
-                            <div class="Toggle Expand Toggle1" id="a9">
+                            <div class="Toggle Expand Toggle1">
                                 <div class="Vertical Vertical1"></div>
                                 <div class="Horizontal"></div>
                             </div>
                             <span class="Text">财务、会计和发票</span>
                             <span></span>
                         </div>
-                        <div class="Content Content1" id="c9">
+                        <div class="Content Content1">
                             <div class="Large Column">
                                 <div class="PageNavigationLinkGroup">                                   
                                     <div class="PageNavigationLinkColumn">
@@ -486,55 +486,43 @@
                 <!--第二部分-->
                 <div class="TabContainer">
                     <div class="ButtonContainer">
-                        <a class="Button ButtonIcon NormalState" tabindex="0" id="d3">
+                        <a class="Button ButtonIcon NormalState ShowAll" tabindex="0">
                             <span class="Text">展开所有</span>
                         </a>
-                        <a class="Button ButtonIcon NormalState" tabindex="0" id="d4">
+                        <a class="Button ButtonIcon NormalState HideAll" tabindex="0">
                             <span class="Text">折叠所有</span>
                         </a>
                     </div>
                     <!--第一个框-->
-                    <div class="Normal Collapsed Section Normal2" id="f1">
+                    <div class="Normal Collapsed Section Normal2">
                         <div class="Heading">
-                            <div class="Toggle Expand Toggle2" id="e1">
+                            <div class="Toggle Expand Toggle2" >
                                 <div class="Vertical Vertical2"></div>
                                 <div class="Horizontal"></div>
                             </div>
                             <span class="Text">自动任务加载项</span>
                             <span></span>
                         </div>
-                        <div class="Content Content2" id="g1">
+                        <div class="Content Content2">
                             <div class="Large Column">
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
-                                        <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                            <div class="StandardText">介绍介绍</div>
-                                        </div>
-                                        <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                            <div class="StandardText">介绍介绍</div>
-                                        </div>
-                                        <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                            <div class="StandardText">介绍介绍</div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!--第二个框-->
-                    <div class="Normal Collapsed Section Normal2" id="f2">
+                    <div class="Normal Collapsed Section Normal2">
                         <div class="Heading">
-                            <div class="Toggle Expand Toggle2" id="e2">
+                            <div class="Toggle Expand Toggle2">
                                 <div class="Vertical Vertical2"></div>
                                 <div class="Horizontal"></div>
                             </div>
                             <span class="Text">端点管理</span>
                             <span></span>
                         </div>
-                        <div class="Content Content2" id="g2">
+                        <div class="Content Content2">
                             <div class="Large Column">
                                 <div class="Resizable Instructions">
                                     <div class="InstructionItem oh">
@@ -547,57 +535,21 @@
                         </div>
                     </div>
                     <!--第三个框-->
-                    <div class="Normal Collapsed Section Normal2" id="f3">
+                    <div class="Normal Collapsed Section Normal2">
                         <div class="Heading">
-                            <div class="Toggle Expand Toggle2" id="e3">
+                            <div class="Toggle Expand Toggle2">
                                 <div class="Vertical Vertical2"></div>
                                 <div class="Horizontal"></div>
                             </div>
                             <span class="Text">客户端门户与TASKFIRE</span>
                             <span></span>
                         </div>
-                        <div class="Content Content2" id="g3">
+                        <div class="Content Content2">
                             <div class="Large Column">
                                 <div class="PageNavigationLinkGroup">
                                     <div class="PageNavigationLinkColumn">
-                                        <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                            <div class="StandardText">介绍介绍</div>
-                                        </div>
-                                        <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                            <div class="StandardText">介绍介绍</div>
-                                        </div>
-                                        <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                            <div class="StandardText">介绍介绍</div>
-                                        </div>
-                                        <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                            <div class="StandardText">介绍介绍</div>
-                                        </div>
-                                        <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                            <div class="StandardText">介绍介绍</div>
-                                        </div>
                                     </div>
                                     <div class="PageNavigationLinkColumn">
-                                        <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                            <div class="StandardText">介绍介绍</div>
-                                        </div>
-                                        <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                            <div class="StandardText">介绍介绍</div>
-                                        </div>
-                                        <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                            <div class="StandardText">介绍介绍</div>
-                                        </div>
-                                        <div class="PageNavigationLink">
-                                            <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                            <div class="StandardText">介绍介绍</div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

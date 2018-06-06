@@ -72,7 +72,19 @@ namespace EMT.DoneNOW.Web
                 //发票邮件模板
                 else if (type == (int)QueryType.Invoice_Email_Tmpl)
                 {
-
+                    this.AlertVariableFilter.DataTextField = "show";
+                    this.AlertVariableFilter.DataValueField = "val";
+                    this.AlertVariableFilter.DataSource = qibll.GetVariableField(cate);
+                    this.AlertVariableFilter.DataBind();
+                    this.AlertVariableFilter.Items.Insert(0, new ListItem() { Value = "0", Text = "显示全部变量", Selected = true });
+                    //对应的变量列表
+                    var list = qibll.GetAllVariable(cate);
+                    StringBuilder sb = new StringBuilder();
+                    foreach (string va in list)
+                    {
+                        sb.Append("<option class='val' ondblclick='dbclick(this);'>" + va.Replace("'", "") + "</option>");
+                    }
+                    this.VariableList.Text = sb.ToString();
 
                 }
                 //默认激活

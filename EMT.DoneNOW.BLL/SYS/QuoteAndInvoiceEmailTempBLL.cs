@@ -94,7 +94,7 @@ namespace EMT.DoneNOW.BLL
             }
             else if (cate == 2)
             {
-                return new sys_quote_tmpl_dal().GetDictionary((int)GeneralTableEnum.NOTIFICATION_TEMPLATE_CATE_DATE_GROUP, (int)NOTIFY_CATE.QUOTE_TEMPLATE_OTHERS);
+                return new sys_quote_tmpl_dal().GetDictionary((int)GeneralTableEnum.NOTIFICATION_TEMPLATE_CATE_DATE_GROUP, (int)NOTIFY_CATE.INVOICE_TEMPLATE_OTHERS);
             }
             else {
                 return null;

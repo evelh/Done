@@ -132,6 +132,20 @@ function BackAddWidgetStep0() {
         $('#AddWidgetBefore').hide();
     })
 }
+function BackAddWidgetSelectStep0() {
+    $('#AddWidget').show();
+    $('#AddWidgetSelect').hide();
+}
+function AddWidgetStepSelect() {
+    if ($('input:radio[name="addWidgetType"]:checked').val() == "1") {
+        AddWidgetStep1(null, 0);
+    } else if ($('input:radio[name="addWidgetType"]:checked').val() == "2") {
+    } else if ($('input:radio[name="addWidgetType"]:checked').val() == "3") {
+
+        //$('#AddWidget').hide();
+        //$('#AddWidgetSelect').show();
+    }
+}
 function GeneralAddWidgetForm(type) {
     if (type == 2581) {
         return '<div class="normal">'
