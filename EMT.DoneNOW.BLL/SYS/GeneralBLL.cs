@@ -691,7 +691,7 @@ namespace EMT.DoneNOW.BLL
             if (data == null)
                 return false;
             var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            data.id = (int)_dal.GetNextIdCom();
+            // data.id = (int)_dal.GetNextIdCom();
             data.create_time = timeNow;
             data.update_time = timeNow;
             data.create_user_id = userId;
@@ -716,6 +716,40 @@ namespace EMT.DoneNOW.BLL
             OperLogBLL.OperLogUpdate<d_general>(data, oldData, data.id, userId, OPER_LOG_OBJ_CATE.General_Code, "编辑字典项");
             return true;
         }
+        /// <summary>
+        /// 删除员工技能字典表，同时删除resource_skill
+        /// </summary>
+        public bool DeleteResourceGeneral(long id,long userId)
+        {
+            var thisGeneral = _dal.FindNoDeleteById(id);
+            if (thisGeneral == null)
+                return true;
+            sys_resource_skill_dal srsDal = new sys_resource_skill_dal();
+            List<sys_resource_skill> skillList=null;
+            List<d_general> generalList=null;
+            if (thisGeneral.general_table_id == (int)GeneralTableEnum.RESOURCE_SKILL_TYPE)
+                skillList = srsDal.GetSkillBType(id);
+            else if (thisGeneral.general_table_id == (int)GeneralTableEnum.SKILLS_CATE)
+            {
+                skillList = srsDal.GetSkillByClass(id);
+                generalList = _dal.GetGeneralByParentId(id);
+            }
+            if (generalList != null && generalList.Count > 0)
+                generalList.ForEach(_ => {
+                    DeleteResourceGeneral(_.id,userId);
+                });
+            if (skillList != null && skillList.Count > 0)
+                skillList.ForEach(_ => {
+                    srsDal.Delete(_);
+                    OperLogBLL.OperLogAdd<sys_resource_skill>(_,_.id,userId,OPER_LOG_OBJ_CATE.RESOURCE,"");
+                });
+            _dal.SoftDelete(thisGeneral,userId);
+            OperLogBLL.OperLogAdd<d_general>(thisGeneral, thisGeneral.id, userId, OPER_LOG_OBJ_CATE.General_Code, "");
+
+            return true;
+
+        }
+
 
         #region 节假日设置
         /// <summary>

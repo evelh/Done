@@ -38,7 +38,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String postal_code { get; set; }
         [DataMember]
-        public Int32 time_zone_id { get; set; }
+        public Int32? time_zone_id { get; set; }
         [DataMember]
         public Int32 holiday_set_id { get; set; }
         [DataMember]
@@ -55,6 +55,8 @@ namespace EMT.DoneNOW.Core
         public Int32? localeid { get; set; }
         [DataMember]
         public String number_format { get; set; }
+        [DataMember]
+        public Int32? holiday_hours_type_id { get; set; }
 
 
     }

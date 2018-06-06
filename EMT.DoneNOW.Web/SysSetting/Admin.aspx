@@ -116,6 +116,10 @@
                                             <div class="StandardText">介绍介绍</div>
                                         </div>
                                           <%}%>
+                                            <div class="PageNavigationLink">
+                                            <a href="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_RESOURCE_WEEK_GOAL %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_RESOURCE_WEEK_GOAL %>" class="Button ButtonIcon Link NormalState chaxun" target="PageFrame1">周计费目标设置</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="PageNavigationLinkGroup">
@@ -138,6 +142,42 @@
                                         </div>
                                           <%}%>
                                     </div>
+                                </div>
+                                <div class="PageNavigationLinkGroup">
+                                    <div class="Heading">
+                                        <div class="Text">技能管理</div>
+                                    </div>
+                                    <div class="PageNavigationLinkColumn">
+                                     <div class="PageNavigationLink">
+                                            <a href="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_SKILL %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_SKILL %>" class="Button ButtonIcon Link NormalState chaxun" target="PageFrame1">技能</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
+                                         </div>
+                                        <div class="PageNavigationLink">
+                                            <a href="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_SKILL_CATE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_SKILL_CATE %>" class="Button ButtonIcon Link NormalState chaxun" target="PageFrame1">技能类别</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
+
+                                     <div class="PageNavigationLink">
+                                            <a href="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CERTIFICATION %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_CERTIFICATION %>" class="Button ButtonIcon Link NormalState chaxun" target="PageFrame1">证书和培训</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
+                                     <div class="PageNavigationLink">
+                                            <a href="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CERTIFICATION_CATE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_CERTIFICATION_CATE %>" class="Button ButtonIcon Link NormalState chaxun" target="PageFrame1">证书和培训类别</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
+
+
+                                     <div class="PageNavigationLink">
+                                            <a href="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_DEGREE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_DEGREE %>" class="Button ButtonIcon Link NormalState chaxun" target="PageFrame1">学位</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
+                                     <div class="PageNavigationLink">
+                                            <a href="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_DEGREE_CATE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_DEGREE_CATE %>" class="Button ButtonIcon Link NormalState chaxun" target="PageFrame1">学位类别</a>
+                                            <div class="StandardText">介绍介绍</div>
+                                        </div>
+                                       
+                                    
                                 </div>
                             </div>
                         </div>

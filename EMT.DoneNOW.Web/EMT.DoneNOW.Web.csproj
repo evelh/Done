@@ -275,6 +275,9 @@
     <Content Include="Scripts\Search\report_contract_bill_tobill.js" />
     <Content Include="Scripts\Search\report_contract_bill_tobill_by_project.js" />
     <Content Include="Scripts\Search\report_contract_bill_tobill_by_res.js" />
+    <Content Include="Scripts\Search\system_resource_week_goal.js" />
+    <Content Include="Scripts\Search\system_skill.js" />
+    <Content Include="Scripts\Search\system_skill_cate.js" />
     <Content Include="Scripts\Search\sys_form_temp_search.js" />
     <Content Include="Scripts\Search\view_contact_group_search.js" />
     <Content Include="Scripts\Search\WidgetDrillCompany.js" />
@@ -634,6 +637,8 @@
     <Content Include="ServiceDesk\MyQueueList.aspx" />
     <Content Include="ServiceDesk\Newsubcategory.aspx" />
     <Content Include="ServiceDesk\DeleteMasterTicket.aspx" />
+    <Content Include="ServiceDesk\QueueManage.aspx" />
+    <Content Include="ServiceDesk\QueueResourceManage.aspx" />
     <Content Include="ServiceDesk\ServiceCall.aspx" />
     <Content Include="ServiceDesk\ServiceDeskDashboard.aspx" />
     <Content Include="ServiceDesk\TaskServiceCall.aspx" />
@@ -2320,6 +2325,20 @@
     </Compile>
     <Compile Include="ServiceDesk\Newsubcategory.aspx.designer.cs">
       <DependentUpon>Newsubcategory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\QueueManage.aspx.cs">
+      <DependentUpon>QueueManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\QueueManage.aspx.designer.cs">
+      <DependentUpon>QueueManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\QueueResourceManage.aspx.cs">
+      <DependentUpon>QueueResourceManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\QueueResourceManage.aspx.designer.cs">
+      <DependentUpon>QueueResourceManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServiceDesk\ServiceCall.aspx.cs">
       <DependentUpon>ServiceCall.aspx</DependentUpon>

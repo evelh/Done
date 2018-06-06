@@ -28,9 +28,10 @@
             <p style="">客户<span class="errorSmall">*</span></p>
             <div style="padding-bottom: 10px;">
                 <input type="text" name="" id="accountId" value="<%=account!=null?account.name:"" %>" size="32" maxlength="32" style="margin-right: 1px" />&nbsp;
-                                    <input type="hidden" id="accountIdHidden" name="accountId" value="<%=account!=null?account.id.ToString():"" %>" />
+                <input type="hidden" id="accountIdHidden" name="accountId" value="<%=account!=null?account.id.ToString():"" %>" />
                 <a onclick="AccountCallBack()">
-                    <img src="../Images/data-selector.png" border="0" width="16" height="16" style="vertical-align: middle;" /></a>
+                    <img src="../Images/data-selector.png" border="0" width="16" height="16" style="vertical-align: middle;" />
+                </a>
             </div>
         </div>
         <div style="margin-left: 20px;">
