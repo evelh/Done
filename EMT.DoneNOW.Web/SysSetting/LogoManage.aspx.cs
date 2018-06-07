@@ -23,7 +23,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                     thisGeneral = genBll.GetSingleGeneral(id);
             if (thisGeneral == null)
             {
-                Response.Write("<script>alert('未获取到相关Logo信息');window.close();</script>");
+                Response.Write("<script>alert('未获取到相关信息');window.close();</script>");
             }
 
         }

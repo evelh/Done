@@ -757,7 +757,6 @@ namespace EMT.DoneNOW.BLL
 
         }
 
-
         #region 节假日设置
         /// <summary>
         /// 新增节假日
@@ -909,5 +908,19 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
         #endregion
+        /// <summary>
+        /// 删除工单问题
+        /// </summary>
+        public bool DeleteGeneralIssue(long id, long userId, ref string failReason, bool isSub = false)
+        {
+            d_general thisGen = GetSingleGeneral(id);
+            if (thisGen == null)
+            {
+                failReason = "已经删除";
+                return false;
+            }
+
+            return true;
+        }
     }
 }

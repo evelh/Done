@@ -158,7 +158,7 @@
                             <tr>
                                 <td>
                                     <div class="clear">
-                                        <label>工单显示在客户端<span class="red"></span></label>
+                                        <label>显示在客户门户上<span class="red"></span></label>
                                         <input type="checkbox" name="isShow" id="isShow" <%if (isAdd || (queue != null && queue.is_show == 1))
                                             {%>
                                             checked="checked" <%} %> />
