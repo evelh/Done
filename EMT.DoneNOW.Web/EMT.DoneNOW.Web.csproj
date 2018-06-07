@@ -275,7 +275,12 @@
     <Content Include="Scripts\Search\report_contract_bill_tobill.js" />
     <Content Include="Scripts\Search\report_contract_bill_tobill_by_project.js" />
     <Content Include="Scripts\Search\report_contract_bill_tobill_by_res.js" />
+    <Content Include="Scripts\Search\system_certification.js" />
+    <Content Include="Scripts\Search\system_certification_cate.js" />
+    <Content Include="Scripts\Search\system_degree.js" />
+    <Content Include="Scripts\Search\system_degree_cate.js" />
     <Content Include="Scripts\Search\system_resource_week_goal.js" />
+    <Content Include="Scripts\Search\system_resource_workgroup_search.js" />
     <Content Include="Scripts\Search\system_skill.js" />
     <Content Include="Scripts\Search\system_skill_cate.js" />
     <Content Include="Scripts\Search\sys_form_temp_search.js" />
@@ -656,6 +661,8 @@
     <Content Include="SysSetting\FormTemplateManage.aspx" />
     <Content Include="SysSetting\Holiday.aspx" />
     <Content Include="SysSetting\HolidaySet.aspx" />
+    <Content Include="SysSetting\LogoManage.aspx" />
+    <Content Include="SysSetting\LogoSearch.aspx" />
     <Content Include="SysSetting\MergeAccount.aspx" />
     <Content Include="SysSetting\MergeContact.aspx" />
     <Content Include="SysSetting\ResourceAssPolicy.aspx" />
@@ -668,6 +675,8 @@
     <Content Include="SysSetting\TransResource.aspx" />
     <Content Include="SysSetting\UserDefinedField.aspx" />
     <Content Include="SysSetting\WorkflowRule.aspx" />
+    <Content Include="Resource\Workgroup.aspx" />
+    <Content Include="Resource\WorkgroupResource.aspx" />
     <Content Include="TimeSheet\ExpenseReportDetail.aspx" />
     <Content Include="TimeSheet\MyTimeoffBalance.aspx" />
     <Content Include="TimeSheet\MyTimeSummary.aspx" />
@@ -2459,6 +2468,20 @@
     <Compile Include="SysSetting\HolidaySet.aspx.designer.cs">
       <DependentUpon>HolidaySet.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\LogoManage.aspx.cs">
+      <DependentUpon>LogoManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\LogoManage.aspx.designer.cs">
+      <DependentUpon>LogoManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\LogoSearch.aspx.cs">
+      <DependentUpon>LogoSearch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\LogoSearch.aspx.designer.cs">
+      <DependentUpon>LogoSearch.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SysSetting\MergeAccount.aspx.cs">
       <DependentUpon>MergeAccount.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2542,6 +2565,20 @@
     </Compile>
     <Compile Include="SysSetting\WorkflowRule.aspx.designer.cs">
       <DependentUpon>WorkflowRule.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Resource\Workgroup.aspx.cs">
+      <DependentUpon>Workgroup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Resource\Workgroup.aspx.designer.cs">
+      <DependentUpon>Workgroup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Resource\WorkgroupResource.aspx.cs">
+      <DependentUpon>WorkgroupResource.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Resource\WorkgroupResource.aspx.designer.cs">
+      <DependentUpon>WorkgroupResource.aspx</DependentUpon>
     </Compile>
     <Compile Include="TimeSheet\ExpenseReportDetail.aspx.cs">
       <DependentUpon>ExpenseReportDetail.aspx</DependentUpon>

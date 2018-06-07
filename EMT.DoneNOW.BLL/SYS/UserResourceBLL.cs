@@ -728,5 +728,113 @@ namespace EMT.DoneNOW.BLL
                 });
             return true;
         }
+        /// <summary>
+        /// 获取员工工作组
+        /// </summary>
+        public sys_workgroup GetGroup(long groupId)
+        {
+            return new sys_workgroup_dal().FindNoDeleteById(groupId);
+        }
+
+        /// <summary>
+        /// 获取员工工作组员工
+        /// </summary>
+        public sys_workgroup_resouce GetGroupResource(long id)
+        {
+            return new sys_workgroup_resouce_dal().FindById(id);
+        }
+
+        /// <summary>
+        /// 根据工作组获取工作组员工
+        /// </summary>
+        public List<sys_workgroup_resouce> GetGroupResList(long groupId)
+        {
+            return _dal.FindListBySql<sys_workgroup_resouce>($"SELECT * from sys_workgroup_resouce where workgroup_id = {groupId}");
+        }
+        /// <summary>
+        /// 新增工作组
+        /// </summary>
+        public bool AddGroup(sys_workgroup group ,long userId)
+        {
+            sys_workgroup_dal swDal = new sys_workgroup_dal();
+            group.id = swDal.GetNextIdCom();
+            group.create_time = group.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            group.create_user_id = group.update_user_id = userId;
+            swDal.Insert(group);
+            OperLogBLL.OperLogAdd<sys_workgroup>(group, group.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SYS_WORKGROUP, "");
+            return true;
+        }
+        /// <summary>
+        /// 编辑工作组
+        /// </summary>
+        public bool EditGroup(sys_workgroup group, long userId)
+        {
+            sys_workgroup_dal swDal = new sys_workgroup_dal();
+            var oldGroup = swDal.FindNoDeleteById(group.id);
+            if (oldGroup == null)
+                return false;
+            group.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            group.update_user_id = userId;
+            swDal.Update(group);
+            OperLogBLL.OperLogUpdate<sys_workgroup>(group, oldGroup, group.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SYS_WORKGROUP, "");
+            return true;
+        }
+        /// <summary>
+        /// 删除工作组
+        /// </summary>
+        public bool DeleteGroup(long groupId,long userId)
+        {
+            sys_workgroup_dal swDal = new sys_workgroup_dal();
+            var oldGroup = swDal.FindNoDeleteById(groupId);
+            if (oldGroup == null)
+                return true;
+            swDal.SoftDelete(oldGroup, userId);
+            OperLogBLL.OperLogDelete<sys_workgroup>(oldGroup, oldGroup.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SYS_WORKGROUP, "");
+            var resList = GetGroupResList(oldGroup.id);
+            if (resList != null && resList.Count > 0)
+                resList.ForEach(_ => {
+                    DeleteGroupResource(_.id,userId);
+                });
+            return true;
+        }
+        /// <summary>
+        /// 新增工作组员工
+        /// </summary>
+        public bool AddGroupResource(sys_workgroup_resouce group, long userId)
+        {
+            sys_workgroup_resouce_dal swrDal = new sys_workgroup_resouce_dal();
+            group.id = swrDal.GetNextIdCom();
+            swrDal.Insert(group);
+            OperLogBLL.OperLogAdd<sys_workgroup_resouce>(group, group.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SYS_WORKGROUP_RESOURCE, "");
+            return true;
+        }
+        /// <summary>
+        /// 编辑工作组员工
+        /// </summary>
+        public bool EditGroupResource(sys_workgroup_resouce group, long userId)
+        {
+            sys_workgroup_resouce_dal swrDal = new sys_workgroup_resouce_dal();
+            var oldGroup = swrDal.FindById(group.id);
+            if (oldGroup == null)
+                return false;
+            swrDal.Update(group);
+            OperLogBLL.OperLogUpdate<sys_workgroup_resouce>(group, oldGroup, group.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SYS_WORKGROUP_RESOURCE, "");
+            return true;
+        }
+        /// <summary>
+        /// 删除工作组员工
+        /// </summary>
+        public bool DeleteGroupResource(long groupId, long userId)
+        {
+            sys_workgroup_resouce_dal swrDal = new sys_workgroup_resouce_dal();
+            var oldGroup = swrDal.FindById(groupId);
+            if (oldGroup == null)
+                return true;
+            swrDal.Delete(oldGroup);
+            OperLogBLL.OperLogDelete<sys_workgroup_resouce>(oldGroup, oldGroup.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SYS_WORKGROUP_RESOURCE, "");
+            return true;
+        }
+
+
     }
 }

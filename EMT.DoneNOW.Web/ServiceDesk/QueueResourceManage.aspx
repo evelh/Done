@@ -5,7 +5,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title><%=isAdd?"新增":"编辑" %>队列员工</title>
     <link rel="stylesheet" type="text/css" href="../Content/base.css" />
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
@@ -14,7 +13,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div class="header"><%=isAdd?"新增":"编辑" %>队列</div>
+        <div class="header"><%=isAdd?"新增":"编辑" %>队列员工</div>
         <div class="header-title">
             <ul>
                 <li id="SaveClose"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>保存并关闭</li>

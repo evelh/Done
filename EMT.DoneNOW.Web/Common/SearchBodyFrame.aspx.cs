@@ -273,6 +273,7 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SYSTEM_DEGREE:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_CERTIFICATION_CATE:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_DEGREE_CATE:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_RESOURCE_WORKGROUP_SEARCH:
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
@@ -1623,7 +1624,12 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "设置周目标", click_function = "SetWeek()" });
                     break;
                 case (long)QueryType.SYSTEM_SKILL:
-                    
+                case (long)QueryType.SYSTEM_SKILL_CATE:
+                case (long)QueryType.SYSTEM_CERTIFICATION:
+                case (long)QueryType.SYSTEM_CERTIFICATION_CATE:
+                case (long)QueryType.SYSTEM_DEGREE:
+                case (long)QueryType.SYSTEM_DEGREE_CATE:
+                case (long)QueryType.SYSTEM_RESOURCE_WORKGROUP_SEARCH:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;

@@ -2,7 +2,7 @@
     $(".General").hide();
 })
 function Add() {
-    window.open("../SysSetting/ResourceDicCateForm.aspx", windowObj.general + windowType.add, 'left=0,top=0,location=no,status=no,width=400,height=350', false);
+    window.open("../SysSetting/ResourceDicCateForm.aspx?type=Degree", windowObj.general + windowType.add, 'left=0,top=0,location=no,status=no,width=400,height=350', false);
 }
 
 function Edit() {

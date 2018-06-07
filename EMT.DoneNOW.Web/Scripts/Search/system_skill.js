@@ -2,16 +2,16 @@
     $(".General").hide();
 })
 function Add() {
-    window.open("../SysSetting/ResourceDicForm.aspx", windowObj.general + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+    window.open("../SysSetting/ResourceDicForm.aspx", windowObj.general + windowType.add, 'left=0,top=0,location=no,status=no,width=400,height=350', false);
 }
 
 function Edit() {
-    window.open("../SysSetting/ResourceDicForm.aspx?id=" + entityid, windowObj.general + windowType.edit, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
+    window.open("../SysSetting/ResourceDicForm.aspx?id=" + entityid, windowObj.general + windowType.edit, 'left=0,top=0,location=no,status=no,width=400,height=350', false);
 }
 function Delete() {
     $.ajax({
         type: "GET",
-        url: "../Tools/GeneralAjax.ashx?act=DeleteSkillFromGeneral&id" + entityid,
+        url: "../Tools/GeneralAjax.ashx?act=DeleteSkillFromGeneral&id=" + entityid,
         async: false,
         dataType: "json",
         success: function (data) {

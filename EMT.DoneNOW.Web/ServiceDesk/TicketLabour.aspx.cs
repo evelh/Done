@@ -45,6 +45,13 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 if (!string.IsNullOrEmpty(ticket_id))
                 {
                     thisTicket = new sdk_task_dal().FindNoDeleteById(long.Parse(ticket_id));
+                    if (thisTicket != null)
+                    {
+                        if (thisTicket.contact_id != null)
+                            thisContract = new ctt_contract_dal().FindNoDeleteById((long)thisTicket.contract_id);
+                        if(thisTicket.cost_code_id!=null)
+                            cost_code_id.SelectedValue = thisTicket.cost_code_id.ToString();
+                    }
                 }
                 var service_id = Request.QueryString["service_id"];
                 if (!string.IsNullOrEmpty(service_id))
@@ -62,7 +69,10 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                         if (ticketLabour.resource_id != null)
                             resource_id.SelectedValue = ((long)ticketLabour.resource_id).ToString();
                         if (ticketLabour.cost_code_id != null)
+                        {
+                            cost_code_id.ClearSelection();
                             cost_code_id.SelectedValue = ticketLabour.cost_code_id.ToString();
+                        }
                         if (ticketLabour.role_id != null)
                             role_id.SelectedValue = ticketLabour.role_id.ToString();
                         if (ticketLabour.contract_id != null)

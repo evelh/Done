@@ -123,6 +123,12 @@ namespace EMT.DoneNOW.Web
                     case "ChangeUserDataProtected":
                         ChangeUserDataProtected(context);
                         break;
+                    case "DeleteGroup":
+                        DeleteGroup(context);
+                        break;
+                    case "DeleteGroupResource":
+                        DeleteGroupResource(context);
+                        break;
                     default:
                         break;
                 }
@@ -958,6 +964,33 @@ namespace EMT.DoneNOW.Web
                 }
             }
             context.Response.Write(new Tools.Serialize().SerializeJson(result));
+        }
+
+        /// <summary>
+        /// 删除员工工作组
+        /// </summary>
+        /// <param name="context"></param>
+        private void DeleteGroup(HttpContext context)
+        {
+            var result = false;
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
+                if (long.TryParse(context.Request.QueryString["id"], out id))
+                    result = new BLL.UserResourceBLL().DeleteGroup(id,LoginUserId);
+            WriteResponseJson(result);
+        }
+        /// <summary>
+        /// 删除员工工作组员工
+        /// </summary>
+        /// <param name="context"></param>
+        private void DeleteGroupResource(HttpContext context)
+        {
+            var result = false;
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
+                if (long.TryParse(context.Request.QueryString["id"], out id))
+                    result = new BLL.UserResourceBLL().DeleteGroupResource(id, LoginUserId);
+            WriteResponseJson(result);
         }
     }
    
