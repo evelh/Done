@@ -54,6 +54,9 @@ namespace EMT.DoneNOW.Web
                 case "DeleteDashboard":
                     DeleteDashboard();
                     break;
+                case "GetSysWidget":
+                    GetSysWidget();
+                    break;
 
                 case "GetWidgetEntityList":
                     GetWidgetEntityList();
@@ -66,6 +69,9 @@ namespace EMT.DoneNOW.Web
                     break;
                 case "GetWidgetGroupby":
                     GetWidgetGroupbyList();
+                    break;
+                case "GetBreakPoint":
+                    GetBreakPoint();
                     break;
                 case "GetWidgetTableColumn":
                     GetWidgetTableColumn();
@@ -184,6 +190,14 @@ namespace EMT.DoneNOW.Web
             var id = long.Parse(request.QueryString["id"]);
             var info = bll.DeleteDashboard(id, LoginUserId);
             WriteResponseJson(info);
+        }
+
+        /// <summary>
+        /// 获取系统小窗口列表
+        /// </summary>
+        private void GetSysWidget()
+        {
+            WriteResponseJson(bll.GetSysWidgetList());
         }
 
         /// <summary>
@@ -557,6 +571,14 @@ namespace EMT.DoneNOW.Web
         private void GetWidgetEntityList()
         {
             WriteResponseJson(bll.GetAddWidgetEntityList(LoginUserId));
+        }
+
+        /// <summary>
+        /// 获取小窗口仪表类型分段类型
+        /// </summary>
+        private void GetBreakPoint()
+        {
+            WriteResponseJson(bll.GetBreakPoint(long.Parse(request.QueryString["id"])));
         }
 
         /// <summary>

@@ -1858,7 +1858,22 @@
         <div class="AddWidgetBeforePOP">
             <h3>新增小窗口</h3>
             <div class="content">
-                
+                <div style="width:100%;"><p>选择一个小窗口</p></div>
+                <div><label>实体</label><select id="WidgetSelectEntity"></select></div>
+                <table class="WidgetSelect">
+                    <tbody id="WidgetSelectWidgets">
+                        <tr style="background-color:#cbd9e4;">
+                            <th style="border:1px solid #b8c8d4;"></th>
+                            <th style="border:1px solid #b8c8d4;"></th>
+                            <th style="border:1px solid #b8c8d4;text-align:left;">名称和描述</th>
+                        </tr>
+                        <tr>
+                            <td><div class="SelWgtRd"><input type="radio" name="AddWgtSelectWgt" value="" /></div></td>
+                            <td><div class="SelWgtImg"></div></td>
+                            <td><div class="SelWgtDesc"><p>12312312312</p><p>12312312</p></div></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div class="button">
                 <div class="pev" onclick="BackAddWidgetSelectStep0();"><span></span>上一步</div>
