@@ -1451,3 +1451,27 @@ input[type=text], input[type=password] {
     display: block;
     padding-left: 8px;
 }
+
+.WidgetSelect{
+
+}
+    .WidgetSelect td {
+        border: solid 1px #e8e8e8;
+    }
+    .WidgetSelect th {
+        border-bottom-color: #98b4ca;
+        border-right-color: #98b4ca;
+    }
+    .WidgetSelect p{
+        text-align:left;
+    }
+.SelWgtRd{
+    width:40px;
+}
+.SelWgtImg{
+    width:80px;
+    height:64px;
+}
+.SelWgtDesc {
+    width: 696px;
+}

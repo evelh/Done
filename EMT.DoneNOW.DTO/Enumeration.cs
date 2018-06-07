@@ -101,6 +101,7 @@ namespace EMT.DoneNOW.DTO
         DASHBOARD_COLOR_THEME = 184,            // 仪表板色系
         WIDGET_TYPE = 189,                      // 小窗口类型
         WIDGET_ENTITY = 190,                    // 小窗口实体
+        WIDGET_BREAK_BASE_ON = 193,             // 小窗口仪表分段值分段类型
         DYNAMIC_START_DATE_TYPE = 196,          // 动态日期开始日期类型
         DYNAMIC_END_DATE_TYPE = 197,            // 动态日期结束日期类型
         SYS_TICKET_RESOLUTION_METRICS = 206,    // 工单解决参数设置

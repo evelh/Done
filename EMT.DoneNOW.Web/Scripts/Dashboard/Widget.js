@@ -141,9 +141,36 @@ function AddWidgetStepSelect() {
         AddWidgetStep1(null, 0);
     } else if ($('input:radio[name="addWidgetType"]:checked').val() == "2") {
     } else if ($('input:radio[name="addWidgetType"]:checked').val() == "3") {
+        LayerLoad();
+        $("#WidgetSelectEntity").empty();
+        for (var i = 0; i < widgetEntityList.length; i++) {
+            $("#WidgetSelectEntity").append("<option value='" + widgetEntityList[i].id + "'>" + widgetEntityList[i].name + "</option>");
+        }
+        var SysWidgets;
+        requestData("/Tools/DashboardAjax.ashx?act=GetSysWidget", null, function (data) {
+            SysWidgets = data;
+            SelectEntityChange();
+            $('#AddWidget').hide();
+            $('#AddWidgetSelect').show();
+            LayerLoadClose();
+            $("#WidgetSelectEntity").unbind("change").bind("change", function () {
+                SelectEntityChange();
+            });
+        })
 
-        //$('#AddWidget').hide();
-        //$('#AddWidgetSelect').show();
+        function SelectEntityChange() {
+            var selval = $("#WidgetSelectEntity").val();
+            var str = '<tr style="background-color:#cbd9e4;"><th style="border:1px solid #b8c8d4;"></th><th style="border:1px solid #b8c8d4;"></th><th style="border:1px solid #b8c8d4;text-align:left;">名称和描述</th></tr>';
+            for (var i = 0; i < SysWidgets.length; i++) {
+                if (selval == SysWidgets[i][1]) {
+                    str += '<tr><td><div class="SelWgtRd"><input type="radio" name="AddWgtSelectWgt" value="' + SysWidgets[i][0] + '" /></div></td>';
+                    str += '<td><div class="SelWgtImg"></div></td>';
+                    str += '<td><div class="SelWgtDesc"><p>' + SysWidgets[i][4] + '</p><p>' + SysWidgets[i][5] + '</p></div></td></tr>';
+                }
+            }
+            $("#WidgetSelectWidgets").empty();
+            $("#WidgetSelectWidgets")[0].innerHTML = str;
+        }
     }
 }
 function GeneralAddWidgetForm(type) {
@@ -1699,6 +1726,27 @@ function AddWidgetStep1(widgetData, copy) {
                 }
                 
             });
+            var breakBaseon = null;
+            requestData("/Tools/DashboardAjax.ashx?act=GetBreakPoint&id=" + entityType, null, function (data) {
+                breakBaseon = data;
+                if (breakBaseon != null) {
+                    var str = '<option value="">指定分段值</option>';
+                    for (var i = 0; i < breakBaseon.length; i++){
+                        str += '<option value="' + breakBaseon[i][0] + '">' + breakBaseon[i][1] + '</option>';
+                    }
+                    $("#wgtSub1BreakType")[0].innerHTML = str;
+                    $("#wgtSub2BreakType")[0].innerHTML = str;
+                    $("#wgtSub3BreakType")[0].innerHTML = str;
+                    $("#wgtSub4BreakType")[0].innerHTML = str;
+                    $("#wgtSub5BreakType")[0].innerHTML = str;
+                    $("#wgtSub6BreakType")[0].innerHTML = str;
+                }
+                if (widget != null && guages != null) {
+                    for (var i = 1; i <= guages.length; i++) {
+                        $("#wgtSub" + i + "BreakType").val(guages[i - 1].break_based_on);
+                    }
+                }
+            });
             function BreakPointCntChange(sub, values) {
                 var bpCnt = parseInt($("#wgtSub" + sub + "BreakCnt").val());
                 var wdPercent = 100 / bpCnt + "%";
@@ -1753,6 +1801,35 @@ function AddWidgetStep1(widgetData, copy) {
                     $("#wgtSub" + sub + "BPL5").hide();
                     if (bpCnt == 4) $("#wgtSub" + sub + "BPL4").html('<input type="text" name="wgtSub' + sub + 'BP3" id="wgtSub' + sub + 'BP3" value="' + vals[3] + '" style="width:60px;"><input type="text" name="wgtSub' + sub + 'BP4" id="wgtSub' + sub + 'BP4" value="' + vals[4] + '" style="width:60px;float:right;">');
                     $("#wgtSub" + sub + "BPL5").html('');
+                }
+                if ($("#wgtSub" + sub + "BreakType").val() != "") {
+                    var bkval = 0;
+                    $.each(breakBaseon, function (i, bk) {
+                        if ($("#wgtSub" + sub + "BreakType").val() == bk[0])
+                            bkval = bk[2];
+                    })
+                    $("#wgtSub" + sub + "BP0").val(0);
+                    if (bpCnt == 1) {
+                        $("#wgtSub" + sub + "BP1").val(bkval);
+                    } else if (bpCnt == 2) {
+                        $("#wgtSub" + sub + "BP1").val(bkval);
+                        $("#wgtSub" + sub + "BP2").val(bkval * 1.2);
+                    } else if (bpCnt == 3) {
+                        $("#wgtSub" + sub + "BP1").val(bkval * 0.8);
+                        $("#wgtSub" + sub + "BP2").val(bkval);
+                        $("#wgtSub" + sub + "BP3").val(bkval * 1.2);
+                    } else if (bpCnt == 4) {
+                        $("#wgtSub" + sub + "BP1").val(bkval * 0.6);
+                        $("#wgtSub" + sub + "BP2").val(bkval * 0.8);
+                        $("#wgtSub" + sub + "BP3").val(bkval);
+                        $("#wgtSub" + sub + "BP4").val(bkval * 1.2);
+                    } else if (bpCnt == 5) {
+                        $("#wgtSub" + sub + "BP1").val(bkval * 0.4);
+                        $("#wgtSub" + sub + "BP2").val(bkval * 0.6);
+                        $("#wgtSub" + sub + "BP3").val(bkval * 0.8);
+                        $("#wgtSub" + sub + "BP4").val(bkval);
+                        $("#wgtSub" + sub + "BP5").val(bkval * 1.2);
+                    }
                 }
             }
             if (widget != null) {

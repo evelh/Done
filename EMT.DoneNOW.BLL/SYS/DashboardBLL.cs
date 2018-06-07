@@ -839,6 +839,53 @@ namespace EMT.DoneNOW.BLL
             return rtn;
         }
 
+        /// <summary>
+        /// 获取小窗口仪表类型分段类型
+        /// </summary>
+        /// <param name="entityId"></param>
+        /// <returns></returns>
+        public List<string[]> GetBreakPoint(long entityId)
+        {
+            var list = dal.FindListBySql<d_general>($"select id,name,ext1 from d_general where general_table_id={(int)GeneralTableEnum.WIDGET_BREAK_BASE_ON} and parent_id={entityId} order by sort_order asc");
+            if (list.Count == 0)
+                return null;
+
+            var rtn = new List<string[]>();
+            foreach (var bk in list)
+            {
+                rtn.Add(new string[]
+                {
+                    bk.id.ToString(),
+                    bk.name,
+                    dal.FindSignleBySql<string>(bk.ext1)
+                });
+            }
+            return rtn;
+        }
+
+        /// <summary>
+        /// 获取系统小窗口列表
+        /// </summary>
+        /// <returns></returns>
+        public List<string[]> GetSysWidgetList()
+        {
+            var list = wgtDal.FindListBySql("select id,entity_id,type_id,visual_type_id,name,description from sys_widget where dashboard_id is null and delete_time=0 order by sort_order asc");
+            var rtn = new List<string[]>();
+            foreach (var wgt in list)
+            {
+                rtn.Add(new string[]
+                {
+                    wgt.id.ToString(),
+                    wgt.entity_id.ToString(),
+                    wgt.type_id.ToString(),
+                    wgt.visual_type_id==null?"":wgt.visual_type_id.Value.ToString(),
+                    wgt.name,
+                    wgt.description
+                });
+            }
+            return rtn;
+        }
+
         #endregion
 
     }
