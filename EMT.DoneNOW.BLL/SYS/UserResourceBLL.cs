@@ -728,6 +728,7 @@ namespace EMT.DoneNOW.BLL
                 });
             return true;
         }
+        #region 工作组相关管理
         /// <summary>
         /// 获取员工工作组
         /// </summary>
@@ -834,7 +835,154 @@ namespace EMT.DoneNOW.BLL
             OperLogBLL.OperLogDelete<sys_workgroup_resouce>(oldGroup, oldGroup.id, userId, DicEnum.OPER_LOG_OBJ_CATE.SYS_WORKGROUP_RESOURCE, "");
             return true;
         }
+        #endregion
 
+        #region 工时审批设置相关
+        /// <summary>
+        /// 根据员工 获取相关的员工审批人 typeid 是工时或费用
+        /// </summary>
+        public List<sys_resource_approver> GetApprover(long resourceId, int typeId= (int)APPROVE_TYPE.TIMESHEET_APPROVE)
+        {
+            return _dal.FindListBySql<sys_resource_approver>($"SELECT * from sys_resource_approver where resource_id = {resourceId} and approve_type_id = {typeId}");
+        }
+        /// <summary>
+        /// 获取没有审批的员工信息
+        /// </summary>
+        public List<sys_resource> GetResourceNoApprover(long resourceId, int typeId = (int)APPROVE_TYPE.TIMESHEET_APPROVE)
+        {
+            return _dal.FindListBySql<sys_resource>($"SELECT * from sys_resource where id not in (SELECT approver_resource_id from sys_resource_approver where resource_id = {resourceId} and approve_type_id = {typeId}) and delete_time = 0 and id <>0");
+        }
+        /// <summary>
+        /// 审批设置
+        /// </summary>
+        public bool ApprovalSet(long resId,string toResIds,long userId,int typeId)
+        {
+            sys_resource_approver_dal sraDal = new sys_resource_approver_dal();
+            List<sys_resource_approver> appList = GetApprover(resId);
+            if(appList!=null&& appList.Count > 0)
+            {
+                if (!string.IsNullOrEmpty(toResIds))
+                {
+                    var toResArr = toResIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var toResId in toResArr)
+                    {
+                        long thisToResId = 0;
+                        int tier = 1;
+                        if (typeId == (int)DicEnum.APPROVE_TYPE.EXPENSE_APPROVE)
+                            long.TryParse(toResId, out thisToResId);
+                        else if (typeId == (int)DicEnum.APPROVE_TYPE.TIMESHEET_APPROVE)
+                        {
+                            var toResIdArr = toResId.Split('-');
+                            if (toResIdArr != null && toResIdArr.Count() == 2)
+                            {
+                                long.TryParse(toResIdArr[0], out thisToResId);
+                                int.TryParse(toResIdArr[1], out tier);
+                            }
+                        }
+                        if (thisToResId == 0)
+                            continue;
+                        sys_resource_approver thisApproval = appList.FirstOrDefault(_=>_.resource_id == resId&&_.approver_resource_id == thisToResId);
+                        if (thisApproval != null)
+                        {
+                            if(thisApproval.tier!= tier)
+                            {
+                                thisApproval.tier = tier;
+                                EditApproval(thisApproval,userId);
+                            }
+                            appList.Remove(thisApproval);
+                            continue;
+                        }
+                        thisApproval = new sys_resource_approver()
+                        {
+                            id = sraDal.GetNextIdCom(),
+                            resource_id = resId,
+                            approver_resource_id = thisToResId,
+                            approve_type_id = typeId,
+                            tier = tier,
+                        };
+                        sraDal.Insert(thisApproval);
+                        OperLogBLL.OperLogAdd<sys_resource_approver>(thisApproval, thisApproval.id, userId, OPER_LOG_OBJ_CATE.RESOURCE, "");
+                    }
+                }
+                if (appList.Count > 0)
+                    appList.ForEach(_=> {
+                        sraDal.Delete(_);
+                        OperLogBLL.OperLogDelete<sys_resource_approver>(_, _.id, userId, OPER_LOG_OBJ_CATE.RESOURCE, "");
+                    });
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(toResIds))
+                {
+                    var toResArr = toResIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var toResId in toResArr)
+                    {
+                        long thisToResId = 0;
+                        int tier = 1;
+                        if (typeId == (int)DicEnum.APPROVE_TYPE.EXPENSE_APPROVE)
+                            long.TryParse(toResId,out thisToResId);
+                        else if (typeId == (int)DicEnum.APPROVE_TYPE.TIMESHEET_APPROVE)
+                        {
+                            var toResIdArr = toResId.Split('-');
+                            if(toResIdArr!=null&& toResIdArr.Count() == 2)
+                            {
+                                long.TryParse(toResIdArr[0],out thisToResId);
+                                int.TryParse(toResIdArr[1], out tier);
+                            }
+                        }
+                        if (thisToResId == 0)
+                            continue;
+                        sys_resource_approver thisApproval = sraDal.GetApproverByRes(resId,thisToResId, typeId);
+                        if (thisApproval != null)
+                            continue;
+                        thisApproval = new sys_resource_approver() {
+                            id = sraDal.GetNextIdCom(),
+                            resource_id = resId,
+                            approver_resource_id = thisToResId,
+                            approve_type_id = typeId,
+                            tier = tier,
+                        };
+                        sraDal.Insert(thisApproval);
+                        OperLogBLL.OperLogAdd<sys_resource_approver>(thisApproval, thisApproval.id, userId, OPER_LOG_OBJ_CATE.RESOURCE, "");
+
+                    }
+                }
+            }
+
+            return true;
+        }
+        /// <summary>
+        /// 编辑目标
+        /// </summary>
+        public void EditApproval(sys_resource_approver appro,long userId)
+        {
+            sys_resource_approver_dal sraDal = new sys_resource_approver_dal();
+            sys_resource_approver oldAppro = sraDal.FindById(appro.id);
+            if (oldAppro == null)
+                return;
+            sraDal.Update(appro);
+            OperLogBLL.OperLogUpdate<sys_resource_approver>(appro, oldAppro, appro.id, userId, OPER_LOG_OBJ_CATE.RESOURCE, "");
+        }
+        /// <summary>
+        /// 清除员工的审批设置
+        /// </summary>
+        public bool DeleteUserApproval(long resId,int type,long userId)
+        {
+            List<sys_resource_approver> appList = GetApprover(resId, type);
+            if(appList!=null&& appList.Count > 0)
+            {
+                sys_resource_approver_dal sraDal = new sys_resource_approver_dal();
+                appList.ForEach(_ => {
+                    sraDal.Delete(_);
+                    OperLogBLL.OperLogDelete<sys_resource_approver>(_, _.id, userId, OPER_LOG_OBJ_CATE.RESOURCE, "");
+                });
+            }
+            return true;
+        }
+
+
+
+        #endregion
 
     }
 }

@@ -129,6 +129,15 @@ namespace EMT.DoneNOW.Web
                     case "DeleteGroupResource":
                         DeleteGroupResource(context);
                         break;
+                    case "GetResApproval":
+                        GetResApproval(context);
+                        break;
+                    case "ApprovalManage":
+                        ApprovalManage(context);
+                        break;
+                    case "DeleteApproval":
+                        DeleteApproval(context);
+                        break;
                     default:
                         break;
                 }
@@ -992,6 +1001,62 @@ namespace EMT.DoneNOW.Web
                     result = new BLL.UserResourceBLL().DeleteGroupResource(id, LoginUserId);
             WriteResponseJson(result);
         }
+        /// <summary>
+        /// 获取审批设置相关信息
+        /// </summary>
+        private void GetResApproval(HttpContext context)
+        {
+            long resId = 0;
+
+            if (!string.IsNullOrEmpty(context.Request.QueryString["resId"])&&long.TryParse(context.Request.QueryString["resId"], out resId))
+            {
+                int typeId = (int)DTO.DicEnum.APPROVE_TYPE.TIMESHEET_APPROVE;
+                if(!string.IsNullOrEmpty(context.Request.QueryString["type"]) && context.Request.QueryString["type"]=="expense")
+                    typeId = (int)DTO.DicEnum.APPROVE_TYPE.EXPENSE_APPROVE;
+                BLL.UserResourceBLL userBll = new BLL.UserResourceBLL();
+                List<sys_resource_approver> approList = userBll.GetApprover(resId, typeId);
+                List<sys_resource> allResList = new DAL.sys_resource_dal().GetSourceList();
+                List<ResAndWorkGroDto> appDtoList = new List<ResAndWorkGroDto>();
+                if(approList!=null&& approList.Count>0&& allResList!=null&& allResList.Count > 0)
+                {
+                    appDtoList = (from a in approList
+                                 join b in allResList on a.approver_resource_id equals b.id
+                                 select new ResAndWorkGroDto {name=b.name,id=b.id,isActive=b.is_active==1?"":"unActive",tier=a.tier.ToString() }).ToList();
+                }
+
+                List<sys_resource> noAppRes = userBll.GetResourceNoApprover(resId, typeId);
+                WriteResponseJson(new {appro= appDtoList,noAppro= noAppRes });
+            }
+        }
+        /// <summary>
+        /// 员工审批设置管理
+        /// </summary>
+        void ApprovalManage(HttpContext context)
+        {
+            string resId = context.Request.QueryString["resId"];
+            string toResIds = context.Request.QueryString["toResIds"];
+            int type = (int)DTO.DicEnum.APPROVE_TYPE.TIMESHEET_APPROVE;
+            if(!string.IsNullOrEmpty(context.Request.QueryString["type"]) && context.Request.QueryString["type"] =="expense")
+                type = (int)DTO.DicEnum.APPROVE_TYPE.EXPENSE_APPROVE;
+            bool result = false;
+            if (!string.IsNullOrEmpty(resId) && !string.IsNullOrEmpty(toResIds))
+                result = new BLL.UserResourceBLL().ApprovalSet(long.Parse(resId), toResIds,LoginUserId,type);
+            WriteResponseJson(result);
+        }
+        /// <summary>
+        /// 删除员工审批
+        /// </summary>
+        void DeleteApproval(HttpContext context)
+        {
+            string resId = context.Request.QueryString["resId"];
+            int type = (int)DTO.DicEnum.APPROVE_TYPE.TIMESHEET_APPROVE;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["type"]) && context.Request.QueryString["type"] == "expense")
+                type = (int)DTO.DicEnum.APPROVE_TYPE.EXPENSE_APPROVE;
+            bool result = false;
+            if (!string.IsNullOrEmpty(resId) )
+                result = new BLL.UserResourceBLL().DeleteUserApproval(long.Parse(resId), type,LoginUserId);
+            WriteResponseJson(result);
+        }
     }
    
     public class ResAndWorkGroDto
@@ -1000,5 +1065,7 @@ namespace EMT.DoneNOW.Web
         public string name;
         public string email;
         public string type;
+        public string isActive;
+        public string tier;
     }
 }

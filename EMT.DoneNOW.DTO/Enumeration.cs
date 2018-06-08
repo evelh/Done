@@ -80,9 +80,11 @@ namespace EMT.DoneNOW.DTO
         TICKET_TYPE = 129,                         // 工单类型
         TASK_TYPE =130,                            //任务类型
         TASK_ISSUE_TYPE = 132,                     // 工单问题类型
+        TASK_SUB_ISSUE_TYPE = 133,                     // 工单子问题类型
         TASK_PRIORITY_TYPE = 134,                  // 工单优先级
         TICKET_STATUS =135,                        // 工单状态
         TASK_SOURCE_TYPES = 137,                   // 任务来源
+        SLA_EVENT_TYPE = 139,                       // SLA 事件类型
         INVOICE_TEMPLATE_BODY_GROUP_BY =141,      //发票模板主体-分组条件
         INVOICE_TEMPLATE_BODY_ITEMIZE =142,      //发票模板主体-逐项列出
         INVOICE_TEMPLATE_BODY_ORDER_BY =143,     //发票模板主体-排序条件

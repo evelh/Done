@@ -211,6 +211,7 @@
     <Content Include="Content\sysset_user.css" />
     <Content Include="Content\Ticket.css" />
     <Content Include="Content\TicketLabour.css" />
+    <Content Include="General\GeneralManage.aspx" />
     <Content Include="Images\ButtonIcons.svg" />
     <Content Include="Images\dashboard_administration.png" />
     <Content Include="Images\dashboard_assignments.png" />
@@ -635,6 +636,7 @@
     <Content Include="ServiceDesk\ChangeTicketApprove.aspx" />
     <Content Include="ServiceDesk\CopyToProject.aspx" />
     <Content Include="ServiceDesk\ImportKnowledgebase.aspx" />
+    <Content Include="ServiceDesk\IssueTypeManage.aspx" />
     <Content Include="ServiceDesk\KnowledgebaseDetail.aspx" />
     <Content Include="ServiceDesk\ManageKnowledgebase.aspx" />
     <Content Include="ServiceDesk\MasterTicket.aspx" />
@@ -672,6 +674,7 @@
     <Content Include="SysSetting\ResourceProtectedData.aspx" />
     <Content Include="SysSetting\Service.aspx" />
     <Content Include="SysSetting\ServiceBundle.aspx" />
+    <Content Include="SysSetting\TimeApproval.aspx" />
     <Content Include="SysSetting\TransResource.aspx" />
     <Content Include="SysSetting\UserDefinedField.aspx" />
     <Content Include="SysSetting\WorkflowRule.aspx" />
@@ -1617,6 +1620,13 @@
     <Compile Include="Contract\InteralCostAddOrEdit.aspx.designer.cs">
       <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="General\GeneralManage.aspx.cs">
+      <DependentUpon>GeneralManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="General\GeneralManage.aspx.designer.cs">
+      <DependentUpon>GeneralManage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Project\ProjectDashboard.aspx.cs">
       <DependentUpon>ProjectDashboard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2287,6 +2297,13 @@
     <Compile Include="ServiceDesk\ImportKnowledgebase.aspx.designer.cs">
       <DependentUpon>ImportKnowledgebase.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ServiceDesk\IssueTypeManage.aspx.cs">
+      <DependentUpon>IssueTypeManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\IssueTypeManage.aspx.designer.cs">
+      <DependentUpon>IssueTypeManage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ServiceDesk\KnowledgebaseDetail.aspx.cs">
       <DependentUpon>KnowledgebaseDetail.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2545,6 +2562,13 @@
     </Compile>
     <Compile Include="SysSetting\ServiceBundle.aspx.designer.cs">
       <DependentUpon>ServiceBundle.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\TimeApproval.aspx.cs">
+      <DependentUpon>TimeApproval.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\TimeApproval.aspx.designer.cs">
+      <DependentUpon>TimeApproval.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\TransResource.aspx.cs">
       <DependentUpon>TransResource.aspx</DependentUpon>
