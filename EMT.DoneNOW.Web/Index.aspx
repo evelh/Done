@@ -1621,7 +1621,7 @@
                     </div>
                     <div class="delete" onclick="DleteDashboard()">
                         <img src="Images/delete.png" alt="">
-                        删除标签
+                        删除仪表板
                     </div>
                 </div>
                 <div class="common">
@@ -1858,26 +1858,28 @@
         <div class="AddWidgetBeforePOP">
             <h3>新增小窗口</h3>
             <div class="content">
-                <div style="width:100%;"><p>选择一个小窗口</p></div>
-                <div><label>实体</label><select id="WidgetSelectEntity"></select></div>
-                <table class="WidgetSelect">
-                    <tbody id="WidgetSelectWidgets">
-                        <tr style="background-color:#cbd9e4;">
-                            <th style="border:1px solid #b8c8d4;"></th>
-                            <th style="border:1px solid #b8c8d4;"></th>
-                            <th style="border:1px solid #b8c8d4;text-align:left;">名称和描述</th>
-                        </tr>
-                        <tr>
-                            <td><div class="SelWgtRd"><input type="radio" name="AddWgtSelectWgt" value="" /></div></td>
-                            <td><div class="SelWgtImg"></div></td>
-                            <td><div class="SelWgtDesc"><p>12312312312</p><p>12312312</p></div></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div style="width:100%;margin-bottom:6px;"><p>选择一个小窗口</p></div>
+                <div style="margin-bottom:6px;"><label style="margin-right:46px;">实体</label><select id="WidgetSelectEntity"></select></div>
+                <div style="width:100%;height:440px;overflow-x:hidden;overflow-y:scroll;">
+                    <table class="WidgetSelect">
+                        <tbody id="WidgetSelectWidgets">
+                            <tr style="background-color:#cbd9e4;">
+                                <th style="border:1px solid #b8c8d4;"></th>
+                                <th style="border:1px solid #b8c8d4;"></th>
+                                <th style="border:1px solid #b8c8d4;text-align:left;">名称和描述</th>
+                            </tr>
+                            <tr>
+                                <td><div class="SelWgtRd"><input type="radio" name="AddWgtSelectWgt" value="" /></div></td>
+                                <td><div class="SelWgtImg"></div></td>
+                                <td><div class="SelWgtDesc"><p>12312312312</p><p>12312312</p></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="button">
-                <div class="pev" onclick="BackAddWidgetSelectStep0();"><span></span>上一步</div>
-                <div class="next" >下一步</div>
+            <div class="button" style="position:absolute;bottom:10px;">
+                <div class="pev" onclick="BackAddWidgetSelectStep0();" style="float:left;margin-left:10px;"><span></span>上一步</div>
+                <div class="next" style="float:right;margin-right:10px;">下一步</div>
             </div>
         </div>
     </div>

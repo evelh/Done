@@ -22,6 +22,7 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public List<DictionaryEntryDto> GetUserDashboardList(long userId)
         {
+
             return dal.FindListBySql<DictionaryEntryDto>($"select dashboard_id as `val`,(select `name` from sys_dashboard where id=dashboard_id) as `show` from sys_dashboard_resource where resource_id={userId} and is_visible=1 and delete_time=0 order by sort_order asc");
         }
 
@@ -676,9 +677,10 @@ namespace EMT.DoneNOW.BLL
             var grp = groupList[0];
             string sql = $"select id,data_type_id as data_type,default_value as defaultValue,col_name,col_comment as description,ref_sql,ref_url,operator_type_id from d_query_para where query_para_group_id={grp.id} and is_visible=1 and operator_type_id is not null";
             var paras = new d_query_para_dal().FindListBySql<WidgetFilterPataDto>(sql);
-
             sql = $"select distinct(col_comment) from d_query_para where query_para_group_id={grp.id} and is_visible=1 and operator_type_id is not null  order by col_comment asc";
             var cdts = new d_query_para_dal().FindListBySql<string>(sql);
+
+            var operList = dal.FindListBySql<d_general>($"select id,name from d_general where general_table_id={(int)GeneralTableEnum.OPERATOR_TYPE} and is_active=1 and delete_time=0").ToDictionary(k => k.id.ToString(), v => v.name);
             foreach (var cdt in cdts)
             {
                 List<WidgetFilterPataDto> newDtos = new List<WidgetFilterPataDto>();
@@ -706,7 +708,8 @@ namespace EMT.DoneNOW.BLL
                     var opers = dto.operator_type_id.Split(',');
                     if (opers.Length == 1)
                     {
-                        dto.operatorName = dal.FindSignleBySql<string>($"select name from d_general where id={long.Parse(dto.operator_type_id)}");
+                        //dto.operatorName = dal.FindSignleBySql<string>($"select name from d_general where id={long.Parse(dto.operator_type_id)}");
+                        dto.operatorName = operList[dto.operator_type_id];
                         newDtos.Add(dto);
                     }
                     else
@@ -720,7 +723,8 @@ namespace EMT.DoneNOW.BLL
                                 defaultValue = dto.defaultValue,
                                 description = dto.description,
                                 id = dto.id,
-                                operatorName = dal.FindSignleBySql<string>($"select name from d_general where id={long.Parse(oper)}"),
+                                //operatorName = dal.FindSignleBySql<string>($"select name from d_general where id={long.Parse(oper)}"),
+                                operatorName = operList[oper],
                                 operator_type_id = oper,
                                 ref_sql = dto.ref_sql,
                                 ref_url = dto.ref_url,
@@ -732,7 +736,6 @@ namespace EMT.DoneNOW.BLL
                 }
                 parasList.Add(newDtos);
             }
-
             return parasList;
         }
 

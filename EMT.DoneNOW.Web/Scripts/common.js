@@ -12,19 +12,25 @@ function requestData(url, data, calBackFunction) {
         url: url,
         data: data,
         dataType: "JSON",
-        timeout: 300000,
+        timeout: 30000,
         async: true,
         beforeSend : function(){
             //$("body").append(loadDialog);
         },
-        success : function(json){
+        success: function (json) {
+            if (json.length == 2 && json[0] == "status=1") {
+                LayerLoadClose();
+                window.location.href = "/index.aspx";
+                return;
+            } else if (json.length == 2 && json[0] == "status = 2"){
+                LayerLoadClose();
+                LayerMsg(json[1]);
+                return;
+            }
             calBackFunction(json);
-            //$("#LoadingDialog").remove();
         },
-        error : function(XMLHttpRequest){
-            //$("#LoadingDialog").remove();
-            //console.log(XMLHttpRequest);
-            alert('请检查网络');
+        error: function (XMLHttpRequest) {
+            LayerMsg('系统错误');
         }
     });
 }
