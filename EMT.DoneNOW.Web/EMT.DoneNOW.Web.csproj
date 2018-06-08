@@ -691,6 +691,7 @@
     <Content Include="SysSetting\WorkflowRule.aspx" />
     <Content Include="Resource\Workgroup.aspx" />
     <Content Include="Resource\WorkgroupResource.aspx" />
+    <Content Include="System\AcceptOfferWidget.aspx" />
     <Content Include="TimeSheet\ExpenseReportDetail.aspx" />
     <Content Include="TimeSheet\MyTimeoffBalance.aspx" />
     <Content Include="TimeSheet\MyTimeSummary.aspx" />
@@ -2621,6 +2622,13 @@
     </Compile>
     <Compile Include="Resource\WorkgroupResource.aspx.designer.cs">
       <DependentUpon>WorkgroupResource.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="System\AcceptOfferWidget.aspx.cs">
+      <DependentUpon>AcceptOfferWidget.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="System\AcceptOfferWidget.aspx.designer.cs">
+      <DependentUpon>AcceptOfferWidget.aspx</DependentUpon>
     </Compile>
     <Compile Include="TimeSheet\ExpenseReportDetail.aspx.cs">
       <DependentUpon>ExpenseReportDetail.aspx</DependentUpon>

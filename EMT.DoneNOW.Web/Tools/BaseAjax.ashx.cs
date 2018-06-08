@@ -32,8 +32,7 @@ namespace EMT.DoneNOW.Web
             string token = EMT.Tools.Common.GetCookie("Token", "DoneNOW");
             if (string.IsNullOrEmpty(token))
             {
-                ctx.Response.Write("{\"status\": '1', \"msg\": \"用户未登录！\"}");
-                //ctx.Response.Write(new Tools.Serialize().SerializeJson("{\"status\": '1', \"msg\": \"用户未登录！\"}"));
+                ctx.Response.Write(new Tools.Serialize().SerializeJson(new string[] { "status=1", "用户未登录" }));
                 ctx.Response.End();
                 return;
             }
@@ -41,8 +40,7 @@ namespace EMT.DoneNOW.Web
             userInfo = AuthBLL.GetLoginUserInfo(token);
             if (userInfo == null)
             {
-                ctx.Response.Write("{\"status\": '1', \"msg\": \"用户未登录！\"}");
-                //ctx.Response.Write(new Tools.Serialize().SerializeJson("{\"status\": '1', \"msg\": \"用户未登录！\"}"));
+                ctx.Response.Write(new Tools.Serialize().SerializeJson(new string[] { "status=1", "用户未登录" }));
                 ctx.Response.End();
                 return;
             }
@@ -52,8 +50,7 @@ namespace EMT.DoneNOW.Web
             // 判断用户是否可以访问当前url
             if (!CheckUserAccess(ctx.Request.RawUrl))
             {
-                ctx.Response.Write("{\"status\": '2', \"msg\": \"没有权限操作！\"}");
-                //ctx.Response.Write(new Tools.Serialize().SerializeJson("{\"status\": '2', \"msg\": \"没有权限操作！\"}"));
+                ctx.Response.Write(new Tools.Serialize().SerializeJson(new string[] { "status=2", "没有权限操作" }));
                 ctx.Response.End();
                 return;
             }

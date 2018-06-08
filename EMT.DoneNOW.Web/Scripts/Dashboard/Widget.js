@@ -61,8 +61,10 @@ function CopyWidget(id) {
 function DeleteWidget(id) {
     LayerConfirmOk("删除操作将不能恢复，是否继续?", "确定", "取消", function () {
         requestData("/Tools/DashboardAjax.ashx?act=DeleteWidget&id=" + id, null, function (data) {
-            if (data != true)
+            if (data != true) {
+                LayerConfirmOk("系统小窗口不能删除", "确定", "取消", function(){})
                 RefreshDashboard();
+            }
             else {
                 $("#widget" + id).remove();
             }
@@ -171,6 +173,25 @@ function AddWidgetStepSelect() {
             $("#WidgetSelectWidgets").empty();
             $("#WidgetSelectWidgets")[0].innerHTML = str;
         }
+
+        $("#AddWidgetSelect").find(".next").unbind("click").bind("click", function () {
+            if ($("input:radio[name='AddWgtSelectWgt']:checked").val() == null) {
+                LayerMsg("请选择一个小窗口");
+                return;
+            }
+            requestData("/Tools/DashboardAjax.ashx?act=GetWidget&id=" + $("input:radio[name='AddWgtSelectWgt']:checked").val(), null, function (data) {
+                if (data[0] != null) {
+                    $("#cover").show();
+                    LayerLoadClose();
+                    $('#AddWidgetSelect').hide();
+                    AddWidgetStep1(data, 1);
+                }
+                else {
+                    LayerLoadClose();
+                    LayerMsg("小窗口错误!");
+                }
+            })
+        })
     }
 }
 function GeneralAddWidgetForm(type) {

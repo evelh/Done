@@ -98,6 +98,7 @@ namespace EMT.DoneNOW.DTO
         KB_PUBLISH_TO_TYPE=165,                  // 知识库：发布对象类型
         TICKET_CATE = 167,                       // 工单种类
         SKILLS_CATE = 175,                      // 技能类别
+        OPERATOR_TYPE = 177,                    // 过滤条件操作符
         DASHBOARD_COLOR_THEME = 184,            // 仪表板色系
         WIDGET_TYPE = 189,                      // 小窗口类型
         WIDGET_ENTITY = 190,                    // 小窗口实体
