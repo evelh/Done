@@ -132,7 +132,13 @@
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
                                             <%}%>
-
+                                            <%if (CheckAuth("SYS_FEATURES_RESOURCES_DEPARTMENTS"))
+                                                { %>
+                                            <div class="PageNavigationLink">
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_DEPARTMENT %>" target="PageFrame1">部门</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                            <%}%>
                                             <div class="PageNavigationLink">
                                                 <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_RESOURCE_WORKGROUP_SEARCH %>" target="PageFrame1">工作组</a>
                                                 <div class="StandardText">介绍介绍</div>
@@ -147,13 +153,14 @@
                                                 <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TIMEOFF_POLICY %>" target="PageFrame1">休假策略</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
-                                            <%if (CheckAuth("SYS_FEATURES_RESOURCES_DEPARTMENTS"))
-                                                { %>
                                             <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_DEPARTMENT %>" target="PageFrame1">部门</a>
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TIME_APPROVAL_SEARCH %>" target="PageFrame1">工时审批人设置</a>
                                                 <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <%}%>
+                                                </div>
+                                            <div class="PageNavigationLink">
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_EXPENSE_APPROVAL_SEARCH %>" target="PageFrame1">费用审批人设置</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                                 </div>
                                             <div class="PageNavigationLink">
                                                 <a href="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_RESOURCE_WEEK_GOAL %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_RESOURCE_WEEK_GOAL %>" class="Button ButtonIcon Link NormalState chaxun" target="PageFrame1">周计费目标设置</a>
                                                 <div class="StandardText">介绍介绍</div>
@@ -321,6 +328,51 @@
                             </div>
                         </div>
                         <%}%>
+
+                          <div class="Normal Section Collapsed Normal1" id="b10">
+                            <div class="Heading">
+                                <div class="Toggle Expand Toggle1" id="a10">
+                                    <div class="Vertical Vertical1"></div>
+                                    <div class="Horizontal"></div>
+                                </div>
+                                <span class="Text">服务台(工单)</span>
+                                <span></span>
+                            </div>
+                            <div class="Content Content1" id="c10">
+                                <div class="Large Column">
+                                    <div class="PageNavigationLinkGroup">
+                                        <div class="PageNavigationLinkColumn">
+                                           
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_QUEUE_SEARCH %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">队列</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TICKET_SOURCE_SEARCH %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">工单来源</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TICKET_STATUS_SEARCH %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">任务/工单状态</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TICKET_PRIORITY_SEARCH %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">工单优先级</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                           
+                                        </div>
+                                        <div class="PageNavigationLinkColumn">
+                                           
+                                        </div>
+                                    </div>
+                              
+                                </div>
+                            </div>
+                        </div>
+
                         <!--第五个框-->
                         <%if (CheckAuth("SYS_FEATURES_SALES_OPPS"))
                             { %>

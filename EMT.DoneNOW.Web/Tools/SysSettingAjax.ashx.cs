@@ -33,6 +33,9 @@ namespace EMT.DoneNOW.Web
                 case "DeleteQuoteEmailTmpl":
                     DeleteQuoteEmailTmpl();
                     break;
+                case "CheckBoardName":
+                    CheckBoardName(context);
+                    break;
                 default:
                     break;
             }
@@ -100,6 +103,18 @@ namespace EMT.DoneNOW.Web
         private void DeleteQuoteEmailTmpl()
         {
             WriteResponseJson(new QuoteAndInvoiceEmailTempBLL().DeleteTmpl(long.Parse(request.QueryString["id"]), LoginUserId));
+        }
+
+        void CheckBoardName(HttpContext context)
+        {
+            var name = context.Request.QueryString["name"];
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
+                long.TryParse(context.Request.QueryString["id"],out id);
+            bool result = false;
+            if (!string.IsNullOrEmpty(name))
+                result = new ChangeBoardBll().CheckBoardName(name,id);
+            WriteResponseJson(result);
         }
     }
 }

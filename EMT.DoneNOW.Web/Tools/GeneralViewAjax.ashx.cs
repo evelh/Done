@@ -136,6 +136,18 @@ namespace EMT.DoneNOW.Web
             {
                 context.Response.Write("有" + n + "个里程碑关联此状态，不能删除!");
             }
+            else if (result == DTO.ERROR_CODE.TICKET_SOURCE_USED)
+            {
+                context.Response.Write("有" + n + "个工单关联此来源，不能删除!");
+            }
+            else if (result == DTO.ERROR_CODE.TICKET_STATUS_USED)
+            {
+                context.Response.Write("有" + n + "个工单/任务关联此状态，不能删除!");
+            }
+            else if (result == DTO.ERROR_CODE.TICKET_PRIORITY_USED)
+            {
+                context.Response.Write("有" + n + "个工单关联此优先级，不能删除!");
+            }
             else if (result == DTO.ERROR_CODE.SUCCESS)
             {
                 Delete(context, general_id, general_table_id);

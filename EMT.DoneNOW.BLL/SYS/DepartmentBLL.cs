@@ -234,6 +234,53 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
         /// <summary>
+        /// 删除队列
+        /// </summary>
+        public bool DeleteQueue(long queId,long userId,ref string faileReason)
+        {
+            sys_department thisQue = _dal.FindNoDeleteById(queId);
+            if (thisQue == null)
+                return true;
+            if (thisQue.is_system == 1)
+            {
+                faileReason = "系统队列，不能删除";
+                return false;
+            }
+            List<sys_resource_department> resDepList = GetResDepList(queId);
+            if(resDepList!=null&& resDepList.Count > 0)
+            {
+                faileReason = "队列下有多个联系人，不能删除";
+                return false;
+            }
+
+            List<sdk_task> ticketList = _dal.FindListBySql<sdk_task>("SELECT * from sdk_task where delete_time =0 and type_id = 1809 and department_id = "+ queId.ToString());
+            if(ticketList!=null&& ticketList.Count > 0)
+            {
+                faileReason = "队列被多个工单引用，不能删除";
+                return false;
+            }
+            _dal.SoftDelete(thisQue,userId);
+            OperLogBLL.OperLogDelete<sys_department>(thisQue, thisQue.id, userId, OPER_LOG_OBJ_CATE.DEPARTMENT, "");
+            return true;
+        }
+        /// <summary>
+        /// 激活/失活 队列
+        /// </summary>
+        public bool ActiveQueue(long queId, long userId,bool isActive)
+        {
+            sys_department thisQue = _dal.FindNoDeleteById(queId);
+            if (thisQue == null)
+                return false;
+            sbyte active = (sbyte)(isActive?1:0);
+            if (thisQue.is_active != active)
+            {
+                thisQue.is_active = active;
+                return EditQueue(thisQue,userId);
+            }
+            return true;
+        }
+
+        /// <summary>
         /// 新增队列员工
         /// </summary>
         public bool AddQueueResource(sys_resource_department resDep,long userId,ref string faileReason)

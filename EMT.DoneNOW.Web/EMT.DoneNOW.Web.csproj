@@ -278,12 +278,22 @@
     <Content Include="Scripts\Search\report_contract_bill_tobill_by_res.js" />
     <Content Include="Scripts\Search\system_certification.js" />
     <Content Include="Scripts\Search\system_certification_cate.js" />
+    <Content Include="Scripts\Search\system_change_board_search.js" />
+    <Content Include="Scripts\Search\system_check_lib_search.js" />
     <Content Include="Scripts\Search\system_degree.js" />
     <Content Include="Scripts\Search\system_degree_cate.js" />
+    <Content Include="Scripts\Search\system_expense_approval_search.js" />
+    <Content Include="Scripts\Search\system_queue_search.js" />
     <Content Include="Scripts\Search\system_resource_week_goal.js" />
     <Content Include="Scripts\Search\system_resource_workgroup_search.js" />
     <Content Include="Scripts\Search\system_skill.js" />
     <Content Include="Scripts\Search\system_skill_cate.js" />
+    <Content Include="Scripts\Search\system_ticket_issue_search.js" />
+    <Content Include="Scripts\Search\system_ticket_priority_search.js" />
+    <Content Include="Scripts\Search\system_ticket_source_search.js" />
+    <Content Include="Scripts\Search\system_ticket_status_search.js" />
+    <Content Include="Scripts\Search\system_ticket_sub_issue_search.js" />
+    <Content Include="Scripts\Search\system_time_approval_search.js" />
     <Content Include="Scripts\Search\sys_form_temp_search.js" />
     <Content Include="Scripts\Search\view_contact_group_search.js" />
     <Content Include="Scripts\Search\WidgetDrillCompany.js" />
@@ -659,6 +669,7 @@
     <Content Include="SysSetting\AddTimeOffPolicy.aspx" />
     <Content Include="ServiceDesk\TicketManage.aspx" />
     <Content Include="SysSetting\AdjustResourceGoal.aspx" />
+    <Content Include="SysSetting\ChangeBoardManage.aspx" />
     <Content Include="SysSetting\EditServiceAlert.aspx" />
     <Content Include="SysSetting\FormTemplateManage.aspx" />
     <Content Include="SysSetting\Holiday.aspx" />
@@ -2456,6 +2467,13 @@
     </Compile>
     <Compile Include="SysSetting\AdjustResourceGoal.aspx.designer.cs">
       <DependentUpon>AdjustResourceGoal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\ChangeBoardManage.aspx.cs">
+      <DependentUpon>ChangeBoardManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\ChangeBoardManage.aspx.designer.cs">
+      <DependentUpon>ChangeBoardManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\EditServiceAlert.aspx.cs">
       <DependentUpon>EditServiceAlert.aspx</DependentUpon>
