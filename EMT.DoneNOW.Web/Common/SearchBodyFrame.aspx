@@ -658,7 +658,7 @@
                             tooltip = para.name + "tooltip"; %>
                 <td <%if (tooltip != null)
                     { %>title="<%=rslt[tooltip] %>"
-                    <%} %> style="background: url(..<%=rslt[para.name] %>) no-repeat center;"></td>
+                    <%} %> style="background: url(..<%=rslt[para.name] %>) no-repeat center;background-size: contain;"></td>
                 <%}
                     else if (catId==(int)(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_OTHER_SYSTEM_OPERLOG&&para.name == "详情")
                     {var stDal = new EMT.DoneNOW.DAL.sdk_task_dal();%>

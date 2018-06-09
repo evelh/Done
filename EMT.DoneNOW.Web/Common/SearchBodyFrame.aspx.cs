@@ -274,6 +274,15 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SYSTEM_CERTIFICATION_CATE:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_DEGREE_CATE:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_RESOURCE_WORKGROUP_SEARCH:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_TIME_APPROVAL_SEARCH:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_EXPENSE_APPROVAL_SEARCH:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_QUEUE_SEARCH:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_TICKET_SOURCE_SEARCH:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_TICKET_STATUS_SEARCH:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_TICKET_PRIORITY_SEARCH:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_TICKET_ISSUE_SEARCH:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_CHANGE_BOARD_SEARCH:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_CHECK_LIB_SEARCH:
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
@@ -1630,8 +1639,28 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.SYSTEM_DEGREE:
                 case (long)QueryType.SYSTEM_DEGREE_CATE:
                 case (long)QueryType.SYSTEM_RESOURCE_WORKGROUP_SEARCH:
+                case (long)QueryType.SYSTEM_TIME_APPROVAL_SEARCH:
+                case (long)QueryType.SYSTEM_EXPENSE_APPROVAL_SEARCH:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (long)QueryType.SYSTEM_QUEUE_SEARCH:
+                case (long)QueryType.SYSTEM_TICKET_SOURCE_SEARCH:
+                //case (int)DicEnum.QUERY_CATE.SYSTEM_TICKET_ISSUE_SEARCH:
+                //case (int)DicEnum.QUERY_CATE.SYSTEM_CHANGE_BOARD_SEARCH:
+                //case (int)DicEnum.QUERY_CATE.SYSTEM_CHECK_LIB_SEARCH:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()",id="ActiveLi" });
+                    contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "InActive()", id = "InActiveLi" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" ,id="DeleteLi"});
+                    break;
+                case (long)QueryType.SYSTEM_TICKET_STATUS_SEARCH:
+                case (long)QueryType.SYSTEM_TICKET_PRIORITY_SEARCH:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActiveLi" });
+                    contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "InActive()", id = "InActiveLi" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设置图标", click_function = "SetLogo()"});
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()", id = "DeleteLi" });
                     break;
                 default:
                     break;

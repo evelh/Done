@@ -138,6 +138,9 @@ namespace EMT.DoneNOW.Web
                     case "DeleteApproval":
                         DeleteApproval(context);
                         break;
+                    case "GetResByIds":
+                        GetResByIds(context);
+                        break;
                     default:
                         break;
                 }
@@ -1020,7 +1023,7 @@ namespace EMT.DoneNOW.Web
                 if(approList!=null&& approList.Count>0&& allResList!=null&& allResList.Count > 0)
                 {
                     appDtoList = (from a in approList
-                                 join b in allResList on a.approver_resource_id equals b.id
+                                 join b in allResList on a.resource_id equals b.id
                                  select new ResAndWorkGroDto {name=b.name,id=b.id,isActive=b.is_active==1?"":"unActive",tier=a.tier.ToString() }).ToList();
                 }
 
@@ -1057,6 +1060,17 @@ namespace EMT.DoneNOW.Web
                 result = new BLL.UserResourceBLL().DeleteUserApproval(long.Parse(resId), type,LoginUserId);
             WriteResponseJson(result);
         }
+
+        void GetResByIds(HttpContext context)
+        {
+            if(!string.IsNullOrEmpty(context.Request.QueryString["resIds"]))
+            {
+                List<sys_resource> resList = new sys_resource_dal().GetListByIds( context.Request.QueryString["resIds"], false);
+                if (resList != null && resList.Count > 0)
+                    WriteResponseJson(resList);
+            }
+        }
+
     }
    
     public class ResAndWorkGroDto

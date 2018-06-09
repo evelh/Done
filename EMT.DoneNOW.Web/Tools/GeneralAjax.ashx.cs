@@ -62,6 +62,9 @@ namespace EMT.DoneNOW.Web
                     case "DeleteSkillFromGeneral":
                         DeleteSkillFromGeneral(context);
                         break;
+                    case "ActiveGeneral":
+                        ActiveGeneral(context);
+                        break;
                     default:
                         break;
                 }
@@ -224,6 +227,26 @@ namespace EMT.DoneNOW.Web
                 result = new GeneralBLL().DeleteResourceGeneral(long.Parse(context.Request.QueryString["id"]),LoginUserId);
             WriteResponseJson(result);
 
+        }
+
+        void ActiveGeneral(HttpContext context)
+        {
+            bool result = false;
+            bool isAvtive = false;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["isActive"]) && context.Request.QueryString["isActive"] == "1")
+                isAvtive = true;
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"])&&long.TryParse(context.Request.QueryString["id"],out id))
+            {
+                var resType = DTO.ERROR_CODE.ERROR;
+                if (isAvtive)
+                    resType = new GeneralBLL().Active(id,LoginUserId);
+                else
+                    resType = new GeneralBLL().NoActive(id, LoginUserId);
+                if(resType== DTO.ERROR_CODE.SUCCESS)
+                    result = true;
+            }
+            WriteResponseJson(result);
         }
     }
 }

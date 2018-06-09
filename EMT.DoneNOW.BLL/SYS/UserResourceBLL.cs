@@ -843,14 +843,14 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         public List<sys_resource_approver> GetApprover(long resourceId, int typeId= (int)APPROVE_TYPE.TIMESHEET_APPROVE)
         {
-            return _dal.FindListBySql<sys_resource_approver>($"SELECT * from sys_resource_approver where resource_id = {resourceId} and approve_type_id = {typeId}");
+            return _dal.FindListBySql<sys_resource_approver>($"SELECT * from sys_resource_approver where approver_resource_id = {resourceId} and approve_type_id = {typeId}");
         }
         /// <summary>
         /// 获取没有审批的员工信息
         /// </summary>
         public List<sys_resource> GetResourceNoApprover(long resourceId, int typeId = (int)APPROVE_TYPE.TIMESHEET_APPROVE)
         {
-            return _dal.FindListBySql<sys_resource>($"SELECT * from sys_resource where id not in (SELECT approver_resource_id from sys_resource_approver where resource_id = {resourceId} and approve_type_id = {typeId}) and delete_time = 0 and id <>0");
+            return _dal.FindListBySql<sys_resource>($"SELECT * from sys_resource where id not in (SELECT resource_id from sys_resource_approver where approver_resource_id = {resourceId} and approve_type_id = {typeId}) and delete_time = 0 and id <>0");
         }
         /// <summary>
         /// 审批设置
@@ -858,7 +858,7 @@ namespace EMT.DoneNOW.BLL
         public bool ApprovalSet(long resId,string toResIds,long userId,int typeId)
         {
             sys_resource_approver_dal sraDal = new sys_resource_approver_dal();
-            List<sys_resource_approver> appList = GetApprover(resId);
+            List<sys_resource_approver> appList = GetApprover(resId,typeId);
             if(appList!=null&& appList.Count > 0)
             {
                 if (!string.IsNullOrEmpty(toResIds))
@@ -881,7 +881,7 @@ namespace EMT.DoneNOW.BLL
                         }
                         if (thisToResId == 0)
                             continue;
-                        sys_resource_approver thisApproval = appList.FirstOrDefault(_=>_.resource_id == resId&&_.approver_resource_id == thisToResId);
+                        sys_resource_approver thisApproval = appList.FirstOrDefault(_=>_.approver_resource_id == resId&&_.resource_id == thisToResId);
                         if (thisApproval != null)
                         {
                             if(thisApproval.tier!= tier)
@@ -895,8 +895,8 @@ namespace EMT.DoneNOW.BLL
                         thisApproval = new sys_resource_approver()
                         {
                             id = sraDal.GetNextIdCom(),
-                            resource_id = resId,
-                            approver_resource_id = thisToResId,
+                            approver_resource_id = resId,
+                            resource_id = thisToResId,
                             approve_type_id = typeId,
                             tier = tier,
                         };
@@ -937,8 +937,8 @@ namespace EMT.DoneNOW.BLL
                             continue;
                         thisApproval = new sys_resource_approver() {
                             id = sraDal.GetNextIdCom(),
-                            resource_id = resId,
-                            approver_resource_id = thisToResId,
+                            approver_resource_id = resId,
+                            resource_id = thisToResId,
                             approve_type_id = typeId,
                             tier = tier,
                         };

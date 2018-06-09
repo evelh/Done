@@ -2,7 +2,7 @@
     $(".General").hide();
 })
 function Add() {
-    window.open('../Resource/Workgroup', windowObj.resourceWorkGroup + windowType.ad\, 'left=0,top=0,location=no,status=no,width=500,height=350', false);
+    window.open('../Resource/Workgroup', windowObj.resourceWorkGroup + windowType.add, 'left=0,top=0,location=no,status=no,width=500,height=350', false);
 }
 
 function Edit() {

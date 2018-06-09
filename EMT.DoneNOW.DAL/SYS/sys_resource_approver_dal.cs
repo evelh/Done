@@ -12,7 +12,7 @@ namespace EMT.DoneNOW.DAL
         /// </summary>
         public sys_resource_approver GetApproverByRes(long resId,long appResId,int appType)
         {
-            return FindSignleBySql<sys_resource_approver>($"SELECT * from sys_resource_approver where resource_id = {resId} and approver_resource_id = {appResId} and approve_type_id = {appType}");
+            return FindSignleBySql<sys_resource_approver>($"SELECT * from sys_resource_approver where approver_resource_id = {resId} and resource_id = {appResId} and approve_type_id = {appType}");
         }
     }
 

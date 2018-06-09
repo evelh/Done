@@ -821,7 +821,18 @@ namespace EMT.DoneNOW.DTO
             SYSTEM_DEGREE =1689,                     // 系统设置-学位查询
             SYSTEM_CERTIFICATION_CATE = 1690,        // 系统设置-证书和培训类别查询
             SYSTEM_DEGREE_CATE = 1691,               // 系统设置-学位类别查询
-            SYSTEM_RESOURCE_WORKGROUP_SEARCH,         // 系统设置-员工工作组
+            SYSTEM_RESOURCE_WORKGROUP_SEARCH = 1692,       // 系统设置-员工工作组
+            SYSTEM_TIME_APPROVAL_SEARCH = 1693,            // 系统设置-工时表审批人设置查询
+            SYSTEM_EXPENSE_APPROVAL_SEARCH = 1694,         // 系统设置-费用表审批人设置查询
+            SYSTEM_QUEUE_SEARCH = 1695,                    // 系统设置-队列查询
+            SYSTEM_TICKET_SOURCE_SEARCH = 1696,            // 系统设置-工单来源查询
+            SYSTEM_TICKET_STATUS_SEARCH = 1697,            // 系统设置-任务和工单状态查询
+            SYSTEM_TICKET_PRIORITY_SEARCH = 1698,          // 系统设置-工单优先级查询
+            SYSTEM_TICKET_ISSUE_SEARCH = 1699,             // 系统设置-问题和子问题类型查询
+            SYSTEM_TICKET_SUB_ISSUE_SEARCH = 1700,         // 系统设置-问题和子问题类型-子问题查询
+            SYSTEM_CHANGE_BOARD_SEARCH = 1701,             // 系统设置-变更委员会查询
+            SYSTEM_CHECK_LIB_SEARCH = 1702,                // 系统设置-系统设置-检查单库查询
+
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -993,7 +1004,9 @@ namespace EMT.DoneNOW.DTO
             SYS_FORM_TMPL_TICKET_CHECKLIST = 1456,      // 表单模板-工单检查单
             SYS_RESOURCE_DEPARTMENT = 1457,             // 员工所属队列
             SYS_WORKGROUP=1458,                         // 工作组
-            SYS_WORKGROUP_RESOURCE=1459,                // 工作组员工                
+            SYS_WORKGROUP_RESOURCE=1459,                // 工作组员工   
+            CHANGE_BOARD = 1460,                        // 变更委员会
+            CHANGE_BOARD_PERSON = 1461,                 // 变更委员会成员
 
         }
 
@@ -2027,7 +2040,17 @@ namespace EMT.DoneNOW.DTO
         SYSTEM_DEGREE = 299,                     // 系统设置-学位查询   
         SYSTEM_CERTIFICATION_CATE = 300,        // 系统设置-证书和培训类别查询   
         SYSTEM_DEGREE_CATE = 301,               // 系统设置-学位类别查询    
-        SYSTEM_RESOURCE_WORKGROUP_SEARCH,         // 系统设置-员工工作组  
+        SYSTEM_RESOURCE_WORKGROUP_SEARCH = 302,       // 系统设置-员工工作组
+        SYSTEM_TIME_APPROVAL_SEARCH = 303,            // 系统设置-工时表审批人设置查询  
+        SYSTEM_EXPENSE_APPROVAL_SEARCH = 304,         // 系统设置-费用表审批人设置查询  
+        SYSTEM_QUEUE_SEARCH = 305,                    // 系统设置-队列查询  
+        SYSTEM_TICKET_SOURCE_SEARCH = 306,            // 系统设置-工单来源查询  
+        SYSTEM_TICKET_STATUS_SEARCH = 307,            // 系统设置-任务和工单状态查询  
+        SYSTEM_TICKET_PRIORITY_SEARCH = 308,          // 系统设置-工单优先级查询  
+        SYSTEM_TICKET_ISSUE_SEARCH = 309,             // 系统设置-问题和子问题类型查询  
+        SYSTEM_TICKET_SUB_ISSUE_SEARCH = 310,         // 系统设置-问题和子问题类型-子问题查询  
+        SYSTEM_CHANGE_BOARD_SEARCH = 311,             // 系统设置-变更委员会查询   
+        SYSTEM_CHECK_LIB_SEARCH = 312,                // 系统设置-系统设置-检查单库查询  
 
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理

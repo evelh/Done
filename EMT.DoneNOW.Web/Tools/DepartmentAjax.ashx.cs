@@ -47,6 +47,12 @@ namespace EMT.DoneNOW.Web
                     ActiveResManage(context);break;
                 case "DeleteResource":
                     DeleteResource(context);break;
+                case "DeleteQueue":
+                    DeleteQueue(context);break;
+                case "ActiveQueue":
+                    ActiveQueue(context);break;
+                case "QueueInfo":
+                    QueueInfo(context); break;
                 default: break;
 
             }
@@ -210,13 +216,52 @@ namespace EMT.DoneNOW.Web
             }
             WriteResponseJson(result);
         }
-
+        /// <summary>
+        /// 删除队列员
+        /// </summary>
         void DeleteResource(HttpContext context)
         {
             bool result = false;
             if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
                 result = new DepartmentBLL().DeleteResource(long.Parse(context.Request.QueryString["id"]),LoginUserId);
             WriteResponseJson(result);
+        }
+        /// <summary>
+        /// 删除队列
+        /// </summary>
+        void DeleteQueue(HttpContext context)
+        {
+            bool result = false;
+            string reason = string.Empty;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
+                result = new DepartmentBLL().DeleteQueue(long.Parse(context.Request.QueryString["id"]), LoginUserId,ref reason);
+            WriteResponseJson(new { result=result,reason=reason});
+        }
+        /// <summary>
+        /// 激活/失活 队列
+        /// </summary>
+        void ActiveQueue(HttpContext context)
+        {
+            bool result = false;
+            bool isActive = false;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["isActive"]) && context.Request.QueryString["isActive"] == "1")
+                isActive = true;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
+                result = new DepartmentBLL().ActiveQueue(long.Parse(context.Request.QueryString["id"]), LoginUserId, isActive);
+            WriteResponseJson(result);
+        }
+        /// <summary>
+        /// 获取队列信息
+        /// </summary>
+        void QueueInfo(HttpContext context)
+        {
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
+            {
+                var queue = new DepartmentBLL().GetQueue(long.Parse(context.Request.QueryString["id"]));
+                if(queue!=null)
+                    WriteResponseJson(queue);
+            }
+                
         }
 
     }

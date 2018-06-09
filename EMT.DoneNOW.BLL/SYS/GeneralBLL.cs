@@ -338,6 +338,33 @@ namespace EMT.DoneNOW.BLL
                     return ERROR_CODE.REGION_USED;
                 }
             }
+            else if (table_id == (int)GeneralTableEnum.TASK_SOURCE_TYPES)
+            {
+                var ticketList = _dal.FindListBySql<sdk_task>("SELECT id from sdk_task where delete_time =0 and type_id = 1809 and source_type_id ="+id.ToString());
+                if(ticketList!=null&& ticketList.Count > 0)
+                {
+                    n = ticketList.Count;
+                    return ERROR_CODE.TICKET_SOURCE_USED;
+                }
+            }
+            else if (table_id == (int)GeneralTableEnum.TICKET_STATUS)
+            {
+                var ticketList = _dal.FindListBySql<sdk_task>("SELECT id from sdk_task where delete_time =0 and status_id =" + id.ToString());
+                if (ticketList != null && ticketList.Count > 0)
+                {
+                    n = ticketList.Count;
+                    return ERROR_CODE.TICKET_STATUS_USED;
+                }
+            }
+            else if (table_id == (int)GeneralTableEnum.TASK_PRIORITY_TYPE)
+            {
+                var ticketList = _dal.FindListBySql<sdk_task>("SELECT id from sdk_task where delete_time =0 and type_id = 1809 and priority_type_id =" + id.ToString());
+                if (ticketList != null && ticketList.Count > 0)
+                {
+                    n = ticketList.Count;
+                    return ERROR_CODE.TICKET_PRIORITY_USED;
+                }
+            }
 
             return ERROR_CODE.SUCCESS;
         }
