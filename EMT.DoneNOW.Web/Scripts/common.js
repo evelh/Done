@@ -18,11 +18,11 @@ function requestData(url, data, calBackFunction) {
             //$("body").append(loadDialog);
         },
         success: function (json) {
-            if (json.length == 2 && json[0] == "status=1") {
+            if (json != null && json.length == 2 && json[0] == "status=1") {
                 LayerLoadClose();
                 window.location.href = "/index.aspx";
                 return;
-            } else if (json.length == 2 && json[0] == "status = 2"){
+            } else if (json != null && json.length == 2 && json[0] == "status=2"){
                 LayerLoadClose();
                 LayerMsg(json[1]);
                 return;

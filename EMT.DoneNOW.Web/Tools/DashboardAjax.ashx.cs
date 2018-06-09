@@ -280,11 +280,19 @@ namespace EMT.DoneNOW.Web
             sys_widget wgt = new sys_widget();
             List<sys_widget_guage> guages = null;
             long dsbdId = long.Parse(request.QueryString["dashboardId"]);
-            if (request.Form["addWidgetType"] == "1")
+            if (request.Form["addWidgetType"] == "1" || request.Form["addWidgetType"] == "3")
             {
                 wgt.dashboard_id = dsbdId;
-                wgt.entity_id = int.Parse(request.Form["addWidgetEntity"]);
-                wgt.type_id= int.Parse(request.Form["addWidgetTypeSelect"]);
+                if (request.Form["addWidgetType"] == "3")
+                {
+                    wgt.entity_id = int.Parse(request.Form["addWidgetEntityCopy"]);
+                    wgt.type_id = int.Parse(request.Form["addWidgetTypeSelectCopy"]);
+                }
+                else
+                {
+                    wgt.entity_id = int.Parse(request.Form["addWidgetEntity"]);
+                    wgt.type_id = int.Parse(request.Form["addWidgetTypeSelect"]);
+                }
                 wgt.name = request.Form["addWidgetName"];
                 wgt.description= request.Form["wgtDesc"];
                 wgt.width = sbyte.Parse(request.Form["wgtSize"]);
