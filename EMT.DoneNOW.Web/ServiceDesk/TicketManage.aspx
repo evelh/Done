@@ -3037,6 +3037,12 @@
     // 新增检查单
     function AddCheckList(copyNum, upOrDown, upOrDownId) {
         // copyNum 复制的Id 没有代表新增不复制--（复制不考虑其他，名称复制后名称加入‘复制’）
+
+        var count = $(".HighImportance.D").length;
+        if (count > 19) {
+            LayerMsg("最多只可以添加20个相关条目");
+            return;
+        }
         pageCheckId--;
         var newCheckHtml = "<tr data-val='" + pageCheckId + "' id='" + pageCheckId + "'  class='HighImportance D' draggable='true'><td class='Interaction' ><div><div class='Decoration Icon DragHandle'></div><div class='Num'></div> <input type='hidden' id='" + pageCheckId + "_sort_order' name='" + pageCheckId + "_sort_order' value=''/></div></td ><td><a class='ButtonIcon Button ContextMenu NormalState'><div class='Icon' style='background: url(../Images/ButtonBarIcons.png) no-repeat -193px -97px; width: 15px;height:15px;'></div></a></td><td></td><td><input type='checkbox' id='" + pageCheckId + "_is_complete' name='" + pageCheckId + "_is_complete' /></td><td><input type='text' id='" + pageCheckId + "_item_name' name='" + pageCheckId + "_item_name' /></td><td><input type='checkbox' id='" + pageCheckId + "_is_import' name='" + pageCheckId + "_is_import' /></td></tr>";
 
@@ -3158,7 +3164,7 @@
     // 删除任务单
     function Delete() {
         if (entityid != "") {
-            LayerConfirm("删除不可恢复，是否继续删除？", "是", "否", function () { $("#" + entityid).remove(); }, function () { });
+            LayerConfirm("删除不可恢复，是否继续删除？", "是", "否", function () { $("#" + entityid).remove(); SortNum(); }, function () { });
             SortNum();
         }
     }

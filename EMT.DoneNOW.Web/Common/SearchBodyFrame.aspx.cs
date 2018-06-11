@@ -1646,9 +1646,9 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.SYSTEM_QUEUE_SEARCH:
                 case (long)QueryType.SYSTEM_TICKET_SOURCE_SEARCH:
-                //case (int)DicEnum.QUERY_CATE.SYSTEM_TICKET_ISSUE_SEARCH:
-                //case (int)DicEnum.QUERY_CATE.SYSTEM_CHANGE_BOARD_SEARCH:
-                //case (int)DicEnum.QUERY_CATE.SYSTEM_CHECK_LIB_SEARCH:
+                case (long)QueryType.SYSTEM_TICKET_ISSUE_SEARCH:
+                case (long)QueryType.SYSTEM_CHANGE_BOARD_SEARCH:
+                   
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()",id="ActiveLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "InActive()", id = "InActiveLi" });
@@ -1660,6 +1660,16 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActiveLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "InActive()", id = "InActiveLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "设置图标", click_function = "SetLogo()"});
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()", id = "DeleteLi" });
+                    break;
+                case (long)QueryType.SYSTEM_TICKET_SUB_ISSUE_SEARCH:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    break;
+                case (long)QueryType.SYSTEM_CHECK_LIB_SEARCH:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActiveLi" });
+                    contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "InActive()", id = "InActiveLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()", id = "DeleteLi" });
                     break;
                 default:

@@ -156,6 +156,8 @@
     <Compile Include="SDK\v_task_all.cs" />
     <Compile Include="SDK\v_ticket.cs" />
     <Compile Include="SYS\sys_bookmark.cs" />
+    <Compile Include="SYS\sys_checklist.cs" />
+    <Compile Include="SYS\sys_checklist_lib.cs" />
     <Compile Include="SYS\sys_dashboard.cs" />
     <Compile Include="SYS\sys_dashboard_publish.cs" />
     <Compile Include="SYS\sys_dashboard_resource.cs" />

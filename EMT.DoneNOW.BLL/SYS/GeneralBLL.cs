@@ -365,6 +365,20 @@ namespace EMT.DoneNOW.BLL
                     return ERROR_CODE.TICKET_PRIORITY_USED;
                 }
             }
+            else if (table_id == (int)GeneralTableEnum.TASK_ISSUE_TYPE)
+            {
+                var subIss = _dal.GetGeneralByParentId(id);
+                if(subIss!=null&& subIss.Count > 0)
+                {
+                    return ERROR_CODE.TICKET_ISSUE_HAS_SUB;
+                }
+                var ticketList = _dal.FindListBySql<sdk_task>("SELECT id from sdk_task where delete_time =0 and type_id = 1809 and issue_type_id =" + id.ToString());
+                if (ticketList != null && ticketList.Count > 0)
+                {
+                    n = ticketList.Count;
+                    return ERROR_CODE.TICKET_ISSUE_USED;
+                }
+            }
 
             return ERROR_CODE.SUCCESS;
         }
@@ -938,13 +952,30 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 删除工单问题
         /// </summary>
-        public bool DeleteGeneralIssue(long id, long userId, ref string failReason, bool isSub = false)
+        public bool DeleteGeneralSubIssue(string ids, long userId, ref string failReason)
         {
-            d_general thisGen = GetSingleGeneral(id);
-            if (thisGen == null)
+            if (!string.IsNullOrEmpty(ids))
             {
-                failReason = "已经删除";
-                return false;
+                string[] idArr = ids.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                foreach (var thisId in idArr)
+                {
+                    var thisGeneral = _dal.FindNoDeleteById(long.Parse(thisId));
+                    if (thisGeneral == null)
+                        continue;
+                    var ticketList = _dal.FindListBySql<sdk_task>("SELECT id from sdk_task where delete_time =0 and type_id = 1809 and sub_issue_type_id =" + thisId);
+                    if (ticketList != null && ticketList.Count > 0)
+                        failReason += thisGeneral.name + ',';
+                    else
+                    {
+                        _dal.SoftDelete(thisGeneral,userId);
+                        OperLogBLL.OperLogDelete<d_general>(thisGeneral, thisGeneral.id,userId,OPER_LOG_OBJ_CATE.General_Code,"");
+                    }
+                }
+                if (!string.IsNullOrEmpty(failReason))
+                {
+                    failReason = failReason.Substring(0, failReason.Length-1);
+                    failReason += "等被工单引用，不能删除";
+                }
             }
 
             return true;

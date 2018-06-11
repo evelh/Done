@@ -32,6 +32,11 @@ namespace EMT.DoneNOW.Web.ServiceDesk
             {
                 thisArt = new DAL.sdk_kb_article_dal().FindNoDeleteById(long.Parse(artId));
             }
+            long reqAddTicId = 0;
+            if (!string.IsNullOrEmpty(Request.QueryString["ticketId"]) && long.TryParse(Request.QueryString["ticketId"], out reqAddTicId))
+                kbTicketList = new List<sdk_kb_article_ticket>() {
+                    new sdk_kb_article_ticket(){task_id=reqAddTicId },
+                };
             if (thisArt != null)
             {
                 isAdd = false;

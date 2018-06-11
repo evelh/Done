@@ -210,10 +210,9 @@
                 <div class="relatedcontent">
                     <p>工单编号</p>
                     <input type="text" name="ticket" id="ticket" /><div class="add" onclick="AddPageTicket()">添加</div>
-                </div>
-                <div id="kbm_ticket_grid_row" style="padding-bottom: 12px;">
+                    <div id="kbm_ticket_grid_row" style="padding-bottom: 12px;">
                     <input type="hidden" id="TicketIds" name="TicketIds" />
-                    <table border="0" width="100%" cellpadding="0" cellspacing="0" style="margin-left: 25px;">
+                    <table border="0" width="100%" cellpadding="0" cellspacing="0" style="">
                         <tbody id="ChooseTicketTbody">
                             <%if (kbTicketList != null && kbTicketList.Count > 0)
                                 {
@@ -226,7 +225,7 @@
                             <tr data-val="<%=kbTicket.task_id %>" id="<%=kbTicket.task_id %>" class="pageTicket">
                                 <td style="width: 10px;">
                                     <img src="../Images/delete.png" style="cursor: pointer" onclick="DeleteTicket('<%=kbTicket.task_id %>')" /></td>
-                                <td width="110" style="padding-left: 5px; padding-bottom: 6px;"><a class="ViewATicket" onclick="ViewTicket('<%=kbTicket.task_id %>')"><%=kbTicket.task_no %></a></td>
+                                <td width="110" style="padding-left: 5px; padding-bottom: 6px;"><a class="ViewATicket" onclick="ViewTicket('<%=kbTicket.task_id %>')"><%=thisTicket.no %></a></td>
                                 <td width="10" style="font-size: 8pt;"></td>
                                 <td style="font-size: 8pt; font-family: Tahoma, Arial, Verdana;"><%=thisTicket.title %></td>
                             </tr>
@@ -235,6 +234,8 @@
                         </tbody>
                     </table>
                 </div>
+                </div>
+                
             </div>
             <div class="RelatedTicketsSection" style="cursor: pointer;">
                 <div class="relatedheard">
@@ -525,7 +526,7 @@
             }
         }
         else {
-            LayerAlert("请先填写工单编号！");
+            LayerMsg("请先填写工单编号！");
         }
     }
 

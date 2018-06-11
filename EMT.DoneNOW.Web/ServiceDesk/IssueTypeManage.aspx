@@ -71,10 +71,12 @@
                     </div>
                 </div>
              
-                <%if (!isAdd)
+                <%if (!isAdd&&thisIssue!=null&&thisIssue.general_table_id==(int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_ISSUE_TYPE)
                     { %>
-                   
-                <div class="information clear">
+                   <iframe src="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TICKET_SUB_ISSUE_SEARCH %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_TICKET_SUB_ISSUE_SEARCH %>&con4854=<%=thisIssue != null ? thisIssue.id.ToString() : "" %>&isCheck=1" style="width: 100%; height: 100%;min-height:500px;border: 0px;"></iframe>
+
+
+                <div class="information clear" style="display:none;">
                   <div class="content clear" id="ResourceDiv">
                 <div class="header-title">
                     <ul>
@@ -142,11 +144,11 @@
         return true;
     })
 
-    function AddIssue() {
+   <%-- function AddIssue() {
         window.open('../ServiceDesk/IssueTypeManage?parentId=<%=thisIssue!=null?thisIssue.id.ToString():"" %>&tableId=<%=(int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_SUB_ISSUE_TYPE %>', 'AddSubIssue', 'left=0,top=0,location=no,status=no,width=400,height=350', false);
     }
 
     function DeleteIssue() {
 
-    }
+    }--%>
 </script>

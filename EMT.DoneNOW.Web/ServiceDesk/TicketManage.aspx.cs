@@ -86,6 +86,10 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                             cate_id.SelectedValue = thisTicket.cate_id.ToString();
                             this.ticket_type_id.SelectedValue = thisTicket.ticket_type_id.ToString();
                             this.status_id.SelectedValue = thisTicket.status_id.ToString();
+                            if (isCopy)
+                            {
+                                this.status_id.ClearSelection(); this.status_id.SelectedValue = ((int)DicEnum.TICKET_STATUS.NEW).ToString();
+                            }
                             if (thisTicket.priority_type_id != null)
                                 priority_type_id.SelectedValue = thisTicket.priority_type_id.ToString();
                             if (thisTicket.issue_type_id != null)
@@ -100,6 +104,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                                 department_id.SelectedValue = thisTicket.department_id.ToString();
                         }
                         ticketUdfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.TASK, thisTicket.id, tickUdfList);
+
                         thisAccount = new CompanyBLL().GetCompany(thisTicket.account_id);
                         if (thisTicket.contact_id != null)
                         {
@@ -356,6 +361,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 #region 获取页面相关值
                 thisTicket.account_id = pageTicket.account_id;
                 thisTicket.contract_id = pageTicket.contract_id;
+                thisTicket.contact_id = pageTicket.contact_id;
                 thisTicket.status_id = pageTicket.status_id;
                 thisTicket.priority = pageTicket.priority;
                 thisTicket.issue_type_id = pageTicket.issue_type_id;
@@ -376,6 +382,12 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                 thisTicket.title = pageTicket.title;
                 thisTicket.description = pageTicket.description;
                 thisTicket.resolution = pageTicket.resolution;
+
+                thisTicket.sla_start_time = pageTicket.sla_start_time;
+                thisTicket.estimated_end_time = pageTicket.estimated_end_time;
+                thisTicket.first_response_target_time = pageTicket.first_response_target_time;
+                thisTicket.resolution_target_time = pageTicket.resolution_target_time;
+                thisTicket.resolution_plan_target_time = pageTicket.resolution_plan_target_time;
                 #endregion
                 param.ticket = thisTicket;
             }

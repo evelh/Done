@@ -670,6 +670,7 @@
     <Content Include="ServiceDesk\TicketManage.aspx" />
     <Content Include="SysSetting\AdjustResourceGoal.aspx" />
     <Content Include="SysSetting\ChangeBoardManage.aspx" />
+    <Content Include="SysSetting\CheckListLibrary.aspx" />
     <Content Include="SysSetting\EditServiceAlert.aspx" />
     <Content Include="SysSetting\FormTemplateManage.aspx" />
     <Content Include="SysSetting\Holiday.aspx" />
@@ -2475,6 +2476,13 @@
     </Compile>
     <Compile Include="SysSetting\ChangeBoardManage.aspx.designer.cs">
       <DependentUpon>ChangeBoardManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\CheckListLibrary.aspx.cs">
+      <DependentUpon>CheckListLibrary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\CheckListLibrary.aspx.designer.cs">
+      <DependentUpon>CheckListLibrary.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\EditServiceAlert.aspx.cs">
       <DependentUpon>EditServiceAlert.aspx</DependentUpon>

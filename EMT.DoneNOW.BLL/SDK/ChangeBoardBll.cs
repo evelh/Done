@@ -146,6 +146,41 @@ namespace EMT.DoneNOW.BLL
         {
             return _dal.FindListBySql<d_change_board_person>($"SELECT * from d_change_board_person where delete_time =0 and change_board_id = {boardId}");
         }
+        /// <summary>
+        /// 激活/失活 变更委员会
+        /// </summary>
+        public bool ActivBoard(long bId,long userId,bool isActive)
+        {
+            d_change_board thisBoard = GetBoard(bId);
+            if (thisBoard == null)
+                return false;
+            sbyte thisActive = (sbyte)(isActive ? 1 : 0);
+            if (thisBoard.is_active != thisActive)
+            {
+                var oldBoard = GetBoard(bId);
+                thisBoard.is_active = thisActive;
+                thisBoard.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                thisBoard.update_user_id = userId;
+                _dal.Update(thisBoard);
+                OperLogBLL.OperLogUpdate<d_change_board>(thisBoard, oldBoard, thisBoard.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CHANGE_BOARD, "");
+            }
+            return true;
+        }
+        /// <summary>
+        /// 删除变更委员会
+        /// </summary>
+        public bool DeleteBoard(long bId,long userId,ref string faileReason)
+        {
+            d_change_board thisBoard = GetBoard(bId);
+            if (thisBoard == null)
+                return false;
+            thisBoard.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            thisBoard.delete_user_id = userId;
+            EditBoard(thisBoard,"",userId);
+            //_dal.SoftDelete(thisBoard,userId);
+            //OperLogBLL.OperLogDelete<d_change_board>(thisBoard,thisBoard.id, userId, DicEnum.OPER_LOG_OBJ_CATE.CHANGE_BOARD, "");
+            return true;
+        }
 
     }
 }

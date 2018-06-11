@@ -723,6 +723,21 @@
                 success: function (data) {
                     if (data != "") {
                         $("#unit_price").val(toDecimal2(data.unit_price));
+                        if (data.show_on_invoice == '<%=(int)EMT.DoneNOW.DTO.DicEnum.SHOW_ON_INVOICE.BILLED %>') {
+                            $("#ckIsBilled").prop("checked", false);
+                            $("#ckShowOnInv").prop("checked", true);
+                            $("#ckShowOnInv").prop("disabled", true);
+                        }
+                        else if (data.show_on_invoice == '<%=(int)EMT.DoneNOW.DTO.DicEnum.SHOW_ON_INVOICE.NO_SHOW_ONINCOICE %>') {
+                            $("#ckIsBilled").prop("checked", true);
+                            $("#ckShowOnInv").prop("checked", false);
+                            $("#ckShowOnInv").prop("disabled", false);
+                        }
+                        else if (data.show_on_invoice == '<%=(int)EMT.DoneNOW.DTO.DicEnum.SHOW_ON_INVOICE.BILLED %>') {
+                            $("#ckIsBilled").prop("checked", true);
+                            $("#ckShowOnInv").prop("checked", true);
+                            $("#ckShowOnInv").prop("disabled", false);
+                        }
                     }
                 },
             });

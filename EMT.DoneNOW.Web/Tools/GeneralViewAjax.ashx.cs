@@ -148,6 +148,14 @@ namespace EMT.DoneNOW.Web
             {
                 context.Response.Write("有" + n + "个工单关联此优先级，不能删除!");
             }
+            else if (result == DTO.ERROR_CODE.TICKET_ISSUE_USED)
+            {
+                context.Response.Write("有" + n + "个工单关联此问题，不能删除!");
+            }
+            else if (result == DTO.ERROR_CODE.TICKET_ISSUE_HAS_SUB)
+            {
+                context.Response.Write("问题有相关子问题，不能删除!");
+            }
             else if (result == DTO.ERROR_CODE.SUCCESS)
             {
                 Delete(context, general_id, general_table_id);

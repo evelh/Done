@@ -30,7 +30,8 @@ namespace EMT.DoneNOW.Web.ServiceDesk
             if (thisIssue != null)
             {
                 isAdd = false;
-                if(tableId == (int)DTO.GeneralTableEnum.TASK_ISSUE_TYPE)
+                tableId = thisIssue.general_table_id;
+                if (tableId == (int)DTO.GeneralTableEnum.TASK_ISSUE_TYPE)
                 {
                     subIssueList = new DAL.d_general_dal().GetGeneralByParentId(thisIssue.id);
                 }

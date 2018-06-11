@@ -64,6 +64,30 @@ namespace EMT.DoneNOW.Web
                         break;
                     case "ActiveGeneral":
                         ActiveGeneral(context);
+                        break; 
+                    case "DeleteTicketSubIssue":
+                        DeleteTicketSubIssue(context);
+                        break;
+                    case "ActiveBoard":
+                        ActiveBoard(context);
+                        break;
+                    case "DeleteBoard":
+                        DeleteBoard(context);
+                        break;
+                    case "BoardInfo":
+                        BoardInfo(context);
+                        break;
+                    case "ActiveCheckLib":
+                        ActiveCheckLib(context);
+                        break;
+                    case "DeleteCheckLib":
+                        DeleteCheckLib(context);
+                        break;
+                    case "CheckLibInfo":
+                        CheckLibInfo(context);
+                        break;
+                    case "CopyCheckLib":
+                        CopyCheckLib(context);
                         break;
                     default:
                         break;
@@ -247,6 +271,113 @@ namespace EMT.DoneNOW.Web
                     result = true;
             }
             WriteResponseJson(result);
+        }
+        /// <summary>
+        /// 删除工单子问题校验
+        /// </summary>
+        void DeleteTicketSubIssue(HttpContext context)
+        {
+            bool result = false;
+            string reason = string.Empty;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["ids"]))
+                result = new GeneralBLL().DeleteGeneralSubIssue(context.Request.QueryString["ids"],LoginUserId,ref reason);
+            WriteResponseJson(new {result= result, reason=reason });
+        }
+
+
+        /// <summary>
+        /// 激活/失活 变更委员会
+        /// </summary>
+        void ActiveBoard(HttpContext context)
+        {
+            bool result = false;
+            bool isAvtive = false;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["isActive"]) && context.Request.QueryString["isActive"] == "1")
+                isAvtive = true;
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]) && long.TryParse(context.Request.QueryString["id"], out id))
+                result = new ChangeBoardBll().ActivBoard(id, LoginUserId, isAvtive);
+            WriteResponseJson(result);
+        }
+        /// <summary>
+        /// 删除变更委员会
+        /// </summary>
+        void DeleteBoard(HttpContext context)
+        {
+            bool result = false;
+            string reason = string.Empty;
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]) && long.TryParse(context.Request.QueryString["id"], out id))
+                result = new ChangeBoardBll().DeleteBoard(id, LoginUserId, ref reason);
+            WriteResponseJson(new { result = result, reason = reason });
+        }
+        /// <summary>
+        /// 获取变更委员会相关内同
+        /// </summary>
+        void BoardInfo(HttpContext context)
+        {
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]) && long.TryParse(context.Request.QueryString["id"], out id))
+            {
+                d_change_board board = new ChangeBoardBll().GetBoard(id);
+                if (board != null)
+                    WriteResponseJson(board);
+            }
+        }
+
+
+
+
+
+        /// <summary>
+        /// 激活/失活 检查单库
+        /// </summary>
+        void ActiveCheckLib(HttpContext context)
+        {
+            bool result = false;
+            bool isAvtive = false;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["isActive"]) && context.Request.QueryString["isActive"] == "1")
+                isAvtive = true;
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]) && long.TryParse(context.Request.QueryString["id"], out id))
+                result = new CheckListBLL().ActivLib(id, LoginUserId, isAvtive);
+            WriteResponseJson(result);
+        }
+        /// <summary>
+        /// 删除检查单库
+        /// </summary>
+        void DeleteCheckLib(HttpContext context)
+        {
+            bool result = false;
+            string reason = string.Empty;
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]) && long.TryParse(context.Request.QueryString["id"], out id))
+                result = new CheckListBLL().DeleteBoard(id, LoginUserId, ref reason);
+            WriteResponseJson(new { result = result, reason = reason });
+        }
+        /// <summary>
+        /// 复制检查单库
+        /// </summary>
+        void CopyCheckLib(HttpContext context)
+        {
+            bool result = false;
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]) && long.TryParse(context.Request.QueryString["id"], out id))
+                result = new CheckListBLL().CopyLib(id, LoginUserId);
+            WriteResponseJson( result);
+        }
+        /// <summary>
+        /// 获取检查单库
+        /// </summary>
+        void CheckLibInfo(HttpContext context)
+        {
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]) && long.TryParse(context.Request.QueryString["id"], out id))
+            {
+                sys_checklist_lib lib = new CheckListBLL().GetLib(id);
+                if (lib != null)
+                    WriteResponseJson(lib);
+            }
         }
     }
 }

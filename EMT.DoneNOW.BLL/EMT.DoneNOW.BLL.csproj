@@ -89,6 +89,7 @@
     <Compile Include="PRO\ProjectBLL.cs" />
     <Compile Include="PRO\TaskBLL.cs" />
     <Compile Include="SDK\ChangeBoardBll.cs" />
+    <Compile Include="SDK\CheckListBLL.cs" />
     <Compile Include="SDK\DispatchBLL.cs" />
     <Compile Include="SDK\KnowledgeBLL.cs" />
     <Compile Include="SDK\TicketBLL.cs" />

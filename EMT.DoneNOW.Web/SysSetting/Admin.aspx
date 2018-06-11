@@ -362,10 +362,20 @@
                                                 <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TICKET_PRIORITY_SEARCH %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">工单优先级</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
-                                           
+                                           <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TICKET_ISSUE_SEARCH %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">问题和子问题类型</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                             <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CHECK_LIB_SEARCH %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">检查单库</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
                                         </div>
                                         <div class="PageNavigationLinkColumn">
-                                           
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CHANGE_BOARD_SEARCH %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">变更委员会</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
                                         </div>
                                     </div>
                               
@@ -428,7 +438,7 @@
                                             <%}%>
                                             <%if (CheckAuth("SYS_FEATURES_SALES_OPPS_SALES_QUOTA_METRICS"))
                                                 { %>
-                                            <div class="PageNavigationLink">
+                                            <div class="PageNavigationLink" style="display:none;">
                                                 <a href="OppoAdvancedField.aspx?id=<%=(int)GeneralTableEnum.OPPORTUNITY_ADVANCED_FIELD %>" class="Button ButtonIcon Link NormalState chaxun" target="PageFrame1">销售指标度量</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>

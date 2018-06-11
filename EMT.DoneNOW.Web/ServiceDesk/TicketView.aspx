@@ -105,7 +105,7 @@
                 </li>
 
                 <li>
-                    <a class="ImgLink" onclick="" style="background: linear-gradient(to bottom,#fff 0,#fdfdfd 100%);">
+                    <a class="ImgLink" onclick="TicketModify()" style="background: linear-gradient(to bottom,#fff 0,#fdfdfd 100%);">
                         <span class="icon" style="background: url(../Images/Icons.png) no-repeat -277px 0px; width: 16px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
                         <span class="Text" style="line-height: 24px;">转发</span>
                     </a>
@@ -200,8 +200,6 @@
 
                             </div>
                         </div>
-
-
                     </div>
                 </li>
 
@@ -210,6 +208,29 @@
                         <span class="icon" style="background: url(../Images/Icons.png) no-repeat -6px -64px; width: 16px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
                         <span class="Text" style="line-height: 24px;">完成</span>
                     </a>
+                </li>
+                 <li style="float:right;" id="KonwLi">
+                    <a class="ImgLink" onclick="" style="background: linear-gradient(to bottom,#fff 0,#fdfdfd 100%);">
+                       <span class="icon" style="background: url(../Images/Icons.png) no-repeat -70px -78px; width: 16px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
+                        <span class="Text" style="line-height: 24px;">知识库</span>
+                         <span class="icon" style="background: url(../Images/Icons.png) no-repeat -182px -48px; width: 15px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
+                    </a>
+                </li>
+                 <li class="DropDownButton" style="top: 72px; left: 1092px; display: none;" id="Down3">
+                    <div class="DropDownButtonDiv">
+                        <div class="Group">
+                            <div class="Content">
+                                <div class="Button1" tabindex="0" onclick="SearchKnow()">
+                                    <span class="Icon"></span>
+                                    <span class="Text">查询知识库</span>
+                                </div>
+                                <div class="Button1" tabindex="0" onclick="AddKnow()">
+                                    <span class="Icon"></span>
+                                    <span class="Text">新增知识库</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -2557,7 +2578,7 @@
         var ticketId = $("#ticket_id").val();
         if (ticketId == "")
             return;
-        window.open("../ServiceDesk/CopyToProject.aspx?ticketIds=" + ticketId, _blank, 'left=200,top=200,width=600,height=800', false);
+        window.open("../ServiceDesk/CopyToProject.aspx?ticketIds=" + ticketId, '_blank', 'left=200,top=200,width=600,height=800', false);
           
     }
 
@@ -2754,4 +2775,12 @@
             console.log(e);
         });
     }
+
+    function SearchKnow(){
+        window.open("../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.KNOWLEDGEBASE_ARTICLE %>", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>", 'left=200,top=200,width=1210,height=800', false);
+    }
+    function AddKnow() {
+        window.open("../ServiceDesk/AddRepository.aspx?ticketId=<%=thisTicket.id.ToString() %>", "_blank", "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=800,height=700");
+    }
+    
 </script>

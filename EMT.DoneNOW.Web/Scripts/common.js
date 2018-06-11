@@ -347,6 +347,8 @@ var windowObj = {
     resourceApproval: "resourceApproval",
     queue: "queue",
     logo:"logo",
+    board: "board", 
+    CheckListLibrary: "CheckListLibrary",
 }
 var windowType = {
     blank: '_blank',
