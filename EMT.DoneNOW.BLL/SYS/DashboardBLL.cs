@@ -22,6 +22,59 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public List<DictionaryEntryDto> GetUserDashboardList(long userId)
         {
+            // 先把发布仪表板同步到用户仪表板
+            var res = new sys_resource_dal().FindById(userId);
+            var dpts = dal.FindListBySql<string>($"select department_id from sys_resource_department where resource_id={userId} and is_active=1");
+            string sql = $"select distinct dashboard_id from sys_dashboard_publish where delete_time=0 and (select  FIND_IN_SET('{userId}',resource_ids))>0  ";
+            if (res.security_level_id != null)
+                sql += $" or (select  FIND_IN_SET('{res.security_level_id.Value}',security_level_ids))>0 ";
+            foreach (var dpt in dpts)
+            {
+                sql += $" or (select  FIND_IN_SET('{dpt}',department_ids))>0 ";
+            }
+            sql += " order by dashboard_id asc";
+            var dashboards = dal.FindListBySql<long>(sql);
+            var ownDshb = dal.FindListBySql<long>($"select id from sys_dashboard where create_user_id={userId} and delete_time=0");
+            ownDshb.AddRange(dashboards);
+            ownDshb = ownDshb.Distinct().ToList();     // 需要同步的仪表板id列表
+
+            sys_dashboard_resource_dal drDal = new sys_dashboard_resource_dal();
+            var list = dal.FindListBySql<sys_dashboard_resource>($"select id,dashboard_id,sort_order from sys_dashboard_resource where resource_id={userId} and delete_time=0 order by sort_order asc");    // 用户当前的仪表板id列表
+            foreach (var ds in list)
+            {
+                if (ownDshb.Exists(_ => _ == ds.dashboard_id))     // 不需要同步
+                {
+                    ownDshb.Remove(ds.dashboard_id);
+                }
+                else    // 需要删除
+                {
+                    sys_dashboard_resource dltDr = drDal.FindById(ds.id);
+                    dltDr.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                    dltDr.delete_user_id = userId;
+                    drDal.Update(dltDr);
+                    OperLogBLL.OperLogDelete<sys_dashboard_resource>(dltDr, dltDr.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_USER, "同步用户仪表板删除");
+                }
+            }
+
+            decimal currentOrder = 1;
+            if (list.Count > 0)
+                currentOrder = list[list.Count - 1].sort_order + 1;
+            foreach (var dsid in ownDshb)   // 剩余的需要同步新增
+            {
+                sys_dashboard_resource dr = new sys_dashboard_resource();
+                dr.id = dal.GetNextIdCom();
+                dr.dashboard_id = dsid;
+                dr.sort_order = currentOrder;
+                dr.resource_id = userId;
+                dr.is_visible = 1;
+                dr.update_time= Tools.Date.DateHelper.ToUniversalTimeStamp();
+                dr.create_time = dr.update_time;
+                dr.create_user_id = userId;
+                dr.update_user_id = userId;
+                drDal.Insert(dr);
+                OperLogBLL.OperLogAdd<sys_dashboard_resource>(dr, dr.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_USER, "同步用户仪表板新增");
+            }
+
 
             return dal.FindListBySql<DictionaryEntryDto>($"select dashboard_id as `val`,(select `name` from sys_dashboard where id=dashboard_id) as `show` from sys_dashboard_resource where resource_id={userId} and is_visible=1 and delete_time=0 order by sort_order asc");
         }

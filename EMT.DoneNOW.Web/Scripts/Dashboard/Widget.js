@@ -160,13 +160,40 @@ function AddWidgetStepSelect() {
             });
         })
 
+        var visualTypes = new Array();
+        visualTypes[2545] = -61;
+        visualTypes[2546] = 0;
+        visualTypes[2547] = -481;
+        visualTypes[2548] = -181;
+        visualTypes[2549] = -121;
+        visualTypes[2556] = -421;
+        visualTypes[2558] = -541;
+        visualTypes[2553] = -361;
+        visualTypes[2552] = -1021;
+        visualTypes[2551] = -241;
+        visualTypes[2550] = -901;
+        visualTypes[2555] = -301;
+        visualTypes[2554] = -961;
+        visualTypes[2557] = -841;
+        visualTypes[2559] = -661;
+        visualTypes[2560] = -721;
+        visualTypes[2561] = -781;
         function SelectEntityChange() {
             var selval = $("#WidgetSelectEntity").val();
             var str = '<tr style="background-color:#cbd9e4;"><th style="border:1px solid #b8c8d4;"></th><th style="border:1px solid #b8c8d4;"></th><th style="border:1px solid #b8c8d4;text-align:left;">名称和描述</th></tr>';
+            var yidx = -60 * ThemeIdx - 1;
             for (var i = 0; i < SysWidgets.length; i++) {
                 if (selval == SysWidgets[i][1]) {
                     str += '<tr><td><div class="SelWgtRd"><input type="radio" name="AddWgtSelectWgt" value="' + SysWidgets[i][0] + '" /></div></td>';
-                    str += '<td><div class="SelWgtImg"></div></td>';
+                    if (SysWidgets[i][2] == 2581 || SysWidgets[i][2] == 2583) {
+                        if (SysWidgets[i][3] == 2557)
+                            str += '<td><div class="SelWgtImg"><div class="SysWgtSelect" style="background-position:' + visualTypes[SysWidgets[i][3]] + 'px -1px"></div></div></td>';
+                        else
+                            str += '<td><div class="SelWgtImg"><div class="SysWgtSelect" style="background-position:' + visualTypes[SysWidgets[i][3]] + 'px ' + yidx + 'px"></div></div></td>';
+                    } else if (SysWidgets[i][2] == 2584) {
+                        str += '<td><div class="SelWgtImg"><div class="SysWgtSelect" style="background-position:-1081px ' + yidx + 'px"></div></div></td>';
+                    } else if (SysWidgets[i][2] == 2585)
+                        str += '<td><div class="SelWgtImg"><div class="SysWgtSelect" style="background-position:-1261px -1px"></div></div></td>';
                     str += '<td><div class="SelWgtDesc"><p>' + SysWidgets[i][4] + '</p><p>' + SysWidgets[i][5] + '</p></div></td></tr>';
                 }
             }
@@ -1598,6 +1625,10 @@ function AddWidgetStep1(widgetData, copy) {
         }
         if (copy == 1) {
             $("#addWidgetId").val(0);
+            if ($('input:radio[name="addWidgetType"]:checked').val() == "3") {
+                $("#addWidgetEntityCopy").val(widget.entity_id);
+                $("#addWidgetTypeSelectCopy").val(widget.type_id);
+            }
         }
         if (widgetEntityList == null) {
             requestData("/Tools/DashboardAjax.ashx?act=GetWidgetEntityList", null, function (data) {
@@ -1702,19 +1733,37 @@ function AddWidgetStep1(widgetData, copy) {
             $("#wgtSub1BreakCnt").change(function () {
                 BreakPointCntChange(1, null);
             })
+            $("#wgtSub1BreakType").change(function () {
+                BreakPointCntChange(1, null);
+            })
             $("#wgtSub2BreakCnt").change(function () {
+                BreakPointCntChange(2, null);
+            })
+            $("#wgtSub2BreakType").change(function () {
                 BreakPointCntChange(2, null);
             })
             $("#wgtSub3BreakCnt").change(function () {
                 BreakPointCntChange(3, null);
             })
+            $("#wgtSub3BreakType").change(function () {
+                BreakPointCntChange(3, null);
+            })
             $("#wgtSub4BreakCnt").change(function () {
+                BreakPointCntChange(4, null);
+            })
+            $("#wgtSub4BreakType").change(function () {
                 BreakPointCntChange(4, null);
             })
             $("#wgtSub5BreakCnt").change(function () {
                 BreakPointCntChange(5, null);
             })
+            $("#wgtSub5BreakType").change(function () {
+                BreakPointCntChange(5, null);
+            })
             $("#wgtSub6BreakCnt").change(function () {
+                BreakPointCntChange(6, null);
+            })
+            $("#wgtSub6BreakType").change(function () {
                 BreakPointCntChange(6, null);
             })
             requestData("/Tools/DashboardAjax.ashx?act=GetWidgetFilter&id=" + entityType, null, function (data) {
@@ -1829,27 +1878,30 @@ function AddWidgetStep1(widgetData, copy) {
                         if ($("#wgtSub" + sub + "BreakType").val() == bk[0])
                             bkval = bk[2];
                     })
+                    var maxval = bkval + 1.2;
+                    if (maxval > 100)
+                        maxval = 100;
                     $("#wgtSub" + sub + "BP0").val(0);
                     if (bpCnt == 1) {
                         $("#wgtSub" + sub + "BP1").val(bkval);
                     } else if (bpCnt == 2) {
                         $("#wgtSub" + sub + "BP1").val(bkval);
-                        $("#wgtSub" + sub + "BP2").val(bkval * 1.2);
+                        $("#wgtSub" + sub + "BP2").val(maxval);
                     } else if (bpCnt == 3) {
                         $("#wgtSub" + sub + "BP1").val(bkval * 0.8);
                         $("#wgtSub" + sub + "BP2").val(bkval);
-                        $("#wgtSub" + sub + "BP3").val(bkval * 1.2);
+                        $("#wgtSub" + sub + "BP3").val(maxval);
                     } else if (bpCnt == 4) {
                         $("#wgtSub" + sub + "BP1").val(bkval * 0.6);
                         $("#wgtSub" + sub + "BP2").val(bkval * 0.8);
                         $("#wgtSub" + sub + "BP3").val(bkval);
-                        $("#wgtSub" + sub + "BP4").val(bkval * 1.2);
+                        $("#wgtSub" + sub + "BP4").val(maxval);
                     } else if (bpCnt == 5) {
                         $("#wgtSub" + sub + "BP1").val(bkval * 0.4);
                         $("#wgtSub" + sub + "BP2").val(bkval * 0.6);
                         $("#wgtSub" + sub + "BP3").val(bkval * 0.8);
                         $("#wgtSub" + sub + "BP4").val(bkval);
-                        $("#wgtSub" + sub + "BP5").val(bkval * 1.2);
+                        $("#wgtSub" + sub + "BP5").val(maxval);
                     }
                 }
             }

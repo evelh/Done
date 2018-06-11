@@ -1831,6 +1831,8 @@
                 <div class="itemborderBottom"></div>
                 <div class="item"  style="padding-top:20px;">
                     <input type="radio" name="addWidgetType" id="addWidgetType3" value="3"><label for="addWidgetType3"> 从系统的小窗口库中选择</label>
+                    <input type="hidden" name="addWidgetEntityCopy" id="addWidgetEntityCopy" />
+                    <input type="hidden" name="addWidgetTypeSelectCopy" id="addWidgetTypeSelectCopy" />
                 </div>
             </div>
             <div class="button">
@@ -1852,6 +1854,7 @@
             </div>
         </div>
     </div>
+    </form>
     <div class="POPbox" id="AddWidgetSelect">
         <div class="shut" onclick="POPClose(this)">
         </div>
@@ -1870,7 +1873,7 @@
                             </tr>
                             <tr>
                                 <td><div class="SelWgtRd"><input type="radio" name="AddWgtSelectWgt" value="" /></div></td>
-                                <td><div class="SelWgtImg"></div></td>
+                                <td><div class="SelWgtImg"><div class="SysWgtSelect" style="background-position:-61px -1px"></div></div></td>
                                 <td><div class="SelWgtDesc"><p>12312312312</p><p>12312312</p></div></td>
                             </tr>
                         </tbody>
@@ -1883,7 +1886,6 @@
             </div>
         </div>
     </div>
-    </form>
     <div class="POPbox" style="z-index:105;height:400px;margin-top:-200px;" id="AddWidgetDynamicSelect">
         <div class="shut" onclick="CloseDynamicDate()">
         </div>
