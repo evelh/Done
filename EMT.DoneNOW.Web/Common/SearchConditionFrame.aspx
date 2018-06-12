@@ -493,7 +493,7 @@
                 <input name="con<%=param1 %>" type="hidden" class="sl_cdt" value="<%=param2 %>" />
             <%} %>
             <%} %>
-            <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH && param4 == "AddHidden")
+            <%if ((catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_SEARCH||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE) && param4 == "AddHidden")
                 { %>
             <input name="<%=param1 %>" type="hidden" class="sl_cdt" value="<%=param2 %>" />
             <%if (!string.IsNullOrEmpty(param5) && !string.IsNullOrEmpty(param6)&&string.IsNullOrEmpty(Request.QueryString["param7"]))

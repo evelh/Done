@@ -53,7 +53,7 @@
                                     <%if (resList != null && resList.Count > 0)
                                         {foreach (var res in resList)
                                             {     %>
-                                    <option value="<%=res.id %>" <%if (appo != null && appo.resource_id == res.id){ %> selected="selected" <%} %> ><%=res.name %></option>
+                                    <option value="<%=res.id %>" <%if (resId == res.id){ %> selected="selected" <%} %> ><%=res.name %></option>
                                     <%
                                             }} %>
                                 </select>

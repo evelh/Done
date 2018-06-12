@@ -79,73 +79,8 @@ namespace EMT.DoneNOW.BLL
                 var oldTicket = _dal.FindNoDeleteById(param.ticket.id);
                 if (oldTicket == null)
                     return false;
-                bool isComplete = false;   // 是否是完成
-                bool isRepeat = false;     // 是否是重新打开
-                // 状态从第一次从“新建”改为其他，会触发 存储响应时间
                 var updateTicket = param.ticket;
-                if (oldTicket.first_activity_time == null && oldTicket.status_id == (int)DicEnum.TICKET_STATUS.NEW)
-                {
-                    updateTicket.first_activity_time = timeNow;
-                }
-                // 重新打开判断  -- 从完成状态变为其他状态次数
-                if (oldTicket.status_id == (int)DicEnum.TICKET_STATUS.DONE && updateTicket.status_id != (int)DicEnum.TICKET_STATUS.DONE)
-                {
-                    updateTicket.reopened_count = (oldTicket.reopened_count ?? 0) + 1;
-                    updateTicket.date_completed = null;
-                    updateTicket.reason = param.repeatReason;
-                    isRepeat = true;
-                }
-                // 完成判断
-                if (oldTicket.status_id != (int)DicEnum.TICKET_STATUS.DONE && updateTicket.status_id == (int)DicEnum.TICKET_STATUS.DONE)
-                {
-                    updateTicket.date_completed = timeNow;
-                    updateTicket.reason = param.completeReason;
-                    isComplete = true;
-                    if (param.isAppSlo)
-                    {
-                        updateTicket.resolution = (oldTicket.resolution ?? "") + updateTicket.resolution;
-                    }
-                }
-                if (oldTicket.sla_id == null && updateTicket.sla_id != null)
-                {
-                    updateTicket.sla_start_time = timeNow;
-                }
-                if (oldTicket.sla_id != null && updateTicket.sla_id == null)
-                {
-                    // updateTicket.sla_start_time = null;
-                }
-
-                var statusGeneral = new d_general_dal().FindNoDeleteById(updateTicket.status_id);
-
-                var oldStatusGeneral = new d_general_dal().FindNoDeleteById(oldTicket.status_id);
-
-                if (statusGeneral != null && !string.IsNullOrEmpty(statusGeneral.ext1))
-                {
-                    // 根据状态事件，执行相应的操作
-                    switch (int.Parse(statusGeneral.ext1))
-                    {
-                        case (int)SLA_EVENT_TYPE.RESOLUTIONPLAN:
-                            updateTicket.resolution_plan_actual_time = timeNow;
-                            break;
-                        case (int)SLA_EVENT_TYPE.RESOLUTION:
-                            updateTicket.resolution_actual_time = timeNow;
-                            break;
-                        default:
-                            break;
-                    }
-                    TicketSlaEvent(updateTicket, userId);
-                }
-                EditTicket(updateTicket, userId);
-                // 添加活动信息
-                if (isComplete)
-                {
-                    AddCompleteActive(updateTicket, userId);
-                }
-                // 添加活动信息
-                if (isRepeat)
-                {
-                    AddCompleteActive(updateTicket, userId, true);
-                }
+                EditTicket(updateTicket, userId,param.repeatReason,param.completeReason,param.isAppSlo);
                 #endregion
 
                 #region 自定义字段处理
@@ -196,7 +131,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 编辑工单信息
         /// </summary>
-        public bool EditTicket(sdk_task ticket, long user_id)
+        public bool EditTicket(sdk_task ticket, long user_id,string repeatReason="",string completeReason="",bool isAppSlo = false)
         {
             bool result = false;
             var oldTicket = _dal.FindNoDeleteById(ticket.id);
@@ -205,10 +140,82 @@ namespace EMT.DoneNOW.BLL
                 string desc = _dal.CompareValue<sdk_task>(oldTicket, ticket);
                 if (string.IsNullOrEmpty(desc))
                     return true;
+                bool isComplete = false;   // 是否是完成
+                bool isRepeat = false;     // 是否是重新打开
+                                           // 状态从第一次从“新建”改为其他，会触发 存储响应时间
+                var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                if (oldTicket.first_activity_time == null && oldTicket.status_id == (int)DicEnum.TICKET_STATUS.NEW)
+                {
+                    ticket.first_activity_time = timeNow;
+                }
+                // 重新打开判断  -- 从完成状态变为其他状态次数
+                if (oldTicket.status_id == (int)DicEnum.TICKET_STATUS.DONE && ticket.status_id != (int)DicEnum.TICKET_STATUS.DONE)
+                {
+                    ticket.reopened_count = (oldTicket.reopened_count ?? 0) + 1;
+                    ticket.date_completed = null;
+                    ticket.reason = repeatReason;
+                    isRepeat = true;
+                }
+                // 完成判断  
+                if (oldTicket.status_id != (int)DicEnum.TICKET_STATUS.DONE && ticket.status_id == (int)DicEnum.TICKET_STATUS.DONE)
+                {
+                    ticket.date_completed = timeNow;
+                    ticket.reason = completeReason;
+                    isComplete = true;
+                    if (isAppSlo)
+                    {
+                        ticket.resolution = (oldTicket.resolution ?? "") + ticket.resolution;
+                    }
+                }
+                if (oldTicket.sla_id == null && ticket.sla_id != null)
+                {
+                    ticket.sla_start_time = timeNow;
+                }
+                if (oldTicket.sla_id != null && ticket.sla_id == null)
+                {
+                    // updateTicket.sla_start_time = null;
+                }
+
+                var statusGeneral = new d_general_dal().FindNoDeleteById(ticket.status_id);
+
+                var oldStatusGeneral = new d_general_dal().FindNoDeleteById(oldTicket.status_id);
+
+                if (statusGeneral != null && !string.IsNullOrEmpty(statusGeneral.ext1))
+                {
+                    // 根据状态事件，执行相应的操作
+                    switch (int.Parse(statusGeneral.ext1))
+                    {
+                        case (int)SLA_EVENT_TYPE.RESOLUTIONPLAN:
+                            ticket.resolution_plan_actual_time = timeNow;
+                            break;
+                        case (int)SLA_EVENT_TYPE.RESOLUTION:
+                            ticket.resolution_actual_time = timeNow;
+                            break;
+                        default:
+                            break;
+                    }
+                    TicketSlaEvent(ticket, user_id);
+                }
+
+
                 ticket.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 ticket.update_user_id = user_id;
                 _dal.Update(ticket);
                 OperLogBLL.OperLogUpdate<sdk_task>(ticket, oldTicket, ticket.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "");
+                // 添加活动信息
+                if (isComplete)
+                {
+                    AddCompleteActive(ticket, user_id);
+                }
+                // 添加活动信息
+                if (isRepeat)
+                {
+                    AddCompleteActive(ticket, user_id, true);
+                }
+                #region 更新客户最后活动时间
+                crm_account thisAccount = new CompanyBLL().GetCompany(ticket.account_id);
+                if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, user_id); }
+                #endregion
             }
             return result;
         }
@@ -1344,7 +1351,11 @@ namespace EMT.DoneNOW.BLL
             // 相关操作
             #region  联系人转移
             if (fromTicket.contact_id != null)
+            {
                 TransferContact(toTicketId, (long)fromTicket.contact_id, userId);
+                
+            }
+                
             #endregion
 
             var timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -1440,6 +1451,23 @@ namespace EMT.DoneNOW.BLL
             };
             srDal.Insert(thisCon);
             OperLogBLL.OperLogAdd<sdk_task_resource>(thisCon, thisCon.id, userId, OPER_LOG_OBJ_CATE.PROJECT_TASK_RESOURCE, "新增工单分配对象");
+
+            // 联系人附加到  additional_contact_ids 中
+            if (!string.IsNullOrEmpty(thisTicket.additional_contact_ids))
+            {
+                var addConArr = thisTicket.additional_contact_ids.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                if (!addConArr.Contains(contactId.ToString()))
+                {
+                    thisTicket.additional_contact_ids += ","+ contactId.ToString();
+                    EditTicket(thisTicket, userId);
+                }
+            }
+            else
+            {
+                thisTicket.additional_contact_ids = contactId.ToString();
+                EditTicket(thisTicket,userId);
+            }
+            
         }
         /// <summary>
         /// 复制到项目
@@ -1635,6 +1663,7 @@ namespace EMT.DoneNOW.BLL
                     resolution = relaTicket.resolution,
                     sla_start_time = relaTicket.sla_start_time,
                     last_activity_time = timeNow,
+                    last_activity_user_id = userId,
                 };
                 if (newTicket.status_id != (int)TICKET_STATUS.NEW)
                     newTicket.first_activity_time = timeNow;
@@ -1810,6 +1839,7 @@ namespace EMT.DoneNOW.BLL
                         resolution = problem.resolution,
                         sla_start_time = problem.sla_start_time,
                         last_activity_time = timeNow,
+                        last_activity_user_id = userId,
                     };
                     if (newTicket.status_id != (int)TICKET_STATUS.NEW)
                         newTicket.first_activity_time = timeNow;
@@ -3371,6 +3401,7 @@ namespace EMT.DoneNOW.BLL
             thisSubTicket.ticket_type_id = (int)DicEnum.TICKET_TYPE.SERVICE_REQUEST;
             thisSubTicket.type_id = (int)DicEnum.TASK_TYPE.SERVICE_DESK_TICKET;
             thisSubTicket.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            thisSubTicket.last_activity_user_id = userId;
             thisSubTicket.recurring_ticket_id = parTicketId;
             return InsertTicket(thisSubTicket, userId);
         }

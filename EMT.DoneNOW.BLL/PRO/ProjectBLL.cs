@@ -10,12 +10,20 @@ using Newtonsoft.Json.Linq;
 using static EMT.DoneNOW.DTO.DicEnum;
 using System.Net.Mail;
 using System.Net;
+using System.Data;
 
 namespace EMT.DoneNOW.BLL
 {
     public class ProjectBLL
     {
         private pro_project_dal _dal = new pro_project_dal();
+        /// <summary>
+        /// 获取相关项目
+        /// </summary>
+        public pro_project GetPoject(long id)
+        {
+            return _dal.FindNoDeleteById(id);
+        }
         public Dictionary<string, object> GetField()
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
@@ -2190,6 +2198,14 @@ namespace EMT.DoneNOW.BLL
             project.update_user_id = userId;
             _dal.Update(project);
             OperLogBLL.OperLogUpdate<pro_project>(project, oldProject, project.id, userId, OPER_LOG_OBJ_CATE.PROJECT, "");
+        }
+
+        /// <summary>
+        /// 根据SQL 获取相关信息
+        /// </summary>
+        public DataTable GetTableBySql(string sql)
+        {
+            return _dal.ExecuteDataTable(sql);
         }
     }
 }

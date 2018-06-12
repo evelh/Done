@@ -1170,7 +1170,7 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
         /// <summary>
-        /// 编辑客户
+        /// 编辑客户(只修改，不做校验)  --- 慎用
         /// </summary>
         public void EditAccount(crm_account account,long userId)
         {

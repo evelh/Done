@@ -176,6 +176,11 @@ namespace EMT.DoneNOW.BLL
             new UserDefinedFieldsBLL().SaveUdfValue(DicEnum.UDF_CATE.CONTACT, user.id, contactAddDto.contact.id, udf_contact_list, udf_con_list, OPER_LOG_OBJ_CATE.CONTACTS_EXTENSION_INFORMATION); // 保存成功即插入日志
             #endregion
 
+            #region 更新客户最后活动时间
+            crm_account thisAccount = new CompanyBLL().GetCompany(contactAddDto.contact.account_id);
+            if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, user_id); }
+            #endregion
+
             return ERROR_CODE.SUCCESS;
         }
 
@@ -285,6 +290,11 @@ namespace EMT.DoneNOW.BLL
                 new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.CONTACT, udf_contact_list, contact_update.contact.id, udf_con_list, user, DicEnum.OPER_LOG_OBJ_CATE.CONTACTS_EXTENSION_INFORMATION);                         // 修改方法内含有插入日志操作，若无修改将不插入日志
             }
 
+            #endregion
+
+            #region 更新客户最后活动时间
+            crm_account thisAccount = new CompanyBLL().GetCompany(contact_update.contact.account_id);
+            if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, user_id); }
             #endregion
 
             return ERROR_CODE.SUCCESS;

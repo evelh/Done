@@ -130,7 +130,13 @@ namespace EMT.DoneNOW.BLL
             {
                 var task = new sdk_task_dal().FindNoDeleteById(att.object_id);
                 if (task != null)
+                {
                     att.account_id = task.account_id;
+                    #region 更新客户最后活动时间
+                    crm_account thisAccount = new CompanyBLL().GetCompany(task.account_id);
+                    if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, userId); }
+                    #endregion
+                }
                 if (!string.IsNullOrEmpty(pubTypeId))
                     att.publish_type_id = int.Parse(pubTypeId);
             }
@@ -266,6 +272,18 @@ namespace EMT.DoneNOW.BLL
             att.update_user_id = userId;
             dal.Update(att);
             OperLogBLL.OperLogUpdate<com_attachment>(att, oldAtt, att.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ATTACHMENT, "");
+            if (att.object_type_id == (int)DicEnum.ATTACHMENT_OBJECT_TYPE.TASK)
+            {
+                var task = new sdk_task_dal().FindNoDeleteById(att.object_id);
+                if (task != null)
+                {
+                    #region 更新客户最后活动时间
+                    crm_account thisAccount = new CompanyBLL().GetCompany(task.account_id);
+                    if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, userId); }
+                    #endregion
+                }
+                
+            }
         }
     }
 }

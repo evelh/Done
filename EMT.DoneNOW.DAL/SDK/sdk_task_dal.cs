@@ -38,7 +38,7 @@ namespace EMT.DoneNOW.DAL
         /// </summary>
         public List<sdk_task> GetAllProTask(long project_id)
         {
-            return FindListBySql<sdk_task>($"select * from sdk_task where delete_time = 0 and project_id = {project_id} and type_id in({(int)TASK_TYPE.PROJECT_TASK},{(int)TASK_TYPE.PROJECT_ISSUE},{(int)TASK_TYPE.PROJECT_PHASE}) ");
+            return FindListBySql<sdk_task>($"select * from sdk_task where delete_time = 0 and project_id = {project_id} and type_id in({(int)TASK_TYPE.PROJECT_TASK},{(int)TASK_TYPE.PROJECT_ISSUE},{(int)TASK_TYPE.PROJECT_PHASE}) ORDER BY sort_order");
             // and type_id in({(int)TASK_TYPE.PROJECT_TASK},{(int)TASK_TYPE.PROJECT_ISSUE})
         }
         /// <summary>

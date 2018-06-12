@@ -525,6 +525,10 @@ namespace EMT.DoneNOW.BLL
 
                 #endregion
 
+                #region 更新客户最后活动时间
+                crm_account thisAccount = new CompanyBLL().GetCompany(thisTask.account_id);
+                if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, user_id); }
+                #endregion
             }
             catch (Exception msg)
             {
@@ -1193,7 +1197,10 @@ namespace EMT.DoneNOW.BLL
             }
 
             #endregion
-
+            #region 更新客户最后活动时间
+            crm_account thisAccount = new CompanyBLL().GetCompany(thisTask.account_id);
+            if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, user_id); }
+            #endregion
             return true;
         }
 
@@ -2420,6 +2427,10 @@ namespace EMT.DoneNOW.BLL
                 thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 OperLogBLL.OperLogUpdate<sdk_task>(thisTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "完成任务");
                 _dal.Update(thisTask);
+                #region 更新客户最后活动时间
+                crm_account thisAccount = new CompanyBLL().GetCompany(thisTask.account_id);
+                if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, user_id); }
+                #endregion
                 return true;
             }
             return false;
@@ -2842,7 +2853,14 @@ namespace EMT.DoneNOW.BLL
                     }
                 }
                 #endregion
-
+                #region 更新客户最后活动时间
+                var thisTask = _dal.FindNoDeleteById(newEntry.task_id);
+                if (thisTask != null)
+                {
+                    crm_account thisAccount = new CompanyBLL().GetCompany(thisTask.account_id);
+                    if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, user_id); }
+                }
+                #endregion
             }
             catch (Exception msg)
             {
@@ -3192,7 +3210,10 @@ namespace EMT.DoneNOW.BLL
                         param.thisTask.status_id = param.status_id;
                         OperLogBLL.OperLogUpdate<sdk_task>(param.thisTask, _dal.FindNoDeleteById(param.thisTask.id), param.thisTask.id, user.id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
                         _dal.Update(param.thisTask);
-
+                        #region 更新客户最后活动时间
+                        crm_account thisAccount = new CompanyBLL().GetCompany(param.thisTask.account_id);
+                        if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, user_id); }
+                        #endregion
                         if (param.status_id == (int)DicEnum.TICKET_STATUS.DONE)
                         {
                             InsActTaskDone(param.thisTask.id, user_id);
@@ -3217,6 +3238,7 @@ namespace EMT.DoneNOW.BLL
                         //   修改工单状态为完成时，暂不处理
                         if (param.status_id == (int)DicEnum.TICKET_STATUS.DONE)
                         {
+                            param.thisTicket.date_completed = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                         }
                     }
                     ticBll.EditTicket(param.thisTicket, user_id);
@@ -3682,9 +3704,13 @@ namespace EMT.DoneNOW.BLL
                         }
                     }
                     ticBll.EditTicket(param.thisTicket, user_id);
-                   
-                    
-
+                }
+                if (param.thisTask != null)
+                {
+                    #region 更新客户最后活动时间
+                    crm_account thisAccount = new CompanyBLL().GetCompany(param.thisTask.account_id);
+                    if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, user_id); }
+                    #endregion
                 }
                 #endregion
 
@@ -3944,6 +3970,13 @@ namespace EMT.DoneNOW.BLL
                 thisExp.update_user_id = user_id;
                 seDal.Insert(thisExp);
                 OperLogBLL.OperLogAdd<sdk_expense>(thisExp, thisExp.id, user_id, OPER_LOG_OBJ_CATE.SDK_EXPENSE, "新增费用");
+                #region 更新客户最后活动时间
+                if (thisExp.is_billable == 1)
+                {
+                    crm_account thisAccount = new CompanyBLL().GetCompany(thisExp.account_id);
+                    if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, user_id); }
+                }
+                #endregion
                 return true;
             }
             catch (Exception msg)

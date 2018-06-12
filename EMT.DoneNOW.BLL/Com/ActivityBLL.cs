@@ -1813,7 +1813,13 @@ namespace EMT.DoneNOW.BLL
 
             dal.Insert(todo);
             OperLogBLL.OperLogAdd<com_activity>(todo, todo.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ACTIVITY, "新增跟进待办");
-
+            #region 更新客户最后活动时间
+            if (note.account_id != null)
+            {
+                crm_account thisAccount = new CompanyBLL().GetCompany((long)note.account_id);
+                if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, userId); }
+            }
+            #endregion
             return true;
         }
 
@@ -1887,7 +1893,13 @@ namespace EMT.DoneNOW.BLL
 
             dal.Insert(todo);
             OperLogBLL.OperLogAdd<com_activity>(todo, todo.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ACTIVITY, "新增跟进待办");
-
+            #region 更新客户最后活动时间
+            if (note.account_id != null)
+            {
+                crm_account thisAccount = new CompanyBLL().GetCompany((long)note.account_id);
+                if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, userId); }
+            }
+            #endregion
             return true;
         }
 
@@ -1967,7 +1979,13 @@ namespace EMT.DoneNOW.BLL
                 addTodo.sales_order_id = addTodo.object_id;
             dal.Insert(addTodo);
             OperLogBLL.OperLogAdd<com_activity>(addTodo, addTodo.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ACTIVITY, "新增待办");
-
+            #region 更新客户最后活动时间
+            if (addTodo.account_id != null)
+            {
+                crm_account thisAccount = new CompanyBLL().GetCompany((long)addTodo.account_id);
+                if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, userId); }
+            }
+            #endregion
             return true;
         }
 
@@ -2007,7 +2025,13 @@ namespace EMT.DoneNOW.BLL
                 editTodo.sales_order_id = editTodo.object_id;
             dal.Update(editTodo);
             OperLogBLL.OperLogUpdate<com_activity>(editTodo, oldTodo, editTodo.id, userId, DicEnum.OPER_LOG_OBJ_CATE.ACTIVITY, "编辑待办");
-
+            #region 更新客户最后活动时间
+            if (editTodo.account_id != null)
+            {
+                crm_account thisAccount = new CompanyBLL().GetCompany((long)editTodo.account_id);
+                if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, userId); }
+            }
+            #endregion
             return true;
         }
 

@@ -17,10 +17,14 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected sdk_appointment appo = null;
         protected List<sys_resource> resList = new DAL.sys_resource_dal().GetSourceList();
         protected DateTime chooseDate = DateTime.Now;
+        protected long resId;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+                // resId
+                if (!string.IsNullOrEmpty(Request.QueryString["resId"]))
+                    long.TryParse(Request.QueryString["resId"],out resId);
                 var appId = Request.QueryString["id"];
                 if (!string.IsNullOrEmpty(appId))
                     appo = new DAL.sdk_appointment_dal().FindNoDeleteById(long.Parse(appId));
@@ -34,6 +38,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                         url = Request.RawUrl,
                     };
                     new IndexBLL().BrowseHistory(history, LoginUserId);
+                    resId = appo.resource_id;
                 }
                 var chooseDateString = Request.QueryString["chooseDate"];
                 if (!string.IsNullOrEmpty(chooseDateString))

@@ -153,7 +153,10 @@ namespace EMT.DoneNOW.BLL
             #region 2.保存通知
             #endregion
 
-
+            #region 更新客户最后活动时间
+            crm_account thisAccount = new CompanyBLL().GetCompany(quote.account_id);
+            if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, user_id); }
+            #endregion
 
 
 
@@ -246,6 +249,11 @@ namespace EMT.DoneNOW.BLL
                 oper_description = _dal.CompareValue(old_quote, quote),
                 remark = "修改报价信息"
             });
+
+            #region 更新客户最后活动时间
+            crm_account thisAccount = new CompanyBLL().GetCompany(quote.account_id);
+            if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, user_id); }
+            #endregion
             return ERROR_CODE.SUCCESS;
         }
 

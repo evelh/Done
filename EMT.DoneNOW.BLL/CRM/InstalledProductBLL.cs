@@ -199,7 +199,13 @@ namespace EMT.DoneNOW.BLL
             //});  // 插入日志
 
             #endregion
-
+            #region 更新客户最后活动时间
+            if (installed_product.account_id != null)
+            {
+                crm_account thisAccount = new CompanyBLL().GetCompany((long)installed_product.account_id);
+                if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, user_id); }
+            }
+            #endregion
             return true;
         }
 

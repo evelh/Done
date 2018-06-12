@@ -44,6 +44,9 @@ function CreateTodo() {
 function ViewGroup() {
     window.open("../Contact/ViewContactGroup.aspx?groupId=" + entityid, 'groupSelect', 'left=200,top=200,width=600,height=800', false);
 }
+function View(id) {
+    window.open("../Contact/ViewContactGroup.aspx?groupId=" + id, 'groupSelect', 'left=200,top=200,width=600,height=800', false);
+}
 
 function EditGroup() {
     window.open("../Contact/ContactGroupManage.aspx?id=" + entityid, windowObj.contactGroup + windowType.edit, 'left=0,top=0,location=no,status=no,width=900,height=750', false);

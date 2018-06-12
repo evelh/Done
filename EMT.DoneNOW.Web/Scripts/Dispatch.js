@@ -250,12 +250,14 @@ function OnScrollHAW(dom) {
 
 MenuBind();
 var objectDate = "";
+var objectResId = "";
 function ShowContextMenu(e) {
     var menu = document.getElementById("menu");
     if ($(this).hasClass("hoverAppoint")) {
         menu = document.getElementById("AppiontMenu");
     }
     objectDate = $(this).data("date");
+    objectResId = $(this).data("res");
     var Times = 0;
     clearInterval(Times);
     (function () {
@@ -1203,7 +1205,10 @@ function AddAppiont() {
     var url = "../ServiceDesk/AppointmentsManage.aspx?a=1";
     if (objectDate != "" && objectDate != null && objectDate != undefined) {
         url += "&chooseDate=" + objectDate;
-    } 
+    }
+    if (objectResId != "" && objectResId != null && objectResId != undefined) {
+        url += "&resId=" + objectResId;
+    }
     window.open(url, windowObj.appointment + windowType.add, 'left=200,top=200,width=600,height=800', false);
 }
 function AddTodo() {

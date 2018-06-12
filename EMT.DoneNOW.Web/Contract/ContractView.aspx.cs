@@ -102,6 +102,10 @@ namespace EMT.DoneNOW.Web.Contract
                         ShowTitle.Text = "例外因素-" + contract.name + (conAccount == null ? "" : $"({conAccount.name})");
                         viewContractIframe.Src = "ContractExclusions?contract_id="+ contract.id;
                         break;
+                    case "ticket":
+                        ShowTitle.Text = "合同工单";
+                        viewContractIframe.Src = "../Common/SearchFrameSet.aspx?cat=" + (int)DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE + "&type=" + (int)QueryType.MY_QUEUE_ACTIVE + "&group=215&param1=4876&param2=" + contract.id+ "&param4=AddHidden"; 
+                        break;
                     default:
                         ShowTitle.Text = "摘要-" + contract.name;
                         viewContractIframe.Src = "ContractSummary.aspx?id=" + contract.id;

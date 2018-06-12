@@ -546,4 +546,7 @@
         }
       
     }
+    function Preference() {
+        window.open("../Project/ProjectFinancials.aspx?id=" + entityid,'_blank', 'left=200,top=200,width=1080,height=800', false);
+    }
 </script>

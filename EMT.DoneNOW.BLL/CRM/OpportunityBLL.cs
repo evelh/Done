@@ -223,17 +223,10 @@ namespace EMT.DoneNOW.BLL
             #endregion
 
 
-            // var optnt = opt.general;
-            // optnt.id = _dal.GetNextIdCom();
-            //// optnt.opportunity_no = ""; // TODO: 商机号码生成
-            // optnt.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            // optnt.create_user_id = userId;
-            // optnt.update_time = optnt.create_time;
-            // optnt.update_user_id = optnt.create_user_id;
-            // _dal.Insert(optnt);     // 新增商机
-            // // 记录日志
-            // sys_oper_log_dal.InsertLog<crm_opportunity>(optnt, optnt.id, userId, DicEnum.OPER_LOG_TYPE.ADD, DicEnum.OPER_LOG_OBJ_CATE.OPPORTUNITY);
-
+            #region 更新客户最后活动时间
+            crm_account thisAccount = new CompanyBLL().GetCompany(param.general.account_id);
+            if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, user_id); }
+            #endregion
 
 
             return ERROR_CODE.SUCCESS;
@@ -319,6 +312,10 @@ namespace EMT.DoneNOW.BLL
                     new UserDefinedFieldsBLL().UpdateUdfValue(DicEnum.UDF_CATE.OPPORTUNITY, oppo_list, param.general.id, udf_oppo, user, DicEnum.OPER_LOG_OBJ_CATE.FROMOPPORTUNITY_EXTENSION_INFORMATION);
                 }
             }
+            #region 更新客户最后活动时间
+            crm_account thisAccount = new CompanyBLL().GetCompany(param.general.account_id);
+            if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, user_id); }
+            #endregion
             return ERROR_CODE.SUCCESS;
         }
 

@@ -63,6 +63,17 @@ namespace EMT.DoneNOW.BLL
                 oper_description = _dal.AddValue(param.cost),
                 remark = "新增合同成本"
             });
+            #region 更新客户最后活动时间
+            if (param.cost.task_id != null)
+            {
+                var thisTicket = new sdk_task_dal().FindNoDeleteById((long)param.cost.task_id);
+                if (thisTicket != null && thisTicket.type_id == (int)DicEnum.TASK_TYPE.SERVICE_DESK_TICKET)
+                {
+                    crm_account thisAccount = new CompanyBLL().GetCompany(thisTicket.account_id);
+                    if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, user_id); }
+                }
+            }
+            #endregion
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -200,6 +211,18 @@ namespace EMT.DoneNOW.BLL
 
                 ChangCostStatus(param.cost.id, user_id, isAdd);
             }
+
+            #region 更新客户最后活动时间
+            if (param.cost.task_id != null)
+            {
+                var thisTicket = new sdk_task_dal().FindNoDeleteById((long)param.cost.task_id);
+                if (thisTicket != null && thisTicket.type_id == (int)DicEnum.TASK_TYPE.SERVICE_DESK_TICKET)
+                {
+                    crm_account thisAccount = new CompanyBLL().GetCompany(thisTicket.account_id);
+                    if (thisAccount != null) { thisAccount.last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now); new CompanyBLL().EditAccount(thisAccount, user_id); }
+                }
+            }
+            #endregion
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>

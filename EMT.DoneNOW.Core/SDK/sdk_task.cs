@@ -154,7 +154,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int32? automatic_leveling_end_date_offset_days { get; set; }
         [DataMember]
-        public Int32? template_id { get; set; }
+        public Int64? template_id { get; set; }
         [DataMember]
         public Decimal projected_variance { get; set; }
         [DataMember]
@@ -189,6 +189,10 @@ namespace EMT.DoneNOW.Core
         public Int32? cate_id { get; set; }
         [DataMember]
         public Int64? service_id { get; set; }
+        [DataMember]
+        public String additional_contact_ids { get; set; }
+        [DataMember]
+        public Int64? last_activity_user_id { get; set; }
 
 
     }

@@ -74,9 +74,11 @@
 <body>
     <form id="form1" runat="server">
         <div class="Left">
+            
             <div class="HeaderRow">
                 <span>菜单</span>
             </div>
+          
             <ul class="ButtonBarVert">
                 <li class="MenuLink"><a href="ContractView.aspx?id=<%=contract.id %>">摘要</a></li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=InternalCost&id=<%=contract.id %>">内部成本</a></li>
@@ -116,15 +118,16 @@
                 <li class="MenuLink"><a href="ContractView.aspx?type=project&id=<%=contract.id %>">项目</a></li>
                 <%} %>
                 
-                <li class="MenuLink">工单-暂未实现</li>
+                <li class="MenuLink"><a href="ContractView.aspx?type=ticket&id=<%=contract.id %>">工单</a></li>
                 <li class="MenuLink"><a href="ContractView.aspx?type=udf&id=<%=contract.id %>">自定义字段</a></li>
                  
             </ul>
         </div>
         <div class="Right">
-             <div class="HeaderRow">
+             <div class="HeaderRow" <% if (Request.QueryString["type"] == "ticket")
+                { %>  style="display:none;" <%} %>>
                  <asp:Label ID="ShowTitle" runat="server" Text="Label"></asp:Label>
-            </div>
+            </div> 
             <iframe runat="server" id="viewContractIframe" name="viewContractIframe" width="100%" height="92%" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
             <iframe runat="server" id="second" width="100%" height="0" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
         </div>
