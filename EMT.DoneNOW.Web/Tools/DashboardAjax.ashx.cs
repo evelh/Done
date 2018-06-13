@@ -30,6 +30,9 @@ namespace EMT.DoneNOW.Web
                 case "DashboardSettingInfo":
                     GetDashboradInfo();
                     break;
+                case "ShareTab":
+                    ShareDashboard();
+                    break;
                 case "GetDashboardFilter":
                     GetDashboardFilter();
                     break;
@@ -142,6 +145,20 @@ namespace EMT.DoneNOW.Web
         }
 
         /// <summary>
+        /// 设置仪表板共享
+        /// </summary>
+        private void ShareDashboard()
+        {
+            string isnew = request.QueryString["isnew"];
+            bool newDsh = false;
+            if (!string.IsNullOrEmpty(isnew) && isnew.Equals("1"))
+                newDsh = true;
+
+            long id = long.Parse(request.QueryString["id"]);
+            WriteResponseJson(bll.SetDashboardShared(id, newDsh, LoginUserId));
+        }
+
+        /// <summary>
         /// 获取一个窗口详细信息
         /// </summary>
         private void GetWidgetInfo()
@@ -161,7 +178,9 @@ namespace EMT.DoneNOW.Web
 
             long id;
             if (long.TryParse(request.QueryString["id"], out id))
-                dashboard.id = id;
+            {
+                dashboard = bll.GetDashboard(id);
+            }
             else
                 WriteResponseJson(null);
 

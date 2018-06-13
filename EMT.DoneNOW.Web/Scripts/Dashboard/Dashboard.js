@@ -233,7 +233,42 @@ function AddDashboard() {
     $("#cover").show();
     InitDashboardInfo(null);
 }
-
+function ShareDashboard() {
+    $("#cover").show();
+    $("#ShareTabStep1").show();
+}
+function ShareDashboardSelect() {
+    var isnew = '';
+    if ($("input:radio[name='shareTabType']:checked").val() == '1') { isnew = '&isnew=1'; }
+    LayerLoad();
+    requestData("/Tools/DashboardAjax.ashx?act=ShareTab&id=" + CurrentDashboardId() + isnew, null, function (data) {
+        LayerLoadClose();
+        if (data == 0) {
+            LayerLoad();
+            requestData("/Tools/DashboardAjax.ashx?act=GetInitailDashboard", null, function (data) {
+                if (data == null) {
+                    LayerLoadClose();
+                    return;
+                }
+                AddDashboardList(data[0]);
+                InitDashboard(data[1]);
+            })
+        } else {
+            $("#ShareTabStep1").hide();
+            $("#ShareTabStep2").show();
+            $("#SettingShareTab").unbind("click").bind("click", function () {
+                $("#cover").show();
+                $("#ShareTabStep2").hide();
+                requestData("/Tools/DashboardAjax.ashx?act=DashboardSettingInfo&id=" + data, null, function (data) {
+                    InitDashboardInfo(data);
+                })
+            })
+            $("#ShareShareTab").unbind("click").bind("click", function () {
+                
+            })
+        }
+    })
+}
 function ManageDashboard() {
 
 }
@@ -445,6 +480,8 @@ function SaveDashboard() {
     }
     ShowLoading();
     requestData("/Tools/DashboardAjax.ashx?act=SaveDashboard&id=" + $("#dashboardId").val() + "&name=" + $("#dashboardName").val() + "&widget_auto_place=" + ($("#dashboardAutoPlace").prop("checked") ? 1 : 0) + "&theme_id=" + $('#dashboardTheme').val() + fltStr, null, function (data) {
+        $("#settings").hide();
+        $("#cover").hide();
         if ($("#dashboardId").val()==0){
             setTimeout(function () {
                 requestData("/Tools/DashboardAjax.ashx?act=GetInitailDashboard", null, function (data) {

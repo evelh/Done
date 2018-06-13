@@ -1545,7 +1545,7 @@
                                 <span class="Icon" style="float:left;display: block;width: 16px;height: 16px; background:url(Images/ButtonIcons.svg) no-repeat scroll;background-position: -96px -128px;margin-top: 2px;"></span>
                                 <span class="Text" style="float: left;display: block;padding-left:8px; ">演示模式</span>
                             </li>
-                            <li onclick="POPOpen(this)" data-pop = ""  title="分享仪表板">
+                            <li  title="分享仪表板" onclick="ShareDashboard()">
                                 <span class="Icon" style="float:left;display: block;width: 16px;height: 16px; background:url(Images/ButtonIcons.svg) no-repeat scroll;background-position: -64px -128px;margin-top: 2px;"></span>
                                 <span class="Text" style="float: left;display: block;padding-left:8px; ">分享仪表板</span>
                             </li>
@@ -1883,6 +1883,67 @@
             <div class="button" style="position:absolute;bottom:10px;">
                 <div class="pev" onclick="BackAddWidgetSelectStep0();" style="float:left;margin-left:10px;"><span></span>上一步</div>
                 <div class="next" style="float:right;margin-right:10px;">下一步</div>
+            </div>
+        </div>
+    </div>
+    <div class="POPbox" id="ShareTabStep1">
+        <div class="shut" onclick="POPClose(this)"></div>
+        <div>
+            <h3>共享仪表板</h3>
+            <div class="content">
+                <div style="width:100%;margin-bottom:6px;"><p>从以下两个选择中选择一个</p></div>
+                <div style="margin:10px;">
+                    <div>
+                        <input type="radio" id="shareTabType1" name="shareTabType" value="1" checked="checked" /><label for="shareTabType1">保留当前仪表板，并创建一个新的仪表板用于共享</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="shareTabType2" name="shareTabType" value="2" /><label for="shareTabType2">将当前仪表板转为共享仪表板</label>
+                    </div>
+                </div>
+            </div>
+            <div class="button" style="position:absolute;bottom:10px;">
+                <div class="next" style="float:right;margin-right:10px;" onclick="ShareDashboardSelect()">完成</div>
+            </div>
+        </div>
+    </div>
+    <div class="POPbox" id="ShareTabStep2">
+        <div class="shut" onclick="POPClose(this)"></div>
+        <div>
+            <h3>共享仪表板</h3>
+            <div class="content">
+                <div style="width:100%;margin-bottom:6px;"><p>共享仪表板已创建。点击下面链接编辑这个仪表板</p></div>
+                <div style="margin:10px;">
+                    <div><a id="SettingShareTab" style="color:#376597;cursor:pointer;">设置这个仪表板</a></div>
+                    <div><a id="ShareShareTab" style="color:#376597;cursor:pointer;">共享这个仪表板</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="POPbox" id='AddDashboard' >
+        <div class="shut" onclick="POPClose(this)">
+        </div>
+        <div class="Widget">
+            <h3>新增仪表板</h3>
+            <div class="Column">
+                <p class="title">您想做什么？</p>
+                <div class="item">
+                    <input type="radio" name="addDashboardType" id="addDashboardType1" checked="checked" value="1"><label for="addDashboardType1">新增一个空白的仪表板</label>
+                </div>
+                <div class="itemborderBottom"></div>
+                <div class="item" style="padding-top:20px; ">
+                    <input type="radio" name="addDashboardType" id="addDashboardType2" value="2"><label for="addDashboardType2">从已存在的仪表板中复制</label>
+                </div>
+                <div class="itemborderBottom"></div>
+                <div class="item"  style="padding-top:20px;">
+                    <input type="radio" name="addDashboardType" id="addDashboardType3" value="3"><label for="addDashboardType3">从默认的仪表板中复制</label>
+                </div>
+                <div class="itemborderBottom"></div>
+                <div class="item"  style="padding-top:20px;">
+                    <input type="radio" name="addDashboardType" id="addDashboardType4" value="4"><label for="addDashboardType4">打开已存在的仪表板</label>
+                </div>
+            </div>
+            <div class="button">
+                <div onclick="()"><span></span>下一步</div>
             </div>
         </div>
     </div>

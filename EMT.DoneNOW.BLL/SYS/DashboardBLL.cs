@@ -33,8 +33,9 @@ namespace EMT.DoneNOW.BLL
                 sql += $" or (select  FIND_IN_SET('{dpt}',department_ids))>0 ";
             }
             sql += " order by dashboard_id asc";
-            var dashboards = dal.FindListBySql<long>(sql);
-            var ownDshb = dal.FindListBySql<long>($"select id from sys_dashboard where create_user_id={userId} and delete_time=0");
+            var dashboards = dal.FindListBySql<long>(sql);  // 共享给该用户的仪表板
+            var ownDshb = dal.FindListBySql<long>($"select id from sys_dashboard where create_user_id={userId} and is_shared=0 and delete_time=0");     // 用户自有的仪表板
+            // 取前面两个列表并集
             ownDshb.AddRange(dashboards);
             ownDshb = ownDshb.Distinct().ToList();     // 需要同步的仪表板id列表
 
@@ -52,7 +53,7 @@ namespace EMT.DoneNOW.BLL
                     dltDr.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
                     dltDr.delete_user_id = userId;
                     drDal.Update(dltDr);
-                    OperLogBLL.OperLogDelete<sys_dashboard_resource>(dltDr, dltDr.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_USER, "同步用户仪表板删除");
+                    //OperLogBLL.OperLogDelete<sys_dashboard_resource>(dltDr, dltDr.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_USER, "同步用户仪表板删除");
                 }
             }
 
@@ -72,7 +73,7 @@ namespace EMT.DoneNOW.BLL
                 dr.create_user_id = userId;
                 dr.update_user_id = userId;
                 drDal.Insert(dr);
-                OperLogBLL.OperLogAdd<sys_dashboard_resource>(dr, dr.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_USER, "同步用户仪表板新增");
+                //OperLogBLL.OperLogAdd<sys_dashboard_resource>(dr, dr.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_USER, "同步用户仪表板新增");
             }
 
 
@@ -109,7 +110,7 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public DashboardInfoDto GetDashboardInfo(long dsbdId, long userId)
         {
-            var dto = dal.FindSignleBySql<DashboardInfoDto>($"select id,name,theme_id,widget_auto_place from sys_dashboard where id={dsbdId} and (select count(0) from sys_dashboard_resource where resource_id={userId} and dashboard_id={dsbdId} and delete_time=0)=1 and delete_time=0");
+            var dto = dal.FindSignleBySql<DashboardInfoDto>($"select id,name,theme_id,widget_auto_place from sys_dashboard where id={dsbdId} and delete_time=0");
 
             var filterList = GetDashboardFilterPara();
             if (dto.filter_id != null)
@@ -303,6 +304,87 @@ namespace EMT.DoneNOW.BLL
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// 获取仪表板
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public sys_dashboard GetDashboard(long id)
+        {
+            return dal.FindNoDeleteById(id);
+        }
+
+        /// <summary>
+        /// 设置仪表板共享
+        /// </summary>
+        /// <param name="id">仪表板id</param>
+        /// <param name="isnew">是否创建新的仪表板来共享</param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public long SetDashboardShared(long id, bool isnew, long userId)
+        {
+            var ds = dal.FindNoDeleteById(id);
+            if (ds == null)
+                return 0;
+            if (ds.is_shared == 1)
+                return 0;
+
+            if (isnew)
+            {
+                long dsid = CopySharedDashboard(ds, userId);  // 复制仪表板
+                var wgtList = GetWidgetListOrdered(id); // 小窗口列表
+
+                // 复制小窗口
+                foreach (var wgt in wgtList)
+                {
+                    CopyWidget(wgt, dsid, userId);
+                }
+
+                return dsid;
+            }
+            else
+            {
+                var dsOld = dal.FindById(id);
+                ds.is_shared = 1;
+                ds.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                ds.update_user_id = userId;
+
+                dal.Update(ds);
+                OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<sys_dashboard>(dsOld, ds), ds.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD, "设置仪表板共享");
+
+                return id;
+            }
+        }
+
+        /// <summary>
+        /// 共享复制仪表板
+        /// </summary>
+        /// <param name="ds"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        private long CopySharedDashboard(sys_dashboard ds, long userId)
+        {
+            sys_dashboard dsnew = new sys_dashboard();
+            dsnew.id = dal.GetNextIdCom();
+            dsnew.create_user_id = userId;
+            dsnew.update_user_id = userId;
+            dsnew.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            dsnew.update_time = dsnew.create_time;
+            dsnew.name = ds.name + "-复制";
+            dsnew.theme_id = ds.theme_id;
+            dsnew.widget_auto_place = ds.widget_auto_place;
+            dsnew.filter_default_value = ds.filter_default_value;
+            dsnew.filter_id = ds.filter_id;
+            dsnew.limit_type_id = ds.limit_type_id;
+            dsnew.limit_value = ds.limit_value;
+            dsnew.is_shared = 1;
+
+            dal.Insert(dsnew);
+            OperLogBLL.OperLogAdd<sys_dashboard>(dsnew, dsnew.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD, "共享复制仪表板");
+
+            return dsnew.id;
         }
         #endregion
 
@@ -555,6 +637,87 @@ namespace EMT.DoneNOW.BLL
             return true;
         }
 
+        /// <summary>
+        /// 复制小窗口
+        /// </summary>
+        /// <param name="wgt"></param>
+        /// <param name="dashboardId">复制小窗口所属仪表板</param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        private long CopyWidget(sys_widget wgt, long dashboardId, long userId)
+        {
+            sys_widget wgtnew = new sys_widget();
+            wgtnew.id = wgtDal.GetNextIdCom();
+            wgtnew.create_user_id = userId;
+            wgtnew.update_user_id = userId;
+            wgtnew.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            wgtnew.update_time = wgtnew.create_time;
+            wgtnew.dashboard_id = dashboardId;
+            wgtnew.entity_id = wgt.entity_id;
+            wgtnew.type_id = wgt.type_id;
+            wgtnew.name = wgt.name;
+            wgtnew.description = wgt.description;
+            wgtnew.width = wgt.width;
+            wgtnew.filter_json = wgt.filter_json;
+            wgtnew.visual_type_id = wgt.visual_type_id;
+            wgtnew.color_scheme_id = wgt.color_scheme_id;
+            wgtnew.report_on_id = wgt.report_on_id;
+            wgtnew.aggregation_type_id = wgt.aggregation_type_id;
+            wgtnew.report_on_id2 = wgt.report_on_id2;
+            wgtnew.aggregation_type_id2 = wgt.aggregation_type_id2;
+            wgtnew.show2axis = wgt.show2axis;
+            wgtnew.groupby_id = wgt.groupby_id;
+            wgtnew.groupby_id2 = wgt.groupby_id2;
+            wgtnew.include_none = wgt.include_none;
+            wgtnew.display_type_id = wgt.display_type_id;
+            wgtnew.orderby_id = wgt.orderby_id;
+            wgtnew.display_other = wgt.display_other;
+            wgtnew.show_axis_label = wgt.show_axis_label;
+            wgtnew.show_trendline = wgt.show_trendline;
+            wgtnew.show_legend = wgt.show_legend;
+            wgtnew.show_total = wgt.show_total;
+            wgtnew.primary_column_ids = wgt.primary_column_ids;
+            wgtnew.other_column_ids = wgt.other_column_ids;
+            wgtnew.orderby_grid_id = wgt.orderby_grid_id;
+            wgtnew.emphasis_column_id = wgt.emphasis_column_id;
+            wgtnew.show_action_column = wgt.show_action_column;
+            wgtnew.show_column_header = wgt.show_column_header;
+            wgtnew.html = wgt.html;
+            wgtnew.sort_order = wgt.sort_order;
+            wgtnew.show_widget_name = wgt.show_widget_name;
+
+            wgtDal.Insert(wgtnew);
+            OperLogBLL.OperLogAdd<sys_widget>(wgtnew, wgtnew.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_WIDGET, "复制小窗口");
+
+            if (wgtnew.type_id == (int)DicEnum.WIDGET_TYPE.GUAGE)
+            {
+                var glist = GetGuageChildren(wgtnew.id);
+                var gDal = new sys_widget_guage_dal();
+                foreach (var gg in glist)
+                {
+                    sys_widget_guage g = new sys_widget_guage();
+                    g.id = gDal.GetNextIdCom();
+                    g.create_user_id = userId;
+                    g.update_user_id = userId;
+                    g.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                    g.update_time = g.create_time;
+                    g.widget_id = wgtnew.id;
+                    g.sort_order = gg.sort_order;
+                    g.report_on_id = gg.report_on_id;
+                    g.aggregation_type_id = gg.aggregation_type_id;
+                    g.name = gg.name;
+                    g.break_based_on = gg.break_based_on;
+                    g.segments = gg.segments;
+                    g.break_points = gg.break_points;
+                    g.filter_json = gg.filter_json;
+
+                    gDal.Insert(g);
+                    OperLogBLL.OperLogAdd<sys_widget_guage>(g, g.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_WIDGET_GUAGE, "复制小窗口部件");
+                }
+            }
+
+            return wgtnew.id;
+        }
         #endregion
 
 
