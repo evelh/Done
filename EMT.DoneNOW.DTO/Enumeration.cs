@@ -71,7 +71,8 @@ namespace EMT.DoneNOW.DTO
         EXPENSE_TYPE = 113,                     // 费用类型
         CHARGE_TYPE = 114,                      // 合同的成本类型
         CHARGE_STATUS = 115,                    // 合同的成本状态
-        CONTRACT_MILESTONE=117,                  //合同里程碑
+        GENERAL_LEDGER = 116,                    // 合同：总账代码
+        CONTRACT_MILESTONE =117,                  //合同里程碑
         BILL_POST_TYPE = 118,                   // 合同：工时计费设置
         ACCOUNT_DEDUCTION_TYPE=121,              //审批并提交操作类型
         PROJECT_TYPE = 123,                       // 项目类型
@@ -108,6 +109,7 @@ namespace EMT.DoneNOW.DTO
         SYS_TICKET_RESOLUTION_METRICS = 206,    // 工单解决参数设置
         FORM_TMPL_QUICK_EMAIL_OBJECT = 207,     // 表单模板：发送对象
         SYSTEM_LOGO = 212,                      // 系统LOGO
+        OPPORTUNITY_SPREAD_UNIT = 213,          // 商机收入周期取值范围
     }
 
     /// <summary>
@@ -832,7 +834,9 @@ namespace EMT.DoneNOW.DTO
             SYSTEM_TICKET_SUB_ISSUE_SEARCH = 1700,         // 系统设置-问题和子问题类型-子问题查询
             SYSTEM_CHANGE_BOARD_SEARCH = 1701,             // 系统设置-变更委员会查询
             SYSTEM_CHECK_LIB_SEARCH = 1702,                // 系统设置-系统设置-检查单库查询
-
+            SYSTEM_PROJECT_STATUS,               // 系统设置-项目状态
+            SYSTEM_TASK_LIBRARY_CATE,               // 系统设置-任务种类  
+            SYSTEM_TASK_LIBRARY,                   //  系统设置-任务库 
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -1007,6 +1011,7 @@ namespace EMT.DoneNOW.DTO
             SYS_WORKGROUP_RESOURCE=1459,                // 工作组员工   
             CHANGE_BOARD = 1460,                        // 变更委员会
             CHANGE_BOARD_PERSON = 1461,                 // 变更委员会成员
+            D_COST_CODE = 1464,                          // 物料代码
 
         }
 
@@ -1788,6 +1793,15 @@ namespace EMT.DoneNOW.DTO
             MAXIMUM_NEW_TICKETS = 3087,                   // 最大新建工单数
             MAXIMUM_AVERAGE_TICKETS_PER_RESOURCE = 3088,  // 人均最大平均工单数
         }
+        /// <summary>
+        /// 商机收入周期范围-单位 - 213
+        /// </summary>
+        public enum OPPORTUNITY_SPREAD_UNIT
+        {
+            DAY = 3401,
+            MONTH = 3402,
+            YEAR = 3403,
+        }
     }
 
     /// <summary>
@@ -2051,7 +2065,10 @@ namespace EMT.DoneNOW.DTO
         SYSTEM_TICKET_SUB_ISSUE_SEARCH = 310,         // 系统设置-问题和子问题类型-子问题查询  
         SYSTEM_CHANGE_BOARD_SEARCH = 311,             // 系统设置-变更委员会查询   
         SYSTEM_CHECK_LIB_SEARCH = 312,                // 系统设置-系统设置-检查单库查询  
-
+        SYSTEM_PROJECT_STATUS,               // 系统设置-项目状态  
+        SYSTEM_TASK_LIBRARY_CATE,               // 系统设置-任务种类
+        SYSTEM_TASK_LIBRARY,                   //  系统设置-任务库 
+        
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
         Line_Of_Business,              //系统管理：组织：业务条线

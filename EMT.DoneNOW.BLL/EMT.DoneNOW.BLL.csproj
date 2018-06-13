@@ -96,6 +96,7 @@
     <Compile Include="SDK\WorkEntryBLL.cs" />
     <Compile Include="SYS\AccountClassBLL.cs" />
     <Compile Include="SYS\ConfigTypeBLL.cs" />
+    <Compile Include="SYS\CostCodeBLL.cs" />
     <Compile Include="SYS\DashboardBLL.cs" />
     <Compile Include="SYS\DistrictBLL.cs" />
     <Compile Include="Com\ErrorLogBLL.cs" />

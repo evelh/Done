@@ -792,7 +792,12 @@
     if (thisWorkEntry.service_id != null)
     {%>
         GetServiceByContractID();
-        $("#service_id").val(<%=thisWorkEntry.service_id %>);
+        <%var thisConser = new EMT.DoneNOW.DAL.ctt_contract_service_dal().FindById((long)thisWorkEntry.service_id);
+    if (thisConser != null)
+    {%>
+        $("#service_id").val(<%=thisConser.object_id %>);
+    <%}
+    %>
         <%}
         // 工时权限过滤 部分字段不可以更改
         if (GetLimitValue(EMT.DoneNOW.DTO.AuthLimitEnum.PROCanModifyContract) == EMT.DoneNOW.DTO.DicEnum.LIMIT_TYPE_VALUE.NO960)

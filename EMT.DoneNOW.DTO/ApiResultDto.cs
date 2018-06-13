@@ -60,6 +60,7 @@ namespace EMT.DoneNOW.DTO
         TICKET_PRIORITY_USED,                                // 工单优先级已经被使用
         TICKET_ISSUE_USED,                                // 工单问题类型已经被使用
         TICKET_ISSUE_HAS_SUB,                                // 工单问题类型有子问题
+        PROJECT_USED,                                // 项目已经被使用
         NOTIFICATION_RULE,                 //通知规则表的费率为空
     }
 }

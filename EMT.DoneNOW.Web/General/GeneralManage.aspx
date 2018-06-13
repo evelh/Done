@@ -34,14 +34,24 @@
             <tbody>
                 <tr>
                     <td width="30%" class="FieldLabels">
-                       名称<span style="color:red;">*</span>
+                        名称<span style="color:red;">*</span>
                         <div>
                             <input type="text" id="name" name="name" style="width:220px;"  maxlength="11"  value="<%=thisGeneral!=null?thisGeneral.name:"" %>" />
                         </div>
                     </td>
                 </tr>
-               
-                <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_SOURCE_TYPES)
+                <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE)
+                        { %>
+                  <tr>
+                    <td width="30%" class="FieldLabels">
+                       说明<span style="color:red;"></span>
+                        <div>
+                            <textarea id="remark" name="remark"><%=thisGeneral!=null?thisGeneral.remark:"" %></textarea>
+                        </div>
+                    </td>
+                </tr>
+               <%} %>
+                <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_SOURCE_TYPES||tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE)
                         { %>
                  <tr>
                     <td width="30%" class="FieldLabels">
@@ -71,13 +81,32 @@
                     </td>
                 </tr>
                 <%} %>
+                 <%if (tableId != (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE)
+                     {%>
+
                  <tr>
                     <td width="30%" class="FieldLabels">
                         <div>
-                          激活  <input type="checkbox" id="isActive" name="isActive" <%if (isAdd || (thisGeneral != null && thisGeneral.is_active == 1)) {%> checked="checked"  <%} %> />
+                          激活  <input type="checkbox" id="isActive" name="isActive" <%if (isAdd || (thisGeneral != null && thisGeneral.is_active == 1))
+    {%> checked="checked"  <%} %> />
                         </div>
                     </td>
                 </tr>
+                <%} %>
+                   <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE)
+                       {%>
+                <tr>
+                    <td width="30%" class="FieldLabels">
+                        状态
+                        <div>
+                          <select id="status_id" name="status_id">
+                              <option value="1"></option>
+                              <option value="0" <% if (thisGeneral != null && thisGeneral.status_id == 0) {%> selected="selected" <% } %> ></option>
+                          </select>
+                        </div>
+                    </td>
+                </tr>
+                <%} %>
             </tbody>
         </table>
     </div>
@@ -93,6 +122,13 @@
             LayerMsg("请填写名称！");
             return false;
         }
+        <%if(tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE){%> 
+        var sort_order = $("#sort_order").val();
+        if (sort_order == "") {
+            LayerMsg("请填写排序值！");
+            return false;
+        }
+        <%}%>
         return true;
     })
 </script>

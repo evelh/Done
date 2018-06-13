@@ -2,7 +2,7 @@
     $(".General").hide();
 })
 function Add() {
-    window.open('../General/GeneralManage?tableId=137', windowObj.general + windowType.add, 'left=0,top=0,location=no,status=no,width=700,height=500', false);
+    window.open('../General/GeneralManage?tableId=124', windowObj.general + windowType.add, 'left=0,top=0,location=no,status=no,width=700,height=500', false);
 }
 
 function Edit() {
@@ -11,13 +11,13 @@ function Edit() {
 function Delete() {
     $.ajax({
         type: "GET",
-        url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&GT_id=137&id=" + entityid ,
+        url: "../Tools/GeneralViewAjax.ashx?act=delete_validate&GT_id=124&id=" + entityid,
         async: false,
         //dataType: "json",
         success: function (data) {
             if (data == "success") {
-                    LayerMsg("删除成功！");
-                    setTimeout(function () { history.go(0); }, 800);
+                LayerMsg("删除成功！");
+                setTimeout(function () { history.go(0); }, 800);
             }
             else if (data == "system") {
                 LayerMsg("删除失败！系统字段不能删除");
@@ -59,6 +59,7 @@ function InActive() {
         },
     });
 }
+
 function RightClickFunc() {
     $("#ActiveLi").hide();
     $("#InActiveLi").hide();
@@ -77,8 +78,11 @@ function RightClickFunc() {
                 }
                 if (data.is_system == "1") {
                     $("#DeleteLi").hide();
-                } else {
+                    $("#EditLi").hide();
+                }
+                else {
                     $("#DeleteLi").show();
+                    $("#EditLi").show();
                 }
             }
 

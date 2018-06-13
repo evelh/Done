@@ -80,33 +80,33 @@
             <ul class="ButtonBarVert">
                 <%if (CheckAuth("PRO_PROJECT_VIEW_SUMMARY"))
                     { %>
-                <li class="MenuLink" onclick="javasrript:location.href='ProjectView.aspx?id=<%=thisProject.id %>';"><a >摘要</a></li>
+                <li class="MenuLink" onclick="javascript:location.href='ProjectView.aspx?id=<%=thisProject.id %>';"><a >摘要</a></li>
                 <%} %>
                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE"))
                     { %>
-                <li class="MenuLink" onclick="javasrript:location.href='ProjectView.aspx?id=<%=thisProject.id %>&type=Schedule';"><a >日程表</a></li>   <%} %>
+                <li class="MenuLink" onclick="javascript:location.href='ProjectView.aspx?id=<%=thisProject.id %>&type=Schedule';"><a >日程表</a></li>   <%} %>
                    <%if (CheckAuth("PRO_PROJECT_TEAM"))
                     { %>
-                <li class="MenuLink" onclick="javasrript:location.href='ProjectView.aspx?id=<%=thisProject.id %>&type=Team';"><a>团队</a></li> <%} %>
+                <li class="MenuLink" onclick="javascript:location.href='ProjectView.aspx?id=<%=thisProject.id %>&type=Team';"><a>团队</a></li> <%} %>
                   <%if (CheckAuth("PRO_PROJECT_COST_EXPENSE"))
                     { %>
-                 <li class="MenuLink"  onclick="javasrript:location.href='ProjectView.aspx?id=<%=thisProject.id %>&type=Cost';"><a>成本费用</a></li><%} %>
+                 <li class="MenuLink"  onclick="javascript:location.href='ProjectView.aspx?id=<%=thisProject.id %>&type=Cost';"><a>成本费用</a></li><%} %>
                  <%if (CheckAuth("PRO_PROJECT_NOTE"))
                     { %>
-                 <li class="MenuLink"  onclick="javasrript:location.href='ProjectView.aspx?id=<%=thisProject.id %>&type=Note';"><a>备注</a></li><%} %>
+                 <li class="MenuLink"  onclick="javascript:location.href='ProjectView.aspx?id=<%=thisProject.id %>&type=Note';"><a>备注</a></li><%} %>
                  <%if (CheckAuth("PRO_PROJECT_VIEW__RATE_SEARCH"))
                     { %>
-                 <li class="MenuLink"  onclick="javasrript:location.href='ProjectView.aspx?id=<%=thisProject.id %>&type=Rate';"><a>费率</a></li><%} %>
+                 <li class="MenuLink"  onclick="javascript:location.href='ProjectView.aspx?id=<%=thisProject.id %>&type=Rate';"><a>费率</a></li><%} %>
                   <%if (CheckAuth("PRO_PROJECT_CALENDAR"))
                     { %>
-                 <li class="MenuLink"  onclick="javasrript:location.href='ProjectView.aspx?id=<%=thisProject.id %>&type=Calendar';"><a>日历条目</a></li><%} %>
+                 <li class="MenuLink"  onclick="javascript:location.href='ProjectView.aspx?id=<%=thisProject.id %>&type=Calendar';"><a>日历条目</a></li><%} %>
                  <%if (CheckAuth("PRO_PROJECT_ATTACH"))
                     { %>
-                 <li class="MenuLink"  onclick="javasrript:location.href='ProjectView.aspx?id=<%=thisProject.id %>&type=Attach';"><a>附件</a></li><%} %>
+                 <li class="MenuLink"  onclick="javascript:location.href='ProjectView.aspx?id=<%=thisProject.id %>&type=Attach';"><a>附件</a></li><%} %>
                   <%if (CheckAuth("PRO_PROJECT_UDF"))
                     { %>
-                     <li class="MenuLink"  onclick="javasrript:location.href='ProjectView.aspx?id=<%=thisProject.id %>&type=UDF';"><a>自定义字段</a></li><%} %>
-                  <li class="MenuLink"><a>工单(暂未实现)</a></li>
+                     <li class="MenuLink"  onclick="javascript:location.href='ProjectView.aspx?id=<%=thisProject.id %>&type=UDF';"><a>自定义字段</a></li><%} %>
+                  <li class="MenuLink" onclick="javascript:location.href='ProjectView.aspx?id=<%=thisProject.id %>&type=ticket';"><a>工单</a></li>
             </ul>
         </div>
         <div class="Right">

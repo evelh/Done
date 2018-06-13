@@ -706,14 +706,13 @@ namespace EMT.DoneNOW.BLL
             thisTask.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             if (thisTask.status_id == (int)DicEnum.TICKET_STATUS.DONE)
             {
+                thisTask.date_completed = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 var thisVt = new v_task_all_dal().FindById(thisTask.id);
                 if (thisVt != null && !isPhase)
                 {
                     // 预估偏差将会变更为：实际时间 - （预估时间+变更单时间）+剩余时间
                     thisTask.projected_variance = (thisVt.worked_hours == null ? 0 : (decimal)thisVt.worked_hours) - (thisTask.estimated_hours + (thisVt.change_Order_Hours == null ? 0 : (decimal)thisVt.change_Order_Hours));
-
                     thisTask.reason = "";
-                    thisTask.date_completed = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 }
             }
             OperLogBLL.OperLogUpdate<sdk_task>(thisTask, _dal.FindNoDeleteById(thisTask.id), thisTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "修改task");
@@ -2992,6 +2991,10 @@ namespace EMT.DoneNOW.BLL
                         if (isEdit || choTask.status_id != para.status_id)
                         {
                             choTask.status_id = para.status_id;
+                            if(choTask.status_id != para.status_id && para.status_id == (int)DicEnum.TICKET_STATUS.DONE)
+                            {
+                                choTask.date_completed = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                            }
                             choTask.projected_variance += para.remain_hours - (v_task.remain_hours == null ? 0 : (decimal)v_task.remain_hours);
                             OperLogBLL.OperLogUpdate<sdk_task>(choTask, _dal.FindNoDeleteById(choTask.id), choTask.id, user_id, OPER_LOG_OBJ_CATE.PROJECT_TASK, "更改task");
                             _dal.Update(choTask);
@@ -4329,7 +4332,7 @@ namespace EMT.DoneNOW.BLL
                 param.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                 param.update_user_id = user_id;
                 new sdk_task_library_dal().Insert(param);
-                OperLogBLL.OperLogAdd<sdk_task_library>(param, param.id, user_id, OPER_LOG_OBJ_CATE.SDK_TASK_LIBARY, "任务添加到任务库");
+                OperLogBLL.OperLogAdd<sdk_task_library>(param, param.id, user_id, OPER_LOG_OBJ_CATE.SDK_TASK_LIBARY, "");
             }
             catch (Exception msg)
             {
@@ -4337,6 +4340,35 @@ namespace EMT.DoneNOW.BLL
             }
             return true;
         }
+        /// <summary>
+        /// 编辑任务库
+        /// </summary>
+        public bool EditTaskLibary(sdk_task_library param,long userId)
+        {
+            sdk_task_library_dal stlDal = new sdk_task_library_dal();
+            var oldLib = stlDal.FindNoDeleteById(userId);
+            if (oldLib == null)
+                return false;
+            param.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+            param.update_user_id = userId;
+            stlDal.Update(param);
+            OperLogBLL.OperLogUpdate<sdk_task_library>(param, oldLib, param.id, userId, OPER_LOG_OBJ_CATE.SDK_TASK_LIBARY, "");
+            return true;
+        }
+        /// <summary>
+        /// 删除任务库
+        /// </summary>
+        public bool DeleteLibary(long id,long userId)
+        {
+            sdk_task_library_dal stlDal = new sdk_task_library_dal();
+            var oldLib = stlDal.FindNoDeleteById(userId);
+            if (oldLib == null)
+                return true;
+            stlDal.SoftDelete(oldLib,userId);
+            OperLogBLL.OperLogDelete<sdk_task_library>(oldLib, oldLib.id, userId, OPER_LOG_OBJ_CATE.SDK_TASK_LIBARY, "");
+            return true;
+        }
+
         /// <summary>
         /// 删除任务成员是这个员工的成员信息，或者主负责人是这个员工的移除
         /// </summary>

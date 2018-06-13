@@ -91,6 +91,9 @@ namespace EMT.DoneNOW.Core
         public Int32? expense_type_id { get; set; }
         [DataMember]
         public Int32? billing_method_id { get; set; }
+        [DataMember]
+        public SByte excluded_new_contract { get; set; }
+        
 
 
     }

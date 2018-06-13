@@ -343,11 +343,16 @@
                         <input type="checkbox" name="" id="opportunityRange" />
                         <label style="width: 141px;">商机收入周期范围</label>
                         <input type="text" name="spread_value" id="spread_value" value="<%=(!isAdd)&&(opportunity.spread_value!=null)?opportunity.spread_value.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
-                        <asp:DropDownList ID="spread_unit" runat="server" Style="margin-left: 3px;">
-                            <asp:ListItem Value="Days">日</asp:ListItem>
-                            <asp:ListItem Value="Months">月</asp:ListItem>
-                            <asp:ListItem Value="Years">年</asp:ListItem>
-                        </asp:DropDownList>
+                    
+                        <select id="spread_unit" name="spread_unit" style="margin-left:3px;">
+                            <%if (spredList != null && spredList.Count > 0) {
+                                    foreach (var spred in spredList)
+                                    {%>
+                            <option value="<%=spred.id %>" <%if (opportunity != null && opportunity.spread_unit == spred.id) {%> selected="selected" <%} else if (isAdd && spred.id == (int)EMT.DoneNOW.DTO.DicEnum.OPPORTUNITY_SPREAD_UNIT.MONTH) { %> selected="selected" <%} %> ><%=spred.name %></option>
+                                   <% }
+                                } %>
+                        </select>
+                      
                         <%--    <select name="spread_unit" id="spread_unit">
                         <option value="Day">日</option>
                         <option value="Months" selected>月</option>
@@ -713,6 +718,21 @@
                 });
                 <%} %>
         }
+        $("#opportunityRange").click(function () {
+            if ($(this).is(':checked')) {
+                $("#spread_value").removeAttr("disabled");
+                $("#spread_unit").removeAttr("disabled");
+            }
+            else {
+                $("#spread_value").attr("disabled", "disabled");
+                $("#spread_unit").attr("disabled", "disabled");
+            }
+        });
+        $("#spread_value").prop("disabled", true);
+        $("#spread_unit").prop("disabled", true);
+        <%if (opportunity.spread_value != null || opportunity.spread_unit != null) {%>
+        $("#opportunityRange").trigger("click");
+    <%}  %>
 
 
         $("#save").click(function () {
@@ -964,18 +984,8 @@
                 <%}%>
             }
         })
-        $("#spread_value").attr("disabled", "disabled");
-        $("#spread_unit").attr("disabled", "disabled");
-        $("#opportunityRange").click(function () {
-            if ($(this).is(':checked')) {
-                $("#spread_value").removeAttr("disabled");
-                $("#spread_unit").removeAttr("disabled");
-            }
-            else {
-                $("#spread_value").attr("disabled", "disabled");
-                $("#spread_unit").attr("disabled", "disabled");
-            }
-        });
+     
+      
 
     })
     function SubmitCheck() {

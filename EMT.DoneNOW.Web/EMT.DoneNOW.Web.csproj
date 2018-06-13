@@ -285,11 +285,14 @@
     <Content Include="Scripts\Search\system_degree.js" />
     <Content Include="Scripts\Search\system_degree_cate.js" />
     <Content Include="Scripts\Search\system_expense_approval_search.js" />
+    <Content Include="Scripts\Search\system_project_status.js" />
     <Content Include="Scripts\Search\system_queue_search.js" />
     <Content Include="Scripts\Search\system_resource_week_goal.js" />
     <Content Include="Scripts\Search\system_resource_workgroup_search.js" />
     <Content Include="Scripts\Search\system_skill.js" />
     <Content Include="Scripts\Search\system_skill_cate.js" />
+    <Content Include="Scripts\Search\system_task_library.js" />
+    <Content Include="Scripts\Search\system_task_library_cate.js" />
     <Content Include="Scripts\Search\system_ticket_issue_search.js" />
     <Content Include="Scripts\Search\system_ticket_priority_search.js" />
     <Content Include="Scripts\Search\system_ticket_source_search.js" />
@@ -673,6 +676,7 @@
     <Content Include="SysSetting\AdjustResourceGoal.aspx" />
     <Content Include="SysSetting\ChangeBoardManage.aspx" />
     <Content Include="SysSetting\CheckListLibrary.aspx" />
+    <Content Include="SysSetting\CostCodeManage.aspx" />
     <Content Include="SysSetting\EditServiceAlert.aspx" />
     <Content Include="SysSetting\FormTemplateManage.aspx" />
     <Content Include="SysSetting\Holiday.aspx" />
@@ -2492,6 +2496,13 @@
     </Compile>
     <Compile Include="SysSetting\CheckListLibrary.aspx.designer.cs">
       <DependentUpon>CheckListLibrary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\CostCodeManage.aspx.cs">
+      <DependentUpon>CostCodeManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\CostCodeManage.aspx.designer.cs">
+      <DependentUpon>CostCodeManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\EditServiceAlert.aspx.cs">
       <DependentUpon>EditServiceAlert.aspx</DependentUpon>

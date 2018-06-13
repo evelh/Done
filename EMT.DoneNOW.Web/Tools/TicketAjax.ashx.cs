@@ -147,6 +147,9 @@ namespace EMT.DoneNOW.Web
                     case "GetTicketByNo":
                         GetTicketByNo(context);
                         break;
+                    case "DeleteTaskLibary":
+                        DeleteTaskLibary(context);
+                        break;
                     default:
                         break;
                 }
@@ -844,6 +847,16 @@ namespace EMT.DoneNOW.Web
             var ticket = new sdk_task_dal().GetTicketByNo(no);
             if(ticket!=null)
                 context.Response.Write(new EMT.Tools.Serialize().SerializeJson(ticket));
+        }
+        /// <summary>
+        /// 删除任务库
+        /// </summary>
+        void DeleteTaskLibary(HttpContext context)
+        {
+            bool result = false;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
+                result = new TaskBLL().DeleteLibary(long.Parse(context.Request.QueryString["id"]),LoginUserId);
+            WriteResponseJson(result);
         }
     }
 }

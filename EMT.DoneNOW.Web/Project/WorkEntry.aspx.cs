@@ -339,6 +339,18 @@ namespace EMT.DoneNOW.Web.Project
                 para.pagEntDtoList = entDtoList;
             }
 
+            if (pageEntry.contract_id!=null&&pageEntry.service_id!=null)
+            {
+                var thisConSer = new ctt_contract_service_dal().GetServiceByConSerId((long)pageEntry.contract_id, (long)pageEntry.service_id);
+                if (thisConSer != null)
+                    pageEntry.service_id = thisConSer.id;
+                else
+                    pageEntry.service_id = null;
+            }
+            else
+            {
+                pageEntry.service_id = null;
+            }
 
             var pageProject = new pro_project_dal().FindNoDeleteById(long.Parse(Request.Form["project_id"]));
             if (pageProject != null)

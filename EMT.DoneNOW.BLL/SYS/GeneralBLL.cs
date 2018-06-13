@@ -379,6 +379,24 @@ namespace EMT.DoneNOW.BLL
                     return ERROR_CODE.TICKET_ISSUE_USED;
                 }
             }
+            else if (table_id == (int)GeneralTableEnum.PROJECT_STATUS)
+            {
+                var proList = _dal.FindListBySql<pro_project>($"SELECT * from pro_project where delete_time = 0 and status_id ="+id.ToString());
+                if (proList != null && proList.Count > 0)
+                {
+                    n = proList.Count;
+                    return ERROR_CODE.TICKET_ISSUE_USED;
+                }
+            }
+            else if (table_id == (int)GeneralTableEnum.TASK_TYPE)
+            {
+                var proList = _dal.FindListBySql<pro_project>($"SELECT * from pro_project where delete_time = 0 and status_id =" + id.ToString());
+                if (proList != null && proList.Count > 0)
+                {
+                    n = proList.Count;
+                    return ERROR_CODE.TICKET_ISSUE_USED;
+                }
+            }
 
             return ERROR_CODE.SUCCESS;
         }
@@ -575,6 +593,20 @@ namespace EMT.DoneNOW.BLL
                         remark = "删除区域信息";
                     }
                     
+                }
+            }
+            if(table_id == (int)GeneralTableEnum.TASK_LIBRARY_CATE)
+            {
+                var taskLibList = _dal.FindListBySql<sdk_task_library>($"SELECT * from sdk_task_library where delete_time = 0 and cate_id = "+id.ToString());
+                if (taskLibList != null && taskLibList.Count > 0)
+                {
+                    sdk_task_library_dal stlDal = new sdk_task_library_dal();
+                    taskLibList.ForEach(_ => {
+                        _.cate_id = null;
+                        _.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        _.update_user_id = user_id;
+                        stlDal.Update(_);
+                    });
                 }
             }
             data.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);

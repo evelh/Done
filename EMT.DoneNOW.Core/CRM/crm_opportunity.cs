@@ -49,7 +49,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int32? spread_value { get; set; }
         [DataMember]
-        public String spread_unit { get; set; }
+        public Int32? spread_unit { get; set; }
         [DataMember]
         public Int32? number_months { get; set; }
         [DataMember]
@@ -110,6 +110,10 @@ namespace EMT.DoneNOW.Core
         public Int64? actual_closed_time { get; set; }
         [DataMember]
         public String description { get; set; }
+        [DataMember]
+        public DateTime? first_contact_date { get; set; }
+        [DataMember]
+        public DateTime? stage_update_date { get; set; }
 
 
     }

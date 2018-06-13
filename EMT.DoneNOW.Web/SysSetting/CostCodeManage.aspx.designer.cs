@@ -7,10 +7,10 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace EMT.DoneNOW.Web.Project {
+namespace EMT.DoneNOW.Web.SysSetting {
     
     
-    public partial class TaskToLibrary {
+    public partial class CostCodeManage {
         
         /// <summary>
         /// form1 控件。

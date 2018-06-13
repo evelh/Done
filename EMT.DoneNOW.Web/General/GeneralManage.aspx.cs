@@ -42,6 +42,11 @@ namespace EMT.DoneNOW.Web.General
             {
                 tempList = genBll.GetGeneralByTable((int)GeneralTableEnum.SLA_EVENT_TYPE);
             }
+            if (tableId == (int)GeneralTableEnum.PROJECT_STATUS && thisGeneral != null && thisGeneral.is_system == 1)
+            {
+                Response.Write("<script>alert('系统状态，不能编辑！');window.close();</script>");
+                return;
+            }
 
         }
 
@@ -54,6 +59,10 @@ namespace EMT.DoneNOW.Web.General
                 pageDic.is_active = 0;
             pageDic.general_table_id = tableId;
 
+            if (tableId == (int)GeneralTableEnum.TASK_LIBRARY_CATE)
+            {
+                pageDic.is_active = 1;
+            }
             if (!isAdd)
             {
                 thisGeneral.name = pageDic.name;
@@ -65,6 +74,11 @@ namespace EMT.DoneNOW.Web.General
                 else if (tableId == (int)GeneralTableEnum.TICKET_STATUS)
                 {
                     thisGeneral.ext1 = pageDic.ext1;
+                }
+                else if (tableId == (int)GeneralTableEnum.TASK_LIBRARY_CATE)
+                {
+                    thisGeneral.status_id = pageDic.status_id;
+                    thisGeneral.remark= pageDic.remark;
                 }
             }
             bool result = false;

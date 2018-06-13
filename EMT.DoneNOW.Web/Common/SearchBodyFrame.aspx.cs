@@ -283,6 +283,8 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SYSTEM_TICKET_ISSUE_SEARCH:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_CHANGE_BOARD_SEARCH:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_CHECK_LIB_SEARCH:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_PROJECT_STATUS:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_TASK_LIBRARY_CATE:
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
@@ -1641,6 +1643,7 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.SYSTEM_RESOURCE_WORKGROUP_SEARCH:
                 case (long)QueryType.SYSTEM_TIME_APPROVAL_SEARCH:
                 case (long)QueryType.SYSTEM_EXPENSE_APPROVAL_SEARCH:
+                case (long)QueryType.SYSTEM_TASK_LIBRARY:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
@@ -1648,8 +1651,9 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.SYSTEM_TICKET_SOURCE_SEARCH:
                 case (long)QueryType.SYSTEM_TICKET_ISSUE_SEARCH:
                 case (long)QueryType.SYSTEM_CHANGE_BOARD_SEARCH:
-                   
-                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                case (long)QueryType.SYSTEM_PROJECT_STATUS:
+                case (long)QueryType.SYSTEM_TASK_LIBRARY_CATE:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" ,id="EditLi"});
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()",id="ActiveLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "InActive()", id = "InActiveLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" ,id="DeleteLi"});

@@ -65,6 +65,9 @@ namespace EMT.DoneNOW.Web.Project
                         case "UDF":
                             viewProjectIframe.Src = "../Common/SearchBodyFrame.aspx?id=" + thisProject.id + "&cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_UDF + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.PROJECT_UDF;
                             break;
+                        case "ticket":
+                            viewProjectIframe.Src = "../Common/SearchFrameSet.aspx?cat=" + (int)DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE + "&type=" + (int)QueryType.MY_QUEUE_ACTIVE + "&group=215&param1=4890&param2=" + thisProject.id + "&param4=AddHidden";
+                            break;
                         default:
                             viewProjectIframe.Src = "ProjectSummary?id=" + thisProject.id;
                             break;
