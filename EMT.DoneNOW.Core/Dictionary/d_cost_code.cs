@@ -50,7 +50,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Decimal? unit_price { get; set; }
         [DataMember]
-        public Int16? timeoff { get; set; }
+        public SByte? is_timeoff { get; set; }
         [DataMember]
         public Int32? allocationcodetype { get; set; }
         [DataMember]
@@ -93,7 +93,9 @@ namespace EMT.DoneNOW.Core
         public Int32? billing_method_id { get; set; }
         [DataMember]
         public SByte excluded_new_contract { get; set; }
-        
+        [DataMember]
+        public SByte? is_regular_time { get; set; }
+
 
 
     }

@@ -349,6 +349,7 @@ var windowObj = {
     logo:"logo",
     board: "board", 
     CheckListLibrary: "CheckListLibrary",
+    costCode:"costCode",
 }
 var windowType = {
     blank: '_blank',

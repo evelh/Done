@@ -282,6 +282,13 @@
     <Content Include="Scripts\Search\system_certification_cate.js" />
     <Content Include="Scripts\Search\system_change_board_search.js" />
     <Content Include="Scripts\Search\system_check_lib_search.js" />
+    <Content Include="Scripts\Search\system_code_ecpense_cate.js" />
+    <Content Include="Scripts\Search\system_code_ilestone.js" />
+    <Content Include="Scripts\Search\system_code_inter_time.js" />
+    <Content Include="Scripts\Search\system_code_ledger.js" />
+    <Content Include="Scripts\Search\system_code_material.js" />
+    <Content Include="Scripts\Search\system_code_service.js" />
+    <Content Include="Scripts\Search\system_code_work_type.js" />
     <Content Include="Scripts\Search\system_degree.js" />
     <Content Include="Scripts\Search\system_degree_cate.js" />
     <Content Include="Scripts\Search\system_expense_approval_search.js" />
@@ -676,11 +683,13 @@
     <Content Include="SysSetting\AdjustResourceGoal.aspx" />
     <Content Include="SysSetting\ChangeBoardManage.aspx" />
     <Content Include="SysSetting\CheckListLibrary.aspx" />
+    <Content Include="SysSetting\CodeRuleManage.aspx" />
     <Content Include="SysSetting\CostCodeManage.aspx" />
     <Content Include="SysSetting\EditServiceAlert.aspx" />
     <Content Include="SysSetting\FormTemplateManage.aspx" />
     <Content Include="SysSetting\Holiday.aspx" />
     <Content Include="SysSetting\HolidaySet.aspx" />
+    <Content Include="SysSetting\LedgerAccountManage.aspx" />
     <Content Include="SysSetting\LogoManage.aspx" />
     <Content Include="SysSetting\LogoSearch.aspx" />
     <Content Include="SysSetting\MergeAccount.aspx" />
@@ -2497,6 +2506,13 @@
     <Compile Include="SysSetting\CheckListLibrary.aspx.designer.cs">
       <DependentUpon>CheckListLibrary.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\CodeRuleManage.aspx.cs">
+      <DependentUpon>CodeRuleManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\CodeRuleManage.aspx.designer.cs">
+      <DependentUpon>CodeRuleManage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SysSetting\CostCodeManage.aspx.cs">
       <DependentUpon>CostCodeManage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2531,6 +2547,13 @@
     </Compile>
     <Compile Include="SysSetting\HolidaySet.aspx.designer.cs">
       <DependentUpon>HolidaySet.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\LedgerAccountManage.aspx.cs">
+      <DependentUpon>LedgerAccountManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\LedgerAccountManage.aspx.designer.cs">
+      <DependentUpon>LedgerAccountManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\LogoManage.aspx.cs">
       <DependentUpon>LogoManage.aspx</DependentUpon>
@@ -2713,6 +2736,9 @@
     </Compile>
     <Compile Include="TimeSheet\TimeoffRequestAdd.aspx.designer.cs">
       <DependentUpon>TimeoffRequestAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\CostCodeAjax.ashx.cs">
+      <DependentUpon>CostCodeAjax.ashx</DependentUpon>
     </Compile>
     <Compile Include="Tools\DashboardAjax.ashx.cs">
       <DependentUpon>DashboardAjax.ashx</DependentUpon>
@@ -3244,6 +3270,7 @@
     <Content Include="Tools\WareHouseAjax.ashx" />
     <Content Include="Tools\FormTempAjax.ashx" />
     <Content Include="Tools\UploadAjax.ashx" />
+    <Content Include="Tools\CostCodeAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

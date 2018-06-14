@@ -140,6 +140,9 @@ namespace EMT.DoneNOW.Web
                         break;
                     case "GetResByIds":
                         GetResByIds(context);
+                        break; 
+                    case "GetResByDepId":
+                        GetResByDepId(context);
                         break;
                     default:
                         break;
@@ -1070,7 +1073,20 @@ namespace EMT.DoneNOW.Web
                     WriteResponseJson(resList);
             }
         }
+        /// <summary>
+        /// 获取部门下的员工
+        /// </summary>
+        void GetResByDepId(HttpContext context)
+        {
+            if (!string.IsNullOrEmpty(context.Request.QueryString["depId"]))
+            {
+                List<sys_resource> resList = new sys_resource_dal().GetResByDepId(long.Parse(context.Request.QueryString["depId"]));
+                if (resList != null && resList.Count > 0)
+                    WriteResponseJson(resList);
+            }
 
+            
+        }
     }
    
     public class ResAndWorkGroDto

@@ -4460,31 +4460,31 @@ namespace EMT.DoneNOW.BLL
             {
                 if (account_id != null)
                 {
-                    returnRule = ruleList.FirstOrDefault(_ => _.resource_id != null && _.account_id == account_id);
+                    returnRule = ruleList.FirstOrDefault(_ => _.resource_id != null &&!string.IsNullOrEmpty(_.account_ids) && _.account_ids.Split(',').Contains(account_id.ToString()));
                 }
                 else
                 {
-                    returnRule = ruleList.FirstOrDefault(_ => _.resource_id != null && _.account_id != null);
+                    returnRule = ruleList.FirstOrDefault(_ => _.resource_id != null && !string.IsNullOrEmpty(_.account_ids));
                 }
                 if (returnRule == null)
                 {
                     if (account_id != null)
                     {
-                        returnRule = ruleList.FirstOrDefault(_ => _.department_id != null && _.account_id == account_id);
+                        returnRule = ruleList.FirstOrDefault(_ => _.department_id != null && !string.IsNullOrEmpty(_.account_ids) && _.account_ids.Split(',').Contains(account_id.ToString()));
                     }
                     else
                     {
-                        returnRule = ruleList.FirstOrDefault(_ => _.department_id != null && _.account_id != null);
+                        returnRule = ruleList.FirstOrDefault(_ => _.department_id != null && !string.IsNullOrEmpty(_.account_ids));
                     }
                     if (returnRule == null)
                     {
                         if (account_id != null)
                         {
-                            returnRule = ruleList.FirstOrDefault(_ => _.account_id == account_id);
+                            returnRule = ruleList.FirstOrDefault(_ => !string.IsNullOrEmpty(_.account_ids) && _.account_ids.Split(',').Contains(account_id.ToString()));
                         }
                         else
                         {
-                            returnRule = ruleList.FirstOrDefault(_ => _.account_id != null);
+                            returnRule = ruleList.FirstOrDefault(_ => !string.IsNullOrEmpty(_.account_ids));
                         }
                         if (returnRule == null)
                         {

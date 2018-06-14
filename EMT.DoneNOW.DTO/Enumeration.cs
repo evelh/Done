@@ -91,6 +91,7 @@ namespace EMT.DoneNOW.DTO
         INVOICE_TEMPLATE_BODY_ORDER_BY =143,     //发票模板主体-排序条件
         NOTE_PUBLISH_TYPE = 146,                 // 合同/项目等备注发布类型
         ATTACHMENT_PUBLISH_TYPE = 147,           // 附件发布类型
+        EXPENSE_OVERDRAFT_POLICY = 148,          // 费用超支政策
         TASK_LIBRARY_CATE  = 149,                 // 任务库种类
         SERVICE_CALL_STATUS = 152,                // 服务请求状态
         ITEM_DESC_DISPLAY_TYPE = 155,               // 采购项描述信息显示内容类型
@@ -834,9 +835,17 @@ namespace EMT.DoneNOW.DTO
             SYSTEM_TICKET_SUB_ISSUE_SEARCH = 1700,         // 系统设置-问题和子问题类型-子问题查询
             SYSTEM_CHANGE_BOARD_SEARCH = 1701,             // 系统设置-变更委员会查询
             SYSTEM_CHECK_LIB_SEARCH = 1702,                // 系统设置-系统设置-检查单库查询
-            SYSTEM_PROJECT_STATUS,               // 系统设置-项目状态
-            SYSTEM_TASK_LIBRARY_CATE,               // 系统设置-任务种类  
-            SYSTEM_TASK_LIBRARY,                   //  系统设置-任务库 
+            SYSTEM_PROJECT_STATUS = 1724,                  // 系统设置-项目状态
+            SYSTEM_TASK_LIBRARY_CATE = 1725,               // 系统设置-任务种类  
+            SYSTEM_TASK_LIBRARY = 1726,                    // 系统设置-任务库 
+
+            SYSTEM_CODE_WORK_TYPE = 1727,                  // 系统设置-成本代码 - 工作类型  
+            SYSTEM_CODE_MATERIAL = 1728,                   // 系统设置-成本代码 - 物料     
+            SYSTEM_CODE_INTER_TIME = 1729,                 // 系统设置-成本代码 - 内部工时   
+            SYSTEM_CODE_ECPENSE_CATE = 1730,               // 系统设置-成本代码 - 费用           
+            SYSTEM_CODE_SERVICE = 1731,                    // 系统设置-成本代码 - 服务         
+            SYSTEM_CODE_ILESTONE = 1732,                   // 系统设置-成本代码 - 里程碑     
+            SYSTEM_CODE_LEDGER = 1733,                     // 系统设置- 总账代码                
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -2065,10 +2074,18 @@ namespace EMT.DoneNOW.DTO
         SYSTEM_TICKET_SUB_ISSUE_SEARCH = 310,         // 系统设置-问题和子问题类型-子问题查询  
         SYSTEM_CHANGE_BOARD_SEARCH = 311,             // 系统设置-变更委员会查询   
         SYSTEM_CHECK_LIB_SEARCH = 312,                // 系统设置-系统设置-检查单库查询  
-        SYSTEM_PROJECT_STATUS,               // 系统设置-项目状态  
-        SYSTEM_TASK_LIBRARY_CATE,               // 系统设置-任务种类
-        SYSTEM_TASK_LIBRARY,                   //  系统设置-任务库 
-        
+        SYSTEM_PROJECT_STATUS = 334,                  // 系统设置-项目状态  
+        SYSTEM_TASK_LIBRARY_CATE = 335,               // 系统设置-任务种类
+        SYSTEM_TASK_LIBRARY = 336,                    // 系统设置-任务库 
+        SYSTEM_CODE_WORK_TYPE = 337,                  // 系统设置- 工作类型
+        SYSTEM_CODE_MATERIAL = 338,                   // 系统设置- 物料
+        SYSTEM_CODE_INTER_TIME = 339,                 // 系统设置- 内部工时
+        SYSTEM_CODE_ECPENSE_CATE = 340,               // 系统设置- 费用
+        SYSTEM_CODE_SERVICE = 341,                    // 系统设置- 服务
+        SYSTEM_CODE_ILESTONE = 342,                   // 系统设置- 里程碑
+        SYSTEM_CODE_LEDGER = 343,                     // 系统设置- 总账代码
+
+
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
         Line_Of_Business,              //系统管理：组织：业务条线

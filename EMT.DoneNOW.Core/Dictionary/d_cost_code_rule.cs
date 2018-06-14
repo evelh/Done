@@ -26,7 +26,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int64? resource_id { get; set; }
         [DataMember]
-        public Int64? account_id { get; set; }
+        public String account_ids { get; set; }
         [DataMember]
         public Decimal? max { get; set; }
 
