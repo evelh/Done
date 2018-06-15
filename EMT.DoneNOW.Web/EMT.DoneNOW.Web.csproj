@@ -207,6 +207,7 @@
     <Content Include="Content\SidebarDrag.css" />
     <Content Include="Content\SwapConfigItem.css" />
     <Content Include="Content\SysSettingRoles.css" />
+    <Content Include="Content\SystemSet.css" />
     <Content Include="Content\SysUserSecurityLevel.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\sysset_user.css" />
@@ -292,14 +293,20 @@
     <Content Include="Scripts\Search\system_degree.js" />
     <Content Include="Scripts\Search\system_degree_cate.js" />
     <Content Include="Scripts\Search\system_expense_approval_search.js" />
+    <Content Include="Scripts\Search\system_payment_term.js" />
+    <Content Include="Scripts\Search\system_payment_type.js" />
     <Content Include="Scripts\Search\system_project_status.js" />
     <Content Include="Scripts\Search\system_queue_search.js" />
     <Content Include="Scripts\Search\system_resource_week_goal.js" />
     <Content Include="Scripts\Search\system_resource_workgroup_search.js" />
+    <Content Include="Scripts\Search\system_ship_type.js" />
     <Content Include="Scripts\Search\system_skill.js" />
     <Content Include="Scripts\Search\system_skill_cate.js" />
     <Content Include="Scripts\Search\system_task_library.js" />
     <Content Include="Scripts\Search\system_task_library_cate.js" />
+    <Content Include="Scripts\Search\system_tax_cate.js" />
+    <Content Include="Scripts\Search\system_tax_region.js" />
+    <Content Include="Scripts\Search\system_tax_region_cate.js" />
     <Content Include="Scripts\Search\system_ticket_issue_search.js" />
     <Content Include="Scripts\Search\system_ticket_priority_search.js" />
     <Content Include="Scripts\Search\system_ticket_source_search.js" />
@@ -701,6 +708,8 @@
     <Content Include="SysSetting\ResourceProtectedData.aspx" />
     <Content Include="SysSetting\Service.aspx" />
     <Content Include="SysSetting\ServiceBundle.aspx" />
+    <Content Include="SysSetting\SystemSetting.aspx" />
+    <Content Include="SysSetting\TaxCateManage.aspx" />
     <Content Include="SysSetting\TimeApproval.aspx" />
     <Content Include="SysSetting\TransResource.aspx" />
     <Content Include="SysSetting\UserDefinedField.aspx" />
@@ -2631,6 +2640,20 @@
     </Compile>
     <Compile Include="SysSetting\ServiceBundle.aspx.designer.cs">
       <DependentUpon>ServiceBundle.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\SystemSetting.aspx.cs">
+      <DependentUpon>SystemSetting.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SystemSetting.aspx.designer.cs">
+      <DependentUpon>SystemSetting.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\TaxCateManage.aspx.cs">
+      <DependentUpon>TaxCateManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\TaxCateManage.aspx.designer.cs">
+      <DependentUpon>TaxCateManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\TimeApproval.aspx.cs">
       <DependentUpon>TimeApproval.aspx</DependentUpon>

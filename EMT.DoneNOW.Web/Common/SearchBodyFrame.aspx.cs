@@ -285,6 +285,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SYSTEM_CHECK_LIB_SEARCH:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_PROJECT_STATUS:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_TASK_LIBRARY_CATE:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_PAYMENT_TYPE:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_PAYMENT_TERM:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_SHIP_TYPE:
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
@@ -1644,15 +1647,25 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.SYSTEM_TIME_APPROVAL_SEARCH:
                 case (long)QueryType.SYSTEM_EXPENSE_APPROVAL_SEARCH:
                 case (long)QueryType.SYSTEM_TASK_LIBRARY:
+                case (long)QueryType.SYSTEM_TASK_LIBRARY_CATE:
+                case (long)QueryType.SYSTEM_CODE_MATERIAL:
+                case (long)QueryType.SYSTEM_CODE_INTER_TIME:
+                case (long)QueryType.SYSTEM_CODE_ECPENSE_CATE:
+                case (long)QueryType.SYSTEM_CODE_SERVICE:
+                case (long)QueryType.SYSTEM_CODE_ILESTONE:
+                case (long)QueryType.SYSTEM_PAYMENT_TYPE:
+                case (long)QueryType.SYSTEM_PAYMENT_TERM:
+                case (long)QueryType.SYSTEM_SHIP_TYPE:
+                case (long)QueryType.SYSTEM_TAX_CATE:
+                case (long)QueryType.SYSTEM_TAX_REGION:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()", id = "DeleteLi" });
                     break;
                 case (long)QueryType.SYSTEM_QUEUE_SEARCH:
                 case (long)QueryType.SYSTEM_TICKET_SOURCE_SEARCH:
                 case (long)QueryType.SYSTEM_TICKET_ISSUE_SEARCH:
                 case (long)QueryType.SYSTEM_CHANGE_BOARD_SEARCH:
                 case (long)QueryType.SYSTEM_PROJECT_STATUS:
-                case (long)QueryType.SYSTEM_TASK_LIBRARY_CATE:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" ,id="EditLi"});
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()",id="ActiveLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "InActive()", id = "InActiveLi" });
@@ -1674,6 +1687,11 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActiveLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "InActive()", id = "InActiveLi" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()", id = "DeleteLi" });
+                    break;
+                case (long)QueryType.SYSTEM_CODE_WORK_TYPE:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "从合同中排除此工作类型", click_function = "Exclude()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()", id = "DeleteLi" });
                     break;
                 default:

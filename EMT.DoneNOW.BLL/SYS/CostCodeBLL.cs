@@ -54,9 +54,16 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 根据总账Id 获取相关的工作类型的物料代码
         /// </summary>
-        public List<d_cost_code> GetWorkCodeByLedger(long id)
+        public List<d_cost_code> GetWorkCodeByLedger(int id)
         {
             return _dal.FindListBySql<d_cost_code>($"SELECT * from d_cost_code where cate_id ={(int)DicEnum.COST_CODE_CATE.GENERAL_ALLOCATION_CODE} and delete_time = 0 and general_ledger_id = {id}");
+        }
+        /// <summary>
+        /// 根据类别获取相关代码
+        /// </summary>
+        public List<d_cost_code> GetCodeByCate(long cateId)
+        {
+            return _dal.FindListBySql<d_cost_code>($"SELECT * from d_cost_code where cate_id ={cateId} and delete_time = 0");
         }
         /// <summary>
         /// 获取费用规则相关
@@ -126,6 +133,8 @@ namespace EMT.DoneNOW.BLL
             d_cost_code code = GetCodeById(id);
             if (code == null)
                 return true;
+            if (code.is_system == 1)
+                return false;
             // 报价项，成本，工单，产品。费用，工时
             List<crm_quote_item> quoteItem = _dal.FindListBySql<crm_quote_item>($"SELECT * from crm_quote_item where object_id ={id.ToString()} and delete_time = 0");
             if (quoteItem != null && quoteItem.Count > 0)
@@ -157,6 +166,77 @@ namespace EMT.DoneNOW.BLL
             _dal.SoftDelete(thisCode,userId);
             OperLogBLL.OperLogDelete<d_cost_code>(thisCode, thisCode.id, userId, OPER_LOG_OBJ_CATE.D_COST_CODE, "");
             return true;
+        }
+        /// <summary>
+        /// 根据Ids 获取相关代码
+        /// </summary>
+        public List<d_cost_code> GetCodeByIds(string ids)
+        {
+            if (string.IsNullOrEmpty(ids))
+                return null;
+            return _dal.FindListBySql($"SELECT * from d_cost_code where delete_time = 0 and id in('{ids}')");
+        }
+        /// <summary>
+        /// 根据税种获取 代码
+        /// </summary>
+        public List<d_cost_code> GetCodeByTaxCate(long taxCateId)
+        {
+           
+            return _dal.FindListBySql($"SELECT * from d_cost_code where delete_time = 0 and tax_category_id={taxCateId}");
+        }
+
+        /// <summary>
+        /// 批量更改 计费代码的税种
+        /// </summary>
+        public void ChangeCodeTaxCate(string codeIds,int taxCateId,long userId)
+        {
+            List<d_cost_code> oldCodeList = GetCodeByTaxCate(taxCateId);
+            if(oldCodeList!=null&& oldCodeList.Count > 0)
+            {
+                if (!string.IsNullOrEmpty(codeIds))
+                {
+                    string[] codeIdArr = codeIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var codeId in codeIdArr)
+                    {
+                        d_cost_code thisCode = oldCodeList.FirstOrDefault(_=>_.id.ToString()==codeId);
+                        if (thisCode != null)
+                        {
+                            oldCodeList.Remove(thisCode);
+                            
+                        }
+                        else
+                        {
+                            d_cost_code code = GetCodeById(long.Parse(codeId));
+                            if (code != null)
+                            {
+                                code.tax_category_id = taxCateId;
+                                EditCode(code, userId);
+                            }
+                        }
+                    }
+                }
+                if (oldCodeList.Count > 0)
+                    oldCodeList.ForEach(_ => {
+                        _.tax_category_id = null;
+                        EditCode(_, userId);
+                    });
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(codeIds))
+                {
+                    string[] codeIdArr = codeIds.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var codeId in codeIdArr)
+                    {
+                        d_cost_code thisCode = GetCodeById(long.Parse(codeId));
+                        if (thisCode != null)
+                        {
+                            thisCode.tax_category_id = taxCateId;
+                            EditCode(thisCode,userId);
+                        }
+                    }
+                }
+            }
         }
 
     }

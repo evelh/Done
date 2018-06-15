@@ -59,6 +59,7 @@ namespace EMT.DoneNOW.DTO
         ACCOUNT_SUFFIX = 75,                     // 客户名称后缀
         LIMIT_TYPE = 76,                         //系统权限：类型 取值 有无、全部部分 等
         LIMIT_TYPE_VALUE = 77,                    //系统权限：类型详情 取值 有无（有、无）、全部部分（全部、我的、无）等
+        SYSTEM_SETTING_MODULE = 78,             // 系统管理：系统配置模块
         MATERIAL_CODE_TO_USE = 80,              // 系统管理：系统配置：配送报价项转为账单时使用的物料代码
         HOLIDAY_SET = 94,                       // 节假日设置
         LINE_OF_BUSINESS=95,                    //系统管理：组织：业务条线
@@ -845,7 +846,13 @@ namespace EMT.DoneNOW.DTO
             SYSTEM_CODE_ECPENSE_CATE = 1730,               // 系统设置-成本代码 - 费用           
             SYSTEM_CODE_SERVICE = 1731,                    // 系统设置-成本代码 - 服务         
             SYSTEM_CODE_ILESTONE = 1732,                   // 系统设置-成本代码 - 里程碑     
-            SYSTEM_CODE_LEDGER = 1733,                     // 系统设置- 总账代码                
+            SYSTEM_CODE_LEDGER = 1733,                     // 系统设置- 总账代码   
+            SYSTEM_TAX_REGION = 1734,                       // 系统设置-财务-税收-税区
+            SYSTEM_TAX_CATE = 1735,                         // 系统设置-财务-税收-税种
+            SYSTEM_TAX_REGION_CATE = 1736,                  // 系统设置-财务-税收-税区税种
+            SYSTEM_PAYMENT_TYPE = 1737,                     // 系统配置-财务-支付类型  
+            SYSTEM_PAYMENT_TERM = 1738,                     // 系统配置-财务-支付条款  
+            SYSTEM_SHIP_TYPE = 1739,                        // 系统配置-财务-配送类型   
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -2084,7 +2091,12 @@ namespace EMT.DoneNOW.DTO
         SYSTEM_CODE_SERVICE = 341,                    // 系统设置- 服务
         SYSTEM_CODE_ILESTONE = 342,                   // 系统设置- 里程碑
         SYSTEM_CODE_LEDGER = 343,                     // 系统设置- 总账代码
-
+        SYSTEM_TAX_REGION = 344,                      // 系统设置-财务-税收-税区     
+        SYSTEM_TAX_CATE = 345,                        // 系统设置-财务-税收-税种     
+        SYSTEM_TAX_REGION_CATE = 346,                 // 系统设置-财务-税收-税区税种   
+        SYSTEM_PAYMENT_TYPE = 347,                    // 系统配置-财务-支付类型
+        SYSTEM_PAYMENT_TERM = 348,                    // 系统配置-财务-支付条款
+        SYSTEM_SHIP_TYPE = 349,                       // 系统配置-财务-配送类型
 
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理

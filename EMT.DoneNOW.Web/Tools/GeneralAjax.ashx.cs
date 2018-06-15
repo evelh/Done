@@ -89,6 +89,12 @@ namespace EMT.DoneNOW.Web
                     case "CopyCheckLib":
                         CopyCheckLib(context);
                         break;
+                    case "TaxRegionDeleteCheck":
+                        TaxRegionDeleteCheck(context);
+                        break;
+                    case "TaxCateDeleteCheck":
+                        TaxCateDeleteCheck(context);
+                        break;
                     default:
                         break;
                 }
@@ -378,6 +384,28 @@ namespace EMT.DoneNOW.Web
                 if (lib != null)
                     WriteResponseJson(lib);
             }
+        }
+        /// <summary>
+        /// 税区删除校验
+        /// </summary>
+        void TaxRegionDeleteCheck(HttpContext context)
+        {
+            bool result = false;
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]) && long.TryParse(context.Request.QueryString["id"], out id))
+                result = new GeneralBLL().CheckTaxRegionDelete(id);
+            WriteResponseJson(result);
+        }
+        /// <summary>
+        /// 税种删除校验
+        /// </summary>
+        void TaxCateDeleteCheck(HttpContext context)
+        {
+            bool result = false;
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]) && long.TryParse(context.Request.QueryString["id"], out id))
+                result = new GeneralBLL().CheckTaxCateDelete(id);
+            WriteResponseJson(result);
         }
     }
 }

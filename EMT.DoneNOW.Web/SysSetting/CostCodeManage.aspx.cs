@@ -14,7 +14,7 @@ namespace EMT.DoneNOW.Web.SysSetting
     {
         protected bool isAdd = true;
         protected d_cost_code code;
-        protected d_cost_code_rule codeRule;
+        protected List<d_cost_code_rule> ruleList;
         protected int cateId;
         
         protected CostCodeBLL codeBll = new CostCodeBLL();
@@ -23,6 +23,9 @@ namespace EMT.DoneNOW.Web.SysSetting
         protected List<d_general> ledgerList = new GeneralBLL().GetGeneralByTable((long)GeneralTableEnum.GENERAL_LEDGER);
         protected List<d_general> taxCateList = new GeneralBLL().GetGeneralByTable((long)GeneralTableEnum.QUOTE_ITEM_TAX_CATE);
         protected List<d_general> expTypeList = new GeneralBLL().GetGeneralByTable((long)GeneralTableEnum.EXPENSE_TYPE);
+        protected List<d_general> policyList = new GeneralBLL().GetGeneralByTable((long)GeneralTableEnum.EXPENSE_OVERDRAFT_POLICY);
+        protected List<sys_resource> resList = new DAL.sys_resource_dal().GetSourceList();
+        protected CompanyBLL accBll = new CompanyBLL();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(Request.QueryString["cateId"]))
@@ -34,6 +37,7 @@ namespace EMT.DoneNOW.Web.SysSetting
             {
                 isAdd = false;
                 cateId = code.cate_id;
+                ruleList = codeBll.GetRuleListByCodeId(code.id);
             }
             if (cateId == 0) {
                 Response.Write("<script>alert('未获取到相关种类！');window.close();</script>");

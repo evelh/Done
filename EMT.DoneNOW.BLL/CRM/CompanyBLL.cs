@@ -1267,6 +1267,19 @@ namespace EMT.DoneNOW.BLL
 
             return result;
         }
+
+        public string GetNames(string ids)
+        {
+            string names = string.Empty;
+            var list = GetCompanyNames(ids);
+            if (list != null && list.Count > 0)
+                list.ForEach(_=> {
+                    names += _.show+',';
+                });
+            if (!string.IsNullOrEmpty(names))
+                names = names.Substring(0, names.Length-1);
+            return names;
+        }
         /// <summary>
         /// 获取到默认的客户（oid为0）
         /// </summary>

@@ -79,9 +79,13 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public d_general GetSingleGeneral(long id) {
+        public d_general GetSingleGeneral(long id,bool checkDelete = false) {
+            if (checkDelete)
+                return _dal.FindNoDeleteById(id);
             return _dal.FindById(id);
         }
+        
+
         /// <summary>
         /// 通过name和general_table_id获取一个d_general对象，并返回
         /// </summary>
@@ -397,6 +401,55 @@ namespace EMT.DoneNOW.BLL
                     return ERROR_CODE.TICKET_ISSUE_USED;
                 }
             }
+            else if (table_id == (int)GeneralTableEnum.GENERAL_LEDGER)
+            {
+                var proList = _dal.FindListBySql<d_cost_code>($"SELECT * from d_cost_code where delete_time = 0 and general_ledger_id =" + id.ToString());
+                if (proList != null && proList.Count > 0)
+                {
+                    n = proList.Count;
+                    return ERROR_CODE.LEDGER_USED;
+                }
+            }
+            else if (table_id == (int)GeneralTableEnum.PAYMENT_TERM)
+            {
+                var proList = _dal.FindListBySql<crm_quote>($"SELECT * from crm_quote where delete_time = 0 and payment_term_id =" + id.ToString());
+                if (proList != null && proList.Count > 0)
+                {
+                    n = proList.Count;
+                    return ERROR_CODE.PAY_TERM_USED;
+                }
+            }
+            else if (table_id == (int)GeneralTableEnum.PAYMENT_TYPE)
+            {
+                var proList = _dal.FindListBySql<crm_quote>($"SELECT * from crm_quote where delete_time = 0 and payment_type_id =" + id.ToString());
+                if (proList != null && proList.Count > 0)
+                {
+                    n = proList.Count;
+                    return ERROR_CODE.PAY_TYPE_USED;
+                }
+            }
+            else if (table_id == (int)GeneralTableEnum.PAYMENT_SHIP_TYPE)
+            {
+                var proList = _dal.FindListBySql<crm_quote>($"SELECT * from crm_quote where delete_time = 0 and shipping_type_id =" + id.ToString());
+                if (proList != null && proList.Count > 0)
+                {
+                    n = proList.Count;
+                    return ERROR_CODE.SHIP_TYPE_USED;
+                }
+            }
+            else if (table_id == (int)GeneralTableEnum.TAX_REGION)
+            {
+                if(!CheckTaxRegionDelete(id))
+                    return ERROR_CODE.TAX_REGION_USED;
+            }
+            else if (table_id == (int)GeneralTableEnum.QUOTE_ITEM_TAX_CATE)
+            {
+                if (!CheckTaxCateDelete(id))
+                    return ERROR_CODE.TAX_CATE_USED;
+            }
+
+
+
 
             return ERROR_CODE.SUCCESS;
         }
@@ -1011,6 +1064,60 @@ namespace EMT.DoneNOW.BLL
             }
 
             return true;
+        }
+        /// <summary>
+        /// 校验税区是否可以删除
+        /// </summary>
+        public bool CheckTaxRegionDelete(long id)
+        {
+            var thisGen = GetSingleGeneral(id,true);
+            if (thisGen == null||thisGen.is_system==1)
+                return true;
+            if (thisGen.general_table_id != (int)GeneralTableEnum.TAX_REGION)
+                return false;
+            var accList = _dal.FindListBySql<crm_account>("select id from crm_account where delete_time = 0 and tax_region_id = "+ id.ToString());
+            if (accList != null && accList.Count > 0)
+                return false;
+            return true;
+        }
+        /// <summary>
+        /// 校验税种是否可以删除
+        /// </summary>
+        public bool CheckTaxCateDelete(long id)
+        {
+            var thisGen = GetSingleGeneral(id, true);
+            if (thisGen == null || thisGen.is_system == 1)
+                return true;
+            if (thisGen.general_table_id != (int)GeneralTableEnum.QUOTE_ITEM_TAX_CATE)
+                return false;
+            var codeList = new CostCodeBLL().GetCodeByTaxCate(id);
+            if (codeList != null && codeList.Count > 0)
+                return false;
+            var roleList = _dal.FindListBySql<sys_role>("select id from sys_role where delete_time = 0 and tax_cate_id="+id.ToString());   //
+            if (roleList != null && roleList.Count > 0)
+                return false;
+            return true;
+        }
+        /// <summary>
+        /// 将当前税区设置成默认税区，
+        /// </summary>
+        public void SetDefaultRegion(long id,long userId)
+        {
+            var thisRegion = GetSingleGeneral(id,true);
+            if (thisRegion == null || thisRegion.general_table_id != (int)GeneralTableEnum.TAX_REGION)
+                return;
+            if (thisRegion.ext1 != "1")
+            {
+                thisRegion.ext1 = "1";
+                EditGeneral(thisRegion,userId);
+            }
+
+            List<d_general> defRegionList = _dal.FindListBySql($"SELECT * from d_general where general_table_id = { (int)GeneralTableEnum.TAX_REGION} and delete_time = 0 and ext1='1'");
+            if (defRegionList != null && defRegionList.Count > 0)
+                defRegionList.ForEach(_ => {
+                    _.ext1 = "0";
+                    EditGeneral(_, userId);
+                });
         }
     }
 }

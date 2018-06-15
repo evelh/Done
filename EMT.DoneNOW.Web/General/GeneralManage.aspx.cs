@@ -19,6 +19,7 @@ namespace EMT.DoneNOW.Web.General
         protected d_general thisGeneral;
         protected GeneralBLL genBll = new GeneralBLL();
         protected List<d_general> tempList = null;
+        protected List<d_cost_code> codeList;
         protected void Page_Load(object sender, EventArgs e)
         {
             long id = 0;
@@ -42,11 +43,16 @@ namespace EMT.DoneNOW.Web.General
             {
                 tempList = genBll.GetGeneralByTable((int)GeneralTableEnum.SLA_EVENT_TYPE);
             }
+            else if (tableId == (int)GeneralTableEnum.PAYMENT_SHIP_TYPE)
+            {
+                codeList = new CostCodeBLL().GetCodeByCate((int)DicEnum.COST_CODE_CATE.MATERIAL_COST_CODE);
+            }
             if (tableId == (int)GeneralTableEnum.PROJECT_STATUS && thisGeneral != null && thisGeneral.is_system == 1)
             {
                 Response.Write("<script>alert('系统状态，不能编辑！');window.close();</script>");
                 return;
             }
+            
 
         }
 
@@ -58,8 +64,22 @@ namespace EMT.DoneNOW.Web.General
             else
                 pageDic.is_active = 0;
             pageDic.general_table_id = tableId;
+            if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_TYPE)
+            {
+                if (!string.IsNullOrEmpty(Request.Form["isRei"]) && Request.Form["isRei"] == "on")
+                    pageDic.ext1 = "1";
+                else
+                    pageDic.ext1 = "0";
+            }
+            if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TAX_REGION)
+            {
+                if (!string.IsNullOrEmpty(Request.Form["isDef"]) && Request.Form["isDef"] == "on")
+                    pageDic.ext1 = "1";
+                else
+                    pageDic.ext1 = "0";
+            }
 
-            if (tableId == (int)GeneralTableEnum.TASK_LIBRARY_CATE)
+                if (tableId == (int)GeneralTableEnum.TASK_LIBRARY_CATE)
             {
                 pageDic.is_active = 1;
             }
@@ -71,7 +91,7 @@ namespace EMT.DoneNOW.Web.General
                 {
                     thisGeneral.sort_order = pageDic.sort_order;
                 }
-                else if (tableId == (int)GeneralTableEnum.TICKET_STATUS)
+                else if (tableId == (int)GeneralTableEnum.TICKET_STATUS|| tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_TYPE|| tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_TERM || tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_SHIP_TYPE|| tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TAX_REGION)
                 {
                     thisGeneral.ext1 = pageDic.ext1;
                 }
@@ -80,12 +100,17 @@ namespace EMT.DoneNOW.Web.General
                     thisGeneral.status_id = pageDic.status_id;
                     thisGeneral.remark= pageDic.remark;
                 }
+               
             }
             bool result = false;
             if (isAdd)
                 result = genBll.AddGeneral(pageDic, LoginUserId);
             else
                 result = genBll.EditGeneral(thisGeneral, LoginUserId);
+            if(tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TAX_REGION)
+            {
+                genBll.SetDefaultRegion((isAdd? pageDic.id:thisGeneral.id),LoginUserId);
+            }
 
             ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存{(result ? "成功" : "失败")}!');self.opener.location.reload();window.close();</script>");
         }

@@ -383,6 +383,45 @@
                             </div>
                         </div>
 
+                         <div class="Normal Section Collapsed Normal1" id="b11">
+                            <div class="Heading">
+                                <div class="Toggle Expand Toggle1" id="a11">
+                                    <div class="Vertical Vertical1"></div>
+                                    <div class="Horizontal"></div>
+                                </div>
+                                <span class="Text">项目和任务</span>
+                                <span></span>
+                            </div>
+                            <div class="Content Content1" id="c11">
+                                <div class="Large Column">
+                                    <div class="PageNavigationLinkGroup">
+                                        <div class="PageNavigationLinkColumn">
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_PROJECT_STATUS %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">项目状态</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TASK_LIBRARY_CATE %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">任务库种类</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                          
+                                        </div>
+                                        <div class="PageNavigationLinkColumn">
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TASK_LIBRARY %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">任务库</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TICKET_STATUS_SEARCH %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">任务/工单状态</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                              
+                                </div>
+                            </div>
+                        </div>
+
                         <!--第五个框-->
                         <%if (CheckAuth("SYS_FEATURES_SALES_OPPS"))
                             { %>
@@ -645,7 +684,33 @@
                                     <div class="PageNavigationLinkGroup">
                                         <div class="PageNavigationLinkColumn">
                                             <div class="PageNavigationLink">
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_WORK_TYPE %>" target="PageFrame1">计费代码</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                            <div class="PageNavigationLink">
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_LEDGER %>" target="PageFrame1">总账代码</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                            <div class="PageNavigationLink">
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_REGION_CATE %>" target="PageFrame1">税区 和税种</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                            <div class="PageNavigationLink">
                                                 <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.INVOICE_EMAIL_TEMPLATE %>" target="PageFrame1">发票邮件模板</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                        </div>
+                                        <div class="PageNavigationLinkColumn">
+                                            <div class="PageNavigationLink">
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_PAYMENT_TYPE %>" target="PageFrame1">支付类型</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                            <div class="PageNavigationLink">
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_PAYMENT_TERM %>" target="PageFrame1">支付条款</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                            <div class="PageNavigationLink">
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_SHIP_TYPE %>" target="PageFrame1">配送类型</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
                                         </div>

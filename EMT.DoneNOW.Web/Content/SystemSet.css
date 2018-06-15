@@ -1,0 +1,7 @@
+﻿body {
+}
+.GridBottomBorder {
+    border-bottom: 1px solid rgb(216, 216, 216);
+    border-top: 1px solid rgb(216, 216, 216);
+    border-right: 1px solid rgb(216, 216, 216);
+}

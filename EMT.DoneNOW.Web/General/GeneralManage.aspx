@@ -100,9 +100,64 @@
                         状态
                         <div>
                           <select id="status_id" name="status_id">
-                              <option value="1"></option>
-                              <option value="0" <% if (thisGeneral != null && thisGeneral.status_id == 0) {%> selected="selected" <% } %> ></option>
+                              <option value="1">激活</option>
+                              <option value="0" <% if (thisGeneral != null && thisGeneral.status_id == 0) {%> selected="selected" <% } %> >不激活</option>
                           </select>
+                        </div>
+                    </td>
+                </tr>
+                <%} %>
+                 <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_TYPE)
+                     {%>
+
+                 <tr>
+                    <td width="30%" class="FieldLabels">
+                        <div>
+                          报销  <input type="checkbox" id="isRei" name="isRei" <%if ( (thisGeneral != null && thisGeneral.ext1 == "1"))
+    {%> checked="checked"  <%} %> />
+                        </div>
+                    </td>
+                </tr>
+                <%} %>
+                 <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_TERM)
+                     {%>
+
+                 <tr>
+                    <td width="30%" class="FieldLabels">
+                        付款到期日
+                        <div>
+                         <input type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" id="ext1" name="ext1" style="width:220px;"  maxlength="3"  value="<%=thisGeneral != null && !string.IsNullOrEmpty(thisGeneral.ext1)? thisGeneral.ext1: "" %>" />
+                        </div>
+                    </td>
+                </tr>
+                <%} %>
+                <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_SHIP_TYPE)
+                        { %>
+                 <tr>
+                    <td width="30%" class="FieldLabels">
+                          物料代码
+                        <div>
+                           <select name="ext1" id="ext1" style="width:232px;">
+                                 <option></option>
+                                 <%if (codeList != null && codeList.Count > 0) {
+                                         foreach (var temp in codeList)
+                                         {%>
+                                 <option value="<%=temp.id %>" <%if (thisGeneral != null && thisGeneral.ext1 == temp.id.ToString()) {%> selected="selected" <%} %>><%=temp.name %></option>
+                                        <% }
+                                     } %>
+                             </select>
+                        </div>
+                    </td>
+                </tr>
+                <%} %>
+                   <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TAX_REGION)
+                     {%>
+
+                 <tr>
+                    <td width="30%" class="FieldLabels">
+                        <div>
+                          默认税区  <input type="checkbox" id="isDef" name="isDef" <%if ( (thisGeneral != null && thisGeneral.ext1 == "1"))
+    {%> checked="checked"  <%} %> />
                         </div>
                     </td>
                 </tr>

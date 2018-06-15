@@ -95,6 +95,8 @@ namespace EMT.DoneNOW.Core
         public SByte excluded_new_contract { get; set; }
         [DataMember]
         public SByte? is_regular_time { get; set; }
+        [DataMember]
+        public SByte is_system { get; set; }
 
 
 

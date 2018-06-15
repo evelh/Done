@@ -21,6 +21,7 @@ namespace EMT.DoneNOW.Web
                 case "CheckCodeDelete": CheckCodeDelete(context); break;  // 校验成本代码是否可以删除
                 case "DeleteCode": DeleteCode(context); break;            // 删除成本代码
                 case "ChangeCodeLedger": ChangeCodeLedger(context); break;            // 修改物料代码的总账代码
+                case "GetCodeByIds": GetCodeByIds(context); break;            // 根据Id 获取相关的代码
                     
                 default:break;
             }
@@ -79,6 +80,18 @@ namespace EMT.DoneNOW.Web
             WriteResponseJson(result);
         }
 
+        void GetCodeByIds(HttpContext context)
+        {
+            string ids = context.Request.QueryString["ids"];
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var codeList = codeBll.GetCodeByIds(ids);
+                if (codeList != null && codeList.Count > 0)
+                {
+                    WriteResponseJson(codeList);
+                }
+            }
+        }
         
 
     }

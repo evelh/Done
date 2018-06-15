@@ -53,7 +53,7 @@
             </ul>
         </div>
         <%} %>
-        <div style="left: 0; overflow-x: auto; overflow-y: auto; position: fixed; right: 0; bottom: 0; top: 116px;">
+        <div style="left: 0; overflow-x: auto; overflow-y: auto; position: fixed; right: 0; bottom: 0; top: 133px;">
             <div class="content clear" id="GeneralDiv">
                 <div class="information clear">
                     <div>
@@ -315,7 +315,50 @@
   <% if (cateId == (int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.EXPENSE_CATEGORY&&!isAdd)
                          { %>
                <div class="content clear" style="display: none;" id="RuleDiv">
-                   <iframe src="" style="width:100%;height:100%;border:0px;min-height:600px;"></iframe>
+                     <div class="header-title">
+                    <input type="hidden" id="codeId" />
+                    <input type="hidden" id="codeIdHidden" />
+                    <ul>
+                        <li onclick="AddCodeRule()"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>新增</li>
+                    </ul>
+                </div>
+                <div class="GridContainer">
+                    <div style="height: 832px; width: 100%; overflow: auto; z-index: 0;">
+                        <table class="dataGridBody" style="width: 100%; border-collapse: collapse;">
+                            <tbody>
+                                <tr class="dataGridHeader">
+
+                                    <td align="center" style="width: 15%;">规则名称</td>
+                                    <td align="center" style="width: 15%;">部门</td>
+                                    <td align="center" style="width: 15%;">员工</td>
+                                    <td align="center" style="width: 30%;">客户</td>
+                                    <td align="center" style="width: 15%;">超支政策</td>
+                                    <td align="center" style="width: 10%;">限制</td>
+                                </tr>
+
+                                <% if (ruleList != null && ruleList.Count > 0)
+                                    {
+                                        foreach (var rule in ruleList)
+                                        {
+                                            var thisDep = depList?.FirstOrDefault(_ => _.id == rule.department_id);
+                                            var thisRes = resList?.FirstOrDefault(_ => _.id == rule.resource_id);
+                                            var thisPolicy = policyList?.FirstOrDefault(_ => _.id == rule.overdraft_policy_id);
+                                %>
+                                <tr class="dataGridBody" style="cursor: pointer;" data-val="<%=rule.id %>" onclick="ShowCodeRule('<%=rule.id %>')" >
+                                    <td align="center"><%=code!=null?code.name:"" %></td>
+                                    <td align="center"><%=thisDep!=null?thisDep.name:"" %></td>
+                                    <td align="center"><%=thisRes!=null?thisRes.name:"" %></td>
+                                    <td align="center"><%=!string.IsNullOrEmpty(rule.account_ids)?accBll.GetNames(rule.account_ids):"" %></td>
+                                    <td align="center"><%=thisPolicy!=null?thisPolicy.name:"" %></td>
+                                    <td align="center"><%=rule.max!=null?((decimal)rule.max).ToString("#0.00"):"" %></td>
+
+                                </tr>
+                                <% }
+                                    } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                </div>
             <%} %>
         </div>
@@ -480,5 +523,16 @@
         return true;
 
     })
+
+
+    function AddCodeRule() {
+        <%if (code != null) {%>
+        window.open("../SysSetting/CodeRuleManage.aspx?codeId=<%=code.id.ToString() %>", "codeRuleAdd", 'left=0,top=0,location=no,status=no,width=700,height=500', false);
+    <%} %>
+      
+    }
+    function ShowCodeRule(id) {
+        window.open("../SysSetting/CodeRuleManage.aspx?id=" + id, "codeRuleEdit", 'left=0,top=0,location=no,status=no,width=700,height=500', false);
+    }
     
 </script>

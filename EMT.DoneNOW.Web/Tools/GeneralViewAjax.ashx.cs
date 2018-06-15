@@ -160,6 +160,30 @@ namespace EMT.DoneNOW.Web
             {
                 context.Response.Write("有" + n + "个项目关联此状态，不能删除!");
             }
+            else if (result == DTO.ERROR_CODE.LEDGER_USED)
+            {
+                context.Response.Write("有" + n + "个计费成本关联此总账代码，不能删除!");
+            }
+            else if (result == DTO.ERROR_CODE.PAY_TERM_USED)
+            {
+                context.Response.Write("有" + n + "个报价项关联此付款期限 ，不能删除!");
+            }
+            else if (result == DTO.ERROR_CODE.PAY_TYPE_USED)
+            {
+                context.Response.Write("有" + n + "个报价项关联此付款类型，不能删除!");
+            }
+            else if (result == DTO.ERROR_CODE.SHIP_TYPE_USED)
+            {
+                context.Response.Write("有" + n + "个报价项关联此配送类型，不能删除!");
+            }
+            else if (result == DTO.ERROR_CODE.TAX_REGION_USED)
+            {
+                context.Response.Write("税区被使用，不能删除!");
+            }
+            else if (result == DTO.ERROR_CODE.TAX_CATE_USED)
+            {
+                context.Response.Write("税种被使用，不能删除!");
+            }
             else if (result == DTO.ERROR_CODE.SUCCESS)
             {
                 Delete(context, general_id, general_table_id);
