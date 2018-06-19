@@ -692,6 +692,7 @@
     <Content Include="SysSetting\CheckListLibrary.aspx" />
     <Content Include="SysSetting\CodeRuleManage.aspx" />
     <Content Include="SysSetting\CostCodeManage.aspx" />
+    <Content Include="SysSetting\DuplicateTicket.aspx" />
     <Content Include="SysSetting\EditServiceAlert.aspx" />
     <Content Include="SysSetting\FormTemplateManage.aspx" />
     <Content Include="SysSetting\Holiday.aspx" />
@@ -701,6 +702,8 @@
     <Content Include="SysSetting\LogoSearch.aspx" />
     <Content Include="SysSetting\MergeAccount.aspx" />
     <Content Include="SysSetting\MergeContact.aspx" />
+    <Content Include="SysSetting\MileageDefaults.aspx" />
+    <Content Include="SysSetting\PurchasingTeam.aspx" />
     <Content Include="SysSetting\ResourceAssPolicy.aspx" />
     <Content Include="SysSetting\ResourceAssPolicyEdit.aspx" />
     <Content Include="SysSetting\ResourceDicCateForm.aspx" />
@@ -2529,6 +2532,13 @@
     <Compile Include="SysSetting\CostCodeManage.aspx.designer.cs">
       <DependentUpon>CostCodeManage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\DuplicateTicket.aspx.cs">
+      <DependentUpon>DuplicateTicket.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\DuplicateTicket.aspx.designer.cs">
+      <DependentUpon>DuplicateTicket.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SysSetting\EditServiceAlert.aspx.cs">
       <DependentUpon>EditServiceAlert.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2591,6 +2601,20 @@
     </Compile>
     <Compile Include="SysSetting\MergeContact.aspx.designer.cs">
       <DependentUpon>MergeContact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\MileageDefaults.aspx.cs">
+      <DependentUpon>MileageDefaults.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\MileageDefaults.aspx.designer.cs">
+      <DependentUpon>MileageDefaults.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\PurchasingTeam.aspx.cs">
+      <DependentUpon>PurchasingTeam.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\PurchasingTeam.aspx.designer.cs">
+      <DependentUpon>PurchasingTeam.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\ResourceAssPolicy.aspx.cs">
       <DependentUpon>ResourceAssPolicy.aspx</DependentUpon>

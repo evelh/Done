@@ -17,11 +17,14 @@ namespace EMT.DoneNOW.DTO
         CRM_OPPORTUNITY_WIN_REASON = 17,     // 赢得商机是否需要填写赢得原因
         SDK_EXPENSE_SHOW_WORK_TYPE=18,       // 新增编辑费用时是否显示工作类型
         INVENTORY_ACCOUNTING_METHOD=20,      // 系统配置：库存记账方法
+        PURCHASING_TEAM =21,                 // 采购团队
         CTT_COST_APPROVAL_VALUE = 22,        // 新增修改成本时，如果总价在这个范围内则状态为原来状态，否则状态是待审批
         ALL_USER_ASSIGN_NODE_TOTAASL = 25,   // 允许用户分配非部门工作类型
         SDK_CHECK_RES = 26,                  // 保存任务时检查员工的可用性
         SDK_DEPARTMENT_REQUIRE = 27,         // 分配项目任务/问题时需要部门
         PRO_TASK_DONE_REASON = 28,           // 完成Task时是否必填原因
+        DUPLICATE_TICKET_HANDLING = 36,      // 重复工单处理设置 
+        MILEAGE_KILOMETRAGE_DEFAULTS = 39,   // 里程默认值设置
         SDK_TICKER_MERGE_QUEUE = 40,         // 工单合并-移动合并工单（源工单）到以下队列（空则不移动）
         SDK_TICKET_ADD_LABOUR = 41,          // 已完成工单是否允许添加工时
         SDK_TICKET_STATUS_LABOUR = 44,       // 添加工时的时候是否 必须将工单状态改为非“new”

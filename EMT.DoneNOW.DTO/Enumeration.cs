@@ -1058,6 +1058,7 @@ namespace EMT.DoneNOW.DTO
             CALLBACK = 812,         // 查找带回
             BOOLEAN = 813,          // 布尔值
             MUILT_CALLBACK = 814,   // 多选查找带回
+            MUILT_LINE = 815,       // 多行文本
             NUMBER_EQUAL = 816,     // 数值(做等于判断)
             TIMESPAN = 817,         // 日期-时间戳(做范围判断)
             UN_EQUAL = 818,         // 不等于

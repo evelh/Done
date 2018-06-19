@@ -66,6 +66,10 @@
                                 <div class="Large Column">
                                     <div class="PageNavigationLinkGroup">
                                         <div class="PageNavigationLinkColumn">
+                                             <div class="PageNavigationLink">
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../SysSetting/SystemSetting" target="PageFrame1">系统设置</a>
+                                                <div class="StandardText"></div>
+                                            </div>
                                             <div class="PageNavigationLink">
                                                 <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_FORM_TEMP_SEARCH %>" target="PageFrame1">表单模板</a>
                                                 <div class="StandardText"></div>

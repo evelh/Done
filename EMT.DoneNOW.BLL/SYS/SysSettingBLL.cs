@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DTO;
 using EMT.DoneNOW.DAL;
+using System.Data;
 
 namespace EMT.DoneNOW.BLL
 {
@@ -67,7 +68,23 @@ namespace EMT.DoneNOW.BLL
 
         public List<sys_system_setting> GetAllSet()
         {
-            return dal.FindListBySql("SELECT * from sys_system_setting where is_visible=1");
+            return dal.FindListBySql("SELECT * from sys_system_setting where is_visible=1 ORDER BY sort_order");
+        }
+        /// <summary>
+        /// 获取相关实体
+        /// </summary>
+        public List<DictionaryEntryDto> GetDtoList(string sql)
+        {
+            List<DictionaryEntryDto> dtoList = new List<DictionaryEntryDto>();
+            if (string.IsNullOrEmpty(sql))
+                return dtoList;
+            var table = dal.ExecuteDataTable(sql);
+            if (table != null && table.Rows.Count > 0)
+            {
+                dtoList = (from  DataRow t in table.Rows
+                           select new DictionaryEntryDto { val=t[0].ToString(),show = t[1].ToString()}).ToList();
+            }
+            return dtoList;
         }
     }
 }
