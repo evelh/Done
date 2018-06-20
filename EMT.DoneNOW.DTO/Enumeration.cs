@@ -810,7 +810,7 @@ namespace EMT.DoneNOW.DTO
             REPORT_CONTRACT_BILL_PROJECT_PROFIT = 1677,      // 报表-合同-计费-项目利润率摘要报表
             PROJECT_DASHBOARD_TIMESHEET = 1678,              // 项目-仪表板-漏工时表
             PROJECT_DASHBOARD_MY_PROJECT_ISSUE = 1679,       // 项目-仪表板-我的项目问题
-
+            USER_DEFINED_FIELD = 1680,                      // 用户自定义字段
             QUOTE_EMAIL_TEMPLATE = 1682,                    // 报价邮件模板
             INVOICE_EMAIL_TEMPLATE = 1683,                  // 发票邮件模板
             SYS_FORM_TEMP_SEARCH = 1684,             // 系统设置-表单模板查询
@@ -832,6 +832,11 @@ namespace EMT.DoneNOW.DTO
             SYSTEM_TICKET_SUB_ISSUE_SEARCH = 1700,         // 系统设置-问题和子问题类型-子问题查询
             SYSTEM_CHANGE_BOARD_SEARCH = 1701,             // 系统设置-变更委员会查询
             SYSTEM_CHECK_LIB_SEARCH = 1702,                // 系统设置-系统设置-检查单库查询
+
+            SHARED_DASHBOARD = 1718,                        // 共享仪表板管理
+            SHARED_DASHBOARD_RESOURCE = 1719,               // 共享仪表板管理-发布对象
+            SECURITY_LEVEL_CALLBACK = 1723,                 // 安全等级查找带回
+            DEPARTMENT_CALLBACK = 1741,                     // 部门查找带回
 
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
@@ -2028,7 +2033,8 @@ namespace EMT.DoneNOW.DTO
         REPORT_PROJECT_TASK_RES_ACHIEVEMENTS = 286,     // 报表-项目-任务-任务员工绩效分析
         REPORT_CONTRACT_BILL_PROJECT_PROFIT = 287,      // 报表-合同-计费-项目利润率摘要报表
         PROJECT_DASHBOARD_TIMESHEET = 288,              // 项目-仪表板-漏工时表     
-        PROJECT_DASHBOARD_MY_PROJECT_ISSUE = 289,       // 项目-仪表板-我的项目问题      
+        PROJECT_DASHBOARD_MY_PROJECT_ISSUE = 289,       // 项目-仪表板-我的项目问题  
+        UserDefinedField = 290,                         // 用户自定义字段
 
         Quote_Email_Tmpl = 292,                         //报价邮件模板
         Invoice_Email_Tmpl = 293,                       //发票邮件模板
@@ -2051,6 +2057,10 @@ namespace EMT.DoneNOW.DTO
         SYSTEM_TICKET_SUB_ISSUE_SEARCH = 310,         // 系统设置-问题和子问题类型-子问题查询  
         SYSTEM_CHANGE_BOARD_SEARCH = 311,             // 系统设置-变更委员会查询   
         SYSTEM_CHECK_LIB_SEARCH = 312,                // 系统设置-系统设置-检查单库查询  
+
+        SharedDashboard = 328,                      // 共享仪表板
+        SharedDashboardResource = 329,              // 共享仪表板共享用户
+        SecurityLevelCallback = 333,                // 安全等级查找带回
 
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理

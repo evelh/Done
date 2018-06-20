@@ -15,6 +15,7 @@ namespace EMT.DoneNOW.DTO
         public string name;
         public int theme_id;
         public sbyte auto_place;
+        public sbyte is_shared;
         public List<DashboardWidgetDto> widgetList = new List<DashboardWidgetDto>();
     }
 

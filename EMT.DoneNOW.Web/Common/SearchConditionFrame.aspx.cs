@@ -92,6 +92,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.RESOURCE:
                     currentQuery.page_name = "员工管理";
                     break;
+                case (int)DicEnum.QUERY_CATE.USER_DEFINED_FIELD:
+                    currentQuery.page_name = "用户自定义字段";
+                    break;
                 case (int)DicEnum.QUERY_CATE.SECURITY_LEVEL:
                     currentQuery.page_name = "安全等级管理";
                     break;

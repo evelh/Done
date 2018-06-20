@@ -349,6 +349,7 @@ var windowObj = {
     logo:"logo",
     board: "board", 
     CheckListLibrary: "CheckListLibrary",
+    shareDashboard: "shareDashboard",
 }
 var windowType = {
     blank: '_blank',

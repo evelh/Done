@@ -24,6 +24,9 @@ namespace EMT.DoneNOW.Web
                 case "GetInitailDashboard":
                     GetInitailDashboard();
                     break;
+                case "GetDashboardList":
+                    GetDashboardList();
+                    break;
                 case "GetDashboard":
                     GetDashborad();
                     break;
@@ -57,8 +60,18 @@ namespace EMT.DoneNOW.Web
                 case "DeleteDashboard":
                     DeleteDashboard();
                     break;
+                case "DeleteShareDashboard":
+                    DeleteShareDashboard();
+                    break;
                 case "GetSysWidget":
                     GetSysWidget();
+                    break;
+
+                case "CloseDashboard":
+                    CloseDashboard();
+                    break;
+                case "AddClosedDashboard":
+                    AddClosedDashboard();
                     break;
 
                 case "GetWidgetEntityList":
@@ -91,6 +104,12 @@ namespace EMT.DoneNOW.Web
                 case "GetColorThemeList":
                     GetColorThemeList();
                     break;
+                case "GetWidgetMoveDashboard":
+                    GetWidgetMoveDashboard();
+                    break;
+                case "MoveWidget":
+                    MoveWidget();
+                    break;
                 default:
                     WriteResponseJson("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     break;
@@ -118,6 +137,18 @@ namespace EMT.DoneNOW.Web
         }
 
         /// <summary>
+        /// 分别获取用户全部、系统默认、用户关闭的仪表板列表
+        /// </summary>
+        private void GetDashboardList()
+        {
+            List<List<DashboardSummaryInfoDto>> allList = new List<List<DashboardSummaryInfoDto>>();
+            allList.Add(bll.GetUserAllDashboardList(LoginUserId));
+            allList.Add(bll.GetSystemDefaultDashboardList());
+            allList.Add(bll.GetUserClosedDashboardList(LoginUserId));
+            WriteResponseJson(allList);
+        }
+
+        /// <summary>
         /// 获取一个仪表板信息
         /// </summary>
         private void GetDashborad()
@@ -134,6 +165,25 @@ namespace EMT.DoneNOW.Web
         {
             var id = long.Parse(request.QueryString["id"]);
             WriteResponseJson(bll.GetDashboardInfo(id, LoginUserId));
+        }
+
+        /// <summary>
+        /// 关闭仪表板
+        /// </summary>
+        private void CloseDashboard()
+        {
+            long id = long.Parse(request.QueryString["id"]);
+            WriteResponseJson(bll.CloseDashboard(id, LoginUserId));
+        }
+
+        /// <summary>
+        /// 重新打开关闭的仪表板
+        /// </summary>
+        private void AddClosedDashboard()
+        {
+            long id = long.Parse(request.QueryString["id"]);
+            WriteResponseJson(bll.AddClosedDashboard(id, LoginUserId));
+
         }
 
         /// <summary>
@@ -173,38 +223,116 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void SaveDashboard()
         {
-            sys_dashboard dashboard = new sys_dashboard();
-            dashboard.id = 0;
-
-            long id;
-            if (long.TryParse(request.QueryString["id"], out id))
+            if (request.QueryString["type"] == "0")     // 新增或设置仪表板
             {
-                dashboard = bll.GetDashboard(id);
-            }
-            else
-                WriteResponseJson(null);
+                sys_dashboard dashboard = new sys_dashboard();
+                dashboard.id = 0;
 
-            dashboard.name = request.QueryString["name"];
-            dashboard.theme_id = int.Parse(request.QueryString["theme_id"]);
-            dashboard.widget_auto_place = sbyte.Parse(request.QueryString["widget_auto_place"]);
-            if (!string.IsNullOrEmpty(request.QueryString["filter_id"]))
-            {
-                dashboard.filter_id = long.Parse(request.QueryString["filter_id"]);
-                dashboard.filter_default_value= long.Parse(request.QueryString["default"]);
-                dashboard.limit_type_id = int.Parse(request.QueryString["limit_type"]);
-                if (dashboard.limit_type_id == (int)DicEnum.DASHBOARD_FILTER_TYPE.CUSTOM)
+                long id;
+                if (long.TryParse(request.QueryString["id"], out id))
                 {
-                    dashboard.limit_value = request.QueryString["limit_value"];
+                    if (id != 0)
+                        dashboard = bll.GetDashboard(id);
                 }
-            }
+                else
+                    WriteResponseJson(null);
 
-            WriteResponseJson(bll.AddEditDashboard(dashboard, LoginUserId));
+                dashboard.name = request.QueryString["name"];
+                dashboard.theme_id = int.Parse(request.QueryString["theme_id"]);
+                dashboard.widget_auto_place = sbyte.Parse(request.QueryString["widget_auto_place"]);
+                if (!string.IsNullOrEmpty(request.QueryString["filter_id"]))
+                {
+                    dashboard.filter_id = long.Parse(request.QueryString["filter_id"]);
+                    dashboard.filter_default_value = long.Parse(request.QueryString["default"]);
+                    dashboard.limit_type_id = int.Parse(request.QueryString["limit_type"]);
+                    if (dashboard.limit_type_id == (int)DicEnum.DASHBOARD_FILTER_TYPE.CUSTOM)
+                    {
+                        dashboard.limit_value = request.QueryString["limit_value"];
+                    }
+                }
+
+                WriteResponseJson(bll.AddEditDashboard(dashboard, LoginUserId));
+            }
+            else if (request.QueryString["type"] == "1" || request.QueryString["type"] == "4")    // 复制仪表板
+            {
+                sys_dashboard dashboard = new sys_dashboard();
+                dashboard.id = 0;
+                long id = long.Parse(request.QueryString["id"]);
+
+                dashboard.name = request.QueryString["name"];
+                dashboard.theme_id = int.Parse(request.QueryString["theme_id"]);
+                dashboard.widget_auto_place = sbyte.Parse(request.QueryString["widget_auto_place"]);
+                if (!string.IsNullOrEmpty(request.QueryString["filter_id"]))
+                {
+                    dashboard.filter_id = long.Parse(request.QueryString["filter_id"]);
+                    dashboard.filter_default_value = long.Parse(request.QueryString["default"]);
+                    dashboard.limit_type_id = int.Parse(request.QueryString["limit_type"]);
+                    if (dashboard.limit_type_id == (int)DicEnum.DASHBOARD_FILTER_TYPE.CUSTOM)
+                    {
+                        dashboard.limit_value = request.QueryString["limit_value"];
+                    }
+                }
+                if (request.QueryString["type"] == "4")
+                    dashboard.is_shared = 1;
+
+                WriteResponseJson(bll.CopyDashboardSetting(dashboard, id, LoginUserId));
+            }
+            else if (request.QueryString["type"] == "2")    // 设置关闭的仪表板
+            {
+                sys_dashboard dashboard = new sys_dashboard();
+                dashboard.id = long.Parse(request.QueryString["id"]);
+
+                dashboard.name = request.QueryString["name"];
+                dashboard.theme_id = int.Parse(request.QueryString["theme_id"]);
+                dashboard.widget_auto_place = sbyte.Parse(request.QueryString["widget_auto_place"]);
+                if (!string.IsNullOrEmpty(request.QueryString["filter_id"]))
+                {
+                    dashboard.filter_id = long.Parse(request.QueryString["filter_id"]);
+                    dashboard.filter_default_value = long.Parse(request.QueryString["default"]);
+                    dashboard.limit_type_id = int.Parse(request.QueryString["limit_type"]);
+                    if (dashboard.limit_type_id == (int)DicEnum.DASHBOARD_FILTER_TYPE.CUSTOM)
+                    {
+                        dashboard.limit_value = request.QueryString["limit_value"];
+                    }
+                }
+
+                WriteResponseJson(bll.AddClosedDashboardSetting(dashboard, LoginUserId));
+            }
+            else if (request.QueryString["type"] == "3")    // 设置关闭的仪表板
+            {
+                sys_dashboard dashboard = new sys_dashboard();
+                dashboard.id = 0;
+
+                dashboard.is_shared = 1;
+                dashboard.name = request.QueryString["name"];
+                dashboard.theme_id = int.Parse(request.QueryString["theme_id"]);
+                dashboard.widget_auto_place = sbyte.Parse(request.QueryString["widget_auto_place"]);
+                if (!string.IsNullOrEmpty(request.QueryString["filter_id"]))
+                {
+                    dashboard.filter_id = long.Parse(request.QueryString["filter_id"]);
+                    dashboard.filter_default_value = long.Parse(request.QueryString["default"]);
+                    dashboard.limit_type_id = int.Parse(request.QueryString["limit_type"]);
+                    if (dashboard.limit_type_id == (int)DicEnum.DASHBOARD_FILTER_TYPE.CUSTOM)
+                    {
+                        dashboard.limit_value = request.QueryString["limit_value"];
+                    }
+                }
+
+                WriteResponseJson(bll.AddEditDashboard(dashboard, LoginUserId));
+            }
         }
 
         /// <summary>
         /// 删除仪表板
         /// </summary>
         private void DeleteDashboard()
+        {
+            var id = long.Parse(request.QueryString["id"]);
+            var info = bll.DeleteDashboard(id, LoginUserId);
+            WriteResponseJson(info);
+        }
+
+        private void DeleteShareDashboard()
         {
             var id = long.Parse(request.QueryString["id"]);
             var info = bll.DeleteDashboard(id, LoginUserId);
@@ -667,6 +795,25 @@ namespace EMT.DoneNOW.Web
         private void GetColorThemeList()
         {
             WriteResponseJson(bll.GetWidgetColorThemeList(LoginUserId));
+        }
+
+        /// <summary>
+        /// 获取小窗口可移动的仪表板列表
+        /// </summary>
+        private void GetWidgetMoveDashboard()
+        {
+            long id = long.Parse(request.QueryString["id"]);
+            WriteResponseJson(bll.GetWidgetMoveDashboard(id, LoginUserId));
+        }
+
+        /// <summary>
+        /// 移动小窗口到其他仪表板
+        /// </summary>
+        private void MoveWidget()
+        {
+            long id = long.Parse(request.QueryString["id"]);
+            long dsid = long.Parse(request.QueryString["dashboardid"]);
+            WriteResponseJson(bll.MoveWidget(id, dsid, LoginUserId));
         }
     }
 }

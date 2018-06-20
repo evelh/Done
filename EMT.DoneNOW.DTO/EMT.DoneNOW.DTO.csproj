@@ -67,6 +67,7 @@
     <Compile Include="ContractServiceEntityDto.cs" />
     <Compile Include="DashboardDto.cs" />
     <Compile Include="DashboardInfoDto.cs" />
+    <Compile Include="DashboardSummaryInfoDto.cs" />
     <Compile Include="DataPermissionDto.cs" />
     <Compile Include="DictionaryEntryDto.cs" />
     <Compile Include="EnumAuthority.cs" />

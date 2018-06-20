@@ -1,0 +1,3 @@
+﻿$(function () {
+    $("#PrintLi").parent().remove();
+})

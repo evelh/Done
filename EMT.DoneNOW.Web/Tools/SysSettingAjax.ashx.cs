@@ -36,6 +36,15 @@ namespace EMT.DoneNOW.Web
                 case "CheckBoardName":
                     CheckBoardName(context);
                     break;
+                case "UdfStatus":
+                    GetUdfStatus();
+                    break;
+                case "UpdateUdfStatus":
+                    UpdateUdfStatus();
+                    break;
+                case "DeleteUdf":
+                    DeleteUdf();
+                    break;
                 default:
                     break;
             }
@@ -103,6 +112,35 @@ namespace EMT.DoneNOW.Web
         private void DeleteQuoteEmailTmpl()
         {
             WriteResponseJson(new QuoteAndInvoiceEmailTempBLL().DeleteTmpl(long.Parse(request.QueryString["id"]), LoginUserId));
+        }
+
+        /// <summary>
+        /// 查询自定义字段激活状态
+        /// </summary>
+        private void GetUdfStatus()
+        {
+            var bll = new UserDefinedFieldsBLL();
+            WriteResponseJson(bll.GetUdfIsActive(long.Parse(request.QueryString["id"])));
+        }
+
+        /// <summary>
+        /// 激活/取消激活自定义字段
+        /// </summary>
+        private void UpdateUdfStatus()
+        {
+            bool active = false;
+            if (!string.IsNullOrEmpty(request.QueryString["active"]) && request.QueryString["active"] == "1")
+                active = true;
+
+            WriteResponseJson(new UserDefinedFieldsBLL().UpdateUdfStatus(long.Parse(request.QueryString["id"]), active, LoginUserId));
+        }
+
+        /// <summary>
+        /// 删除自定义字段
+        /// </summary>
+        private void DeleteUdf()
+        {
+            WriteResponseJson(new UserDefinedFieldsBLL().DeleteUdf(long.Parse(request.QueryString["id"]), LoginUserId));
         }
 
         void CheckBoardName(HttpContext context)

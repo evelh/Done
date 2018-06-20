@@ -656,7 +656,7 @@ input[type=text], input[type=password] {
 /*closetable*/
 #CloseTable {
     width: 510px;
-    height: 200px;
+    height: 220px;
     margin-left: -255px;
     margin-top: -100px;
     color: #666;

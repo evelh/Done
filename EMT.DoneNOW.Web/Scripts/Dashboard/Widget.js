@@ -58,6 +58,42 @@ function CopyWidget(id) {
     })
 }
 
+function MoveWidget(id) {
+    requestData("/Tools/DashboardAjax.ashx?act=GetWidgetMoveDashboard&id=" + id, null, function (data) {
+        var str = '';
+        for (var i = 0; i < data.length; i++) {
+            str += '<option value="' + data[i].val + '">' + data[i].show + '</option>';
+        }
+        $("#MoveWidgetMoveTo")[0].innerHTML = str;
+        $("#cover").show();
+        $("#MoveWidget").show();
+
+        $("#MoveWidgetFinish").unbind("click").bind("click", function () {
+            var selval = $("#MoveWidgetMoveTo").val();
+            for (var i = 0; i < data.length; i++) {
+                if (selval == data[i].val) {
+                    if (data[i].select >= 12) {
+                        LayerMsg("该仪表板内小窗口数已达到12个，请选择其他仪表板。");
+                        return;
+                    }
+                    requestData("/Tools/DashboardAjax.ashx?act=MoveWidget&id=" + id + "&dashboardid=" + selval, null, function (data) {
+                        if (data == true) {
+                            $("#cover").hide();
+                            $("#MoveWidget").hide();
+                            RefreshDashboard();
+                        } else {
+                            $("#cover").hide();
+                            $("#MoveWidget").hide();
+                            LayerMsg("移动失败！");
+                            return;
+                        }
+                    })
+                }
+            }
+        })
+    })
+}
+
 function DeleteWidget(id) {
     LayerConfirmOk("删除操作将不能恢复，是否继续?", "确定", "取消", function () {
         requestData("/Tools/DashboardAjax.ashx?act=DeleteWidget&id=" + id, null, function (data) {
@@ -85,7 +121,7 @@ var widgetEntityList;
 var widgetTypeList;
 var widgetDynamicDateTypes;
 function AddWidgetStep0() {
-    if ($('#dshli' + CurrentDashboardId()).children('.WidgetShell').length >= 12) {
+    if ($('#dshli' + CurrentDashboardId()).children('.WidgetShell').length > 12) {
         $('#cover').show();
         $("#AddWidgetRemind").show();
         return;

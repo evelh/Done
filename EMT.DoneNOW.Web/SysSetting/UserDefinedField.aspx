@@ -139,7 +139,7 @@
                                         </tr>
                                         <%if (udfField != null && udfField.data_type == (int)EMT.DoneNOW.DTO.DicEnum.UDF_DATA_TYPE.LIST) {
                                                 foreach(var val in udfField.list) { %>
-                                        <tr id="listVale<%=val.id %>"><td><%=val.name %><input type="hidden" name="listValShowe<%=val.id %>" value="<%=val.name %>" /></td><td><%=val.sort_order %><input type="hidden" name="listValOrdere<%=val.id %>" value="<%=val.sort_order %>" /></td><td><%=val.is_default==1?"是":"否" %><input type="hidden" name="listValDefte<%=val.id %>" value="<%=val.is_default %>" /></td><td><input type="button" value="删除" onclick="DeleteListVal(<%=val.id%>)" /></td></tr>
+                                        <tr id="listVale<%=val.id %>"><td><%=val.name %><input type="hidden" name="listValShowe<%=val.id %>" value="<%=val.name %>" /></td><td><%=val.sort_order %><input type="hidden" name="listValOrdere<%=val.id %>" value="<%=val.sort_order %>" /></td><td id="dft<%=val.id %>"><%=val.is_default==1?"是":"否" %></td><td><input type="hidden" name="listValDefte<%=val.id %>" value="<%=val.is_default %>" /><input type="button" value="删除" onclick="DeleteListVal(<%=val.id%>)" /></td></tr>
                                         <%}
                                             } %>
                                         <tr id="listAdd">
@@ -256,7 +256,7 @@
         })
         var listIdx = 1;
         var deftIdx = 0;
-        <%if (udfField != null) {
+        <%if (udfField != null && udfField.list != null) {
             var find = udfField.list.Find(_ => _.is_default == 1);
             if (find != null) { %>
         deftIdx=<%=find.id%>

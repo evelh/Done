@@ -43,16 +43,20 @@ function CurrentDashboardId() {
         return null;
     return id;
 }
-function AddWidget(dom, wgt) {
+function AddWidget(dom, wgt, share) {
     var str = '<div  data-size="' + wgt.width + '" id="widget' + wgt.widgetId + '" class="WidgetShell">';
     str += '<div class="LoadingWidget"></div>';
     str += '<div class="LittleBorder dad-draggable-area"></div>';
     str += '<div class="Draggable"></div>';
     str += '<div class="Content"></div>';
     str += '<div class="ContainerMenu"><span></span><span></span><span></span><ul class="MenuBox">';
-    str += '<li title="删除" onclick="DeleteWidget(' + wgt.widgetId + ')"><span class="WidgetMenuIcon WidgetMenuIconDelete"></span><span class="WidgetMenuText">删除</span></li><li title="复制" onclick="CopyWidget(' + wgt.widgetId + ')"><span class="WidgetMenuIcon WidgetMenuIconCopy"></span><span class="WidgetMenuText">复制</span></li>';
-    str += '<li title="设置" onclick="SettingWidget(' + wgt.widgetId + ')"><span class="WidgetMenuIcon WidgetMenuIconSetting"></span><span class="WidgetMenuText">设置</span></li><li title="移至其他仪表板"><span class="WidgetMenuIcon WidgetMenuIconMove"></span><span class="WidgetMenuText">移至其他仪表板</span></li>';
-    str += '<li title="分享给其他用户"><span class="WidgetMenuIcon WidgetMenuIconApply"></span><span class="WidgetMenuText">分享给其他用户</span></li><li title="刷新" onclick="RefreshWidget(' + wgt.widgetId + ')"><span class="WidgetMenuIcon WidgetMenuIconRefresh"></span><span class="WidgetMenuText">刷新</span></li>';
+    if (share == 1 && dashboardContainer == null) {
+        str += '<li title="刷新" onclick="RefreshWidget(' + wgt.widgetId + ')"><span class="WidgetMenuIcon WidgetMenuIconRefresh"></span><span class="WidgetMenuText">刷新</span></li>';
+    } else {
+        str += '<li title="删除" onclick="DeleteWidget(' + wgt.widgetId + ')"><span class="WidgetMenuIcon WidgetMenuIconDelete"></span><span class="WidgetMenuText">删除</span></li><li title="复制" onclick="CopyWidget(' + wgt.widgetId + ')"><span class="WidgetMenuIcon WidgetMenuIconCopy"></span><span class="WidgetMenuText">复制</span></li>';
+        str += '<li title="设置" onclick="SettingWidget(' + wgt.widgetId + ')"><span class="WidgetMenuIcon WidgetMenuIconSetting"></span><span class="WidgetMenuText">设置</span></li><li title="移至其他仪表板" onclick="MoveWidget(' + wgt.widgetId + ')"><span class="WidgetMenuIcon WidgetMenuIconMove"></span><span class="WidgetMenuText">移至其他仪表板</span></li>';
+        str += '<li title="分享给其他用户"><span class="WidgetMenuIcon WidgetMenuIconApply"></span><span class="WidgetMenuText">分享给其他用户</span></li><li title="刷新" onclick="RefreshWidget(' + wgt.widgetId + ')"><span class="WidgetMenuIcon WidgetMenuIconRefresh"></span><span class="WidgetMenuText">刷新</span></li>';
+    }
     str += '</ul><div class="Menuborderline"></div></div>';
     //dom.appendChild(str);
     dom[0].innerHTML += str;
@@ -60,6 +64,12 @@ function AddWidget(dom, wgt) {
 }
 
 function SwichDashboard(id) {
+    if (dashboardContainer != null) {
+        BackDashboardContainer();
+    }
+    $(".cont").hide();
+    $("#yibiaopan").show();
+
     var crtId = CurrentDashboardId();
     if (crtId == id) return;
     $.each($(".panel_nav_now").removeClass('panel_nav_now').addClass('panel_nav_no').siblings(), function () {
@@ -70,8 +80,9 @@ function SwichDashboard(id) {
     $("#dshli" + id).show();
     RefreshDashboard();
 }
-
+var dashboardList;
 function AddDashboardList(list) {
+    dashboardList = list;
     var dom = $('.panel_nav > .nav_heard');
     var str = '';
     var strCtn = '';
@@ -124,7 +135,18 @@ function InitDashboard(data) {
     SelectTheme = ColorTheme[ThemeIdx];
     $("#dshli" + data.id)[0].innerHTML = '';
     for (var i = 0; i < data.widgetList.length; i++) {
-        AddWidget($("#dshli" + data.id), data.widgetList[i]);
+        AddWidget($("#dshli" + data.id), data.widgetList[i], data.is_shared);
+    }
+    if (dashboardContainer == null) {
+        if (data.is_shared) {
+            $("#dashboardSettingLi").hide();
+            $("#dashboardAddWgtLi").hide();
+            $("#dashboardShareLi").hide();
+        } else {
+            $("#dashboardSettingLi").show();
+            $("#dashboardAddWgtLi").show();
+            $("#dashboardShareLi").show();
+        }
     }
     $(".panel_nav_now").unbind("click");
     $(".panel_nav_no").unbind("click").click(function () {
@@ -148,16 +170,6 @@ function InitDashboard(data) {
         }, 500)
     });
 
-    // 最低高度 宽度
-    $('.panel_content > ul').css('min-height', $(window).height() - $('.panel_nav').height() - 20)
-    $('.panel_content > ul >li').css('min-height', $(window).height() - $('.panel_nav').height() - 20)
-    // $('.panel_nav .nav_heard').css('min-width',$('.panel_nav .nav_heard').width())
-    $(window).resize(function () {
-        $('.panel_content > ul').css('min-height', $(window).height() - $('.panel_nav').height() - 20)
-        $('.panel_content > ul >li').css('min-height', $(window).height() - $('.panel_nav').height() - 20)
-        // $('.panel_nav .nav_heard').css('min-width',$('.panel_nav .nav_heard').width())
-    })
-
     var dom = $("#dshli" + data.id).children('.WidgetShell');
     var screenW = window.screen.width - 20 - 17;  //去掉padding值     滚动条
     $.each(dom, function (i) {
@@ -169,7 +181,7 @@ function InitDashboard(data) {
         dom.eq(i).css('width', (screenW / 8) * size - 14)
     })
     //判断数量，是否有添加按钮
-    if (dom.length < 12) {
+    if (dom.length < 12 && (data.is_shared == 0 || dashboardContainer != null)) {
         var addShell = '<div onclick="AddWidgetStep0()" class="WidgetShell addShell" style="width:200px;"><div class="addWidget"><span></span> <span></span>  添加</div></div>';
         $("#dshli" + data.id).append(addShell)
         $('.addShell').css('width', screenW / 8 - 14)
@@ -185,6 +197,19 @@ function InitDashboard(data) {
     HideLoading();
 }
 $(function () {
+    RefreshAllDashboard();
+
+    // 最低高度 宽度
+    $('.panel_content > ul').css('min-height', $(window).height() - $('.panel_nav').height() - 80)
+    $('.panel_content > ul >li').css('min-height', $(window).height() - $('.panel_nav').height() - 80)
+    // $('.panel_nav .nav_heard').css('min-width',$('.panel_nav .nav_heard').width())
+    $(window).resize(function () {
+        $('.panel_content > ul').css('min-height', $(window).height() - $('.panel_nav').height() - 80)
+        $('.panel_content > ul >li').css('min-height', $(window).height() - $('.panel_nav').height() - 80)
+        // $('.panel_nav .nav_heard').css('min-width',$('.panel_nav .nav_heard').width())
+    })
+});
+function RefreshAllDashboard() {
     ShowLoading();
     setTimeout(function () {
         requestData("/Tools/DashboardAjax.ashx?act=GetInitailDashboard", null, function (data) {
@@ -196,7 +221,7 @@ $(function () {
             InitDashboard(data[1]);
         })
     }, 100)
-});
+}
 $(function () {
     var hidden, state, visibilityChange, time;
     if (typeof document.hidden !== "undefined") {
@@ -231,8 +256,59 @@ $(function () {
 })
 function AddDashboard() {
     $("#cover").show();
-    InitDashboardInfo(null);
+    var allDshList;
+    requestData("/Tools/DashboardAjax.ashx?act=GetDashboardList", null, function (data) {
+        allDshList = data;
+        var str = '';
+        for (var i = 0; i < data[0].length; i++) {
+            str += '<option value="' + data[0][i].val + '">' + data[0][i].show + '</option>';
+        }
+        $("#addDashboardSelectExist")[0].innerHTML = str;
+        str = '';
+        for (var i = 0; i < data[1].length; i++) {
+            str += '<option value="' + data[1][i].val + '">' + data[1][i].show + '</option>';
+        }
+        $("#addDashboardSelectDefault")[0].innerHTML = str;
+        str = '';
+        for (var i = 0; i < data[2].length; i++) {
+            str += '<option value="' + data[2][i].val + '">' + data[2][i].show + '</option>';
+        }
+        $("#addDashboardSelectClosed")[0].innerHTML = str;
+        $("#AddDashboard").show();
+
+        $(".AddDashboardNext").unbind("click").bind("click", function () {
+            var seltype = $("input:radio[name='addDashboardType']:checked").val();
+            $("#AddDashboard").hide();
+            if (seltype == 1) {
+                InitDashboardInfo(null, 0);
+            } else if (seltype == 2) {
+                requestData("/Tools/DashboardAjax.ashx?act=DashboardSettingInfo&id=" + $("#addDashboardSelectExist").val(), null, function (data) {
+                    InitDashboardInfo(data, 1);
+                })
+            } else if (seltype == 3) {
+                requestData("/Tools/DashboardAjax.ashx?act=DashboardSettingInfo&id=" + $("#addDashboardSelectDefault").val(), null, function (data) {
+                    InitDashboardInfo(data, 1);
+                })
+            } else if (seltype == 4) {
+                var selval = $("#addDashboardSelectClosed").val();
+                for (var i = 0; i < allDshList[2].length; i++) {
+                    if (allDshList[2][i].val != selval) continue;
+                    if (allDshList[2][i].share == 1) {
+                        requestData("/Tools/DashboardAjax.ashx?act=AddClosedDashboard&id=" + $("#addDashboardSelectClosed").val(), null, function (data) {
+                            RefreshAllDashboard();
+                            $("#cover").hide();
+                        })
+                    } else {
+                        requestData("/Tools/DashboardAjax.ashx?act=DashboardSettingInfo&id=" + $("#addDashboardSelectClosed").val(), null, function (data) {
+                            InitDashboardInfo(data, 2);
+                        })
+                    }
+                }
+            }
+        })
+    })
 }
+
 function ShareDashboard() {
     $("#cover").show();
     $("#ShareTabStep1").show();
@@ -244,15 +320,7 @@ function ShareDashboardSelect() {
     requestData("/Tools/DashboardAjax.ashx?act=ShareTab&id=" + CurrentDashboardId() + isnew, null, function (data) {
         LayerLoadClose();
         if (data == 0) {
-            LayerLoad();
-            requestData("/Tools/DashboardAjax.ashx?act=GetInitailDashboard", null, function (data) {
-                if (data == null) {
-                    LayerLoadClose();
-                    return;
-                }
-                AddDashboardList(data[0]);
-                InitDashboard(data[1]);
-            })
+            RefreshAllDashboard();
         } else {
             $("#ShareTabStep1").hide();
             $("#ShareTabStep2").show();
@@ -260,28 +328,157 @@ function ShareDashboardSelect() {
                 $("#cover").show();
                 $("#ShareTabStep2").hide();
                 requestData("/Tools/DashboardAjax.ashx?act=DashboardSettingInfo&id=" + data, null, function (data) {
-                    InitDashboardInfo(data);
+                    InitDashboardInfo(data, 0);
                 })
             })
             $("#ShareShareTab").unbind("click").bind("click", function () {
-                
+                setTimeout(function () {
+                    $(".cont").show();
+                }, 300);
+                setTimeout(function () {
+                    $("#yibiaopan").hide();
+                }, 100);
+                window.open("/System/ShareDashboard?id=" + data, windowObj.shareDashboard, 'left=0,top=0,location=no,status=no,width=910,height=920', false);
             })
         }
     })
 }
-function ManageDashboard() {
 
-}
 var dashboardFilters;
 function SettingDashboard() {
     if (CurrentDashboardId() == 0) return;
     $("#cover").show();
     requestData("/Tools/DashboardAjax.ashx?act=DashboardSettingInfo&id=" + CurrentDashboardId(), null, function (data) {
-        InitDashboardInfo(data);
+        InitDashboardInfo(data, 0);
     })
 }
-function InitDashboardInfo(data) {
+function AddSharedDashboard() {
+    $("#cover").show();
+    InitDashboardInfo(null, 3);
+}
+function CopySharedDashboard(id) {
+    $("#cover").show();
+    requestData("/Tools/DashboardAjax.ashx?act=DashboardSettingInfo&id=" + id, null, function (data) {
+        InitDashboardInfo(data, 4);
+    })
+}
+var dashboardContainer = null;
+function EditSharedDashboard(id) {
+    setTimeout(function () {
+        $(".cont").hide();
+        $("#SearchTitle").hide();
+    }, 300);
+    setTimeout(function () {
+        $("#yibiaopan").show();
+    }, 100);
+    if (dashboardContainer == null)
+        dashboardContainer = $("#DashboardContainer").remove();
+    $("#SharedDashboardEdit")[0].innerHTML = '<div class="panel_nav"><div class="nav_heard"></div><div style="background-color: inherit;color: #fff;margin-left: 64px;text-decoration: underline;padding-top: 4px;"><span style="cursor: pointer;" onclick="BackDashboardContainer()">返回仪表板</span><span style="cursor: pointer;margin-left:12px;" onclick="BackSharedManage()">返回共享仪表板管理</span></div>'
+        + '<div class="settings"><span></span><span></span><span></span><ul class="settingsBox"><li title="仪表板设置" onclick="SettingDashboard()"><span class="Icon" style="float:left;display: block;width: 16px;height: 16px; background:url(Images/ButtonIcons.svg) no-repeat scroll;background-position: -288px -32px;margin-top: 2px;"></span>'
+        + '<span class="Text" style="float: left;display: block;padding-left:8px; ">仪表板设置</span></li><li title="添加小窗口" onclick="AddWidgetStep0()"><span class="Icon" style="float:left;display: block;width: 16px;height: 16px; background:url(Images/ButtonIcons.svg) no-repeat scroll;background-position: -80px 0;margin-top: 2px;"></span>'
+        + '<span class="Text" style="float: left;display: block;padding-left:8px; ">添加小窗口</span></li></ul></div></div><div class="panel_content"><ul></ul></div>';
+
+    // 最低高度 宽度
+    $('.panel_content > ul').css('min-height', $(window).height() - $('.panel_nav').height() - 80)
+    $('.panel_content > ul >li').css('min-height', $(window).height() - $('.panel_nav').height() - 80)
+    // $('.panel_nav .nav_heard').css('min-width',$('.panel_nav .nav_heard').width())
+    $(window).resize(function () {
+        $('.panel_content > ul').css('min-height', $(window).height() - $('.panel_nav').height() - 80)
+        $('.panel_content > ul >li').css('min-height', $(window).height() - $('.panel_nav').height() - 80)
+        // $('.panel_nav .nav_heard').css('min-width',$('.panel_nav .nav_heard').width())
+    })
+
+    $("#SharedDashboardEdit").show();
+
+    requestData("/Tools/DashboardAjax.ashx?act=GetDashboard&id=" + id, null, function (data) {
+        var dom = $('.panel_nav > .nav_heard');
+        var str = '';
+        var strCtn = '';
+        
+        str += '<div class="panel_nav_now" data-dshdb="' + data.id + '" >' + data.name + '</div>';
+        strCtn += '<li style="display: block;" id="dshli' + data.id + '"></li>';
+        
+        dom[0].innerHTML = str;
+        $('.panel_nav .nav_heard').dad2()
+        $('.panel_content > ul')[0].innerHTML = strCtn;
+
+        InitDashboard(data);
+    })
+}
+function BackSharedManage() {
+    if (dashboardContainer == null) window.location.reload();
+    $("#SharedDashboardEdit").empty();
+    $("#yibiaopan").append(dashboardContainer);
+    dashboardContainer = null;
+    $("#SharedDashboardEdit").hide();
+    $("#PageFrame").attr("src", "/Common/SearchFrameSet.aspx?cat=1718");
+    $(".cont").show();
+    $("#yibiaopan").hide();
+
+    // 重新添加事件
+    $(".panel_nav_now").unbind("click");
+    $(".panel_nav_no").unbind("click").click(function () {
+        $('.panel_nav .nav_heard').dad2()
+        var id = $(this).data('dshdb');
+        if (id == undefined)
+            return;
+
+        ShowLoading();
+        var dom = $(this);
+        //$('#PresentTit').html($('.panel_nav > ul > li').eq(i).html())
+        setTimeout(function () {
+            requestData("/Tools/DashboardAjax.ashx?act=GetDashboard&id=" + id, null, function (data) {
+                if (data == null) {
+                    return;
+                }
+                dom.addClass('panel_nav_now').removeClass('panel_nav_no').siblings().removeClass('panel_nav_now').addClass('panel_nav_no')
+                $("#dshli" + id).show().siblings().hide();
+                InitDashboard(data);
+            })
+        }, 500)
+    });
+}
+function BackDashboardContainer() {
+    if (dashboardContainer != null) {
+        $("#yibiaopan").append(dashboardContainer);
+        dashboardContainer = null;
+        $("#SharedDashboardEdit").empty();
+        $("#SharedDashboardEdit").hide();
+
+        $(".cont").hide();
+        $("#yibiaopan").show();
+
+        // 重新添加事件
+        $(".panel_nav_now").unbind("click");
+        $(".panel_nav_no").unbind("click").click(function () {
+            $('.panel_nav .nav_heard').dad2()
+            var id = $(this).data('dshdb');
+            if (id == undefined)
+                return;
+
+            ShowLoading();
+            var dom = $(this);
+            //$('#PresentTit').html($('.panel_nav > ul > li').eq(i).html())
+            setTimeout(function () {
+                requestData("/Tools/DashboardAjax.ashx?act=GetDashboard&id=" + id, null, function (data) {
+                    if (data == null) {
+                        return;
+                    }
+                    dom.addClass('panel_nav_now').removeClass('panel_nav_no').siblings().removeClass('panel_nav_now').addClass('panel_nav_no')
+                    $("#dshli" + id).show().siblings().hide();
+                    InitDashboard(data);
+                })
+            }, 500)
+        });
+    }
+}
+function InitDashboardInfo(data, opType) {
+    $("#dashboardIsCopy").val(opType);
+    $(".SettingsPOP").find(".delete").hide();
     if (data != null) {
+        if (opType == 0) {
+            $(".SettingsPOP").find(".delete").show();
+        }
         $("#dashboardName").val(data.name);
         $("#dashboardId").val(data.id);
         if (data.widget_auto_place == 1)
@@ -478,21 +675,20 @@ function SaveDashboard() {
             }
         }
     }
-    ShowLoading();
-    requestData("/Tools/DashboardAjax.ashx?act=SaveDashboard&id=" + $("#dashboardId").val() + "&name=" + $("#dashboardName").val() + "&widget_auto_place=" + ($("#dashboardAutoPlace").prop("checked") ? 1 : 0) + "&theme_id=" + $('#dashboardTheme').val() + fltStr, null, function (data) {
+    LayerLoad();
+    requestData("/Tools/DashboardAjax.ashx?act=SaveDashboard&id=" + $("#dashboardId").val() + "&type=" + $("#dashboardIsCopy").val() + "&name=" + $("#dashboardName").val() + "&widget_auto_place=" + ($("#dashboardAutoPlace").prop("checked") ? 1 : 0) + "&theme_id=" + $('#dashboardTheme').val() + fltStr, null, function (data) {
         $("#settings").hide();
         $("#cover").hide();
-        if ($("#dashboardId").val()==0){
-            setTimeout(function () {
-                requestData("/Tools/DashboardAjax.ashx?act=GetInitailDashboard", null, function (data) {
-                    if (data == null) {
-                        HideLoading();
-                        return;
-                    }
-                    AddDashboardList(data[0]);
-                    InitDashboard(data[1]);
-                })
-                }, 100)
+        if ($("#dashboardIsCopy").val() == 3 || $("#dashboardIsCopy").val() == 4) {
+            LayerLoadClose();
+            var formbody = window.frames["PageFrame"].frames["SearchBody"].contentWindow;
+            if (formbody == undefined)
+                formbody = window.frames["PageFrame"].frames["SearchBody"].document;
+            else
+                formbody = formbody.document;
+            formbody.location.reload();
+        } else if ($("#dashboardId").val() == 0 || $("#dashboardIsCopy").val() != 0) {
+            RefreshAllDashboard();
         } else {
             RefreshDashboard();
         }
@@ -501,18 +697,16 @@ function SaveDashboard() {
 function DleteDashboard() {
     LayerConfirmOk("删除操作将不能恢复，是否继续?", "确定", "取消", function () {
         requestData("/Tools/DashboardAjax.ashx?act=DeleteDashboard&id=" + id, null, function (data) {
-            ShowLoading();
-            setTimeout(function () {
-                requestData("/Tools/DashboardAjax.ashx?act=GetInitailDashboard", null, function (data) {
-                    if (data == null) {
-                        HideLoading();
-                        return;
-                    }
-                    AddDashboardList(data[0]);
-                    InitDashboard(data[1]);
-                })
-            }, 100)
+            RefreshAllDashboard();
         })
+    })
+}
+function CloseDashboard() {
+    ShowLoading();
+    $('#cover').hide();
+    $("#CloseTable").hide();
+    requestData("/Tools/DashboardAjax.ashx?act=CloseDashboard&id=" + CurrentDashboardId(), null, function (data) {
+        RefreshAllDashboard();
     })
 }
 

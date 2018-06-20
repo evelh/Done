@@ -81,6 +81,46 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 获取用户所有的仪表板列表
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<DashboardSummaryInfoDto> GetUserAllDashboardList(long userId)
+        {
+            return dal.FindListBySql<DashboardSummaryInfoDto>($"select dashboard_id as `val`,(select `name` from sys_dashboard where id=dashboard_id) as `show` from sys_dashboard_resource where resource_id={userId} and delete_time=0 order by sort_order asc,id asc");
+        }
+
+        /// <summary>
+        /// 获取用户关闭的仪表板列表
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<DashboardSummaryInfoDto> GetUserClosedDashboardList(long userId)
+        {
+            var list = dal.FindListBySql<DashboardSummaryInfoDto>($"select dashboard_id as `val`,(select `name` from sys_dashboard where id=dashboard_id) as `show` from sys_dashboard_resource where resource_id={userId} and is_visible=0 and delete_time=0 order by id asc");
+
+            // 区分是否是共享的
+            var ownlist = dal.FindListBySql<long>($"select id from sys_dashboard where is_shared=0 and delete_time=0 and id in(select dashboard_id from sys_dashboard_resource where resource_id={userId} and is_visible=0 and delete_time=0)");
+            foreach (var dsh in list)
+            {
+                if (ownlist.Exists(_ => _.ToString().Equals(dsh.val)))
+                    dsh.share = 0;
+                else
+                    dsh.share = 1;
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// 获取系统默认仪表板列表
+        /// </summary>
+        /// <returns></returns>
+        public List<DashboardSummaryInfoDto> GetSystemDefaultDashboardList()
+        {
+            return dal.FindListBySql<DashboardSummaryInfoDto>($"select id as `val`,`name` as `show` from sys_dashboard where is_system=1 and delete_time=0 order by id asc");
+        }
+
+        /// <summary>
         /// 获取一个仪表板及其小窗口信息
         /// </summary>
         /// <param name="dsbdId"></param>
@@ -88,7 +128,7 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public DashboardDto GetDashboardInfoById(long dsbdId, long userId)
         {
-            var dto = dal.FindSignleBySql<DashboardDto>($"select id,name,theme_id,widget_auto_place as auto_place from sys_dashboard where id={dsbdId} and (select count(0) from sys_dashboard_resource where resource_id={userId} and dashboard_id={dsbdId} and delete_time=0)=1 and delete_time=0");
+            var dto = dal.FindSignleBySql<DashboardDto>($"select id,name,theme_id,widget_auto_place as auto_place,is_shared from sys_dashboard where id={dsbdId} and delete_time=0");
             if (dto != null)
                 dto.widgetList = GetWidgetListByDashboardId(dsbdId, userId);
 
@@ -272,24 +312,27 @@ namespace EMT.DoneNOW.BLL
                 dal.Insert(dashboard);
                 OperLogBLL.OperLogAdd<sys_dashboard>(dashboard, dashboard.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD, "新增仪表板");
 
-                var duDal = new sys_dashboard_resource_dal();
-                sys_dashboard_resource du = new sys_dashboard_resource();
-                du.id = duDal.GetNextIdCom();
-                du.dashboard_id = dashboard.id;
-                du.resource_id = userId;
-                du.is_visible = 1;
-                du.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
-                du.update_user_id = userId;
-                du.create_time = du.update_time;
-                du.create_user_id = userId;
-                var sort = duDal.FindSignleBySql<decimal?>($"select max(sort_order) from sys_dashboard_resource where resource_id={userId}");
-                if (sort == null)
-                    du.sort_order = 1;
-                else
-                    du.sort_order = sort.Value + 1;
+                if (dashboard.is_shared != 1)
+                {
+                    var duDal = new sys_dashboard_resource_dal();
+                    sys_dashboard_resource du = new sys_dashboard_resource();
+                    du.id = duDal.GetNextIdCom();
+                    du.dashboard_id = dashboard.id;
+                    du.resource_id = userId;
+                    du.is_visible = 1;
+                    du.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                    du.update_user_id = userId;
+                    du.create_time = du.update_time;
+                    du.create_user_id = userId;
+                    var sort = duDal.FindSignleBySql<decimal?>($"select max(sort_order) from sys_dashboard_resource where resource_id={userId}");
+                    if (sort == null)
+                        du.sort_order = 1;
+                    else
+                        du.sort_order = sort.Value + 1;
 
-                duDal.Insert(du);
-                OperLogBLL.OperLogAdd<sys_dashboard_resource>(du, du.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_USER, "新增用户仪表板");
+                    duDal.Insert(du);
+                    OperLogBLL.OperLogAdd<sys_dashboard_resource>(du, du.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_USER, "新增用户仪表板");
+                }
             }
             else
             {
@@ -307,6 +350,151 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
+        /// 关闭仪表板
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool CloseDashboard(long id, long userId)
+        {
+            var dr = dal.FindSignleBySql<sys_dashboard_resource>($"select * from sys_dashboard_resource where resource_id={userId} and dashboard_id={id} and delete_time=0");
+            if (dr == null)
+                return false;
+
+            if (dr.is_visible == null || dr.is_visible == 0)
+                return false;
+
+            sys_dashboard_resource_dal drdal = new sys_dashboard_resource_dal();
+            dr.is_visible = 0;
+            dr.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            dr.update_user_id = userId;
+            var drold = drdal.FindById(dr.id);
+            drdal.Update(dr);
+            OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<sys_dashboard_resource>(drold, dr), dr.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_USER, "关闭仪表板");
+
+            return true;
+        }
+
+        /// <summary>
+        /// 重新打开关闭的共享仪表板
+        /// </summary>
+        /// <param name="dashboardId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool AddClosedDashboard(long dashboardId, long userId)
+        {
+            var dshUser = dal.FindSignleBySql<sys_dashboard_resource>($"select * from sys_dashboard_resource where resource_id={userId} and dashboard_id={dashboardId} and delete_time=0");
+            if (dshUser == null || dshUser.is_visible == 1)
+                return false;
+
+            decimal? sort = dal.FindSignleBySql<decimal?>($"select max(sort_order) from sys_dashboard_resource where resource_id={userId} and is_visible=1 and delete_time=0");
+            if (sort == null)
+                dshUser.sort_order = 1;
+            else
+                dshUser.sort_order = sort.Value + 1;
+            dshUser.is_visible = 1;
+
+            var drDal = new sys_dashboard_resource_dal();
+            var dshOld = drDal.FindById(dshUser.id);
+            drDal.Update(dshUser);
+            OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<sys_dashboard_resource>(dshOld, dshUser), dshUser.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_USER, "重新打开仪表板");
+
+            return true;
+        }
+
+        /// <summary>
+        /// 重新打开关闭的自有仪表板
+        /// </summary>
+        /// <param name="dashboard"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool AddClosedDashboardSetting(sys_dashboard dashboard, long userId)
+        {
+            // 重新设置仪表板
+            var ds = dal.FindNoDeleteById(dashboard.id);
+            if (ds == null || ds.is_shared == 1)
+                return false;
+            var dsold = dal.FindById(ds.id);
+            ds.update_user_id = userId;
+            ds.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            ds.name = dashboard.name;
+            ds.theme_id = dashboard.theme_id;
+            ds.widget_auto_place = dashboard.widget_auto_place;
+            ds.filter_default_value = dashboard.filter_default_value;
+            ds.filter_id = dashboard.filter_id;
+            ds.limit_type_id = dashboard.limit_type_id;
+            ds.limit_value = dashboard.limit_value;
+            var desc = OperLogBLL.CompareValue<sys_dashboard>(dsold, ds);
+            if (!string.IsNullOrEmpty(desc))
+            {
+                dal.Update(ds);
+                OperLogBLL.OperLogUpdate(desc, ds.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD, "设置仪表板");
+            }
+
+            // 打开仪表板
+            var dshUser = dal.FindSignleBySql<sys_dashboard_resource>($"select * from sys_dashboard_resource where resource_id={userId} and dashboard_id={dashboard.id} and delete_time=0");
+            if (dshUser == null || dshUser.is_visible == 1)
+                return false;
+
+            decimal? sort = dal.FindSignleBySql<decimal?>($"select max(sort_order) from sys_dashboard_resource where resource_id={userId} and is_visible=1 and delete_time=0");
+            if (sort == null)
+                dshUser.sort_order = 1;
+            else
+                dshUser.sort_order = sort.Value + 1;
+            dshUser.is_visible = 1;
+
+            var drDal = new sys_dashboard_resource_dal();
+            var dshOld = drDal.FindById(dshUser.id);
+            drDal.Update(dshUser);
+            OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<sys_dashboard_resource>(dshOld, dshUser), dshUser.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_USER, "重新打开仪表板");
+
+
+            return true;
+        }
+
+        /// <summary>
+        /// 复制指定仪表板并设置仪表板信息
+        /// </summary>
+        /// <param name="dashboard">仪表板设置信息</param>
+        /// <param name="copyId">复制的仪表板对象</param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool CopyDashboardSetting(sys_dashboard dashboard, long copyId, long userId)
+        {
+            var ds = dal.FindNoDeleteById(copyId);
+            if (ds == null)
+                return false;
+
+            sys_dashboard dsnew = new sys_dashboard();
+            dsnew.id = dal.GetNextIdCom();
+            dsnew.create_user_id = userId;
+            dsnew.update_user_id = userId;
+            dsnew.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            dsnew.update_time = dsnew.create_time;
+            dsnew.name = dashboard.name;
+            dsnew.theme_id = dashboard.theme_id;
+            dsnew.widget_auto_place = dashboard.widget_auto_place;
+            dsnew.filter_default_value = dashboard.filter_default_value;
+            dsnew.filter_id = dashboard.filter_id;
+            dsnew.limit_type_id = dashboard.limit_type_id;
+            dsnew.limit_value = dashboard.limit_value;
+            dsnew.is_shared = dashboard.is_shared;
+
+            dal.Insert(dsnew);
+            OperLogBLL.OperLogAdd<sys_dashboard>(dsnew, dsnew.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD, "新增复制仪表板");
+
+            // 复制小窗口
+            var wgtList = GetWidgetListOrdered(copyId); // 小窗口列表
+            
+            foreach (var wgt in wgtList)
+            {
+                CopyWidget(wgt, dsnew.id, userId);
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// 获取仪表板
         /// </summary>
         /// <param name="id"></param>
@@ -315,6 +503,11 @@ namespace EMT.DoneNOW.BLL
         {
             return dal.FindNoDeleteById(id);
         }
+
+        #endregion
+
+
+        #region 仪表板共享功能
 
         /// <summary>
         /// 设置仪表板共享
@@ -385,6 +578,198 @@ namespace EMT.DoneNOW.BLL
             OperLogBLL.OperLogAdd<sys_dashboard>(dsnew, dsnew.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD, "共享复制仪表板");
 
             return dsnew.id;
+        }
+
+        /// <summary>
+        /// 仪表板共享设置
+        /// </summary>
+        /// <param name="id">仪表板id</param>
+        /// <param name="secs">共享的安全等级id列表</param>
+        /// <param name="dpts">共享的部门id列表</param>
+        /// <param name="res">共享的员工id列表</param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool DashboardShareSetting(long id, string secs, string dpts, string res, long userId)
+        {
+            var ds = dal.FindNoDeleteById(id);
+            if (ds == null || ds.is_shared == 0)
+                return false;
+
+            sys_dashboard_publish_dal dpdal = new sys_dashboard_publish_dal();
+            var publish = dpdal.FindSignleBySql<sys_dashboard_publish>($"select * from sys_dashboard_publish where dashboard_id={id} and delete_time=0");
+            if (publish == null)
+            {
+                if (string.IsNullOrEmpty(secs) && string.IsNullOrEmpty(dpts) && string.IsNullOrEmpty(res))
+                    return true;
+
+                publish = new sys_dashboard_publish();
+                publish.id = dpdal.GetNextIdCom();
+                publish.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                publish.create_user_id = userId;
+                publish.update_time = publish.create_time;
+                publish.update_user_id = userId;
+                publish.dashboard_id = id;
+                publish.security_level_ids = secs;
+                publish.department_ids = dpts;
+                publish.resource_ids = res;
+
+                dpdal.Insert(publish);
+                OperLogBLL.OperLogAdd<sys_dashboard_publish>(publish, publish.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_PUBLISH, "仪表板共享");
+
+                UpdateDashboardResourceOneDashboard(publish, userId);
+            }
+            else
+            {
+                publish.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                publish.update_user_id = userId;
+                publish.security_level_ids = secs;
+                publish.department_ids = dpts;
+                publish.resource_ids = res;
+
+                var pbold = dpdal.FindById(publish.id);
+                var desc = OperLogBLL.CompareValue<sys_dashboard_publish>(pbold, publish);
+                if (!string.IsNullOrEmpty(desc))
+                {
+                    dpdal.Update(publish);
+                    OperLogBLL.OperLogUpdate(desc, publish.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_PUBLISH, "修改仪表板共享");
+
+                    UpdateDashboardResourceOneDashboard(publish, userId);
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 同步一个仪表板的共享用户对象数据
+        /// </summary>
+        /// <param name="publish"></param>
+        /// <param name="userId"></param>
+        private void UpdateDashboardResourceOneDashboard(sys_dashboard_publish publish, long userId)
+        {
+            List<string> secRes, dtpRes, res;
+            List<string> resList = new List<string>();
+            if(!string.IsNullOrEmpty(publish.security_level_ids))
+            { 
+                secRes = dal.FindListBySql<string>($"select id from sys_resource where security_level_id in({publish.security_level_ids}) and delete_time=0");
+                resList.AddRange(secRes);
+            }
+            if (!string.IsNullOrEmpty(publish.department_ids))
+            { 
+                dtpRes = dal.FindListBySql<string>($"select resource_id from sys_resource_department where department_id in({publish.department_ids}) and is_active=1");
+                resList.AddRange(dtpRes);
+            }
+            if (!string.IsNullOrEmpty(publish.resource_ids))
+            {
+                res = publish.resource_ids.Split(',').ToList();
+                resList.AddRange(res);
+            }
+
+            resList = resList.Distinct().ToList();  // 该仪表板共享的所有员工列表
+
+            sys_dashboard_resource_dal drdal = new sys_dashboard_resource_dal();
+            var dsList = drdal.FindListBySql($"select * from sys_dashboard_resource where dashboard_id={publish.dashboard_id} and delete_time=0");
+            foreach (var ds in dsList)
+            {
+                if (resList.Exists(_ => _.Equals(ds.resource_id.ToString())))
+                {
+                    resList.Remove(ds.resource_id.ToString());
+                    continue;
+                }
+
+                // 同步后的列表不存在，则原纪录需要删除
+                ds.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                ds.delete_user_id = userId;
+                drdal.Update(ds);
+
+            }
+
+            foreach (var dres in resList)     // 剩余的记录需要新增
+            {
+                // 获取排序值
+                decimal ord = 1;
+                decimal? currentOrder = dal.FindSignleBySql<decimal?>($"select max(sort_order) from sys_dashboard_resource where resource_id={dres} and delete_time=0 and is_visible=1");
+                if (currentOrder != null)
+                    ord = currentOrder.Value + 1;
+
+                sys_dashboard_resource dr = new sys_dashboard_resource();
+                dr.id = dal.GetNextIdCom();
+                dr.dashboard_id = publish.dashboard_id;
+                dr.sort_order = ord;
+                dr.resource_id = long.Parse(dres);
+                dr.is_visible = 1;
+                dr.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                dr.create_time = dr.update_time;
+                dr.create_user_id = userId;
+                dr.update_user_id = userId;
+                drdal.Insert(dr);
+            }
+        }
+
+        /// <summary>
+        /// 获取共享仪表板共享对象名称
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<string> GetDashboardPublishNames(long id)
+        {
+            var publish = dal.FindSignleBySql<sys_dashboard_publish>($"select * from sys_dashboard_publish where dashboard_id={id} and delete_time=0");
+            var rslt = new List<string>();
+            if (publish == null)
+                return rslt;
+
+            if (string.IsNullOrEmpty(publish.security_level_ids))
+            {
+                rslt.Add(null);
+                rslt.Add(null);
+            }
+            else
+            {
+                var names = dal.FindListBySql<string>($"select name from sys_security_level where id in({publish.security_level_ids}) and delete_time=0");
+                string tmp = "";
+                foreach (var nm in names)
+                {
+                    tmp += nm + "\r\n";
+                }
+                rslt.Add(tmp);
+                rslt.Add(publish.security_level_ids);
+            }
+
+            if (string.IsNullOrEmpty(publish.department_ids))
+            {
+                rslt.Add(null);
+                rslt.Add(null);
+            }
+            else
+            {
+                var names = dal.FindListBySql<string>($"select name from sys_department where id in({publish.department_ids}) and delete_time=0");
+                string tmp = "";
+                foreach (var nm in names)
+                {
+                    tmp += nm + "\r\n";
+                }
+                rslt.Add(tmp);
+                rslt.Add(publish.department_ids);
+            }
+
+            if (string.IsNullOrEmpty(publish.resource_ids))
+            {
+                rslt.Add(null);
+                rslt.Add(null);
+            }
+            else
+            {
+                var names = dal.FindListBySql<string>($"select name from sys_resource where id in({publish.resource_ids}) and delete_time=0");
+                string tmp = "";
+                foreach (var nm in names)
+                {
+                    tmp += nm + "\r\n";
+                }
+                rslt.Add(tmp);
+                rslt.Add(publish.resource_ids);
+            }
+
+            return rslt;
         }
         #endregion
 
@@ -691,7 +1076,7 @@ namespace EMT.DoneNOW.BLL
 
             if (wgtnew.type_id == (int)DicEnum.WIDGET_TYPE.GUAGE)
             {
-                var glist = GetGuageChildren(wgtnew.id);
+                var glist = GetGuageChildren(wgt.id);
                 var gDal = new sys_widget_guage_dal();
                 foreach (var gg in glist)
                 {
@@ -717,6 +1102,57 @@ namespace EMT.DoneNOW.BLL
             }
 
             return wgtnew.id;
+        }
+
+        /// <summary>
+        /// 获取小窗口可移动的仪表板列表
+        /// </summary>
+        /// <param name="widgetId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<DictionaryEntryDto> GetWidgetMoveDashboard(long widgetId, long userId)
+        {
+            long dsid = dal.FindSignleBySql<long>($"select dashboard_id from sys_widget where id={widgetId}");
+            return dal.FindListBySql<DictionaryEntryDto>($"select id as `val`,name as `show`,(select count(0) from sys_widget where dashboard_id=sys_dashboard.id and delete_time=0) as `select` from sys_dashboard where id in(select dashboard_id from sys_dashboard_resource where resource_id={userId} and is_visible=1 and delete_time=0 and dashboard_id<>{dsid}) and is_shared=0 and delete_time=0");
+        }
+
+        /// <summary>
+        /// 移动小窗口到其他仪表板
+        /// </summary>
+        /// <param name="widgetId"></param>
+        /// <param name="dashboardId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool MoveWidget(long widgetId, long dashboardId, long userId)
+        {
+            var dashboard = dal.FindNoDeleteById(dashboardId);
+            if (dashboard == null || dashboard.is_shared == 1)
+                return false;
+
+            var wgt = wgtDal.FindNoDeleteById(widgetId);
+            if (wgt == null)
+                return false;
+            if (wgt.dashboard_id == dashboardId)
+                return true;
+
+            var wgtList = dal.FindListBySql<int>($"select sort_order from sys_widget where dashboard_id={dashboardId} and delete_time=0 order by sort_order desc");
+            if (wgtList.Count >= 12)
+                return false;
+
+            int order = 1;
+            if (wgtList.Count > 0)
+                order = wgtList[0] + 1;
+
+            var wgtOld = wgtDal.FindById(wgt.id);
+            wgt.dashboard_id = dashboardId;
+            wgt.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            wgt.update_user_id = userId;
+            wgt.sort_order = order;
+
+            wgtDal.Update(wgt);
+            OperLogBLL.OperLogUpdate(OperLogBLL.CompareValue<sys_widget>(wgtOld, wgt), wgt.id, userId, DicEnum.OPER_LOG_OBJ_CATE.DASHBOARD_WIDGET, "移动小窗口");
+
+            return true;
         }
         #endregion
 

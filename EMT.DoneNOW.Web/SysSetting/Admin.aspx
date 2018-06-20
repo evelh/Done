@@ -45,10 +45,10 @@
                     <!--第一部分-->
                     <div class="TabContainer Active">
                         <div class="ButtonContainer">
-                            <a class="Button ButtonIcon NormalState" tabindex="0" id="d1">
+                            <a class="Button ButtonIcon NormalState ShowAll" tabindex="0" id="d1">
                                 <span class="Text">展开所有</span>
                             </a>
-                            <a class="Button ButtonIcon NormalState" tabindex="0" id="d2">
+                            <a class="Button ButtonIcon NormalState HideAll" tabindex="0" id="d2">
                                 <span class="Text">折叠所有</span>
                             </a>
                         </div>
@@ -66,6 +66,10 @@
                                 <div class="Large Column">
                                     <div class="PageNavigationLinkGroup">
                                         <div class="PageNavigationLinkColumn">
+                                            <div class="PageNavigationLink">
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.USER_DEFINED_FIELD %>" target="PageFrame1">用户自定义字段</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
                                             <div class="PageNavigationLink">
                                                 <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_FORM_TEMP_SEARCH %>" target="PageFrame1">表单模板</a>
                                                 <div class="StandardText"></div>
@@ -658,10 +662,10 @@
                     <!--第二部分-->
                     <div class="TabContainer">
                         <div class="ButtonContainer">
-                            <a class="Button ButtonIcon NormalState" tabindex="0" id="d3">
+                            <a class="Button ButtonIcon NormalState ShowAll" tabindex="0" id="d3">
                                 <span class="Text">展开所有</span>
                             </a>
-                            <a class="Button ButtonIcon NormalState" tabindex="0" id="d4">
+                            <a class="Button ButtonIcon NormalState HideAll" tabindex="0" id="d4">
                                 <span class="Text">折叠所有</span>
                             </a>
                         </div>

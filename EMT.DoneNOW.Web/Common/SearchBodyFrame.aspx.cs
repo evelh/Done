@@ -47,7 +47,6 @@ namespace EMT.DoneNOW.Web
                 return;
             }
 
-
             if (!int.TryParse(Request.QueryString["cat"], out catId))
                 catId = 0;
             if (!long.TryParse(Request.QueryString["type"], out queryTypeId))
@@ -80,6 +79,8 @@ namespace EMT.DoneNOW.Web
             if (!long.TryParse(Request.QueryString["id"], out objId))
                 objId = 0;
 
+
+            InitPageTitle();
             InitData();
             GetMenus();
             string flag = Request.QueryString["show"];
@@ -136,10 +137,7 @@ namespace EMT.DoneNOW.Web
             queryPara.group1 = keys["val1"];
             queryPara.group2 = keys["val2"];
             queryResult = bll.GetResultWidgetDrill(LoginUserId, queryPara);
-
-
-            isShowTitle = true;
-            InitPageTitle();
+            
 
             GetMenus();
             CalcTableWidth();
@@ -221,10 +219,17 @@ namespace EMT.DoneNOW.Web
                 case (int)QueryType.WidgetDrillWorkEntries:
                     title = "工时";
                     break;
+                case (int)QueryType.SharedDashboard:
+                    title = "共享仪表板";
+                    break;
                 default:
                     title = "";
                     break;
             }
+            if (!string.IsNullOrEmpty(title))
+                isShowTitle = true;
+            else
+                isShowTitle = false;
         }
 
         /// <summary>
@@ -283,6 +288,8 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SYSTEM_TICKET_ISSUE_SEARCH:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_CHANGE_BOARD_SEARCH:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_CHECK_LIB_SEARCH:
+                case (int)DicEnum.QUERY_CATE.USER_DEFINED_FIELD:
+                case (int)DicEnum.QUERY_CATE.SHARED_DASHBOARD:
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
@@ -1671,6 +1678,18 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActiveLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "InActive()", id = "InActiveLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()", id = "DeleteLi" });
+                    break;
+                case (long)QueryType.UserDefinedField:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActiveLi" });
+                    contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "InActive()", id = "InActiveLi" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()", id = "DeleteLi" });
+                    break;
+                case (long)QueryType.SharedDashboard:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "共享", click_function = "Share()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 default:
                     break;

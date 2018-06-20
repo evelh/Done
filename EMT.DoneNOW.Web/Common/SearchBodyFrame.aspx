@@ -101,7 +101,7 @@
             <div class="TitleBarNavigationButton">
                 <a class="Button ButtonIcon NormalState" id="goBack"><img src="../Images/move-left.png" /></a>
             </div>
-            <span class="text1" id="opname"><%=title %></span>
+            <span class="text1" id="opname" style="margin-left:10px;"><%=title %></span>
         </div>
     </div>
     <%} %>

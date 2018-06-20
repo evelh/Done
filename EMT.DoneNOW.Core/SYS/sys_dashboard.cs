@@ -34,6 +34,8 @@ namespace EMT.DoneNOW.Core
         public String limit_value { get; set; }
         [DataMember]
         public SByte is_shared { get; set; }
+        [DataMember]
+        public SByte is_system { get; set; }
 
 
     }

@@ -23,13 +23,13 @@ namespace EMT.DoneNOW.BLL
         {
             var dal = new sys_udf_field_dal();
             var udfListDal = new sys_udf_list_dal();
-            string sql=dal.QueryStringDeleteFlag($"SELECT id,col_name,col_comment as name,description,data_type_id as data_type,default_value,decimal_length,is_required as required,is_protected FROM sys_udf_field WHERE is_active=1 and cate_id = {(int)cate} ORDER BY sort_order");
+            string sql=dal.QueryStringDeleteFlag($"SELECT id,col_name,col_comment as name,description,data_type_id as data_type,default_value,decimal_length,is_required as required,is_protected FROM sys_udf_field WHERE is_active=1 and delete_time=0 and cate_id = {(int)cate} ORDER BY sort_order");
             var list = dal.FindListBySql<UserDefinedFieldDto>(sql);
             foreach (var udf in list)
             {
                 if (udf.data_type == (int)DicEnum.UDF_DATA_TYPE.LIST)
                 {
-                    var valList = udfListDal.FindListBySql<DictionaryEntryDto>(udfListDal.QueryStringDeleteFlag($"SELECT id as 'val',name as 'show',is_default as 'select' FROM sys_udf_list WHERE udf_field_id={udf.id} and status_id=0 ORDER BY sort_order"));
+                    var valList = udfListDal.FindListBySql<DictionaryEntryDto>(udfListDal.QueryStringDeleteFlag($"SELECT id as 'val',name as 'show',is_default as 'select' FROM sys_udf_list WHERE udf_field_id={udf.id} and delete_time=0 and status_id=0 ORDER BY sort_order"));
                     if (valList != null && valList.Count != 0)
                         udf.value_list = valList;
                 }
@@ -56,6 +56,59 @@ namespace EMT.DoneNOW.BLL
             }
 
             return dto;
+        }
+
+        /// <summary>
+        /// 获取自定义字段是否激活
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string GetUdfIsActive(long id)
+        {
+            return new sys_udf_field_dal().FindSignleBySql<string>($"select is_active from sys_udf_field where id={id}");
+        }
+
+        /// <summary>
+        /// 激活/取消激活自定义字段
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="active"></param>
+        /// <returns></returns>
+        public bool UpdateUdfStatus(long id, bool active, long userId)
+        {
+            var dal = new sys_udf_field_dal();
+            var udf = dal.FindNoDeleteById(id);
+            if (udf == null)
+                return false;
+            if (active)
+                udf.is_active = 1;
+            else
+                udf.is_active = 0;
+
+            udf.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            udf.update_user_id = userId;
+            dal.Update(udf);
+            return true;
+        }
+
+        /// <summary>
+        /// 删除自定义字段
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool DeleteUdf(long id, long userId)
+        {
+            var dal = new sys_udf_field_dal();
+            var udf = dal.FindNoDeleteById(id);
+            if (udf == null)
+                return false;
+
+            udf.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            udf.delete_user_id = userId;
+
+            dal.Update(udf);
+            return true;
         }
 
         /// <summary>
@@ -112,6 +165,7 @@ namespace EMT.DoneNOW.BLL
                     val.is_default = ufv.is_default;
                     val.name = ufv.name;
                     val.sort_order = ufv.sort_order;
+                    val.udf_field_id = udf.id;
                     val.status_id = 0;
                     val.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                     val.update_time = val.create_time;
@@ -195,6 +249,7 @@ namespace EMT.DoneNOW.BLL
                         val.is_default = listVal.is_default;
                         val.name = listVal.name;
                         val.sort_order = listVal.sort_order;
+                        val.udf_field_id = field.id;
                         val.status_id = 0;
                         val.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
                         val.update_time = val.create_time;

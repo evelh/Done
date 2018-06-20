@@ -278,6 +278,8 @@
     <Content Include="Scripts\Search\report_contract_bill_tobill.js" />
     <Content Include="Scripts\Search\report_contract_bill_tobill_by_project.js" />
     <Content Include="Scripts\Search\report_contract_bill_tobill_by_res.js" />
+    <Content Include="Scripts\Search\SharedDashboard.js" />
+    <Content Include="Scripts\Search\SharedDashboardResource.js" />
     <Content Include="Scripts\Search\system_certification.js" />
     <Content Include="Scripts\Search\system_certification_cate.js" />
     <Content Include="Scripts\Search\system_change_board_search.js" />
@@ -297,6 +299,7 @@
     <Content Include="Scripts\Search\system_ticket_sub_issue_search.js" />
     <Content Include="Scripts\Search\system_time_approval_search.js" />
     <Content Include="Scripts\Search\sys_form_temp_search.js" />
+    <Content Include="Scripts\Search\UserDefinedField.js" />
     <Content Include="Scripts\Search\view_contact_group_search.js" />
     <Content Include="Scripts\Search\WidgetDrillCompany.js" />
     <Content Include="Scripts\Search\WidgetDrillConfiguration.js" />
@@ -695,6 +698,7 @@
     <Content Include="Resource\Workgroup.aspx" />
     <Content Include="Resource\WorkgroupResource.aspx" />
     <Content Include="System\AcceptOfferWidget.aspx" />
+    <Content Include="System\ShareDashboard.aspx" />
     <Content Include="TimeSheet\ExpenseReportDetail.aspx" />
     <Content Include="TimeSheet\MyTimeoffBalance.aspx" />
     <Content Include="TimeSheet\MyTimeSummary.aspx" />
@@ -2646,6 +2650,13 @@
     </Compile>
     <Compile Include="System\AcceptOfferWidget.aspx.designer.cs">
       <DependentUpon>AcceptOfferWidget.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="System\ShareDashboard.aspx.cs">
+      <DependentUpon>ShareDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="System\ShareDashboard.aspx.designer.cs">
+      <DependentUpon>ShareDashboard.aspx</DependentUpon>
     </Compile>
     <Compile Include="TimeSheet\ExpenseReportDetail.aspx.cs">
       <DependentUpon>ExpenseReportDetail.aspx</DependentUpon>

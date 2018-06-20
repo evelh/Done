@@ -725,6 +725,11 @@
                                                         <span class="Text">工作流规则</span>
                                                     </a>
                                                 </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.USER_DEFINED_FIELD %>" target="PageFrame">
+                                                        <span class="Text">用户自定义字段</span>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -852,7 +857,7 @@
                                             </div>
 
                                             <div class="Content">
-                                                <a class="Button ButtonIcon Link NormalState" onclick="ManageDashboard()">管理共享仪表板
+                                                <a class="Button ButtonIcon Link NormalState" href="Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SHARED_DASHBOARD %>" onclick='setTimeout(function () {$(".cont").show();}, 300);setTimeout(function () {$("#yibiaopan").hide();}, 100);' target="PageFrame">管理共享仪表板
                                                 </a>
                                             </div>
 
@@ -1520,7 +1525,7 @@
             <div id="DashboardContainer" style="background-color:#fff; height:100%;">
                 <div class="panel_nav">
                     <div class="nav_heard"></div>
-                    <div class="nav_add"> 
+                    <div class="nav_add" onclick="AddDashboard()"> 
                         <div class="hline"></div>
                         <div class="sline"></div>
                     </div>
@@ -1533,11 +1538,11 @@
                                 <span class="Icon" style="float:left;display: block;width: 16px;height: 16px; background:url(Images/ButtonIcons.svg) no-repeat scroll;background-position: -288px 0;margin-top: 2px;"></span>
                                 <span class="Text" style="float: left;display: block;padding-left:8px; ">刷新</span>
                             </li>
-                            <li title="仪表板设置" onclick="SettingDashboard()">
+                            <li title="仪表板设置" onclick="SettingDashboard()" id="dashboardSettingLi">
                                 <span class="Icon" style="float:left;display: block;width: 16px;height: 16px; background:url(Images/ButtonIcons.svg) no-repeat scroll;background-position: -288px -32px;margin-top: 2px;"></span>
                                 <span class="Text" style="float: left;display: block;padding-left:8px; ">仪表板设置</span>
                             </li>
-                            <li title="添加小窗口" onclick="AddWidgetStep0()">
+                            <li title="添加小窗口" onclick="AddWidgetStep0()" id="dashboardAddWgtLi">
                                 <span class="Icon" style="float:left;display: block;width: 16px;height: 16px; background:url(Images/ButtonIcons.svg) no-repeat scroll;background-position: -80px 0;margin-top: 2px;"></span>
                                 <span class="Text" style="float: left;display: block;padding-left:8px; ">添加小窗口</span>
                             </li>
@@ -1545,7 +1550,7 @@
                                 <span class="Icon" style="float:left;display: block;width: 16px;height: 16px; background:url(Images/ButtonIcons.svg) no-repeat scroll;background-position: -96px -128px;margin-top: 2px;"></span>
                                 <span class="Text" style="float: left;display: block;padding-left:8px; ">演示模式</span>
                             </li>
-                            <li  title="分享仪表板" onclick="ShareDashboard()">
+                            <li title="分享仪表板" onclick="ShareDashboard()" id="dashboardShareLi">
                                 <span class="Icon" style="float:left;display: block;width: 16px;height: 16px; background:url(Images/ButtonIcons.svg) no-repeat scroll;background-position: -64px -128px;margin-top: 2px;"></span>
                                 <span class="Text" style="float: left;display: block;padding-left:8px; ">分享仪表板</span>
                             </li>
@@ -1559,6 +1564,31 @@
                 <div class="panel_content">
                     <ul></ul>
                 </div>
+            </div>
+
+            <div id="SharedDashboardEdit" style="background-color:#fff; height:100%; display:none;">
+                <%--<div class="panel_nav">
+                    <div class="nav_heard"></div>
+                    <div style="background-color: inherit;color: #fff;cursor: pointer;margin-left: 64px;text-decoration: underline;padding-top: 4px;" onclick="BackSharedManage()">返回共享仪表板管理</div>
+                    <div class="settings">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <ul class="settingsBox">
+                            <li title="仪表板设置" onclick="SettingDashboard()">
+                                <span class="Icon" style="float:left;display: block;width: 16px;height: 16px; background:url(Images/ButtonIcons.svg) no-repeat scroll;background-position: -288px -32px;margin-top: 2px;"></span>
+                                <span class="Text" style="float: left;display: block;padding-left:8px; ">仪表板设置</span>
+                            </li>
+                            <li title="添加小窗口" onclick="AddWidgetStep0()">
+                                <span class="Icon" style="float:left;display: block;width: 16px;height: 16px; background:url(Images/ButtonIcons.svg) no-repeat scroll;background-position: -80px 0;margin-top: 2px;"></span>
+                                <span class="Text" style="float: left;display: block;padding-left:8px; ">添加小窗口</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel_content">
+                    <ul></ul>
+                </div>--%>
             </div>
         </div>
         <div class="Siderbar_button" style="position: absolute;right: 0px;top: 80px;width: auto;height: auto;left:auto;">
@@ -1625,12 +1655,13 @@
                     </div>
                 </div>
                 <div class="common">
-                    <p class='title' style="padding-left:5px; ">一般</p>
+                    <p class='title' style="padding-left:5px; ">常规</p>
                     <div class="Column">
                         <div class="item">
                             <p>仪表板名称<span style="color: red;">*</span></p>
                             <input type="text" id="dashboardName" name="dashboardName">
                             <input type="hidden" id="dashboardId" name="dashboardId" />
+                            <input type="hidden" id="dashboardIsCopy" />
                         </div>
                         <div class="item" style="line-height: 57px;">
                             <input type="checkbox" checked="checked" id="dashboardAutoPlace" name="dashboardAutoPlace">
@@ -1779,11 +1810,11 @@
             </div>
             <div class="content">
                 <p>关闭标签</p>
-                <span>您即将关闭此仪表板。要稍后再次打开此仪表板，请单击“+”（添加）仪表板并选择“显示现有仪表板”选项。你想继续吗？</span>
+                <span>您即将关闭此仪表板。要稍后再次打开此仪表板，请单击“+”（添加）仪表板并选择“打开已存在的仪表板”选项。你想继续吗？</span>
 
                 <div class="button">
-                    <div class="yes">是</div>
-                    <div class="no">否</div>
+                    <div class="yes" onclick="CloseDashboard()">是</div>
+                    <div class="no" onclick="$('#cover').hide();$('#CloseTable').hide();">否</div>
                 </div>
             </div>
         </div>
@@ -1927,23 +1958,51 @@
             <div class="Column">
                 <p class="title">您想做什么？</p>
                 <div class="item">
-                    <input type="radio" name="addDashboardType" id="addDashboardType1" checked="checked" value="1"><label for="addDashboardType1">新增一个空白的仪表板</label>
+                    <input type="radio" name="addDashboardType" id="addDashboardType1" checked="checked" value="1" style="margin:6px;"><label for="addDashboardType1">新增一个空白的仪表板</label>
+                </div>
+                <div class="item"></div>
+                <div class="itemborderBottom"></div>
+                <div class="item">
+                    <input type="radio" name="addDashboardType" id="addDashboardType2" value="2" style="margin:6px;"><label for="addDashboardType2">从已存在的仪表板中复制</label>
+                </div>
+                <div class="item">
+                    <select id="addDashboardSelectExist"></select>
                 </div>
                 <div class="itemborderBottom"></div>
-                <div class="item" style="padding-top:20px; ">
-                    <input type="radio" name="addDashboardType" id="addDashboardType2" value="2"><label for="addDashboardType2">从已存在的仪表板中复制</label>
+                <div class="item">
+                    <input type="radio" name="addDashboardType" id="addDashboardType3" value="3" style="margin:6px;"><label for="addDashboardType3">从默认的仪表板中复制</label>
+                </div>
+                <div class="item">
+                    <select id="addDashboardSelectDefault"></select>
                 </div>
                 <div class="itemborderBottom"></div>
-                <div class="item"  style="padding-top:20px;">
-                    <input type="radio" name="addDashboardType" id="addDashboardType3" value="3"><label for="addDashboardType3">从默认的仪表板中复制</label>
+                <div class="item">
+                    <input type="radio" name="addDashboardType" id="addDashboardType4" value="4" style="margin:6px;"><label for="addDashboardType4">打开已存在的仪表板</label>
                 </div>
-                <div class="itemborderBottom"></div>
-                <div class="item"  style="padding-top:20px;">
-                    <input type="radio" name="addDashboardType" id="addDashboardType4" value="4"><label for="addDashboardType4">打开已存在的仪表板</label>
+                <div class="item">
+                    <select id="addDashboardSelectClosed"></select>
                 </div>
             </div>
-            <div class="button">
-                <div onclick="()"><span></span>下一步</div>
+            <div class="button" style="position:absolute;bottom:10px;">
+                <div class="AddDashboardNext next" style="float:right;margin-right:10px;"><span></span>下一步</div>
+            </div>
+        </div>
+    </div>
+    <div class="POPbox" style="z-index:105;height:400px;margin-top:-200px;" id="MoveWidget">
+        <div class="shut" onclick="POPClose(this)">
+        </div>
+        <div class="AddWidgetDynamicSelectPOP">
+            <h3>移动小窗口</h3>
+            <div class="button" style="padding:10px 0 0 10px;">
+                <div class="next" id="MoveWidgetFinish">确定</div>
+            </div>
+            <div class="content" style="padding:10px 40px 20px 40px;">
+                <div class="Column" style="margin:0 30px 0 30px;">
+                    <div class="item">
+                        <p>移动到</p>
+                        <select id="MoveWidgetMoveTo"></select>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1963,8 +2022,6 @@
                     </div>
                 </div>
                 <div class="Column" style="margin:0 30px 0 30px;">
-                    <%--<div><input type="radio" value="2765" id="AddWidgetColorScheme1" name="AddWidgetColorScheme" checked="checked" /><label for="AddWidgetColorScheme1">仪表板颜色</label></div>
-                    <div><input type="radio" value="2765" id="AddWidgetColorScheme2" name="AddWidgetColorScheme" /><label for="AddWidgetColorScheme2">红绿黄</label></div>--%>
                     <div class="item">
                         <p>开始</p>
                         <select id="WidgetDynamicDateStart"></select>
