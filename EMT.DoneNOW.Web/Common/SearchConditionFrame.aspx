@@ -174,28 +174,10 @@
                     { %>SelectedState <%} %>" href="../Common/SearchFrameSet?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_CHANGE_APPROVEL %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.MY_QUEUE_CHANGE_APPROVEL %>&param1=<%=param1 %>" target="PageFrame" id="MyChangeApproal">
                     <span class="Text">我的变更请求</span>
                 </a>
-             <%--   <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES)
-                    { %>SelectedState <%} %>" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_CHARGES %>" target="PageFrame" id="tab2">
-                    <span class="Text">成本</span>
-                </a>
-                <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_EXPENSE)
-                    { %>SelectedState <%} %>" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_EXPENSE %>" target="PageFrame" id="tab3">
-                    <span class="Text">费用</span>
-                </a>
-                <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS)
-                    { %>SelectedState <%} %>" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_SUBSCRIPTIONS %>" target="PageFrame" id="tab4">
-                    <span class="Text">订阅</span>
-                </a>
-                <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES)
-                    { %>SelectedState <%} %>" href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_RECURRING_SERVICES %>" target="PageFrame" id="tab5">
-                    <span class="Text">定期服务</span>
-                </a>
-                <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_MILESTONES)
-                    { %> SelectedState<%} %>"  href="../Common/SearchFrameSet.aspx?isCheck=1&cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.APPROVE_MILESTONES %>" target="PageFrame" id="tab6">
-                    <span class="Text">里程碑</span>
-                </a>--%>
             </div>
     <%} %>
+
+   
 
     <%--结束--%>
 

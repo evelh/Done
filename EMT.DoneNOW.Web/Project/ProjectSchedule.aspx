@@ -2172,7 +2172,7 @@
                                     <span class="Text">添加到任务库</span>
                                 </div>
                                 <%} %>
-                                <div class="Button1 TaskMenu OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="">
+                                <div class="Button1 TaskMenu OnlyTaskMenu OnlyIssMenu" id="" tabindex="0" onclick="AddTaskServiceCall()">
                                     <span class="Text">服务预定</span>
                                 </div>
                             </div>
@@ -3282,6 +3282,11 @@
         if (entityid != "" && entityid != undefined) {
             window.open("TaskToLibrary.aspx?task_id=" + entityid, '<%=(int)EMT.DoneNOW.DTO.OpenWindow.TASK_TO_LIBARY %>', 'left=200,top=200,width=1080,height=800', false);
         }
+    }
+    function AddTaskServiceCall() {
+        if (entityid != "" && entityid != undefined) {
+            window.open("../ServiceDesk/TaskServiceCall?ticketId=" + entityid, windowObj.serviceCall + windowType.add, 'left=200,top=200,width=1080,height=800', false);
+         }
     }
 
     function DeleteTask() {

@@ -59,6 +59,7 @@ namespace EMT.DoneNOW.DTO
         ACCOUNT_SUFFIX = 75,                     // 客户名称后缀
         LIMIT_TYPE = 76,                         //系统权限：类型 取值 有无、全部部分 等
         LIMIT_TYPE_VALUE = 77,                    //系统权限：类型详情 取值 有无（有、无）、全部部分（全部、我的、无）等
+        SYSTEM_SETTING_MODULE = 78,             // 系统管理：系统配置模块
         MATERIAL_CODE_TO_USE = 80,              // 系统管理：系统配置：配送报价项转为账单时使用的物料代码
         HOLIDAY_SET = 94,                       // 节假日设置
         LINE_OF_BUSINESS=95,                    //系统管理：组织：业务条线
@@ -71,7 +72,8 @@ namespace EMT.DoneNOW.DTO
         EXPENSE_TYPE = 113,                     // 费用类型
         CHARGE_TYPE = 114,                      // 合同的成本类型
         CHARGE_STATUS = 115,                    // 合同的成本状态
-        CONTRACT_MILESTONE=117,                  //合同里程碑
+        GENERAL_LEDGER = 116,                    // 合同：总账代码
+        CONTRACT_MILESTONE =117,                  //合同里程碑
         BILL_POST_TYPE = 118,                   // 合同：工时计费设置
         ACCOUNT_DEDUCTION_TYPE=121,              //审批并提交操作类型
         PROJECT_TYPE = 123,                       // 项目类型
@@ -90,6 +92,7 @@ namespace EMT.DoneNOW.DTO
         INVOICE_TEMPLATE_BODY_ORDER_BY =143,     //发票模板主体-排序条件
         NOTE_PUBLISH_TYPE = 146,                 // 合同/项目等备注发布类型
         ATTACHMENT_PUBLISH_TYPE = 147,           // 附件发布类型
+        EXPENSE_OVERDRAFT_POLICY = 148,          // 费用超支政策
         TASK_LIBRARY_CATE  = 149,                 // 任务库种类
         SERVICE_CALL_STATUS = 152,                // 服务请求状态
         ITEM_DESC_DISPLAY_TYPE = 155,               // 采购项描述信息显示内容类型
@@ -108,6 +111,7 @@ namespace EMT.DoneNOW.DTO
         SYS_TICKET_RESOLUTION_METRICS = 206,    // 工单解决参数设置
         FORM_TMPL_QUICK_EMAIL_OBJECT = 207,     // 表单模板：发送对象
         SYSTEM_LOGO = 212,                      // 系统LOGO
+        OPPORTUNITY_SPREAD_UNIT = 213,          // 商机收入周期取值范围
     }
 
     /// <summary>
@@ -832,12 +836,26 @@ namespace EMT.DoneNOW.DTO
             SYSTEM_TICKET_SUB_ISSUE_SEARCH = 1700,         // 系统设置-问题和子问题类型-子问题查询
             SYSTEM_CHANGE_BOARD_SEARCH = 1701,             // 系统设置-变更委员会查询
             SYSTEM_CHECK_LIB_SEARCH = 1702,                // 系统设置-系统设置-检查单库查询
-
             SHARED_DASHBOARD = 1718,                        // 共享仪表板管理
             SHARED_DASHBOARD_RESOURCE = 1719,               // 共享仪表板管理-发布对象
             SECURITY_LEVEL_CALLBACK = 1723,                 // 安全等级查找带回
+            SYSTEM_PROJECT_STATUS = 1724,                  // 系统设置-项目状态
+            SYSTEM_TASK_LIBRARY_CATE = 1725,               // 系统设置-任务种类  
+            SYSTEM_TASK_LIBRARY = 1726,                    // 系统设置-任务库 
+            SYSTEM_CODE_WORK_TYPE = 1727,                  // 系统设置-成本代码 - 工作类型  
+            SYSTEM_CODE_MATERIAL = 1728,                   // 系统设置-成本代码 - 物料     
+            SYSTEM_CODE_INTER_TIME = 1729,                 // 系统设置-成本代码 - 内部工时   
+            SYSTEM_CODE_ECPENSE_CATE = 1730,               // 系统设置-成本代码 - 费用           
+            SYSTEM_CODE_SERVICE = 1731,                    // 系统设置-成本代码 - 服务         
+            SYSTEM_CODE_ILESTONE = 1732,                   // 系统设置-成本代码 - 里程碑     
+            SYSTEM_CODE_LEDGER = 1733,                     // 系统设置- 总账代码   
+            SYSTEM_TAX_REGION = 1734,                       // 系统设置-财务-税收-税区
+            SYSTEM_TAX_CATE = 1735,                         // 系统设置-财务-税收-税种
+            SYSTEM_TAX_REGION_CATE = 1736,                  // 系统设置-财务-税收-税区税种
+            SYSTEM_PAYMENT_TYPE = 1737,                     // 系统配置-财务-支付类型  
+            SYSTEM_PAYMENT_TERM = 1738,                     // 系统配置-财务-支付条款  
+            SYSTEM_SHIP_TYPE = 1739,                        // 系统配置-财务-配送类型   
             DEPARTMENT_CALLBACK = 1741,                     // 部门查找带回
-
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -1012,6 +1030,7 @@ namespace EMT.DoneNOW.DTO
             SYS_WORKGROUP_RESOURCE=1459,                // 工作组员工   
             CHANGE_BOARD = 1460,                        // 变更委员会
             CHANGE_BOARD_PERSON = 1461,                 // 变更委员会成员
+            D_COST_CODE = 1464,                          // 物料代码
 
         }
 
@@ -1042,6 +1061,7 @@ namespace EMT.DoneNOW.DTO
             CALLBACK = 812,         // 查找带回
             BOOLEAN = 813,          // 布尔值
             MUILT_CALLBACK = 814,   // 多选查找带回
+            MUILT_LINE = 815,       // 多行文本
             NUMBER_EQUAL = 816,     // 数值(做等于判断)
             TIMESPAN = 817,         // 日期-时间戳(做范围判断)
             UN_EQUAL = 818,         // 不等于
@@ -1793,6 +1813,15 @@ namespace EMT.DoneNOW.DTO
             MAXIMUM_NEW_TICKETS = 3087,                   // 最大新建工单数
             MAXIMUM_AVERAGE_TICKETS_PER_RESOURCE = 3088,  // 人均最大平均工单数
         }
+        /// <summary>
+        /// 商机收入周期范围-单位 - 213
+        /// </summary>
+        public enum OPPORTUNITY_SPREAD_UNIT
+        {
+            DAY = 3401,
+            MONTH = 3402,
+            YEAR = 3403,
+        }
     }
 
     /// <summary>
@@ -2057,6 +2086,22 @@ namespace EMT.DoneNOW.DTO
         SYSTEM_TICKET_SUB_ISSUE_SEARCH = 310,         // 系统设置-问题和子问题类型-子问题查询  
         SYSTEM_CHANGE_BOARD_SEARCH = 311,             // 系统设置-变更委员会查询   
         SYSTEM_CHECK_LIB_SEARCH = 312,                // 系统设置-系统设置-检查单库查询  
+        SYSTEM_PROJECT_STATUS = 334,                  // 系统设置-项目状态  
+        SYSTEM_TASK_LIBRARY_CATE = 335,               // 系统设置-任务种类
+        SYSTEM_TASK_LIBRARY = 336,                    // 系统设置-任务库 
+        SYSTEM_CODE_WORK_TYPE = 337,                  // 系统设置- 工作类型
+        SYSTEM_CODE_MATERIAL = 338,                   // 系统设置- 物料
+        SYSTEM_CODE_INTER_TIME = 339,                 // 系统设置- 内部工时
+        SYSTEM_CODE_ECPENSE_CATE = 340,               // 系统设置- 费用
+        SYSTEM_CODE_SERVICE = 341,                    // 系统设置- 服务
+        SYSTEM_CODE_ILESTONE = 342,                   // 系统设置- 里程碑
+        SYSTEM_CODE_LEDGER = 343,                     // 系统设置- 总账代码
+        SYSTEM_TAX_REGION = 344,                      // 系统设置-财务-税收-税区     
+        SYSTEM_TAX_CATE = 345,                        // 系统设置-财务-税收-税种     
+        SYSTEM_TAX_REGION_CATE = 346,                 // 系统设置-财务-税收-税区税种   
+        SYSTEM_PAYMENT_TYPE = 347,                    // 系统配置-财务-支付类型
+        SYSTEM_PAYMENT_TERM = 348,                    // 系统配置-财务-支付条款
+        SYSTEM_SHIP_TYPE = 349,                       // 系统配置-财务-配送类型
 
         SharedDashboard = 328,                      // 共享仪表板
         SharedDashboardResource = 329,              // 共享仪表板共享用户

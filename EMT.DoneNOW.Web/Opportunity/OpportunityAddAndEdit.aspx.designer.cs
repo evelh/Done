@@ -130,15 +130,6 @@ namespace EMT.DoneNOW.Web.Opportunity {
         protected global::System.Web.UI.WebControls.CheckBox is_use_quote;
         
         /// <summary>
-        /// spread_unit 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList spread_unit;
-        
-        /// <summary>
         /// win_reason_type_id 控件。
         /// </summary>
         /// <remarks>

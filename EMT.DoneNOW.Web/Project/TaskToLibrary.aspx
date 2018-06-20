@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <%--    <link href="../Content/reset.css" rel="stylesheet" />
     <link href="../Content/style.css" rel="stylesheet" />--%>
-    <title></title>
+    <title><%=isAdd?"新增":"编辑" %>任务库</title>
     <style>
         body {
             font-size: 12px;
@@ -155,9 +155,16 @@
         <div class="HeaderRow">
             <table>
                 <tr>
-                    <td><span>添加到任务库: <%=thisTask==null?"":thisTask.title %></span></td>
+                    <%if (isAdd)
+                        { %>
+                    <td><span>添加到任务库: <%=thisTask == null ? "" : thisTask.title %></span></td>
+                    <%}
+    else
+    { %>
+                    <td><span>编辑任务库</span></td>
+                    <%} %>
                     <td align="right" class="helpLink"><a class="HelperLinkIcon">
-                        <img src="/images/icons/context_help.png?v=41154" border="0"></a></td>
+                        </a></td>
                 </tr>
             </table>
         </div>
@@ -167,7 +174,7 @@
             <ul>
                 <li><a class="ImgLink" id="HREF_btnSaveClose" name="HREF_btnSaveClose">
                     <span class="icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;width: 16px;height: 16px;display: inline-block;margin: -2px 3px;margin-top: 3px;"></span><span class="Text"><asp:Button ID="save_close" runat="server" Text="保存并关闭" OnClick="save_close_Click" /></span></a></li>
-                <li style="margin-left:20px;"><a class="ImgLink" id="HREF_btnCancel" name="HREF_btnCancel" title="Cancel">
+                <li style="margin-left:20px;" onclick="javascript:window.close();"><a class="ImgLink" id="HREF_btnCancel" name="HREF_btnCancel" title="Cancel">
                     <span class="icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;width: 16px;height: 16px;display: inline-block;margin: -2px 3px;margin-top: 3px;"></span>
                     <span class="Text">取消</span></a></li>
 
@@ -175,32 +182,42 @@
         </div>
         <div style="left: 0; overflow-x: auto; overflow-y: auto; position: fixed; right: 0; bottom: 0; top: 145px;">
             <div class="DivScrollingContainer General">
+                <%if (isAdd)
+                    { %>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="Searchareaborder">
                     <tr>
                         <td class="PageLevelInstructions"><span>选择一个类别，验证任务信息，然后单击“保存和关闭”添加到任务库中。</span></td>
                     </tr>
                 </table>
-                <div class="DivSection NoneBorder" style="padding-left: 0px; padding-top: 0px">
+                <%} %>
+                <div class="DivSection NoneBorder" style="padding-left: 0px; padding-top: 0px;min-width:700px;">
                     <table width="100%" border="0" cellspacing="0" cellpadding="3">
                         <tr>
                             <td class="FieldLabels">种类
 				<div>
-                    <asp:DropDownList ID="cate_id" runat="server" Width="662px"></asp:DropDownList>
-
+                    <select id="cate_id" name="cate_id" style="width:362px;">
+                        <option></option>
+                        <% if (libCateList != null && libCateList.Count > 0) {
+                                foreach (var libCate in libCateList)
+                                {%>
+                        <option value="<%=libCate.id %>" <% if (taskLib != null && taskLib.cate_id == libCate.id) {%> selected="selected" <% } %> ><%=libCate.name %></option>
+                               <% }
+                            } %>
+                    </select>
                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td class="FieldLabels">标题<span id="errorSmall" style="color:red;">*</span>
                                 <div>
-                                    <input type="text" name="title" style="width: 662px;" id="title" value="<%=thisTask!=null?thisTask.title:"" %>" />
+                                    <input type="text" name="title" style="width: 362px;" id="title" value="<%=taskLib!=null?taskLib.title:(thisTask!=null?thisTask.title:"") %>" />
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td class="FieldLabels">描述
 				<div>
-                    <textarea name="description" id="description" rows="6" style="width: 662px;"><%=thisTask!=null?thisTask.description:"" %></textarea>
+                    <textarea name="description" id="description" rows="6" style="width: 362px;"><%=taskLib!=null?taskLib.title:(thisTask!=null?thisTask.description:"") %></textarea>
                 </div>
                             </td>
                         </tr>
@@ -208,35 +225,45 @@
                         <tr>
                             <td class="FieldLabels">预估时间
 				<div>
-                    <input type="text" name="estimated_hours" size="8" style="width: 60px;" id="estimated_hours" value="<%=thisTask!=null?thisTask.estimated_hours.ToString("#0.00"):"" %>" maxlength="4" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"  />
+                    <input type="text" name="estimated_hours" size="8" style="width: 60px;" id="estimated_hours" value="<%=taskLib!=null?(taskLib.estimated_hours!=null?(((decimal)taskLib.estimated_hours).ToString("#0.00")):""):(thisTask!=null?thisTask.estimated_hours.ToString("#0.00"):"") %>" maxlength="4" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"  />
                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td class="FieldLabels">部门
 				<div>
-                    <asp:DropDownList ID="department_id" runat="server" Width="662px"></asp:DropDownList>
+                    <select id="department_id" name="department_id" style="width:362px;">
+                        <option></option>
+                        <% if (depList != null && depList.Count > 0) {
+                                foreach (var dep in depList)
+                                {%>
+                        <option value="<%=dep.id %>" <% if (taskLib != null && taskLib.department_id == dep.id) {%> selected="selected" <% } %> ><%=dep.name %></option>
+                               <% }
+                            } %>
+                    </select>
                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td class="FieldLabels">工作类型
 				<div>
-                    <select name="cost_code_id" id="cost_code_id" style="width: 662px;">
+                    <select name="cost_code_id" id="cost_code_id" style="width: 362px;">
                     </select>
                 </div>
 
                             </td>
                         </tr>
+                        <%if (isAdd)
+                            { %>
                         <tr>
                             <td class="FieldLevelInstructions"><span>默认任务工作类型下拉框工作类型如果不计费则用括弧标记出来，如“销售（不可计费）
                             </span>
                             </td>
                         </tr>
+                        <%} %>
                     </table>
                 </div>
             </div>
-
         </div>
     </form>
 </body>
@@ -247,7 +274,13 @@
 <script>
     $(function () {
         GetWorkTypeByDepId();
-
+        <%if (isAdd && thisTask != null && thisTask.department_id != null) {%>
+        $("#department_id").val('<%=thisTask.department_id %>');
+    <%} %>
+        <%if (taskLib != null && taskLib.cost_code_id != null)
+    { %>
+        $("#cost_code_id").val('<%=taskLib.cost_code_id %>');
+        <%} %>
     })
     $("#save_close").click(function () {
         var title = $("#title").val();
@@ -276,7 +309,7 @@
             });
         }
         else {
-            $("#cost_code_id").html("<option value='0'> <option>");
+            $("#cost_code_id").html("<option value=''> <option>");
         }
 
     }

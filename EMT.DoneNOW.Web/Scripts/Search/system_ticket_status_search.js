@@ -83,6 +83,8 @@ function RightClickFunc() {
                 }
                 if (data.is_system == "1") {
                     $("#DeleteLi").hide();
+                } else {
+                    $("#DeleteLi").show();
                 }
             }
 

@@ -91,6 +91,62 @@
     right: 0;
     display: none;
 }/*加载的css样式(结尾)*/
+ 
+    /*切换按钮*/
+    .TabBar {
+        border-bottom: solid 1px #adadad;
+        font-size: 0;
+        margin: 0 0 10px 0;
+        padding: 0 0 0 5px;
+    }
+    .TabBar a.Button.SelectedState {
+        background: #fff;
+        border-color: #adadad;
+        border-bottom-color: #fff;
+        color:black;
+    }
+    .TabBar a.Button {
+        background: #eaeaea;
+        border: solid 1px #dfdfdf;
+        border-bottom-color: #adadad;
+        color: #858585;
+        height: 24px;
+        padding: 0;
+        margin: 0 0 -1px 5px;
+        width:100px;
+    }
+    a.Button {
+        -ms-flex-align: center;
+        align-items: center;
+        background: #f0f0f0;
+        background: -moz-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+        background: -webkit-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+        background: -ms-linear-gradient(top,#fbfbfb 0,#f0f0f0 100%);
+        background: linear-gradient(to bottom,#fbfbfb 0,#f0f0f0 100%);
+        border: 1px solid #d7d7d7;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        color: #4f4f4f;
+        cursor: pointer;
+        height: 24px;
+        padding: 0 3px;
+        position: relative;
+        text-decoration: none;
+    }
+    .TabBar a.Button span.Text {
+        padding: 0 6px 0 6px;
+        margin: 0 auto;
+    }
+    a.Button>.Text {
+        -ms-flex: 0 1 auto;
+        flex: 0 1 auto;
+        font-size: 12px;
+        font-weight: bold;
+        overflow: hidden;
+        padding: 0 3px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
     </style>
 </head>
 <body style="overflow-x: auto; overflow-y: auto;">
@@ -126,7 +182,7 @@
             <input type="hidden" id="param1" value="<%=param1 %>" />
             <input type="hidden" id="param2" value="<%=param2 %>" />
             <input type="hidden" id="isCheck" name="isCheck" value="<%=isCheck %>" />
-            <input type="hidden" id="loginUserId" name="isCheck" value="<%=LoginUserId %>" />
+            <input type="hidden" id="loginUserId" name="loginUserId" value="<%=LoginUserId %>" />
             <div id="conditions">
                 <%foreach (var para in queryParaValue)
                     { %>
@@ -215,6 +271,56 @@
                 </div>
               <%} %>
             </div>
+              <% if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_WORK_TYPE||(catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_MATERIAL)||(catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_INTER_TIME)||(catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_ECPENSE_CATE)||(catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_SERVICE)||(catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_ILESTONE))
+                 {%>
+            <p><span id="options" style="padding: 3px;border: 1px solid #bcbcbc;margin-left: 10px;background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);">新增  <img src="../Images/dropdown.png" alt="" class="ButtonRightImg1" /></span></p>
+      <div class="TabBar" style="margin-top:5px;">
+                <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_WORK_TYPE)
+                    { %>SelectedState <%} %>" href="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_WORK_TYPE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_CODE_WORK_TYPE %>" id="">
+                    <span class="Text">工作类型</span>
+                </a>
+          <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_MATERIAL)
+                    { %>SelectedState <%} %>" href="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_MATERIAL %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_CODE_MATERIAL %>" id="">
+                    <span class="Text">物料代码</span>
+                </a>
+          <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_INTER_TIME)
+                    { %>SelectedState <%} %>" href="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_INTER_TIME %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_CODE_INTER_TIME %>" id="">
+                    <span class="Text">内部工时</span>
+                </a>
+          <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_CHANGE_APPROVEL)
+                    { %>SelectedState <%} %>" href="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_ECPENSE_CATE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_CODE_ECPENSE_CATE %>" id="">
+                    <span class="Text">费用</span>
+                </a>
+            <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_SERVICE)
+                    { %>SelectedState <%} %>" href="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_SERVICE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_CODE_SERVICE %>" id="">
+                    <span class="Text">服务</span>
+                </a>
+            <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_ILESTONE)
+                    { %>SelectedState <%} %>" href="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_ILESTONE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_CODE_ILESTONE %>" id="">
+                    <span class="Text">里程碑</span>
+                </a>
+            </div>
+    <%} %>
+              <% if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_REGION||(catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_CATE)||(catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_REGION_CATE))
+                 {%>
+              <p><span onclick="AddTaxRegion()" style="padding: 3px;border: 1px solid #bcbcbc;margin-left: 10px;background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);">新增税区 </span><span onclick="AddTaxCate()" style="padding: 3px;border: 1px solid #bcbcbc;margin-left: 10px;background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);">新增税种 </span></p>
+             <div class="TabBar" style="margin-top:5px;">
+                 <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_REGION_CATE)
+                    { %>SelectedState <%} %>" href="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_REGION_CATE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_TAX_REGION_CATE %>" id="">
+                    <span class="Text">税区税种</span>
+                </a>
+                <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_REGION)
+                    { %>SelectedState <%} %>" href="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_REGION %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_TAX_REGION %>" id="">
+                    <span class="Text">税区</span>
+                </a>
+          <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_CATE)
+                    { %>SelectedState <%} %>" href="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_CATE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_TAX_CATE %>" id="">
+                    <span class="Text">税种</span>
+                </a>
+          
+        
+            </div>
+             <%} %>
             <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_MONTH_PROFIT_MARGIN || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_MONTH_PROFIT_MARGIN_BYDATE || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_CONTRACT_PROFIT || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_CONTRACT_PROFIT_BYDATE || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_CONTRACT_PROFIT_MARGIN || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_PROJECT_PROFIT || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_PROJECT_PROFIT_BYDATE || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_PROJECT_PROFIT_MARGIN || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_RES_WORKHOUR || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_RES_WORKHOUR_BYDATE || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_ACCOUNT_OVERVIEW || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_ACCOUNT_OVERVIEW_BYDATE)
                                                                                                        { %>    
             <p style="margin-top:10px;"><span id="FilterSpan">过滤方式</span><span id="FilterSelect"><select id="FilterPosted"><option value="ItemDate">条目日期</option><option value="BillDate">计费日期</option></select></span> <span style="margin-left:10px;" id="BillSpanName">是否计费</span><span id="BillSelectSpan"><select id="IsBilled"><option value=""></option><option value="1">计费</option><option value="0">不计费</option></select></span><%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_PROJECT_PROFIT || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_PROJECT_PROFIT_BYDATE || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_VIEW_PROJECT_PROFIT_MARGIN) { var projectStatusList = new EMT.DoneNOW.DAL.d_general_dal().GetGeneralByTableId((int)EMT.DoneNOW.DTO.GeneralTableEnum.PROJECT_STATUS);%>
@@ -539,7 +645,20 @@
                        
                     </ul>
                 </div>
-                <%}%>
+                <%}
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_WORK_TYPE||(catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_MATERIAL)||(catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_INTER_TIME)||(catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_ECPENSE_CATE)||(catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_SERVICE)||(catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_ILESTONE))
+    {%>
+                 <div class="DropDownMenu" id="D1" style=" background-color: #FFF;padding: 5px;border: 1px solid #BCBCBC;cursor: pointer;box-shadow: 1px 3px 4px rgba(0,0,0,0.33);position: fixed;top: 20px;border-top:white;display:none;">
+                    <ul>
+                        <li><span class='DropDownMenuItemText' onclick="AddCode('<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.GENERAL_ALLOCATION_CODE %>')">工作类型</span></li> 
+                        <li><span class='DropDownMenuItemText' onclick="AddCode('<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.EXPENSE_CATEGORY %>')">费用</span></li> 
+                        <li><span class='DropDownMenuItemText' onclick="AddCode('<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.INTERNAL_ALLOCATION_CODE %>')">内部成本</span></li> 
+                        <li><span class='DropDownMenuItemText' onclick="AddCode('<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.MATERIAL_COST_CODE %>')">物料成本</span></li> 
+                        <li><span class='DropDownMenuItemText' onclick="AddCode('<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.RECURRING_CONTRACT_SERVICE_CODE %>')">周期服务成本</span></li> 
+                        <li><span class='DropDownMenuItemText' onclick="AddCode('<%=(int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.MILESTONE_CODE %>')">里程碑</span></li> 
+                    </ul>
+                </div>
+                <%} %>
               
            
 
@@ -2768,5 +2887,9 @@
         { %>
     <script type="text/javascript" src="../Scripts/Search/my_queue_active.js"></script>
     <%} %>
+    <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_WORK_TYPE || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_MATERIAL||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_INTER_TIME||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_ECPENSE_CATE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_SERVICE||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CODE_ILESTONE)
+        { %>
+     <script type="text/javascript" src="../Scripts/Search/system_code_work_type.js"></script>
+     <%} %>
 </body>
 </html>

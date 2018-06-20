@@ -2148,7 +2148,7 @@ namespace EMT.DoneNOW.BLL
                 OperLogBLL.OperLogUpdate<sdk_task_other>(thisOther, oldOther, thisOther.task_id, userId, OPER_LOG_OBJ_CATE.TICKET_RELATION, "编辑变更申请");
             }
         }
-        #endregion#
+        #endregion
 
         #region 定期主工单 - 管理
         public bool AddMasterTicket(MasterTicketDto param, long userId)

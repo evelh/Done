@@ -25,6 +25,7 @@ namespace EMT.DoneNOW.Web.Opportunity
         protected crm_account account = null;
         protected crm_contact contact = null;
         protected string callBackFiled = "";
+        protected List<d_general> spredList = new d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.OPPORTUNITY_SPREAD_UNIT);
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -111,7 +112,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                 formTemplate.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
                 #endregion
 
-                spread_unit.SelectedValue = "Months";
+              
                 opportunity_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.OPPORTUNITY);
                 if (opportunity != null)
                 {
@@ -136,7 +137,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                     competitor_id.SelectedValue = opportunity.competitor_id == null ? "0" : opportunity.competitor_id.ToString();
                     win_reason_type_id.SelectedValue = opportunity.win_reason_type_id == null ? "0" : opportunity.win_reason_type_id.ToString();
                     loss_reason_type_id.SelectedValue = opportunity.loss_reason_type_id == null ? "0" : opportunity.loss_reason_type_id.ToString();
-                    spread_unit.SelectedValue = opportunity.spread_unit;
+                    
                     
                         is_use_quote.Checked = opportunity.use_quote == 1;
                     }

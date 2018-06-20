@@ -124,6 +124,14 @@ namespace EMT.DoneNOW.BLL
                 param.general.loss_reason_type_id = null;
                 param.general.loss_reason = "";
             }
+            if (param.general.stage_id == (int)DicEnum.OPPORTUNITY_STAGE.INITIAL_CONTACT)
+            {
+                param.general.first_contact_date = DateTime.Now; 
+            }
+            if (param.general.stage_id != null)
+            {
+                param.general.stage_update_date = DateTime.Now;
+            }
 
             _dal.Insert(param.general);
             id = param.general.id.ToString();
@@ -282,7 +290,15 @@ namespace EMT.DoneNOW.BLL
                     param.general.actual_closed_time = null;
                 }
             }
-
+            if (param.general.stage_id != old_opportunity.stage_id)
+            {
+                param.general.stage_update_date = DateTime.Now;
+            }
+            if(param.general.stage_id == (int)DicEnum.OPPORTUNITY_STAGE.INITIAL_CONTACT&&old_opportunity.stage_id != (int)DicEnum.OPPORTUNITY_STAGE.INITIAL_CONTACT)
+            {
+                param.general.first_contact_date = DateTime.Now;
+            }
+                
             param.general.update_user_id = user_id;
             param.general.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             _dal.Update(param.general);    // 更改商机

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EMT.DoneNOW.Core;
 using EMT.DoneNOW.DTO;
 using EMT.DoneNOW.DAL;
+using System.Data;
 
 namespace EMT.DoneNOW.BLL
 {
@@ -50,6 +51,40 @@ namespace EMT.DoneNOW.BLL
                 dal.Update(thisSet);
                 OperLogBLL.OperLogUpdate<sys_system_setting>(thisSet, oldSet, thisSet.id, userId,DicEnum.OPER_LOG_OBJ_CATE.SERVICE_CALL, "编辑系统设置");
             }
+        }
+        /// <summary>
+        /// 保存更改
+        /// </summary>
+        public void SystemSet(Dictionary<long,string> systemDic,long userId)
+        {
+            if(systemDic!=null&& systemDic.Count > 0)
+            {
+                foreach (var system in systemDic)
+                {
+                    ChangeSetValue(system.Key,system.Value,userId);
+                }
+            }
+        }
+
+        public List<sys_system_setting> GetAllSet()
+        {
+            return dal.FindListBySql("SELECT * from sys_system_setting where is_visible=1 ORDER BY sort_order");
+        }
+        /// <summary>
+        /// 获取相关实体
+        /// </summary>
+        public List<DictionaryEntryDto> GetDtoList(string sql)
+        {
+            List<DictionaryEntryDto> dtoList = new List<DictionaryEntryDto>();
+            if (string.IsNullOrEmpty(sql))
+                return dtoList;
+            var table = dal.ExecuteDataTable(sql);
+            if (table != null && table.Rows.Count > 0)
+            {
+                dtoList = (from  DataRow t in table.Rows
+                           select new DictionaryEntryDto { val=t[0].ToString(),show = t[1].ToString()}).ToList();
+            }
+            return dtoList;
         }
     }
 }

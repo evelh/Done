@@ -90,6 +90,9 @@ namespace EMT.DoneNOW.Web
                 case "GetAccDetail":
                     GetAccDetail(context);
                     break;
+                case "GetAccountByIds":
+                    GetAccountByIds(context);
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     return;
@@ -454,6 +457,19 @@ namespace EMT.DoneNOW.Web
                     if(ticketList!=null&& ticketList.Count > 0)
                         ticketNum = ticketList.Count;
                     context.Response.Write(new Tools.Serialize().SerializeJson(new {id=thisAcc.id,name=thisAcc.name,phone = thisAcc.phone, city= city, provice = provice, quXian = quXian, address1 = address1, address2 = address2, ticketNum = ticketNum, monthNum = monthNum, postalCode = postalCode }));
+                }
+            }
+        }
+
+        void GetAccountByIds(HttpContext context)
+        {
+            var ids = context.Request.QueryString["ids"];
+            if (!string.IsNullOrEmpty(ids))
+            {
+                List<crm_account> accList = new crm_account_dal().GetCompanyByIds(ids);
+                if(accList!=null&& accList.Count > 0)
+                {
+                    WriteResponseJson(accList);
                 }
             }
         }

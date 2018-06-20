@@ -111,7 +111,14 @@ namespace EMT.DoneNOW.DAL
             return FindListBySql<sys_resource>($"SELECT sr.id,sr.name from sdk_task_resource str INNER JOIN sys_resource sr on str.resource_id = sr.id where str.delete_time =0 and sr.delete_time = 0 and str.task_id = {ticketId}");
         }
 
-        
+        /// <summary>
+        /// 获取部门的员工
+        /// </summary>
+        public List<sys_resource> GetResByDepId(long depId)
+        {
+            return FindListBySql("SELECT sr.* from sys_resource sr INNER JOIN sys_resource_department srd on sr.id= srd.resource_id where srd.department_id = "+depId);
+        }
+
 
     }
 }

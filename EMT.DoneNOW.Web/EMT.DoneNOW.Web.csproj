@@ -207,6 +207,7 @@
     <Content Include="Content\SidebarDrag.css" />
     <Content Include="Content\SwapConfigItem.css" />
     <Content Include="Content\SysSettingRoles.css" />
+    <Content Include="Content\SystemSet.css" />
     <Content Include="Content\SysUserSecurityLevel.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\sysset_user.css" />
@@ -284,14 +285,30 @@
     <Content Include="Scripts\Search\system_certification_cate.js" />
     <Content Include="Scripts\Search\system_change_board_search.js" />
     <Content Include="Scripts\Search\system_check_lib_search.js" />
+    <Content Include="Scripts\Search\system_code_ecpense_cate.js" />
+    <Content Include="Scripts\Search\system_code_ilestone.js" />
+    <Content Include="Scripts\Search\system_code_inter_time.js" />
+    <Content Include="Scripts\Search\system_code_ledger.js" />
+    <Content Include="Scripts\Search\system_code_material.js" />
+    <Content Include="Scripts\Search\system_code_service.js" />
+    <Content Include="Scripts\Search\system_code_work_type.js" />
     <Content Include="Scripts\Search\system_degree.js" />
     <Content Include="Scripts\Search\system_degree_cate.js" />
     <Content Include="Scripts\Search\system_expense_approval_search.js" />
+    <Content Include="Scripts\Search\system_payment_term.js" />
+    <Content Include="Scripts\Search\system_payment_type.js" />
+    <Content Include="Scripts\Search\system_project_status.js" />
     <Content Include="Scripts\Search\system_queue_search.js" />
     <Content Include="Scripts\Search\system_resource_week_goal.js" />
     <Content Include="Scripts\Search\system_resource_workgroup_search.js" />
+    <Content Include="Scripts\Search\system_ship_type.js" />
     <Content Include="Scripts\Search\system_skill.js" />
     <Content Include="Scripts\Search\system_skill_cate.js" />
+    <Content Include="Scripts\Search\system_task_library.js" />
+    <Content Include="Scripts\Search\system_task_library_cate.js" />
+    <Content Include="Scripts\Search\system_tax_cate.js" />
+    <Content Include="Scripts\Search\system_tax_region.js" />
+    <Content Include="Scripts\Search\system_tax_region_cate.js" />
     <Content Include="Scripts\Search\system_ticket_issue_search.js" />
     <Content Include="Scripts\Search\system_ticket_priority_search.js" />
     <Content Include="Scripts\Search\system_ticket_source_search.js" />
@@ -676,14 +693,20 @@
     <Content Include="SysSetting\AdjustResourceGoal.aspx" />
     <Content Include="SysSetting\ChangeBoardManage.aspx" />
     <Content Include="SysSetting\CheckListLibrary.aspx" />
+    <Content Include="SysSetting\CodeRuleManage.aspx" />
+    <Content Include="SysSetting\CostCodeManage.aspx" />
+    <Content Include="SysSetting\DuplicateTicket.aspx" />
     <Content Include="SysSetting\EditServiceAlert.aspx" />
     <Content Include="SysSetting\FormTemplateManage.aspx" />
     <Content Include="SysSetting\Holiday.aspx" />
     <Content Include="SysSetting\HolidaySet.aspx" />
+    <Content Include="SysSetting\LedgerAccountManage.aspx" />
     <Content Include="SysSetting\LogoManage.aspx" />
     <Content Include="SysSetting\LogoSearch.aspx" />
     <Content Include="SysSetting\MergeAccount.aspx" />
     <Content Include="SysSetting\MergeContact.aspx" />
+    <Content Include="SysSetting\MileageDefaults.aspx" />
+    <Content Include="SysSetting\PurchasingTeam.aspx" />
     <Content Include="SysSetting\ResourceAssPolicy.aspx" />
     <Content Include="SysSetting\ResourceAssPolicyEdit.aspx" />
     <Content Include="SysSetting\ResourceDicCateForm.aspx" />
@@ -691,6 +714,8 @@
     <Content Include="SysSetting\ResourceProtectedData.aspx" />
     <Content Include="SysSetting\Service.aspx" />
     <Content Include="SysSetting\ServiceBundle.aspx" />
+    <Content Include="SysSetting\SystemSetting.aspx" />
+    <Content Include="SysSetting\TaxCateManage.aspx" />
     <Content Include="SysSetting\TimeApproval.aspx" />
     <Content Include="SysSetting\TransResource.aspx" />
     <Content Include="SysSetting\UserDefinedField.aspx" />
@@ -2497,6 +2522,27 @@
     <Compile Include="SysSetting\CheckListLibrary.aspx.designer.cs">
       <DependentUpon>CheckListLibrary.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\CodeRuleManage.aspx.cs">
+      <DependentUpon>CodeRuleManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\CodeRuleManage.aspx.designer.cs">
+      <DependentUpon>CodeRuleManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\CostCodeManage.aspx.cs">
+      <DependentUpon>CostCodeManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\CostCodeManage.aspx.designer.cs">
+      <DependentUpon>CostCodeManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\DuplicateTicket.aspx.cs">
+      <DependentUpon>DuplicateTicket.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\DuplicateTicket.aspx.designer.cs">
+      <DependentUpon>DuplicateTicket.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SysSetting\EditServiceAlert.aspx.cs">
       <DependentUpon>EditServiceAlert.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2525,6 +2571,13 @@
     <Compile Include="SysSetting\HolidaySet.aspx.designer.cs">
       <DependentUpon>HolidaySet.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SysSetting\LedgerAccountManage.aspx.cs">
+      <DependentUpon>LedgerAccountManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\LedgerAccountManage.aspx.designer.cs">
+      <DependentUpon>LedgerAccountManage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SysSetting\LogoManage.aspx.cs">
       <DependentUpon>LogoManage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2552,6 +2605,20 @@
     </Compile>
     <Compile Include="SysSetting\MergeContact.aspx.designer.cs">
       <DependentUpon>MergeContact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\MileageDefaults.aspx.cs">
+      <DependentUpon>MileageDefaults.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\MileageDefaults.aspx.designer.cs">
+      <DependentUpon>MileageDefaults.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\PurchasingTeam.aspx.cs">
+      <DependentUpon>PurchasingTeam.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\PurchasingTeam.aspx.designer.cs">
+      <DependentUpon>PurchasingTeam.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\ResourceAssPolicy.aspx.cs">
       <DependentUpon>ResourceAssPolicy.aspx</DependentUpon>
@@ -2601,6 +2668,20 @@
     </Compile>
     <Compile Include="SysSetting\ServiceBundle.aspx.designer.cs">
       <DependentUpon>ServiceBundle.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\SystemSetting.aspx.cs">
+      <DependentUpon>SystemSetting.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\SystemSetting.aspx.designer.cs">
+      <DependentUpon>SystemSetting.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\TaxCateManage.aspx.cs">
+      <DependentUpon>TaxCateManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\TaxCateManage.aspx.designer.cs">
+      <DependentUpon>TaxCateManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\TimeApproval.aspx.cs">
       <DependentUpon>TimeApproval.aspx</DependentUpon>
@@ -2713,6 +2794,9 @@
     </Compile>
     <Compile Include="TimeSheet\TimeoffRequestAdd.aspx.designer.cs">
       <DependentUpon>TimeoffRequestAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\CostCodeAjax.ashx.cs">
+      <DependentUpon>CostCodeAjax.ashx</DependentUpon>
     </Compile>
     <Compile Include="Tools\DashboardAjax.ashx.cs">
       <DependentUpon>DashboardAjax.ashx</DependentUpon>
@@ -3244,6 +3328,7 @@
     <Content Include="Tools\WareHouseAjax.ashx" />
     <Content Include="Tools\FormTempAjax.ashx" />
     <Content Include="Tools\UploadAjax.ashx" />
+    <Content Include="Tools\CostCodeAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
