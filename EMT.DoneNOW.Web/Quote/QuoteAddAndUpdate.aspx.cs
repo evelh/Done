@@ -76,10 +76,9 @@ namespace EMT.DoneNOW.Web.Quote
                     quote = new crm_quote_dal().GetQuote(Convert.ToInt64(id));
                     if (quote != null)
                     {
-                        isAdd = false;
-                      
+                        if (string.IsNullOrEmpty(Request.QueryString["copy"]))
+                            isAdd = false;
                     }
-
                 }
                 else
                 {

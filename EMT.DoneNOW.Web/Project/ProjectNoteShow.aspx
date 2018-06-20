@@ -36,24 +36,53 @@
             color: #376597;
             text-decoration: none;
         }
+        .HeaderRow {
+    background-color: #346a95;
+    z-index: 100;
+    height: 36px;
+    padding-left: 10px;
+    margin-bottom: 10px;
+}
+        .HeaderRow span {
+    color: #FFF;
+    top: 10px;
+    display: block;
+    width: 85%;
+    position: absolute;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
+        <%if (thisProject != null)
+            {%>
         <div style="float: right;">
             <select id="NoteTypeSelect">
                 <option value="">全部备注类型</option>
                 <% if (actList != null && actList.Count > 0)
-                    {
-                        foreach (var thisAct in actList)
-                        {
+    {
+        foreach (var thisAct in actList)
+        {
                         %>
                 <option value="<%=thisAct.id %>"><%=thisAct.name %></option>
                   <%
-                        }
-                  } %>
+        }
+    } %>
             </select>
         </div>
+        <%}
+    else if (task != null)
+    { %>
+        <div class="HeaderRow">
+                 <span id="ShowTitle">任务-<%=task.no %>-<%=task.title %><%=account!=null?$"({account.name})":"" %></span>
+            </div>
+        <%} %>
         <div>
             <iframe runat="server" id="ShowNoteList" style="width: 100%; height: 385px; border-width: 0px;"></iframe>
             <input type="hidden" id="note_id" />

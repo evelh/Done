@@ -14,6 +14,8 @@ namespace EMT.DoneNOW.Web.Project
     {
         protected pro_project thisProject = null;
         protected List<d_general> actList = null;
+        protected sdk_task task;
+        protected crm_account account;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -22,6 +24,11 @@ namespace EMT.DoneNOW.Web.Project
                 if(!string.IsNullOrEmpty(thisId))
                 {
                     thisProject = new pro_project_dal().FindNoDeleteById(long.Parse(thisId));
+                }
+                var taskId = Request.QueryString["task_id"];
+                if (!string.IsNullOrEmpty(taskId))
+                {
+                    task = new sdk_task_dal().FindNoDeleteById(long.Parse(taskId));
                 }
                 if (thisProject != null)
                 {
@@ -35,10 +42,12 @@ namespace EMT.DoneNOW.Web.Project
 
 
                 }
-                else
+                else if (task != null)
                 {
-                    Response.End();
+                    account = new BLL.CompanyBLL().GetCompany(task.account_id);
+                    ShowNoteList.Src = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_NOTE + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.PROJECT_NOTE + "&con1054=" + task.id + "&con1055=";
                 }
+               
 
             }
             catch (Exception)

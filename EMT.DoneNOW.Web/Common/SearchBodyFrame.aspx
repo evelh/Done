@@ -897,6 +897,64 @@
             </div>
         </div>
     </div>
+
+    <% if (queryTypeId ==(int)EMT.DoneNOW.DTO.QueryType.WidgetDrillTask) { %>
+      <div class="Dialog Large" style="margin-left: -442px; margin-top: -229px; z-index: 100; display: none; width: 650px;" id="ShowAddOtherDiv">
+            <div>
+
+                <div class="DialogContentContainer">
+                    <div class="CancelDialogButton" onclick="CloseDigAddOtherDiv()"></div>
+                    <div class="Active ThemePrimaryColor TitleBar">
+                        <div class="Title">
+                            <span class="text">添加到员工的工作列表-</span><span id="ToOtherTaskNo"></span>
+                        </div>
+                    </div>
+                    <div class="DialogHeadingContainer">
+                        <div class="ButtonContainer"><a class="Button ButtonIcon Save NormalState" onclick="SaveAddToOtherWorkList()"><span class="Icon" style="background: url(../Images/Icons.png) no-repeat -38px 0px;"></span><span class="Text">保存并关闭</span></a><a class="Button ButtonIcon Cancel NormalState" id="CancelButton" onclick="CloseDigAddOtherDiv()"><span class="Icon" style="background: url(../Images/Icons.png) no-repeat -102px 0px;"></span><span class="Text">取消</span></a></div>
+                    </div>
+                    <div class="ScrollingContentContainer" style="position:unset;">
+                        <div class="ScrollingContainer" style="position:unset;">
+                                <div class="Medium NoHeading Section">
+                                    <div class="Content">
+                                        <div class="Normal Column">
+                                            <div class="Instructions">
+                                                <div class="InstructionItem">你想将这个任务添加到谁的工作列表中?</div>
+                                            </div>
+                                            <div class="EditorLabelContainer">
+                                                <div class="Label">
+                                                    <label>员工</label><span class="Required">*</span></div>
+                                            </div>
+                                            <div class="Editor DataSelector">
+                                                <div class="InputField">
+                                                    <input id="" type="text" value="" style="width:200px;padding:0px;"/>
+                                                    <a class="Button ButtonIcon IconOnly DataSelector NormalState" id="" ><span class="Icon" onclick="ChooseOtherRes()"  style="background-image:url(../Images/data-selector.png)"></span><span class="Text"></span></a>
+                                                    <input id="ToOtherResIds" name="" type="hidden" value="" />
+                                                    <input id="ToOtherResIdsHidden" name="" type="hidden" value="" />
+                                                    <div class="ContextOverlayContainer">
+                                                        <div class="AutoComplete ContextOverlay">
+                                                            <div class="Active LoadingIndicator"></div>
+                                                            <div class="Content"></div>
+                                                        </div>
+                                                        <div class="AutoComplete ContextOverlay">
+                                                            <div class="Active LoadingIndicator"></div>
+                                                            <div class="Content"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <select id="ResManySelect" multiple="multiple" style="width:200px;height:100px;"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <%} %>
+
     <!-- 拒绝费用审批理由填写 -->
     <div class="Dialog" style="margin-left: -370px; margin-top: -229px; z-index: 100; display: none;max-width:500px;height:320px;" id="RefuseExpenseReport">
          <div>
@@ -973,6 +1031,14 @@
                 }
             })
         }
+        function CloseOppo() {
+            window.open('../Opportunity/CloseOpportunity.aspx?id=' + entityid, windowType.blank, 'left=200,top=200,width=900,height=750', false);
+        }
+
+        function LostOppo() {
+            window.open('../Opportunity/LoseOpportunity.aspx?id=' + entityid, windowType.blank, 'left=200,top=200,width=900,height=750', false);
+        }
+
         <%if (queryTypeId == (long)EMT.DoneNOW.DTO.QueryType.Opportunity)
         { %>
         function Add() {

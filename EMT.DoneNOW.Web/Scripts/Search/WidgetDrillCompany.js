@@ -25,5 +25,5 @@ function LoseOpportunity() {
     window.open('../Opportunity/LoseOpportunity.aspx?account_id=' + entityid, windowType.blank, 'left=200,top=200,width=900,height=750', false);
 }
 function AddTicket() {
-
+    window.open('../ServiceDesk/TicketManage.aspx?account_id=' + entityid, windowObj.ticket + windowType.add, 'left=200,top=200,width=900,height=750', false);
 }

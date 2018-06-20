@@ -64,6 +64,9 @@ namespace EMT.DoneNOW.Web
                     case "GetTax":
                         GetTax(context);
                         break;
+                    case "GetQuoteItem":
+                        GetQuoteItem(context);
+                        break;
                     default:
                         break;
                 }
@@ -249,6 +252,19 @@ namespace EMT.DoneNOW.Web
                     {
                         context.Response.Write(taxCate.total_effective_tax_rate);
                     }
+                }
+            }
+        }
+
+        void GetQuoteItem(HttpContext context)
+        {
+            var quoteItemId = context.Request.QueryString["quoteItemId"];
+            if (!string.IsNullOrEmpty(quoteItemId))
+            {
+                var item = new crm_quote_item_dal().FindNoDeleteById(long.Parse(quoteItemId));
+                if (item != null)
+                {
+                    WriteResponseJson(item);
                 }
             }
         }

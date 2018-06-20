@@ -150,6 +150,10 @@ namespace EMT.DoneNOW.Web
                     case "DeleteTaskLibary":
                         DeleteTaskLibary(context);
                         break;
+                    case "GetLabourInfo":
+                        GetLabourInfo(context);
+                        break;
+                        
                     default:
                         break;
                 }
@@ -857,6 +861,19 @@ namespace EMT.DoneNOW.Web
             if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
                 result = new TaskBLL().DeleteLibary(long.Parse(context.Request.QueryString["id"]),LoginUserId);
             WriteResponseJson(result);
+        }
+
+        void GetLabourInfo(HttpContext context)
+        {
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
+            {
+                var labour = new sdk_work_entry_dal().FindNoDeleteById(long.Parse(context.Request.QueryString["id"]));
+                if (labour != null)
+                {
+                    WriteResponseJson(labour);
+                }
+            }
+
         }
     }
 }

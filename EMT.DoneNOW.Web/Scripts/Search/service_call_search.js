@@ -101,3 +101,25 @@ function DeleteCall() {
 function CopyCall() {
     window.open("../ServiceDesk/ServiceCall?copy=1&id=" + entityid, windowType.serviceCall + windowType.add, 'left=200,top=200,width=1280,height=800', false);
 }
+
+function RightClickFunc() {
+
+    // new 状态可以完成
+
+    $("#DoneMenu").hide();
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: "../Tools/ServiceCallAjax.ashx?act=GetServiceCall&callId=" + entityid,
+        dataType: "json",
+        success: function (data) {
+            if (data != "") {
+                if (data.status_id == "2162") {
+                    $("#DoneMenu").show();
+                }
+            }
+        },
+    });
+
+    ShowContextMenu();
+}

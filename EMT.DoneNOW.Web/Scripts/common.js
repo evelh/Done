@@ -297,6 +297,7 @@ var windowObj = {
     configurationItem: 'configurationItem',
     subscription: 'subscription',
     quote: 'quote',
+    quoteItem: 'quoteItem',
     contract: 'contract',
     contractService : 'contractService',
     contractCost: "contractCost",

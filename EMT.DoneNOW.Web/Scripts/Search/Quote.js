@@ -4,7 +4,7 @@
 function ViewOpp() {
     OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid, windowType.blank);
 }
-function ViewCompany(id) {
+function ViewCompany() {
     OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid, windowType.blank);
 }
 function LossQuote() {

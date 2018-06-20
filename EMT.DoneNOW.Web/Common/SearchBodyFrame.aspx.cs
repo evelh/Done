@@ -137,7 +137,7 @@ namespace EMT.DoneNOW.Web
             queryPara.group1 = keys["val1"];
             queryPara.group2 = keys["val2"];
             queryResult = bll.GetResultWidgetDrill(LoginUserId, queryPara);
-            
+
 
             GetMenus();
             CalcTableWidth();
@@ -237,7 +237,7 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void InitData()
         {
-            switch(catId)
+            switch (catId)
             {
                 case (int)DicEnum.QUERY_CATE.COMPANY:
                     addBtn = "新增客户";
@@ -299,7 +299,7 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
                     addBtn = "新增内部成本";
-					break;
+                    break;
                 case (int)DicEnum.QUERY_CATE.PRODUCT:
                     addBtn = "新增产品";
                     break;
@@ -308,7 +308,7 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (int)DicEnum.QUERY_CATE.RELATION_CONFIGITEM:
                     addBtn = "新增配置项";
-					break;
+                    break;
                 case (int)DicEnum.QUERY_CATE.REVOKE_CHARGES:
                 case (int)DicEnum.QUERY_CATE.REVOKE_MILESTONES:
                 case (int)DicEnum.QUERY_CATE.REVOKE_RECURRING_SERVICES:
@@ -616,17 +616,17 @@ namespace EMT.DoneNOW.Web
                 }
                 #region 部分特殊处理添加的参数
                 if (queryTypeId == (int)QueryType.EXPENSE_REPORT)
-                    queryPara.query_params.Add(new Para() { id=1236,value=LoginUserId.ToString()});
-                else if(queryTypeId == (int)QueryType.MY_QUEUE_ACTIVE)
+                    queryPara.query_params.Add(new Para() { id = 1236, value = LoginUserId.ToString() });
+                else if (queryTypeId == (int)QueryType.MY_QUEUE_ACTIVE)
                 {
                     if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
                         queryPara.query_params.Add(new Para() { id = long.Parse(param1), value = param2 });
                     if (paraGroupId == 215)
                     {
-                        if(string.IsNullOrEmpty(keys["con3962"]))
+                        if (string.IsNullOrEmpty(keys["con3962"]))
                             queryPara.query_params.Add(new Para() { id = 2626, value = LoginUserId.ToString() });
                     }
-                    else if(paraGroupId == 230)
+                    else if (paraGroupId == 230)
                         queryPara.query_params.Add(new Para() { id = 2730, value = LoginUserId.ToString() });
                     var param3 = string.IsNullOrEmpty(Request.QueryString["param3"]) ? "" : Request.QueryString["param3"];
                     var param4 = string.IsNullOrEmpty(Request.QueryString["param4"]) ? "" : Request.QueryString["param4"];
@@ -637,22 +637,22 @@ namespace EMT.DoneNOW.Web
                     queryPara.query_params.Add(new Para() { id = 2658, value = LoginUserId.ToString() });
                 else if (queryTypeId == (int)QueryType.MY_QUEUE_CHANGE_APPROVEL)
                     queryPara.query_params.Add(new Para() { id = 2662, value = LoginUserId.ToString() });
-                else if (queryTypeId == (int)QueryType.PROJECT_SEARCH|| queryTypeId == (int)QueryType.InstalledProductView || queryTypeId == (int)QueryType.KnowledgebaseArticle || queryTypeId == (int)QueryType.Invoice_History )
+                else if (queryTypeId == (int)QueryType.PROJECT_SEARCH || queryTypeId == (int)QueryType.InstalledProductView || queryTypeId == (int)QueryType.KnowledgebaseArticle || queryTypeId == (int)QueryType.Invoice_History)
                 {
                     if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2))
                         queryPara.query_params.Add(new Para() { id = long.Parse(param1), value = param2 });
                 }
-                else if(queryTypeId == (int)QueryType.Contact|| queryTypeId == (int)QueryType.Opportunity || queryTypeId == (int)QueryType.SaleOrder || queryTypeId == (int)QueryType.Quote || queryTypeId == (int)QueryType.CRMNote || queryTypeId == (int)QueryType.Todos || queryTypeId == (int)QueryType.Company)
+                else if (queryTypeId == (int)QueryType.Contact || queryTypeId == (int)QueryType.Opportunity || queryTypeId == (int)QueryType.SaleOrder || queryTypeId == (int)QueryType.Quote || queryTypeId == (int)QueryType.CRMNote || queryTypeId == (int)QueryType.Todos || queryTypeId == (int)QueryType.Company)
                 {
                     var id = keys["conparam1"];
                     string val = keys["conparam2"];
-                    if(!string.IsNullOrEmpty(val)&&!string.IsNullOrEmpty(id))
+                    if (!string.IsNullOrEmpty(val) && !string.IsNullOrEmpty(id))
                         queryPara.query_params.Add(new Para() { id = long.Parse(id), value = val });
 
                 }
-                if(queryTypeId == (int)QueryType.Todos || queryTypeId == (int)QueryType.Company)
+                if (queryTypeId == (int)QueryType.Todos || queryTypeId == (int)QueryType.Company)
                 {
-                    if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2)&& new System.Text.RegularExpressions.Regex(@"^[0-9]*$").IsMatch(param1))
+                    if (!string.IsNullOrEmpty(param1) && !string.IsNullOrEmpty(param2) && new System.Text.RegularExpressions.Regex(@"^[0-9]*$").IsMatch(param1))
                         queryPara.query_params.Add(new Para() { id = long.Parse(param1), value = param2 });
                     var param3 = string.IsNullOrEmpty(Request.QueryString["param3"]) ? "" : Request.QueryString["param3"];
                     var param4 = string.IsNullOrEmpty(Request.QueryString["param4"]) ? "" : Request.QueryString["param4"];
@@ -663,7 +663,7 @@ namespace EMT.DoneNOW.Web
                 {
                     queryPara.query_params.Add(new Para() { id = 3605, value = LoginUserId.ToString() });
                 }
-               
+
                 #endregion
 
                 queryPara.query_type_id = queryTypeId;
@@ -853,7 +853,7 @@ namespace EMT.DoneNOW.Web
         {
             contextMenu = new List<PageContextMenuDto>();
             Dictionary<string, object> dics = null;
-            switch(queryTypeId)
+            switch (queryTypeId)
             {
                 case (long)QueryType.Company:
                     dics = new CompanyBLL().GetField();
@@ -867,7 +867,7 @@ namespace EMT.DoneNOW.Web
                     if (classification != null)
                     {
                         List<PageContextMenuDto> classsub = new List<PageContextMenuDto>();
-                        foreach(var c in classification)
+                        foreach (var c in classification)
                         {
                             classsub.Add(new PageContextMenuDto { text = c.show, click_function = $"openopenopen({c.val})\" \" style='color:grey;'" });
                         }
@@ -910,8 +910,8 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
                     contextMenu.Add(new PageContextMenuDto { text = "新增报价", click_function = "AddQuote()" });
                     contextMenu.Add(new PageContextMenuDto { text = "修改报价", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "关闭商机", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "丢失商机", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "关闭商机", click_function = "CloseOppo()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "丢失商机", click_function = "LostOppo()" });
                     contextMenu.Add(new PageContextMenuDto { text = "重新指定商机负责人", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除商机", click_function = "DeleteOpp()" });
                     contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()\" \" style='color:grey;'" });
@@ -924,7 +924,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看报价", click_function = "ViewQuote()" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制报价", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "关闭报价", click_function = "CloseQuote()",id="CloQuoteMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "关闭报价", click_function = "CloseQuote()", id = "CloQuoteMenu" });
                     contextMenu.Add(new PageContextMenuDto { text = "丢失报价", click_function = "LossQuote()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除报价", click_function = "DeleteQuote()" });
                     break;
@@ -949,10 +949,10 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()" });
                     contextMenu.Add(new PageContextMenuDto { text = "替换", click_function = "Swap()" });
                     contextMenu.Add(new PageContextMenuDto { text = "新建工单", click_function = "NewTicket()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "激活当前记录", click_function = "",id="ActiveThis" });
-                    contextMenu.Add(new PageContextMenuDto { text = "激活选中记录", click_function = "", id = "ActiveChoose" });
-                    contextMenu.Add(new PageContextMenuDto { text = "停用当前记录", click_function = "", id = "NoActiveThis" });
-                    contextMenu.Add(new PageContextMenuDto { text = "停用选中记录", click_function = "", id = "NoActiveChoose" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活当前记录", click_function = "ActiveIProduct()", id = "ActiveThis" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活选中记录", click_function = "ActiveIProducts()", id = "ActiveChoose" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用当前记录", click_function = "NoActiveIProduct()", id = "NoActiveThis" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用选中记录", click_function = "NoActiveIProducts()", id = "NoActiveChoose" });
                     contextMenu.Add(new PageContextMenuDto { text = "当前记录经过合同审核", click_function = "ReViewByContract()", id = "ReViewByContractMenu" });
                     contextMenu.Add(new PageContextMenuDto { text = "当前记录不经过合同审核", click_function = "NoReViewByContract()", id = "NoReViewByContractMenu" });
                     contextMenu.Add(new PageContextMenuDto { text = "选中记录经过合同审核", click_function = "ReViewByContractSelect()", id = "ReViewByContractSelectMenu" });
@@ -963,11 +963,13 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.WidgetDrillConfiguration:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑配置项", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "激活配置项", click_function = "Active()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "停用配置项", click_function = "Inactive()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活配置项", click_function = "Active()", id = "ActiveThis" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用配置项", click_function = "Inactive()", id = "NoActiveThis" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除配置项", click_function = "DeleteIProduct()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "复制配置项", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "新增工单", click_function = "AddTicket()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制配置项", click_function = "Copy()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增工单", click_function = "AddTicket()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "当前记录经过合同审核", click_function = "ReViewByContract()", id = "ReViewByContractMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "当前记录不经过合同审核", click_function = "NoReViewByContract()", id = "NoReViewByContractMenu" });
                     break;
                 case (long)QueryType.Subscription:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
@@ -1000,7 +1002,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑合同", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看合同", click_function = "ViewContract()" });
                     contextMenu.Add(new PageContextMenuDto { text = "在新窗口中查看合同", click_function = "ViewNewWindow()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "续约", click_function = "RenewContract()", id= "RenewContract" });
+                    contextMenu.Add(new PageContextMenuDto { text = "续约", click_function = "RenewContract()", id = "RenewContract" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制合同", click_function = "CopyContract()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除合同", click_function = "DeleteContract()" });
                     break;
@@ -1046,19 +1048,19 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "替换", click_function = "openopenopen()\" \" style='color:grey;'" });
-                    contextMenu.Add(new PageContextMenuDto { text = "解除与当前合同关系", click_function = "Norelation()"});
+                    contextMenu.Add(new PageContextMenuDto { text = "解除与当前合同关系", click_function = "Norelation()" });
                     contextMenu.Add(new PageContextMenuDto { text = "LiveLinks", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除当前配置项", click_function = "Delete()" });
                     break;
                 case (long)QueryType.Norelation_ConfigItem:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "openopenopen()\" \" style='color:grey;'" });
-                   
+
                     contextMenu.Add(new PageContextMenuDto { text = "关联当前合同关系", click_function = "Relation()" });
                     contextMenu.Add(new PageContextMenuDto { text = "Set As Reviewed", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "Set As Not Reviewed", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除当前配置项", click_function = "Delete()" });
-					break;
+                    break;
                 case (long)QueryType.SECURITYLEVEL:
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()" });
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
@@ -1080,12 +1082,12 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.Contract_Charge:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看", click_function = "ViewCharge()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "当前成本设置为可计费", click_function = "Post()",id="thisBilled" });
-                    contextMenu.Add(new PageContextMenuDto { text = "选中成本设置为可计费", click_function = "Post()",id="ChooseBilled" });
-                    contextMenu.Add(new PageContextMenuDto { text = "当前成本设置为不可计费", click_function = "Post()",id="thisNoBilled" });
-                    contextMenu.Add(new PageContextMenuDto { text = "选中成本设置为不可计费", click_function = "Post()" ,id="ChooseNoBilled"});
-                    contextMenu.Add(new PageContextMenuDto { text = "删除当前成本", click_function = "Post()",id="delete" });
-                    contextMenu.Add(new PageContextMenuDto { text = "删除选中成本", click_function = "Post()",id="ChooseDelete" });
+                    contextMenu.Add(new PageContextMenuDto { text = "当前成本设置为可计费", click_function = "Post()", id = "thisBilled" });
+                    contextMenu.Add(new PageContextMenuDto { text = "选中成本设置为可计费", click_function = "Post()", id = "ChooseBilled" });
+                    contextMenu.Add(new PageContextMenuDto { text = "当前成本设置为不可计费", click_function = "Post()", id = "thisNoBilled" });
+                    contextMenu.Add(new PageContextMenuDto { text = "选中成本设置为不可计费", click_function = "Post()", id = "ChooseNoBilled" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除当前成本", click_function = "Post()", id = "delete" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除选中成本", click_function = "Post()", id = "ChooseDelete" });
                     break;
                 case (long)QueryType.CONTRACT_DEFAULT_COST:
                     contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" });
@@ -1094,7 +1096,7 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.APPROVE_SUBSCRIPTIONS:
                     contextMenu.Add(new PageContextMenuDto { text = "审批并提交", click_function = "Post()" });
                     contextMenu.Add(new PageContextMenuDto { text = "调整总价", click_function = "AdjustExtend()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "恢复初始值", click_function = "Restore_Initiall()" });                   
+                    contextMenu.Add(new PageContextMenuDto { text = "恢复初始值", click_function = "Restore_Initiall()" });
                     break;
                 case (long)QueryType.APPROVE_RECURRING_SERVICES:
                     contextMenu.Add(new PageContextMenuDto { text = "审批并提交", click_function = "Post()" });
@@ -1132,8 +1134,8 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()" });
                     contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "NoActive()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
-                    break;  
-                    
+                    break;
+
                 case (long)QueryType.ContractType:
                 case (long)QueryType.OPPORTUNITYAGES:
                 case (long)QueryType.OPPORTUNITYSOURCE:
@@ -1171,6 +1173,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 case (long)QueryType.ContractMilestone:
+                case (long)QueryType.WidgetDrillMilestones:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
@@ -1221,25 +1224,25 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "删除库存产品", click_function = "Delete()" });
                     break;
                 case (long)QueryType.PROJECT_TEAM:
-                    contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()" ,id= "EditTeamMenu" });
-                    contextMenu.Add(new PageContextMenuDto { text = "移除", click_function = "DeleteRes()",id= "DeleteResMenu" });
-                    contextMenu.Add(new PageContextMenuDto { text = "找相似", click_function = "FindSmilar()",id="SmilarMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "修改", click_function = "Edit()", id = "EditTeamMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "移除", click_function = "DeleteRes()", id = "DeleteResMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "找相似", click_function = "FindSmilar()", id = "SmilarMenu" });
                     contextMenu.Add(new PageContextMenuDto { text = "移除", click_function = "DeleteCon()", id = "DeleteConMenu" });
                     break;
                 case (long)QueryType.PROJECT_COST_EXPENSE:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()", id = "EditMenu" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看", click_function = "ShowDetailes()", id = "ViewMenu" });
-                    contextMenu.Add(new PageContextMenuDto { text = "当前成本/费用设置为可计费",  id = "SingBillMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "当前成本/费用设置为可计费", id = "SingBillMenu" });
                     contextMenu.Add(new PageContextMenuDto { text = "选中成本/费用设置为可计费", id = "ChooseBillMenu" });
                     contextMenu.Add(new PageContextMenuDto { text = "当前成本/费用设置为不可计费", id = "SingNonBillMenu" });
-                    contextMenu.Add(new PageContextMenuDto { text = "选中成本/费用设置为不可计费",id = "ChooseNonBillMenu" });
-                    contextMenu.Add(new PageContextMenuDto { text = "删除当期成本/费用",id = "SingDeleteMenu" });
-                    contextMenu.Add(new PageContextMenuDto { text = "删除选中成本/费用",id = "ChooseDeleteMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "选中成本/费用设置为不可计费", id = "ChooseNonBillMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除当期成本/费用", id = "SingDeleteMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除选中成本/费用", id = "ChooseDeleteMenu" });
                     break;
                 case (long)QueryType.PROJECT_NOTE:
                     contextMenu.Add(new PageContextMenuDto { text = "查看备注", click_function = "ViewNote()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "编辑备注", click_function = "EditNote()"});
-                    contextMenu.Add(new PageContextMenuDto { text = "删除备注", click_function = "DeleteNote()"});
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑备注", click_function = "EditNote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除备注", click_function = "DeleteNote()" });
                     break;
                 case (long)QueryType.PROJECT_CALENDAR:
                     //contextMenu.Add(new PageContextMenuDto { text = "查看日历条目", click_function = "ViewCalendar()" }); 
@@ -1262,7 +1265,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑采购项", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "编辑关联成本", click_function = "EditCost()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看/添加备注", click_function = "EditNote()" });
-					contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     break;
                 case (long)QueryType.CONTRACT_NOTIFY_RULE:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑通知规则", click_function = "Edit()" });
@@ -1300,7 +1303,7 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.PROJECT_SEARCH:
                     contextMenu.Add(new PageContextMenuDto { text = "查看项目", click_function = "ViewProject()" });
-               
+
                     break;
                 case (long)QueryType.HolidaySet:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
@@ -1309,7 +1312,7 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.Holidays:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
-					break;
+                    break;
                 case (long)QueryType.EXPENSE_REPORT:
                     contextMenu.Add(new PageContextMenuDto { text = "查看", click_function = "ViewReport()" });
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "EditReport()" });
@@ -1341,7 +1344,7 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.TICKET_REQUEST:
                 case (long)QueryType.TICKET_INCIDENT:
                 case (long)QueryType.TICKET_PROBLEM:
-                    var ticketView = new PageContextMenuDto { text="查看"};
+                    var ticketView = new PageContextMenuDto { text = "查看" };
                     ticketView.submenu = new List<PageContextMenuDto>() {
                         new PageContextMenuDto(){text = "查看工单", click_function = "ViewTicket()" },
                         new PageContextMenuDto(){ text = "工单历史", click_function = "TicketHistory()"},
@@ -1373,19 +1376,19 @@ namespace EMT.DoneNOW.Web
                          new PageContextMenuDto(){text = "取消与项目管理关系", click_function = "CancelProject()" },
                          new PageContextMenuDto(){text = "删除工单", click_function = "DeleteTicket()" },
                     };
-                    if (queryTypeId == (long)QueryType.TICKET_REQUEST|| queryTypeId == (long)QueryType.TICKET_INCIDENT || queryTypeId == (long)QueryType.TICKET_PROBLEM)
+                    if (queryTypeId == (long)QueryType.TICKET_REQUEST || queryTypeId == (long)QueryType.TICKET_INCIDENT || queryTypeId == (long)QueryType.TICKET_PROBLEM)
                         ticketManage.submenu.Add(new PageContextMenuDto() { text = "解除和工单的关联", click_function = "DisRelationTicket()" });
                     contextMenu.Add(ticketManage);
                     break;
                 case (long)QueryType.TICKET_ACCOUNT_LIST:
-                    
+
                     break;
                 case (long)QueryType.SERVICE:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "DeleteService()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "InActive()",id="InActSer"});
-                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()",id="ActSer" });
-					break;
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "InActive()", id = "InActSer" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActSer" });
+                    break;
                 case (long)QueryType.SERVICE_BUNDLE:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "DeleteServiceBundle()" });
@@ -1398,7 +1401,7 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.MY_TASK_TICKET:
                     #region 工单右键
-                    contextMenu.Add(new PageContextMenuDto { text = "工时", click_function = "AddLabour()", class_name = "ticket"});
+                    contextMenu.Add(new PageContextMenuDto { text = "工时", click_function = "AddLabour()", class_name = "ticket" });
                     contextMenu.Add(new PageContextMenuDto { text = "服务预定工时", click_function = "AddServiceLabour()", class_name = "ticket" });
                     contextMenu.Add(new PageContextMenuDto { text = "编辑工单", click_function = "EditTicket()", class_name = "ticket" });
                     var MyTicketView = new PageContextMenuDto { text = "查看", class_name = "ticket" };
@@ -1453,8 +1456,9 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.TimeoffPolicyResource:
                     contextMenu.Add(new PageContextMenuDto { text = "取消关联", click_function = "Disassociate()" });
-					   break;
+                    break;
                 case (long)QueryType.MASTER_TICKET_SEARCH:
+                case (long)QueryType.WidgetDrillRecurMasterTickets:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
                     contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "InActive()", id = "InActTic" });
@@ -1475,7 +1479,7 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.SERVICE_CALL_TICKET:
                     contextMenu.Add(new PageContextMenuDto { text = "添加工时", click_function = "AddLabour()", class_name = "NeedSave ticket" });
-                    contextMenu.Add(new PageContextMenuDto { text = "为服务预定添加工时", click_function = "AddServiceLabour()",class_name= "NeedSave ticket" });
+                    contextMenu.Add(new PageContextMenuDto { text = "为服务预定添加工时", click_function = "AddServiceLabour()", class_name = "NeedSave ticket" });
                     contextMenu.Add(new PageContextMenuDto { text = "添加工时", click_function = "AddTaskLabour()", class_name = "NeedSave task" });
                     contextMenu.Add(new PageContextMenuDto { text = "添加包含起止时间的工时", click_function = "AddTaskTimeLabour()", class_name = "NeedSave task" });
                     contextMenu.Add(new PageContextMenuDto { text = "根据服务预定添加工时", click_function = "AddTaskServiceLabour()", class_name = "NeedSave task" });
@@ -1487,14 +1491,14 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "查看任务详情", click_function = "ViewTask()", class_name = "NeedSave task" });
                     contextMenu.Add(new PageContextMenuDto { text = "添加任务备注", click_function = "AddTask()", class_name = "NeedSave task" });
                     contextMenu.Add(new PageContextMenuDto { text = "移除", click_function = "RemoveTicket()", class_name = "NeedSave" });
-                    break; 
+                    break;
                 case (long)QueryType.SERVICE_CALL_SEARCH:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑服务预定", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewAccount()" });
                     contextMenu.Add(new PageContextMenuDto { text = "为调度条目添加备注", click_function = "AddItemNote()" });
                     contextMenu.Add(new PageContextMenuDto { text = "转移/修改调度工单", click_function = "ModifyTicket()" });
                     contextMenu.Add(new PageContextMenuDto { text = "生成工作说明书", click_function = "GetWorkBook()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "完成服务预定", click_function = "DoneServiceCall()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "完成服务预定", click_function = "DoneServiceCall()", id = "DoneMenu" });
                     contextMenu.Add(new PageContextMenuDto { text = "再次调度（复制）", click_function = "CopyCall()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除服务预定", click_function = "DeleteCall()" });
                     break;
@@ -1503,7 +1507,7 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.TimeoffWaitApprove:
                     contextMenu.Add(new PageContextMenuDto { text = "详情", click_function = "Detail()" });
-					break;
+                    break;
                 case (long)QueryType.TimeoffMyCurrent:
                 case (long)QueryType.ResourcePolicyAssignment:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
@@ -1560,10 +1564,10 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.MY_QUEUE_MY_TICKET:
                 case (long)QueryType.MY_QUEUE_CHANGE_APPROVEL:
                 case (long)QueryType.MY_QUEUE_VIEW:
-                    contextMenu.Add(new PageContextMenuDto { text = "添加工时", click_function = "AddLabour()",id="btnAddLab", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加工时", click_function = "AddLabour()", id = "btnAddLab", class_name = "" });
                     contextMenu.Add(new PageContextMenuDto { text = "为服务预定添加工时", click_function = "AddServiceLabour()", class_name = "" });
                     contextMenu.Add(new PageContextMenuDto { text = "编辑工单", click_function = "EditTicket()", class_name = "" });
-                    contextMenu.Add(new PageContextMenuDto { text = "编辑定期服务主工单", click_function = "EditMasterTicket()",id="btnEditMaster", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑定期服务主工单", click_function = "EditMasterTicket()", id = "btnEditMaster", class_name = "" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看工单", click_function = "ViewTask()", class_name = "" });
                     contextMenu.Add(new PageContextMenuDto { text = "工单历史", click_function = "ViewTaskHistory()", class_name = "" });
                     contextMenu.Add(new PageContextMenuDto { text = "客户工单历史", click_function = "ViewAccountTaskHistory()", class_name = "" });
@@ -1582,7 +1586,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "取消与项目管理关系", click_function = "RemoveProject()", class_name = "" });
                     break;
                 case (long)QueryType.DISPATCH_TICKET_SEARCH:
-                    contextMenu.Add(new PageContextMenuDto { text = "编辑工单", click_function = "EditTicket()" ,id="MenuEditTicket"});
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑工单", click_function = "EditTicket()", id = "MenuEditTicket" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看工单", click_function = "ViewTicket()", id = "MenuViewTicket" });
                     contextMenu.Add(new PageContextMenuDto { text = "加入到新的服务预定", click_function = "AddNewCall()", id = "MenuAddNewCall" });
                     contextMenu.Add(new PageContextMenuDto { text = "加入到已存在的服务预定", click_function = "AddAlreadyCall()", id = "MenuAddAlreadyCall" });
@@ -1592,10 +1596,10 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()" });
                     contextMenu.Add(new PageContextMenuDto { text = "替换", click_function = "Swap()" });
                     contextMenu.Add(new PageContextMenuDto { text = "移动", click_function = "Move()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "设为父配置项", click_function = "SetAsParent()", id="AsParent" });
-                    contextMenu.Add(new PageContextMenuDto { text = "取消父配置项设置", click_function = "RemoveParent()", id="CancelParent" });
-                    contextMenu.Add(new PageContextMenuDto { text = "设为子配置项", click_function = "SetAsChild()", id="AsChild" });
-                    contextMenu.Add(new PageContextMenuDto { text = "取消子配置项设置", click_function = "RemoveChild()", id="CancelChild" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设为父配置项", click_function = "SetAsParent()", id = "AsParent" });
+                    contextMenu.Add(new PageContextMenuDto { text = "取消父配置项设置", click_function = "RemoveParent()", id = "CancelParent" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设为子配置项", click_function = "SetAsChild()", id = "AsChild" });
+                    contextMenu.Add(new PageContextMenuDto { text = "取消子配置项设置", click_function = "RemoveChild()", id = "CancelChild" });
                     contextMenu.Add(new PageContextMenuDto { text = "经过合同审核", click_function = "ReViewByContract()", id = "ReViewByContractMenu" });
                     contextMenu.Add(new PageContextMenuDto { text = "不经过合同审核", click_function = "NoReViewByContract()", id = "NoReViewByContractMenu" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
@@ -1618,8 +1622,8 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "为组成员创建待办", click_function = "CreateTodo()" });
                     contextMenu.Add(new PageContextMenuDto { text = "编辑联系人组", click_function = "EditGroup()" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制联系人组", click_function = "CopyGroup()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "激活联系人组", click_function = "ActiveGroup()",id="Active" });
-                    contextMenu.Add(new PageContextMenuDto { text = "失活联系人组", click_function = "InActiveGroup()",id= "InActive" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活联系人组", click_function = "ActiveGroup()", id = "Active" });
+                    contextMenu.Add(new PageContextMenuDto { text = "失活联系人组", click_function = "InActiveGroup()", id = "InActive" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除联系人组", click_function = "DeleteGroup()" });
                     break;
                 case (long)QueryType.CONTACT_ACTION_TEMP:
@@ -1632,11 +1636,11 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "设置默认", click_function = "Default()", id = "Default" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
-					break;
+                    break;
                 case (long)QueryType.SYS_FORM_TEMP_SEARCH:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑模板", click_function = "EditTemp()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "激活模板", click_function = "Active()",id="LiActive" });
-                    contextMenu.Add(new PageContextMenuDto { text = "失活模板", click_function = "InActive()",id= "LiInActive" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活模板", click_function = "Active()", id = "LiActive" });
+                    contextMenu.Add(new PageContextMenuDto { text = "失活模板", click_function = "InActive()", id = "LiInActive" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制模板", click_function = "Copy()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除模板", click_function = "Delete()" });
                     break;
@@ -1673,17 +1677,17 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.SYSTEM_TICKET_ISSUE_SEARCH:
                 case (long)QueryType.SYSTEM_CHANGE_BOARD_SEARCH:
                 case (long)QueryType.SYSTEM_PROJECT_STATUS:
-                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" ,id="EditLi"});
-                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()",id="ActiveLi" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()", id = "EditLi" });
+                    contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActiveLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "InActive()", id = "InActiveLi" });
-                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" ,id="DeleteLi"});
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()", id = "DeleteLi" });
                     break;
                 case (long)QueryType.SYSTEM_TICKET_STATUS_SEARCH:
                 case (long)QueryType.SYSTEM_TICKET_PRIORITY_SEARCH:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActiveLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "InActive()", id = "InActiveLi" });
-                    contextMenu.Add(new PageContextMenuDto { text = "设置图标", click_function = "SetLogo()"});
+                    contextMenu.Add(new PageContextMenuDto { text = "设置图标", click_function = "SetLogo()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()", id = "DeleteLi" });
                     break;
                 case (long)QueryType.SYSTEM_TICKET_SUB_ISSUE_SEARCH:
@@ -1712,6 +1716,78 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "从合同中排除此工作类型", click_function = "Exclude()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()", id = "DeleteLi" });
+                    break;
+                case (int)QueryType.WidgetDrillInvoiceItems:
+                    contextMenu.Add(new PageContextMenuDto { text = "工时详情", click_function = "ShowLabour()", id = "labourMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "项目详情", click_function = "ShowProject()", id = "projectMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "任务详情", click_function = "ShowTicket()", id = "taskMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "合同详情", click_function = "ShowContract()", id = "contractMenu" });
+                    break;
+                case (int)QueryType.WidgetDrillPendingBillItems:
+                    contextMenu.Add(new PageContextMenuDto { text = "审批并提交", click_function = "ApprovalAndPost()", class_name = "menu", id = "appPostMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "调整价格", click_function = "AjustPrice()", class_name = "menu", id = "AjustPriceMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑成本", click_function = "EditCost()", class_name = "menu", id = "EditChargeMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑工单", click_function = "EditTicket()", class_name = "menu", id = "EditTicketMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "里程碑详情", click_function = "ShowMile()", class_name = "menu", id = "MileDetailMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "合同详情", click_function = "ShowContract()", class_name = "menu", id = "contractMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "工时详情", click_function = "ShowEntry()", class_name = "menu", id = "EntrytMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "项目详情", click_function = "ShowProject()", class_name = "menu", id = "ProjectMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "任务详情", click_function = "ShowTask()", class_name = "menu", id = "taskMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "设置为不计费", click_function = "MakeAsNoBill()", class_name = "menu", id = "MakeAsNoBillMenu" });
+                    break;
+                case (int)QueryType.WidgetDrillPostedBillItems:
+                    contextMenu.Add(new PageContextMenuDto { text = "工时详情", click_function = "ShowEntry()", class_name = "menu", id = "EntrytMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "里程碑详情", click_function = "ShowMile()", class_name = "menu", id = "MileDetailMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "合同详情", click_function = "ShowContract()", class_name = "menu", id = "contractMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "项目详情", click_function = "ShowProject()", class_name = "menu", id = "ProjectMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "任务详情", click_function = "ShowTask()", class_name = "menu", id = "TaskMenu" });
+                    break;
+                case (int)QueryType.WidgetDrillTask:
+                    contextMenu.Add(new PageContextMenuDto { text = "查看任务详情", click_function = "TaskViewDetails()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑任务", click_function = "EditObject()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "转发/编辑", click_function = "ModifySingTask()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "加入到我的工作清单", click_function = "AddToMyWorkList()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "加入到主负责人清单", click_function = "AddToPriResWorkList()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "加入到其他员工的工作清单", click_function = "AddToOtherResWorkList()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加工时", click_function = "NewAddWorkEntry()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加工时(输入开始结束时间)", click_function = "NewAddWorkEntryStart()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加服务预定", click_function = "AddTaskServiceCall()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看备注", click_function = "ViewNote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看项目", click_function = "ViewProject()" });
+                    break;
+                case (int)QueryType.WidgetDrillProjects:
+                    contextMenu.Add(new PageContextMenuDto { text = "查看项目", click_function = "ViewProject()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑项目", click_function = "EditObject()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加项目备注", click_function = "NewAddNote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加项目日历条目", click_function = "AddCalendar()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看项目财务", click_function = "ViewFinancials()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+                    break;
+                case (int)QueryType.WidgetDrillQuotes:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑报价", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑报价设置", click_function = "QuotePref()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑/查看 报价条目", click_function = "QuoteManage()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看商机", click_function = "ViewOpp()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看报价", click_function = "ViewQuote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制报价", click_function = "CopyQuote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "赢得报价", click_function = "CloseQuote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "丢失报价", click_function = "LossQuote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除报价", click_function = "DeleteQuote()" });
+                    break;
+                case (int)QueryType.WidgetDrillQuoteItems:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑报价项", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑报价", click_function = "EditQuote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑/查看 报价条目", click_function = "QuoteManage()" });
+                    break;
+                case (int)QueryType.WidgetDrillServiceCalls:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑服务预定", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "完成服务预定", click_function = "DoneServiceCall()",id="DoneMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "CopyCall()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewAccount()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "添加备注", click_function = "AddItemNote()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "转发/编辑 工单", click_function = "ModifyTicket()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "删除服务预定", click_function = "DeleteCall()" });
                     break;
                 default:
                     break;
