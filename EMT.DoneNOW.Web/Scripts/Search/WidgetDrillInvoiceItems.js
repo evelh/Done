@@ -25,9 +25,10 @@ function ShowLabour() {
 }
 
 function ShowTicket() {
+    
     if (task_id != "") {
         if (isTicket == "1") {
-            window.open("../ServiceDesk/TicketView?id=" + entityid, windowType.blank, 'left=200,top=200,width=1280,height=800', false);
+            window.open("../ServiceDesk/TicketView?id=" + task_id, windowType.blank, 'left=200,top=200,width=1280,height=800', false);
         }
         else {
             window.open("../Project/TaskView.aspx?id=" + task_id, '_blank', 'left=200,top=200,width=1080,height=800', false);
@@ -84,11 +85,11 @@ function RightClickFunc() {
             url: "../Tools/TicketAjax.ashx?act=IsTicket&ticket_id=" + task_id,
             success: function (data) {
                 if (data == "1") {
-                    isTicket == "1";
+                    isTicket = "1";
                     $("#taskMenu").text("工单详情");
                 }
                 else {
-                    isTicket == "";
+                    isTicket = "";
                     $("#taskMenu").text("任务详情");
                 }
             },

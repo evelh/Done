@@ -22,7 +22,20 @@ function View(id) {
 
 
 function ViewOpp() {
-    OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid, windowType.blank);
+    $.ajax({
+        type: "GET",
+        url: "../Tools/QuoteAjax.ashx?act=GetQuote&quoteId=" + entityid,
+        async: false,
+        dataType:'json',
+        success: function (data) {
+            if (data != "") {
+                if (data.opportunity_id != "") {
+                    OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + data.opportunity_id, windowType.blank);
+                }
+            }
+        }
+    })
+    
 }
 function ViewCompany() {
     OpenWindow("../Company/ViewCompany.aspx?type=todo&id=" + entityid, windowType.blank);

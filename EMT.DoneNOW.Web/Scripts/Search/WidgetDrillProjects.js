@@ -20,7 +20,7 @@ function AddCalendar() {
 function ViewFinancials() {
     window.open("../Project/ProjectFinancials.aspx?id=" + entityid,'_blank', 'left=200,top=200,width=1080,height=800', false);
 }
-}
+
 function Delete() {
     $.ajax({
         type: "GET",

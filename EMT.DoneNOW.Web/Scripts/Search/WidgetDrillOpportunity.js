@@ -4,6 +4,10 @@
 window.parent.ShowSearchCon()
 window.parent.HideLoading();
 
+$(function () {
+    $("#AddQuoteMenu").hide();
+    
+})
 
 function ViewOpp() {
     OpenWindow("../Opportunity/ViewOpportunity.aspx?type=todo&id=" + entityid, '_blank');
@@ -23,6 +27,7 @@ function DeleteOpp() {
     $.ajax({
         type: "GET",
         url: "../Tools/OpportunityAjax.ashx?act=delete&id=" + entityid,
+        async: false,
         success: function (data) {
             alert(data);
         }

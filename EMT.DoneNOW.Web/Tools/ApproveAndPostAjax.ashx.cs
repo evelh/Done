@@ -39,6 +39,9 @@ namespace EMT.DoneNOW.Web
                 case "GetExpInfo":
                     GetExpInfo(context,long.Parse(id));
                     break;
+                case "GetCostInfo":
+                    GetCostInfo(context, long.Parse(id));
+                    break; 
                 default: break;
 
             }
@@ -189,6 +192,19 @@ namespace EMT.DoneNOW.Web
                 context.Response.Write(new Tools.Serialize().SerializeJson(thisEntry));
             }
         }
+        /// <summary>
+        /// 获取成本信息
+        /// </summary>
+        public void GetCostInfo(HttpContext context, long id)
+        {
+            var thisCost = new DAL.ctt_contract_cost_dal().FindNoDeleteById(id);
+            if (thisCost != null)
+            {
+                context.Response.Write(new Tools.Serialize().SerializeJson(thisCost));
+            }
+        }
+
+
         /// <summary>
         /// 获取费用信息
         /// </summary>

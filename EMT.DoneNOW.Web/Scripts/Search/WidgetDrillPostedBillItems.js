@@ -44,21 +44,36 @@ var contract_id = "";
 var task_id = "";
 var project_id = "";
 var isTicket = "";
+var object_id = "";
 
 
 function RightClickFunc() {
     $(".menu").hide();
-
     $.ajax({
         type: "GET",
         async: false,
-        url: "../Tools/InvoiceAjax.ashx?act=GetItemType&id=" + entityid,
+        url: "../Tools/InvoiceAjax.ashx?act=GetAccDedItem&id=" + entityid,
+        dataType: 'json',
+        success: function (data) {
+            if (data != "") {
+                contract_id = data.contract_id;
+                task_id = data.task_id;
+                object_id = data.object_id;
+            }
+        },
+    });
+    if (object_id == "") {
+        return;
+    }
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: "../Tools/InvoiceAjax.ashx?act=GetItemType&id=" + object_id,
         dataType: 'json',
         success: function (data) {
             if (data != "") {
                 itemType = data.itemType;
-                contract_id = data.contract_id;
-                task_id = data.task_id;
+                
             }
         },
     });
@@ -70,11 +85,11 @@ function RightClickFunc() {
             url: "../Tools/TicketAjax.ashx?act=IsTicket&ticket_id=" + task_id,
             success: function (data) {
                 if (data == "1") {
-                    isTicket == "1";
+                    isTicket = "1";
                     $("#TaskMenu").text("工单详情");
                 }
                 else {
-                    isTicket == "";
+                    isTicket = "";
                     $("#TaskMenu").text("任务详情");
                 }
             },

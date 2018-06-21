@@ -67,6 +67,10 @@ namespace EMT.DoneNOW.Web
                     case "GetQuoteItem":
                         GetQuoteItem(context);
                         break;
+                    case "GetQuote":
+                        GetQuote(context);
+                        break;
+                        
                     default:
                         break;
                 }
@@ -268,6 +272,19 @@ namespace EMT.DoneNOW.Web
                 }
             }
         }
+        void GetQuote(HttpContext context)
+        {
+            var quoteId = context.Request.QueryString["quoteId"];
+            if (!string.IsNullOrEmpty(quoteId))
+            {
+                var item = new crm_quote_dal().FindNoDeleteById(long.Parse(quoteId));
+                if (item != null)
+                {
+                    WriteResponseJson(item);
+                }
+            }
+        }
+        
 
     }
 }

@@ -2164,7 +2164,14 @@
                 dataType: "json",
                 success: function (data) {
                     if (data != "") {
-                        $("#ShowAlert").show();
+                        
+                        if (data.hasTicketAlert || data.hasTicketDetail) {
+                            $("#ShowAlert").show();
+                        }
+                        else {
+                            $("#ShowAlert").hide();
+                        }
+                        
                         if (data.hasTicketAlert) {
                             $("#ShowTicketAlert").html("工单提醒:" + data.ticketAlert);
                         }

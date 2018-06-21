@@ -325,6 +325,7 @@
     <Content Include="Scripts\Search\ResourcePolicyAssignment.js" />
     <Content Include="Scripts\Search\ResourceServiceDeskQueue.js" />
     <Content Include="Scripts\Search\TimeoffMyBalance.js" />
+    <Content Include="Scripts\Search\WidgetDrillInventory.js" />
     <Content Include="Scripts\SidebarDrag.js" />
     <Content Include="Scripts\Search\WidgetDrillInvoiceItems.js" />
     <Content Include="Scripts\Search\WidgetDrillMilestones.js" />

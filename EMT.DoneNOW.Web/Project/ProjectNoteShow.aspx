@@ -222,6 +222,6 @@
 
     $("#NoteTypeSelect").change(function () {
         var thisValue = $(this).val();
-        $("#ShowNoteList").attr("src", "../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_NOTE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_NOTE %>&con1054=<%=thisProject.id %>&con1055=" + thisValue);
+        $("#ShowNoteList").attr("src", "../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PROJECT_NOTE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.PROJECT_NOTE %>&con1054=<%=thisProject!=null?thisProject.id.ToString():"" %>&con1055=" + thisValue);
     })
 </script>

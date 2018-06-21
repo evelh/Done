@@ -5,87 +5,54 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title></title>
+    <link href="../Content/reset.css" rel="stylesheet" />
+    <link href="../Content/SysSettingRoles.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../Content/style.css" />
+    <title>查看<%=isTodo?"待办":"备注" %></title>
 </head>
 <body>
     <form id="form1" runat="server">
-
-        <div class="FeedHeader">
-            <div class="null"></div>
-            <div class="NewRootNote">
-                <textarea placeholder="Add a note..." id="insert"></textarea>
+        <div class="TitleBar">
+            <div class="Title">
+                <span class="text1">查看<%=isTodo?"待办":"备注" %>-<%=actType!=null?actType.name:"" %><%=account!=null?$"({account.name})":"" %></span>
+                <a href="###" class="help"></a>
             </div>
-            <div class="add clear">
-                <span id="WordNumber">2000</span>
-                <asp:DropDownList ID="Type" runat="server" Width="100px">
-                </asp:DropDownList>
-                <asp:Button ID="add" runat="server" Text="添加" />
-            </div>
-            <div class="checkboxs clear">
-                <div class="clear">
-                    <label>待办</label>
-                    <asp:CheckBox ID="Todos" runat="server" />
-                </div>
-                <div class="clear">
-                    <label>备注</label>
-                    <asp:CheckBox ID="Note" runat="server" />
-                </div>
-                <div class="clear">
-                    <label>商机</label>
-                    <asp:CheckBox ID="Opportunities" runat="server" />
-                </div>
-                <div class="clear">
-                    <label>销售单</label>
-                   <asp:CheckBox ID="SalesOrders" runat="server" />
-                </div>
-                <div class="clear">
-                    <label>工单</label>
-                    <asp:CheckBox ID="Tickets" runat="server" />
-                </div>
-                <div class="clear">
-                    <label>合同</label>
-                   <asp:CheckBox ID="Contacts" runat="server" />
-                </div>
-                    <div class="clear">
-                    <label>项目</label>
-                   <asp:CheckBox ID="Projects" runat="server" />
-                </div>
-            </div>
-            <div class="addselect">
-                <div class="clear">
-                    <label>排序方式：</label>
-              <asp:DropDownList ID="OrderBy" runat="server">
-                <asp:ListItem Value="1">时间从早到晚</asp:ListItem>
-                <asp:ListItem Value="2">时间从晚到早</asp:ListItem>
-            </asp:DropDownList>
-                </div>
-            </div>
-            <hr class="activityTitlerighthr" />
         </div>
-        <%--    <table>
-                <tr>
-                    <td colspan="2">
-                        <input type="text" onkeydown="Prompt()"/>
-                        <asp:TextBox ID="insert" runat="server" TextMode="MultiLine" MaxLength="1000" Rows="5" Width="500px" Height="25%" Wrap="true" Style="overflow-y: visible"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding-right: 5px; padding-top: 10px; width: 350px;">
-                        <span id="WordNumber"></span>
-                    </td>
-                    <td align="right" style="padding-top: 10px;">
-                        <%
-                           // Type.DataValueField = "val";
-                           //  Type.DataTextField = "show";
-                           //  Type.DataSource = action_type;
-                           //  Type.DataBind();
-                           //  Type.Items.Insert(0, new ListItem() { Value = "0", Text = "   ", Selected = true });
-                        %>
-                        <asp:DropDownList ID="Type" runat="server" Width="100px">
-                        </asp:DropDownList>
-                        <asp:Button ID="add" runat="server" Text="添加" /></td>
-                </tr>
-            </table>--%>
+        <div class="DivSection" style="border: none; padding-left: 0;">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                    <tr>
+                        <td width="50%" class="FieldLabels">创建人
+                        <div>
+                            <%=createUser!=null?createUser.name:"" %>
+                        </div>
+                        </td>
+                         <td width="50%" class="FieldLabels">活动类型
+                        <div>
+                          <%=actType!=null?actType.name:"" %>
+                        </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="50%" class="FieldLabels">创建日期
+                        <div>
+                            <%=thisActivity==null?"":EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisActivity.create_time).ToString("yyyy-MM-dd HH:mm") %>
+                        </div>
+                        </td>
+                         <td width="50%" class="FieldLabels">指派给
+                        <div>
+                                <%=assignUser!=null?assignUser.name:"" %>
+                        </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <span><%=thisActivity!=null?thisActivity.description:"" %></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
     </form>
 </body>
@@ -96,18 +63,6 @@
 <script src="../Scripts/common.js"></script>
 <script>
     $(function () {
-        var maxNumber = 2000;
-        $("#WordNumber").text(maxNumber);
-        $("#insert").keyup(function () {
-            var insert = $("#insert").val();
-            if (insert != '') {
-                var length = insert.length;
-                $("#WordNumber").text(maxNumber - length);
-                if (length > 2000) {
-                    $(this).val($(this).val().substring(0, 2000));
-                }
-            }
 
-        });
     })
 </script>

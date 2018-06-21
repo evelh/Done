@@ -30,9 +30,11 @@ namespace EMT.DoneNOW.Web.Contract
                 rid = Request.QueryString["contractId"];
                 if (!long.TryParse(rid, out contractId))
                 {
-                    Response.Close();
-                    return;
+                   
                 }
+                var entity = bll.GetMilestone(milestoneId);
+                if (entity != null)
+                    contractId = entity.contract_id;
 
                 contract_id.Value = contractId.ToString();
                 milstId.Value = milestoneId.ToString();

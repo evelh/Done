@@ -47,7 +47,7 @@ namespace EMT.DoneNOW.Web.Contract
                 }
 
                 contractCopy = bll.GetContract(id);
-                contractCopy.name = "[Copy of]" + contractCopy.name;
+                contractCopy.name = "【复制于】" + contractCopy.name;
                 companyName = new CompanyBLL().GetCompany(contractCopy.account_id).name;
                 if (contractCopy.contact_id != null && contractCopy.contact_id > 0)
                     contactList = new ContactBLL().GetContactByCompany(contractCopy.account_id);

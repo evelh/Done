@@ -2002,6 +2002,7 @@ namespace EMT.DoneNOW.DTO
         WidgetDrillCompany = 216,           // 小窗口-客户
         WidgetDrillConfiguration = 226,     // 小窗口-配置项
         WidgetDrillContract = 227,          // 小窗口-合同
+        WidgetDrillInventory = 229,         // 小窗口-库存
         WidgetDrillInvoiceItems = 232,      // 小窗口-发票条目
         WidgetDrillMilestones = 235,        // 小窗口-里程碑
         WidgetDrillMiscellaneous = 237,     // 小窗口-其他

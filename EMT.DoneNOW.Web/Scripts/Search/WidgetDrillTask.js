@@ -106,7 +106,10 @@ function SaveAddToOtherWorkList() {
     }
     CloseDigAddOtherDiv();
 }
-
+function CloseDigAddOtherDiv() {
+    $("#BackgroundOverLay").hide();
+    $("#ShowAddOtherDiv").hide();
+}
 function AddToWorkList(resIds, taskId) {
     if (resIds == "" || taskId == "") {
         return;
@@ -150,6 +153,7 @@ function ViewProject() {
         type: "GET",
         async: false,
         url: "../Tools/TicketAjax.ashx?act=GetTicket&ticket_id=" + entityid,
+        dataType: 'json',
         success: function (data) {
             if (data != "") {
                 if (data.project_id != "") {

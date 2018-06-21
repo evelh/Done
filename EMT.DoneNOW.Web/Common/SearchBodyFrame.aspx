@@ -495,7 +495,7 @@
                     <li onclick="Add()" style="padding-left: 5px;"><span>新增</span></li>
                        <li onclick="PrintView()" style="padding-left: 5px;"><span>打印预览</span></li>
                     <%}
-    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_MY_TICKET || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_VIEW)
+    else if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_MY_TICKET || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_VIEW )
     { %>
                     <li class="Button ButtonIcon NormalState f1" id="options" tabindex="0"> 
                     <span class="Icon" style="width: 0; margin: 0;"></span>
@@ -899,14 +899,14 @@
     </div>
 
     <% if (queryTypeId ==(int)EMT.DoneNOW.DTO.QueryType.WidgetDrillTask) { %>
-      <div class="Dialog Large" style="margin-left: -442px; margin-top: -229px; z-index: 100; display: none; width: 650px;" id="ShowAddOtherDiv">
+      <div class="Dialog Large" style="margin-left: -442px; margin-top: -229px; z-index: 100; display: none; width: 650px;height:300px;" id="ShowAddOtherDiv">
             <div>
 
                 <div class="DialogContentContainer">
                     <div class="CancelDialogButton" onclick="CloseDigAddOtherDiv()"></div>
                     <div class="Active ThemePrimaryColor TitleBar">
                         <div class="Title">
-                            <span class="text">添加到员工的工作列表-</span><span id="ToOtherTaskNo"></span>
+                            <span class="text"  style="color: white;font-size: medium;font-weight: 500;margin-left: 10px;">添加到员工的工作列表-</span><span id="ToOtherTaskNo"></span>
                         </div>
                     </div>
                     <div class="DialogHeadingContainer">
@@ -2949,7 +2949,7 @@
     </script>
   <script type="text/javascript" src="../Scripts/My97DatePicker/WdatePicker.js"></script>
   <script type="text/javascript" src="../Scripts/Search/<%=(EMT.DoneNOW.DTO.QueryType)queryTypeId %>.js"></script>
-    <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_MY_TICKET || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_VIEW||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_VIEW)
+    <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_MY_TICKET || catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_VIEW||catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_VIEW||queryTypeId == (int)EMT.DoneNOW.DTO.QueryType.WidgetDrillTickets)
         { %>
     <script type="text/javascript" src="../Scripts/Search/my_queue_active.js"></script>
     <%} %>

@@ -118,6 +118,10 @@ namespace EMT.DoneNOW.Web
             catId = groups[0].cate_id;
             queryTypeId = groups[0].query_type_id;
             paraGroupId = groups[0].id;
+            if(queryTypeId==(long)QueryType.WidgetDrillTimeoffRequest|| queryTypeId == (long)QueryType.WidgetDrillTimesheet)
+            {
+                isCheck = "1";
+            }
 
             resultPara = bll.GetResultParaSelect(LoginUserId, paraGroupId);    // 获取查询结果列信息
             var keys = Request.QueryString;
@@ -905,16 +909,17 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.Opportunity:
                 case (long)QueryType.OpportunityCompanyView:
                 case (long)QueryType.OpportunityContactView:
+                case (long)QueryType.WidgetDrillOpportunity:
                     contextMenu.Add(new PageContextMenuDto { text = "修改商机", click_function = "EditOpp()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看商机", click_function = "ViewOpp()" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "新增报价", click_function = "AddQuote()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "修改报价", click_function = "openopenopen()\" \" style='color:grey;'" });
+                    contextMenu.Add(new PageContextMenuDto { text = "新增报价", click_function = "AddQuote()",id="AddQuoteMenu" });
+                   
                     contextMenu.Add(new PageContextMenuDto { text = "关闭商机", click_function = "CloseOppo()" });
                     contextMenu.Add(new PageContextMenuDto { text = "丢失商机", click_function = "LostOppo()" });
                     contextMenu.Add(new PageContextMenuDto { text = "重新指定商机负责人", click_function = "openopenopen()\" \" style='color:grey;'" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除商机", click_function = "DeleteOpp()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "Livelink", click_function = "openopenopen()\" \" style='color:grey;'" });
+                   
                     break;
                 case (long)QueryType.Quote:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑报价", click_function = "Edit()" });
@@ -1564,14 +1569,15 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.MY_QUEUE_MY_TICKET:
                 case (long)QueryType.MY_QUEUE_CHANGE_APPROVEL:
                 case (long)QueryType.MY_QUEUE_VIEW:
+                case (long)QueryType.WidgetDrillTickets:
                     contextMenu.Add(new PageContextMenuDto { text = "添加工时", click_function = "AddLabour()", id = "btnAddLab", class_name = "" });
                     contextMenu.Add(new PageContextMenuDto { text = "为服务预定添加工时", click_function = "AddServiceLabour()", class_name = "" });
                     contextMenu.Add(new PageContextMenuDto { text = "编辑工单", click_function = "EditTicket()", class_name = "" });
                     contextMenu.Add(new PageContextMenuDto { text = "编辑定期服务主工单", click_function = "EditMasterTicket()", id = "btnEditMaster", class_name = "" });
                     contextMenu.Add(new PageContextMenuDto { text = "查看工单", click_function = "ViewTask()", class_name = "" });
                     contextMenu.Add(new PageContextMenuDto { text = "工单历史", click_function = "ViewTaskHistory()", class_name = "" });
-                    contextMenu.Add(new PageContextMenuDto { text = "客户工单历史", click_function = "ViewAccountTaskHistory()", class_name = "" });
-                    contextMenu.Add(new PageContextMenuDto { text = "查看报表", click_function = "ViewReport()", class_name = "" });
+                    contextMenu.Add(new PageContextMenuDto { text = "客户工单历史", click_function = "ViewAccountTaskHistory()", class_name = "",id="AccTicketHistory" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看报表", click_function = "ViewReport()", class_name = "" ,id="ReportHidden"});
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "CopyTask()", class_name = "" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制到项目", click_function = "CopyToProject()", class_name = "" });
                     contextMenu.Add(new PageContextMenuDto { text = "合并到另一个工单", click_function = "MergeOtherTicket()", class_name = "" });
@@ -1788,6 +1794,34 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "添加备注", click_function = "AddItemNote()" });
                     contextMenu.Add(new PageContextMenuDto { text = "转发/编辑 工单", click_function = "ModifyTicket()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除服务预定", click_function = "DeleteCall()" });
+                    break;
+                case (int)QueryType.WidgetDrillTimeoffRequest:
+                    contextMenu.Add(new PageContextMenuDto { text = "批准申请", click_function = "ApproveSingle()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "拒绝申请", click_function = "RejectSingle()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "批准选中申请", click_function = "ApproveSelect()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "拒绝选中申请", click_function = "RejectSelect()" });
+                    break;
+                case (int)QueryType.WidgetDrillTimesheet:
+                    contextMenu.Add(new PageContextMenuDto { text = "批准申请", click_function = "ApproveSingle()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "拒绝申请", click_function = "RejectSingle()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看详情", click_function = "ShowDetail()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "批准选中申请", click_function = "ApproveSelect()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "拒绝选中申请", click_function = "RejectSelect()" });
+                    break;
+                case (int)QueryType.WidgetDrillTodoNotes:
+                case (int)QueryType.WidgetDrillScheduledItems:
+                    contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看", click_function = "View()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "转为待办", click_function = "SetScheduled()", id="TransTodoMenu"});
+                    contextMenu.Add(new PageContextMenuDto { text = "完成待办", click_function = "FinishTodo()", id = "CompleteTodoMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看客户", click_function = "ViewCompany()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看商机", click_function = "ViewOpportunity()", id="ShowOppoMenu"});
+                    contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()" });
+
+                    break;
+                case (int)QueryType.WidgetDrillWorkEntries:
+                    contextMenu.Add(new PageContextMenuDto { text = "工单详情", click_function = "ViewTicket()",id="TicketMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "任务详情", click_function = "ViewTask()" ,id="TaskMenu"});
                     break;
                 default:
                     break;

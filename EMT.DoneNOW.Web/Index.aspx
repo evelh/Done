@@ -1395,11 +1395,11 @@
         {
             navNum++;
     %>
-    <div class="Dialog Notice Large" style="margin-left: -442px; margin-top: -229px; z-index: 100; width: 400px; height: 400px;" id="Nav<%=navNum %>">
+    <div class="Dialog Notice Large" style="margin-left: -442px; margin-top: -229px; z-index: 100; width: 800px; height: 600px;" id="Nav<%=navNum %>">
         <div class="CancelDialogButton" onclick="CancelDialog('Nav<%=navNum %>')"></div>
         <div class="heard-title" style="height: 30px;"><%=notice.title %></div>
-        <div style="margin: 10px; height: 300px;">
-            <iframe id="NavFrame<%=navNum %>" name="NavFrame<%=navNum %>" style="width: 100%;" src="<%=notice.url+((notice.url.Contains('?')?"":"?")+$"&Nav=Nav"+navNum.ToString()) %>"></iframe>
+        <div style="margin: 10px; height: 400px;">
+            <iframe id="NavFrame<%=navNum %>" name="NavFrame<%=navNum %>" style="width: 100%;height:100%;border:0px;" src="<%=notice.url+((notice.url.Contains('?')?"":"?")+$"&Nav=Nav"+navNum.ToString()) %>"></iframe>
         </div>
         <div style="margin-left: 10px;">
             <p><span style="display: inline-block;">
@@ -1463,7 +1463,7 @@
         </div>
     </div>
 
-    <div class="Dialog Large" style="margin-left: -442px; margin-top: -229px; z-index: 100; display: none; width: 650px;" id="ShowAddOtherDiv">
+    <div class="Dialog Large" style="margin-left: -442px; margin-top: -229px; z-index: 100; display: none; width: 650px;height:300px;" id="ShowAddOtherDiv">
             <div>
 
                 <div class="DialogContentContainer">
