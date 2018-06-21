@@ -1154,6 +1154,58 @@ namespace EMT.DoneNOW.BLL
 
             return true;
         }
+
+        /// <summary>
+        /// 分享小窗口
+        /// </summary>
+        /// <param name="widgetId"></param>
+        /// <param name="resIds"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool ShareWidget(long widgetId, string resIds, long userId)
+        {
+            if (string.IsNullOrEmpty(resIds))
+                return false;
+
+            var wgt = wgtDal.FindById(widgetId);
+            if (wgt == null)
+                return false;
+
+            var ntDal = new sys_notice_dal();
+            sys_notice nt = new sys_notice();
+            nt.id = ntDal.GetNextIdCom();
+            nt.create_user_id = userId;
+            nt.update_user_id = userId;
+            nt.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            nt.create_time = nt.update_time;
+            nt.title = "接收小窗口";
+            nt.begin_time = 0;
+            nt.end_time = 0;
+            nt.description = new sys_resource_dal().FindById(userId).name + "分享了一个小窗口（" + wgt.name + "）给你，如果接收，请先选择仪表板。";
+            nt.url = "/System/AcceptOfferWidget.aspx?wgtid=" + widgetId;
+            nt.send_type_id = 2;
+            ntDal.Insert(nt);
+
+            var ntrDal = new sys_notice_resource_dal();
+            var ids = resIds.Split(',');
+            foreach (var id in ids)
+            {
+                if (id == userId.ToString())
+                    continue;
+
+                var ntr = new sys_notice_resource();
+                ntr.id = ntrDal.GetNextIdCom();
+                ntr.resource_id = long.Parse(id);
+                ntr.notice_id = nt.id;
+                ntr.is_show = 1;
+                ntr.first_show_time = null;
+                ntr.status_changed_time = null;
+
+                ntrDal.Insert(ntr);
+            }
+
+            return true;
+        }
         #endregion
 
 

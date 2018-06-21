@@ -110,6 +110,9 @@ namespace EMT.DoneNOW.Web
                 case "MoveWidget":
                     MoveWidget();
                     break;
+                case "ShareWidget":
+                    ShareWidget();
+                    break;
                 default:
                     WriteResponseJson("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     break;
@@ -814,6 +817,16 @@ namespace EMT.DoneNOW.Web
             long id = long.Parse(request.QueryString["id"]);
             long dsid = long.Parse(request.QueryString["dashboardid"]);
             WriteResponseJson(bll.MoveWidget(id, dsid, LoginUserId));
+        }
+
+        /// <summary>
+        /// 分享小窗口
+        /// </summary>
+        private void ShareWidget()
+        {
+            long id = long.Parse(request.QueryString["id"]);
+            string resid = request.QueryString["res"];
+            WriteResponseJson(bll.ShareWidget(id, resid, LoginUserId));
         }
     }
 }
