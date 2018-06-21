@@ -2006,6 +2006,42 @@
             </div>
         </div>
     </div>
+    <div class="POPbox" style="z-index:105;height:400px;margin-top:-200px;width:676px;left:55%;" id="ShareWidget">
+        <div class="shut" onclick="POPClose(this)">
+        </div>
+        <div class="AddWidgetDynamicSelectPOP">
+            <h3>分享小窗口</h3>
+            <div class="button" style="padding:10px 0 0 10px;">
+                <div class="next" id="ShareWidgetFinish">确定</div>
+            </div>
+            <div class="content" style="padding:10px 40px 20px 40px;">
+                <div class="Column" style="margin:0 30px 0 30px;">
+                    <p>所选用户下次登录系统时，会收到一条接受消息。</p>
+                    <div class="item">
+                        <div><label>分享给</label><span style="position:absolute;"><i class="icon-dh" style="height:16px !important;margin-left:12px;margin-top:2px;" onclick='window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.RESOURCE_CALLBACK %>&field=rsselect&muilt=1&callBack=ChangeRes", "_blank", "left=200,top=200,width=600,height=800", false);'></i></span></div>
+                        <textarea rows="2" cols="20" style="resize:none;width:260px;height:210px;overflow-y:auto;" readonly="readonly" id="rsselectName" ></textarea>
+                        <input type="hidden" id="rsselect" />
+                        <input type="hidden" id="rsselectHidden" />
+                    </div>
+                </div>
+            </div>
+            <script>
+                function ChangeRes() {
+                    var selval = $("#rsselect").val();
+                    if (selval != "") {
+                        var selvals = selval.split(',');
+                        var str = '';
+                        $.each(selvals, function (idx) {
+                            str += selvals[idx] + '\r\n';
+                        })
+                        $("#rsselectName").text(str);
+                    } else {
+                        $("#rsselectName").text("");
+                    }
+                }
+            </script>
+        </div>
+    </div>
     <div class="POPbox" style="z-index:105;height:400px;margin-top:-200px;" id="AddWidgetDynamicSelect">
         <div class="shut" onclick="CloseDynamicDate()">
         </div>

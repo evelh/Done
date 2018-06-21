@@ -94,6 +94,26 @@ function MoveWidget(id) {
     })
 }
 
+function ShareWidget(id) {
+    $("#rsselectHidden").val("");
+    $("#rsselectName").text("");
+    $("#cover").show();
+    $("#ShareWidget").show();
+    $("#ShareWidgetFinish").unbind("click").bind("click", function () {
+        if ($("#rsselectHidden").val() == "") {
+            LayerMsg("请选择用户！");
+            return;
+        }
+        requestData("/Tools/DashboardAjax.ashx?act=ShareWidget&id=" + id + "&res=" + $("#rsselectHidden").val(), null, function (data) {
+            $("#cover").hide();
+            $("#ShareWidget").hide();
+            if (data == true) {
+                LayerAlert("分享成功！", "确定", function () { });
+            }
+        })
+    })
+}
+
 function DeleteWidget(id) {
     LayerConfirmOk("删除操作将不能恢复，是否继续?", "确定", "取消", function () {
         requestData("/Tools/DashboardAjax.ashx?act=DeleteWidget&id=" + id, null, function (data) {

@@ -13,6 +13,7 @@ namespace EMT.DoneNOW.Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            long widgetId = long.Parse(Request.QueryString["wgtid"]);
 
         }
     }
