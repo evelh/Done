@@ -1802,11 +1802,13 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "拒绝选中申请", click_function = "RejectSelect()" });
                     break;
                 case (int)QueryType.WidgetDrillTimesheet:
-                    contextMenu.Add(new PageContextMenuDto { text = "批准申请", click_function = "ApproveSingle()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "拒绝申请", click_function = "RejectSingle()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "查看详情", click_function = "ShowDetail()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "批准选中申请", click_function = "ApproveSelect()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "拒绝选中申请", click_function = "RejectSelect()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "批准申请", click_function = "ApproveSingle()" ,id="AppSinMenu"});
+                    contextMenu.Add(new PageContextMenuDto { text = "拒绝申请", click_function = "RejectSingle()", id = "RejSinMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "提交申请", click_function = "SubmitSingle()", id = "SubSinMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "查看详情", click_function = "ShowDetail()", id = "SinDetailMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "批准选中申请", click_function = "ApproveSelect()", id = "AppSelMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "拒绝选中申请", click_function = "RejectSelect()", id = "RejSelMenu" });
+                    contextMenu.Add(new PageContextMenuDto { text = "提交选中申请", click_function = "SubmitSelect()", id = "SubSelMenu" });
                     break;
                 case (int)QueryType.WidgetDrillTodoNotes:
                 case (int)QueryType.WidgetDrillScheduledItems:

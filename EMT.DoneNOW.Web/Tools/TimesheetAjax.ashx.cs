@@ -43,6 +43,9 @@ namespace EMT.DoneNOW.Web
                 case "deleteWorkEntry":
                     DeleteWorkEntry(context);
                     break;
+                case "SubmitManySheet":
+                    SubmitManySheet(context);
+                    break;
                 //case "delete":
                 //    DeleteTimesheet(context);
                 //    break;
@@ -164,6 +167,38 @@ namespace EMT.DoneNOW.Web
             DateTime start = DateTime.Parse(context.Request.QueryString["startDate"]);
             long resId = long.Parse(context.Request.QueryString["resId"]);
             context.Response.Write(new Tools.Serialize().SerializeJson(new BLL.WorkEntryBLL().DeleteWorkEntryReport(start, resId, LoginUserId)));
+        }
+        /// <summary>
+        /// 批量提交工时表
+        /// </summary>
+        void SubmitManySheet(HttpContext context)
+        {
+           bool result = false;
+            int temp = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["Array"]))
+            {
+                var arr = new Tools.Serialize().DeserializeJson<string[]>(context.Request.QueryString["Array"]);
+                if(arr!=null&& arr.Length > 0)
+                {
+                    var bll = new BLL.WorkEntryBLL();
+                    foreach (var thisArr in arr)
+                    {
+                        var thisSub = thisArr.Split('_');
+                        if (thisSub.Length == 2)
+                        {
+                           if(!bll.SubmitWorkEntry(DateTime.Parse(thisSub[1]), long.Parse(thisSub[0]), LoginUserId))
+                            {
+                                temp++;
+                            }
+                        }
+                    }
+                }
+            }
+            if (temp == 0)
+            {
+                result = true;
+            }
+            WriteResponseJson(result);
         }
     }
 }

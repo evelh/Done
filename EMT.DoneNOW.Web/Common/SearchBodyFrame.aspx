@@ -742,6 +742,9 @@
                         { %><img src="../Images/sort-<%=order %>.png" />
                     <%} %></th>
                 <%} %>
+                <% if (queryTypeId ==(int)EMT.DoneNOW.DTO.QueryType.WidgetDrillTimesheet) {%>
+                <th style="display:none;"></th>
+                   <% } %>
             </tr>
             <%               
                 if (queryResult.count>0)
@@ -761,7 +764,7 @@
     else
     { %>
 
-            <tr onclick="ViewEntity('<%=id %>')" title="右键显示操作菜单" data-val="<%=id %>" class="dn_tr">
+            <tr onclick="ViewEntity('<%=id %>')" title="右键显示操作菜单" data-val="<%=id %>"  class="dn_tr">
 
                 <%} %>
                 <%if (!string.IsNullOrEmpty(isCheck))
@@ -774,6 +777,7 @@
                     {
                         if (para.visible != 1)
                             continue;
+                        
                         if (para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.ID
                             || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.TOOLTIP
                             || para.type == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_RESULT_DISPLAY_TYPE.RETURN_VALUE)
@@ -835,6 +839,13 @@
                 <%} %>
                 <%} // foreach
                 %>
+               <% if( queryTypeId == (int)EMT.DoneNOW.DTO.QueryType.WidgetDrillTimesheet)
+                        {
+                            %> 
+                <td style="display:none;"><input type="hidden" id="" class="<%="9285" %>" value="<%=rslt["员工id"] %>"/><input type="hidden"  class="<%="9286" %>" id="" value="<%=rslt["开始日期"] %>"/></td>
+                <% 
+                            continue;
+                        }%>
             </tr>
             <%} // foreach
                 } // else
