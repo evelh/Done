@@ -1029,7 +1029,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="dashboardId">复制小窗口所属仪表板</param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        private long CopyWidget(sys_widget wgt, long dashboardId, long userId)
+        private long CopyWidget(sys_widget wgt, long dashboardId, long userId, int? sort = null)
         {
             sys_widget wgtnew = new sys_widget();
             wgtnew.id = wgtDal.GetNextIdCom();
@@ -1068,7 +1068,7 @@ namespace EMT.DoneNOW.BLL
             wgtnew.show_action_column = wgt.show_action_column;
             wgtnew.show_column_header = wgt.show_column_header;
             wgtnew.html = wgt.html;
-            wgtnew.sort_order = wgt.sort_order;
+            wgtnew.sort_order = sort == null ? wgt.sort_order : sort;
             wgtnew.show_widget_name = wgt.show_widget_name;
 
             wgtDal.Insert(wgtnew);
@@ -1179,10 +1179,10 @@ namespace EMT.DoneNOW.BLL
             nt.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
             nt.create_time = nt.update_time;
             nt.title = "接收小窗口";
-            nt.begin_time = 0;
-            nt.end_time = 0;
+            nt.begin_time = 1;
+            nt.end_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now.AddYears(10));
             nt.description = new sys_resource_dal().FindById(userId).name + "分享了一个小窗口（" + wgt.name + "）给你，如果接收，请先选择仪表板。";
-            nt.url = "/System/AcceptOfferWidget.aspx?wgtid=" + widgetId;
+            nt.url = "/System/AcceptOfferWidget.aspx?wgtid=" + widgetId + "&resid=" + userId + "&ntid=" + nt.id;
             nt.send_type_id = 2;
             ntDal.Insert(nt);
 
@@ -1205,6 +1205,63 @@ namespace EMT.DoneNOW.BLL
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// 接收共享小窗口
+        /// </summary>
+        /// <param name="widgetId"></param>
+        /// <param name="dashboardId"></param>
+        /// <param name="noticeId">系统通知id</param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public string AcceptShareWidget(long widgetId, long dashboardId, long noticeId, long userId)
+        {
+            sys_notice_resource_dal ntdal = new sys_notice_resource_dal();
+            var ntres = ntdal.GetByResNotic(noticeId, userId);
+            if (ntres == null)
+                return "请重新操作！";
+
+            var wgtList = GetWidgetListOrdered(dashboardId);
+            if (wgtList.Count >= 12)
+                return "该仪表板小窗口数已达最大，请选择其他仪表板！";
+
+            var wgt = wgtDal.FindNoDeleteById(widgetId);
+            if (wgt == null)
+            {
+                ntres.is_show = 0;
+                ntres.status_changed_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                ntdal.Update(ntres);
+                return "接收失败，小窗口已被删除！";
+            }
+            int sort = 1;
+            if (wgtList.Count > 0)
+                sort = wgtList[wgtList.Count - 1].sort_order.Value + 1;
+            CopyWidget(wgt, dashboardId, userId, sort);
+
+            ntres.is_show = 0;
+            ntres.status_changed_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            ntdal.Update(ntres);
+
+            return null;
+        }
+
+        /// <summary>
+        /// 拒绝接收共享小窗口
+        /// </summary>
+        /// <param name="noticeId"></param>
+        /// <param name="userId"></param>
+        public void DeclineShareWidget(long noticeId, long userId)
+        {
+            sys_notice_resource_dal ntdal = new sys_notice_resource_dal();
+
+            var ntres = ntdal.GetByResNotic(noticeId, userId);
+            if (ntres == null)
+                return;
+
+            ntres.is_show = 0;
+            ntres.status_changed_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            ntdal.Update(ntres);
         }
         #endregion
 

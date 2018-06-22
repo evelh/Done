@@ -12,5 +12,20 @@ namespace EMT.DoneNOW.DAL
         {
             return FindSignleBySql<sys_notice_resource>($"SELECT * from sys_notice_resource where notice_id = {noticeId} and resource_id = {userId}");
         }
+
+        /// <summary>
+        /// 更新首次显示时间，如果首次显示时间为空
+        /// </summary>
+        /// <param name="noticeId"></param>
+        /// <param name="userId"></param>
+        public void FirstReadNotice(long noticeId, long userId)
+        {
+            var ntres = GetByResNotic(noticeId, userId);
+            if (ntres != null && ntres.first_show_time == null)
+            {
+                ntres.first_show_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                Update(ntres);
+            }
+        }
     }
 }
