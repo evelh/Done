@@ -9,6 +9,7 @@ using EMT.DoneNOW.DTO;
 using Newtonsoft.Json.Linq;
 using static EMT.DoneNOW.DTO.DicEnum;
 using System.Text.RegularExpressions;
+using System.Data;
 
 
 namespace EMT.DoneNOW.BLL
@@ -1296,6 +1297,13 @@ namespace EMT.DoneNOW.BLL
             return _dal.FindListBySql<T>(sql);
         }
         /// <summary>
+        /// 根据SQL 语句获取相关表格
+        /// </summary>
+        public  DataTable GetTable(string sql)
+        {
+            return _dal.ExecuteDataTable(sql);
+        }
+        /// <summary>
         /// 合并客户
         /// </summary>
         public bool MergeAccount(long fromAccId, long toAccId, long userId, bool isDelete = false)
@@ -1424,6 +1432,12 @@ namespace EMT.DoneNOW.BLL
                 DeleteCompany(fromAccId,userId);
             return true;
         }
+
+        public List<crm_account> GetAccList(string ids)
+        {
+            return _dal.GetCompanyByIds(ids);
+        }
+
 
     }
 }

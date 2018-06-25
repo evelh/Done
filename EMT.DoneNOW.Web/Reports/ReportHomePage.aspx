@@ -100,6 +100,10 @@
                                                 <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CRM_ACCOUNT_LABOURBYACCOUNT %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">按照客户统计工时</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
+                                             <div class="PageNavigationLink">
+                                                <a href="../Reports/ExecutiveSummarySearch.aspx" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">执行汇总表</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -653,6 +657,10 @@
                                                 <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_RESOURCE_GENERAL_LABOUR_REPORT %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">分类工时报表</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
+                                              <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_RESOURCE_GENERAL_LABOUR_DETAIL %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">工时详情</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -676,7 +684,7 @@
                                     <div class="Vertical Vertical6"></div>
                                     <div class="Horizontal"></div>
                                 </div>
-                                <span class="Text">系统</span>
+                                <span class="Text">工时表</span>
                                 <span></span>
                             </div>
                             <div class="Content Content6">
@@ -684,10 +692,50 @@
                                     <div class="PageNavigationLinkGroup">
                                         <div class="PageNavigationLinkColumn">
                                             <div class="PageNavigationLink">
-                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_OTHER_SYSTEM_LOGINLOG %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">登录日志</a>
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_LABOUREXPENSE_TIMESHEETS_RESOURCE %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">员工工时表</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
-                                           
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_LABOUREXPENSE_TIMESHEETS_RESOURCEDETAIL %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">员工工时详情</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                        </div>
+                                         <div class="PageNavigationLinkColumn">
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_LABOUREXPENSE_TIMESHEETS_RESOURCEDONE %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">员工工时完成情况</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_LABOUREXPENSE_TIMESHEETS_STATUS %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">工时表状态</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--第二个框-->
+                        <div class="Normal Collapsed Section Normal6 col" id="">
+                            <div class="Heading">
+                                <div class="Toggle Expand Toggle6" id="">
+                                    <div class="Vertical Vertical6"></div>
+                                    <div class="Horizontal"></div>
+                                </div>
+                                <span class="Text">费用</span>
+                                <span></span>
+                            </div>
+                            <div class="Content Content6">
+                                <div class="Large Column">
+                                    <div class="PageNavigationLinkGroup">
+                                        <div class="PageNavigationLinkColumn">
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_LABOUREXPENSE_EXPENSE_REPORT %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">费用报表</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                           <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_LABOUREXPENSE_EXPENSE_DETAILS %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">费用详情</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -718,10 +766,6 @@
                                 <div class="Large Column">
                                     <div class="PageNavigationLinkGroup">
                                         <div class="PageNavigationLinkColumn">
-                                            <div class="PageNavigationLink">
-                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_OTHER_SYSTEM_LOGINLOG %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">登录日志</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
                                             
                                         </div>
                                     </div>
@@ -793,7 +837,7 @@
     </form>
     <script src="../Scripts/jquery-3.1.0.min.js"></script>
     <script src="../Scripts/Report.js"></script>
-    <script src="Scripts/index.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../Scripts/index.js" type="text/javascript" charset="utf-8"></script>
     <script>
         $(window).resize(function () {
             var Height = $(document).height() - 66 + "px";
@@ -830,6 +874,15 @@
             }
             else if (queryPanel == "ContractBill") {
                 $("#TabButtonContractBill").trigger("click");
+            }
+            else if (queryPanel == "Resource") {
+                $("#TabButtonResource").trigger("click");
+            }
+            else if (queryPanel == "LabourExpense") {
+                $("#TabButtonLabourExpense").trigger("click");
+            }
+            else if (queryPanel == "Executive") {
+                $("#TabButtonExecutive").trigger("click");
             }
             else if (queryPanel == "Other") {
                 $("#TabButtonOther").trigger("click");

@@ -152,7 +152,7 @@ $("#d11").on("click", function () {
 
 });
 $("#d12").on("click", function () {
-    $(".Toggle6").find(".Vertical5").show();
+    $(".Toggle6").find(".Vertical6").show();
     $(".Content6").hide();
     var color = colors[1];
     $(".Normal6").css("background", color);
@@ -165,7 +165,7 @@ $("#d12").on("click", function () {
 });
 
 $("#d13").on("click", function () {
-    $(".Toggle7").find(".Vertical6").hide();
+    $(".Toggle7").find(".Vertical7").hide();
     $(".Content7").show();
     var color = colors[0];
     $(".Normal7").css("background", color);
@@ -175,7 +175,7 @@ $("#d13").on("click", function () {
 
 });
 $("#d14").on("click", function () {
-    $(".Toggle7").find(".Vertical5").show();
+    $(".Toggle7").find(".Vertical7").show();
     $(".Content7").hide();
     var color = colors[1];
     $(".Normal7").css("background", color);
@@ -188,7 +188,7 @@ $("#d14").on("click", function () {
 });
 
 $("#d15").on("click", function () {
-    $(".Toggle8").find(".Vertical6").hide();
+    $(".Toggle8").find(".Vertical8").hide();
     $(".Content8").show();
     var color = colors[0];
     $(".Normal8").css("background", color);
@@ -198,7 +198,7 @@ $("#d15").on("click", function () {
 
 });
 $("#d16").on("click", function () {
-    $(".Toggle8").find(".Vertical5").show();
+    $(".Toggle8").find(".Vertical8").show();
     $(".Content8").hide();
     var color = colors[1];
     $(".Normal8").css("background", color);

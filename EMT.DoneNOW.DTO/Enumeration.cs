@@ -907,7 +907,15 @@ namespace EMT.DoneNOW.DTO
             REPORT_RESOURCE_GENERAL_RESOURCE_WEEK_LABOUR = 1775,             // 报表-员工-常规-员工一周工时
             REPORT_RESOURCE_GENERAL_LABOUR_REPORT = 1776,                    // 报表-员工-常规-分类工时报表
             REPORT_RESOURCE_GENERAL_RESOURCE_UTILIZATION = 1777,             // 报表-员工-常规-员工利用率
+            REPORT_RESOURCE_GENERAL_LABOUR_DETAIL = 1778,                    // 报表-员工-常规-工时详情
+            REPORT_LABOUREXPENSE_TIMESHEETS_RESOURCE = 1779,                 // 报表-工时和费用-工时表-员工工时表
+            REPORT_LABOUREXPENSE_TIMESHEETS_RESOURCEDETAIL = 1780,           // 报表-工时和费用-工时表-员工工时详情
+            REPORT_LABOUREXPENSE_TIMESHEETS_RESOURCEDONE = 1781,             // 报表-工时和费用-工时表-员工工时完成情况
+            REPORT_LABOUREXPENSE_TIMESHEETS_STATUS = 1782,                   // 报表-工时和费用-工时表-工时表状态
+            REPORT_LABOUREXPENSE_EXPENSE_REPORT = 1783,                      // 报表-工时和费用-费用-费用报表
+            REPORT_LABOUREXPENSE_EXPENSE_DETAILS = 1784,                     // 报表-工时和费用-费用-费用详情
 
+            // 
 
 
             //RESOURCE_CALLBACK,                      // 
@@ -2162,6 +2170,11 @@ namespace EMT.DoneNOW.DTO
         SharedDashboard = 328,                      // 共享仪表板
         SharedDashboardResource = 329,              // 共享仪表板共享用户
         SecurityLevelCallback = 333,                // 安全等级查找带回
+
+        REPORT_RESOURCE_GENERAL_RESOURCE_MONTH_WORKTIME_NUM = 379,      // 报表-员工-常规-按月统计员工工作时间-时长
+        REPORT_RESOURCE_GENERAL_RESOURCE_MONTH_WORKTIME_MONEY = 380,    // 报表-员工-常规-按月统计员工工作时间-金额
+        REPORT_RESOURCE_GENERAL_RESOURCE_YEAR_WORKTIME_NUM = 381,       // 报表-员工-常规-按年统计员工工作时间-时长
+        REPORT_RESOURCE_GENERAL_RESOURCE_YEAR_WORKTIME_MONEY = 382,     // 报表-员工-常规-按年统计员工工作时间-金额
 
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理
