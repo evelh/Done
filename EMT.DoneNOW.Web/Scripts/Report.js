@@ -141,4 +141,74 @@ $("#d10").on("click", function () {
 });
 
 
+$("#d11").on("click", function () {
+    $(".Toggle6").find(".Vertical6").hide();
+    $(".Content6").show();
+    var color = colors[0];
+    $(".Normal6").css("background", color);
+
+    $('.TabContainer6>.Collapsed').removeClass("col");
+    $('.TabContainer6>.Collapsed').css("background", "white");
+
+});
+$("#d12").on("click", function () {
+    $(".Toggle6").find(".Vertical6").show();
+    $(".Content6").hide();
+    var color = colors[1];
+    $(".Normal6").css("background", color);
+    $('.TabContainer6>.Collapsed').each(function () {
+        if (!$(this).hasClass("col")) {
+            $(this).addClass("col");
+        }
+    })
+    $('.TabContainer6>.Collapsed').css("background", "#efefef");
+});
+
+$("#d13").on("click", function () {
+    $(".Toggle7").find(".Vertical7").hide();
+    $(".Content7").show();
+    var color = colors[0];
+    $(".Normal7").css("background", color);
+
+    $('.TabContainer7>.Collapsed').removeClass("col");
+    $('.TabContainer7>.Collapsed').css("background", "white");
+
+});
+$("#d14").on("click", function () {
+    $(".Toggle7").find(".Vertical7").show();
+    $(".Content7").hide();
+    var color = colors[1];
+    $(".Normal7").css("background", color);
+    $('.TabContainer7>.Collapsed').each(function () {
+        if (!$(this).hasClass("col")) {
+            $(this).addClass("col");
+        }
+    })
+    $('.TabContainer7>.Collapsed').css("background", "#efefef");
+});
+
+$("#d15").on("click", function () {
+    $(".Toggle8").find(".Vertical8").hide();
+    $(".Content8").show();
+    var color = colors[0];
+    $(".Normal8").css("background", color);
+
+    $('.TabContainer8>.Collapsed').removeClass("col");
+    $('.TabContainer8>.Collapsed').css("background", "white");
+
+});
+$("#d16").on("click", function () {
+    $(".Toggle8").find(".Vertical8").show();
+    $(".Content8").hide();
+    var color = colors[1];
+    $(".Normal8").css("background", color);
+    $('.TabContainer8>.Collapsed').each(function () {
+        if (!$(this).hasClass("col")) {
+            $(this).addClass("col");
+        }
+    })
+    $('.TabContainer8>.Collapsed').css("background", "#efefef");
+});
+
+
 

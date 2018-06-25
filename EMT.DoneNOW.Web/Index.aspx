@@ -671,6 +671,21 @@
                                                     </a>
                                                 </div>
                                                 <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage?SearchType=Resource" target="PageFrame">
+                                                        <span class="Text">员工</span>
+                                                    </a>
+                                                </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage?SearchType=LabourExpense" target="PageFrame">
+                                                        <span class="Text">工时和费用</span>
+                                                    </a>
+                                                </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage?SearchType=Executive" target="PageFrame">
+                                                        <span class="Text">执行</span>
+                                                    </a>
+                                                </div>
+                                                <div class="Content">
                                                     <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage?SearchType=Other" target="PageFrame">
                                                         <span class="Text">其他</span>
                                                     </a>

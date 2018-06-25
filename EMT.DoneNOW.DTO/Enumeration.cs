@@ -836,6 +836,20 @@ namespace EMT.DoneNOW.DTO
             SYSTEM_TICKET_SUB_ISSUE_SEARCH = 1700,         // 系统设置-问题和子问题类型-子问题查询
             SYSTEM_CHANGE_BOARD_SEARCH = 1701,             // 系统设置-变更委员会查询
             SYSTEM_CHECK_LIB_SEARCH = 1702,                // 系统设置-系统设置-检查单库查询
+            REPORT_CRM_ACCOUNT_LABOURBYMONTH=1704,         // 报表-CRM-客户-按照员工和月份统计工时
+            REPORT_CRM_ACCOUNT_LABOURBYACCOUNT =1705,      // 报表-CRM-客户-按照客户统计工时
+            REPORT_CRM_INSTALLPRODUCT_EXPIRE = 1706,       // 报表-CRM-配置项合同和配置项到期情况
+            REPORT_CRM_OPPORTUNITY_ACCOUNTNOTEBYRESOURCE = 1707,   // 报表-CRM-商机-客户备注按员工汇总
+            REPORT_CRM_OPPORTUNITY_STAGE = 1708,                   // 报表-CRM-商机-商机阶段报表
+            REPORT_CRM_OPPORTUNITY_SHOWNOTE_BYUSER = 1709,         // 报表-CRM-商机-按员工展示客户备注
+            REPORT_CRM_OPPORTUNITY_FORRCAST_BYUSER = 1710,         // 报表-CRM-商机-商机预估收入按员工汇总
+            REPORT_CRM_OPPORTUNITY_FORRCAST_BYTERRITY = 1711,      // 报表-CRM-商机-商机预估收入按地域汇总
+            REPORT_CRM_OPPORTUNITY_OVERGROUP_BYUSER = 1712,        // 报表-CRM-商机-过期商机按员工分组展示
+            REPORT_CRM_OPPORTUNITY_MONTH_FORRCAST = 1713,          // 报表-CRM-商机-商机每月预估收入
+            REPORT_CRM_OPPORTUNITY_STAGE_ANALYSIS = 1714,          // 报表-CRM-商机-商机阶段分析
+            REPORT_CRM_OPPORTUNITY_STAGE_ANALYSIS_DETAIL = 1715,   // 报表-CRM-商机-商机阶段分析-详情
+            REPORT_CRM_OPPORTUNITY_QUOTA = 1716,                   // 报表-CRM-商机-销售指标
+            REPORT_CRM_OPPORTUNITY_QUOTA_SUMMARY = 1717,           // 报表-CRM-商机-销售指标汇总
             SHARED_DASHBOARD = 1718,                        // 共享仪表板管理
             SHARED_DASHBOARD_RESOURCE = 1719,               // 共享仪表板管理-发布对象
             SECURITY_LEVEL_CALLBACK = 1723,                 // 安全等级查找带回
@@ -855,7 +869,55 @@ namespace EMT.DoneNOW.DTO
             SYSTEM_PAYMENT_TYPE = 1737,                     // 系统配置-财务-支付类型  
             SYSTEM_PAYMENT_TERM = 1738,                     // 系统配置-财务-支付条款  
             SYSTEM_SHIP_TYPE = 1739,                        // 系统配置-财务-配送类型   
+            REPORT_PROJECT_LABOUR_SUMMARY_BYTASK = 1740,    // 报表-项目-项目-工时和费用按任务汇总
             DEPARTMENT_CALLBACK = 1741,                     // 部门查找带回
+            REPORT_PROJECT_LABOUR_SUMMARY_BYWORKTYPE = 1742,    // 报表-项目-项目-按工作类型汇总工时收入
+            REPORT_PROJECT_LABOUR_SUMMARY_BYWORKTYPERES = 1743, // 报表-项目-项目-按工作类型员工汇总工时收入
+            REPORT_PROJECT_LABOUR_SUMMARY_BYMONTHRES = 1744,    // 报表-项目-项目-按员工和月份汇总工时
+            REPORT_PROJECT_PORTFOLIO_REVENCE = 1745,            // 报表-项目-项目-项目组合收入
+            REPORT_TICKET_GENERAL_SUMMARY_BYQUEUE = 1746,            // 报表-工单-常规-按队列汇总工单
+            REPORT_TICKET_GENERAL_SUMMARY_BYRESOURCE = 1747,         // 报表-工单-常规-按员工汇总工单
+            REPORT_TICKET_GENERAL_LABOURNOTE = 1748,                 // 报表-工单-常规-工单工时和备注
+            REPORT_TICKET_GENERAL_SUMMARY_BYACCOUNTMONTH = 1749,     // 报表-工单-常规-按客户和月份汇总工单
+            REPORT_TICKET_GENERAL_NOCLOSE = 1750,                    // 报表-工单-常规-未关闭工单
+            REPORT_TICKET_METRICS_QUEUE = 1751,                      // 报表-工单-效率-队列处理工单效率
+            REPORT_TICKET_METRICS_RESOURCE = 1752,                   // 报表-工单-效率-员工处理工单效率
+            REPORT_TICKET_METRICS_SUMMARY_BYISSUE = 1753,            // 报表-工单-效率-按问题类型汇总工单
+            REPORT_TICKET_METRICS_SUMMARY_BYSOURCE = 1754,           // 报表-工单-效率-按来源汇总工单
+            REPORT_TICKET_METRICS_SLA_COMPLETE = 1755,               // 报表-工单-效率-SLA指标完成情况
+            REPORT_TICKET_METRICS_SLA_COMPLETE_DETAIL = 1756,        // 报表-工单-效率-SLA指标完成详情
+
+
+            REPORT_CONTRACTBILL_CONTRACT_OVER = 1759,             // 报表-合同和计费-合同-过期合同和配置项
+            REPORT_CONTRACTBILL_CONTRACT_EVENT = 1760,            // 报表-合同和计费-合同-事件扣除
+            REPORT_CONTRACTBILL_CONTRACT_PREPAID_COST = 1761,     // 报表-合同和计费-合同-预付费用扣除
+            REPORT_CONTRACTBILL_CONTRACT_PREPAID_TIME = 1762,     // 报表-合同和计费-合同-预付时间扣除
+            REPORT_CONTRACTBILL_BILL_MILSTONE = 1763,             // 报表-合同和计费-计费-里程碑
+            REPORT_CONTRACTBILL_BILL_PROJECT_FINANCIAL = 1764,    // 报表-合同和计费-计费-项目总账财务信息
+            REPORT_CONTRACTBILL_BILL_TIME = 1765,                 // 报表-合同和计费-计费-预付时间
+            REPORT_CONTRACTBILL_BILL_TO_BILL_ITEM = 1766,         // 报表-合同和计费-计费-本公司待计费条目
+            REPORT_RESOURCE_GENERAL_INTERNAL_LABOUR = 1767,                  // 报表-员工-常规-内部工时汇总
+            REPORT_RESOURCE_GENERAL_TASKTICEKT = 1768,                       // 报表-员工-常规-员工任务和工单
+            REPORT_RESOURCE_GENERAL_RESOURCE_MONTH_WORKTIME_NUM = 1769,      // 报表-员工-常规-按月统计员工工作时间-时长
+            REPORT_RESOURCE_GENERAL_RESOURCE_MONTH_WORKTIME_MONEY = 1770,    // 报表-员工-常规-按月统计员工工作时间-金额
+            REPORT_RESOURCE_GENERAL_RESOURCE_YEAR_WORKTIME_NUM = 1771,       // 报表-员工-常规-按年统计员工工作时间-时长
+            REPORT_RESOURCE_GENERAL_RESOURCE_YEAR_WORKTIME_MONEY = 1772,     // 报表-员工-常规-按年统计员工工作时间-金额
+            REPORT_RESOURCE_GENERAL_RESOURCE_PROJECT_LABOUR = 1773,          // 报表-员工-常规-员工项目工时
+            REPORT_RESOURCE_GENERAL_LABOUR_SUMMARY_BYTYPE = 1774,            // 报表-员工-常规-按类型汇总工时
+            REPORT_RESOURCE_GENERAL_RESOURCE_WEEK_LABOUR = 1775,             // 报表-员工-常规-员工一周工时
+            REPORT_RESOURCE_GENERAL_LABOUR_REPORT = 1776,                    // 报表-员工-常规-分类工时报表
+            REPORT_RESOURCE_GENERAL_RESOURCE_UTILIZATION = 1777,             // 报表-员工-常规-员工利用率
+            REPORT_RESOURCE_GENERAL_LABOUR_DETAIL = 1778,                    // 报表-员工-常规-工时详情
+            REPORT_LABOUREXPENSE_TIMESHEETS_RESOURCE = 1779,                 // 报表-工时和费用-工时表-员工工时表
+            REPORT_LABOUREXPENSE_TIMESHEETS_RESOURCEDETAIL = 1780,           // 报表-工时和费用-工时表-员工工时详情
+            REPORT_LABOUREXPENSE_TIMESHEETS_RESOURCEDONE = 1781,             // 报表-工时和费用-工时表-员工工时完成情况
+            REPORT_LABOUREXPENSE_TIMESHEETS_STATUS = 1782,                   // 报表-工时和费用-工时表-工时表状态
+            REPORT_LABOUREXPENSE_EXPENSE_REPORT = 1783,                      // 报表-工时和费用-费用-费用报表
+            REPORT_LABOUREXPENSE_EXPENSE_DETAILS = 1784,                     // 报表-工时和费用-费用-费用详情
+
+            // 
+
+
             //RESOURCE_CALLBACK,                      // 
             //以下是还没有配查询语句的枚举（系统管理）
 
@@ -1068,6 +1130,7 @@ namespace EMT.DoneNOW.DTO
             DYNAMIC = 819,          // 动态参考
             CHANGED = 820,          // 变更
             DATE_EQUAL = 2807,      // 日期(做等于判断)
+            DATE_MONTH_EQUAL = 2808,// 日期到月（单个）
         }
 
         /// <summary>
@@ -2117,6 +2180,11 @@ namespace EMT.DoneNOW.DTO
         SharedDashboard = 328,                      // 共享仪表板
         SharedDashboardResource = 329,              // 共享仪表板共享用户
         SecurityLevelCallback = 333,                // 安全等级查找带回
+
+        REPORT_RESOURCE_GENERAL_RESOURCE_MONTH_WORKTIME_NUM = 379,      // 报表-员工-常规-按月统计员工工作时间-时长
+        REPORT_RESOURCE_GENERAL_RESOURCE_MONTH_WORKTIME_MONEY = 380,    // 报表-员工-常规-按月统计员工工作时间-金额
+        REPORT_RESOURCE_GENERAL_RESOURCE_YEAR_WORKTIME_NUM = 381,       // 报表-员工-常规-按年统计员工工作时间-时长
+        REPORT_RESOURCE_GENERAL_RESOURCE_YEAR_WORKTIME_MONEY = 382,     // 报表-员工-常规-按年统计员工工作时间-金额
 
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理

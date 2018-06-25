@@ -247,6 +247,8 @@
     <Content Include="Images\arrowrighttow.png" />
     <Content Include="Project\ProjectDashboard.aspx" />
     <Content Include="Project\ProjectFinancials.aspx" />
+    <Content Include="Reports\ExecutiveSummaryResult.aspx" />
+    <Content Include="Reports\ExecutiveSummarySearch.aspx" />
     <Content Include="RichText\uploader.swf" />
     <Content Include="Scripts\clipboard.js" />
     <Content Include="Scripts\clipboard.min.js" />
@@ -279,6 +281,10 @@
     <Content Include="Scripts\Search\report_contract_bill_tobill.js" />
     <Content Include="Scripts\Search\report_contract_bill_tobill_by_project.js" />
     <Content Include="Scripts\Search\report_contract_bill_tobill_by_res.js" />
+    <Content Include="Scripts\Search\report_resource_general_resource_month_worktime_money.js" />
+    <Content Include="Scripts\Search\report_resource_general_resource_month_worktime_num.js" />
+    <Content Include="Scripts\Search\report_resource_general_resource_year_worktime_money.js" />
+    <Content Include="Scripts\Search\report_resource_general_resource_year_worktime_num.js" />
     <Content Include="Scripts\Search\SharedDashboard.js" />
     <Content Include="Scripts\Search\SharedDashboardResource.js" />
     <Content Include="Scripts\Search\system_certification.js" />
@@ -1685,6 +1691,20 @@
     </Compile>
     <Compile Include="Project\ProjectFinancials.aspx.designer.cs">
       <DependentUpon>ProjectFinancials.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ExecutiveSummaryResult.aspx.cs">
+      <DependentUpon>ExecutiveSummaryResult.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ExecutiveSummaryResult.aspx.designer.cs">
+      <DependentUpon>ExecutiveSummaryResult.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ExecutiveSummarySearch.aspx.cs">
+      <DependentUpon>ExecutiveSummarySearch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ExecutiveSummarySearch.aspx.designer.cs">
+      <DependentUpon>ExecutiveSummarySearch.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServiceDesk\AddQuickCall.aspx.cs">
       <DependentUpon>AddQuickCall.aspx</DependentUpon>
