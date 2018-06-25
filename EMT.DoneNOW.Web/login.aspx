@@ -60,9 +60,9 @@
     <div class="layout-footer">
         <ul>
             <li>www.voiceonline.com.cn</li>
-            <li>400-600-5688</li>
+            <li>400-600-5588</li>
             <li>service@voiceonlice.com.cn</li>
-            <li>上海声联网路科技股份有限公司</li>
+            <li>上海声联网络科技股份有限公司</li>
         </ul>
     </div>
 </footer>

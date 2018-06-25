@@ -45,6 +45,9 @@ namespace EMT.DoneNOW.Web
                 case "DeleteUdf":
                     DeleteUdf();
                     break;
+                case "GetCompanyImportFields":
+                    GetCompanyImportFields();
+                    break;
                 default:
                     break;
             }
@@ -153,6 +156,14 @@ namespace EMT.DoneNOW.Web
             if (!string.IsNullOrEmpty(name))
                 result = new ChangeBoardBll().CheckBoardName(name,id);
             WriteResponseJson(result);
+        }
+
+        /// <summary>
+        /// 获取客户导入字段
+        /// </summary>
+        private void GetCompanyImportFields()
+        {
+            WriteResponseJson(new DataImportBLL().GetCompanyImportFieldsStr());
         }
     }
 }

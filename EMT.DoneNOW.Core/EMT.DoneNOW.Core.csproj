@@ -55,6 +55,8 @@
     <Compile Include="AUTH\sys_user.cs" />
     <Compile Include="COM\com_activity.cs" />
     <Compile Include="COM\com_attachment.cs" />
+    <Compile Include="COM\com_import_log.cs" />
+    <Compile Include="COM\com_import_log_detail.cs" />
     <Compile Include="COM\com_notify_email.cs" />
     <Compile Include="COM\v_activity.cs" />
     <Compile Include="COM\v_activity_contact.cs" />

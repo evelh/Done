@@ -701,6 +701,7 @@
     <Content Include="SysSetting\FormTemplateManage.aspx" />
     <Content Include="SysSetting\Holiday.aspx" />
     <Content Include="SysSetting\HolidaySet.aspx" />
+    <Content Include="SysSetting\ImportCompany.aspx" />
     <Content Include="SysSetting\LedgerAccountManage.aspx" />
     <Content Include="SysSetting\LogoManage.aspx" />
     <Content Include="SysSetting\LogoSearch.aspx" />
@@ -2571,6 +2572,13 @@
     </Compile>
     <Compile Include="SysSetting\HolidaySet.aspx.designer.cs">
       <DependentUpon>HolidaySet.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\ImportCompany.aspx.cs">
+      <DependentUpon>ImportCompany.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\ImportCompany.aspx.designer.cs">
+      <DependentUpon>ImportCompany.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\LedgerAccountManage.aspx.cs">
       <DependentUpon>LedgerAccountManage.aspx</DependentUpon>

@@ -178,11 +178,18 @@
             <input type="hidden" id="cat" name="cat" value="<%=catId %>" />
             <input type="hidden" id="type" name="type" value="<%=queryTypeId %>" />
             <input type="hidden" id="group" name="group" value="<%=paraGroupId %>" />
-            <input type="hidden" id="id" name="id" value="<%=objId %>" />
             <input type="hidden" id="param1" value="<%=param1 %>" />
             <input type="hidden" id="param2" value="<%=param2 %>" />
             <input type="hidden" id="isCheck" name="isCheck" value="<%=isCheck %>" />
             <input type="hidden" id="loginUserId" name="loginUserId" value="<%=LoginUserId %>" />
+            <%if (!string.IsNullOrEmpty(Request.QueryString["widgetDrill"])) { %>
+            <input type="hidden" name="widgetDrill" value="1" />
+            <input type="hidden" name="val1" value="<%=Request.QueryString["val1"] %>" />
+            <input type="hidden" name="val2" value="<%=Request.QueryString["val2"] %>" />
+            <input type="hidden" name="id" value="<%=Request.QueryString["id"] %>" />
+            <%} else {%>
+            <input type="hidden" id="id" name="id" value="<%=objId %>" />
+            <%} %>
             <div id="conditions">
                 <%foreach (var para in queryParaValue)
                     { %>

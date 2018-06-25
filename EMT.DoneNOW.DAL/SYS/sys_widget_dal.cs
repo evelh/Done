@@ -46,6 +46,8 @@ namespace EMT.DoneNOW.DAL
         /// <returns></returns>
         public string GetWidgetDrillSql(long widgetId, long userId, long? filter, string orderby, string group1, string group2)
         {
+            if (string.IsNullOrEmpty(orderby))
+                orderby = null;
             using (IDbConnection conn = DapperHelper.BuildConnection())
             {
                 var p = new DynamicParameters();
@@ -74,6 +76,8 @@ namespace EMT.DoneNOW.DAL
         /// <returns></returns>
         public int GetWidgetDrillCount(long widgetId, long userId, long? filter, string orderby, string group1, string group2)
         {
+            if (string.IsNullOrEmpty(orderby))
+                orderby = null;
             using (IDbConnection conn = DapperHelper.BuildConnection())
             {
                 var p = new DynamicParameters();
