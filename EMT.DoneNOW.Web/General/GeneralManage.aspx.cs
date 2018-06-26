@@ -53,6 +53,14 @@ namespace EMT.DoneNOW.Web.General
                 return;
             }
             
+            if (tableId == (int)GeneralTableEnum.ACTION_TYPE)
+            {
+                tempList = new List<d_general>() {
+                    genBll.GetSingleGeneral((long)DicEnum.ACTIVITY_CATE.PROJECT_NOTE,true),
+                    genBll.GetSingleGeneral((long)DicEnum.ACTIVITY_CATE.CONTRACT_NOTE,true),
+                    genBll.GetSingleGeneral((long)DicEnum.ACTIVITY_CATE.TASK_NOTE,true),
+                };
+            }
 
         }
 
@@ -79,7 +87,7 @@ namespace EMT.DoneNOW.Web.General
                     pageDic.ext1 = "0";
             }
 
-                if (tableId == (int)GeneralTableEnum.TASK_LIBRARY_CATE)
+            if (tableId == (int)GeneralTableEnum.TASK_LIBRARY_CATE|| (tableId == (int)GeneralTableEnum.ACTION_TYPE))
             {
                 pageDic.is_active = 1;
             }
@@ -100,8 +108,21 @@ namespace EMT.DoneNOW.Web.General
                     thisGeneral.status_id = pageDic.status_id;
                     thisGeneral.remark= pageDic.remark;
                 }
-               
+                else if (tableId == (int)GeneralTableEnum.ACTION_TYPE)
+                {
+                    if(thisGeneral.is_system != 1)
+                    {
+                        thisGeneral.name = pageDic.name;
+                        thisGeneral.ext1 = pageDic.ext1;
+                        thisGeneral.status_id = pageDic.status_id;
+                    }
+                    thisGeneral.remark = pageDic.remark;
+                    thisGeneral.sort_order = pageDic.sort_order;
+                }
+
+
             }
+            
             bool result = false;
             if (isAdd)
                 result = genBll.AddGeneral(pageDic, LoginUserId);

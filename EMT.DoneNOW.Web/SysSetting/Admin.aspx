@@ -277,7 +277,7 @@
                                             <%}%>
                                             <%if (CheckAuth("SYS_FEATURES_COMPANY_CONTACT_COUNTRY"))
                                                 { %>
-                                            <div class="PageNavigationLink">
+                                            <div class="PageNavigationLink" style="display:none;">
                                                 <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COUNTRY %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">国家</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>

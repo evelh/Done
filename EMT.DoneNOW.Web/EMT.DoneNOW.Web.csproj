@@ -714,6 +714,7 @@
     <Content Include="SysSetting\MergeContact.aspx" />
     <Content Include="SysSetting\MileageDefaults.aspx" />
     <Content Include="SysSetting\PurchasingTeam.aspx" />
+    <Content Include="SysSetting\RegionManage.aspx" />
     <Content Include="SysSetting\ResourceAssPolicy.aspx" />
     <Content Include="SysSetting\ResourceAssPolicyEdit.aspx" />
     <Content Include="SysSetting\ResourceDicCateForm.aspx" />
@@ -2640,6 +2641,13 @@
     </Compile>
     <Compile Include="SysSetting\PurchasingTeam.aspx.designer.cs">
       <DependentUpon>PurchasingTeam.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\RegionManage.aspx.cs">
+      <DependentUpon>RegionManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\RegionManage.aspx.designer.cs">
+      <DependentUpon>RegionManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\ResourceAssPolicy.aspx.cs">
       <DependentUpon>ResourceAssPolicy.aspx</DependentUpon>

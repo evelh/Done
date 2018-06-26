@@ -40,18 +40,18 @@
                         </div>
                     </td>
                 </tr>
-                <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE)
+                <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE||tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.ACTION_TYPE)
                         { %>
                   <tr>
                     <td width="30%" class="FieldLabels">
-                       说明<span style="color:red;"></span>
+                       说明<span style="color:red;display:none;" id="RemarkDiv">*</span>
                         <div>
                             <textarea id="remark" name="remark"><%=thisGeneral!=null?thisGeneral.remark:"" %></textarea>
                         </div>
                     </td>
                 </tr>
                <%} %>
-                <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_SOURCE_TYPES||tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE)
+                <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_SOURCE_TYPES||tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE||tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.ACTION_TYPE)
                         { %>
                  <tr>
                     <td width="30%" class="FieldLabels">
@@ -81,7 +81,7 @@
                     </td>
                 </tr>
                 <%} %>
-                 <%if (tableId != (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE)
+                 <%if (tableId != (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE && tableId != (int)EMT.DoneNOW.DTO.GeneralTableEnum.ACTION_TYPE)
                      {%>
 
                  <tr>
@@ -93,7 +93,26 @@
                     </td>
                 </tr>
                 <%} %>
-                   <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE)
+                <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.ACTION_TYPE)
+                    { %>
+                <tr>
+                    <td width="30%" class="FieldLabels">
+                          类别
+                        <div>
+                           <select name="ext1" id="ext1" style="width:232px;">
+                                  <%if (tempList != null && tempList.Count > 0) {
+                                         foreach (var temp in tempList)
+                                         {%>
+                                 <option value="<%=temp.id %>" <%if (thisGeneral?.ext1 == temp.id.ToString()) {%> selected="selected" <%} %>><%=temp.name %></option>
+                                        <% }
+                                     } %>
+                             </select>
+                        </div>
+                    </td>
+                </tr>
+                <%} %>
+
+                   <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE||tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.ACTION_TYPE)
                        {%>
                 <tr>
                     <td width="30%" class="FieldLabels">
@@ -171,6 +190,20 @@
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
 <script src="../Scripts/common.js"></script>
 <script>
+
+    $(function () {
+         <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.ACTION_TYPE)
+    {%> 
+        $("#RemarkDiv").show();
+        <%if (thisGeneral?.is_system == 1)
+    { %>
+        $("#name").prop("disabled", true);
+        $("#ext1").prop("disabled", true);
+        $("#status_id").prop("disabled", true);
+        <%} %>
+    <%} %>
+    })
+
     $("#save_close").click(function () {
         var name = $("#name").val();
         if (name == "") {
@@ -184,6 +217,17 @@
             return false;
         }
         <%}%>
+
+         <%if(tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.ACTION_TYPE){%> 
+        var remark = $("#remark").val();
+        if (remark == "") {
+            LayerMsg("请填写说明！");
+            return false;
+        }
+        $("input").prop("disabled", false);
+        $("select").prop("disabled", false);
+        <%}%>
         return true;
     })
+    
 </script>

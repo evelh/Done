@@ -886,7 +886,8 @@ namespace EMT.DoneNOW.DTO
             REPORT_TICKET_METRICS_SUMMARY_BYSOURCE = 1754,           // 报表-工单-效率-按来源汇总工单
             REPORT_TICKET_METRICS_SLA_COMPLETE = 1755,               // 报表-工单-效率-SLA指标完成情况
             REPORT_TICKET_METRICS_SLA_COMPLETE_DETAIL = 1756,        // 报表-工单-效率-SLA指标完成详情
-
+            REPORT_OTHER_GENERAL_NOTE_SEARCH = 1757,                 // 报表-其他-常规-备注搜索
+            REPORT_OTHER_SYSTEM_RESOURCE = 1758,                     // 报表-其他-系统-全部员工报表
 
             REPORT_CONTRACTBILL_CONTRACT_OVER = 1759,             // 报表-合同和计费-合同-过期合同和配置项
             REPORT_CONTRACTBILL_CONTRACT_EVENT = 1760,            // 报表-合同和计费-合同-事件扣除
@@ -914,6 +915,10 @@ namespace EMT.DoneNOW.DTO
             REPORT_LABOUREXPENSE_TIMESHEETS_STATUS = 1782,                   // 报表-工时和费用-工时表-工时表状态
             REPORT_LABOUREXPENSE_EXPENSE_REPORT = 1783,                      // 报表-工时和费用-费用-费用报表
             REPORT_LABOUREXPENSE_EXPENSE_DETAILS = 1784,                     // 报表-工时和费用-费用-费用详情
+            REPORT_LABOUREXPENSE_TIMEOFF_VACATION_TIME = 1785,               // 报表-工时和费用-休假-员工休假按月汇总
+            REPORT_LABOUREXPENSE_TIMEOFF_DETAILS = 1786,                     // 报表-工时和费用-休假-员工休假详情
+            REPORT_LABOUREXPENSE_TIMEOFF_VACATION_SUMMARY = 1787,            // 报表-工时和费用-休假-休假汇总
+            REPORT_LABOUREXPENSE_TIMEOFF_LABOUR_WEEK = 1788,                 // 报表-工时和费用-休假-员工周工时汇总
 
             // 
 
@@ -1797,6 +1802,14 @@ namespace EMT.DoneNOW.DTO
             CHANGED_FROM = 2436,    // 更改自
             IN = 2437,              // 属于列表
             NOT_IN = 2438,          // 不属于列表
+        }
+        /// <summary>
+        /// 节假日上班安排 - 178
+        /// </summary>
+        public enum HOLIDAY_HOURS_TYPE
+        {
+            NO_WORK = 2443,     // 不上班
+            WORK = 2444,        // 节假日正常上班
         }
         /// <summary>
         /// 变更单审批状态 - 181

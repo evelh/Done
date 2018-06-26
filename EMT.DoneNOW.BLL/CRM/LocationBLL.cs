@@ -152,5 +152,131 @@ namespace EMT.DoneNOW.BLL
             return result;
         }
 
+
+
+        /// <summary>
+        /// 新增区域
+        /// </summary>
+        public bool AddOrganization(sys_organization_location location,long userId)
+        {
+            if (OrganizationManage(location, userId))
+                OrganizationHours(location.id, null, userId);
+            else
+                return false;
+            return true;
+        }
+        /// <summary>
+        /// 编辑区域
+        /// </summary>
+        public bool EditOrganization(sys_organization_location location,List<sys_organization_location_workhours> hoursList, long userId)
+        {
+            if (OrganizationManage(location, userId))
+                OrganizationHours(location.id, hoursList, userId);
+            else
+                return false;
+            return true;
+        }
+
+        public void OrganizationHours(long locationId,List<sys_organization_location_workhours> hoursList,long user_id)
+        {
+            sys_organization_location_workhours_dal solwDal = new sys_organization_location_workhours_dal();
+            long timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            if (hoursList != null&& hoursList.Count > 0)
+            {
+                foreach (var hours in hoursList)
+                {
+                    hours.update_time = timeNow;
+                    hours.update_user_id = user_id;
+                    solwDal.Update(hours);
+                }
+            }
+            else
+            {
+                for (int i = 1; i < 8; i++)
+                {
+                    sys_organization_location_workhours hours = new sys_organization_location_workhours() {
+                        id = solwDal.GetNextIdCom(),
+                        create_time = timeNow,
+                        update_time = timeNow,
+                        create_user_id = user_id,
+                        update_user_id = user_id,
+                        location_id = locationId,
+                        weekday =  (sbyte)(i==7?0:i),
+                        start_time = (i == 7||i==6)?"":"09:00",
+                        end_time = (i == 7||i == 6)?"":"18:00",
+                    };
+                    solwDal.Insert(hours);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 区域管理
+        /// </summary>
+        public bool OrganizationManage(sys_organization_location location,long user_id)
+        {
+            sys_organization_location_dal solDal = new sys_organization_location_dal();
+
+           
+            var defaultLoca = GetDefaultOrganization();
+            if (location.is_default == 1)
+            {
+                if (defaultLoca != null && defaultLoca.id != location.id)
+                {
+                    defaultLoca.is_default = 0;
+                    OrganizationManage(defaultLoca, user_id);
+                }
+            }
+            else
+            {
+                if (defaultLoca == null)
+                {
+                    return false;
+                }
+            }
+            if (location.id == 0)
+            {
+                location.id = solDal.GetNextIdCom();
+                location.create_time = location.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                location.create_user_id = location.update_user_id = user_id;
+                solDal.Insert(location);
+            }
+            else
+            {
+                var oldLocaton = GetOrganization(location.id);
+                if (oldLocaton == null)
+                    return false;
+                location.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                location.update_user_id = user_id;
+                solDal.Update(location);
+            }
+
+            return true;
+        }
+        /// <summary>
+        /// 获取相关区域
+        /// </summary>
+        public sys_organization_location GetOrganization(long id)
+        {
+            return new sys_organization_location_dal().FindNoDeleteById(id);
+        }
+
+        /// <summary>
+        /// 获取默认区域
+        /// </summary>
+        public sys_organization_location GetDefaultOrganization()
+        {
+            return new sys_organization_location_dal().FindSignleBySql<sys_organization_location>($"SELECT * from sys_organization_location where is_default = 1 and delete_time = 0");
+        }
+
+        /// <summary>
+        /// 根据区域获取相关时间
+        /// </summary>
+        public List<sys_organization_location_workhours> GetWorkHourList(long id)
+        {
+            return new sys_organization_location_workhours_dal().FindListBySql($"SELECT * from sys_organization_location_workhours where delete_time = 0 and location_id = {id} order by id");
+        }
+
     }
 }

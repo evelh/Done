@@ -199,6 +199,7 @@
     <Compile Include="SYS\sys_notice_resource_dal.cs" />
     <Compile Include="SYS\sys_notify_tmpl_email_dal.cs" />
     <Compile Include="SYS\sys_organization_location_dal.cs" />
+    <Compile Include="SYS\sys_organization_location_workhours_dal.cs" />
     <Compile Include="SYS\sys_quote_email_tmpl_dal.cs" />
     <Compile Include="SYS\sys_quote_tmpl_dal.cs" />
     <Compile Include="CRM\crm_quote_dal.cs" />

@@ -154,7 +154,12 @@ namespace EMT.DoneNOW.BLL
             List<sdk_work_entry> entryList = _dal.FindListBySql<sdk_work_entry>($"SELECT * from sdk_work_entry where cost_code_id ={id.ToString()} and delete_time = 0");
             if (entryList != null && entryList.Count > 0)
                 return false;
-           
+            List<ivt_service> serviceList = _dal.FindListBySql<ivt_service>($"SELECT * from ivt_service where cost_code_id ={id.ToString()} and delete_time = 0");
+            if (serviceList != null && serviceList.Count > 0)
+                return false;
+            List<ctt_contract_milestone> milestoneList = _dal.FindListBySql<ctt_contract_milestone>($"SELECT * from ctt_contract_milestone where cost_code_id ={id.ToString()} and delete_time = 0");
+            if (milestoneList != null && milestoneList.Count > 0)
+                return false;
             return true;
         }
 

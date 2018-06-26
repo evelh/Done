@@ -170,7 +170,7 @@ namespace EMT.DoneNOW.Web
             }
             else if (result == DTO.ERROR_CODE.PAY_TYPE_USED)
             {
-                context.Response.Write("有" + n + "个报价项关联此付款类型，不能删除!");
+                context.Response.Write("有" + n + "个报价项,费用，合同预付关联此付款类型，不能删除!");
             }
             else if (result == DTO.ERROR_CODE.SHIP_TYPE_USED)
             {

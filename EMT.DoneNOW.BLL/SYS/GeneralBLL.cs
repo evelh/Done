@@ -427,6 +427,20 @@ namespace EMT.DoneNOW.BLL
                     n = proList.Count;
                     return ERROR_CODE.PAY_TYPE_USED;
                 }
+
+                var expList = _dal.FindListBySql<sdk_expense>($"SELECT * from sdk_expense where delete_time = 0 and payment_type_id =" + id.ToString());
+                if (expList != null && expList.Count > 0)
+                {
+                    n = expList.Count;
+                    return ERROR_CODE.PAY_TYPE_USED;
+                }
+
+                var blockList = _dal.FindListBySql<ctt_contract_block>($"SELECT * from ctt_contract_block where delete_time = 0 and payment_type_id =" + id.ToString());
+                if (blockList != null && blockList.Count > 0)
+                {
+                    n = blockList.Count;
+                    return ERROR_CODE.PAY_TYPE_USED;
+                }
             }
             else if (table_id == (int)GeneralTableEnum.PAYMENT_SHIP_TYPE)
             {
@@ -648,6 +662,7 @@ namespace EMT.DoneNOW.BLL
                     
                 }
             }
+
             if(table_id == (int)GeneralTableEnum.TASK_LIBRARY_CATE)
             {
                 var taskLibList = _dal.FindListBySql<sdk_task_library>($"SELECT * from sdk_task_library where delete_time = 0 and cate_id = "+id.ToString());
@@ -662,6 +677,49 @@ namespace EMT.DoneNOW.BLL
                     });
                 }
             }
+            if (table_id == (int)GeneralTableEnum.PAYMENT_TERM)
+            {
+                var proList = _dal.FindListBySql<sys_form_tmpl_quote>($"SELECT * from sys_form_tmpl_quote where delete_time = 0 and payment_term_id =" + id.ToString());
+                if (proList != null && proList.Count > 0)
+                {
+                    sys_form_tmpl_quote_dal sftqDal = new sys_form_tmpl_quote_dal();
+                    proList.ForEach(_ => {
+                        _.payment_term_id = null;
+                        _.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        _.update_user_id = user_id;
+                        sftqDal.Update(_);
+                    });
+                }
+            }
+            if (table_id == (int)GeneralTableEnum.PAYMENT_TYPE)
+            {
+                var proList = _dal.FindListBySql<sys_form_tmpl_quote>($"SELECT * from sys_form_tmpl_quote where delete_time = 0 and payment_type_id =" + id.ToString());
+                if (proList != null && proList.Count > 0)
+                {
+                    sys_form_tmpl_quote_dal sftqDal = new sys_form_tmpl_quote_dal();
+                    proList.ForEach(_ => {
+                        _.payment_type_id = null;
+                        _.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        _.update_user_id = user_id;
+                        sftqDal.Update(_);
+                    });
+                }
+            }
+            if (table_id == (int)GeneralTableEnum.PAYMENT_SHIP_TYPE)
+            {
+                var proList = _dal.FindListBySql<sys_form_tmpl_quote>($"SELECT * from sys_form_tmpl_quote where delete_time = 0 and shipping_type_id =" + id.ToString());
+                if (proList != null && proList.Count > 0)
+                {
+                    sys_form_tmpl_quote_dal sftqDal = new sys_form_tmpl_quote_dal();
+                    proList.ForEach(_ => {
+                        _.shipping_type_id = null;
+                        _.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                        _.update_user_id = user_id;
+                        sftqDal.Update(_);
+                    });
+                }
+            }
+
             data.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.delete_user_id = user_id;
             if (!_dal.Update(data))
