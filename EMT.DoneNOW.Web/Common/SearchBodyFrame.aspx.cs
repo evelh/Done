@@ -44,6 +44,7 @@ namespace EMT.DoneNOW.Web
             if (!string.IsNullOrEmpty(Request.QueryString["widgetDrill"]))
             {
                 WidgetDrillQuery();
+                InitPageTitle();
                 return;
             }
 

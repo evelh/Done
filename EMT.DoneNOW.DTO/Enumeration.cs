@@ -1889,6 +1889,16 @@ namespace EMT.DoneNOW.DTO
             MAXIMUM_NEW_TICKETS = 3087,                   // 最大新建工单数
             MAXIMUM_AVERAGE_TICKETS_PER_RESOURCE = 3088,  // 人均最大平均工单数
         }
+
+        /// <summary>
+        /// 数据导入对象类型 - 211
+        /// </summary>
+        public enum DATA_IMPORT_CATE
+        {
+            COMPANY_CONTACT = 3200,     // 客户和联系人
+            CONFIGURATION = 3201,       // 配置项
+        }
+
         /// <summary>
         /// 商机收入周期范围-单位 - 213
         /// </summary>

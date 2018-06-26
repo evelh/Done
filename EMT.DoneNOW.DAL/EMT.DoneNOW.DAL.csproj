@@ -80,6 +80,8 @@
     <Compile Include="Column2PropertyMapping.cs" />
     <Compile Include="COM\com_activity_dal.cs" />
     <Compile Include="COM\com_attachment_dal.cs" />
+    <Compile Include="COM\com_import_log_dal.cs" />
+    <Compile Include="COM\com_import_log_detail_dal.cs" />
     <Compile Include="COM\com_notify_email_dal.cs" />
     <Compile Include="COM\v_activity_contact_dal.cs" />
     <Compile Include="COM\v_activity_dal.cs" />
