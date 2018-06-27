@@ -983,6 +983,16 @@ namespace EMT.DoneNOW.BLL
 
 
         #endregion
+        /// <summary>
+        /// 获取到在指定日期内没有设置销售目标的员工信息
+        /// </summary>
+        public List<sys_resource> GetResourceByTime(int year,int month)
+        {
+            return _dal.FindListBySql($@"SELECT sr.id,sr.name from sys_resource sr where  sr.delete_time =0 and sr.is_active = 1 and id not in (
+SELECT resource_id from sys_resource_sales_quota where  year = {year} and month ={month} and delete_time =0)");
+        }
+
+  
 
     }
 }

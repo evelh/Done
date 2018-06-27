@@ -108,6 +108,7 @@
     <Compile Include="Dictionary\d_query_groupby.cs" />
     <Compile Include="Dictionary\d_sla.cs" />
     <Compile Include="Dictionary\d_cost_code.cs" />
+    <Compile Include="Dictionary\d_sla_item.cs" />
     <Compile Include="Dictionary\d_tax_region_cate.cs" />
     <Compile Include="Dictionary\d_tax_region_cate_tax.cs" />
     <Compile Include="Dictionary\d_time_zone.cs" />

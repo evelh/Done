@@ -269,6 +269,10 @@ namespace EMT.DoneNOW.BLL
         {
             return new sys_organization_location_dal().FindSignleBySql<sys_organization_location>($"SELECT * from sys_organization_location where is_default = 1 and delete_time = 0");
         }
+        /// <summary>
+        /// 获取全部的区域信息
+        /// </summary>
+        public List<sys_organization_location> GetAllOrganization() => new sys_organization_location_dal().FindListBySql($"SELECT * from sys_organization_location where  delete_time = 0");
 
         /// <summary>
         /// 根据区域获取相关时间

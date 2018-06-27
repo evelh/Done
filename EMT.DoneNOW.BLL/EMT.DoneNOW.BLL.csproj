@@ -108,6 +108,7 @@
     <Compile Include="Com\OperLogBLL.cs" />
     <Compile Include="SYS\QuoteAndInvoiceEmailTempBLL.cs" />
     <Compile Include="SYS\ReverseBLL.cs" />
+    <Compile Include="SYS\SLABLL.cs" />
     <Compile Include="SYS\SysRoleInfoBLL.cs" />
     <Compile Include="SYS\SecurityLevelBLL.cs" />
     <Compile Include="SYS\SysSettingBLL.cs" />

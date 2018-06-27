@@ -94,6 +94,9 @@ namespace EMT.DoneNOW.Web
                         break;
                     case "TaxCateDeleteCheck":
                         TaxCateDeleteCheck(context);
+                        break; 
+                    case "CheckExist":
+                        CheckExist(context);
                         break;
                     default:
                         break;
@@ -405,6 +408,19 @@ namespace EMT.DoneNOW.Web
             long id = 0;
             if (!string.IsNullOrEmpty(context.Request.QueryString["id"]) && long.TryParse(context.Request.QueryString["id"], out id))
                 result = new GeneralBLL().CheckTaxCateDelete(id);
+            WriteResponseJson(result);
+        }
+        /// <summary>
+        /// 校验名称重复
+        /// </summary>
+        void CheckExist(HttpContext context)
+        {
+            bool result = false;
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
+                long.TryParse(context.Request.QueryString["id"],out id);
+            if (!string.IsNullOrEmpty(context.Request.QueryString["tableId"]) && !string.IsNullOrEmpty(context.Request.QueryString["name"]))
+                result = new GeneralBLL().CheckExist(context.Request.QueryString["name"],int.Parse(context.Request.QueryString["tableId"]),id);
             WriteResponseJson(result);
         }
     }
