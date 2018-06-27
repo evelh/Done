@@ -2080,6 +2080,9 @@ function AddWidgetStep1(widgetData, copy) {
         $(".AddWidgetBeforePOP").children(".button").children(".next").unbind("click").bind("click", function () {
             AddWidgetFinish(showType);
         })
+        if (widget != null) {
+            $("#wgtSize").val(widget.width);
+        }
         setTimeout(function () {
             $(".widgetSizeList").children().click(function () {
                 $(this).addClass("widgetSizeListNow").siblings().removeClass("widgetSizeListNow");

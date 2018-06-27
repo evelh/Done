@@ -12,6 +12,8 @@ namespace EMT.DoneNOW.BLL
 {
     public class DataImportBLL
     {
+        sys_udf_field_dal udfDal = new sys_udf_field_dal();
+
         /// <summary>
         /// 获取客户联系人导入的字段名称列表
         /// </summary>
@@ -25,7 +27,7 @@ namespace EMT.DoneNOW.BLL
             {
                 fields.Add(field.name);
             }
-
+            
             return fields;
         }
 
@@ -123,57 +125,672 @@ namespace EMT.DoneNOW.BLL
             log.file_name = filename;
             logdal.Insert(log);
 
+            com_import_log_detail_dal logDetailDal = new com_import_log_detail_dal(log.id);
+
             while ((strline = mysr.ReadLine()) != null)
             {
-
-                //for (int i = 0; i < list.Count; i++)
-                //{
-                //    var field = list[i];
-                //    // 检查必填
-                //    if (field.require == 1 && string.IsNullOrEmpty(aryline[i]))
-                //    {
-
-                //    }
-                //}
+                if (ImportCompanyOneLine(strline, isUpdate, userId, logDetailDal, lstCpy, udfCpy, udfCfg, lstCtt, udfCtt))
+                    log.success_num++;
+                else
+                    log.fail_num++;
             }
+            if (log.success_num != 0 || log.fail_num != 0)
+                logdal.Update(log);
 
             return null;
         }
 
-        private bool ImportCompanyOneLine(string strline, bool isUpdate, long logId, long userId, List<ImportFieldStruct> lstCpy, List<ImportFieldStruct> udfCpy, List<ImportFieldStruct> udfCfg, List<ImportFieldStruct> lstCtt, List<ImportFieldStruct> udfCtt)
+        /// <summary>
+        /// 导入一个客户联系人
+        /// </summary>
+        /// <param name="strline">导入数据</param>
+        /// <param name="isUpdate">有匹配是否更新</param>
+        /// <param name="userId"></param>
+        /// <param name="logDal">详细日志dal</param>
+        /// <param name="lstCpy">客户</param>
+        /// <param name="udfCpy">客户自定义</param>
+        /// <param name="udfCfg">站点自定义</param>
+        /// <param name="lstCtt">联系人</param>
+        /// <param name="udfCtt">联系人自定义</param>
+        /// <returns></returns>
+        private bool ImportCompanyOneLine(string strline, bool isUpdate, long userId, com_import_log_detail_dal logDal, List<ImportFieldStruct> lstCpy, List<ImportFieldStruct> udfCpy, List<ImportFieldStruct> udfCfg, List<ImportFieldStruct> lstCtt, List<ImportFieldStruct> udfCtt)
         {
             var aryline = strline.Split(',');
             int idx = 0;
+
+            List<ImportFieldStruct> list = new List<ImportFieldStruct>();   // 合并字段
+            list.AddRange(lstCpy);
+            list.AddRange(udfCpy);
+            list.AddRange(udfCfg);
+
+            // 联系人
+            int idxfname = lstCtt.FindIndex(_ => _.field == "first_name");
+            int idxlname = lstCtt.FindIndex(_ => _.field == "last_name");
+            int idxemail = lstCtt.FindIndex(_ => _.field == "email");
+            idx = lstCpy.Count + udfCpy.Count + udfCfg.Count;
+            string fname = aryline[idx + idxfname];
+            string lname = aryline[idx + idxlname];
+            string email = aryline[idx + idxemail];
+            if (!string.IsNullOrEmpty(fname) && !string.IsNullOrEmpty(lname) && !string.IsNullOrEmpty(email))   // 导入了联系人
+            {
+                list.AddRange(lstCtt);
+                list.AddRange(udfCtt);
+            }
+
+            // 检查必填字段
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].require == 1 && string.IsNullOrEmpty(aryline[i]))
+                {
+                    logDal.AddFailLog($"{list[i].name}字段为空");
+                    return false;
+                }
+            }
+
+            idx = 0;
+            bool exist = false;
+            string sqlact;
+            string sqladdrAct;
+            string sqlactUdf = null;
+            string sqlactalert1 = null;
+            string sqlactalert2 = null;
+            string sqlactalert3 = null;
+            string sqlcfgUdf = null;
+            string sqlctt = null;
+            string sqladdrCtt;
+            string sqlcttUdf = null;
+            string sqlcttGroup = null;
+            string sqltmp;
+            
+            long accountId;
+
+            long longval;
+            int intval;
+            decimal decimalval;
+            string crtval;
+            GeneralBLL generalbll = new GeneralBLL();
+            long crttime = Tools.Date.DateHelper.ToUniversalTimeStamp();
+
+            // 判断客户是否存在
+            var idxCpyName = lstCpy.FindIndex(_ => _.field == "name");
+            var idxCpyPhone = lstCpy.FindIndex(_ => _.field == "phone");
+            string actName = aryline[idxCpyName];
+            string actPhone = aryline[idxCpyPhone];
+            crm_account find = udfDal.FindSignleBySql<crm_account>($"select * from crm_account where name='{actName}' and phone='{actPhone}' and delete_time=0");
+            if (find != null)
+            {
+                exist = true;
+                if (!isUpdate)
+                {
+                    logDal.AddFailLog("客户已存在");
+                    return false;
+                }
+                sqlact = $"update crm_account set delete_time=0";
+                accountId = find.id;
+                sqltmp = null;
+            }
+            else
+            {
+                accountId = udfDal.GetNextIdCom();
+                sqlact = "insert into crm_account (id,create_user_id,update_user_id,create_time,update_time";
+                sqltmp = accountId.ToString() + $",{userId},{userId},{crttime},{crttime}";
+            }
+
             for (int i = 0; i < lstCpy.Count; i++)
             {
+                crtval = aryline[idx];
+                if (string.IsNullOrEmpty(crtval))
+                {
+                    idx++;
+                    continue;
+                }
 
+                if (lstCpy[i].field.IndexOf("crm_location:") >= 0)  // 地址信息
+                {
+
+                }
+                else if (lstCpy[i].type == ImportFieldType.String)
+                {
+                    if (exist)
+                        sqlact += $",{lstCpy[i].field}='{crtval}'";
+                    else
+                    {
+                        sqlact += $",{lstCpy[i].field}";
+                        sqltmp += $",'{crtval}'";
+                    }
+                }
+                else if (lstCpy[i].type == ImportFieldType.Long)
+                {
+                    if (!long.TryParse(crtval, out longval))
+                    {
+                        logDal.AddFailLog($"{lstCpy[i].name}字段格式错误，应为整数数字");
+                        return false;
+                    }
+                    if (exist)
+                        sqlact += $",{lstCpy[i].field}='{longval}'";
+                    else
+                    {
+                        sqlact += $",{lstCpy[i].field}";
+                        sqltmp += $",'{longval}'";
+                    }
+                }
+                else if (lstCpy[i].type == ImportFieldType.Int)
+                {
+                    if (!int.TryParse(crtval, out intval))
+                    {
+                        logDal.AddFailLog($"{lstCpy[i].name}字段格式错误，应为整数数字");
+                        return false;
+                    }
+                    if (exist)
+                        sqlact += $",{lstCpy[i].field}='{intval}'";
+                    else
+                    {
+                        sqlact += $",{lstCpy[i].field}";
+                        sqltmp += $",'{intval}'";
+                    }
+                }
+                else if (lstCpy[i].type == ImportFieldType.Decimal)
+                {
+                    if (!decimal.TryParse(crtval, out decimalval))
+                    {
+                        logDal.AddFailLog($"{lstCpy[i].name}字段格式错误，应为小数数字");
+                        return false;
+                    }
+                    if (exist)
+                        sqlact += $",{lstCpy[i].field}='{decimalval}'";
+                    else
+                    {
+                        sqlact += $",{lstCpy[i].field}";
+                        sqltmp += $",'{decimalval}'";
+                    }
+                }
+                else if (lstCpy[i].type == ImportFieldType.Check)
+                {
+                    if (crtval == "是")
+                        intval = 1;
+                    else if (crtval == "否")
+                        intval = 0;
+                    else
+                    {
+                        logDal.AddFailLog($"{lstCpy[i].name}字段格式错误，应为'是'或'否'");
+                        return false;
+                    }
+
+                    if (exist)
+                        sqlact += $",{lstCpy[i].field}='{intval}'";
+                    else
+                    {
+                        sqlact += $",{lstCpy[i].field}";
+                        sqltmp += $",'{intval}'";
+                    }
+                }
+                else if(lstCpy[i].type == ImportFieldType.Dictionary && lstCpy[i].dic != 0)     // 通用字典
+                {
+                    var dics = generalbll.GetDicValues(lstCpy[i].dic);
+                    var finddic = dics.FindAll(_ => _.show.Equals(crtval));
+                    if(finddic.Count==0)
+                    {
+                        logDal.AddFailLog($"{lstCpy[i].name}字段找不到对应字典项");
+                        return false;
+                    }
+                    else if (finddic.Count > 1)
+                    {
+                        logDal.AddFailLog($"{lstCpy[i].name}字段找到多个字典项");
+                        return false;
+                    }
+                    if (exist)
+                        sqlact += $",{lstCpy[i].field}='{finddic[0].val}'";
+                    else
+                    {
+                        sqlact += $",{lstCpy[i].field}";
+                        sqltmp += $",'{finddic[0].val}'";
+                    }
+                }
+                else    // 其他字典
+                {
+                    if (lstCpy[i].field == "classification_id")
+                    {
+                        var cls = udfDal.FindListBySql<d_account_classification>($"select * from d_account_classification where name='{crtval}' and delete_time=0");
+                        if (cls.Count == 0)
+                        {
+                            logDal.AddFailLog($"{lstCpy[i].name}字段找不到对应字典项");
+                            return false;
+                        }
+                        else if (cls.Count > 1)
+                        {
+                            logDal.AddFailLog($"{lstCpy[i].name}字段找到多个字典项");
+                            return false;
+                        }
+                        if (exist)
+                            sqlact += $",{lstCpy[i].field}='{cls[0].id}'";
+                        else
+                        {
+                            sqlact += $",{lstCpy[i].field}";
+                            sqltmp += $",'{cls[0].id}'";
+                        }
+                    }
+                    else if (lstCpy[i].field == "resource_id")
+                    {
+                        var dics = udfDal.FindListBySql<sys_user>($"select * from sys_user where name='{crtval}'");
+                        if (dics.Count == 0)
+                        {
+                            logDal.AddFailLog($"{lstCpy[i].name}字段找不到对应字典项");
+                            return false;
+                        }
+                        else if (dics.Count > 1)
+                        {
+                            logDal.AddFailLog($"{lstCpy[i].name}字段找到多个字典项");
+                            return false;
+                        }
+                        if (exist)
+                            sqlact += $",{lstCpy[i].field}='{dics[0].id}'";
+                        else
+                        {
+                            sqlact += $",{lstCpy[i].field}";
+                            sqltmp += $",'{dics[0].id}'";
+                        }
+                    }
+                    else if (lstCpy[i].field == "parent_id")
+                    {
+                        var dics = udfDal.FindListBySql<crm_account>($"select id,name from crm_account where name='{crtval}' and delete_time=0");
+                        if (dics.Count == 0)
+                        {
+                            logDal.AddFailLog($"{lstCpy[i].name}字段找不到对应字典项");
+                            return false;
+                        }
+                        else if (dics.Count > 1)
+                        {
+                            logDal.AddFailLog($"{lstCpy[i].name}字段找到多个字典项");
+                            return false;
+                        }
+                        if (exist)
+                            sqlact += $",{lstCpy[i].field}='{dics[0].id}'";
+                        else
+                        {
+                            sqlact += $",{lstCpy[i].field}";
+                            sqltmp += $",'{dics[0].id}'";
+                        }
+                    }
+                    else if (lstCpy[i].field == "alert1" || lstCpy[i].field == "alert2" || lstCpy[i].field == "alert3")
+                    {
+                        int alerttype;
+                        if (lstCpy[i].field == "alert1")
+                            alerttype = (int)DicEnum.ACCOUNT_ALERT_TYPE.COMPANY_DETAIL_ALERT;
+                        else if (lstCpy[i].field == "alert2")
+                            alerttype = (int)DicEnum.ACCOUNT_ALERT_TYPE.NEW_TICKET_ALERT;
+                        else
+                            alerttype = (int)DicEnum.ACCOUNT_ALERT_TYPE.TICKET_DETAIL_ALERT;
+
+                        if (exist)
+                        {
+                            var alert = udfDal.FindSignleBySql<crm_account_alert>($"select * from crm_account_alert where account_id={accountId} and alert_type_id={alerttype} and delete_time=0");
+                            if (alert == null)
+                            {
+                                string tmp = $"insert into crm_account_alert(id,account_id,alert_type_id,alert_text,create_user_id,update_user_id,create_time,update_time) values ({udfDal.GetNextIdCom()},{accountId},{alerttype},'{crtval}',{userId},{userId},{crttime},{crttime})";
+                                if (lstCpy[i].field == "alert1")
+                                    sqlactalert1 = tmp;
+                                else if (lstCpy[i].field == "alert2")
+                                    sqlactalert2 = tmp;
+                                else
+                                    sqlactalert3 = tmp;
+                            }
+                            else
+                            {
+                                string tmp = $"update crm_account_alert set alert_text='{crtval}' where id={alert.id}";
+                                if (lstCpy[i].field == "alert1")
+                                    sqlactalert1 = tmp;
+                                else if (lstCpy[i].field == "alert2")
+                                    sqlactalert2 = tmp;
+                                else
+                                    sqlactalert3 = tmp;
+                            }
+                        }
+                        else
+                        {
+                            string tmp = $"insert into crm_account_alert(id,account_id,alert_type_id,alert_text,create_user_id,update_user_id,create_time,update_time) values ({udfDal.GetNextIdCom()},{accountId},{alerttype},'{crtval}',{userId},{userId},{crttime},{crttime})";
+                            if (lstCpy[i].field == "alert1")
+                                sqlactalert1 = tmp;
+                            else if (lstCpy[i].field == "alert2")
+                                sqlactalert2 = tmp;
+                            else
+                                sqlactalert3 = tmp;
+                        }
+                    }
+                }
+                
                 idx++;
             }
+
+            if (exist)
+                sqlact = sqlact + $" where id={accountId}";
+            else
+                sqlact = $"{sqlact}) values ({sqltmp})";
+
+            // 客户自定义字段
+            sqltmp = "";
+            sqlactUdf = "";
             for (int i = 0; i < udfCpy.Count; i++)
             {
-                
+                crtval = aryline[idx];
+                if (string.IsNullOrEmpty(crtval))
+                {
+                    idx++;
+                    continue;
+                }
+
+                if (exist)
+                {
+                    sqlactUdf += $"{udfCpy[i].field}='{crtval}',";
+                }
+                else
+                {
+                    sqlactUdf += $"{udfCpy[i].field},";
+                    sqltmp += $"'{crtval}',";
+                }
 
                 idx++;
             }
+            if (!string.IsNullOrEmpty(sqlactUdf))
+            {
+                sqlactUdf = sqlactUdf.Remove(sqlactUdf.Length - 1);
+                if (exist)
+                {
+                    sqlactUdf = "update crm_account_ext set " + sqlactUdf + " where parent_id=" + accountId;
+                }
+                else
+                {
+                    sqltmp = sqltmp.Remove(sqltmp.Length - 1);
+                    sqlactUdf = $"insert into crm_account_ext (id,parent_id,{sqlactUdf}) values ({udfDal.GetNextIdCom()},{accountId},{sqltmp})";
+                }
+            }
+            else if (!exist)
+            {
+                sqlactUdf = $"insert into crm_account_ext (id,parent_id) values ({udfDal.GetNextIdCom()},{accountId})";
+            }
+
+            // 站点自定义
+            sqltmp = "";
+            sqlcfgUdf = "";
             for (int i = 0; i < udfCfg.Count; i++)
             {
-                
+                crtval = aryline[idx];
+                if (string.IsNullOrEmpty(crtval))
+                {
+                    idx++;
+                    continue;
+                }
+
+                if (exist)
+                {
+                    sqlcfgUdf += $"{udfCfg[i].field}='{crtval}',";
+                }
+                else
+                {
+                    sqlcfgUdf += $"{udfCfg[i].field},";
+                    sqltmp += $"'{crtval}',";
+                }
 
                 idx++;
             }
-            for (int i = 0; i < lstCtt.Count; i++)
+            if (!string.IsNullOrEmpty(sqlcfgUdf))
             {
-                
-
-                idx++;
+                sqlcfgUdf = sqlcfgUdf.Remove(sqlcfgUdf.Length - 1);
+                if (exist)
+                {
+                    sqlcfgUdf = "update crm_account_site_ext set " + sqlcfgUdf + " where parent_id=" + accountId;
+                }
+                else
+                {
+                    sqltmp = sqltmp.Remove(sqltmp.Length - 1);
+                    sqlcfgUdf = $"insert into crm_account_site_ext (id,parent_id,{sqlcfgUdf}) values ({udfDal.GetNextIdCom()},{accountId},{sqltmp})";
+                }
             }
-            for (int i = 0; i < udfCtt.Count; i++)
+            else if (!exist)
             {
-                
-                idx++;
+                sqlcfgUdf = $"insert into crm_account_site_ext (id,parent_id) values ({udfDal.GetNextIdCom()},{accountId})";
             }
 
-            return true;
+            // 联系人
+            sqlctt = "";
+            sqltmp = "";
+            if (!string.IsNullOrEmpty(fname) && !string.IsNullOrEmpty(lname) && !string.IsNullOrEmpty(email))   // 导入了联系人
+            {
+                long contactId;
+                if (exist)
+                {
+                    // 判断联系人是否有匹配
+                    crm_contact cttfind = udfDal.FindSignleBySql<crm_contact>($"select * from crm_contact where account_id={accountId} and first_name='{fname}' and last_name='{lname}' and email='{email}' and delete_time=0");
+                    if (cttfind == null)
+                    {
+                        exist = false;
+                        contactId = udfDal.GetNextIdCom();
+                    }
+                    else
+                        contactId = cttfind.id;
+                }
+                else
+                {
+                    contactId = udfDal.GetNextIdCom();
+                }
+
+                if (exist)  // 更新联系人
+                {
+                    sqlctt = "update crm_contact set delete_time=0";
+                }
+                else    // 新增联系人
+                {
+                    sqlctt = $"insert into crm_contact (id,account_id,create_user_id,update_user_id,create_time,update_time";
+                    sqltmp = $"{contactId},{accountId},{userId},{userId},{crttime},{crttime}";
+                }
+
+                for (int i = 0; i < lstCtt.Count; i++)
+                {
+                    crtval = aryline[idx];
+                    if (string.IsNullOrEmpty(crtval))
+                    {
+                        idx++;
+                        continue;
+                    }
+
+                    if (lstCtt[i].field.IndexOf("crm_location:") >= 0)  // 地址信息
+                    {
+
+                    }
+                    else if (lstCtt[i].type == ImportFieldType.String)
+                    {
+                        if (exist)
+                            sqlctt += $",{lstCtt[i].field}='{crtval}'";
+                        else
+                        {
+                            sqlctt += $",{lstCtt[i].field}";
+                            sqltmp += $",'{crtval}'";
+                        }
+                    }
+                    else if (lstCtt[i].type == ImportFieldType.Long)
+                    {
+                        if (!long.TryParse(crtval, out longval))
+                        {
+                            logDal.AddFailLog($"{lstCtt[i].name}字段格式错误，应为整数数字");
+                            return false;
+                        }
+                        if (exist)
+                            sqlctt += $",{lstCtt[i].field}='{longval}'";
+                        else
+                        {
+                            sqlctt += $",{lstCtt[i].field}";
+                            sqltmp += $",'{longval}'";
+                        }
+                    }
+                    else if (lstCtt[i].type == ImportFieldType.Int)
+                    {
+                        if (!int.TryParse(crtval, out intval))
+                        {
+                            logDal.AddFailLog($"{lstCtt[i].name}字段格式错误，应为整数数字");
+                            return false;
+                        }
+                        if (exist)
+                            sqlctt += $",{lstCtt[i].field}='{intval}'";
+                        else
+                        {
+                            sqlctt += $",{lstCtt[i].field}";
+                            sqltmp += $",'{intval}'";
+                        }
+                    }
+                    else if (lstCtt[i].type == ImportFieldType.Decimal)
+                    {
+                        if (!decimal.TryParse(crtval, out decimalval))
+                        {
+                            logDal.AddFailLog($"{lstCtt[i].name}字段格式错误，应为小数数字");
+                            return false;
+                        }
+                        if (exist)
+                            sqlctt += $",{lstCtt[i].field}='{decimalval}'";
+                        else
+                        {
+                            sqlctt += $",{lstCtt[i].field}";
+                            sqltmp += $",'{decimalval}'";
+                        }
+                    }
+                    else if (lstCtt[i].type == ImportFieldType.Check)
+                    {
+                        if (crtval == "是")
+                            intval = 1;
+                        else if (crtval == "否")
+                            intval = 0;
+                        else
+                        {
+                            logDal.AddFailLog($"{lstCtt[i].name}字段格式错误，应为'是'或'否'");
+                            return false;
+                        }
+
+                        if (exist)
+                            sqlctt += $",{lstCtt[i].field}='{intval}'";
+                        else
+                        {
+                            sqlctt += $",{lstCtt[i].field}";
+                            sqltmp += $",'{intval}'";
+                        }
+                    }
+                    else if (lstCtt[i].type == ImportFieldType.Dictionary && lstCtt[i].dic != 0)     // 通用字典
+                    {
+                        var dics = generalbll.GetDicValues(lstCtt[i].dic);
+                        var finddic = dics.FindAll(_ => _.show.Equals(crtval));
+                        if (finddic.Count == 0)
+                        {
+                            logDal.AddFailLog($"{lstCtt[i].name}字段找不到对应字典项");
+                            return false;
+                        }
+                        else if (finddic.Count > 1)
+                        {
+                            logDal.AddFailLog($"{lstCtt[i].name}字段找到多个字典项");
+                            return false;
+                        }
+                        if (exist)
+                            sqlctt += $",{lstCtt[i].field}='{finddic[0].val}'";
+                        else
+                        {
+                            sqlctt += $",{lstCtt[i].field}";
+                            sqltmp += $",'{finddic[0].val}'";
+                        }
+                    }
+                    else    // 其他字典
+                    {
+                        if (lstCtt[i].field == "contact_group")
+                        {
+                            var groups = udfDal.FindListBySql<crm_contact_group>($"select * from crm_contact_group where name='{crtval}' and delete_time=0");
+                            if (groups.Count == 0)
+                            {
+                                logDal.AddFailLog($"{lstCtt[i].name}字段找不到对应联系人组");
+                                return false;
+                            }
+                            if (groups.Count > 1)
+                            {
+                                logDal.AddFailLog($"{lstCtt[i].name}字段找到多个联系人组");
+                                return false;
+                            }
+                            var contactgroup = udfDal.FindSignleBySql<crm_contact_group_contact>($"select * from crm_contact_group_contact where contact_group_id={groups[0].id} and contact_id={contactId} and delete_time=0");
+                            if (contactgroup == null)
+                                sqlcttGroup = $"insert into crm_contact_group_contact (id,contact_group_id,contact_id,create_user_id,update_user_id,create_time,update_time) values ({udfDal.GetNextIdCom()},{groups[0].id},{contactId},{userId},{userId},{crttime},{crttime})";
+
+                        }
+                    }
+
+                    idx++;
+                }
+                if (exist)
+                    sqlctt = sqlctt + $",name='{fname + lname}' where id={contactId}";
+                else
+                    sqlctt = $"{sqlctt},name) values ({sqltmp},'{fname + lname}')";
+
+                sqltmp = "";
+                sqlcttUdf = "";
+                for (int i = 0; i < udfCtt.Count; i++)
+                {
+                    crtval = aryline[idx];
+                    if (string.IsNullOrEmpty(crtval))
+                    {
+                        idx++;
+                        continue;
+                    }
+
+                    if (exist)
+                    {
+                        sqlcttUdf += $"{udfCtt[i].field}='{crtval}',";
+                    }
+                    else
+                    {
+                        sqlcttUdf += $"{udfCtt[i].field},";
+                        sqltmp += $"'{crtval}',";
+                    }
+
+                    idx++;
+                }
+                if (!string.IsNullOrEmpty(sqlcttUdf))
+                {
+                    sqlcttUdf = sqlcttUdf.Remove(sqlcttUdf.Length - 1);
+                    if (exist)
+                    {
+                        sqlcttUdf = "update crm_contact_ext set " + sqlcttUdf + " where parent_id=" + contactId;
+                    }
+                    else
+                    {
+                        sqltmp = sqltmp.Remove(sqltmp.Length - 1);
+                        sqlcttUdf = $"insert into crm_contact_ext (id,parent_id,{sqlcttUdf}) values ({udfDal.GetNextIdCom()},{contactId},{sqltmp})";
+                    }
+                }
+                else if (!exist)
+                {
+                    sqlcttUdf = $"insert into crm_contact_ext (id,parent_id) values ({udfDal.GetNextIdCom()},{contactId})";
+                }
+            }
+
+            List<string> sqls = new List<string>();
+            sqls.Add(sqlact);
+            if (!string.IsNullOrEmpty(sqlactalert1))
+                sqls.Add(sqlactalert1);
+            if (!string.IsNullOrEmpty(sqlactalert2))
+                sqls.Add(sqlactalert2);
+            if (!string.IsNullOrEmpty(sqlactalert3))
+                sqls.Add(sqlactalert3);
+            if (!string.IsNullOrEmpty(sqlactUdf))
+                sqls.Add(sqlactUdf);
+            if (!string.IsNullOrEmpty(sqlcfgUdf))
+                sqls.Add(sqlcfgUdf);
+            if (!string.IsNullOrEmpty(sqlctt))
+                sqls.Add(sqlctt);
+            if (!string.IsNullOrEmpty(sqlcttGroup))
+                sqls.Add(sqlcttGroup);
+            if (!string.IsNullOrEmpty(sqlcttUdf))
+                sqls.Add(sqlcttUdf);
+
+            if (udfDal.SQLTransaction(null, sqls.ToArray()))
+            {
+                logDal.AddSuccessLog();
+                return true;
+            }
+
+            logDal.AddFailLog("出现错误！");
+            return false;
         }
 
 
@@ -247,9 +864,9 @@ namespace EMT.DoneNOW.BLL
             list.Add(new ImportFieldStruct { name = "客户:股票市场", field = "stock_market" });
             list.Add(new ImportFieldStruct { name = "客户:股票代码", field = "sic_code" });
             list.Add(new ImportFieldStruct { name = "客户:市值", field = "asset_value", type = ImportFieldType.Decimal });
-            list.Add(new ImportFieldStruct { name = "客户:客户详细提醒", field = "", type = ImportFieldType.Dictionary });
-            list.Add(new ImportFieldStruct { name = "客户:新建工单提醒", field = "", type = ImportFieldType.Dictionary });
-            list.Add(new ImportFieldStruct { name = "客户:工单进度提醒", field = "", type = ImportFieldType.Dictionary });
+            list.Add(new ImportFieldStruct { name = "客户:客户详细提醒", field = "alert1", type = ImportFieldType.Dictionary });
+            list.Add(new ImportFieldStruct { name = "客户:新建工单提醒", field = "alert2", type = ImportFieldType.Dictionary });
+            list.Add(new ImportFieldStruct { name = "客户:工单进度提醒", field = "alert3", type = ImportFieldType.Dictionary });
             list.Add(new ImportFieldStruct { name = "客户:税区", field = "tax_region_id", type = ImportFieldType.Dictionary, dic = 5 });
             list.Add(new ImportFieldStruct { name = "客户:是否免税", field = "is_tax_exempt", type = ImportFieldType.Check });
             list.Add(new ImportFieldStruct { name = "客户:税号", field = "tax_identification" });
@@ -273,8 +890,8 @@ namespace EMT.DoneNOW.BLL
             list.Add(new ImportFieldStruct { name = "联系人:名", field = "last_name" });
             list.Add(new ImportFieldStruct { name = "联系人:称谓", field = "suffix_id", type = ImportFieldType.Dictionary, dic = 48 });
             list.Add(new ImportFieldStruct { name = "联系人:头衔", field = "title" });
-            list.Add(new ImportFieldStruct { name = "联系人:email", field = "Email" });
-            list.Add(new ImportFieldStruct { name = "联系人:email2", field = "备用Email" });
+            list.Add(new ImportFieldStruct { name = "联系人:邮箱", field = "email" });
+            list.Add(new ImportFieldStruct { name = "联系人:邮箱2", field = "email2" });
             list.Add(new ImportFieldStruct { name = "联系人:地址国家", field = "crm_location:country_id", type = ImportFieldType.Dictionary });
             list.Add(new ImportFieldStruct { name = "联系人:地址省份", field = "crm_location:province_id", type = ImportFieldType.Dictionary });
             list.Add(new ImportFieldStruct { name = "联系人:地址城市", field = "crm_location:city_id", type = ImportFieldType.Dictionary });
@@ -287,7 +904,7 @@ namespace EMT.DoneNOW.BLL
             list.Add(new ImportFieldStruct { name = "联系人:备用电话", field = "alternate_phone" });
             list.Add(new ImportFieldStruct { name = "联系人:手机号", field = "mobile_phone" });
             list.Add(new ImportFieldStruct { name = "联系人:传真", field = "fax" });
-            list.Add(new ImportFieldStruct { name = "联系人:联系人组", field = "", type = ImportFieldType.Dictionary });
+            list.Add(new ImportFieldStruct { name = "联系人:联系人组", field = "contact_group", type = ImportFieldType.Dictionary });
             list.Add(new ImportFieldStruct { name = "联系人:是否激活", field = "is_active", type = ImportFieldType.Check });
             list.Add(new ImportFieldStruct { name = "联系人:是否主联系人", field = "is_primary_contact", type = ImportFieldType.Check });
             list.Add(new ImportFieldStruct { name = "联系人:qq号", field = "qq" });

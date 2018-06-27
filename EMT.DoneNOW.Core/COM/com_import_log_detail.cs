@@ -21,7 +21,7 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int32 rownum { get; set; }
         [DataMember]
-        public Int64 is_sucess { get; set; }
+        public Int64 is_success { get; set; }
         [DataMember]
         public String fail_desc { get; set; }
 

@@ -31,7 +31,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                 {
                     Directory.CreateDirectory(Server.MapPath(filepath));
                 }
-                string virpath = filepath + Guid.NewGuid().ToString() + ".xls";//这是存到服务器上的虚拟路径
+                string virpath = filepath + Guid.NewGuid().ToString() + ".csv";//这是存到服务器上的虚拟路径
                 string mappath = Server.MapPath(virpath);//转换成服务器上的物理路径
                 file.SaveAs(mappath);//保存图片
 

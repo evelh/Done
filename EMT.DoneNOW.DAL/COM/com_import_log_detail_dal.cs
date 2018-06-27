@@ -17,9 +17,9 @@ namespace EMT.DoneNOW.DAL
         /// <summary>
         /// 添加成功导入日志详情
         /// </summary>
-        public void AddSuccessLog()
+        public void AddSuccessLog(string desc = null)
         {
-            AddLog(log_id, rownum++, 1, null);
+            AddLog(log_id, rownum++, 1, desc);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace EMT.DoneNOW.DAL
             {
                 id = GetNextIdCom(),
                 log_id = logId,
-                is_sucess = isSuccess,
+                is_success = isSuccess,
                 rownum = row,
                 fail_desc = fail
             };

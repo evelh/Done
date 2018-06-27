@@ -51,8 +51,8 @@
             </div>
         </div>
     </form>
-    <div>
-        <%--<table id="fieldsTable" style="display:none;"></table>--%>
+    <div style="display:none;">
+        <%--<table id="fieldsTable"></table>--%>
         <a id="down" download="客户联系人导入模板.csv" href="#">download</a>
     </div>
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
@@ -81,7 +81,7 @@
                 str1 = encodeURIComponent(str1);
                 
                 $("#down").attr("href", "data:text/csv;charset=utf-8,\ufeff" + str1);
-                $("#down").click();
+                document.getElementById("down").click();
 
                 //str += '</tr>';
                 //$("#fieldsTable").html(str);
