@@ -79,19 +79,19 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public d_general GetSingleGeneral(long id,bool checkDelete = false) {
+        public d_general GetSingleGeneral(long id, bool checkDelete = false) {
             if (checkDelete)
                 return _dal.FindNoDeleteById(id);
             return _dal.FindById(id);
         }
-        
+
 
         /// <summary>
         /// 通过name和general_table_id获取一个d_general对象，并返回
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public d_general GetSingleGeneral(string name,int general_table_id) {
+        public d_general GetSingleGeneral(string name, int general_table_id) {
             return _dal.FindSignleBySql<d_general>($"select * from d_general where name='{name}' and general_table_id={general_table_id} and delete_time=0");
         }
         /// <summary>
@@ -126,7 +126,7 @@ namespace EMT.DoneNOW.BLL
         public Dictionary<string, object> GetCalendarField()
         {
             Dictionary<string, object> dic = new Dictionary<string, object>();
-            dic.Add("View", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.CALENDAR_DISPLAY)));         
+            dic.Add("View", new d_general_dal().GetDictionary(new d_general_table_dal().GetById((int)GeneralTableEnum.CALENDAR_DISPLAY)));
             return dic;
         }
         /// <summary>
@@ -141,14 +141,14 @@ namespace EMT.DoneNOW.BLL
             if (user == null)
             {   // 查询不到用户，用户丢失
                 return ERROR_CODE.USER_NOT_FIND;
-            }           
+            }
             var res = GetSingleGeneral(data.name, data.general_table_id);
             if (res != null)
             {
                 return ERROR_CODE.EXIST;
             }
             data.create_time = data.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
-            data.create_user_id = data.update_user_id= user_id;
+            data.create_user_id = data.update_user_id = user_id;
             _dal.Insert(data);
             data = GetSingleGeneral(data.name, data.general_table_id);
             if (data == null) {
@@ -165,7 +165,7 @@ namespace EMT.DoneNOW.BLL
                 oper_object_id = data.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.ADD,
                 oper_description = _dal.AddValue(data),
-                remark = "新增d_general表，general_table_id="+data.general_table_id
+                remark = "新增d_general表，general_table_id=" + data.general_table_id
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_log);       // 插入日志
             return ERROR_CODE.SUCCESS;
@@ -201,14 +201,14 @@ namespace EMT.DoneNOW.BLL
                 oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.General_Code,
                 oper_object_id = data.id,// 操作对象id
                 oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                oper_description = _dal.CompareValue(old,data),
+                oper_description = _dal.CompareValue(old, data),
                 remark = "修改d_general表，general_table_id=" + data.general_table_id
             };          // 创建日志
             new sys_oper_log_dal().Insert(add_log);       // 插入日志
             if (!_dal.Update(data))
             {
                 return ERROR_CODE.ERROR;
-            }            
+            }
             return ERROR_CODE.SUCCESS;
         }
         /// <summary>
@@ -219,7 +219,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="table_id"></param>
         /// <param name="n"></param>
         /// <returns></returns>
-        public ERROR_CODE Delete_Validate(long id, long user_id, long table_id,out int n) {
+        public ERROR_CODE Delete_Validate(long id, long user_id, long table_id, out int n) {
             var user = UserInfoBLL.GetUserInfo(user_id);
             n = 0;
             if (user == null)
@@ -344,8 +344,8 @@ namespace EMT.DoneNOW.BLL
             }
             else if (table_id == (int)GeneralTableEnum.TASK_SOURCE_TYPES)
             {
-                var ticketList = _dal.FindListBySql<sdk_task>("SELECT id from sdk_task where delete_time =0 and type_id = 1809 and source_type_id ="+id.ToString());
-                if(ticketList!=null&& ticketList.Count > 0)
+                var ticketList = _dal.FindListBySql<sdk_task>("SELECT id from sdk_task where delete_time =0 and type_id = 1809 and source_type_id =" + id.ToString());
+                if (ticketList != null && ticketList.Count > 0)
                 {
                     n = ticketList.Count;
                     return ERROR_CODE.TICKET_SOURCE_USED;
@@ -372,7 +372,7 @@ namespace EMT.DoneNOW.BLL
             else if (table_id == (int)GeneralTableEnum.TASK_ISSUE_TYPE)
             {
                 var subIss = _dal.GetGeneralByParentId(id);
-                if(subIss!=null&& subIss.Count > 0)
+                if (subIss != null && subIss.Count > 0)
                 {
                     return ERROR_CODE.TICKET_ISSUE_HAS_SUB;
                 }
@@ -385,7 +385,7 @@ namespace EMT.DoneNOW.BLL
             }
             else if (table_id == (int)GeneralTableEnum.PROJECT_STATUS)
             {
-                var proList = _dal.FindListBySql<pro_project>($"SELECT * from pro_project where delete_time = 0 and status_id ="+id.ToString());
+                var proList = _dal.FindListBySql<pro_project>($"SELECT * from pro_project where delete_time = 0 and status_id =" + id.ToString());
                 if (proList != null && proList.Count > 0)
                 {
                     n = proList.Count;
@@ -453,7 +453,7 @@ namespace EMT.DoneNOW.BLL
             }
             else if (table_id == (int)GeneralTableEnum.TAX_REGION)
             {
-                if(!CheckTaxRegionDelete(id))
+                if (!CheckTaxRegionDelete(id))
                     return ERROR_CODE.TAX_REGION_USED;
             }
             else if (table_id == (int)GeneralTableEnum.QUOTE_ITEM_TAX_CATE)
@@ -473,7 +473,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="id"></param>
         /// <param name="user_id"></param>
         /// <returns></returns>
-        public ERROR_CODE Delete(long id, long user_id,long table_id)
+        public ERROR_CODE Delete(long id, long user_id, long table_id)
         {
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (user == null)
@@ -488,7 +488,7 @@ namespace EMT.DoneNOW.BLL
             if (data.is_system > 0) {
                 return ERROR_CODE.SYSTEM;
             }
-            string remark="删除通用代码信息";
+            string remark = "删除通用代码信息";
             //市场
             if (table_id == (int)GeneralTableEnum.MARKET_SEGMENT)
             {
@@ -514,7 +514,7 @@ namespace EMT.DoneNOW.BLL
                             oper_object_cate_id = (int)OPER_LOG_OBJ_CATE.CUSTOMER,
                             oper_object_id = account.id,// 操作对象id
                             oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
-                            oper_description = a_dal.CompareValue(old,account),
+                            oper_description = a_dal.CompareValue(old, account),
                             remark = remark
                         };          // 创建日志
                         new sys_oper_log_dal().Insert(add_log);       // 插入日志
@@ -659,13 +659,13 @@ namespace EMT.DoneNOW.BLL
                         new sys_oper_log_dal().Insert(add_log);       // 插入日志
                         remark = "删除区域信息";
                     }
-                    
+
                 }
             }
 
-            if(table_id == (int)GeneralTableEnum.TASK_LIBRARY_CATE)
+            if (table_id == (int)GeneralTableEnum.TASK_LIBRARY_CATE)
             {
-                var taskLibList = _dal.FindListBySql<sdk_task_library>($"SELECT * from sdk_task_library where delete_time = 0 and cate_id = "+id.ToString());
+                var taskLibList = _dal.FindListBySql<sdk_task_library>($"SELECT * from sdk_task_library where delete_time = 0 and cate_id = " + id.ToString());
                 if (taskLibList != null && taskLibList.Count > 0)
                 {
                     sdk_task_library_dal stlDal = new sdk_task_library_dal();
@@ -723,7 +723,7 @@ namespace EMT.DoneNOW.BLL
             data.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.delete_user_id = user_id;
             if (!_dal.Update(data))
-            {              
+            {
                 return ERROR_CODE.ERROR;
             }
             //更新日志
@@ -794,7 +794,7 @@ namespace EMT.DoneNOW.BLL
             {
                 return ERROR_CODE.ERROR;
             }
-            if (data.is_active==0)
+            if (data.is_active == 0)
             {
                 return ERROR_CODE.NO_ACTIVATION;
             }
@@ -813,7 +813,7 @@ namespace EMT.DoneNOW.BLL
         /// <param name="table_id"></param>
         /// <param name="sort_order"></param>
         /// <returns></returns>
-        public bool sort_order(int table_id,decimal sort_order) {
+        public bool sort_order(int table_id, decimal sort_order) {
             var kk = _dal.FindSignleBySql<d_general>($"select * from d_general where general_table_id={table_id} and sort_order={sort_order} and delete_time=0 ");
             if (kk != null) {
                 return false;
@@ -826,27 +826,27 @@ namespace EMT.DoneNOW.BLL
         /// <param name="table_id"></param>
         /// <param name="sort_order"></param>
         /// <returns></returns>
-        public bool update_sort_order(int id,int table_id, decimal sort_order)
+        public bool update_sort_order(int id, int table_id, decimal sort_order)
         {
             var kk = _dal.FindSignleBySql<d_general>($"select * from d_general where general_table_id={table_id} and sort_order={sort_order} and delete_time=0 ");
-            if (kk != null&&kk.id!=id)
+            if (kk != null && kk.id != id)
             {
                 return false;
             }
             return true;
         }
-       /// <summary>
-       /// 判断是否是默认关闭商机的原因
-       /// </summary>
-       /// <param name="id"></param>
-       /// <returns></returns>
-        public bool defulatwonreson(long id=0) {
+        /// <summary>
+        /// 判断是否是默认关闭商机的原因
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool defulatwonreson(long id = 0) {
 
             var kk = _dal.FindSignleBySql<d_general>($"select * from d_general where general_table_id=11 and ext2=1 and delete_time=0");
             if (kk != null) {
-                if (kk.id != id||id==0) {
+                if (kk.id != id || id == 0) {
                     return true;
-                }                
+                }
             }
             return false;
         }
@@ -855,7 +855,7 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool defulatlossreson(long id=0)
+        public bool defulatlossreson(long id = 0)
         {
             var kk = _dal.FindSignleBySql<d_general>($"select * from d_general where general_table_id=11 and ext1=1 and delete_time=0");
             if (kk != null)
@@ -872,12 +872,12 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         /// <returns></returns>
         public Dictionary<long, string> GetCodeList() {
-          return new d_cost_code_dal().FindListBySql<d_cost_code>($"select * from d_cost_code where cate_id={(int)COST_CODE_CATE.MATERIAL_COST_CODE} and delete_time=0").ToDictionary(_ => _.id, _ =>_.name);
+            return new d_cost_code_dal().FindListBySql<d_cost_code>($"select * from d_cost_code where cate_id={(int)COST_CODE_CATE.MATERIAL_COST_CODE} and delete_time=0").ToDictionary(_ => _.id, _ => _.name);
         }
         /// <summary>
         /// 新增字典表（不做任何校验）
         /// </summary>
-        public bool AddGeneral(d_general data,long userId)
+        public bool AddGeneral(d_general data, long userId)
         {
             if (data == null)
                 return false;
@@ -894,7 +894,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 编辑字典表（不做任何校验）
         /// </summary>
-        public bool EditGeneral(d_general data,long userId)
+        public bool EditGeneral(d_general data, long userId)
         {
             if (data == null)
                 return false;
@@ -910,14 +910,14 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 删除员工技能字典表，同时删除resource_skill
         /// </summary>
-        public bool DeleteResourceGeneral(long id,long userId)
+        public bool DeleteResourceGeneral(long id, long userId)
         {
             var thisGeneral = _dal.FindNoDeleteById(id);
             if (thisGeneral == null)
                 return true;
             sys_resource_skill_dal srsDal = new sys_resource_skill_dal();
-            List<sys_resource_skill> skillList=null;
-            List<d_general> generalList=null;
+            List<sys_resource_skill> skillList = null;
+            List<d_general> generalList = null;
             if (thisGeneral.general_table_id == (int)GeneralTableEnum.RESOURCE_SKILL_TYPE)
                 skillList = srsDal.GetSkillBType(id);
             else if (thisGeneral.general_table_id == (int)GeneralTableEnum.SKILLS_CATE)
@@ -927,14 +927,14 @@ namespace EMT.DoneNOW.BLL
             }
             if (generalList != null && generalList.Count > 0)
                 generalList.ForEach(_ => {
-                    DeleteResourceGeneral(_.id,userId);
+                    DeleteResourceGeneral(_.id, userId);
                 });
             if (skillList != null && skillList.Count > 0)
                 skillList.ForEach(_ => {
                     srsDal.Delete(_);
-                    OperLogBLL.OperLogAdd<sys_resource_skill>(_,_.id,userId,OPER_LOG_OBJ_CATE.RESOURCE,"");
+                    OperLogBLL.OperLogAdd<sys_resource_skill>(_, _.id, userId, OPER_LOG_OBJ_CATE.RESOURCE, "");
                 });
-            _dal.SoftDelete(thisGeneral,userId);
+            _dal.SoftDelete(thisGeneral, userId);
             OperLogBLL.OperLogAdd<d_general>(thisGeneral, thisGeneral.id, userId, OPER_LOG_OBJ_CATE.General_Code, "");
 
             return true;
@@ -1099,7 +1099,7 @@ namespace EMT.DoneNOW.BLL
         {
             if (!string.IsNullOrEmpty(ids))
             {
-                string[] idArr = ids.Split(new char[] {','},StringSplitOptions.RemoveEmptyEntries);
+                string[] idArr = ids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var thisId in idArr)
                 {
                     var thisGeneral = _dal.FindNoDeleteById(long.Parse(thisId));
@@ -1110,13 +1110,13 @@ namespace EMT.DoneNOW.BLL
                         failReason += thisGeneral.name + ',';
                     else
                     {
-                        _dal.SoftDelete(thisGeneral,userId);
-                        OperLogBLL.OperLogDelete<d_general>(thisGeneral, thisGeneral.id,userId,OPER_LOG_OBJ_CATE.General_Code,"");
+                        _dal.SoftDelete(thisGeneral, userId);
+                        OperLogBLL.OperLogDelete<d_general>(thisGeneral, thisGeneral.id, userId, OPER_LOG_OBJ_CATE.General_Code, "");
                     }
                 }
                 if (!string.IsNullOrEmpty(failReason))
                 {
-                    failReason = failReason.Substring(0, failReason.Length-1);
+                    failReason = failReason.Substring(0, failReason.Length - 1);
                     failReason += "等被工单引用，不能删除";
                 }
             }
@@ -1128,12 +1128,12 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         public bool CheckTaxRegionDelete(long id)
         {
-            var thisGen = GetSingleGeneral(id,true);
-            if (thisGen == null||thisGen.is_system==1)
+            var thisGen = GetSingleGeneral(id, true);
+            if (thisGen == null || thisGen.is_system == 1)
                 return true;
             if (thisGen.general_table_id != (int)GeneralTableEnum.TAX_REGION)
                 return false;
-            var accList = _dal.FindListBySql<crm_account>("select id from crm_account where delete_time = 0 and tax_region_id = "+ id.ToString());
+            var accList = _dal.FindListBySql<crm_account>("select id from crm_account where delete_time = 0 and tax_region_id = " + id.ToString());
             if (accList != null && accList.Count > 0)
                 return false;
             return true;
@@ -1151,7 +1151,7 @@ namespace EMT.DoneNOW.BLL
             var codeList = new CostCodeBLL().GetCodeByTaxCate(id);
             if (codeList != null && codeList.Count > 0)
                 return false;
-            var roleList = _dal.FindListBySql<sys_role>("select id from sys_role where delete_time = 0 and tax_cate_id="+id.ToString());   //
+            var roleList = _dal.FindListBySql<sys_role>("select id from sys_role where delete_time = 0 and tax_cate_id=" + id.ToString());   //
             if (roleList != null && roleList.Count > 0)
                 return false;
             return true;
@@ -1159,15 +1159,15 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 将当前税区设置成默认税区，
         /// </summary>
-        public void SetDefaultRegion(long id,long userId)
+        public void SetDefaultRegion(long id, long userId)
         {
-            var thisRegion = GetSingleGeneral(id,true);
+            var thisRegion = GetSingleGeneral(id, true);
             if (thisRegion == null || thisRegion.general_table_id != (int)GeneralTableEnum.TAX_REGION)
                 return;
             if (thisRegion.ext1 != "1")
             {
                 thisRegion.ext1 = "1";
-                EditGeneral(thisRegion,userId);
+                EditGeneral(thisRegion, userId);
             }
 
             List<d_general> defRegionList = _dal.FindListBySql($"SELECT * from d_general where general_table_id = { (int)GeneralTableEnum.TAX_REGION} and delete_time = 0 and ext1='1'");
@@ -1177,5 +1177,21 @@ namespace EMT.DoneNOW.BLL
                     EditGeneral(_, userId);
                 });
         }
+        /// <summary>
+        /// 字典表的名称重复校验
+        /// </summary>
+        public bool CheckExist(string name, int tableId, long id)
+        {
+            d_general general = GetSingleGeneral(name, tableId);
+            if (general != null && general.id != id)
+                return false;
+            return true;
+        }
+        /// <summary>
+        /// 获取到技术支持邮箱相关
+        /// </summary>
+        public d_general GetSupportEmail() => _dal.FindSignleBySql<d_general>($"select * from d_general where general_table_id = {(int)GeneralTableEnum.SYSTEM_SUPPORT_EMAIL} and delete_time = 0");
+        
+
     }
 }

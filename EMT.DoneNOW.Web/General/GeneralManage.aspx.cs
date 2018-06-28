@@ -61,6 +61,20 @@ namespace EMT.DoneNOW.Web.General
                     genBll.GetSingleGeneral((long)DicEnum.ACTIVITY_CATE.TASK_NOTE,true),
                 };
             }
+            if (tableId == (int)GeneralTableEnum.SYSTEM_SUPPORT_EMAIL)
+            {
+                var email = genBll.GetSupportEmail();
+                if (email != null && isAdd)
+                {
+                    Response.Write("<script>alert('系统支持邮箱只能有一条！');window.close();</script>");
+                    return;
+                }
+            }
+            if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.SYS_TICKET_RESOLUTION_METRICS && isAdd)
+            {
+                Response.Write("<script>alert('工单解决参数设置不允许新增！');window.close();</script>");
+                return;
+            }
 
         }
 
@@ -87,7 +101,7 @@ namespace EMT.DoneNOW.Web.General
                     pageDic.ext1 = "0";
             }
 
-            if (tableId == (int)GeneralTableEnum.TASK_LIBRARY_CATE|| (tableId == (int)GeneralTableEnum.ACTION_TYPE))
+            if (tableId == (int)GeneralTableEnum.TASK_LIBRARY_CATE|| (tableId == (int)GeneralTableEnum.ACTION_TYPE)|| tableId == (int)GeneralTableEnum.PROJECT_LINE_OF_BUSINESS|| tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TAX_REGION)
             {
                 pageDic.is_active = 1;
             }
@@ -119,8 +133,21 @@ namespace EMT.DoneNOW.Web.General
                     thisGeneral.remark = pageDic.remark;
                     thisGeneral.sort_order = pageDic.sort_order;
                 }
+                else if(tableId == (int)GeneralTableEnum.PROJECT_LINE_OF_BUSINESS)
+                {
+                    thisGeneral.remark = pageDic.remark;
+                    thisGeneral.sort_order = pageDic.sort_order;
+                }
+                else if(tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.SYSTEM_SUPPORT_EMAIL)
+                {
+                    thisGeneral.remark = pageDic.remark;
+                }
+                else if(tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.SYS_TICKET_RESOLUTION_METRICS)
+                {
+                    thisGeneral.sort_order = pageDic.sort_order;
+                    thisGeneral.ext1 = pageDic.ext1;
 
-
+                }
             }
             
             bool result = false;

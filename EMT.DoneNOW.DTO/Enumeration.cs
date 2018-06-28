@@ -102,6 +102,8 @@ namespace EMT.DoneNOW.DTO
         TICKET_CATE = 167,                       // 工单种类
         SKILLS_CATE = 175,                      // 技能类别
         OPERATOR_TYPE = 177,                    // 过滤条件操作符
+        SLA_TARGET_TYPE = 179,                  // sla条目完成时间目标类型
+        SLA_TIMEFRAME = 180,                    // sla条目计时方法
         DASHBOARD_COLOR_THEME = 184,            // 仪表板色系
         WIDGET_TYPE = 189,                      // 小窗口类型
         WIDGET_ENTITY = 190,                    // 小窗口实体
@@ -112,6 +114,7 @@ namespace EMT.DoneNOW.DTO
         FORM_TMPL_QUICK_EMAIL_OBJECT = 207,     // 表单模板：发送对象
         SYSTEM_LOGO = 212,                      // 系统LOGO
         OPPORTUNITY_SPREAD_UNIT = 213,          // 商机收入周期取值范围
+        SYSTEM_SUPPORT_EMAIL = 215,             // 系统技术支持邮箱
     }
 
     /// <summary>
@@ -1811,6 +1814,15 @@ namespace EMT.DoneNOW.DTO
         {
             NO_WORK = 2443,     // 不上班
             WORK = 2444,        // 节假日正常上班
+        }
+        /// <summary>
+        /// sla条目完成时间目标类型 - 179
+        /// </summary>
+        public enum SLA_TARGET_TYPE
+        {
+            BY_TIME = 2446,      // 根据时长计算
+            TODAY = 2447,        // 当天
+            NEXT_DAL = 2448,     // 下一天
         }
         /// <summary>
         /// 变更单审批状态 - 181

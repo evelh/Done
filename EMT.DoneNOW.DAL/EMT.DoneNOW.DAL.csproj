@@ -132,6 +132,7 @@
     <Compile Include="Dictionary\d_query_groupby_dal.cs" />
     <Compile Include="Dictionary\d_sla_dal.cs" />
     <Compile Include="Dictionary\d_cost_code_dal.cs" />
+    <Compile Include="Dictionary\d_sla_item_dal.cs" />
     <Compile Include="Dictionary\d_tax_region_cate_dal.cs" />
     <Compile Include="Dictionary\d_tax_region_cate_tax_dal.cs" />
     <Compile Include="Dictionary\d_time_zone_dal.cs" />

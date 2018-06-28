@@ -250,6 +250,7 @@
     <Content Include="Reports\ExecutiveSummaryResult.aspx" />
     <Content Include="Reports\ExecutiveSummarySearch.aspx" />
     <Content Include="RichText\uploader.swf" />
+    <Content Include="SaleOrder\SaleQuotaMonth.aspx" />
     <Content Include="Scripts\clipboard.js" />
     <Content Include="Scripts\clipboard.min.js" />
     <Content Include="Scripts\Dashboard\Dashboard.js" />
@@ -697,6 +698,8 @@
     <Content Include="ServiceDesk\TicketModify.aspx" />
     <Content Include="ServiceDesk\TicketNote.aspx" />
     <Content Include="ServiceDesk\TicketView.aspx" />
+    <Content Include="SLA\SLAItemManage.aspx" />
+    <Content Include="SLA\SLAManage.aspx" />
     <Content Include="SysSetting\AddTimeOffPolicy.aspx" />
     <Content Include="ServiceDesk\TicketManage.aspx" />
     <Content Include="SysSetting\AdjustResourceGoal.aspx" />
@@ -1709,6 +1712,13 @@
     <Compile Include="Reports\ExecutiveSummarySearch.aspx.designer.cs">
       <DependentUpon>ExecutiveSummarySearch.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SaleOrder\SaleQuotaMonth.aspx.cs">
+      <DependentUpon>SaleQuotaMonth.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SaleOrder\SaleQuotaMonth.aspx.designer.cs">
+      <DependentUpon>SaleQuotaMonth.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ServiceDesk\AddQuickCall.aspx.cs">
       <DependentUpon>AddQuickCall.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2512,6 +2522,20 @@
     <Compile Include="ServiceDesk\TicketView.aspx.designer.cs">
       <DependentUpon>TicketView.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SLA\SLAItemManage.aspx.cs">
+      <DependentUpon>SLAItemManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SLA\SLAItemManage.aspx.designer.cs">
+      <DependentUpon>SLAItemManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SLA\SLAManage.aspx.cs">
+      <DependentUpon>SLAManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SLA\SLAManage.aspx.designer.cs">
+      <DependentUpon>SLAManage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SysSetting\AddTimeOffPolicy.aspx.cs">
       <DependentUpon>AddTimeOffPolicy.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -3284,6 +3308,9 @@
     <Compile Include="Tools\ServiceCallAjax.ashx.cs">
       <DependentUpon>ServiceCallAjax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Tools\SLAAjax.ashx.cs">
+      <DependentUpon>SLAAjax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Tools\SubscriptionAjax.ashx.cs">
       <DependentUpon>SubscriptionAjax.ashx</DependentUpon>
     </Compile>
@@ -3371,6 +3398,7 @@
     <Content Include="Tools\UploadAjax.ashx" />
     <Content Include="Tools\CostCodeAjax.ashx" />
     <Content Include="Tools\InvoiceAjax.ashx" />
+    <Content Include="Tools\SLAAjax.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

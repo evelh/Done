@@ -211,7 +211,7 @@ namespace EMT.DoneNOW.BLL
 
 
         /// <summary>
-        /// 编辑销售顶大
+        /// 编辑销售订单
         /// </summary>
         public void EditSaleOrder(crm_sales_order sale, long userId)
         {
@@ -223,5 +223,34 @@ namespace EMT.DoneNOW.BLL
             _dal.Update(sale);
             OperLogBLL.OperLogUpdate<crm_sales_order>(sale, oldSale, sale.id, userId, OPER_LOG_OBJ_CATE.SALE_ORDER, "");
         }
+
+        #region 销售目标设置
+        /// <summary>
+        /// 获取员工本年的销售目标
+        /// </summary>
+        public List<sys_resource_sales_quota> GetResYearQuota(long resourceId,int year)
+        {
+            return _dal.FindListBySql<sys_resource_sales_quota>($"SELECT * from sys_resource_sales_quota where  resource_id = {resourceId} and year = {year} and delete_time =0");
+        }
+
+        /// <summary>
+        /// 获取员工某个月的销售目标
+        /// </summary>
+        public sys_resource_sales_quota GetResMonthQuota(long resourceId, int year,int month)
+        {
+            return _dal.FindSignleBySql<sys_resource_sales_quota>($"SELECT * from sys_resource_sales_quota where  resource_id = {resourceId} and year = {year} and month ={month} and delete_time =0");
+        }
+
+        /// <summary>
+        /// 根据Id 获取相关设置
+        /// </summary>
+        public sys_resource_sales_quota GetQuotaById(long id) => new sys_resource_sales_quota_dal().FindNoDeleteById(id);
+        
+
+
+        #endregion
+
+
+
     }
 }
