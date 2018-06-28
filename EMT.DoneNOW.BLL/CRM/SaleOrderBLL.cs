@@ -245,7 +245,45 @@ namespace EMT.DoneNOW.BLL
         /// 根据Id 获取相关设置
         /// </summary>
         public sys_resource_sales_quota GetQuotaById(long id) => new sys_resource_sales_quota_dal().FindNoDeleteById(id);
-        
+        /// <summary>
+        /// 新增员工目标
+        /// </summary>
+        public bool AddResQuota(sys_resource_sales_quota quota,long userId)
+        {
+            sys_resource_sales_quota_dal srsqDal = new sys_resource_sales_quota_dal();
+            sys_resource_sales_quota checkQuota = GetResMonthQuota(quota.resource_id,quota.year,quota.month);
+            if (checkQuota != null)
+                return false;
+            quota.id = srsqDal.GetNextIdCom();
+            quota.create_time = quota.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            quota.create_user_id = quota.update_user_id = userId;
+            srsqDal.Insert(quota);
+            return true;
+        }
+        /// <summary>
+        /// 编辑员工目标
+        /// </summary>
+        public bool EditResQuota(sys_resource_sales_quota quota, long userId)
+        {
+            sys_resource_sales_quota_dal srsqDal = new sys_resource_sales_quota_dal();
+            sys_resource_sales_quota oldQuota = GetQuotaById(quota.id);
+            if (oldQuota == null)
+                return false;
+            quota.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            quota.update_user_id = userId;
+            srsqDal.Update(quota);
+            return true;
+        }
+
+        public bool DeleteQuota(long id,long userId)
+        {
+            var quota = GetQuotaById(id);
+            if (quota == null)
+                return false;
+            new sys_resource_sales_quota_dal().SoftDelete(quota,userId);
+            return true;
+        }
+
 
 
         #endregion

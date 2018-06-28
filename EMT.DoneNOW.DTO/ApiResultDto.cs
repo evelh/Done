@@ -67,6 +67,7 @@ namespace EMT.DoneNOW.DTO
         SHIP_TYPE_USED,                                 // 配送类型已经被使用
         TAX_REGION_USED,                                 // 税区已经被使用
         TAX_CATE_USED,                                 // 税种已经被使用
+        NOTE_TYPE_USED,                                 // 备注类型已经被使用
         NOTIFICATION_RULE,                 //通知规则表的费率为空
     }
 }

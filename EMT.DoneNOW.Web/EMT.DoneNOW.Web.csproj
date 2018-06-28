@@ -245,6 +245,7 @@
     <Content Include="Images\arrowup.png" />
     <Content Include="Images\arrowleft.png" />
     <Content Include="Images\arrowrighttow.png" />
+    <Content Include="Product\ProductCateManage.aspx" />
     <Content Include="Project\ProjectDashboard.aspx" />
     <Content Include="Project\ProjectFinancials.aspx" />
     <Content Include="Reports\ExecutiveSummaryResult.aspx" />
@@ -302,15 +303,20 @@
     <Content Include="Scripts\Search\system_degree.js" />
     <Content Include="Scripts\Search\system_degree_cate.js" />
     <Content Include="Scripts\Search\system_expense_approval_search.js" />
+    <Content Include="Scripts\Search\system_note_type.js" />
+    <Content Include="Scripts\Search\system_organization.js" />
     <Content Include="Scripts\Search\system_payment_term.js" />
     <Content Include="Scripts\Search\system_payment_type.js" />
     <Content Include="Scripts\Search\system_project_status.js" />
     <Content Include="Scripts\Search\system_queue_search.js" />
     <Content Include="Scripts\Search\system_resource_week_goal.js" />
     <Content Include="Scripts\Search\system_resource_workgroup_search.js" />
+    <Content Include="Scripts\Search\system_sale_quota.js" />
     <Content Include="Scripts\Search\system_ship_type.js" />
     <Content Include="Scripts\Search\system_skill.js" />
     <Content Include="Scripts\Search\system_skill_cate.js" />
+    <Content Include="Scripts\Search\system_sla.js" />
+    <Content Include="Scripts\Search\system_sla_item.js" />
     <Content Include="Scripts\Search\system_task_library.js" />
     <Content Include="Scripts\Search\system_task_library_cate.js" />
     <Content Include="Scripts\Search\system_tax_cate.js" />
@@ -318,9 +324,11 @@
     <Content Include="Scripts\Search\system_tax_region_cate.js" />
     <Content Include="Scripts\Search\system_ticket_issue_search.js" />
     <Content Include="Scripts\Search\system_ticket_priority_search.js" />
+    <Content Include="Scripts\Search\system_ticket_resolution_metrics.js" />
     <Content Include="Scripts\Search\system_ticket_source_search.js" />
     <Content Include="Scripts\Search\system_ticket_status_search.js" />
     <Content Include="Scripts\Search\system_ticket_sub_issue_search.js" />
+    <Content Include="Scripts\Search\system_ticket_support_email.js" />
     <Content Include="Scripts\Search\system_time_approval_search.js" />
     <Content Include="Scripts\Search\sys_form_temp_search.js" />
     <Content Include="Scripts\Search\UserDefinedField.js" />
@@ -1681,6 +1689,13 @@
     </Compile>
     <Compile Include="General\GeneralManage.aspx.designer.cs">
       <DependentUpon>GeneralManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Product\ProductCateManage.aspx.cs">
+      <DependentUpon>ProductCateManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Product\ProductCateManage.aspx.designer.cs">
+      <DependentUpon>ProductCateManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Project\ProjectDashboard.aspx.cs">
       <DependentUpon>ProjectDashboard.aspx</DependentUpon>

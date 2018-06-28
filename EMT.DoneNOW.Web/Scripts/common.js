@@ -351,7 +351,11 @@ var windowObj = {
     board: "board", 
     CheckListLibrary: "CheckListLibrary",
     shareDashboard: "shareDashboard",
-    costCode:"costCode",
+    costCode: "costCode",
+    Region:"Region",
+    sla: "sla",
+    slaItem: "slaItem",
+    saleQuota: "saleQuota",
 }
 var windowType = {
     blank: '_blank',

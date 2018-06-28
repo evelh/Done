@@ -63,7 +63,8 @@ namespace EMT.DoneNOW.DTO
         MATERIAL_CODE_TO_USE = 80,              // 系统管理：系统配置：配送报价项转为账单时使用的物料代码
         HOLIDAY_SET = 94,                       // 节假日设置
         LINE_OF_BUSINESS=95,                    //系统管理：组织：业务条线
-        COST_CODE_CATE=106,                     //产品：成本种类
+        PRODUCT_CATE = 105,                      // 产品：产品种类
+        COST_CODE_CATE =106,                     //产品：成本种类
         INSTALLED_PRODUCT_CATE = 108,           // 配置项种类
         LICENSE_TYPE = 109,                      //安全等级：授权类型
         QUOTE_GROUP_BY = 110,                    // 报价分组条件
@@ -922,6 +923,14 @@ namespace EMT.DoneNOW.DTO
             REPORT_LABOUREXPENSE_TIMEOFF_DETAILS = 1786,                     // 报表-工时和费用-休假-员工休假详情
             REPORT_LABOUREXPENSE_TIMEOFF_VACATION_SUMMARY = 1787,            // 报表-工时和费用-休假-休假汇总
             REPORT_LABOUREXPENSE_TIMEOFF_LABOUR_WEEK = 1788,                 // 报表-工时和费用-休假-员工周工时汇总
+
+            SYSTEM_NOTE_TYPE = 1791,                                  // 系统设置-共享功能-备注类型
+            SYSTEM_ORGANIZATION = 1792,                               // 系统设置-组织管理-区域
+            SYSTEM_SLA = 1794,                                        // 系统设置-工作台-服务等级管理
+            SYSTEM_SLA_ITEM = 1795,                                   // 系统设置-工作台-服务等级管理-条目
+            SYSTEM_TICKET_SUPPORT_EMAIL = 1796,                       // 系统设置-工作台-支持邮箱
+            SYSTEM_TICKET_RESOLUTION_METRICS = 1797,                  // 系统设置-工作台-工单指标定义
+            SYSTEM_SALE_QUOTA = 1798,                                 // 系统设置-销售和商机-销售指标
 
             // 
 
@@ -2210,6 +2219,14 @@ namespace EMT.DoneNOW.DTO
         REPORT_RESOURCE_GENERAL_RESOURCE_MONTH_WORKTIME_MONEY = 380,    // 报表-员工-常规-按月统计员工工作时间-金额
         REPORT_RESOURCE_GENERAL_RESOURCE_YEAR_WORKTIME_NUM = 381,       // 报表-员工-常规-按年统计员工工作时间-时长
         REPORT_RESOURCE_GENERAL_RESOURCE_YEAR_WORKTIME_MONEY = 382,     // 报表-员工-常规-按年统计员工工作时间-金额
+
+        SYSTEM_NOTE_TYPE = 401,                                  // 系统设置-共享功能-备注类型           
+        SYSTEM_ORGANIZATION = 402,                               // 系统设置-组织管理-区域               
+        SYSTEM_SLA = 404,                                        // 系统设置-工作台-服务等级管理          
+        SYSTEM_SLA_ITEM = 405,                                   // 系统设置-工作台-服务等级管理-条目     
+        SYSTEM_TICKET_SUPPORT_EMAIL = 406,                       // 系统设置-工作台-支持邮箱             
+        SYSTEM_TICKET_RESOLUTION_METRICS = 407,                  // 系统设置-工作台-工单指标定义       
+        SYSTEM_SALE_QUOTA = 408,                                 // 系统设置-销售和商机-销售指标      
 
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理

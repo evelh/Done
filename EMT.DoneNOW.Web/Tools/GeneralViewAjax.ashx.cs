@@ -184,6 +184,10 @@ namespace EMT.DoneNOW.Web
             {
                 context.Response.Write("税种被使用，不能删除!");
             }
+            else if (result == DTO.ERROR_CODE.NOTE_TYPE_USED)
+            {
+                context.Response.Write("备注类型被使用，不能删除!");
+            }
             else if (result == DTO.ERROR_CODE.SUCCESS)
             {
                 Delete(context, general_id, general_table_id);

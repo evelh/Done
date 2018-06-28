@@ -20,8 +20,10 @@ namespace EMT.DoneNOW.Web
                 case "CheckSLAName": CheckSLAName(context); break;   // SLA 名称重复校验
                 case "GetSLA": GetSLA(context); break;   // 获取到SLA 相关信息
                 case "ActiveSLA": ActiveSLA(context); break;   // 激活/失活 SLA
+                case "DeleteSLA": DeleteSLA(context); break;   // 删除 SLA
+                case "DeleteSLAItem": DeleteSLAItem(context); break;   // 删除 SLA 条目
                 default:
-                    break;
+                    break; 
 
             }
         }
@@ -68,8 +70,32 @@ namespace EMT.DoneNOW.Web
                 result = slaBll.ActiveSLA(id,isActive,LoginUserId);
             WriteResponseJson(result);
         }
+        /// <summary>
+        /// 删除SLA
+        /// </summary>
+        void DeleteSLA(HttpContext context)
+        {
+            bool result = false;
+            string reason = string.Empty;
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]) && long.TryParse(context.Request.QueryString["id"], out id))
+                result = slaBll.DeleteSLA(id,LoginUserId,ref reason);
+            WriteResponseJson(new {result = result,reason = reason });
+        }
 
+        /// <summary>
+        /// 删除SLA条目
+        /// </summary>
+        void DeleteSLAItem(HttpContext context)
+        {
+            bool result = false;
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]) && long.TryParse(context.Request.QueryString["id"], out id))
+                result = slaBll.DeleteItem(id, LoginUserId);
+            WriteResponseJson(result);
+        }
 
+        
 
     }
 }

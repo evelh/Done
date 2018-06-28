@@ -53,7 +53,6 @@ namespace EMT.DoneNOW.BLL
         {
             if (!CheckExist(sla.name, sla.id))
                 return false;
-            sla.id = _dal.GetNextIdCom();
             sla.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
             sla.update_user_id = userId;
             _dal.Update(sla);
@@ -88,6 +87,41 @@ namespace EMT.DoneNOW.BLL
             }
             return true;
         }
+        /// <summary>
+        /// 删除SLA
+        /// </summary>
+        public bool DeleteSLA(long id,long userId,ref string reason)
+        {
+            var sla = GetSlaById(id);
+            if (sla == null)
+            {
+                reason = "SLA已经删除";return false;
+            }
+            var ticketList = _dal.FindListBySql<sdk_task>($"SELECT * from sdk_task where delete_time =0 and sla_id ={id}");
+            if (ticketList != null && ticketList.Count > 0)
+            {
+                reason = "SLA被工单，合同，服务或服务包引用，不能删除！"; return false;
+            }
+            var contractList = _dal.FindListBySql<ctt_contract>($"SELECT * from ctt_contract where delete_time =0 and sla_id ={id}");
+            if (contractList != null && contractList.Count > 0)
+            {
+                reason = "SLA被工单，合同，服务或服务包引用，不能删除！"; return false;
+            }
+            var serviceList = _dal.FindListBySql<ivt_service>($"SELECT * from ivt_service where delete_time =0 and sla_id ={id}");
+            if (serviceList != null && serviceList.Count > 0)
+            {
+                reason = "SLA被工单，合同，服务或服务包引用，不能删除！"; return false;
+            }
+            var serviceBunList = _dal.FindListBySql<ivt_service_bundle>($"SELECT * from ivt_service_bundle where delete_time =0 and sla_id ={id}");
+            if (serviceBunList != null && serviceBunList.Count > 0)
+            {
+                reason = "SLA被工单，合同，服务或服务包引用，不能删除！"; return false;
+            }
+
+            _dal.SoftDelete(sla,userId);
+            return true;
+        }
+
 
         /// <summary>
         /// SLA 时间管理
@@ -164,6 +198,17 @@ namespace EMT.DoneNOW.BLL
             item.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
             item.update_user_id = userId;
             siDal.Update(item);
+            return true;
+        }
+        /// <summary>
+        /// 删除SLA条目
+        /// </summary>
+        public bool DeleteItem(long id ,long userId)
+        {
+            d_sla_item item = GetSLAItemById(id);
+            if (item == null)
+                return false;
+            new d_sla_item_dal().SoftDelete(item,userId);
             return true;
         }
 

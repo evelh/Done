@@ -588,5 +588,73 @@ namespace EMT.DoneNOW.BLL
 
             return thisCost;
         }
+
+        #region  产品类别管理
+        public List<ProductCateDto> GetProductCateList()
+        {
+            var topCateList = _dal.FindListBySql<ProductCateDto>($"SELECT id,name,parent_id,(SELECT count(0) from ivt_product WHERE cate_id=g.id AND delete_time=0) as productCnt FROM d_general as g WHERE general_table_id={(int)GeneralTableEnum.PRODUCT_CATE} and parent_id is null and delete_time=0 ORDER BY id ASC;");
+            List<ProductCateDto> dtoList = new List<ProductCateDto>();
+            if(topCateList!=null&& topCateList.Count > 0)
+            {
+                foreach (var cate in topCateList)
+                {
+                    cate.nodes = AddSubNode(cate.id);
+                    dtoList.Add(cate);
+                }
+            }
+            
+
+                return dtoList;
+        }
+        private List<ProductCateDto> AddSubNode(long parentId)
+        {
+            var subList = _dal.FindListBySql<ProductCateDto>($"SELECT id,name,parent_id,(SELECT count(0) from ivt_product WHERE cate_id=g.id AND delete_time=0) as productCnt FROM d_general as g WHERE general_table_id={(int)GeneralTableEnum.PRODUCT_CATE} and parent_id={parentId} and delete_time=0 ORDER BY id ASC;");
+            if (subList != null && subList.Count > 0)
+            {
+                foreach (var sub in subList)
+                {
+                    sub.nodes = AddSubNode(sub.id);
+                }
+            }
+            return subList;
+        }
+
+        public bool DeleteProductCate(long cateId,long userId)
+        {
+            d_general_dal dgDal = new d_general_dal();
+            var proList = _dal.FindListBySql<ivt_product>($"SELECT * from ivt_product where delete_time = 0 and cate_id =" + cateId.ToString());
+            if (proList != null && proList.Count > 0)
+            {
+                proList.ForEach(_ => {
+                    _.cate_id = null;
+                    EditProduct(_, userId);
+                });
+            }
+            var childCateList = dgDal.GetGeneralByParentId(cateId);
+            if(childCateList!=null&& childCateList.Count > 0)
+            {
+                GeneralBLL genBll = new GeneralBLL();
+                childCateList.ForEach(_=> {
+                    genBll.Delete(_.id,userId,(long)GeneralTableEnum.PRODUCT_CATE);
+                });
+                
+            }
+            return true;
+        }
+             
+
+        #endregion
+
+        public bool EditProduct(ivt_product product,long userId)
+        {
+            var oldProduct = _dal.FindNoDeleteById(product.id);
+            if (oldProduct == null)
+                return false;
+            product.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            product.update_user_id = userId;
+            _dal.Update(product);
+            OperLogBLL.OperLogUpdate<ivt_product>(product,oldProduct,product.id,userId, OPER_LOG_OBJ_CATE.PRODUCT, "");
+            return true;
+        }
     }
 }

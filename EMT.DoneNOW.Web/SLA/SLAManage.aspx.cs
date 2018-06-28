@@ -72,7 +72,7 @@ namespace EMT.DoneNOW.Web.SLA
             else
                 result = bll.EditSLA(sla, hoursList, LoginUserId);
 
-            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存{(result ? "成功" : "失败")}!');window.close();</script>");
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存{(result ? "成功" : "失败")}!');self.opener.location.reload();window.close();</script>");
 
         }
     }

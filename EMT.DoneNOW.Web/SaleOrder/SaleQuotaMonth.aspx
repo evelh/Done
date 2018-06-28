@@ -22,7 +22,7 @@
         }
 
         select {
-            width: 200px;
+            width: 160px;
         }
     </style>
 </head>
@@ -45,7 +45,7 @@
                             <td>
                                 <label>员工<span class="red"></span></label>
                                 <div class="clear">
-                                    <select id="resource_id" name="resource_id">
+                                    <select id="resource_id" name="resource_id" <% if (!isAdd) {%> disabled="disabled" <% } %>>
                                         <%if (resourceList != null && resourceList.Count > 0)
                                             {
                                                 foreach (var resource in resourceList)
@@ -71,7 +71,7 @@
                             <td>
                                 <label>专业服务目标<span class="red"></span></label>
                                 <div class="clear">
-                                    <input type="text" name="opportunity_ext1" id="opportunity_ext1" value="<%=resQuota?.opportunity_ext1!=null?((decimal)resQuota.opportunity_ext1).ToString("#0.00"):"" %>" />
+                                    <input type="text" name="opportunity_ext1" class="ToDec2" id="opportunity_ext1" value="<%=resQuota?.opportunity_ext1!=null?((decimal)resQuota.opportunity_ext1).ToString("#0.00"):"" %>" />
                                 </div>
                             </td>
                         </tr>
@@ -79,7 +79,7 @@
                             <td>
                                 <label>培训费用目标<span class="red"></span></label>
                                 <div class="clear">
-                                    <input type="text" name="opportunity_ext2" id="opportunity_ext2" value="<%=resQuota?.opportunity_ext2!=null?((decimal)resQuota.opportunity_ext2).ToString("#0.00"):"" %>" />
+                                    <input type="text" name="opportunity_ext2" class="ToDec2" id="opportunity_ext2" value="<%=resQuota?.opportunity_ext2!=null?((decimal)resQuota.opportunity_ext2).ToString("#0.00"):"" %>" />
                                 </div>
                             </td>
                         </tr>
@@ -87,7 +87,7 @@
                             <td>
                                 <label>硬件费用目标<span class="red"></span></label>
                                 <div class="clear">
-                                    <input type="text" name="opportunity_ext3" id="opportunity_ext3" value="<%=resQuota?.opportunity_ext3!=null?((decimal)resQuota.opportunity_ext3).ToString("#0.00"):"" %>" />
+                                    <input type="text" name="opportunity_ext3" class="ToDec2" id="opportunity_ext3" value="<%=resQuota?.opportunity_ext3!=null?((decimal)resQuota.opportunity_ext3).ToString("#0.00"):"" %>" />
                                 </div>
                             </td>
                         </tr>
@@ -95,7 +95,7 @@
                             <td>
                                 <label>月度使用费用目标<span class="red"></span></label>
                                 <div class="clear">
-                                    <input type="text" name="opportunity_ext4" id="opportunity_ext4" value="<%=resQuota?.opportunity_ext4!=null?((decimal)resQuota.opportunity_ext4).ToString("#0.00"):"" %>" />
+                                    <input type="text" name="opportunity_ext4" class="ToDec2" id="opportunity_ext4" value="<%=resQuota?.opportunity_ext4!=null?((decimal)resQuota.opportunity_ext4).ToString("#0.00"):"" %>" />
                                 </div>
                             </td>
                         </tr>
@@ -103,7 +103,7 @@
                             <td>
                                 <label>其他费用目标<span class="red"></span></label>
                                 <div class="clear">
-                                    <input type="text" name="opportunity_ext5" id="opportunity_ext5" value="<%=resQuota?.opportunity_ext5!=null?((decimal)resQuota.opportunity_ext5).ToString("#0.00"):"" %>" />
+                                    <input type="text" name="opportunity_ext5" class="ToDec2" id="opportunity_ext5" value="<%=resQuota?.opportunity_ext5!=null?((decimal)resQuota.opportunity_ext5).ToString("#0.00"):"" %>" />
                                 </div>
                             </td>
                         </tr>
@@ -118,5 +118,13 @@
 <script src="../Scripts/index.js"></script>
 <script src="../Scripts/common.js"></script>
 <script>
-
+    $(".ToDec2").blur(function () {
+        var thisValue = $(this).val();
+        if (thisValue != "" && !isNaN(thisValue)) {
+            $(this).val(toDecimal2(thisValue));
+        }
+        else{
+            $(this).val("");
+        }
+    })
 </script>

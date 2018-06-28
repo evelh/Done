@@ -35,7 +35,9 @@ namespace EMT.DoneNOW.Web.SLA
             if (slaItem != null)
             {
                 sla = bll.GetSlaById(slaItem.sla_id);
-                isAdd = false;
+                if(string.IsNullOrEmpty(Request.QueryString["copy"]))
+                    isAdd = false;
+
             }
 
             if (sla == null)
@@ -100,7 +102,7 @@ namespace EMT.DoneNOW.Web.SLA
             else
                 result = bll.EditItem(slaItem, LoginUserId);
 
-            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存{(result ? "成功" : "失败")}!');window.close();</script>");
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存{(result ? "成功" : "失败")}!');self.opener.location.reload();window.close();</script>");
 
 
         }

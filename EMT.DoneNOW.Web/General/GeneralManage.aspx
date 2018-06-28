@@ -32,7 +32,18 @@
         <div class="DivSection" style="border: none; padding-left: 10px;">
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tbody>
-                     
+                     <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PRODUCT_CATE) {%>  
+                    
+                    <tr>
+                        <td width="30%" class="FieldLabels"><span>父产品种类名称</span><span style="color: red;"></span>
+                            <div>
+                                <input type="text" id="parentId" style="width: 220px;" maxlength="11" value="<%=parentGeneral?.name %>" />
+                                <img src="../Images/data-selector.png" style="width:15px;height:15px;" onclick="GetParentCate()"/>
+                                <input type="hidden" id="parentIdHidden" name="parent_id" value="<%=parentGeneral?.id %>"/>
+                            </div>
+                        </td>
+                    </tr>
+                    <% } %>
                     <tr id="NameTr">
                         <td width="30%" class="FieldLabels"><span id="SpanName">名称</span><span style="color: red;">*</span>
                             <div>
@@ -40,12 +51,12 @@
                             </div>
                         </td>
                     </tr>
-                    <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE || tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.ACTION_TYPE||tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PROJECT_LINE_OF_BUSINESS)
+                    <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE || tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.ACTION_TYPE||tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PROJECT_LINE_OF_BUSINESS||tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PRODUCT_CATE)
                         { %>
                     <tr>
                         <td width="30%" class="FieldLabels">说明<span style="color: red; display: none;" id="RemarkDiv">*</span>
                             <div>
-                                <textarea id="remark" name="remark"><%=thisGeneral!=null?thisGeneral.remark:"" %></textarea>
+                                <textarea id="remark" name="remark" style="width:220px;"><%=thisGeneral!=null?thisGeneral.remark:"" %></textarea>
                             </div>
                         </td>
                     </tr>
@@ -92,7 +103,7 @@
                         </td>
                     </tr>
                     <%} %>
-                    <%if (tableId != (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE && tableId != (int)EMT.DoneNOW.DTO.GeneralTableEnum.ACTION_TYPE&&tableId != (int)EMT.DoneNOW.DTO.GeneralTableEnum.PROJECT_LINE_OF_BUSINESS&&tableId != (int)EMT.DoneNOW.DTO.GeneralTableEnum.SYSTEM_SUPPORT_EMAIL)
+                    <%if (tableId != (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE && tableId != (int)EMT.DoneNOW.DTO.GeneralTableEnum.ACTION_TYPE&&tableId != (int)EMT.DoneNOW.DTO.GeneralTableEnum.PROJECT_LINE_OF_BUSINESS&&tableId != (int)EMT.DoneNOW.DTO.GeneralTableEnum.SYSTEM_SUPPORT_EMAIL&&tableId != (int)EMT.DoneNOW.DTO.GeneralTableEnum.PRODUCT_CATE)
                         {%>
 
                     <tr>
@@ -111,12 +122,12 @@
                     <tr>
                         <td width="30%" class="FieldLabels">类别
                         <div>
-                            <select name="ext1" id="ext1" style="width: 232px;">
+                            <select name="ext2" id="ext2" style="width: 232px;">
                                 <%if (tempList != null && tempList.Count > 0)
                                     {
                                         foreach (var temp in tempList)
                                         {%>
-                                <option value="<%=temp.id %>" <%if (thisGeneral?.ext1 == temp.id.ToString())
+                                <option value="<%=temp.id %>" <%if (thisGeneral?.ext2 == temp.id.ToString())
                                     {%> selected="selected" <%} %>><%=temp.name %></option>
                                 <% }
                                     } %>
@@ -204,8 +215,35 @@
                      <tr>
                         <td width="30%" class="FieldLabels">发送名称<span style="color: red;"></span>
                             <div>
-                                <input type="text" id="remark" name="remark" style="width: 220px;" maxlength="11" value="<%=thisGeneral?.remark %>" />
+                                <input type="text" id="ext1" name="ext1" style="width: 220px;" maxlength="11" value="<%=thisGeneral?.ext1 %>" />
                             </div>
+                        </td>
+                    </tr>
+                    <%} %>
+                    <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PRODUCT_CATE)
+                        { %>
+                        <tr>
+                        <td width="30%" class="FieldLabels">简称<span style="color: red;"></span>
+                            <div>
+                                <input type="text" id="code" name="code" style="width: 220px;" maxlength="11" value="<%=thisGeneral?.code %>" />
+                            </div>
+                        </td>
+                    </tr>
+                     <tr>
+                        <td width="30%" class="FieldLabels">默认配置项类型
+                        <div>
+                            <select name="ext1" id="ext1" style="width: 232px;">
+                                <option></option>
+                                <%if (tempList != null && tempList.Count > 0)
+                                    {
+                                        foreach (var temp in tempList)
+                                        {%>
+                                <option value="<%=temp.id %>" <%if (thisGeneral != null && thisGeneral.ext1 == temp.id.ToString())
+                                    {%> selected="selected" <%} %>><%=temp.name %></option>
+                                <% }
+                                    } %>
+                            </select>
+                        </div>
                         </td>
                     </tr>
                     <%} %>
@@ -226,7 +264,7 @@
         <%if (thisGeneral?.is_system == 1)
     { %>
         $("#name").prop("disabled", true);
-        $("#ext1").prop("disabled", true);
+        $("#ext2").prop("disabled", true);
         $("#status_id").prop("disabled", true);
         <%} %>
         <%}
@@ -266,7 +304,7 @@
         $("input").prop("disabled", false);
         $("select").prop("disabled", false);
         <%}%>
-        <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PROJECT_LINE_OF_BUSINESS)
+        <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PROJECT_LINE_OF_BUSINESS||tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PRODUCT_CATE)
     {%> 
         var isRepeat = "";
         $.ajax({
@@ -287,5 +325,10 @@
         <%}%>
         return true;
     })
-
+      <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PRODUCT_CATE)
+    {%> 
+    function GetParentCate() {
+        window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CATE_CALLBACK %>&field=parentId&con5060=<%=thisGeneral?.id %>", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProductCata %>', 'left=200,top=200,width=600,height=800', false);
+    }
+       <%}%>
 </script>

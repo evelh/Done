@@ -38,6 +38,9 @@ namespace EMT.DoneNOW.Web
                     var locaId = context.Request.QueryString["location_id"];
                     GetLocation(context, long.Parse(locaId));
                     break;
+                case "DeleteOrganization":
+                    DeleteOrganization(context);
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     return;
@@ -114,6 +117,20 @@ namespace EMT.DoneNOW.Web
 
 
         #endregion
+        /// <summary>
+        /// 删除区域
+        /// </summary>
+        void DeleteOrganization(HttpContext context)
+        {
+            bool result = false;
+            string failReason = string.Empty;
+            var id = context.Request.QueryString["id"];
+            if (!string.IsNullOrEmpty(id))
+                result = new LocationBLL().DeleteOrgan(long.Parse(id), LoginUserId, ref failReason);
+            else
+                failReason = "未获取到相关信息，请刷新页面后重试！";
+            WriteResponseJson(new { result = result,reason = failReason});
+        }
 
     }
 }

@@ -17,6 +17,7 @@ namespace EMT.DoneNOW.Web.General
         protected d_general_table thisTable;
         protected bool isAdd = true;
         protected d_general thisGeneral;
+        protected d_general parentGeneral;
         protected GeneralBLL genBll = new GeneralBLL();
         protected List<d_general> tempList = null;
         protected List<d_cost_code> codeList;
@@ -27,10 +28,17 @@ namespace EMT.DoneNOW.Web.General
                 int.TryParse(Request.QueryString["tableId"],out tableId);
             if (!string.IsNullOrEmpty(Request.QueryString["id"]) && long.TryParse(Request.QueryString["id"], out id))
                 thisGeneral = genBll.GetSingleGeneral(id);
+            long parentId = 0;
+            if (!string.IsNullOrEmpty(Request.QueryString["parnetId"]) && long.TryParse(Request.QueryString["parnetId"], out parentId))
+                parentGeneral = genBll.GetSingleGeneral(parentId);
             if (thisGeneral != null)
             {
                 isAdd = false;
                 tableId = thisGeneral.general_table_id;
+                if (tableId == (int)GeneralTableEnum.PRODUCT_CATE&&thisGeneral.parent_id!=null)
+                {
+                    parentGeneral = genBll.GetSingleGeneral((long)thisGeneral.parent_id);
+                }
             }
 
             if (tableId == 0)
@@ -75,6 +83,11 @@ namespace EMT.DoneNOW.Web.General
                 Response.Write("<script>alert('工单解决参数设置不允许新增！');window.close();</script>");
                 return;
             }
+            if(tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PRODUCT_CATE)
+            {
+                tempList = genBll.GetGeneralByTable((int)GeneralTableEnum.INSTALLED_PRODUCT_CATE);
+
+            }
 
         }
 
@@ -101,13 +114,16 @@ namespace EMT.DoneNOW.Web.General
                     pageDic.ext1 = "0";
             }
 
-            if (tableId == (int)GeneralTableEnum.TASK_LIBRARY_CATE|| (tableId == (int)GeneralTableEnum.ACTION_TYPE)|| tableId == (int)GeneralTableEnum.PROJECT_LINE_OF_BUSINESS|| tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TAX_REGION)
+            if (tableId == (int)GeneralTableEnum.TASK_LIBRARY_CATE|| (tableId == (int)GeneralTableEnum.ACTION_TYPE)|| tableId == (int)GeneralTableEnum.PROJECT_LINE_OF_BUSINESS|| tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TAX_REGION|| tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PRODUCT_CATE)
             {
                 pageDic.is_active = 1;
             }
             if (!isAdd)
             {
-                thisGeneral.name = pageDic.name;
+                if (tableId != (int)EMT.DoneNOW.DTO.GeneralTableEnum.SYS_TICKET_RESOLUTION_METRICS)
+                {
+                    thisGeneral.name = pageDic.name;
+                }
                 thisGeneral.is_active = pageDic.is_active;
                 if (tableId == (int)DTO.GeneralTableEnum.TASK_SOURCE_TYPES)
                 {
@@ -127,7 +143,7 @@ namespace EMT.DoneNOW.Web.General
                     if(thisGeneral.is_system != 1)
                     {
                         thisGeneral.name = pageDic.name;
-                        thisGeneral.ext1 = pageDic.ext1;
+                        thisGeneral.ext2 = pageDic.ext2;
                         thisGeneral.status_id = pageDic.status_id;
                     }
                     thisGeneral.remark = pageDic.remark;
@@ -140,13 +156,20 @@ namespace EMT.DoneNOW.Web.General
                 }
                 else if(tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.SYSTEM_SUPPORT_EMAIL)
                 {
-                    thisGeneral.remark = pageDic.remark;
+                    thisGeneral.ext1 = pageDic.ext1;
                 }
                 else if(tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.SYS_TICKET_RESOLUTION_METRICS)
                 {
                     thisGeneral.sort_order = pageDic.sort_order;
                     thisGeneral.ext1 = pageDic.ext1;
 
+                }
+                else if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PRODUCT_CATE)
+                {
+                    thisGeneral.remark = pageDic.remark;
+                    thisGeneral.parent_id = pageDic.parent_id;
+                    thisGeneral.code = pageDic.code;
+                    thisGeneral.ext1 = pageDic.ext1;
                 }
             }
             

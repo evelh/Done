@@ -46,6 +46,23 @@ namespace EMT.DoneNOW.Web.SaleOrder
         protected void save_close_Click(object sender, EventArgs e)
         {
             var pageQuota = AssembleModel<sys_resource_sales_quota>();
+            pageQuota.month = (sbyte)month;
+            pageQuota.year = year;
+            if (!isAdd)
+            {
+                resQuota.amount = pageQuota.amount;
+                resQuota.opportunity_ext1 = pageQuota.opportunity_ext1;
+                resQuota.opportunity_ext2 = pageQuota.opportunity_ext2;
+                resQuota.opportunity_ext3 = pageQuota.opportunity_ext3;
+                resQuota.opportunity_ext4 = pageQuota.opportunity_ext4;
+                resQuota.opportunity_ext5 = pageQuota.opportunity_ext5;
+            }
+            bool result = false;
+            if (isAdd)
+                result = salBll.AddResQuota(pageQuota,LoginUserId);
+            else
+                result = salBll.EditResQuota(resQuota, LoginUserId);
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存{(result ? "成功" : "失败")}!');self.opener.location.reload();window.close();</script>");
         }
     }
 }

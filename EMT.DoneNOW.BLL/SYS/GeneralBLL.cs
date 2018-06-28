@@ -461,6 +461,15 @@ namespace EMT.DoneNOW.BLL
                 if (!CheckTaxCateDelete(id))
                     return ERROR_CODE.TAX_CATE_USED;
             }
+            else if (table_id == (int)GeneralTableEnum.ACTION_TYPE)
+            {
+                var proList = _dal.FindListBySql<com_activity>($"SELECT * from com_activity where delete_time = 0 and action_type_id =" + id.ToString());
+                if (proList != null && proList.Count > 0)
+                {
+                    n = proList.Count;
+                    return ERROR_CODE.NOTE_TYPE_USED;
+                }
+            }
 
 
 
@@ -718,6 +727,11 @@ namespace EMT.DoneNOW.BLL
                         sftqDal.Update(_);
                     });
                 }
+            }
+
+            if (table_id == (int)GeneralTableEnum.PRODUCT_CATE)
+            {
+                 new ProductBLL().DeleteProductCate(id,user_id);
             }
 
             data.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);

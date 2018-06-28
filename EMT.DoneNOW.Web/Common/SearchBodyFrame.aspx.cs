@@ -300,6 +300,11 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SYSTEM_PAYMENT_TYPE:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_PAYMENT_TERM:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_SHIP_TYPE:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_NOTE_TYPE:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_ORGANIZATION:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_SLA:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_SLA_ITEM:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_SALE_QUOTA:
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
@@ -1676,6 +1681,10 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.SYSTEM_SHIP_TYPE:
                 case (long)QueryType.SYSTEM_TAX_CATE:
                 case (long)QueryType.SYSTEM_TAX_REGION:
+                case (long)QueryType.SYSTEM_NOTE_TYPE:
+                case (long)QueryType.SYSTEM_ORGANIZATION:
+                case (long)QueryType.SYSTEM_TICKET_SUPPORT_EMAIL:
+                case (long)QueryType.SYSTEM_SALE_QUOTA:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()", id = "DeleteLi" });
                     break;
@@ -1684,6 +1693,8 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.SYSTEM_TICKET_ISSUE_SEARCH:
                 case (long)QueryType.SYSTEM_CHANGE_BOARD_SEARCH:
                 case (long)QueryType.SYSTEM_PROJECT_STATUS:
+                case (long)QueryType.SYSTEM_SLA:
+                case (long)QueryType.SYSTEM_TICKET_RESOLUTION_METRICS:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()", id = "EditLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActiveLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "InActive()", id = "InActiveLi" });
@@ -1701,6 +1712,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     break;
                 case (long)QueryType.SYSTEM_CHECK_LIB_SEARCH:
+                case (long)QueryType.SYSTEM_SLA_ITEM:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActiveLi" });

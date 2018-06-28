@@ -281,6 +281,29 @@ namespace EMT.DoneNOW.BLL
         {
             return new sys_organization_location_workhours_dal().FindListBySql($"SELECT * from sys_organization_location_workhours where delete_time = 0 and location_id = {id} order by id");
         }
+        /// <summary>
+        /// 删除相关区域
+        /// </summary>
+        public bool DeleteOrgan(long id,long userId,ref string failReason)
+        {
+            var thisLoca = GetOrganization(id);
+            if (thisLoca == null)
+            {
+                failReason = "区域已经删除！"; return false; 
+            }
+            if (thisLoca.is_default == 1)
+            {
+                failReason = "默认区域不能删除！"; return false;
+            }
+
+            var resList = _dal.FindListBySql<sys_resource>($"SELECT * from sys_resource where delete_time = 0 and location_id = {id}");
+            if(resList!=null&& resList.Count > 0)
+            {
+                failReason = "区域已经关联员工，不能删除！"; return false;
+            }
+            new sys_organization_location_dal().SoftDelete(thisLoca,userId);
+            return true;
+        }
 
     }
 }

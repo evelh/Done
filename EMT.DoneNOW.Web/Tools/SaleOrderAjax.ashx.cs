@@ -25,6 +25,9 @@ namespace EMT.DoneNOW.Web
                     var status = context.Request.QueryString["status_id"];
                     ChangeSaleOrderStatus(context, long.Parse(soid), int.Parse(status));
                     break;
+                case "DeleteQuota":
+                    DeleteQuota(context);
+                    break;
 
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
@@ -48,6 +51,17 @@ namespace EMT.DoneNOW.Web
             }
             var result = new SaleOrderBLL().UpdateSaleOrderStatus(soid, status_id, LoginUserId);
             context.Response.Write(result);
+        }
+        /// <summary>
+        /// 删除员工销售目标
+        /// </summary>
+        void DeleteQuota(HttpContext context)
+        {
+            bool result = false;
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]) && long.TryParse(context.Request.QueryString["id"], out id))
+                result = new SaleOrderBLL().DeleteQuota(id,LoginUserId);
+            WriteResponseJson(result);
         }
 
 

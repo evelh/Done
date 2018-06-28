@@ -79,7 +79,12 @@
                                                 <div class="StandardText"></div>
                                             </div>
                                         </div>
-
+                                           <div class="PageNavigationLinkColumn">
+                                               <div class="PageNavigationLink">
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_NOTE_TYPE %>" target="PageFrame1">备注类型 </a>
+                                                <div class="StandardText"></div>
+                                            </div>
+                                             </div>
                                     </div>
 
                                 </div>
@@ -98,6 +103,12 @@
                             <div class="Content Content1" id="c2">
                                 <div class="Large Column">
                                     <div class="PageNavigationLinkGroup">
+                                        <div class="PageNavigationLinkColumn">
+                                            <div class="PageNavigationLink">
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_ORGANIZATION %>" target="PageFrame1">区域</a>
+                                                <div class="StandardText"></div>
+                                            </div>
+                                        </div>
                                         <div class="PageNavigationLinkColumn">
                                             <div class="PageNavigationLink">
                                                 <a class="Button ButtonIcon Link NormalState chaxun" href="../SysSetting/LogoSearch" target="PageFrame1">Logo</a>
@@ -384,6 +395,18 @@
                                                 <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_CHANGE_BOARD_SEARCH %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">变更委员会</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
+                                             <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_SLA %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">服务等级管理</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                             <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TICKET_SUPPORT_EMAIL %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">支持邮箱</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                             <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TICKET_RESOLUTION_METRICS %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">工单指标定义</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
                                         </div>
                                     </div>
                               
@@ -467,6 +490,11 @@
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
                                             <%}%>
+
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_SALE_QUOTA %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">销售指标 </a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
                                         </div>
                                         <div class="PageNavigationLinkColumn">
                                             <%if (CheckAuth("SYS_FEATURES_SALES_OPPS_OPP_WIN_REASON"))
@@ -628,6 +656,10 @@
                                                 { %>
                                             <div class="PageNavigationLink">
                                                 <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT %>" target="PageFrame1">产品</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                             <div class="PageNavigationLink">
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Product/ProductCateManage" target="PageFrame1">产品类别</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
                                             <%}%>

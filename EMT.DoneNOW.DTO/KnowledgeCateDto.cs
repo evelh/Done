@@ -19,4 +19,15 @@ namespace EMT.DoneNOW.DTO
 
         public List<KnowledgeCateDto> nodes = new List<KnowledgeCateDto>(); // 子目录
     }
+    /// <summary>
+    /// 产品类别
+    /// </summary>
+    public class ProductCateDto
+    {
+        public long id;
+        public string name;         // 名称
+        public int productCnt;      // 文章个数
+        public List<ProductCateDto> nodes = new List<ProductCateDto>(); // 子类别
+    }
+
 }

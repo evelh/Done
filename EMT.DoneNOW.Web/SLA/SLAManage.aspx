@@ -135,7 +135,7 @@
             </div>
             <div>
                 <div class="content clear" id="GeneralDiv">
-                    <iframe style="width: 100%; height: 100%; border: 0px;"></iframe>
+                    <iframe style="width: 100%; height: 100%;min-height:330px; border: 0px;" src="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_SLA_ITEM %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_SLA_ITEM %>&con5058=<%=sla?.id %>"></iframe>
                 </div>
                 <div class="content clear" style="display: none;" id="ResourceDiv">
                     <div class="GridContainer">
