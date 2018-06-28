@@ -275,6 +275,8 @@
     <Content Include="Scripts\Search\company_view_res_workhour_bydate.js" />
     <Content Include="Scripts\Search\contacr_group_search.js" />
     <Content Include="Scripts\Search\contact_action_temp.js" />
+    <Content Include="Scripts\Search\DATA_IMPORT_LOG.js" />
+    <Content Include="Scripts\Search\DATA_IMPORT_LOG_DETAIL.js" />
     <Content Include="Scripts\Search\Invoice_Email_Tmpl.js" />
     <Content Include="Scripts\Search\other_installed_product_search.js" />
     <Content Include="Scripts\Search\Quote_Email_Tmpl.js" />
@@ -3319,7 +3321,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Purchase\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

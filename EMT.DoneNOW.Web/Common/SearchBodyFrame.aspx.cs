@@ -484,6 +484,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.ACCOUNT_CONTACT_GROUP_SEARCH:
                     addBtn = "添加联系人到群组";
                     break;
+                case (int)DicEnum.QUERY_CATE.DATA_IMPORT_LOG:
+                    addBtn = "添加导入";
+                    break;
                 default:
                     addBtn = "";
                     break;

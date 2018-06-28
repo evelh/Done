@@ -45,8 +45,8 @@ namespace EMT.DoneNOW.Web
                 case "DeleteUdf":
                     DeleteUdf();
                     break;
-                case "GetCompanyImportFields":
-                    GetCompanyImportFields();
+                case "GetDataImportFields":
+                    GetDataImportFields();
                     break;
                 default:
                     break;
@@ -159,11 +159,15 @@ namespace EMT.DoneNOW.Web
         }
 
         /// <summary>
-        /// 获取客户导入字段
+        /// 获取数据导入字段
         /// </summary>
-        private void GetCompanyImportFields()
+        private void GetDataImportFields()
         {
-            WriteResponseJson(new DataImportBLL().GetCompanyImportFieldsStr());
+            int cate = int.Parse(request.QueryString["cate"]);
+            if (cate == (int)DicEnum.DATA_IMPORT_CATE.COMPANY_CONTACT)
+                WriteResponseJson(new DataImportBLL().GetCompanyImportFieldsStr());
+            else if (cate == (int)DicEnum.DATA_IMPORT_CATE.CONFIGURATION)
+                WriteResponseJson(new DataImportBLL().GetConfigItemFieldsStr());
         }
     }
 }

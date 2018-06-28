@@ -351,7 +351,8 @@ var windowObj = {
     board: "board", 
     CheckListLibrary: "CheckListLibrary",
     shareDashboard: "shareDashboard",
-    costCode:"costCode",
+    costCode: "costCode",
+    dataImport: "dataImport",
 }
 var windowType = {
     blank: '_blank',

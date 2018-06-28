@@ -919,7 +919,8 @@ namespace EMT.DoneNOW.DTO
             REPORT_LABOUREXPENSE_TIMEOFF_DETAILS = 1786,                     // 报表-工时和费用-休假-员工休假详情
             REPORT_LABOUREXPENSE_TIMEOFF_VACATION_SUMMARY = 1787,            // 报表-工时和费用-休假-休假汇总
             REPORT_LABOUREXPENSE_TIMEOFF_LABOUR_WEEK = 1788,                 // 报表-工时和费用-休假-员工周工时汇总
-
+            DATA_IMPORT_LOG = 1789,                                 // 数据导入日志
+            DATA_IMPORT_LOG_DETAIL = 1790,                          // 数据导入日志详情
             // 
 
 
@@ -2198,6 +2199,9 @@ namespace EMT.DoneNOW.DTO
         REPORT_RESOURCE_GENERAL_RESOURCE_MONTH_WORKTIME_MONEY = 380,    // 报表-员工-常规-按月统计员工工作时间-金额
         REPORT_RESOURCE_GENERAL_RESOURCE_YEAR_WORKTIME_NUM = 381,       // 报表-员工-常规-按年统计员工工作时间-时长
         REPORT_RESOURCE_GENERAL_RESOURCE_YEAR_WORKTIME_MONEY = 382,     // 报表-员工-常规-按年统计员工工作时间-金额
+
+        DATA_IMPORT_LOG = 399,                      // 数据导入日志
+        DATA_IMPORT_LOG_DETAIL = 400,               // 数据导入日志详情
 
         //以下是还没有配查询语句的枚举（系统管理）
         General,                       //general表的通用处理

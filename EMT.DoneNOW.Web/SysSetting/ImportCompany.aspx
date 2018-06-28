@@ -27,8 +27,12 @@
     </div>
     <form id="form1" runat="server" enctype="multipart/form-data">
         <div style="border:1px solid #d3d3d3;margin:0 10px 12px 10px;padding:4px 0 4px 0;width:836px;">
-            <div style="align-items:center;display:flex;overflow:hidden;padding:2px 4px 8px 6px;position:relative;text-overflow:ellipsis;white-space:nowrap;">导入客户和/或联系人</div>
+            <div style="align-items:center;display:flex;overflow:hidden;padding:2px 4px 8px 6px;position:relative;text-overflow:ellipsis;white-space:nowrap;">导入<%=cate==(int)EMT.DoneNOW.DTO.DicEnum.DATA_IMPORT_CATE.COMPANY_CONTACT?"客户和/或联系人":cate==(int)EMT.DoneNOW.DTO.DicEnum.DATA_IMPORT_CATE.CONFIGURATION?"配置项":"" %></div>
+            <%if (cate == (int)EMT.DoneNOW.DTO.DicEnum.DATA_IMPORT_CATE.COMPANY_CONTACT){ %>
             <div style="color:#666;font-size:12px;line-height:16px;margin-top:-4px;padding:0 28px 8px 28px;">从一个.csv文件导入客户和/或联系人。如果在导入时匹配到客户或联系人已存在，可以跳过或更新已有数据。客户通过客户名称+客户电话匹配，联系人通过客户名称+客户电话+姓+名+电子邮件匹配。</div>
+            <%} else if (cate == (int)EMT.DoneNOW.DTO.DicEnum.DATA_IMPORT_CATE.CONFIGURATION) { %>
+            <div style="color:#666;font-size:12px;line-height:16px;margin-top:-4px;padding:0 28px 8px 28px;">从一个.csv文件导入配置项。如果在导入时匹配到配置项已存在，可以跳过或更新已有数据。配置项通过产品名称+客户名称+序列号匹配，或者通过配置项ID匹配。</div>
+            <%} %>
             <div style="padding:12px 28px;width:390px;">
                 <div>
                     <a style="background:none;border:none;color:#376597;display:inline;font-size:12px;height:auto;padding:0;vertical-align:inherit;display:inline-block;margin-bottom:10px;cursor:pointer;" onclick="DownloadTmp()">下载导入模板</a>
@@ -52,8 +56,7 @@
         </div>
     </form>
     <div style="display:none;">
-        <%--<table id="fieldsTable"></table>--%>
-        <a id="down" download="客户联系人导入模板.csv" href="#">download</a>
+        <a id="down" download="<%=cate==(int)EMT.DoneNOW.DTO.DicEnum.DATA_IMPORT_CATE.COMPANY_CONTACT?"客户联系人":cate==(int)EMT.DoneNOW.DTO.DicEnum.DATA_IMPORT_CATE.CONFIGURATION?"配置项":"" %>导入模板.csv" href="#">download</a>
     </div>
     <script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../Scripts/common.js"></script>
@@ -66,12 +69,9 @@
             $("#form1").submit();
         })
         function DownloadTmp() {
-            requestData("/Tools/SysSettingAjax.ashx?act=GetCompanyImportFields", null, function (data) {
-                //$("#fieldsTable").html("");
-                //var str = '<tr>';
+            requestData("/Tools/SysSettingAjax.ashx?act=GetDataImportFields&cate=<%=cate%>", null, function (data) {
                 var str1 = '';
                 $.each(data, function (idx) {
-                    //str += '<td>' + data[idx] + '</td>';
                     str1 += data[idx] + ',';
                 })
 
@@ -82,10 +82,7 @@
                 
                 $("#down").attr("href", "data:text/csv;charset=utf-8,\ufeff" + str1);
                 document.getElementById("down").click();
-
-                //str += '</tr>';
-                //$("#fieldsTable").html(str);
-                //method1("fieldsTable");
+                
             })
         }
         

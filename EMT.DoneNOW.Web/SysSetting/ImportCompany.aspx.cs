@@ -10,8 +10,15 @@ namespace EMT.DoneNOW.Web.SysSetting
 {
     public partial class ImportCompany : BasePage
     {
+        protected int cate;     // 导入类型（客户联系人、配置项）
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(Request.QueryString["cate"]))
+            {
+                Response.End();
+                return;
+            }
+            cate = int.Parse(Request.QueryString["cate"]);
             if (IsPostBack)
             {
                 var findOper = Request.Form["findOper"];
@@ -35,7 +42,11 @@ namespace EMT.DoneNOW.Web.SysSetting
                 string mappath = Server.MapPath(virpath);//转换成服务器上的物理路径
                 file.SaveAs(mappath);//保存图片
 
-                var rtn = new BLL.DataImportBLL().ImportCompany(mappath, isUpdate, LoginUserId);
+                string rtn = null;
+                if (cate == (int)DTO.DicEnum.DATA_IMPORT_CATE.COMPANY_CONTACT)
+                    rtn = new BLL.DataImportBLL().ImportCompany(mappath, isUpdate, LoginUserId);
+                else if (cate == (int)DTO.DicEnum.DATA_IMPORT_CATE.CONFIGURATION)
+                    rtn = new BLL.DataImportBLL().ImportConfigItem(mappath, isUpdate, LoginUserId);
                 if (string.IsNullOrEmpty(rtn))
                     Response.Write("<script>alert('导入成功！');</script>");
                 else
