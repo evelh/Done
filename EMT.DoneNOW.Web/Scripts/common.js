@@ -356,6 +356,7 @@ var windowObj = {
     sla: "sla",
     slaItem: "slaItem",
     saleQuota: "saleQuota",
+    dataImport: "dataImport",
 }
 var windowType = {
     blank: '_blank',

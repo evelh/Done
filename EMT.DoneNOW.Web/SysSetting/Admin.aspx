@@ -324,7 +324,7 @@
                                         </div>
                                         <div class="PageNavigationLinkColumn">
                                             <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">客户和联系人导入(暂未开发)</a>
+                                                <a href="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.DATA_IMPORT_LOG %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.DATA_IMPORT_LOG %>&con5057=<%=(int)EMT.DoneNOW.DTO.DicEnum.DATA_IMPORT_CATE.COMPANY_CONTACT %>&param1=<%=(int)EMT.DoneNOW.DTO.DicEnum.DATA_IMPORT_CATE.COMPANY_CONTACT %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">客户和联系人导入</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
                                             <div class="PageNavigationLink">
@@ -704,6 +704,12 @@
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
                                             <%}%>
+                                        </div>
+                                        <div class="PageNavigationLinkColumn">
+                                            <div class="PageNavigationLink">
+                                                <a href="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.DATA_IMPORT_LOG %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.DATA_IMPORT_LOG %>&con5057=<%=(int)EMT.DoneNOW.DTO.DicEnum.DATA_IMPORT_CATE.CONFIGURATION %>&param1=<%=(int)EMT.DoneNOW.DTO.DicEnum.DATA_IMPORT_CATE.CONFIGURATION %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">配置项导入</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

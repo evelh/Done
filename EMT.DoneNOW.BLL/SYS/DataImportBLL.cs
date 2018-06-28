@@ -14,6 +14,7 @@ namespace EMT.DoneNOW.BLL
     {
         sys_udf_field_dal udfDal = new sys_udf_field_dal();
 
+        #region 客户联系人导入
         /// <summary>
         /// 获取客户联系人导入的字段名称列表
         /// </summary>
@@ -49,7 +50,7 @@ namespace EMT.DoneNOW.BLL
         }
 
         /// <summary>
-        /// 从xls文件中导入客户联系人
+        /// 从csv文件中导入客户联系人
         /// </summary>
         /// <param name="filename"></param>
         /// <param name="isUpdate">存在匹配项是否更新已有数据</param>
@@ -793,6 +794,182 @@ namespace EMT.DoneNOW.BLL
             return false;
         }
 
+        #endregion
+
+        #region 配置项导入
+
+        /// <summary>
+        /// 获取配置项导入的字段名称列表
+        /// </summary>
+        /// <returns></returns>
+        public List<string> GetConfigItemFieldsStr()
+        {
+            List<string> fields = new List<string>();
+            var list = GetConfigItemsFields();
+            GetUdfFields(ref list, DicEnum.UDF_CATE.CONFIGURATION_ITEMS);
+
+            foreach (var field in list)
+            {
+                fields.Add(field.name);
+            }
+
+            return fields;
+        }
+
+        /// <summary>
+        /// 从csv文件中导入配置项
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="isUpdate"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public string ImportConfigItem(string filename, bool isUpdate, long userId)
+        {
+            string strline;
+            string[] aryline;
+            StreamReader mysr = new StreamReader(filename, Encoding.Default);
+
+            // 检查模板字段
+            if ((strline = mysr.ReadLine()) == null)
+                return "模板格式错误！";
+
+            List<ImportFieldStruct> lstCfg = GetConfigItemsFields();
+            List<ImportFieldStruct> udfCfg = new List<ImportFieldStruct>();
+            GetUdfFields(ref udfCfg, DicEnum.UDF_CATE.CONFIGURATION_ITEMS);
+
+            aryline = strline.Split(',');
+            if (aryline.Length != lstCfg.Count + udfCfg.Count)
+                return "模板格式错误！";
+
+            for (int i = 0; i < lstCfg.Count; i++)
+            {
+                if (aryline[i] != lstCfg[i].name)
+                    return "模板格式错误！";
+            }
+            for (int i = 0; i < udfCfg.Count; i++)
+            {
+                if (aryline[i + lstCfg.Count] != udfCfg[i].name)
+                    return "模板格式错误！";
+            }
+
+            // 记录导入日志
+            com_import_log log = new com_import_log();
+            com_import_log_dal logdal = new com_import_log_dal();
+            log.cate_id = (int)DicEnum.DATA_IMPORT_CATE.CONFIGURATION;
+            log.id = logdal.GetNextIdCom();
+            log.import_user_id = userId;
+            log.import_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            log.file_name = filename;
+            logdal.Insert(log);
+
+            com_import_log_detail_dal logDetailDal = new com_import_log_detail_dal(log.id);
+
+            while ((strline = mysr.ReadLine()) != null)
+            {
+                if (ImportConfigItemOneLine(strline, isUpdate, userId, logDetailDal, lstCfg, udfCfg))
+                    log.success_num++;
+                else
+                    log.fail_num++;
+            }
+            if (log.success_num != 0 || log.fail_num != 0)
+                logdal.Update(log);
+
+            return null;
+        }
+
+        /// <summary>
+        /// 导入一个配置项
+        /// </summary>
+        /// <param name="strline"></param>
+        /// <param name="isUpdate"></param>
+        /// <param name="userId"></param>
+        /// <param name="logDal"></param>
+        /// <param name="lstCfg"></param>
+        /// <param name="udfCfg"></param>
+        /// <returns></returns>
+        private bool ImportConfigItemOneLine(string strline, bool isUpdate, long userId, com_import_log_detail_dal logDal, List<ImportFieldStruct> lstCfg, List<ImportFieldStruct> udfCfg)
+        {
+            var aryline = strline.Split(',');
+
+            if (!string.IsNullOrEmpty(aryline[0]) && !isUpdate)
+            {
+                logDal.AddFailLog($"不更新数据不能填写配置项ID");
+                return false;
+            }
+
+            // 检查必填字段
+            for (int i = 0; i < lstCfg.Count; i++)
+            {
+                if (lstCfg[i].require == 1 && string.IsNullOrEmpty(aryline[i]))
+                {
+                    logDal.AddFailLog($"{lstCfg[i].name}字段为空");
+                    return false;
+                }
+            }
+            for (int i = 0; i < udfCfg.Count; i++)
+            {
+                if (udfCfg[i].require == 1 && string.IsNullOrEmpty(aryline[i + lstCfg.Count]))
+                {
+                    logDal.AddFailLog($"{udfCfg[i].name}字段为空");
+                    return false;
+                }
+            }
+
+            string crtval;
+            long cfgId;
+            bool exist = false;
+            int idxtmp;
+            string valtmp;
+
+            string sqlcfg = null;
+            string sqlcfgUdf = null;
+            string sqlpdt = null;
+
+            // 判断是否有匹配
+            crtval = aryline[0];
+            if (!string.IsNullOrEmpty(crtval))
+            {
+                if (!long.TryParse(crtval, out cfgId))
+                {
+                    logDal.AddFailLog("配置项ID格式错误");
+                    return false;
+                }
+                var cfg = udfDal.FindSignleBySql<crm_installed_product>($"select * from crm_installed_product where id={cfgId} and delete_time=0");
+                if (cfg == null)
+                {
+                    logDal.AddFailLog($"配置项ID{cfgId}记录不存在");
+                    return false;
+                }
+                exist = true;
+            }
+            int idxPdtName = lstCfg.FindIndex(_ => _.field == "product_id");
+            int idxActName = lstCfg.FindIndex(_ => _.field == "account_id");
+            crtval = aryline[idxPdtName];
+            var pdtlist = udfDal.FindListBySql<ivt_product>($"select * from ivt_product where name='{crtval}' and delete_time=0");
+            if (pdtlist.Count == 0)     // 产品不存在，判断是否新增产品
+            {
+                idxtmp = lstCfg.FindIndex(_ => _.field == "cost_code_id");
+                valtmp = aryline[idxtmp];
+                if (string.IsNullOrEmpty(valtmp))
+                {
+                    logDal.AddFailLog("新增产品需填入物料代码");
+                    return false;
+                }
+
+            }
+            if (!exist)
+            {
+                int idxSerNum = lstCfg.FindIndex(_ => _.field == "serial_number");
+                if (!string.IsNullOrEmpty(aryline[idxSerNum]))
+                {
+
+                }
+            }
+
+            return true;
+        }
+
+        #endregion
 
         #region 导入字段
         /// <summary>
@@ -813,6 +990,9 @@ namespace EMT.DoneNOW.BLL
                     break;
                 case DicEnum.UDF_CATE.SITE:
                     pre = "站点自定义:";
+                    break;
+                case DicEnum.UDF_CATE.CONFIGURATION_ITEMS:
+                    pre = "自定义:";
                     break;
                 default:
                     pre = null;
@@ -912,6 +1092,53 @@ namespace EMT.DoneNOW.BLL
             list.Add(new ImportFieldStruct { name = "联系人:新浪微博地址", field = "weibo_url" });
         }
 
+        /// <summary>
+        /// 获取配置项的导入字段信息
+        /// </summary>
+        /// <returns></returns>
+        private List<ImportFieldStruct> GetConfigItemsFields()
+        {
+            List<ImportFieldStruct> list = new List<ImportFieldStruct>();
+
+            list.Add(new ImportFieldStruct { name = "配置项ID[更新填写]", field = "id", type= ImportFieldType.Long });
+            list.Add(new ImportFieldStruct { name = "[必填]产品名称", field = "product_id", require=1, type = ImportFieldType.Dictionary });
+            list.Add(new ImportFieldStruct { name = "[必填]客户名称", field = "account_id", require = 1, type = ImportFieldType.Dictionary });
+            list.Add(new ImportFieldStruct { name = "配置项种类", field = "cate_id", type = ImportFieldType.Dictionary, dic=108 });
+            list.Add(new ImportFieldStruct { name = "[必填]安装日期", field = "start_date", require = 1, type = ImportFieldType.Date });
+            list.Add(new ImportFieldStruct { name = "质保过期日期", field = "through_date", type = ImportFieldType.Date });
+            list.Add(new ImportFieldStruct { name = "序列号", field = "serial_number" });
+            list.Add(new ImportFieldStruct { name = "参考号", field = "reference_number" });
+            list.Add(new ImportFieldStruct { name = "用户数", field = "number_of_users", type = ImportFieldType.Decimal });
+            list.Add(new ImportFieldStruct { name = "联系人", field = "contact_id", type = ImportFieldType.Dictionary });
+            list.Add(new ImportFieldStruct { name = "安装位置", field = "location" });
+            list.Add(new ImportFieldStruct { name = "合同", field = "contract_id",type=ImportFieldType.Dictionary });
+            list.Add(new ImportFieldStruct { name = "服务", field = "service_id", type = ImportFieldType.Dictionary });
+            list.Add(new ImportFieldStruct { name = "服务集", field = "service_bundle_id", type = ImportFieldType.Dictionary });
+            list.Add(new ImportFieldStruct { name = "供应商", field = "vendor_account_id", type = ImportFieldType.Dictionary });
+            list.Add(new ImportFieldStruct { name = "上级配置项序列号", field = "parent_id" });
+            list.Add(new ImportFieldStruct { name = "备注", field = "remark" });
+            list.Add(new ImportFieldStruct { name = "每小时成本", field = "hourly_cost", type= ImportFieldType.Decimal });
+            list.Add(new ImportFieldStruct { name = "日成本", field = "daily_cost", type = ImportFieldType.Decimal });
+            list.Add(new ImportFieldStruct { name = "月度成本", field = "monthly_cost", type = ImportFieldType.Decimal });
+            list.Add(new ImportFieldStruct { name = "初始费用", field = "setup_fee", type = ImportFieldType.Decimal });
+            list.Add(new ImportFieldStruct { name = "每次使用成本", field = "peruse_cost", type = ImportFieldType.Decimal });
+            list.Add(new ImportFieldStruct { name = "客户链接", field = "accounting_link" });
+            list.Add(new ImportFieldStruct { name = "物料代码[新增产品必填]", field = "cost_code_id", type= ImportFieldType.Dictionary });
+            list.Add(new ImportFieldStruct { name = "是否激活", field = "is_active",type= ImportFieldType.Check });
+            list.Add(new ImportFieldStruct { name = "订阅名称[新增订阅必填]", field = "crm_subscription:name" });
+            list.Add(new ImportFieldStruct { name = "订阅描述", field = "crm_subscription:description" });
+            list.Add(new ImportFieldStruct { name = "订阅周期类型[新增订阅必填]", field = "crm_subscription:period_type_id", type = ImportFieldType.Dictionary });
+            list.Add(new ImportFieldStruct { name = "订阅生效日期[新增订阅必填]", field = "crm_subscription:effective_date", type = ImportFieldType.Date });
+            list.Add(new ImportFieldStruct { name = "订阅到期日期[新增订阅必填]", field = "crm_subscription:expiration_date", type = ImportFieldType.Date });
+            list.Add(new ImportFieldStruct { name = "订阅周期价格[新增订阅必填]", field = "crm_subscription:period_price", type = ImportFieldType.Decimal });
+            list.Add(new ImportFieldStruct { name = "订阅物料成本代码[新增订阅必填]", field = "crm_subscription:cost_code_id", type = ImportFieldType.Dictionary });
+            list.Add(new ImportFieldStruct { name = "订阅订单号", field = "crm_subscription:purchase_order_no" });
+            list.Add(new ImportFieldStruct { name = "订阅周期成本", field = "crm_subscription:period_cost", type = ImportFieldType.Decimal });
+            list.Add(new ImportFieldStruct { name = "订阅状态", field = "crm_subscription:status_id", type = ImportFieldType.Dictionary });
+
+            return list;
+        }
+
         // 导入数据的字段类型
         private enum ImportFieldType
         {
@@ -919,6 +1146,7 @@ namespace EMT.DoneNOW.BLL
             Int,            // 整形
             Long,           // 
             Decimal,        // 
+            Date,           // 日期
             Dictionary,     // 字典项
             Check,          // 是否(1是0否)
         }
