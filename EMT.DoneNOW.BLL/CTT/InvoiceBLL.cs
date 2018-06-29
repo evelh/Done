@@ -1286,6 +1286,150 @@ namespace EMT.DoneNOW.BLL
             }
             return -1;
         }
-        
+
+        /// <summary>
+        /// 获取条目
+        /// </summary>
+        public crm_account_deduction GetDeduction(long id) => new crm_account_deduction_dal().FindNoDeleteById(id);
+
+        /// <summary>
+        /// 工时调整
+        /// </summary>
+        /// <param name="itemId">条目Id</param>
+        /// <param name="isAdd">添加/减少</param>
+        /// <param name="adjustNum">调整数量</param>
+        /// <param name="reason">调整原因</param>
+        public bool AjustBlock(long blockId,decimal adjustNum,string reason,long userId)
+        {
+            ctt_contract_block block = new ContractBlockBLL().GetBlockById(blockId);
+            if (block == null) return false;
+            ctt_contract contract = new ContractBLL().GetContract(block.contract_id);
+            if (contract == null) return false;
+            //int typeId = 0;
+            //if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.BLOCK_HOURS) typeId = (int)ACCOUNT_DEDUCTION_TYPE.PREPAID_TIME_SELF_BILLING;
+            int typeId = (int)ACCOUNT_DEDUCTION_TYPE.PREPAID_TIME_SELF_BILLING;
+            crm_account_deduction_dal cadDal = new crm_account_deduction_dal();
+            crm_account_deduction deduction = new crm_account_deduction()
+            {
+                id = cadDal.GetNextIdCom(),
+                type_id = typeId,
+                object_id = blockId,
+                posted_date = DateTime.Now,
+                contract_id = contract.id,
+                account_id = contract.account_id,
+                create_user_id = userId,
+                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(),
+                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(),
+                update_user_id = userId,
+                contract_block_id = blockId,
+            };
+            if(contract.type_id == (int) DicEnum.CONTRACT_TYPE.RETAINER)
+                deduction.extended_price = adjustNum;
+            else if(contract.type_id == (int)DicEnum.CONTRACT_TYPE.BLOCK_HOURS)
+                deduction.quantity = adjustNum;
+            cadDal.Insert(deduction);
+            OperLogBLL.OperLogAdd<crm_account_deduction>(deduction, deduction.id, userId, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "");
+
+            // 如果预付时间表可用余额为0，则将其状态置为关闭；如果余额从0变为大于0，状态位关闭，将其变为激活   - todo
+            return true;
+        }
+        /// <summary>
+        /// 归零选择的相关条目
+        /// </summary>
+        public bool ZeroDeduction(string dedIds,long userId)
+        {
+            // 预付时间/预付费用调整后的余额不能小于0，也不可以大于购买的初始数。  - todo
+
+            if (string.IsNullOrEmpty(dedIds))
+                return false;
+
+            string[] dedIdArr = dedIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            crm_account_deduction_dal cadDal = new crm_account_deduction_dal();
+            ContractBlockBLL cbBll = new ContractBlockBLL();
+            WorkEntryBLL entryBll = new WorkEntryBLL();
+            TicketBLL ticBll = new TicketBLL();
+            foreach (string dedId in dedIdArr)
+            {
+                crm_account_deduction oldDed = cadDal.FindNoDeleteById(long.Parse(dedId));
+                if (oldDed == null)
+                    continue;
+                //if (oldDed.contract_block_id == null)
+                //    continue;
+                //ctt_contract_block block = cbBll.GetBlockById((long)oldDed.contract_block_id);
+                //if (block == null)
+                //    continue;
+                if (oldDed.object_id == null)
+                    continue;
+                sdk_work_entry entry = entryBll.GetEntryById((long)oldDed.object_id);
+                if (entry == null)
+                    continue;
+                sdk_task task = ticBll.GetTask(entry.task_id);
+                if (task == null)
+                    continue;
+                crm_account_deduction deduction = new crm_account_deduction()
+                {
+                    id = cadDal.GetNextIdCom(),
+                    type_id = (int)(int)ACCOUNT_DEDUCTION_TYPE.LABOUR_AJUST,
+                    object_id = entry.id,
+                    posted_date = DateTime.Now,
+                    contract_id = entry.contract_id,
+                    task_id = entry.task_id,
+                    account_id = task.account_id,
+                    parent_id = oldDed.id,
+                    create_user_id = userId,
+                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(),
+                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(),
+                    update_user_id = userId,
+                };
+                cadDal.Insert(deduction);
+                OperLogBLL.OperLogAdd<crm_account_deduction>(deduction, deduction.id, userId, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "");
+                // extended_price    quantity  总价，数量 待确定
+
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 调整此行
+        /// </summary>
+        public bool AjustDeduction(long itemId,decimal adjustHours,decimal adjustAmount,string reason,long userId)
+        {
+            crm_account_deduction oldDed = GetDeduction(itemId);
+            if (oldDed == null)
+                return false;
+            // 预付时间/预付费用调整后的余额不能小于0，也不可以大于购买的初始数。 - todo 校验
+            crm_account_deduction_dal cadDal = new crm_account_deduction_dal();
+
+            crm_account_deduction deduction = new crm_account_deduction()
+            {
+                id = cadDal.GetNextIdCom(),
+                type_id = (int)(int)ACCOUNT_DEDUCTION_TYPE.LABOUR_AJUST,
+                //object_id = entry.id,
+                //posted_date = DateTime.Now,
+                //contract_id = entry.contract_id,
+                //task_id = entry.task_id,
+                //account_id = task.account_id,
+                //parent_id = oldDed.id,
+                create_user_id = userId,
+                create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(),
+                update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(),
+                update_user_id = userId,
+            };
+            cadDal.Insert(deduction);
+            OperLogBLL.OperLogAdd<crm_account_deduction>(deduction, deduction.id, userId, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "");
+
+            return true;
+        }
+        /// <summary>
+        ///校验预付费的余额  如果预付时间/预付费用可用余额为0，则将其状态置为关闭；如果余额从0变为大于0，状态位关闭，将其变为激活
+        /// </summary>
+        public bool CheckBlockBalance(long blockId,long userId)
+        {
+            
+
+
+            return true;
+        }
     }
 }

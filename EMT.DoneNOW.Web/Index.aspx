@@ -277,6 +277,22 @@
                                                 </div>
                                               
                                             </div>
+                                             <div class="Group">
+                                                <div class="Heading">
+                                                    <div class="Text">报表</div>
+                                                </div>
+                                                
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage" target="PageFrame">
+                                                        <span class="Text">报表</span>
+                                                    </a>
+                                                </div>
+                                                 <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CRM_MY_ACCOUNT_TICKET %>" target="PageFrame">
+                                                        <span class="Text">我的客户的工单</span>
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -355,6 +371,17 @@
                                                 </div>
                                                 <%} %>
                                             </div>
+                                            <div class="Group">
+                                                <div class="Heading">
+                                                    <div class="Text">报表</div>
+                                                </div>
+                                                
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage?SearchType=ContractBill" target="PageFrame">
+                                                        <span class="Text">报表</span>
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -368,6 +395,11 @@
                                             <div class="Group">
                                                 <div class="Heading">
                                                     <div class="Text">视图</div>
+                                                </div>
+                                                 <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Project/ProjectDashboard.aspx" target="PageFrame">
+                                                        <span class="Text">仪表板</span>
+                                                    </a>
                                                 </div>
                                             </div>
                                             <div class="Group">
@@ -395,9 +427,15 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                            <div class="Group">
+                                             <div class="Group">
                                                 <div class="Heading">
-                                                    <div class="Text">工具</div>
+                                                    <div class="Text">报表</div>
+                                                </div>
+                                                
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage?SearchType=Project" target="PageFrame">
+                                                        <span class="Text">报表</span>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -448,7 +486,17 @@
                                                     </a>
                                                 </div>
                                             </div>
-
+                                            <div class="Group">
+                                                <div class="Heading">
+                                                    <div class="Text">报表</div>
+                                                </div>
+                                                
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage?SearchType=ServiceDesk" target="PageFrame">
+                                                        <span class="Text">报表</span>
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -520,9 +568,15 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                            <div class="Group">
+                                           <div class="Group">
                                                 <div class="Heading">
                                                     <div class="Text">报表</div>
+                                                </div>
+                                                
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage?SearchType=LabourExpense" target="PageFrame">
+                                                        <span class="Text">报表</span>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -632,9 +686,15 @@
                                                 </div>
                                                 <%} %>
                                             </div>
-                                            <div class="Group">
+                                           <div class="Group">
                                                 <div class="Heading">
-                                                    <div class="Text">工具</div>
+                                                    <div class="Text">报表</div>
+                                                </div>
+                                                
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage?SearchType=Other" target="PageFrame">
+                                                        <span class="Text">报表</span>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>

@@ -107,6 +107,7 @@
 <script src="../Scripts/jquery-3.1.0.min.js"></script>
 <script src="../Scripts/common.js"></script>
 <script>
+    var entityid = "";
     $(function () {
         var data = <%=cateList==null?"":new EMT.Tools.Serialize().SerializeJson(cateList) %>;
        
@@ -180,7 +181,7 @@
         $(".treep").click(function () {
             ShowProduct($(this).data("id"));
         })
-        var entityid = "";
+        
         var Times = 0;
         $(".treep").bind("contextmenu", function (event) {
             clearInterval(Times);

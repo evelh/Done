@@ -4608,5 +4608,7 @@ namespace EMT.DoneNOW.BLL
             }
             return resList;
         }
+
+        public sdk_task GetTask(long id) => _dal.FindNoDeleteById(id);
     }
 }

@@ -213,6 +213,7 @@
     <Content Include="Content\sysset_user.css" />
     <Content Include="Content\Ticket.css" />
     <Content Include="Content\TicketLabour.css" />
+    <Content Include="Contract\AdjustLabour.aspx" />
     <Content Include="General\GeneralManage.aspx" />
     <Content Include="Images\ButtonIcons.svg" />
     <Content Include="Images\dashboard_administration.png" />
@@ -1551,6 +1552,13 @@
     </Compile>
     <Compile Include="Contract\AdjustExtendedPrice.aspx.designer.cs">
       <DependentUpon>AdjustExtendedPrice.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\AdjustLabour.aspx.cs">
+      <DependentUpon>AdjustLabour.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\AdjustLabour.aspx.designer.cs">
+      <DependentUpon>AdjustLabour.aspx</DependentUpon>
     </Compile>
     <Compile Include="Contract\AdjustService.aspx.cs">
       <DependentUpon>AdjustService.aspx</DependentUpon>

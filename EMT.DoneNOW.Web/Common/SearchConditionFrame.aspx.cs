@@ -101,6 +101,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.CONTRACT_MILESTONE:
                     currentQuery.page_name = "里程碑状态管理";
                     break;
+                case (int)DicEnum.QUERY_CATE.REPORT_CRM_MY_ACCOUNT_TICKET:
+                    currentQuery.page_name = "我的客户的工单";
+                    break;
                 case (int)DicEnum.QUERY_CATE.PRODUCT:
                     currentQuery.page_name = "产品管理";
                     break;

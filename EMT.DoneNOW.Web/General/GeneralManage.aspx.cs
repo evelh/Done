@@ -23,9 +23,10 @@ namespace EMT.DoneNOW.Web.General
         protected List<d_cost_code> codeList;
         protected void Page_Load(object sender, EventArgs e)
         {
-            long id = 0;
+            
             if (!string.IsNullOrEmpty(Request.QueryString["tableId"]))
                 int.TryParse(Request.QueryString["tableId"],out tableId);
+            long id = 0;
             if (!string.IsNullOrEmpty(Request.QueryString["id"]) && long.TryParse(Request.QueryString["id"], out id))
                 thisGeneral = genBll.GetSingleGeneral(id);
             long parentId = 0;

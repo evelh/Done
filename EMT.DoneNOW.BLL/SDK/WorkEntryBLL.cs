@@ -13,6 +13,8 @@ namespace EMT.DoneNOW.BLL
     {
         private sdk_work_entry_dal dal = new sdk_work_entry_dal();
 
+        public sdk_work_entry GetEntryById(long id) => dal.FindNoDeleteById(id);
+
         /// <summary>
         /// 获取工时可选的工作类型，排除年休假、私人时间、浮动时间三项
         /// </summary>
