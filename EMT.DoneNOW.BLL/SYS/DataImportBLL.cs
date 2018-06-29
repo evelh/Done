@@ -916,16 +916,93 @@ namespace EMT.DoneNOW.BLL
             }
 
             string crtval;
-            long cfgId;
+            long cfgId; // 配置项id
+            long actId; // 客户id
+            long pdtId; // 产品id
             bool exist = false;
             int idxtmp;
+            int intval;
+            decimal decimalval;
             string valtmp;
+            long timeval = Tools.Date.DateHelper.ToUniversalTimeStamp();
 
             string sqlcfg = null;
+            string sqlcfgtmp = null;
             string sqlcfgUdf = null;
             string sqlpdt = null;
+            string sqlpdtUdf = null;
+            string sqlsub = null;
+            string sqlsubtmp = null;
 
-            // 判断是否有匹配
+            // 新增或获取产品信息
+            int idxPdtName = lstCfg.FindIndex(_ => _.field == "product_id");
+            crtval = aryline[idxPdtName];   // 产品名称
+            var pdtlist = udfDal.FindListBySql<ivt_product>($"select * from ivt_product where name='{crtval}' and delete_time=0");
+            idxtmp = lstCfg.FindIndex(_ => _.field == "cost_code_id");
+            valtmp = aryline[idxtmp];   // 物料代码
+            if (pdtlist.Count == 0)     // 产品不存在，判断是否新增产品
+            {
+                if (string.IsNullOrEmpty(valtmp))
+                {
+                    logDal.AddFailLog("新增产品需填入物料代码");
+                    return false;
+                }
+                var costcode = udfDal.FindListBySql<d_cost_code>($"select * from d_cost_code where name='{valtmp}' and cate_id={(int)DicEnum.COST_CODE_CATE.MATERIAL_COST_CODE} and delete_time=0");
+                if (costcode.Count == 0)
+                {
+                    logDal.AddFailLog("物料代码不存在");
+                    return false;
+                }
+                if (costcode.Count > 1)
+                {
+                    logDal.AddFailLog("物料代码存在多个");
+                    return false;
+                }
+                pdtId = udfDal.GetNextIdCom();
+                sqlpdt = $"insert into ivt_product (id,name,cost_code_id,create_user_id,update_user_id,create_time,update_time) values ({pdtId},'{crtval}',{costcode[0].id},{userId},{userId},{timeval},{timeval})";
+                sqlpdtUdf = $"insert into ivt_product_ext (id,parent_id,create_user_id,update_user_id,create_time,update_time) values ({udfDal.GetNextIdCom()},{pdtId},{userId},{userId},{timeval},{timeval})";
+            }
+            else
+            {
+                if (pdtlist.Count > 1 && string.IsNullOrEmpty(valtmp))
+                {
+                    logDal.AddFailLog("产品存在多个");
+                    return false;
+                }
+                else if (pdtlist.Count > 1)
+                {
+                    var costcode = udfDal.FindListBySql<d_cost_code>($"select * from d_cost_code where name='{valtmp}' and cate_id={(int)DicEnum.COST_CODE_CATE.MATERIAL_COST_CODE} and delete_time=0");
+                    if (costcode.Count != 1)
+                    {
+                        logDal.AddFailLog("产品存在多个");
+                        return false;
+                    }
+                    var pdt = pdtlist.Find(_ => _.cost_code_id == costcode[0].id);
+                    if (pdt == null)
+                    {
+                        logDal.AddFailLog("产品不存在");
+                        return false;
+                    }
+                    pdtId = pdt.id;
+                }
+                else
+                {
+                    pdtId = pdtlist[0].id;
+                }
+            }
+
+            // 获取客户
+            int idxActName = lstCfg.FindIndex(_ => _.field == "account_id");
+            crtval = aryline[idxActName];   // 客户名称
+            var actlist = udfDal.FindSignleBySql<crm_account>($"select * from crm_account where name='{crtval}' and delete_time=0");
+            if (actlist == null)
+            {
+                logDal.AddFailLog("客户不存在");
+                return false;
+            }
+            actId = actlist.id;
+
+            // 根据id判断是否有匹配
             crtval = aryline[0];
             if (!string.IsNullOrEmpty(crtval))
             {
@@ -942,31 +1019,443 @@ namespace EMT.DoneNOW.BLL
                 }
                 exist = true;
             }
-            int idxPdtName = lstCfg.FindIndex(_ => _.field == "product_id");
-            int idxActName = lstCfg.FindIndex(_ => _.field == "account_id");
-            crtval = aryline[idxPdtName];
-            var pdtlist = udfDal.FindListBySql<ivt_product>($"select * from ivt_product where name='{crtval}' and delete_time=0");
-            if (pdtlist.Count == 0)     // 产品不存在，判断是否新增产品
+            // 根据客户名、产品名和序列号匹配
+            else
             {
-                idxtmp = lstCfg.FindIndex(_ => _.field == "cost_code_id");
-                valtmp = aryline[idxtmp];
-                if (string.IsNullOrEmpty(valtmp))
+                idxtmp = lstCfg.FindIndex(_ => _.field == "serial_number");
+                if (!string.IsNullOrEmpty(aryline[idxtmp]))
                 {
-                    logDal.AddFailLog("新增产品需填入物料代码");
+                    valtmp = $"select * from crm_installed_product where account_id={actId} and product_id={pdtId} and serial_number='{aryline[idxtmp]}' and delete_time=0";
+                }
+                else
+                {
+                    valtmp = $"select * from crm_installed_product where account_id={actId} and product_id={pdtId} and (serial_number is null or serial_number='') and delete_time=0";
+                }
+                var cfglist = udfDal.FindListBySql<crm_installed_product>(valtmp);
+                if (cfglist.Count > 1)
+                {
+                    logDal.AddFailLog("匹配到多个配置项");
                     return false;
                 }
-
-            }
-            if (!exist)
-            {
-                int idxSerNum = lstCfg.FindIndex(_ => _.field == "serial_number");
-                if (!string.IsNullOrEmpty(aryline[idxSerNum]))
+                if (cfglist.Count == 1 && !isUpdate)
                 {
+                    logDal.AddFailLog("配置项已存在");
+                    return false;
+                }
+                if (cfglist.Count == 1)
+                {
+                    exist = true;
+                    cfgId = cfglist[0].id;
+                }
+                else
+                    cfgId = udfDal.GetNextIdCom();
+            }
 
+            if (exist)
+            {
+                sqlcfg = $"update crm_installed_product set product_id={pdtId},account_id={actId}";
+            }
+            else
+            {
+                sqlcfg = "insert into crm_installed_product (id,product_id,account_id,create_user_id,update_user_id,create_time,update_time";
+                sqlcfgtmp = $"{cfgId},{pdtId},{actId},{userId},{userId},{timeval},{timeval}";
+                sqlsub = "insert into crm_subscription (id,installed_product_id,create_user_id,update_user_id,create_time,update_time";
+                sqlsubtmp = $"{udfDal.GetNextIdCom()},{cfgId},{userId},{userId},{timeval},{timeval}";
+            }
+
+            // 是否新增订阅
+            bool addsub = !exist;
+            for (int i = 0; i < lstCfg.Count; i++)
+            {
+                crtval = aryline[i];
+
+                if (lstCfg[i].field.IndexOf("crm_subscription:") >= 0)  // 订阅信息
+                {
+                    if (!addsub)
+                        continue;
+                    if (lstCfg[i].name.IndexOf("新增订阅必填") > 0 && string.IsNullOrEmpty(crtval))    // 必填项未填
+                    {
+                        addsub = false;
+                        continue;
+                    }
+
+                    string field = lstCfg[i].field.Split(':')[1];   // 订阅字段名
+                    if (lstCfg[i].type == ImportFieldType.String)
+                    {
+                        sqlsub += $",{field}";
+                        sqlsubtmp += $",{crtval}";
+                    }
+                    else if (lstCfg[i].type == ImportFieldType.Decimal)
+                    {
+                        if (!decimal.TryParse(crtval, out decimalval))
+                        {
+                            logDal.AddFailLog($"{lstCfg[i].name}字段格式错误，应为小数数字");
+                            return false;
+                        }
+                        sqlsub += $",{field}";
+                        sqlsubtmp += $",'{decimalval}'";
+                    }
+                    else if (lstCfg[i].type == ImportFieldType.Date)
+                    {
+                        DateTime dttmp;
+                        if (!DateTime.TryParse(crtval, out dttmp))
+                        {
+                            logDal.AddFailLog($"{lstCfg[i].name}字段格式错误，应为日期时间");
+                            return false;
+                        }
+                        sqlsub += $",{field}";
+                        sqlsubtmp += $",'{dttmp}'";
+                    }
+                    else    // 字典项
+                    {
+                        if (field == "period_type_id")
+                        {
+                            var dics = new GeneralBLL().GetDicValues(GeneralTableEnum.QUOTE_ITEM_PERIOD_TYPE);
+                            var finddic = dics.FindAll(_ => _.show.Equals(crtval));
+                            if (finddic.Count == 0)
+                            {
+                                logDal.AddFailLog($"{crtval}周期类型不存在");
+                                return false;
+                            }
+                            else if (finddic.Count > 1)
+                            {
+                                logDal.AddFailLog($"{crtval}周期类型找到多个");
+                                return false;
+                            }
+                            sqlsub += $",{field}";
+                            sqlsubtmp += $",'{finddic[0].val}'";
+                        }
+                        else if (field == "cost_code_id")
+                        {
+                            var costcode = udfDal.FindListBySql<d_cost_code>($"select * from d_cost_code where name='{crtval}' and cate_id={(int)DicEnum.COST_CODE_CATE.MATERIAL_COST_CODE} and delete_time=0");
+                            if (costcode.Count == 0)
+                            {
+                                logDal.AddFailLog("订阅物料代码不存在");
+                                return false;
+                            }
+                            if (costcode.Count > 1)
+                            {
+                                logDal.AddFailLog("订阅物料代码存在多个");
+                                return false;
+                            }
+                            sqlsub += $",{field}";
+                            sqlsubtmp += $",'{costcode[0].id}'";
+                        }
+                        else if (field == "status_id")
+                        {
+                            if (crtval == "未激活")
+                                intval = 0;
+                            else if (crtval == "已激活")
+                                intval = 1;
+                            else if (crtval == "已取消")
+                                intval = 2;
+                            else
+                            {
+                                logDal.AddFailLog("订阅状态包括：未激活、已激活、已取消");
+                                return false;
+                            }
+                            sqlsub += $",{field}";
+                            sqlsubtmp += $",'{intval}'";
+                        }
+                    }
+                    continue;
+                }
+
+                if (string.IsNullOrEmpty(crtval))
+                {
+                    continue;
+                }
+
+                if (lstCfg[i].type == ImportFieldType.String)
+                {
+                    if (exist)
+                        sqlcfg += $",{lstCfg[i].field}='{crtval}'";
+                    else
+                    {
+                        sqlcfg += $",{lstCfg[i].field}";
+                        sqlcfgtmp += $",'{crtval}'";
+                    }
+                }
+                else if (lstCfg[i].type == ImportFieldType.Decimal)
+                {
+                    if (!decimal.TryParse(crtval, out decimalval))
+                    {
+                        logDal.AddFailLog($"{lstCfg[i].name}字段格式错误，应为小数数字");
+                        return false;
+                    }
+                    if (exist)
+                        sqlcfg += $",{lstCfg[i].field}='{decimalval}'";
+                    else
+                    {
+                        sqlcfg += $",{lstCfg[i].field}";
+                        sqlcfgtmp += $",'{decimalval}'";
+                    }
+                }
+                else if (lstCfg[i].type == ImportFieldType.Check)
+                {
+                    if (crtval == "是")
+                        intval = 1;
+                    else if (crtval == "否")
+                        intval = 0;
+                    else
+                    {
+                        logDal.AddFailLog($"{lstCfg[i].name}字段格式错误，应为'是'或'否'");
+                        return false;
+                    }
+
+                    if (exist)
+                        sqlcfg += $",{lstCfg[i].field}='{intval}'";
+                    else
+                    {
+                        sqlcfg += $",{lstCfg[i].field}";
+                        sqlcfgtmp += $",'{intval}'";
+                    }
+                }
+                else if (lstCfg[i].type == ImportFieldType.Date)
+                {
+                    DateTime dttmp;
+                    if (!DateTime.TryParse(crtval, out dttmp))
+                    {
+                        logDal.AddFailLog($"{lstCfg[i].name}字段格式错误，应为日期时间");
+                        return false;
+                    }
+                    if (exist)
+                        sqlcfg += $",{lstCfg[i].field}='{dttmp}'";
+                    else
+                    {
+                        sqlcfg += $",{lstCfg[i].field}";
+                        sqlcfgtmp += $",'{dttmp}'";
+                    }
+                }
+                else if (lstCfg[i].type == ImportFieldType.Dictionary && lstCfg[i].dic != 0)     // 通用字典
+                {
+                    var dics = new GeneralBLL().GetDicValues(lstCfg[i].dic);
+                    var finddic = dics.FindAll(_ => _.show.Equals(crtval));
+                    if (finddic.Count == 0)
+                    {
+                        logDal.AddFailLog($"{lstCfg[i].name}字段找不到对应字典项");
+                        return false;
+                    }
+                    else if (finddic.Count > 1)
+                    {
+                        logDal.AddFailLog($"{lstCfg[i].name}字段找到多个字典项");
+                        return false;
+                    }
+                    if (exist)
+                        sqlcfg += $",{lstCfg[i].field}='{finddic[0].val}'";
+                    else
+                    {
+                        sqlcfg += $",{lstCfg[i].field}";
+                        sqlcfgtmp += $",'{finddic[0].val}'";
+                    }
+                }
+                else
+                {
+                    if (lstCfg[i].field == "contact_id")
+                    {
+                        var cls = udfDal.FindListBySql<crm_contact>($"select * from crm_contact where name='{crtval}' and delete_time=0");
+                        if (cls.Count == 0)
+                        {
+                            logDal.AddFailLog($"{lstCfg[i].name}联系人不存在");
+                            return false;
+                        }
+                        else if (cls.Count > 1)
+                        {
+                            logDal.AddFailLog($"{lstCfg[i].name}联系人存在多个");
+                            return false;
+                        }
+                        if (exist)
+                            sqlcfg += $",{lstCfg[i].field}='{cls[0].id}'";
+                        else
+                        {
+                            sqlcfg += $",{lstCfg[i].field}";
+                            sqlcfgtmp += $",'{cls[0].id}'";
+                        }
+                    }
+                    if (lstCfg[i].field == "contract_id")
+                    {
+                        var cls = udfDal.FindListBySql<ctt_contract>($"select * from ctt_contract where name='{crtval}' and delete_time=0");
+                        if (cls.Count == 0)
+                        {
+                            logDal.AddFailLog($"{lstCfg[i].name}合同不存在");
+                            return false;
+                        }
+                        else if (cls.Count > 1)
+                        {
+                            logDal.AddFailLog($"{lstCfg[i].name}合同存在多个");
+                            return false;
+                        }
+                        if (exist)
+                            sqlcfg += $",{lstCfg[i].field}='{cls[0].id}'";
+                        else
+                        {
+                            sqlcfg += $",{lstCfg[i].field}";
+                            sqlcfgtmp += $",'{cls[0].id}'";
+                        }
+                    }
+                    if (lstCfg[i].field == "service_id")
+                    {
+                        var cls = udfDal.FindListBySql<ivt_service>($"select * from ivt_service where name='{crtval}' and delete_time=0");
+                        if (cls.Count == 0)
+                        {
+                            logDal.AddFailLog($"{lstCfg[i].name}服务不存在");
+                            return false;
+                        }
+                        else if (cls.Count > 1)
+                        {
+                            logDal.AddFailLog($"{lstCfg[i].name}服务存在多个");
+                            return false;
+                        }
+                        if (exist)
+                            sqlcfg += $",{lstCfg[i].field}='{cls[0].id}'";
+                        else
+                        {
+                            sqlcfg += $",{lstCfg[i].field}";
+                            sqlcfgtmp += $",'{cls[0].id}'";
+                        }
+                    }
+                    if (lstCfg[i].field == "service_bundle_id")
+                    {
+                        var cls = udfDal.FindListBySql<ivt_service_bundle>($"select * from ivt_service_bundle where name='{crtval}' and delete_time=0");
+                        if (cls.Count == 0)
+                        {
+                            logDal.AddFailLog($"{lstCfg[i].name}服务集不存在");
+                            return false;
+                        }
+                        else if (cls.Count > 1)
+                        {
+                            logDal.AddFailLog($"{lstCfg[i].name}服务集存在多个");
+                            return false;
+                        }
+                        if (exist)
+                            sqlcfg += $",{lstCfg[i].field}='{cls[0].id}'";
+                        else
+                        {
+                            sqlcfg += $",{lstCfg[i].field}";
+                            sqlcfgtmp += $",'{cls[0].id}'";
+                        }
+                    }
+                    if (lstCfg[i].field == "vendor_account_id")
+                    {
+                        var cls = udfDal.FindListBySql<long>($"select id from crm_account where name='{crtval}' and type_id={(int)DicEnum.ACCOUNT_TYPE.MANUFACTURER} and delete_time=0");
+                        if (cls.Count == 0)
+                        {
+                            logDal.AddFailLog($"{lstCfg[i].name}供应商不存在");
+                            return false;
+                        }
+                        else if (cls.Count > 1)
+                        {
+                            logDal.AddFailLog($"{lstCfg[i].name}供应商存在多个");
+                            return false;
+                        }
+                        if (exist)
+                            sqlcfg += $",{lstCfg[i].field}='{cls[0]}'";
+                        else
+                        {
+                            sqlcfg += $",{lstCfg[i].field}";
+                            sqlcfgtmp += $",'{cls[0]}'";
+                        }
+                    }
+                    if (lstCfg[i].field == "parent_id")
+                    {
+                        var cls = udfDal.FindListBySql<crm_installed_product>($"select * from crm_installed_product where serial_number='{crtval}' and account_id={actId} and delete_time=0");
+                        if (cls.Count == 0)
+                        {
+                            logDal.AddFailLog($"上级配置项序列号{crtval}不存在");
+                            return false;
+                        }
+                        else if (cls.Count > 1)
+                        {
+                            logDal.AddFailLog($"上级配置项序列号{crtval}存在多个");
+                            return false;
+                        }
+                        if (exist)
+                            sqlcfg += $",{lstCfg[i].field}='{cls[0].id}'";
+                        else
+                        {
+                            sqlcfg += $",{lstCfg[i].field}";
+                            sqlcfgtmp += $",'{cls[0].id}'";
+                        }
+                    }
                 }
             }
 
-            return true;
+            if (exist)
+            {
+                sqlcfg += $" where id={cfgId}";
+            }
+            else
+            {
+                sqlcfg = $"{sqlcfg}) values ({sqlcfgtmp})";
+                if (!string.IsNullOrEmpty(sqlsub) && addsub)
+                    sqlsub = $"{sqlsub}) values ({sqlsubtmp})";
+            }
+
+            // 配置项自定义
+            sqlcfgUdf = "";
+            sqlcfgtmp = "";
+            for (int i = 0; i < udfCfg.Count; i++)
+            {
+                crtval = aryline[lstCfg.Count + i];
+                if (string.IsNullOrEmpty(crtval))
+                {
+                    continue;
+                }
+
+                if (exist)
+                {
+                    sqlcfgUdf += $"{udfCfg[i].field}='{crtval}',";
+                }
+                else
+                {
+                    sqlcfgUdf += $"{udfCfg[i].field},";
+                    sqlcfgtmp += $"'{crtval}',";
+                }
+                
+            }
+            if (!string.IsNullOrEmpty(sqlcfgUdf))
+            {
+                sqlcfgUdf = sqlcfgUdf.Remove(sqlcfgUdf.Length - 1);
+                if (exist)
+                {
+                    sqlcfgUdf = "update crm_installed_product_ext set " + sqlcfgUdf + " where parent_id=" + cfgId;
+                }
+                else
+                {
+                    sqlcfgtmp = sqlcfgtmp.Remove(sqlcfgtmp.Length - 1);
+                    sqlcfgUdf = $"insert into crm_installed_product_ext (id,parent_id,{sqlcfgUdf}) values ({udfDal.GetNextIdCom()},{cfgId},{sqlcfgtmp})";
+                }
+            }
+            else if (!exist)
+            {
+                sqlcfgUdf = $"insert into crm_installed_product_ext (id,parent_id) values ({udfDal.GetNextIdCom()},{cfgId})";
+            }
+
+            List<string> sqls = new List<string>();
+            if (!string.IsNullOrEmpty(sqlpdt))
+            {
+                sqls.Add(sqlpdt);
+
+                if (!string.IsNullOrEmpty(sqlpdtUdf))
+                    sqls.Add(sqlpdtUdf);
+            }
+            sqls.Add(sqlcfg);
+            if (!string.IsNullOrEmpty(sqlcfgUdf))
+                sqls.Add(sqlcfgUdf);
+            if (addsub)
+            {
+                if (!string.IsNullOrEmpty(sqlsub))
+                    sqls.Add(sqlsub);
+            }
+
+            if (udfDal.SQLTransaction(null, sqls.ToArray()))
+            {
+                logDal.AddSuccessLog();
+                return true;
+            }
+
+            logDal.AddFailLog("出现错误！");
+            return false;
         }
 
         #endregion
@@ -1115,7 +1604,7 @@ namespace EMT.DoneNOW.BLL
             list.Add(new ImportFieldStruct { name = "服务", field = "service_id", type = ImportFieldType.Dictionary });
             list.Add(new ImportFieldStruct { name = "服务集", field = "service_bundle_id", type = ImportFieldType.Dictionary });
             list.Add(new ImportFieldStruct { name = "供应商", field = "vendor_account_id", type = ImportFieldType.Dictionary });
-            list.Add(new ImportFieldStruct { name = "上级配置项序列号", field = "parent_id" });
+            list.Add(new ImportFieldStruct { name = "上级配置项序列号", field = "parent_id", type = ImportFieldType.Dictionary });
             list.Add(new ImportFieldStruct { name = "备注", field = "remark" });
             list.Add(new ImportFieldStruct { name = "每小时成本", field = "hourly_cost", type= ImportFieldType.Decimal });
             list.Add(new ImportFieldStruct { name = "日成本", field = "daily_cost", type = ImportFieldType.Decimal });
