@@ -101,6 +101,7 @@
     <Compile Include="CTT\ctt_invoice_detail.cs" />
     <Compile Include="CTT\v_contract_summary.cs" />
     <Compile Include="CTT\v_pending_all.cs" />
+    <Compile Include="CTT\v_widget_posted_item.cs" />
     <Compile Include="Dictionary\d_change_board.cs" />
     <Compile Include="Dictionary\d_change_board_person.cs" />
     <Compile Include="Dictionary\d_cost_code_rule.cs" />

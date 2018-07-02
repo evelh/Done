@@ -1845,7 +1845,7 @@ namespace EMT.DoneNOW.BLL
                             update_user_id = user.id,
                             create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
                             update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
-                            r_id = project_id,
+                            object_id = project_id,
                         };
 
 

@@ -43,7 +43,7 @@ namespace EMT.DoneNOW.BLL
                 return false;
             //  var arr = param.ids.Split(new char[]{','}, StringSplitOptions.RemoveEmptyEntries);
             //if (arr != null && arr.Count() > 0)
-            if(!string.IsNullOrEmpty(param.ids))
+            if (!string.IsNullOrEmpty(param.ids))
             {
                 var invoiceBatch = _dal.GetNextIdInvBat();
                 param.invoice_batch = invoiceBatch;
@@ -70,7 +70,7 @@ namespace EMT.DoneNOW.BLL
                             var billToThisNoPurOrdList = thisAccDtoList.Where(_ => string.IsNullOrEmpty(_.purchase_order_no) && _.account_id != item.Key && _.bill_account_id == item.Key).ToList();
                             var totalHtml = ReturnTotalHtml(thisNoPurOrdList, billToThisNoPurOrdList, account);
                             StringBuilder thisIds = new StringBuilder();
-                            if(thisNoPurOrdList!=null&& thisNoPurOrdList.Count > 0)
+                            if (thisNoPurOrdList != null && thisNoPurOrdList.Count > 0)
                             {
                                 thisNoPurOrdList.ForEach(_ => thisIds.Append(_.id.ToString() + ","));
                             }
@@ -81,7 +81,7 @@ namespace EMT.DoneNOW.BLL
                             var stringIds = thisIds.ToString();
                             if (!string.IsNullOrEmpty(stringIds))
                             {
-                                stringIds = stringIds.Substring(0, stringIds.Length-1);
+                                stringIds = stringIds.Substring(0, stringIds.Length - 1);
                                 param.thisIds = stringIds;
                             }
                             #endregion
@@ -90,7 +90,7 @@ namespace EMT.DoneNOW.BLL
                             {
                                 continue;
                             }
-                            var invoiceNo= _dal.GetNextIdInvNo().ToString();
+                            var invoiceNo = _dal.GetNextIdInvNo().ToString();
                             param.invoiceNo = invoiceNo;
                             var invocie = new ctt_invoice()
                             {
@@ -107,11 +107,11 @@ namespace EMT.DoneNOW.BLL
                                 payment_term_id = param.payment_term_id,
                                 purchase_order_no = "",
                                 invoice_template_id = param.invoice_template_id,
-                                page_header_html =  GetVarSub(temp.page_header_html, user, account, param),
+                                page_header_html = GetVarSub(temp.page_header_html, user, account, param),
                                 page_footer_html = GetVarSub(temp.page_footer_html, user, account, param),
                                 invoice_header_html = GetVarSub(temp.quote_header_html, user, account, param),
-                                invoice_body_html = RetuenBody(thisNoPurOrdList, billToThisNoPurOrdList, temp,account), 
-                                invoice_footer_html = totalHtml+GetVarSub(temp.quote_footer_html, user, account, param),
+                                invoice_body_html = RetuenBody(thisNoPurOrdList, billToThisNoPurOrdList, temp, account),
+                                invoice_footer_html = totalHtml + GetVarSub(temp.quote_footer_html, user, account, param),
                                 invoice_appendix_html = "", // 模板里面没有todo
                                 tax_region_name = account.tax_region_id == null ? "" : new GeneralBLL().GetGeneralName((int)account.tax_region_id),
                                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -155,11 +155,11 @@ namespace EMT.DoneNOW.BLL
                                 remark = "保存发票详情"
                             });
                             int invoice_line = 1;
-                           if(thisNoPurOrdList!=null&& thisNoPurOrdList.Count > 0)
+                            if (thisNoPurOrdList != null && thisNoPurOrdList.Count > 0)
                             {
                                 foreach (var thisDto in thisNoPurOrdList)
                                 {
-                                   var thisacc_ded = cadDal.FindNoDeleteById(thisDto.id);
+                                    var thisacc_ded = cadDal.FindNoDeleteById(thisDto.id);
                                     thisacc_ded.invoice_id = invocie.id;
                                     thisacc_ded.invoice_line_item_no = invoice_line;
                                     invoice_line += 1;
@@ -213,7 +213,7 @@ namespace EMT.DoneNOW.BLL
                                 foreach (var po in poDic)
                                 {
                                     var thisPurOrdList = thisAccDtoList.Where(_ => !string.IsNullOrEmpty(_.purchase_order_no) && _.account_id == item.Key && _.bill_account_id == item.Key).ToList();
-                                    var billToThisPurOrdList = thisAccDtoList.Where(_ =>!string.IsNullOrEmpty(_.purchase_order_no) && _.account_id != item.Key && _.bill_account_id == item.Key).ToList();
+                                    var billToThisPurOrdList = thisAccDtoList.Where(_ => !string.IsNullOrEmpty(_.purchase_order_no) && _.account_id != item.Key && _.bill_account_id == item.Key).ToList();
 
                                     var totalHtml = ReturnTotalHtml(thisPurOrdList, billToThisPurOrdList, account);
                                     StringBuilder thisIds = new StringBuilder();
@@ -248,11 +248,11 @@ namespace EMT.DoneNOW.BLL
                                         payment_term_id = param.payment_term_id,
                                         purchase_order_no = po.Key,
                                         invoice_template_id = param.invoice_template_id,
-                                        page_header_html = GetVarSub(temp.page_header_html, user, account,param),
+                                        page_header_html = GetVarSub(temp.page_header_html, user, account, param),
                                         page_footer_html = GetVarSub(temp.page_footer_html, user, account, param),
                                         invoice_header_html = GetVarSub(temp.quote_header_html, user, account, param),
                                         invoice_body_html = RetuenBody(thisPurOrdList, billToThisPurOrdList, temp, account),
-                                        invoice_footer_html = totalHtml+ GetVarSub(temp.quote_footer_html, user, account, param),
+                                        invoice_footer_html = totalHtml + GetVarSub(temp.quote_footer_html, user, account, param),
                                         invoice_appendix_html = "", // 模板里面没有todo
                                         tax_region_name = account.tax_region_id == null ? "" : new GeneralBLL().GetGeneralName((int)account.tax_region_id),
                                         create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now),
@@ -468,7 +468,7 @@ namespace EMT.DoneNOW.BLL
         }
 
         #region 发票模板中的变量替换--处理发票使用
-        private string GetVarSub(string thisText, UserInfoDto user,crm_account account, InvoiceDealDto param)
+        private string GetVarSub(string thisText, UserInfoDto user, crm_account account, InvoiceDealDto param)
         {
             if (string.IsNullOrEmpty(thisText))
                 return "";
@@ -533,7 +533,7 @@ namespace EMT.DoneNOW.BLL
 
             }
 
-       
+
 
             var companySql = new sys_query_type_user_dal().GetQuerySql(927, 927, user.id, "'{}'", null);
             if (!string.IsNullOrEmpty(companySql))
@@ -579,7 +579,7 @@ namespace EMT.DoneNOW.BLL
                                         thisText = thisText.Replace(t, param.invoiceNo);
                                         break;
                                     case "[发票：日期范围始于]":
-                                        thisText = thisText.Replace(t, param.date_range_from==null?"":((DateTime)param.date_range_from).ToString("yyyy-MM-dd"));
+                                        thisText = thisText.Replace(t, param.date_range_from == null ? "" : ((DateTime)param.date_range_from).ToString("yyyy-MM-dd"));
                                         break;
                                     case "[发票：日期范围至]":
                                         thisText = thisText.Replace(t, param.date_range_to == null ? "" : ((DateTime)param.date_range_to).ToString("yyyy-MM-dd"));
@@ -615,9 +615,9 @@ namespace EMT.DoneNOW.BLL
 
                 }
             }
-          
 
-             var zaSql = new sys_query_type_user_dal().GetQuerySql(913, 913, user.id, "'{}'", null);
+
+            var zaSql = new sys_query_type_user_dal().GetQuerySql(913, 913, user.id, "'{}'", null);
             if (!string.IsNullOrEmpty(zaSql))
             {
                 var varTable = _dal.ExecuteDataTable(zaSql.ToString());
@@ -660,9 +660,9 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 根据模板展示发票的相关内容
         /// </summary>
-        private string RetuenBody(List<InvoiceDeductionDto> thisParamList, List<InvoiceDeductionDto> billTOThisParamList, sys_quote_tmpl temp,crm_account account)
+        private string RetuenBody(List<InvoiceDeductionDto> thisParamList, List<InvoiceDeductionDto> billTOThisParamList, sys_quote_tmpl temp, crm_account account)
         {
-            if (thisParamList != null && thisParamList.Count > 0 && temp != null &&(!string.IsNullOrEmpty(temp.body_html)))
+            if (thisParamList != null && thisParamList.Count > 0 && temp != null && (!string.IsNullOrEmpty(temp.body_html)))
             {
                 var quote_body = new EMT.Tools.Serialize().DeserializeJson<QuoteTemplateAddDto.BODY>(temp.body_html.Replace("'", "\""));
                 if (quote_body.GRID_COLUMN != null && quote_body.GRID_COLUMN.Count > 0)
@@ -714,7 +714,7 @@ namespace EMT.DoneNOW.BLL
                                 {
                                     case "发票中显示序列号，从1开始":
                                         stringBodyHtml.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{AddNum}</td>");
-                                            AddNum++;
+                                        AddNum++;
                                         break;
                                     case "条目创建日期":
                                         stringBodyHtml.Append($"<td class='ReadOnlyGrid_TableOtherColumn ReadOnlyGrid_TableCell'>{param_item.item_date.ToString("yyyy-MM-dd")}</td>");
@@ -792,7 +792,7 @@ namespace EMT.DoneNOW.BLL
                             #region 拼接表格内容
                             foreach (var param_item in billToThis.Value as List<InvoiceDeductionDto>)
                             {
-                              
+
                                 stringBodyHtml.Append("<tbody><tr>");
                                 foreach (var column_item in quote_body.GRID_COLUMN)
                                 {
@@ -940,7 +940,7 @@ namespace EMT.DoneNOW.BLL
             }
             return hours;
         }
-        private string GetTaxCateHtml(List<InvoiceDeductionDto> paramList, List<InvoiceDeductionDto> billTOThisParamList,crm_account account)
+        private string GetTaxCateHtml(List<InvoiceDeductionDto> paramList, List<InvoiceDeductionDto> billTOThisParamList, crm_account account)
         {
             List<long> tacCateList = paramList.Where(_ => _.tax_category_id != null).Select(_ => (long)_.tax_category_id).ToList();  // 所有的税种信息
             List<long> taxRegionList = paramList.Where(_ => _.tax_region_id != null).Select(_ => (long)_.tax_region_id).ToList();    // 所有的税区信息
@@ -1009,7 +1009,7 @@ namespace EMT.DoneNOW.BLL
             var billHours = GetBillHours(paramList, true) + GetBillHours(billTOThisParamList, true); // 计费
             var prepaidHours = GetPrepaidHours(paramList) + GetPrepaidHours(billTOThisParamList);     // 预付费
             var taxCate = "";  // 分税信息的展示
- 
+
             thisHtmlText.Append($"<div><table style = 'width:100%; padding-top:20px; border-collapse:collapse;' ><tbody><tr><td style = 'vertical-align:top;' ></td><td style = 'vertical-align:top;width:300px; '><table class='InvoiceTotalsBlock'><tbody><tr class='invoiceTotalsRow'><td class='invoiceTotalsNameCell'>不计费时间</td><td class='invoiceTotalsValueCell'>{noBillHours.ToString("#0.00")}</td></tr><tr class='invoiceTotalsRow'> <td class='invoiceTotalsNameCell'>预付费时间</td><td class='invoiceTotalsValueCell'>{prepaidHours.ToString("#0.00")}</td></tr><tr class='invoiceTotalsRow'> <td class='invoiceTotalsNameCell'>付费时间汇总</td><td class='invoiceTotalsValueCell'>{billHours.ToString("#0.00")}</td></tr>{totalTaxHtml}<tr class='invoiceTotalsRow'><td class='invoiceTotalsNameCell'>总额汇总</td><td class='invoiceTotalsValueCell'>{totalMoney.ToString("#0.00")}</td></tr><tr class='invoiceTotalsRow'><td class='invoiceGrandTotalNameCell'>总价</td><td class='invoiceGrandTotalValueCell'>{(totalMoney + totalTax).ToString("#0.00")}</td></tr>{taxCate}</tbody></table></td></tr></tbody></table></div>");
             return thisHtmlText.ToString();
         }
@@ -1022,19 +1022,21 @@ namespace EMT.DoneNOW.BLL
             var user = UserInfoBLL.GetUserInfo(user_id);
             if (ci != null && user != null)
             {
-                if (!string.IsNullOrEmpty(number)) {
+                if (!string.IsNullOrEmpty(number))
+                {
                     var kk = _dal.FindSignleBySql<ctt_invoice>($"select * from ctt_invoice where invoice_no='{number}' and delete_time=0");
                     if (kk != null && kk.id != id)
                     {
                         return ERROR_CODE.EXIST;
-                    }                    
+                    }
                 }
                 ci.invoice_no = number;
                 if (!string.IsNullOrEmpty(date))
                 {
                     ci.paid_date = DateTime.ParseExact(date.ToString(), "yyyyMMdd", null).Date;//转换时间格式
                 }
-                else {
+                else
+                {
                     ci.paid_date = null;
                 }
                 ci.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
@@ -1299,12 +1301,19 @@ namespace EMT.DoneNOW.BLL
         /// <param name="isAdd">添加/减少</param>
         /// <param name="adjustNum">调整数量</param>
         /// <param name="reason">调整原因</param>
-        public bool AjustBlock(long blockId,decimal adjustNum,string reason,long userId)
+        public bool AjustBlock(long blockId, decimal adjustNum, string reason, long userId, ref string faileReason)
         {
             ctt_contract_block block = new ContractBlockBLL().GetBlockById(blockId);
-            if (block == null) return false;
+            if (block == null) { faileReason = "未获取到合同预付信息"; return false; }
             ctt_contract contract = new ContractBLL().GetContract(block.contract_id);
-            if (contract == null) return false;
+            if (contract == null) { faileReason = "未获取到合同信息"; return false; }
+            decimal money = 0;
+            if (contract.type_id == (int)CONTRACT_TYPE.RETAINER)
+                money = new ContractBlockBLL().GetBlockBlance(blockId);
+            else if (contract.type_id == (int)CONTRACT_TYPE.BLOCK_HOURS)
+                money = new ContractBlockBLL().GetBlockHoursBlance(blockId);
+            if ((money + adjustNum) < 0)
+            { faileReason = "调整后的余额不能小于零"; return false; }
             //int typeId = 0;
             //if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.BLOCK_HOURS) typeId = (int)ACCOUNT_DEDUCTION_TYPE.PREPAID_TIME_SELF_BILLING;
             int typeId = (int)ACCOUNT_DEDUCTION_TYPE.PREPAID_TIME_SELF_BILLING;
@@ -1323,20 +1332,22 @@ namespace EMT.DoneNOW.BLL
                 update_user_id = userId,
                 contract_block_id = blockId,
             };
-            if(contract.type_id == (int) DicEnum.CONTRACT_TYPE.RETAINER)
+            if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.RETAINER)
                 deduction.extended_price = adjustNum;
-            else if(contract.type_id == (int)DicEnum.CONTRACT_TYPE.BLOCK_HOURS)
+            else if (contract.type_id == (int)DicEnum.CONTRACT_TYPE.BLOCK_HOURS)
                 deduction.quantity = adjustNum;
             cadDal.Insert(deduction);
             OperLogBLL.OperLogAdd<crm_account_deduction>(deduction, deduction.id, userId, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "");
 
-            // 如果预付时间表可用余额为0，则将其状态置为关闭；如果余额从0变为大于0，状态位关闭，将其变为激活   - todo
+            // 如果预付时间表可用余额为0，则将其状态置为关闭；如果余额从0变为大于0，状态位关闭，将其变为激活 
+            CheckBlockBalance(block.id, userId);
+
             return true;
         }
         /// <summary>
         /// 归零选择的相关条目
         /// </summary>
-        public bool ZeroDeduction(string dedIds,long userId)
+        public bool ZeroDeduction(string dedIds, long userId)
         {
             // 预付时间/预付费用调整后的余额不能小于0，也不可以大于购买的初始数。  - todo
 
@@ -1361,11 +1372,36 @@ namespace EMT.DoneNOW.BLL
                 if (oldDed.object_id == null)
                     continue;
                 sdk_work_entry entry = entryBll.GetEntryById((long)oldDed.object_id);
-                if (entry == null)
+                if (entry == null || entry.is_billable != 1)   // 必须是计费工时
                     continue;
                 sdk_task task = ticBll.GetTask(entry.task_id);
                 if (task == null)
                     continue;
+
+                d_general thisTaxCate = null;//税收种类
+                d_general thisTaxRegion = null;//税区
+                decimal? tax_rate = 0;//税率
+                                      // 获取税收种类
+                if (entry.cost_code_id != null)
+                {
+                    var thisCost = new d_cost_code_dal().FindNoDeleteById((long)entry.cost_code_id);
+                    if (thisCost != null && thisCost.tax_category_id != null)
+                        thisTaxCate = new d_general_dal().FindNoDeleteById((long)thisCost.tax_category_id);
+                }
+                var thisAccount = new CompanyBLL().GetCompany(task.account_id);
+                // 获取税收信息
+                if (thisAccount != null && thisAccount.tax_region_id != null)
+                    thisTaxRegion = new d_general_dal().FindNoDeleteById((long)thisAccount.tax_region_id);
+                if (thisTaxCate != null && thisTaxRegion != null)
+                {
+                    var thisTax = new d_tax_region_cate_dal().GetSingleTax(thisTaxRegion.id, thisTaxCate.id);
+                    if (thisTax != null)
+                        tax_rate = thisTax.total_effective_tax_rate;
+                }
+                var vItem = new v_widget_posted_item_dal().FindById(entry.id);
+                decimal? rate = vItem?.rate;
+                var subDedList = cadDal.FindListBySql($"SELECT * from crm_account_deduction where delete_time = 0 and parent_id = {oldDed.id}");
+                decimal? quantity = subDedList?.Sum(_ => _.quantity);
                 crm_account_deduction deduction = new crm_account_deduction()
                 {
                     id = cadDal.GetNextIdCom(),
@@ -1375,6 +1411,14 @@ namespace EMT.DoneNOW.BLL
                     contract_id = entry.contract_id,
                     task_id = entry.task_id,
                     account_id = task.account_id,
+                    extended_price = quantity * rate,
+                    quantity = quantity,
+                    purchase_order_no = task.purchase_order_no,
+                    tax_category_name = thisTaxCate?.name,
+                    tax_region_name = thisTaxRegion?.name,
+                    tax_dollars = entry.hours_billed * rate * tax_rate,
+                    effective_tax_rate = tax_rate,
+                    contract_block_id = oldDed.contract_block_id,
                     parent_id = oldDed.id,
                     create_user_id = userId,
                     create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(),
@@ -1393,24 +1437,81 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 调整此行
         /// </summary>
-        public bool AjustDeduction(long itemId,decimal adjustHours,decimal adjustAmount,string reason,long userId)
+        public bool AjustDeduction(long itemId, decimal adjustHours, decimal adjustAmount, string reason, long userId)
         {
             crm_account_deduction oldDed = GetDeduction(itemId);
             if (oldDed == null)
                 return false;
+            var labour = new WorkEntryBLL().GetEntryById((long)oldDed.object_id);
+            if (labour == null)
+                return false;
+            var ticket = new TicketBLL().GetTask(labour.task_id);
+            if (ticket == null)
+                return false;
+
+            ctt_contract contract = null;
+            if (oldDed.contract_block_id != null)
+            {
+                ctt_contract_block block = new ContractBlockBLL().GetBlockById((long)oldDed.contract_block_id);
+                if (block != null)
+                {
+                    contract = new ContractBLL().GetContract(block.contract_id);
+                }
+
+            }
+            if (contract != null)
+            {
+                decimal money = 0;
+                if (contract?.type_id == (int)CONTRACT_TYPE.RETAINER)
+                    money = new ContractBlockBLL().GetBlockBlance((long)oldDed.contract_block_id);
+                else if (contract?.type_id == (int)CONTRACT_TYPE.BLOCK_HOURS)
+                    money = new ContractBlockBLL().GetBlockHoursBlance((long)oldDed.contract_block_id);
+                if ((money + adjustHours) < 0)
+                { return false; }
+            }
+
             // 预付时间/预付费用调整后的余额不能小于0，也不可以大于购买的初始数。 - todo 校验
             crm_account_deduction_dal cadDal = new crm_account_deduction_dal();
-
+            d_general thisTaxCate = null;//税收种类
+            d_general thisTaxRegion = null;//税区
+            decimal? tax_rate = 0;//税率
+                                  // 获取税收种类
+            if (labour.cost_code_id != null)
+            {
+                var thisCost = new d_cost_code_dal().FindNoDeleteById((long)labour.cost_code_id);
+                if (thisCost != null && thisCost.tax_category_id != null)
+                    thisTaxCate = new d_general_dal().FindNoDeleteById((long)thisCost.tax_category_id);
+            }
+            var thisAccount = new CompanyBLL().GetCompany(ticket.account_id);
+            // 获取税收信息
+            if (thisAccount != null && thisAccount.tax_region_id != null)
+                thisTaxRegion = new d_general_dal().FindNoDeleteById((long)thisAccount.tax_region_id);
+            if (thisTaxCate != null && thisTaxRegion != null)
+            {
+                var thisTax = new d_tax_region_cate_dal().GetSingleTax(thisTaxRegion.id, thisTaxCate.id);
+                if (thisTax != null)
+                    tax_rate = thisTax.total_effective_tax_rate;
+            }
+            var vItem = new v_widget_posted_item_dal().FindById(labour.id);
+            decimal? rate = vItem?.rate;
             crm_account_deduction deduction = new crm_account_deduction()
             {
                 id = cadDal.GetNextIdCom(),
-                type_id = (int)(int)ACCOUNT_DEDUCTION_TYPE.LABOUR_AJUST,
-                //object_id = entry.id,
-                //posted_date = DateTime.Now,
-                //contract_id = entry.contract_id,
-                //task_id = entry.task_id,
-                //account_id = task.account_id,
-                //parent_id = oldDed.id,
+                type_id = (int)ACCOUNT_DEDUCTION_TYPE.LABOUR_AJUST,
+                object_id = labour.id,
+                posted_date = DateTime.Now,
+                contract_id = labour.contract_id,
+                task_id = labour.task_id,
+                account_id = ticket.account_id,
+                extended_price = adjustAmount,
+                quantity = adjustHours,
+                parent_id = oldDed.id,
+                purchase_order_no = ticket.purchase_order_no,
+                tax_category_name = thisTaxCate?.name,
+                tax_region_name = thisTaxRegion?.name,
+                tax_dollars = labour.hours_billed * rate * tax_rate,
+                effective_tax_rate = tax_rate,
+                contract_block_id = oldDed.contract_block_id,
                 create_user_id = userId,
                 create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(),
                 update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(),
@@ -1418,17 +1519,60 @@ namespace EMT.DoneNOW.BLL
             };
             cadDal.Insert(deduction);
             OperLogBLL.OperLogAdd<crm_account_deduction>(deduction, deduction.id, userId, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "");
-
+            if (oldDed.contract_block_id != null)
+                CheckBlockBalance((long)oldDed.contract_block_id, userId);
             return true;
         }
         /// <summary>
         ///校验预付费的余额  如果预付时间/预付费用可用余额为0，则将其状态置为关闭；如果余额从0变为大于0，状态位关闭，将其变为激活
         /// </summary>
-        public bool CheckBlockBalance(long blockId,long userId)
+        public bool CheckBlockBalance(long blockId, long userId)
         {
-            
+            ctt_contract_block block = new ContractBlockBLL().GetBlockById(blockId);
+            if (block == null) return false;
+            ctt_contract contract = new ContractBLL().GetContract(block.contract_id);
+            if (contract == null) return false;
+            decimal money = 0;
+            if (contract.type_id == (int)CONTRACT_TYPE.RETAINER)
+                money = new ContractBlockBLL().GetBlockBlance(blockId);
+            else if (contract.type_id == (int)CONTRACT_TYPE.BLOCK_HOURS)
+                money = new ContractBlockBLL().GetBlockHoursBlance(blockId);
+            sbyte status = 0;
+            if (money > 0)
+                status = 1;
+            if (block.status_id != status)
+            {
+                var oldBlock = new ContractBlockBLL().GetBlockById(blockId);
+                block.status_id = status;
+                block.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                block.update_user_id = userId;
+                new ctt_contract_block_dal().Update(block);
+                OperLogBLL.OperLogUpdate<ctt_contract_block>(block, oldBlock, block.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, "");
+            }
+            return true;
+        }
+        /// <summary>
+        /// 工时调整删除条目
+        /// </summary>
+        public bool DeleteDeduction(long dedId, long userId)
+        {
+            //  删除校验
+            //1)	可执行本操作的条目类型包括：计费工时，不管是否生成发票
+            //2)	调整时该条目的余额非0。因为等于0没必要删除。
 
-
+            var oldDed = GetDeduction(dedId);
+            if (oldDed == null)
+                return false;
+            var labour = new WorkEntryBLL().GetEntryById((long)oldDed.object_id);
+            if (labour == null||labour.is_billable!=1)
+                return false;
+            crm_account_deduction_dal cadDal = new crm_account_deduction_dal();
+            var subDedList = cadDal.FindListBySql($"SELECT * from crm_account_deduction where delete_time = 0 and parent_id = {oldDed.id}");
+            decimal? quantity = subDedList?.Sum(_ => _.quantity);
+            if (oldDed.quantity == quantity)
+                return false;
+            new crm_account_deduction_dal().SoftDelete(oldDed, userId);
+            OperLogBLL.OperLogDelete<crm_account_deduction>(oldDed, oldDed.id, userId, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "");
             return true;
         }
     }

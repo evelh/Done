@@ -413,5 +413,24 @@ namespace EMT.DoneNOW.BLL
             OperLogBLL.OperLogUpdate<ctt_contract_block>(entity, entityOld, entity.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_BLOCK, "修改预付设置为停用状态");
             return true;
         }
+        /// <summary>
+        /// 获取预付费 block 余额
+        /// </summary>
+        public decimal GetBlockBlance(long blockId)
+        {
+            var re = dal.ExecuteDataTable($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0 ),0),2)) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.id={blockId} and b.status_id=1 ");
+            return Convert.ToDecimal(re.Rows[0][0].ToString());
+
+        }
+
+        /// <summary>
+        /// 获取预时间 block 余额
+        /// </summary>
+        public decimal GetBlockHoursBlance(long blockId)
+        {
+            var re = dal.ExecuteDataTable($"SELECT b.id,round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.id={blockId} and b.status_id=1 ");
+            return Convert.ToDecimal(re.Rows[0][0].ToString());
+
+        }
     }
 }
