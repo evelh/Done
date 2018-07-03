@@ -107,6 +107,10 @@
                                             <div class="PageNavigationLink">
                                                 <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_ORGANIZATION %>" target="PageFrame1">区域</a>
                                                 <div class="StandardText"></div>
+                                            </div> 
+                                            <div class="PageNavigationLink">
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_LINES_BUSINESS %>" target="PageFrame1">业务范围</a>
+                                                <div class="StandardText"></div>
                                             </div>
                                         </div>
                                         <div class="PageNavigationLinkColumn">

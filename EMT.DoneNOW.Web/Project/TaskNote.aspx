@@ -127,6 +127,11 @@
                     <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                     <input type="button" id="CloseButton" value="关闭" />
                 </li>
+                <li style="float:right;background: white;border: 0px;display:none;">
+                    <select style="width:200px;" id="fromTmplId" name="fromTmplId">
+                        <option></option>
+                    </select>
+                </li>
             </ul>
         </div>
         <div class="nav-title">

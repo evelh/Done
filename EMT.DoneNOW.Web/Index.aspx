@@ -2577,7 +2577,7 @@
                 success: function (data) {
                     if (data != "") {
                         for (var i = 0; i < data.length; i++) {
-                            bookHtml += "<div class='PageNavigationLink'><p><span style='display:inline-block'><input type='checkbox' value='" + data[i].id + "' class='CkBookMark'  /><span><span><a class='Button ButtonIcon Link NormalState'>" + data[i].title + "</a></span><p></div>";
+                            bookHtml += "<div class='PageNavigationLink'><p><span style='display:inline-block'><input type='checkbox' value='" + data[i].id + "' class='CkBookMark'  /><span><span><a class='Button ButtonIcon Link NormalState' onclick=\"window.open('" + data[i].url + "', '_blank', 'left=0,top=0,location=no,status=no,width=900,height=750', false)\">" + data[i].title + "</a></span><p></div>";
                         }
                     }
                 },

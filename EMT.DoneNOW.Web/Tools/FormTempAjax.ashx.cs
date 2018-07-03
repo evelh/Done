@@ -30,6 +30,9 @@ namespace EMT.DoneNOW.Web
                 case "DeleteTmpl":
                     DeleteTmpl(context);
                     break;
+                case "GetTempObj":
+                    GetTempObj(context);
+                    break;
                 default:break;
             }
         }
@@ -87,6 +90,68 @@ namespace EMT.DoneNOW.Web
                 result = tempBll.DeleteTmpl(long.Parse(id), LoginUserId);
             context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
         }
+        /// <summary>
+        /// 获取模板关联的相关对象
+        /// </summary>
+        public void GetTempObj(HttpContext context)
+        {
+            long id = 0;
+            if(!string.IsNullOrEmpty(context.Request.QueryString["id"])&&long.TryParse(context.Request.QueryString["id"],out id))
+            {
+                var thisTmpl = tempBll.GetTempById(id);
+                switch (thisTmpl.form_type_id)
+                {
+                    case (int)DTO.DicEnum.FORM_TMPL_TYPE.OPPORTUNITY:
+                        var thisOppoTmpl = tempBll.GetOpportunityTmpl(thisTmpl.id);
+                        if (thisOppoTmpl != null)
+                            WriteResponseJson(thisOppoTmpl);
+                        break;
+                    case (int)DTO.DicEnum.FORM_TMPL_TYPE.PROJECT_NOTE:
+                    case (int)DTO.DicEnum.FORM_TMPL_TYPE.TASK_NOTE:
+                    case (int)DTO.DicEnum.FORM_TMPL_TYPE.TICKET_NOTE:
+                        var thisNote = tempBll.GetNoteTmpl(thisTmpl.id);
+                        if (thisNote != null)
+                            WriteResponseJson(thisNote);
+                        break;
+                    case (int)DTO.DicEnum.FORM_TMPL_TYPE.QUICK_CALL:
+                        var thisQuickCallTmpl = tempBll.GetQuickCallTmpl(thisTmpl.id);
+                        if (thisQuickCallTmpl != null)
+                            WriteResponseJson(thisQuickCallTmpl);
+                        break;
+                    case (int)DTO.DicEnum.FORM_TMPL_TYPE.QUOTE:
+                        var thisQuoteTmpl = tempBll.GetQuoteTmpl(thisTmpl.id);
+                        if (thisQuoteTmpl != null)
+                            WriteResponseJson(thisQuoteTmpl);
+                        break;
+                    case (int)DTO.DicEnum.FORM_TMPL_TYPE.RECURRING_TICKET:
+                        var thisRecTicketTmpl = tempBll.GetRecTicketTmpl(thisTmpl.id);
+                        if (thisRecTicketTmpl != null)
+                            WriteResponseJson(thisRecTicketTmpl);
+                        break;
+                    case (int)DTO.DicEnum.FORM_TMPL_TYPE.SERVICE_CALL:
+                        var thisServiceCallTmpl = tempBll.GetServiceCallTmpl(thisTmpl.id);
+                        if (thisServiceCallTmpl != null)
+                            WriteResponseJson(thisServiceCallTmpl);
+                        break;
+                    case (int)DTO.DicEnum.FORM_TMPL_TYPE.TASK_TIME_ENTRY:
+                    case (int)DTO.DicEnum.FORM_TMPL_TYPE.TICKET_TIME_ENTRY:
+                        var thisEntryTmpl = tempBll.GetWorkEntryTmpl(thisTmpl.id);
+                        if (thisEntryTmpl != null)
+                            WriteResponseJson(thisEntryTmpl);
+                        break;
+                    case (int)DTO.DicEnum.FORM_TMPL_TYPE.TICKET:
+                        var thisTicketTmpl = tempBll.GetTicketTmpl(thisTmpl.id);
+                        if (thisTicketTmpl != null)
+                            WriteResponseJson(thisTicketTmpl);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            
+        }
+
+        
 
 
 

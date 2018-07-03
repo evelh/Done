@@ -148,10 +148,10 @@
                             <tbody>
                                 <tr class="dataGridHeader">
                                     <td style="width: 50%;">
-                                        <span>员工名称</span>
+                                        <span>员工姓名</span>
                                     </td>
-                                    <td align="center" style="width: 25%;">领导</td>
-                                    <td align="center" style="width: 25%;">激活</td>
+                                    <td align="center" style="width: 25%;">负责人</td>
+                                    <td align="center" style="width: 25%;">员工状态</td>
                                 </tr>
 
                                 <% if (groupResList != null && groupResList.Count > 0 && resList != null && resList.Count > 0)

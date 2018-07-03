@@ -943,14 +943,7 @@ namespace EMT.DoneNOW.BLL
             // 9)	Configuration Items配置项：逻辑删除
 
             //var user = CachedInfoBLL.GetUserInfo(token);   // 根据token获取到用户信息
-            var user = new UserInfoDto()
-            {
-                id = 1,
-                email = "zhufei@test.com",
-                mobile = "10086",
-                name = "zhufei_test",
-                security_Level_id = 0
-            };
+         
             crm_account account = GetCompany(id);
             if (account == null)
                 return false;
@@ -971,7 +964,7 @@ namespace EMT.DoneNOW.BLL
             {
                 foreach (var contact in contact_list)                                    // 循环联系人，全部逻辑删除
                 {
-                    contact_dal.SoftDelete(contact, user.id);
+                    contact_dal.SoftDelete(contact, user_id);
                     OperLogBLL.OperLogDelete<crm_contact>(contact, contact.id, user_id, OPER_LOG_OBJ_CATE.CONTACTS, "删除联系人信息");
                 }
             }
@@ -985,7 +978,7 @@ namespace EMT.DoneNOW.BLL
                 var installed_product_dal = new crm_installed_product_dal();
                 foreach (var installed_product in installedProductList)
                 {
-                    if (installed_product_dal.SoftDelete(installed_product, user.id))
+                    if (installed_product_dal.SoftDelete(installed_product, user_id))
                     {
                         OperLogBLL.OperLogDelete<crm_installed_product>(installed_product, installed_product.id, user_id, OPER_LOG_OBJ_CATE.CONFIGURAITEM, "删除配置项信息");
                     }
@@ -994,7 +987,24 @@ namespace EMT.DoneNOW.BLL
 
             #endregion
 
-            // todo 其余的逻辑删除
+            FormTemplateBLL ftBll = new FormTemplateBLL();
+            #region 表单模板中的客户置为null
+            sys_form_tmpl_opportunity_dal sftpDal = new sys_form_tmpl_opportunity_dal();
+            var oppoTempList = sftpDal.FindListBySql($"select * from  sys_form_tmpl_opportunity where delete_time =0 and account_id = {account.id}");
+            if (oppoTempList != null && oppoTempList.Count > 0)
+                oppoTempList.ForEach(_ => {
+                    var oldOppoTmpl = ftBll.GetOpportunityTmpl(_.form_tmpl_id);
+                    _.account_id = null;
+                    _.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
+                    _.update_user_id = user_id;
+                    sftpDal.Update(_);
+                    OperLogBLL.OperLogUpdate<sys_form_tmpl_opportunity>(_, oldOppoTmpl, _.id, user_id, OPER_LOG_OBJ_CATE.SYS_FORM_TMPL_OPPORTUNITY, "");
+                    
+                });
+
+            #endregion
+
+                // todo 其余的逻辑删除
 
             return true;
 

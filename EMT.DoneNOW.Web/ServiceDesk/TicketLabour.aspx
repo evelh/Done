@@ -138,7 +138,7 @@
                                                 <asp:DropDownList ID="cost_code_id" runat="server" CssClass="txtBlack8Class" Width="183px"></asp:DropDownList>
                                             </span></td>
                                             <td style="width: 120px; padding-top: 6px; padding-left: 8px;"><span class="lblNormalClass" style="font-weight: bold; display: block;"></span><span id="TE_nonBillableCheckBox" style="display: inline-block; padding-top: 10px;"><span class="txtBlack8Class" validationcaption="" style="width: 80px;">
-                                                <input id="ckIsBilled" type="checkbox" name="ckIsBilled" style="vertical-align: middle;" tabindex="0" /><label style="vertical-align: middle;">不计费</label></span></span></td>
+                                                <input id="ckIsBilled" type="checkbox" name="ckIsBilled" style="vertical-align: middle;" tabindex="0" /><label style="vertical-align: middle;">计费</label></span></span></td>
                                             <td style="width: 120px; padding-top: 6px; padding-left: 8px;"><span class="lblNormalClass" style="font-weight: bold; display: block;"></span><span id="TE_showOnInvoiceCheckBox" style="display: inline-block; padding-top: 10px;"><span class="txtBlack8Class" style="width: 120px;">
                                                 <input id="ckShowOnInv" type="checkbox" name="ckShowOnInv" style="vertical-align: middle;" disabled="" tabindex="0"><label style="vertical-align: middle;">在发票上显示</label></span></span></td>
                                             <td style="width: 185px; padding-top: 6px;"></td>
@@ -243,7 +243,7 @@
                                 <table cellspacing="0" cellpadding="0" width="660px" border="0" style="border-collapse: collapse;">
                                     <tbody>
                                         <tr>
-                                            <td style="width: 600px; padding-top: 6px;"><span class="lblNormalClass" style="font-weight: bold; display: block;">工单说明<font style="color: Red;"> *</font></span><span id="TE_summaryNoteTextEdit"><textarea name="summary_notes" id="summary_note" class="txtBlack8Class" style="width: 619px; height: 150px;" tabindex="0"><%=ticketLabour==null?"":ticketLabour.summary_notes %></textarea></span></td>
+                                            <td style="width: 600px; padding-top: 6px;"><span class="lblNormalClass" style="font-weight: bold; display: block;">工时说明<font style="color: Red;"> *</font></span><span id="TE_summaryNoteTextEdit"><textarea name="summary_notes" id="summary_note" class="txtBlack8Class" style="width: 619px; height: 150px;" tabindex="0"><%=ticketLabour==null?"":ticketLabour.summary_notes %></textarea></span></td>
                                             <td valign="top" style="width: 20px; padding-top: 6px;"><span class="lblNormalClass" style="font-weight: bold; display: block;">&nbsp;</span>
                                             </td>
                                         </tr>
@@ -695,10 +695,10 @@
 
     $("#ckIsBilled").click(function () {
         if ($(this).is(":checked")) {
-            $("#ckShowOnInv").prop("disabled", false);
-        } else {
             $("#ckShowOnInv").prop("checked", true);
             $("#ckShowOnInv").prop("disabled", true);
+        } else {
+            $("#ckShowOnInv").prop("disabled", false);
         }
     })
     $("#charge_cost_code_id").change(function () {
@@ -724,17 +724,17 @@
                     if (data != "") {
                         $("#unit_price").val(toDecimal2(data.unit_price));
                         if (data.show_on_invoice == '<%=(int)EMT.DoneNOW.DTO.DicEnum.SHOW_ON_INVOICE.BILLED %>') {
-                            $("#ckIsBilled").prop("checked", false);
+                            $("#ckIsBilled").prop("checked", true);
                             $("#ckShowOnInv").prop("checked", true);
                             $("#ckShowOnInv").prop("disabled", true);
                         }
                         else if (data.show_on_invoice == '<%=(int)EMT.DoneNOW.DTO.DicEnum.SHOW_ON_INVOICE.NO_SHOW_ONINCOICE %>') {
-                            $("#ckIsBilled").prop("checked", true);
-                            $("#ckShowOnInv").prop("checked", false);
+                            $("#ckIsBilled").prop("checked", false);
+                            $("#ckShowOnInv").prop("checked", false); 
                             $("#ckShowOnInv").prop("disabled", false);
                         }
-                        else if (data.show_on_invoice == '<%=(int)EMT.DoneNOW.DTO.DicEnum.SHOW_ON_INVOICE.BILLED %>') {
-                            $("#ckIsBilled").prop("checked", true);
+                        else if (data.show_on_invoice == '<%=(int)EMT.DoneNOW.DTO.DicEnum.SHOW_ON_INVOICE.SHOW_DISBILLED %>') {
+                            $("#ckIsBilled").prop("checked", false);
                             $("#ckShowOnInv").prop("checked", true);
                             $("#ckShowOnInv").prop("disabled", false);
                         }
@@ -827,7 +827,7 @@
 
         var summary_note = $("#summary_note").val();
         if (summary_note == "") {
-            LayerMsg("请填写工单说明！");
+            LayerMsg("请填写工时说明！");
             return false;
         }
 

@@ -1425,7 +1425,7 @@ namespace EMT.DoneNOW.BLL
         {
             StringBuilder html = new StringBuilder();
             if (note.is_system_generate == 1 && !string.IsNullOrEmpty(showSys))
-                note.resource_avatar = "/Images/ACheck50.gif";
+                note.resource_avatar = "/Images/logotitle.png"; // 系统 图像
             if(string.IsNullOrEmpty(note.resource_avatar))
                 note.resource_avatar = "/Images/pop.jpg";
             html.Append($"<div class='EntityFeedLevel{level}'><a style='float:left;cursor:pointer;'><img src='..{note.resource_avatar}' /></a> ");

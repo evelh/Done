@@ -730,8 +730,10 @@
         });
         $("#spread_value").prop("disabled", true);
         $("#spread_unit").prop("disabled", true);
+        <% if (opportunity != null) { %>
         <%if (opportunity.spread_value != null || opportunity.spread_unit != null) {%>
         $("#opportunityRange").trigger("click");
+    <%}  %>
     <%}  %>
 
 

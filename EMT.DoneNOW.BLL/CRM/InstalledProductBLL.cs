@@ -667,7 +667,7 @@ namespace EMT.DoneNOW.BLL
                         oper_object_id = iProduct.id,
                         oper_type_id = (int)OPER_LOG_TYPE.UPDATE,
                         oper_description = dal.CompareValue(new crm_installed_product_dal().GetInstalledProduct(iProduct_id), iProduct),
-                        remark = (isActive ? "激活" : "失活") + "配置项",
+                        remark = (isActive ? "激活" : "停用") + "配置项",
                     });
                     dal.Update(iProduct);
                     return "ok";

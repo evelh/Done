@@ -302,6 +302,7 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SYSTEM_SHIP_TYPE:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_NOTE_TYPE:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_ORGANIZATION:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_LINES_BUSINESS:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_SLA:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_SLA_ITEM:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_SALE_QUOTA:
@@ -1638,7 +1639,7 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑联系人组", click_function = "EditGroup()" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制联系人组", click_function = "CopyGroup()" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活联系人组", click_function = "ActiveGroup()", id = "Active" });
-                    contextMenu.Add(new PageContextMenuDto { text = "失活联系人组", click_function = "InActiveGroup()", id = "InActive" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用联系人组", click_function = "InActiveGroup()", id = "InActive" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除联系人组", click_function = "DeleteGroup()" });
                     break;
                 case (long)QueryType.CONTACT_ACTION_TEMP:
@@ -1655,7 +1656,7 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.SYS_FORM_TEMP_SEARCH:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑模板", click_function = "EditTemp()" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活模板", click_function = "Active()", id = "LiActive" });
-                    contextMenu.Add(new PageContextMenuDto { text = "失活模板", click_function = "InActive()", id = "LiInActive" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用模板", click_function = "InActive()", id = "LiInActive" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制模板", click_function = "Copy()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除模板", click_function = "Delete()" });
                     break;
@@ -1686,6 +1687,7 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.SYSTEM_TAX_REGION:
                 case (long)QueryType.SYSTEM_NOTE_TYPE:
                 case (long)QueryType.SYSTEM_ORGANIZATION:
+                case (long)QueryType.SYSTEM_LINES_BUSINESS:
                 case (long)QueryType.SYSTEM_TICKET_SUPPORT_EMAIL:
                 case (long)QueryType.SYSTEM_SALE_QUOTA:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
@@ -1700,14 +1702,14 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.SYSTEM_TICKET_RESOLUTION_METRICS:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()", id = "EditLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActiveLi" });
-                    contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "InActive()", id = "InActiveLi" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "InActive()", id = "InActiveLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()", id = "DeleteLi" });
                     break;
                 case (long)QueryType.SYSTEM_TICKET_STATUS_SEARCH:
                 case (long)QueryType.SYSTEM_TICKET_PRIORITY_SEARCH:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActiveLi" });
-                    contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "InActive()", id = "InActiveLi" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "InActive()", id = "InActiveLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "设置图标", click_function = "SetLogo()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()", id = "DeleteLi" });
                     break;
@@ -1719,13 +1721,13 @@ namespace EMT.DoneNOW.Web
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "复制", click_function = "Copy()" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActiveLi" });
-                    contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "InActive()", id = "InActiveLi" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "InActive()", id = "InActiveLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()", id = "DeleteLi" });
                     break;
                 case (long)QueryType.UserDefinedField:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "激活", click_function = "Active()", id = "ActiveLi" });
-                    contextMenu.Add(new PageContextMenuDto { text = "失活", click_function = "InActive()", id = "InActiveLi" });
+                    contextMenu.Add(new PageContextMenuDto { text = "停用", click_function = "InActive()", id = "InActiveLi" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()", id = "DeleteLi" });
                     break;
                 case (long)QueryType.SharedDashboard:

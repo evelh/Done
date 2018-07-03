@@ -280,7 +280,7 @@
             <ul style="width: 220px;">
                 <li id="" onclick="EditResDep()"><i class="menu-i1"></i>编辑</li>
                 <li id="ActiveLi" onclick="Active()"><i class="menu-i1"></i>激活</li>
-                <li id="InActiveLi" onclick="InActive()"><i class="menu-i1"></i>失活</li>
+                <li id="InActiveLi" onclick="InActive()"><i class="menu-i1"></i>停用</li>
                 <li id="" onclick="Remove()"><i class="menu-i1"></i>删除</li>
             </ul>
         </div>
@@ -458,7 +458,7 @@
             async: false,
             success: function (data) {
                 if (data) {
-                    LayerMsg("失活成功");
+                    LayerMsg("停用成功");
                     setTimeout(function () {
                         location.href = "QueueManage?id=<%=queue!=null?queue.id.ToString():"" %>&type=res";
                     }, 800);

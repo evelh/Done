@@ -734,6 +734,19 @@ namespace EMT.DoneNOW.BLL
                  new ProductBLL().DeleteProductCate(id,user_id);
             }
 
+            if(table_id == (int)GeneralTableEnum.PROJECT_LINE_OF_BUSINESS)
+            {
+                var proList = _dal.FindListBySql<pro_project>($"SELECT * from pro_project where delete_time = 0 and line_of_business_id =" + id.ToString());
+                if (proList != null && proList.Count > 0)
+                {
+                    ProjectBLL proBll = new ProjectBLL();
+                    proList.ForEach(_ => {
+                        _.line_of_business_id = null;
+                        proBll.EditProjetc(_,user_id);
+                    });
+                }
+            }
+
             data.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.delete_user_id = user_id;
             if (!_dal.Update(data))
