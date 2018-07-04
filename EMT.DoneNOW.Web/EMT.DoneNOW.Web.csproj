@@ -741,6 +741,8 @@
     <Content Include="SysSetting\ServiceBundle.aspx" />
     <Content Include="SysSetting\SystemSetting.aspx" />
     <Content Include="SysSetting\TaxCateManage.aspx" />
+    <Content Include="SysSetting\TaxRateManage.aspx" />
+    <Content Include="SysSetting\TaxRateTaxManage.aspx" />
     <Content Include="SysSetting\TimeApproval.aspx" />
     <Content Include="SysSetting\TransResource.aspx" />
     <Content Include="SysSetting\UserDefinedField.aspx" />
@@ -2777,6 +2779,20 @@
     </Compile>
     <Compile Include="SysSetting\TaxCateManage.aspx.designer.cs">
       <DependentUpon>TaxCateManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\TaxRateManage.aspx.cs">
+      <DependentUpon>TaxRateManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\TaxRateManage.aspx.designer.cs">
+      <DependentUpon>TaxRateManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\TaxRateTaxManage.aspx.cs">
+      <DependentUpon>TaxRateTaxManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\TaxRateTaxManage.aspx.designer.cs">
+      <DependentUpon>TaxRateTaxManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\TimeApproval.aspx.cs">
       <DependentUpon>TimeApproval.aspx</DependentUpon>

@@ -1111,7 +1111,9 @@ namespace EMT.DoneNOW.DTO
             SYS_WORKGROUP_RESOURCE=1459,                // 工作组员工   
             CHANGE_BOARD = 1460,                        // 变更委员会
             CHANGE_BOARD_PERSON = 1461,                 // 变更委员会成员
-            D_COST_CODE = 1464,                          // 物料代码
+            D_COST_CODE = 1464,                         // 物料代码
+            D_TAX_REGION_CATE = 1466,                   // 税收类型
+            D_TAX_REGION_CATE_TAX = 1467,               // 税收类型分税
 
         }
 
@@ -1485,6 +1487,7 @@ namespace EMT.DoneNOW.DTO
             PAID_TIME_OFF = 1817,              // 带薪休假
             RECURRING_TICKET_MASTER = 1818,    // 定期主工单
             TASKFIRE_TICKET = 1819,            // 内部 Client Portal 工单
+            INTERNAL_ALLOCATION_CODE = 1820,   // 内部工时
         }
         /// <summary>
         /// 工单问题类型 - 132

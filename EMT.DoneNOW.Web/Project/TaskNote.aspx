@@ -130,6 +130,12 @@
                 <li style="float:right;background: white;border: 0px;display:none;">
                     <select style="width:200px;" id="fromTmplId" name="fromTmplId">
                         <option></option>
+                        <%if (tmplList != null && tmplList.Count > 0) {
+                                foreach (var tmpl in tmplList)
+                                {%>
+                                <option value="<%=tmpl.id %>"><%=tmpl.tmpl_name %></option>
+                               <% }
+                            } %>
                     </select>
                 </li>
             </ul>
@@ -748,5 +754,24 @@
     }
     $("#CloseButton").click(function () {
         window.close();
+    })
+</script>
+
+<script>
+    $("#fromTmplId").change(function () {
+        var thisValue = $(this).val();
+        if (thisValue != "") {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/FormTempAjax.ashx?act=GetTempObj&id=" + thisValue,
+                dataType: "json",
+                success: function (data) {
+                    if (data != "") {
+
+                    }
+                },
+            });
+        }
     })
 </script>

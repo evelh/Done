@@ -71,7 +71,7 @@ namespace EMT.DoneNOW.Web.SysSetting
           
 
             if (cateId == (int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.GENERAL_ALLOCATION_CODE) {
-                #region 角色费率相关，计费方式
+            #region 角色费率相关，计费方式
             var rateType = Request.Form["RateTypeGroup"];
             if (rateType == "rdRole")
             {
@@ -167,7 +167,6 @@ namespace EMT.DoneNOW.Web.SysSetting
                     code.is_quick_cost = pageCode.is_quick_cost;
                     code.unit_cost = pageCode.unit_cost;
                     code.unit_price = pageCode.unit_price;
-
                 }
                 else if (cateId == (int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.INTERNAL_ALLOCATION_CODE)
                 {

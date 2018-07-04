@@ -98,96 +98,24 @@ namespace EMT.DoneNOW.BLL
                     switch (quote_item.period_type_id)
                     {
                         case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME:
-                            if (oppo.one_time_revenue != null)
-                            {
-                                oppo.one_time_revenue += changeRevenue;
-                            }
-                            else
-                            {
-                                oppo.one_time_revenue = changeRevenue;
-                            }
-                            if (oppo.one_time_cost != null)
-                            {
-                                oppo.one_time_cost += changeCost;
-                            }
-                            else
-                            {
-                                oppo.one_time_cost = changeCost;
-                            }
+                            oppo.one_time_revenue += (changeRevenue??0);
+                            oppo.one_time_cost += (changeCost??0);
                             break;
                         case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH:
-                            if (oppo.monthly_revenue != null)
-                            {
-                                oppo.monthly_revenue += changeRevenue;
-                            }
-                            else
-                            {
-                                oppo.monthly_revenue = changeRevenue;
-                            }
-                            if (oppo.monthly_cost != null)
-                            {
-                                oppo.monthly_cost += changeCost;
-                            }
-                            else
-                            {
-                                oppo.monthly_cost = changeCost;
-                            }
+                            oppo.monthly_revenue += (changeRevenue ?? 0);
+                            oppo.monthly_cost += (changeCost ?? 0);
                             break;
                         case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER:
-                            if (oppo.quarterly_revenue != null)
-                            {
-                                oppo.quarterly_revenue += changeRevenue;
-                            }
-                            else
-                            {
-                                oppo.quarterly_revenue = changeRevenue;
-                            }
-                            if (oppo.quarterly_cost != null)
-                            {
-                                oppo.quarterly_cost += changeCost;
-                            }
-                            else
-                            {
-                                oppo.quarterly_cost = changeCost;
-                            }
+                            oppo.quarterly_revenue += (changeRevenue ?? 0);
+                            oppo.quarterly_cost += (changeCost ?? 0);
                             break;
                         case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
-                            if (oppo.semi_annual_revenue != null)
-                            {
-                                oppo.semi_annual_revenue += changeRevenue;
-                            }
-                            else
-                            {
-                                oppo.semi_annual_revenue = changeRevenue;
-                            }
-                            if (oppo.semi_annual_cost != null)
-                            {
-                                oppo.semi_annual_cost += changeCost;
-                            }
-                            else
-                            {
-                                oppo.semi_annual_cost = changeCost;
-                            }
-
+                            oppo.semi_annual_revenue += (changeRevenue ?? 0);
+                            oppo.semi_annual_cost += (changeCost ?? 0);
                             break;
                         case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR:
-                            if (oppo.yearly_revenue != null)
-                            {
-                                oppo.yearly_revenue += changeRevenue;
-                            }
-                            else
-                            {
-                                oppo.yearly_revenue = changeRevenue;
-                            }
-                            if (oppo.yearly_cost != null)
-                            {
-                                oppo.yearly_cost += changeCost;
-                            }
-                            else
-                            {
-                                oppo.yearly_cost = changeCost;
-                            }
-
+                            oppo.yearly_revenue += (changeRevenue ?? 0);
+                            oppo.yearly_cost += (changeCost ?? 0);
                             break;
                         default:
                             break;
@@ -394,24 +322,24 @@ namespace EMT.DoneNOW.BLL
                     switch (oldPeriod)
                     {
                         case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME:
-                            oppo.one_time_revenue = (oppo.one_time_revenue??0)-oldChangeRevenue;
-                            oppo.one_time_cost = (oppo.one_time_cost ?? 0) - oldChangeCost;
+                            oppo.one_time_revenue = oppo.one_time_revenue-(oldChangeRevenue??0);
+                            oppo.one_time_cost = oppo.one_time_cost - (oldChangeCost??0);
                             break;
                         case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH:
-                            oppo.one_time_revenue = (oppo.one_time_revenue ?? 0) - oldChangeRevenue;
-                            oppo.one_time_cost = (oppo.one_time_cost ?? 0) - oldChangeCost;
+                            oppo.one_time_revenue = oppo.one_time_revenue - (oldChangeRevenue ?? 0);
+                            oppo.one_time_cost = oppo.one_time_cost - (oldChangeCost ?? 0);
                             break;
                         case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER:
-                            oppo.one_time_revenue = (oppo.one_time_revenue ?? 0) - oldChangeRevenue;
-                            oppo.one_time_cost = (oppo.one_time_cost ?? 0) - oldChangeCost;
+                            oppo.one_time_revenue = oppo.one_time_revenue - (oldChangeRevenue ?? 0);
+                            oppo.one_time_cost = oppo.one_time_cost - (oldChangeCost ?? 0);
                             break;
                         case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
-                            oppo.one_time_revenue = (oppo.one_time_revenue ?? 0) - oldChangeRevenue;
-                            oppo.one_time_cost = (oppo.one_time_cost ?? 0) - oldChangeCost;
+                            oppo.one_time_revenue = oppo.one_time_revenue  - (oldChangeRevenue ?? 0);
+                            oppo.one_time_cost = oppo.one_time_cost - (oldChangeCost ?? 0);
                             break;
                         case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR:
-                            oppo.one_time_revenue = (oppo.one_time_revenue ?? 0) - oldChangeRevenue;
-                            oppo.one_time_cost = (oppo.one_time_cost ?? 0) - oldChangeCost;
+                            oppo.one_time_revenue = oppo.one_time_revenue  - (oldChangeRevenue ?? 0);
+                            oppo.one_time_cost = oppo.one_time_cost - (oldChangeCost ?? 0);
                             break;
                         default:
                             break;
@@ -420,96 +348,24 @@ namespace EMT.DoneNOW.BLL
                     switch (quote_item.period_type_id)
                     {
                         case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME:
-                            if (oppo.one_time_revenue != null)
-                            {
-                                oppo.one_time_revenue += changeRevenue;
-                            }
-                            else
-                            {
-                                oppo.one_time_revenue = changeRevenue;
-                            }
-                            if (oppo.one_time_cost != null)
-                            {
-                                oppo.one_time_cost += changeCost;
-                            }
-                            else
-                            {
-                                oppo.one_time_cost = changeCost;
-                            }
+                            oppo.one_time_revenue += (changeRevenue ?? 0);
+                            oppo.one_time_cost += (changeCost ?? 0);
                             break;
                         case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH:
-                            if (oppo.monthly_revenue != null)
-                            {
-                                oppo.monthly_revenue += changeRevenue;
-                            }
-                            else
-                            {
-                                oppo.monthly_revenue = changeRevenue;
-                            }
-                            if (oppo.monthly_cost != null)
-                            {
-                                oppo.monthly_cost += changeCost;
-                            }
-                            else
-                            {
-                                oppo.monthly_cost = changeCost;
-                            }
+                            oppo.monthly_revenue += (changeRevenue ?? 0);
+                            oppo.monthly_cost += (changeCost ?? 0);
                             break;
                         case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER:
-                            if (oppo.quarterly_revenue != null)
-                            {
-                                oppo.quarterly_revenue += changeRevenue;
-                            }
-                            else
-                            {
-                                oppo.quarterly_revenue = changeRevenue;
-                            }
-                            if (oppo.quarterly_cost != null)
-                            {
-                                oppo.quarterly_cost += changeCost;
-                            }
-                            else
-                            {
-                                oppo.quarterly_cost = changeCost;
-                            }
+                            oppo.quarterly_revenue += (changeRevenue ?? 0);
+                            oppo.quarterly_cost += (changeCost ?? 0);
                             break;
                         case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
-                            if (oppo.semi_annual_revenue != null)
-                            {
-                                oppo.semi_annual_revenue += changeRevenue;
-                            }
-                            else
-                            {
-                                oppo.semi_annual_revenue = changeRevenue;
-                            }
-                            if (oppo.semi_annual_cost != null)
-                            {
-                                oppo.semi_annual_cost += changeCost;
-                            }
-                            else
-                            {
-                                oppo.semi_annual_cost = changeCost;
-                            }
-
+                            oppo.semi_annual_revenue += (changeRevenue ?? 0);
+                            oppo.semi_annual_cost += (changeCost ?? 0);
                             break;
                         case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR:
-                            if (oppo.yearly_revenue != null)
-                            {
-                                oppo.yearly_revenue += changeRevenue;
-                            }
-                            else
-                            {
-                                oppo.yearly_revenue = changeRevenue;
-                            }
-                            if (oppo.yearly_cost != null)
-                            {
-                                oppo.yearly_cost += changeCost;
-                            }
-                            else
-                            {
-                                oppo.yearly_cost = changeCost;
-                            }
-
+                            oppo.yearly_revenue += (changeRevenue ?? 0);
+                            oppo.yearly_cost += (changeCost ?? 0);
                             break;
                         default:
                             break;
@@ -747,96 +603,24 @@ namespace EMT.DoneNOW.BLL
                         switch (quote_item.period_type_id)
                         {
                             case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.ONE_TIME:
-                                if (oppo.one_time_revenue != null)
-                                {
-                                    oppo.one_time_revenue += changeRevenue;
-                                }
-                                else
-                                {
-                                    oppo.one_time_revenue = changeRevenue;
-                                }
-                                if (oppo.one_time_cost != null)
-                                {
-                                    oppo.one_time_cost += changeCost;
-                                }
-                                else
-                                {
-                                    oppo.one_time_cost = changeCost;
-                                }
+                                oppo.one_time_revenue -= (changeRevenue ?? 0);
+                                oppo.one_time_cost -= (changeCost ?? 0);
                                 break;
                             case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.MONTH:
-                                if (oppo.monthly_revenue != null)
-                                {
-                                    oppo.monthly_revenue += changeRevenue;
-                                }
-                                else
-                                {
-                                    oppo.monthly_revenue = changeRevenue;
-                                }
-                                if (oppo.monthly_cost != null)
-                                {
-                                    oppo.monthly_cost += changeCost;
-                                }
-                                else
-                                {
-                                    oppo.monthly_cost = changeCost;
-                                }
+                                oppo.monthly_revenue -= (changeRevenue ?? 0);
+                                oppo.monthly_cost -= (changeCost ?? 0);
                                 break;
                             case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.QUARTER:
-                                if (oppo.quarterly_revenue != null)
-                                {
-                                    oppo.quarterly_revenue += changeRevenue;
-                                }
-                                else
-                                {
-                                    oppo.quarterly_revenue = changeRevenue;
-                                }
-                                if (oppo.quarterly_cost != null)
-                                {
-                                    oppo.quarterly_cost += changeCost;
-                                }
-                                else
-                                {
-                                    oppo.quarterly_cost = changeCost;
-                                }
+                                oppo.quarterly_revenue -= (changeRevenue ?? 0);
+                                oppo.quarterly_cost -= (changeCost ?? 0);
                                 break;
                             case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.HALFYEAR:
-                                if (oppo.semi_annual_revenue != null)
-                                {
-                                    oppo.semi_annual_revenue += changeRevenue;
-                                }
-                                else
-                                {
-                                    oppo.semi_annual_revenue = changeRevenue;
-                                }
-                                if (oppo.semi_annual_cost != null)
-                                {
-                                    oppo.semi_annual_cost += changeCost;
-                                }
-                                else
-                                {
-                                    oppo.semi_annual_cost = changeCost;
-                                }
-
+                                oppo.semi_annual_revenue -= (changeRevenue ?? 0);
+                                oppo.semi_annual_cost -= (changeCost ?? 0);
                                 break;
                             case (int)DicEnum.QUOTE_ITEM_PERIOD_TYPE.YEAR:
-                                if (oppo.yearly_revenue != null)
-                                {
-                                    oppo.yearly_revenue += changeRevenue;
-                                }
-                                else
-                                {
-                                    oppo.yearly_revenue = changeRevenue;
-                                }
-                                if (oppo.yearly_cost != null)
-                                {
-                                    oppo.yearly_cost += changeCost;
-                                }
-                                else
-                                {
-                                    oppo.yearly_cost = changeCost;
-                                }
-
+                                oppo.yearly_revenue -= (changeRevenue ?? 0);
+                                oppo.yearly_cost -= (changeCost ?? 0);
                                 break;
                             default:
                                 break;

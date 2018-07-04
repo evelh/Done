@@ -98,6 +98,18 @@ namespace EMT.DoneNOW.Web
                     case "CheckExist":
                         CheckExist(context);
                         break;
+                    case "CheckRegionCate":
+                        CheckRegionCate(context);
+                        break;
+                    case "CheckRegionCateTax":
+                        CheckRegionCateTax(context);
+                        break;
+                    case "DeleteRegion":
+                        DeleteRegion(context);
+                        break;
+                    case "DeleteRegionTax":
+                        DeleteRegionTax(context);
+                        break;
                     default:
                         break;
                 }
@@ -421,6 +433,63 @@ namespace EMT.DoneNOW.Web
                 long.TryParse(context.Request.QueryString["id"],out id);
             if (!string.IsNullOrEmpty(context.Request.QueryString["tableId"]) && !string.IsNullOrEmpty(context.Request.QueryString["name"]))
                 result = new GeneralBLL().CheckExist(context.Request.QueryString["name"],int.Parse(context.Request.QueryString["tableId"]),id);
+            WriteResponseJson(result);
+        }
+        /// <summary>
+        /// 校验税收类型是否重复
+        /// </summary>
+        void CheckRegionCate(HttpContext context)
+        {
+            bool result = false;
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
+                long.TryParse(context.Request.QueryString["id"], out id);
+            long regionId = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["regionId"]))
+                long.TryParse(context.Request.QueryString["regionId"], out regionId);
+            long cateId = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["cateId"]))
+                long.TryParse(context.Request.QueryString["cateId"], out cateId);
+            if (cateId != 0 && regionId != 0)
+                result = new GeneralBLL().CheckRegionCate(regionId,cateId,id);
+            WriteResponseJson(result);
+        }
+        /// <summary>
+        /// 校验税收类型分税名称  是否重复
+        /// </summary>
+        void CheckRegionCateTax(HttpContext context)
+        {
+            bool result = false;
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]))
+                long.TryParse(context.Request.QueryString["id"], out id);
+            long regionCateId = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["regionCateId"]))
+                long.TryParse(context.Request.QueryString["regionCateId"], out regionCateId);
+            if (regionCateId != 0 && !string.IsNullOrEmpty(context.Request.QueryString["name"]))
+                result = new GeneralBLL().CheckCateTax(regionCateId, context.Request.QueryString["name"], id);
+            WriteResponseJson(result);
+        }
+        /// <summary>
+        /// 删除税收种类
+        /// </summary>
+        void DeleteRegion(HttpContext context)
+        {
+            bool result = false;
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]) && long.TryParse(context.Request.QueryString["id"], out id))
+                result = new GeneralBLL().DeleteRegion(id,LoginUserId);
+            WriteResponseJson(result);
+        }
+        /// <summary>
+        /// 删除分税
+        /// </summary>
+        void DeleteRegionTax(HttpContext context)
+        {
+            bool result = false;
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]) && long.TryParse(context.Request.QueryString["id"], out id))
+                result = new GeneralBLL().DeleteRegionTax(id, LoginUserId);
             WriteResponseJson(result);
         }
     }

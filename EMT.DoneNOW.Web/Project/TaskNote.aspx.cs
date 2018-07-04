@@ -40,6 +40,7 @@ namespace EMT.DoneNOW.Web.Project
         protected bool isMantStatus = false;   // 工单是否具有多个状态
         protected bool isManyAccount = false;
         protected bool isManyTitle = false;
+        protected List<sys_form_tmpl> tmplList;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -270,6 +271,13 @@ namespace EMT.DoneNOW.Web.Project
                     notify_id.DataBind();
 
                 }
+
+                if(isProject)
+                    tmplList = new FormTemplateBLL().GetTmplByType((int)DicEnum.FORM_TMPL_TYPE.PROJECT_NOTE, LoginUserId);
+                else if(isTicket&&thisTicket!=null)
+                    tmplList = new FormTemplateBLL().GetTmplByType((int)DicEnum.FORM_TMPL_TYPE.TICKET_NOTE, LoginUserId);
+                else if(thisTask!=null)
+                    tmplList = new FormTemplateBLL().GetTmplByType((int)DicEnum.FORM_TMPL_TYPE.TASK_NOTE, LoginUserId);
             }
             catch (Exception msg)
             {

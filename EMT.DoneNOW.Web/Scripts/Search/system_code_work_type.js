@@ -66,3 +66,22 @@ function RightClickFunc() {
     });
     ShowContextMenu();
 }
+
+function Exclude() {
+
+    LayerConfirm("提示内容：此工作类型将会从当前活动的合同中排除（出现在例外因素中）。已创建工时不受影响。操作不能撤销，是否继续？", "是", "否", function () {
+        $.ajax({
+            type: "GET",
+            url: "../Tools/CostCodeAjax.ashx?act=ExcludeContract&id=" + entityid,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    LayerMsg("排除成功！");
+                }
+                setTimeout(function () { history.go(0); }, 800);
+            }
+        })
+    });
+    
+}

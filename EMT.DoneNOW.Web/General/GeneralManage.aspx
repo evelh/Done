@@ -51,7 +51,7 @@
                             </div>
                         </td>
                     </tr>
-                    <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE || tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.ACTION_TYPE||tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PROJECT_LINE_OF_BUSINESS||tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PRODUCT_CATE)
+                    <%if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TASK_LIBRARY_CATE || tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.ACTION_TYPE||tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PROJECT_LINE_OF_BUSINESS||tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PRODUCT_CATE||tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_TERM||tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_TYPE||tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_SHIP_TYPE)
                         { %>
                     <tr>
                         <td width="30%" class="FieldLabels">说明<span style="color: red; display: none;" id="RemarkDiv">*</span>
@@ -169,7 +169,7 @@
                         {%>
 
                     <tr>
-                        <td width="30%" class="FieldLabels">付款到期日
+                        <td width="30%" class="FieldLabels">付款期限
                         <div>
                             <input type="text" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" id="ext1" name="ext1" style="width: 220px;" maxlength="3" value="<%=thisGeneral != null && !string.IsNullOrEmpty(thisGeneral.ext1)? thisGeneral.ext1: "" %>" />
                         </div>

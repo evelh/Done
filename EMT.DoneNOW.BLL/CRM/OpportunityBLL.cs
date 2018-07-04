@@ -1694,12 +1694,12 @@ namespace EMT.DoneNOW.BLL
             if (opportunity == null)
                 return 0;
             decimal total = 0;
-            var month = opportunity.number_months == null ? 0 : (int)opportunity.number_months;
-            total += (decimal)(opportunity.one_time_revenue == null ? 0 : opportunity.one_time_revenue);
-            total += (decimal)((opportunity.monthly_revenue == null ? 0 : opportunity.monthly_revenue) * month);
-            total += (decimal)((opportunity.quarterly_revenue == null ? 0 : (opportunity.quarterly_revenue / 3)) * month);
-            total += (decimal)((opportunity.semi_annual_revenue == null ? 0 : (opportunity.semi_annual_revenue / 6)) * month);
-            total += (decimal)((opportunity.yearly_revenue == null ? 0 : (opportunity.yearly_revenue / 12)) * month);
+            var month = opportunity.number_months??0;
+            total += opportunity.one_time_revenue;
+            total += (decimal)(opportunity.monthly_revenue * month);
+            total += (decimal)((opportunity.quarterly_revenue / 3) * month);
+            total += (decimal)((opportunity.semi_annual_revenue / 6) * month);
+            total += (decimal)((opportunity.yearly_revenue / 12) * month);
             if (opportunity.use_quote == 1)
             {
                 total = 0;

@@ -306,6 +306,7 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SYSTEM_SLA:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_SLA_ITEM:
                 case (int)DicEnum.QUERY_CATE.SYSTEM_SALE_QUOTA:
+                case (int)DicEnum.QUERY_CATE.SYSTEM_CODE_LEDGER:
                     addBtn = "新增";
                     break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
@@ -1690,6 +1691,7 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.SYSTEM_LINES_BUSINESS:
                 case (long)QueryType.SYSTEM_TICKET_SUPPORT_EMAIL:
                 case (long)QueryType.SYSTEM_SALE_QUOTA:
+                case (long)QueryType.SYSTEM_CODE_LEDGER:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()", id = "DeleteLi" });
                     break;
@@ -1738,7 +1740,7 @@ namespace EMT.DoneNOW.Web
                     break;
                 case (long)QueryType.SYSTEM_CODE_WORK_TYPE:
                     contextMenu.Add(new PageContextMenuDto { text = "编辑", click_function = "Edit()" });
-                    contextMenu.Add(new PageContextMenuDto { text = "从合同中排除此工作类型", click_function = "Exclude()" });
+                    contextMenu.Add(new PageContextMenuDto { text = "从新合同中排除", click_function = "Exclude()" });
                     contextMenu.Add(new PageContextMenuDto { text = "删除", click_function = "Delete()", id = "DeleteLi" });
                     break;
                 case (int)QueryType.WidgetDrillInvoiceItems:

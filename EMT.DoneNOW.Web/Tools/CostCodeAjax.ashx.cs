@@ -22,7 +22,7 @@ namespace EMT.DoneNOW.Web
                 case "DeleteCode": DeleteCode(context); break;            // 删除成本代码
                 case "ChangeCodeLedger": ChangeCodeLedger(context); break;            // 修改物料代码的总账代码
                 case "GetCodeByIds": GetCodeByIds(context); break;            // 根据Id 获取相关的代码
-                    
+                case "ExcludeContract": ExcludeContract(context); break;            // 从新合同中排除工作类型
                 default:break;
             }
         }
@@ -92,7 +92,16 @@ namespace EMT.DoneNOW.Web
                 }
             }
         }
-        
-
+        /// <summary>
+        /// 工作类型用，为全部的未过期的合同，添加一个例外因素
+        /// </summary>
+        void ExcludeContract(HttpContext context)
+        {
+            bool result = false;
+            long id =0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"]) && long.TryParse(context.Request.QueryString["id"], out id))
+                result = codeBll.ExcludeContract(id,LoginUserId);
+            WriteResponseJson(result);
+        }
     }
 }

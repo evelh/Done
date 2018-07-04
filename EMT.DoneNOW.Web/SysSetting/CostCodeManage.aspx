@@ -45,7 +45,7 @@
                          { %>
          <div class="nav-title">
             <ul class="clear">
-                <li class="boders" id="general">政策</li>
+                <li class="boders" id="general">常规</li>
                 <%if (!isAdd)
                     { %>
                 <li id="ruleLi">规则</li>
@@ -162,7 +162,7 @@
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tbody>
                                 <tr>
-                                    <td width="30%" class="FieldLabels"><span style="margin-left:15px;"><%=cateId == (int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.EXPENSE_CATEGORY?"种类号码":"外部代码" %></span>
+                                    <td width="30%" class="FieldLabels"><span style="margin-left:15px;"><%=cateId == (int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.EXPENSE_CATEGORY?"编号":"外部代码" %></span>
                                         <span class="errorSmall"></span>
                                         <div>
                                             <input type="text" id="external_id" name="external_id" style="width: 220px;" maxlength="11" value="<%=code!=null?code.external_id:"" %>" />
@@ -187,7 +187,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <%if (cateId == (int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.GENERAL_ALLOCATION_CODE || cateId == (int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.MATERIAL_COST_CODE||cateId == (int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.RECURRING_CONTRACT_SERVICE_CODE||cateId == (int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.MILESTONE_CODE)
+                                <%if (cateId == (int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.GENERAL_ALLOCATION_CODE || cateId == (int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.MATERIAL_COST_CODE||cateId == (int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.RECURRING_CONTRACT_SERVICE_CODE||cateId == (int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.MILESTONE_CODE||cateId == (int)EMT.DoneNOW.DTO.DicEnum.COST_CODE_CATE.EXPENSE_CATEGORY)
                                     { %>
                                 <tr>
                                     <td width="30%" class="FieldLabels">

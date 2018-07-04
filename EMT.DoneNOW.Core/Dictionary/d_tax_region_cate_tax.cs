@@ -11,7 +11,7 @@ namespace EMT.DoneNOW.Core
     [Table("d_tax_region_cate_tax")]
     [Serializable]
     [DataContract]
-    public partial class d_tax_region_cate_tax
+    public partial class d_tax_region_cate_tax : SoftDeleteCore
     {
 
         [Key]
