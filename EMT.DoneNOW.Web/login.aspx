@@ -4,10 +4,9 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>DoneNow</title>
+		<title>DoneNOW</title>
 		<link rel="stylesheet" type="text/css" href="Content/base.css"/>
 		<link rel="stylesheet" type="text/css" href="Content/login.css"/>
-		<script src="Scripts/jquery-3.1.0.min.js"></script>
 	</head>
 	<body>
 		<div class="header">
@@ -47,7 +46,6 @@
                     <li>
                         <div class="account-wrap clearfix">
                             <asp:Button ID="btnLogin" runat="server" Text="登录" CssClass="login-submit" OnClick="btnLogin_Click"/>
-                            <!--<a href="javaScript:" class="login-submit">登陆</a>-->
                         </div>
                     </li>
                 </ul>
@@ -68,11 +66,37 @@
 </footer>
 </body>
 
-<script src="Scripts/common.js"></script>
 <script type="text/javascript">
-    document.getElementsByClassName("layout-content")[0].style.minHeight = document.body.clientHeight - 200 + 'px';
     window.onload = function () {
-        myBrowser();
+        //myBrowser();
+        var brs = getBroswer();
+        if (brs.broswer == "IE") {
+            var vs = brs.version.split('.')[0];
+            if (vs < 11)
+                window.location.href = "/error.html";
+        }
+        function getBroswer() {
+            var Sys = {};
+            var ua = navigator.userAgent.toLowerCase();
+            var s;
+            (s = ua.match(/edge\/([\d.]+)/)) ? Sys.edge = s[1] :
+                (s = ua.match(/rv:([\d.]+)\) like gecko/)) ? Sys.ie = s[1] :
+                    (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] :
+                        (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] :
+                            (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] :
+                                (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
+                                    (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
+            if (Sys.edge) return { broswer: "Edge", version: Sys.edge };
+            if (Sys.ie) return { broswer: "IE", version: Sys.ie };
+            if (Sys.firefox) return { broswer: "Firefox", version: Sys.firefox };
+            if (Sys.chrome) return { broswer: "Chrome", version: Sys.chrome };
+            if (Sys.opera) return { broswer: "Opera", version: Sys.opera };
+            if (Sys.safari) return { broswer: "Safari", version: Sys.safari };
+            return { broswer: "", version: "0" };
+        }
     }
+    document.getElementsByClassName("layout-content")[0].style.minHeight = document.body.clientHeight - 200 + 'px';
 </script>
+<script src="Scripts/jquery-3.1.0.min.js"></script>
+<script src="Scripts/common.js"></script>
 </html>

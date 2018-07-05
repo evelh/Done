@@ -1884,11 +1884,11 @@ function AddWidgetStep1(widgetData, copy) {
                 if (bpCnt > 1) {
                     $("#wgtSub" + sub + "BPC2").show().css("width", wdPercent);
                     $("#wgtSub" + sub + "BPL2").show().css("width", wdPercent);
-                    $("#wgtSub" + sub + "BPL1").html('<input type="text" name="wgtSub' + sub + 'BP0" id="wgtSub' + sub + 'BP0" value="' + vals[0] + '" style="width:60px;">');
+                    $("#wgtSub" + sub + "BPL1").html('<input type="text" name="wgtSub' + sub + 'BP0" id="wgtSub' + sub + 'BP0" value="' + vals[0] + '" style="width:66px !important;">');
                 } else {
                     $("#wgtSub" + sub + "BPC2").hide();
                     $("#wgtSub" + sub + "BPL2").hide();
-                    $("#wgtSub" + sub + "BPL1").html('<input type="text" name="wgtSub' + sub + 'BP0" id="wgtSub' + sub + 'BP0" value="' + vals[0] + '" style="width:60px;"><input type="text" name="wgtSub' + sub + 'BP1" id="wgtSub' + sub + 'BP1" value="' + vals[1] + '" style="width:60px;float:right;">');
+                    $("#wgtSub" + sub + "BPL1").html('<input type="text" name="wgtSub' + sub + 'BP0" id="wgtSub' + sub + 'BP0" value="' + vals[0] + '" style="width:66px !important;"><input type="text" name="wgtSub' + sub + 'BP1" id="wgtSub' + sub + 'BP1" value="' + vals[1] + '" style="width:66px !important;float:right;">');
                     $("#wgtSub" + sub + "BPL2").html('');
                     $("#wgtSub" + sub + "BPL3").html('');
                     $("#wgtSub" + sub + "BPL4").html('');
@@ -1897,11 +1897,11 @@ function AddWidgetStep1(widgetData, copy) {
                 if (bpCnt > 2) {
                     $("#wgtSub" + sub + "BPC3").show().css("width", wdPercent);
                     $("#wgtSub" + sub + "BPL3").show().css("width", wdPercent);
-                    $("#wgtSub" + sub + "BPL2").html('<input type="text" name="wgtSub' + sub + 'BP1" id="wgtSub' + sub + 'BP1" value="' + vals[1] + '" style="width:60px;">');
+                    $("#wgtSub" + sub + "BPL2").html('<input type="text" name="wgtSub' + sub + 'BP1" id="wgtSub' + sub + 'BP1" value="' + vals[1] + '" style="width:66px !important;">');
                 } else {
                     $("#wgtSub" + sub + "BPC3").hide();
                     $("#wgtSub" + sub + "BPL3").hide();
-                    if (bpCnt == 2) $("#wgtSub" + sub + "BPL2").html('<input type="text" name="wgtSub' + sub + 'BP1" id="wgtSub' + sub + 'BP1" value="' + vals[1] + '" style="width:60px;"><input type="text" name="wgtSub' + sub + 'BP2" id="wgtSub' + sub + 'BP2" value="' + vals[2] + '" style="width:60px;float:right;">');
+                    if (bpCnt == 2) $("#wgtSub" + sub + "BPL2").html('<input type="text" name="wgtSub' + sub + 'BP1" id="wgtSub' + sub + 'BP1" value="' + vals[1] + '" style="width:66px !important;"><input type="text" name="wgtSub' + sub + 'BP2" id="wgtSub' + sub + 'BP2" value="' + vals[2] + '" style="width:66px !important;float:right;">');
                     $("#wgtSub" + sub + "BPL3").html('');
                     $("#wgtSub" + sub + "BPL4").html('');
                     $("#wgtSub" + sub + "BPL5").html('');
@@ -1909,34 +1909,37 @@ function AddWidgetStep1(widgetData, copy) {
                 if (bpCnt > 3) {
                     $("#wgtSub" + sub + "BPC4").show().css("width", wdPercent);
                     $("#wgtSub" + sub + "BPL4").show().css("width", wdPercent);
-                    $("#wgtSub" + sub + "BPL3").html('<input type="text" name="wgtSub' + sub + 'BP2" id="wgtSub' + sub + 'BP2" value="' + vals[2] + '" style="width:60px;">');
+                    $("#wgtSub" + sub + "BPL3").html('<input type="text" name="wgtSub' + sub + 'BP2" id="wgtSub' + sub + 'BP2" value="' + vals[2] + '" style="width:66px !important;">');
                 } else {
                     $("#wgtSub" + sub + "BPC4").hide();
                     $("#wgtSub" + sub + "BPL4").hide();
-                    if (bpCnt == 3) $("#wgtSub" + sub + "BPL3").html('<input type="text" name="wgtSub' + sub + 'BP2" id="wgtSub' + sub + 'BP2" value="' + vals[2] + '" style="width:60px;"><input type="text" name="wgtSub' + sub + 'BP3" id="wgtSub' + sub + 'BP3" value="' + vals[3] + '" style="width:60px;float:right;">');
+                    if (bpCnt == 3) $("#wgtSub" + sub + "BPL3").html('<input type="text" name="wgtSub' + sub + 'BP2" id="wgtSub' + sub + 'BP2" value="' + vals[2] + '" style="width:66px !important;"><input type="text" name="wgtSub' + sub + 'BP3" id="wgtSub' + sub + 'BP3" value="' + vals[3] + '" style="width:66px !important;float:right;">');
                     $("#wgtSub" + sub + "BPL4").html('');
                     $("#wgtSub" + sub + "BPL5").html('');
                 }
                 if (bpCnt > 4) {
                     $("#wgtSub" + sub + "BPC5").show().css("width", wdPercent);
                     $("#wgtSub" + sub + "BPL5").show().css("width", wdPercent);
-                    $("#wgtSub" + sub + "BPL4").html('<input type="text" name="wgtSub' + sub + 'BP3" id="wgtSub' + sub + 'BP3" value="' + vals[3] + '" style="width:60px;">');
-                    $("#wgtSub" + sub + "BPL5").html('<input type="text" name="wgtSub' + sub + 'BP4" id="wgtSub' + sub + 'BP4" value="' + vals[4] + '" style="width:60px;"><input type="text" name="wgtSub' + sub + 'BP5" id="wgtSub' + sub + 'BP5" value="' + vals[5] + '" style="width:60px;float:right;">');
+                    $("#wgtSub" + sub + "BPL4").html('<input type="text" name="wgtSub' + sub + 'BP3" id="wgtSub' + sub + 'BP3" value="' + vals[3] + '" style="width:66px !important;">');
+                    $("#wgtSub" + sub + "BPL5").html('<input type="text" name="wgtSub' + sub + 'BP4" id="wgtSub' + sub + 'BP4" value="' + vals[4] + '" style="width:66px !important;"><input type="text" name="wgtSub' + sub + 'BP5" id="wgtSub' + sub + 'BP5" value="' + vals[5] + '" style="width:66px !important;float:right;">');
                 } else {
                     $("#wgtSub" + sub + "BPC5").hide();
                     $("#wgtSub" + sub + "BPL5").hide();
-                    if (bpCnt == 4) $("#wgtSub" + sub + "BPL4").html('<input type="text" name="wgtSub' + sub + 'BP3" id="wgtSub' + sub + 'BP3" value="' + vals[3] + '" style="width:60px;"><input type="text" name="wgtSub' + sub + 'BP4" id="wgtSub' + sub + 'BP4" value="' + vals[4] + '" style="width:60px;float:right;">');
+                    if (bpCnt == 4) $("#wgtSub" + sub + "BPL4").html('<input type="text" name="wgtSub' + sub + 'BP3" id="wgtSub' + sub + 'BP3" value="' + vals[3] + '" style="width:66px !important;"><input type="text" name="wgtSub' + sub + 'BP4" id="wgtSub' + sub + 'BP4" value="' + vals[4] + '" style="width:66px !important;float:right;">');
                     $("#wgtSub" + sub + "BPL5").html('');
                 }
                 if ($("#wgtSub" + sub + "BreakType").val() != "") {
                     var bkval = 0;
+                    var bkmax;
                     $.each(breakBaseon, function (i, bk) {
-                        if ($("#wgtSub" + sub + "BreakType").val() == bk[0])
+                        if ($("#wgtSub" + sub + "BreakType").val() == bk[0]) {
                             bkval = bk[2];
+                            bkmax = bk[3];
+                        }
                     })
-                    var maxval = bkval + 1.2;
-                    if (maxval > 100)
-                        maxval = 100;
+                    var maxval = bkval * 1.2;
+                    if (bkmax != null && maxval > bkmax)
+                        maxval = bkmax;
                     $("#wgtSub" + sub + "BP0").val(0);
                     if (bpCnt == 1) {
                         $("#wgtSub" + sub + "BP1").val(bkval);

@@ -251,7 +251,6 @@
                 <div class="account address opportunityaddress viewleftTitle1 ">
                     <p class="switch pr">
                         <i class="switchicon switchicon1"></i>客户
-                  <%--      <img src="../Images/at16.png" />--%>
                     </p>
                     <p>
                         <%=account.name %>
@@ -318,7 +317,6 @@
                 <div class="contact address opportunityaddress viewleftTitle1">
                     <p class="switch pr">
                         <i class="switchicon switchicon1"></i>联系人
-                   <%--     <img src="../Images/at16.png" />--%>
                     </p>
                     <p><%=contact.name %><%--<%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %>|<%=contact.title %>-<%=account.name %>--%></p>
                     <%-- <label><%=contact.name %><%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %></label>--%>

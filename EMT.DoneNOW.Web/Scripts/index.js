@@ -142,6 +142,9 @@ $("#HomePage").on("click", function () {
 $(".Search").on("click", function () {
     $(".SearchOverlay").show();
 });
+$(".Search").on("mouseout", function () {
+    $(".SearchOverlay").hide();
+});
 $(".SearchOverlay").on("mouseover", function () {
     $(this).show();
 });
