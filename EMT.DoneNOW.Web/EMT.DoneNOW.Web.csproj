@@ -758,7 +758,6 @@
     <Content Include="Tools\PurchaseOrderAjax.ashx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Images\alert.png" />
-    <Content Include="Images\at16.png" />
     <Content Include="Images\ButtonBarIcons.png" />
     <Content Include="Images\cancel.png" />
     <Content Include="Images\column-chooser.png" />

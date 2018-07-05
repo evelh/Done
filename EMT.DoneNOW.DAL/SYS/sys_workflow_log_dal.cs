@@ -17,14 +17,23 @@ namespace EMT.DoneNOW.DAL
         public void AddWorkflowLog(long ruleId, long objId, string sql, string remark = null)
         {
             sys_workflow_log log = new sys_workflow_log();
-            sys_workflow_log_dal dal = new sys_workflow_log_dal();
-            log.id = dal.GetNextIdCom();
+            log.id = GetNextIdCom();
             log.object_id = objId;
             log.workflow_id = ruleId;
             log.create_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
             log.exec_sql = sql;
             log.remark = remark;
-            dal.Insert(log);
+            Insert(log);
+        }
+
+        /// <summary>
+        /// 查询指定时间内的工作流规则触发日志
+        /// </summary>
+        /// <param name="createTime">触发时间下限</param>
+        /// <returns></returns>
+        public List<DTO.DictionaryEntryDto> GetLogListByTime(long createTime)
+        {
+            return FindListBySql<DTO.DictionaryEntryDto>("select workflow_id as `val`,object_id as `show` from sys_workflow_log where create_time>" + createTime);
         }
     }
 

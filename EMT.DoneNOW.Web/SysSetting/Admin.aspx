@@ -75,6 +75,10 @@
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
                                             <div class="PageNavigationLink">
+                                                <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_NOTIFICATION_HISTORY %>" target="PageFrame1">通知历史</a>
+                                                <div class="StandardText"></div>
+                                            </div>
+                                            <div class="PageNavigationLink">
                                                 <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYS_FORM_TEMP_SEARCH %>" target="PageFrame1">表单模板</a>
                                                 <div class="StandardText"></div>
                                             </div>
@@ -84,7 +88,7 @@
                                                 <a class="Button ButtonIcon Link NormalState chaxun" href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_NOTE_TYPE %>" target="PageFrame1">备注类型 </a>
                                                 <div class="StandardText"></div>
                                             </div>
-                                             </div>
+                                        </div>
                                     </div>
 
                                 </div>

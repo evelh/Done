@@ -19,6 +19,8 @@ namespace EMT.DoneNOW.DAL
             return DapperHelper.BuildConnection();
         }
 
+        public delegate void EventChangeHandler(long id);
+
         /// <summary>
         /// 获取表所有数据行
         /// </summary>

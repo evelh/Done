@@ -39,7 +39,7 @@
 			<div class="col-xs-1"></div>
 		</div>
 		<div class="row"  style="width:800px;margin-left: 20px;">
-		    <div class="col-sm-5">
+		    <div class="col-xs-5">
 		        <select name="from[]" id="multiselect" class="form-control" size="8" style="height:320px;" multiple="multiple">
                     <%foreach (var c in allPara) {
                             if (selectedPara.Exists(_ => _.val.Equals(c.val)))  // 已选择列不显示
@@ -50,7 +50,7 @@
                         } %>
 		        </select>
 		    </div>
-		    <div class="col-sm-1">
+		    <div class="col-xs-1">
 		        <button type="button"  class="btn btn-block" style="background: #fff;" disabled="disabled"><i class="glyphicon"></i></button>
 		        <button type="button"  class="btn btn-block" style="background: #fff;" disabled="disabled"><i class="glyphicon"></i></button>
 		        <button type="button" id="multiselect_rightAll" class="btn btn-block"><i class="glyphicon glyphicon-forward"></i></button>
@@ -58,7 +58,7 @@
 		        <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
 		        <button type="button" id="multiselect_leftAll" class="btn btn-block"><i class="glyphicon glyphicon-backward"></i></button>
 		    </div>
-		    <div class="col-sm-5">
+		    <div class="col-xs-5">
 		        <select name="to[]" id="multiselect_to" class="form-control" size="8" style="height:320px;" multiple="multiple">
                     <%foreach (var c in selectedPara) {
                             %>

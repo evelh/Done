@@ -1567,7 +1567,7 @@ namespace EMT.DoneNOW.BLL
             if (groupList.Count == 0)
                 return new List<DictionaryEntryDto>();
 
-            var all = dal.FindListBySql<DictionaryEntryDto>($"select id as `val`,col_comment as `show` from d_query_result WHERE query_type_id={groupList[0].query_type_id} and type_id=2 order by col_comment");
+            var all = dal.FindListBySql<DictionaryEntryDto>($"select id as `val`,col_comment as `show` from d_query_result WHERE query_type_id={groupList[0].query_type_id} and type_id=2 and is_visible=1 order by col_comment");
 
             return all;
         }
@@ -1621,7 +1621,8 @@ namespace EMT.DoneNOW.BLL
                 {
                     bk.id.ToString(),
                     bk.name,
-                    dal.FindSignleBySql<string>(bk.ext1)
+                    dal.FindSignleBySql<string>(bk.ext1),
+                    bk.ext2
                 });
             }
             return rtn;

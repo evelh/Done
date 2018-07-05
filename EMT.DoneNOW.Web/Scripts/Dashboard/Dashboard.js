@@ -651,6 +651,8 @@ function ChangeDashboardLimit(idx) {
 function SaveDashboard() {
     if ($("#dashboardName").val() == "") {
         LayerMsg("请输入仪表板名称");
+        $("#settings").hide();
+        $("#cover").hide();
         return;
     }
     var fltVal = $("#dashboardFilter").val();
@@ -658,6 +660,8 @@ function SaveDashboard() {
     if (fltVal != "") {
         if ($("#dashboardSingleFilterHidden").val() == "") {
             LayerMsg("请过滤条件默认值");
+            $("#settings").hide();
+            $("#cover").hide();
             return;
         }
         fltStr += "&filter_id=" + fltVal + "&default=" + $("#dashboardSingleFilterHidden").val() + "&limit_type=" + $('input:radio[name="dashboardLimitType"]:checked').val() + "&limit_value=";

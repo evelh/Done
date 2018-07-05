@@ -308,11 +308,6 @@
                                         <div>
                                             <div class="Group">
                                                 <div class="Heading">
-                                                    <div class="Text">视图</div>
-                                                </div>
-                                            </div>
-                                            <div class="Group">
-                                                <div class="Heading">
                                                     <div class="Text">搜索</div>
                                                 </div>
                                                 <%if (CheckAuth("MENU_CONTRACT_CONTRACT"))
@@ -749,16 +744,6 @@
                                                     <a class="Button ButtonIcon NormalState" href="Reports/ReportHomePage?SearchType=Other" target="PageFrame">
                                                         <span class="Text">其他</span>
                                                     </a>
-                                                </div>
-                                            </div>
-                                            <div class="Group">
-                                                <div class="Heading">
-                                                    <div class="Text">搜索</div>
-                                                </div>
-                                            </div>
-                                            <div class="Group">
-                                                <div class="Heading">
-                                                    <div class="Text">工具</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1933,6 +1918,9 @@
                 <div class="itemborderBottom"></div>
                 <div class="item" style="padding-top:20px; ">
                     <input type="radio" name="addWidgetType" id="addWidgetType2" value="2"><label for="addWidgetType2"> 从本人已存在的小窗口中复制</label>
+                </div>
+                <div class="item" style="padding-top:20px; ">
+                    <select name="addWidgetTypeCopy" id="addWidgetTypeCopy"></select>
                 </div>
                 <div class="itemborderBottom"></div>
                 <div class="item"  style="padding-top:20px;">

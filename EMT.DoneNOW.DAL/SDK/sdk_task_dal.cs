@@ -240,12 +240,14 @@ namespace EMT.DoneNOW.DAL
         #region 工作流处理工单对象
         public delegate void InsertEventHandler(Object sender, InsertEventArgs e);
         public static event InsertEventHandler AddEdit;
+        public static event EventChangeHandler Changed;
 
         public override void Insert(sdk_task ett)
         {
             base.Insert(ett);
 
             AddEdit?.Invoke(ett, new InsertEventArgs() { EventType = "add" });
+            Changed?.Invoke(ett.id);
         }
 
         public override bool Update(sdk_task ett)
@@ -254,6 +256,17 @@ namespace EMT.DoneNOW.DAL
                 return false;
 
             AddEdit?.Invoke(ett, new InsertEventArgs() { EventType = "edit" });
+            Changed?.Invoke(ett.id);
+
+            return true;
+        }
+
+        public override bool Delete(sdk_task ett)
+        {
+            if (!base.Delete(ett))
+                return false;
+
+            Changed?.Invoke(ett.id);
 
             return true;
         }
