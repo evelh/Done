@@ -927,6 +927,7 @@ namespace EMT.DoneNOW.DTO
             DATA_IMPORT_LOG_DETAIL = 1790,                          // 数据导入日志详情
             SYSTEM_NOTE_TYPE = 1791,                                // 系统设置-共享功能-备注类型
             SYSTEM_ORGANIZATION = 1792,                             // 系统设置-组织管理-区域
+            SYSTEM_LINES_BUSINESS = 1793,                           // 系统设置-组织管理-业务范围
             SYSTEM_SLA = 1794,                                      // 系统设置-工作台-服务等级管理
             SYSTEM_SLA_ITEM = 1795,                                 // 系统设置-工作台-服务等级管理-条目
             SYSTEM_TICKET_SUPPORT_EMAIL = 1796,                     // 系统设置-工作台-支持邮箱
