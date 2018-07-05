@@ -21,8 +21,10 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected crm_account thisAccount = null;
         protected List<d_general> statusList = new d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.SERVICE_CALL_STATUS);
         protected List<sys_notify_tmpl> tempList = new sys_notify_tmpl_dal().GetTempByEvent(((int)DicEnum.NOTIFY_EVENT.SERVICE_CALL_CREATED_EDITED).ToString());
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
+            thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
             var id = Request.QueryString["id"];
             var isCopy = Request.QueryString["copy"];
             if (!string.IsNullOrEmpty(id))

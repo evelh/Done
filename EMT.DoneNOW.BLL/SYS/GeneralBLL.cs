@@ -1273,7 +1273,7 @@ namespace EMT.DoneNOW.BLL
         /// <summary>
         /// 获取税收种类下的分税
         /// </summary>
-        public List<d_tax_region_cate_tax> GetCateTaxList(long regionCateId) => _dal.FindListBySql<d_tax_region_cate_tax>($"SELECT * from d_tax_region_cate_tax where delete_time =0 and tax_region_cate_id ={regionCateId}");
+        public List<d_tax_region_cate_tax> GetCateTaxList(long regionCateId) => _dal.FindListBySql<d_tax_region_cate_tax>($"SELECT * from d_tax_region_cate_tax where delete_time =0 and tax_region_cate_id ={regionCateId}  ORDER BY sort_order");
 
         /// <summary>
         /// 获取分税
@@ -1302,12 +1302,21 @@ namespace EMT.DoneNOW.BLL
         {
             if (!CheckCateTax(obj.tax_region_cate_id, obj.tax_name, obj.id))
                 return false;
+            var thisRegionTax = GetRegionCate(obj.tax_region_cate_id);
+            if (thisRegionTax == null)
+                return false;
+
             d_tax_region_cate_tax_dal dtrctDal = new d_tax_region_cate_tax_dal();
             obj.id = dtrctDal.GetNextIdCom();
             obj.create_time = obj.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
             obj.create_user_id = obj.update_user_id = userId;
             dtrctDal.Insert(obj);
             OperLogBLL.OperLogAdd<d_tax_region_cate_tax>(obj, obj.id, userId, OPER_LOG_OBJ_CATE.D_TAX_REGION_CATE_TAX, "");
+            if (obj.tax_rate != 0)
+            {
+                thisRegionTax.total_effective_tax_rate += obj.tax_rate;
+                EditRegionCate(thisRegionTax, userId);
+            }
             return true;
         }
         /// <summary>
@@ -1320,11 +1329,20 @@ namespace EMT.DoneNOW.BLL
                 return false;
             if (!CheckCateTax(obj.tax_region_cate_id, obj.tax_name, obj.id))
                 return false;
+            var thisRegionTax = GetRegionCate(obj.tax_region_cate_id);
+            if (thisRegionTax == null)
+                return false;
             d_tax_region_cate_tax_dal dtrctDal = new d_tax_region_cate_tax_dal();
             obj.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
             obj.update_user_id = userId;
             dtrctDal.Update(obj);
             OperLogBLL.OperLogUpdate<d_tax_region_cate_tax>(obj, oldObj, obj.id, userId, OPER_LOG_OBJ_CATE.D_TAX_REGION_CATE_TAX, "");
+            decimal diffRate = obj.tax_rate - oldObj.tax_rate;
+            if (diffRate != 0)
+            {
+                thisRegionTax.total_effective_tax_rate += diffRate;
+                EditRegionCate(thisRegionTax, userId);
+            }
             return true;
         }
 
@@ -1358,8 +1376,14 @@ namespace EMT.DoneNOW.BLL
             var obj = GetCateTax(id);
             if (obj == null)
                 return false;
+            var thisRegionTax = GetRegionCate(obj.tax_region_cate_id);
             new d_tax_region_cate_tax_dal().SoftDelete(obj, userId);
             OperLogBLL.OperLogDelete<d_tax_region_cate_tax>(obj, obj.id, userId, OPER_LOG_OBJ_CATE.D_TAX_REGION_CATE_TAX, "");
+            if(thisRegionTax!=null&& obj.tax_rate != 0)
+            {
+                thisRegionTax.total_effective_tax_rate -= obj.tax_rate;
+                EditRegionCate(thisRegionTax, userId);
+            }
             return true;
         }
 

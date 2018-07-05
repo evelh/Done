@@ -36,11 +36,12 @@ namespace EMT.DoneNOW.Web.QuoteItem
         protected bool IssaleOrder = false;    // 是否从销售订单进行操作 （两种操作） 
         protected long? sale_order_id = null;
         protected ctt_contract_cost_dal cccDal = new ctt_contract_cost_dal();
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
-              
+                thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
                 // quote_group_by
 
                 groupBy.DataTextField = "show";

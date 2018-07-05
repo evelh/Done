@@ -48,7 +48,10 @@
                                     <td width="30%" class="FieldLabels"><span style="margin-left: 15px;">税率</span><span style="color: red;">*</span>
                                         <span class="errorSmall"></span>
                                         <div>
-                                            <input type="text" id="tax_rate" name="tax_rate" style="width: 220px;" maxlength="11" value="<%=((thisCateTax?.tax_rate)??0).ToString("#0.0000") %>" />
+                                            <span>
+                                            <input type="text" id="tax_rate" name="tax_rate" style="width: 220px;margin-right: 10px" maxlength="11" value="<%=((thisCateTax?.tax_rate)??0).ToString("#0.0000") %>" />
+                                                </span>
+                                            <span style="display: block;display:block;font-weight: 900;">%</span>
                                         </div>
                                     </td>
                                 </tr>
@@ -95,7 +98,15 @@
             LayerMsg("该名称已存在");
             return false;
         }
-
+        var tax_rate = $("#tax_rate").val();
+        if (tax_rate == "") {
+            LayerMsg("请填写相关税率");
+            return false;
+        }
+        if (Number(tax_rate) < 0 || Number(tax_rate) > 1000) {
+            LayerMsg("税率超出范围，请填写1-999之间的数字");
+            return false;
+        }
         return true;
      })
 </script>

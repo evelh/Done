@@ -25,11 +25,13 @@ namespace EMT.DoneNOW.Web.Opportunity
         protected crm_account account = null;
         protected crm_contact contact = null;
         protected string callBackFiled = "";
+        protected sys_bookmark thisBookMark;
         protected List<d_general> spredList = new d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.OPPORTUNITY_SPREAD_UNIT);
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+                thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
                 callBackFiled = Request.QueryString["callBackFiled"];
 
                 var opportunity_id = Request.QueryString["opportunity_id"];

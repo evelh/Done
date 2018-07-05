@@ -16,7 +16,12 @@
 </head>
 <body>
   <form id="form1" runat="server">
-    <div class="header"><%=note == null ? "新增备注" : "编辑备注" %></div>
+    <div class="header"><%=note == null ? "新增备注" : "编辑备注" %> <div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> " onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div></div>
     <div class="header-title">
       <ul>
         <li id="SaveClose">
@@ -370,7 +375,31 @@
         }
       }
       $("#form1").submit();
-    }
+      }
+      function ChangeBookMark() {
+          var url = '<%=Request.RawUrl %>';
+          var name = "<%=(note?.description??"").Length>20?(note?.description??"").Substring(0,20):(note?.description??"")%>";
+          <%if (note != null)
+      { %> name = ":" + name;
+      <%}%>
+          var title = '<%=note==null?"新增":"编辑" %>备注' + name;
+        var isBook = $("#bookmark").hasClass("Selected");
+        $.ajax({
+            type: "GET",
+            url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    if (isBook) {
+                        $("#bookmark").removeClass("Selected");
+                    } else {
+                        $("#bookmark").addClass("Selected");
+                    }
+                }
+            }
+        })
+       }
   </script>
 </body>
 </html>

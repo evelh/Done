@@ -18,11 +18,13 @@ namespace EMT.DoneNOW.Web.SaleOrder
         protected List<UserDefinedFieldDto> sale_udfList = null;        // 销售订单的自定义字段
         protected List<UserDefinedFieldValue> sale_udfValueList = null; // 销售订单的自定义字段的值
         protected crm_opportunity opportunity = null;
+        protected sys_bookmark thisBookMark;
         protected Dictionary<string, object> dic = new SaleOrderBLL().GetField();
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+                thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
                 var soid = Request.QueryString["id"];
                 if (AuthBLL.GetUserSaleorderAuth(LoginUserId, LoginUser.security_Level_id, Convert.ToInt64(soid)).CanEdit == false)
                 {

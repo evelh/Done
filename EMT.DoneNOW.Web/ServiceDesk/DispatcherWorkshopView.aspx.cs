@@ -32,13 +32,16 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected List<d_general> ticStaList = new DAL.d_general_dal().GetGeneralByTableId((long)DTO.GeneralTableEnum.TICKET_STATUS);          // 工单状态集合
         protected List<d_general> todiAction = new DAL.d_general_dal().GetGeneralByTableId((long)DTO.GeneralTableEnum.ACTION_TYPE);
         protected List<sys_resource> AllResList = new DAL.sys_resource_dal().GetSourceList();
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+                string bookUrlrl = "/ServiceDesk/DispatchCalendar";
+                thisBookMark = new IndexBLL().GetSingBook(bookUrlrl, LoginUserId);
                 // 填入默认查询条件
                 var defaultSearch = new DAL.sys_recent_search_dal().GetByUrl("/ServiceDesk/DispatcherWorkshopView");
-                var url = Request.QueryString[""];
+                //var url = Request.QueryString[""];
                 sdk_dispatcher_view searDefault = null;
                 if (defaultSearch != null&&!string.IsNullOrEmpty(defaultSearch.conditions))
                 {

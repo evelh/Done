@@ -39,6 +39,9 @@ namespace EMT.DoneNOW.Web
                 case "LoadBook":
                     LoadBook(context);
                     break;
+                case "GetBookByUrl":
+                    GetBookByUrl(context);
+                    break;
                 case "DeleteChooseBook":
                     DeleteChooseBook(context);
                     break;
@@ -179,6 +182,24 @@ namespace EMT.DoneNOW.Web
                     bookList = bookList.Take(50).ToList();
                 context.Response.Write(new Tools.Serialize().SerializeJson(bookList));
             }
+        }
+        /// <summary>
+        /// 根据URL 获取相应书签
+        /// </summary>
+        void GetBookByUrl(HttpContext context)
+        {
+            string url = context.Request.QueryString["url"];
+            if (!string.IsNullOrEmpty(url))
+            {
+                var thisBook = new IndexBLL().GetSingBook(url,LoginUserId);
+                if (thisBook != null)
+                {
+                    WriteResponseJson(thisBook);
+                    return;
+                }
+
+            }
+            WriteResponseJson("error");
         }
 
         /// <summary>

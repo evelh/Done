@@ -39,6 +39,7 @@ namespace EMT.DoneNOW.Web.SysSetting
         protected void save_close_Click(object sender, EventArgs e)
         {
             var pageCateTax = AssembleModel<d_tax_region_cate_tax>();
+            pageCateTax.tax_rate = pageCateTax.tax_rate / 100;
             if (!isAdd)
             {
                 thisCateTax.tax_name = pageCateTax.tax_name;

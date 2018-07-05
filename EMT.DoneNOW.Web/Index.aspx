@@ -1490,7 +1490,7 @@
         <div class="DialogHeadingContainer">
             <div class="ButtonContainer">
                 <a class="Button ButtonIcon NormalState" id="ClearButton" tabindex="0" onclick="ClearBrowerHistory()">
-                    <span class="Icon"></span><span class="Text">清除</span></a>
+                    <span class="Icon"></span><span class="Text" style="font-size:14px;">清除</span></a>
             </div>
             <div class="Instructions" style="padding-left: 10px;">
                 <div class="InstructionItem">下面是你最近浏览的部分页面。你可以通过点击链接回到这些页面。</div>

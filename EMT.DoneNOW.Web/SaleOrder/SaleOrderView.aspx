@@ -47,6 +47,13 @@
                 </ul>
             </i>
             销售订单-<%=opportunity.name %>(ID:<%=opportunity.oid %>)-<%=account.name %>
+             <div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> "
+                onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div>
         </div>
 
         <div class="header-title">
@@ -384,6 +391,29 @@
         }
         
     })
+
+    function ChangeBookMark() {
+        //$("#bookmark").removeAttr("click");
+        var url = '<%=Request.Url.LocalPath %>?id=<%=sale_order?.id %>';
+           var title = '查看销售订单:<%=opportunity?.name %>';
+        var isBook = $("#bookmark").hasClass("Selected");
+        $.ajax({
+            type: "GET",
+            url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    if (isBook) {
+                        $("#bookmark").removeClass("Selected");
+                    } else {
+                        $("#bookmark").addClass("Selected");
+                    }
+                }
+            }
+        })
+       }
+
     //var Height = $(window).height() - 80 + "px";
     //var Width = $(window).width() + "px";
     //$("#viewSaleOrder_iframe").css("height", Height).css("width", Width);

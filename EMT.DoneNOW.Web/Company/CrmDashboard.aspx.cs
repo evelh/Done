@@ -61,8 +61,10 @@ namespace EMT.DoneNOW.Web.Company
         protected string terResIds;          // 该区域下的所有负责人的Id 集合
         protected OpportunityBLL oppBLl = new OpportunityBLL();
         protected List<sys_resource_sales_quota> resQuotaList;
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
+            thisBookMark = new IndexBLL().GetSingBook(Request.Url.LocalPath, LoginUserId);
             // 今天生成的待办数量
             // 过期的待办
             // 打开的指派给其他人的待办

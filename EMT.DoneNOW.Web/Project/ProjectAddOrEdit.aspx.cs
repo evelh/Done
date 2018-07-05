@@ -25,10 +25,12 @@ namespace EMT.DoneNOW.Web.Project
         protected string isFromTemp = ""; // 入口是否从模板添加
         protected string isTemp = "";     // 是否添加模板-- 模板
         protected string callBaclFunction = "";
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+                thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
                 //var checkLimitType = Request.QueryString["type_id"];
                 //if (checkLimitType == ((int)DicEnum.PROJECT_TYPE.ACCOUNT_PROJECT).ToString() || checkLimitType == ((int)DicEnum.PROJECT_TYPE.IN_PROJECT).ToString())
                 //{

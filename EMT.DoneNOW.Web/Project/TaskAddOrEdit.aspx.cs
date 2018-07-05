@@ -32,11 +32,12 @@ namespace EMT.DoneNOW.Web.Project
         protected List<PageMile> thisPhaMile =null;              // 修改阶段时使用，关联里程碑
         protected List<sdk_task_predecessor> preList = null;
         public bool isCopy = false;
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
-               
+                thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
                 if (!IsPostBack)
                 {
                     ThisPageDataBind();

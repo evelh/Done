@@ -23,6 +23,7 @@ namespace EMT.DoneNOW.Web.Opportunity
         protected List<crm_quote> quoteList = null;
         protected string actType;
         protected string iframeSrc;
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -47,7 +48,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                     {
                         contact = new ContactBLL().GetContact((long)opportunity.contact_id);
                     }
-
+                    thisBookMark = new IndexBLL().GetSingBook(Request.Url.LocalPath + "?id=" + opportunity.id, LoginUserId);
 
 
 

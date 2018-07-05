@@ -16,8 +16,10 @@ namespace EMT.DoneNOW.Web
         protected int id;
         private QuoteTemplateBLL temp = new QuoteTemplateBLL();
         protected string op;
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
+            thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
             id = Convert.ToInt32(Request.QueryString["id"]);
             if(!string.IsNullOrEmpty(Request.QueryString["op"]))
             op = Request.QueryString["op"];            

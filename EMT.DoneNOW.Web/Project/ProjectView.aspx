@@ -69,6 +69,59 @@
             color:black;
             text-decoration-line:none;
         }
+         .BookmarkButton {
+            cursor: pointer;
+            display: inline-block;
+            height: 16px;
+            position: relative;
+            width: 16px;
+            float: right;
+            margin-top: 8px;
+        }
+
+            .BookmarkButton.Selected div {
+                border-color: #f9d959;
+            }
+
+            .BookmarkButton > .LowerLeftPart {
+                border-right-width: 8px;
+                border-bottom-width: 6px;
+                border-left-width: 8px;
+                top: 5px;
+                -moz-transform: rotate(35deg);
+                -webkit-transform: rotate(35deg);
+                -ms-transform: rotate(35deg);
+                transform: rotate(35deg);
+            }
+
+            .BookmarkButton > .LowerRightPart {
+                border-right-width: 8px;
+                border-bottom-width: 6px;
+                border-left-width: 8px;
+                top: 5px;
+                -moz-transform: rotate(-35deg);
+                -webkit-transform: rotate(-35deg);
+                -ms-transform: rotate(-35deg);
+                transform: rotate(-35deg);
+            }
+
+            .BookmarkButton > div.LowerLeftPart, .BookmarkButton > div.LowerRightPart, .BookmarkButton > div.UpperPart {
+                border-left-color: transparent;
+                border-right-color: transparent;
+                border-style: solid;
+                border-top: none;
+                height: 0;
+                position: absolute;
+                width: 0;
+            }
+
+            .BookmarkButton > .UpperPart {
+                border-bottom-width: 6px;
+                border-left-width: 3px;
+                border-right-width: 3px;
+                left: 5px;
+                top: 1px;
+            }
     </style>
 </head>
 <body>
@@ -112,6 +165,13 @@
         <div class="Right">
              <div class="HeaderRow">
                  <asp:Label ID="ShowTitle" runat="server" Text="Label"></asp:Label>
+                 <div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> "
+                onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div>
             </div>
             <iframe runat="server" id="viewProjectIframe" name="viewProjectIframe" width="100%" height="92%" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
             <iframe runat="server" id="second" width="100%" height="0" frameborder="0" marginheight="0" marginwidth="0" style="overflow: scroll;"></iframe>
@@ -121,3 +181,27 @@
 
 </body>
 </html>
+<script src="../Scripts/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../Scripts/common.js"></script>
+<script>
+    function ChangeBookMark() {
+        var url = '<%=Request.Url.LocalPath + "?id=" + thisProject?.id %>';
+         var title = '查看项目:<%=thisProject?.name %>';
+        var isBook = $("#bookmark").hasClass("Selected");
+        $.ajax({
+            type: "GET",
+            url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    if (isBook) {
+                        $("#bookmark").removeClass("Selected");
+                    } else {
+                        $("#bookmark").addClass("Selected");
+                    }
+                }
+            }
+        })
+     }
+</script>

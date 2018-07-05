@@ -41,6 +41,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected Dictionary<string, object> slaDic = null;    // 时间轴显示
         protected List<d_general> ticketNoteTypeList = null;  // 工单备注类型
         protected List<sdk_work_entry> entryList = null;  // 显示工单 工时剩余时间
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -75,6 +76,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     thisTicket = new sdk_task_dal().FindNoDeleteById(long.Parse(taskId));
                     if (thisTicket != null)
                     {
+                        thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
                         var isCopyString = Request.QueryString["isCopy"];
                         if (string.IsNullOrEmpty(isCopyString))
                             isAdd = false;

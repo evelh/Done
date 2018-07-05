@@ -15,9 +15,10 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected  List<sdk_kb_article> artList = null;
         protected List<d_general> pubList = new DAL.d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.KB_PUBLISH_TO_TYPE);
         protected List<KnowledgeCateDto> cateList = new KnowledgeBLL().GetKnowledgeCateList(false);
-       
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
+            thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
             artList = new KnowledgeBLL().GetArtList();
             if (artList == null)
                 artList = new List<sdk_kb_article>();

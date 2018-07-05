@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="../Content/index.css" />
     <link rel="stylesheet" type="text/css" href="../Content/style.css" />
+
 </head>
 
 <body runat="server">
@@ -17,7 +18,14 @@
         <div class="header"><%if (dto.contact.id == 0)
             { %>添加联系人<%}
                                        else
-                                       { %>编辑联系人<%} %></div>
+                                       { %>编辑联系人<%} %>
+            <div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> " onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div>
+        </div>
         <div class="header-title">
             <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
@@ -512,6 +520,31 @@
                     $("#Phone").val(data);
             })
         }
+        function ChangeBookMark() {
+            var url = '<%=Request.RawUrl %>';
+            var name = "";
+            <%if (id != 0 && dto != null && dto.contact != null)
+        {%>
+            name = ':<%=dto.contact.name %>';
+            <%} %>
+             var title = '<%=id==0?"新增":"编辑" %>联系人'+name;
+        var isBook = $("#bookmark").hasClass("Selected");
+        $.ajax({
+            type: "GET",
+            url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    if (isBook) {
+                        $("#bookmark").removeClass("Selected");
+                    } else {
+                        $("#bookmark").addClass("Selected");
+                    }
+                }
+            }
+        })
+         }
     </script>
 </body>
 </html>

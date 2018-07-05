@@ -172,11 +172,70 @@
                 .menu ul .disabled {
                     color: #AAAAAA;
                 }
+                .BookmarkButton {
+            cursor: pointer;
+            display: inline-block;
+            height: 16px;
+            position: relative;
+            width: 16px;
+            float: right;
+            margin-top: 8px;
+        }
+
+            .BookmarkButton.Selected div {
+                border-color: #f9d959;
+            }
+
+            .BookmarkButton > .LowerLeftPart {
+                border-right-width: 8px;
+                border-bottom-width: 6px;
+                border-left-width: 8px;
+                top: 5px;
+                -moz-transform: rotate(35deg);
+                -webkit-transform: rotate(35deg);
+                -ms-transform: rotate(35deg);
+                transform: rotate(35deg);
+            }
+
+            .BookmarkButton > .LowerRightPart {
+                border-right-width: 8px;
+                border-bottom-width: 6px;
+                border-left-width: 8px;
+                top: 5px;
+                -moz-transform: rotate(-35deg);
+                -webkit-transform: rotate(-35deg);
+                -ms-transform: rotate(-35deg);
+                transform: rotate(-35deg);
+            }
+
+            .BookmarkButton > div.LowerLeftPart, .BookmarkButton > div.LowerRightPart, .BookmarkButton > div.UpperPart {
+                border-left-color: transparent;
+                border-right-color: transparent;
+                border-style: solid;
+                border-top: none;
+                height: 0;
+                position: absolute;
+                width: 0;
+            }
+
+            .BookmarkButton > .UpperPart {
+                border-bottom-width: 6px;
+                border-left-width: 3px;
+                border-right-width: 3px;
+                left: 5px;
+                top: 1px;
+            }
     </style>
 </head>
 <body>
     <div class="Active ThemePrimaryColor TitleBar">
-        <div class="Title"><span class="Text"><%=taskType %>-<%=thisTask.no %>-<%=thisTask.title %>(<%=thisAccount.name %>)</span><span class="SecondaryText"></span></div>
+        <div class="Title"><span class="Text"><%=taskType %>-<%=thisTask.no %>-<%=thisTask.title %>(<%=thisAccount.name %>)</span><span class="SecondaryText"></span> <div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> "
+                onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div></div>
         <div class="TitleBarButton Star" id="za129bcc0139b41ea8e2f627eb64b9cd3" title="Bookmark this page">
             <div class="TitleBarIcon Star"></div>
         </div>
@@ -1073,6 +1132,28 @@
 
 </script>
 <script>
+    function ChangeBookMark() {
+        //$("#bookmark").removeAttr("click");
+        var url = '<%=Request.Url.LocalPath %>?id=<%=thisTask?.id %>';
+         var title = '查看任务:<%=thisProject?.name %>:<%=thisTask?.title %>';
+        var isBook = $("#bookmark").hasClass("Selected");
+        $.ajax({
+            type: "GET",
+            url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    if (isBook) {
+                        $("#bookmark").removeClass("Selected");
+                    } else {
+                        $("#bookmark").addClass("Selected");
+                    }
+                }
+            }
+        })
+    }
+
     function OpenProject() {
         window.open("ProjectView.aspx?id=<%=thisProject.id %>", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.PROJECT_VIEW %>', 'left=200,top=200,width=600,height=800', false);
     }

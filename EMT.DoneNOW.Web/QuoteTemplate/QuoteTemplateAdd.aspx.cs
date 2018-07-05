@@ -14,9 +14,11 @@ namespace EMT.DoneNOW.Web
 {
     public partial class QuoteTemplateAdd : BasePage
     {
-        private long id;
+        protected long id;
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
+            thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
             id = Convert.ToInt64(Request.QueryString["id"]);
             if (!IsPostBack) {
                 Bind();

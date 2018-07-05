@@ -20,10 +20,12 @@ namespace EMT.DoneNOW.Web.Quote
         protected CompanyBLL companyBLL = new CompanyBLL();
         protected Dictionary<string, object> dic = null;
         protected crm_account account = null;
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+                thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
                 var id = Request.QueryString["id"];
                 dic = new QuoteBLL().GetField();
                 #region 下拉框配置数据源

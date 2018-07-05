@@ -24,11 +24,13 @@ namespace EMT.DoneNOW.Web.Activity
         protected long saleOrderId = 0;     // 初始销售订单id
         protected int objType = 0;          // 对象类型
         protected long objId = 0;           // 对象id
+        protected sys_bookmark thisBookMark;
 
         private ActivityBLL bll = new ActivityBLL();
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
             actionTypeList = bll.GetCRMActionType();
             resourceList = new UserResourceBLL().GetResourceList();
 

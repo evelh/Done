@@ -1181,9 +1181,8 @@
         }
     }
     function ChangeBookMark() {
-        //$("#bookmark").removeAttr("click");
         var url = '<%=Request.RawUrl %>';
-        var title = $('title').text();
+        var title = '编辑客户:<%=account?.name %>';
         var isBook = $("#bookmark").hasClass("Selected");
         $.ajax({
             type: "GET",

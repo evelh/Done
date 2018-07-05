@@ -14,6 +14,7 @@ namespace EMT.DoneNOW.Web.Contract
     public partial class ContractView : BasePage
     {
         protected ctt_contract contract = null;
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -21,6 +22,8 @@ namespace EMT.DoneNOW.Web.Contract
                 var contract_id = Request.QueryString["id"];
                 contract = new ctt_contract_dal().FindNoDeleteById(long.Parse(contract_id));
                 var conAccount = new CompanyBLL().GetCompany(contract.account_id);
+
+                thisBookMark = new IndexBLL().GetSingBook(Request.Url.LocalPath + "?id=" + contract_id, LoginUserId);
                 #region 记录浏览历史
                 var history = new sys_windows_history()
                 {

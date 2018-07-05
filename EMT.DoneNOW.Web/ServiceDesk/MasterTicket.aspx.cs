@@ -46,8 +46,10 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected long objectId = -1;  // 添加附件的对象ID
         protected sdk_service_call_task thisTicketCall = null;   // 主工单的服务预定
         protected List<sys_notify_tmpl> tempList = new sys_notify_tmpl_dal().GetTempByEvent(((int)DicEnum.NOTIFY_EVENT.RECURRENCE_MASTER_CREATED_EDITED).ToString()+','+ ((int)DicEnum.NOTIFY_EVENT.TICKET_CREATED_EDITED).ToString()+','+ ((int)DicEnum.NOTIFY_EVENT.TICKET_ATTACHMENT_ADDED).ToString());
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
+            thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
             if (!IsPostBack)
                 Bind();  // 绑定页面下拉数据
             if (noteTypeList != null && noteTypeList.Count > 0)

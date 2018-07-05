@@ -33,7 +33,15 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <div class="header">报价模板新增</div>
+            <div class="header">报价模板新增
+               <% if (id == 0)
+                        { %> <div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                        { %>Selected<%} %> " onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div><%} %>
+            </div>
             <div class="ButtonContainer header-title">
                 <ul id="btn">
                     <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>
@@ -627,5 +635,26 @@
         }
         bol = !bol;
     });
+
+    function ChangeBookMark() {
+        var url = '<%=Request.RawUrl %>';
+        var title = '新增报价模板';
+        var isBook = $("#bookmark").hasClass("Selected");
+        $.ajax({
+            type: "GET",
+            url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    if (isBook) {
+                        $("#bookmark").removeClass("Selected");
+                    } else {
+                        $("#bookmark").addClass("Selected");
+                    }
+                }
+            }
+        })
+    }
 </script>
 </html>

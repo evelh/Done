@@ -13,7 +13,12 @@
 </head>
 <body>
     <form id="form1" runat="server" style="min-width:500px;width:100%;">
-        <div class="header"><%=isAdd?"添加报价":"修改报价" %></div>
+        <div class="header"><%=isAdd?"添加报价":"修改报价" %><div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> " onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div></div>
         <div class="header-title">
             <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
@@ -1099,7 +1104,27 @@
         });
         $("#contact_id").val(contact_id);
     }
- 
+    function ChangeBookMark() {
+        var url = '<%=Request.RawUrl %>';
+        var name = "<%=isAdd?"":":" %><%=quote?.name %>";
+        var title = '<%=isAdd?"新增":"编辑" %>报价' + name;
+        var isBook = $("#bookmark").hasClass("Selected");
+        $.ajax({
+            type: "GET",
+            url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    if (isBook) {
+                        $("#bookmark").removeClass("Selected");
+                    } else {
+                        $("#bookmark").addClass("Selected");
+                    }
+                }
+            }
+        })
+ }
   
 
 </script>

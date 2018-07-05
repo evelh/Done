@@ -24,9 +24,10 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected List<sdk_kb_article_ticket> kbTicketList = null;
         protected DAL.sdk_task_dal stDal = new DAL.sdk_task_dal();
         protected List<com_attachment> thisNoteAtt = null;   // 这个的附件
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
             var artId = Request.QueryString["id"];
             if (!string.IsNullOrEmpty(artId))
             {
