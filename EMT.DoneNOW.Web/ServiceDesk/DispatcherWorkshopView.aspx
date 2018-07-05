@@ -349,7 +349,7 @@
     <div class="loading">
         <div class="loadimg">
             <img src="../Images/Loading.gif" alt="" />
-            <p>Loading scheduled itenms</p>
+            <p>加载中...</p>
         </div>
     </div>
     <div id="BackgroundOverLay"></div>

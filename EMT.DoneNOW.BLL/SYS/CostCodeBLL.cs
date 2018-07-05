@@ -24,6 +24,8 @@ namespace EMT.DoneNOW.BLL
           
             _dal.Insert(code);
             OperLogBLL.OperLogAdd<d_cost_code>(code, code.id, userId, OPER_LOG_OBJ_CATE.D_COST_CODE, "");
+            if (code.cate_id == (int)DicEnum.COST_CODE_CATE.INTERNAL_ALLOCATION_CODE)
+                AddInterCodeTask(code,userId);
             return true;
         }
         public bool AddCodeRule(d_cost_code_rule code, long userId)
@@ -34,6 +36,43 @@ namespace EMT.DoneNOW.BLL
             code.create_user_id = code.update_user_id = userId;
             new d_cost_code_rule_dal().Insert(code);
             // OperLogBLL.OperLogAdd<d_cost_code>(code, code.id, userId, OPER_LOG_OBJ_CATE.D_COST_CODE, "");
+            return true;
+        }
+        /// <summary>
+        /// 新增内部工时的时候新增Task
+        /// </summary>
+        public bool AddInterCodeTask(d_cost_code code,long userId)
+        {
+            if (code.cate_id != (int)DicEnum.COST_CODE_CATE.INTERNAL_ALLOCATION_CODE)
+                return false;
+            var task = new TicketBLL().GetTask(code.id);
+            if (task != null)
+            {
+                var oldCode = GetCodeById(code.id);
+                code.id = _dal.GetNextIdCom();
+                _dal.Update(code);
+                OperLogBLL.OperLogUpdate<d_cost_code>(code, oldCode, code.id, userId, OPER_LOG_OBJ_CATE.D_COST_CODE, "");
+                AddInterCodeTask(code,userId);
+            }
+            else
+            {
+                task = new sdk_task()
+                {
+                    id = code.id,
+                    create_time = Tools.Date.DateHelper.ToUniversalTimeStamp(),
+                    update_time = Tools.Date.DateHelper.ToUniversalTimeStamp(),
+                    create_user_id = userId,
+                    update_user_id = userId,
+                    account_id = 0,
+                    title = code.name,
+                    no = new TaskBLL().ReturnTaskNo(),
+                    status_id = (int)DicEnum.TICKET_STATUS.NEW,
+                    type_id = (int)TASK_TYPE.INTERNAL_ALLOCATION_CODE,
+                    last_activity_time = Tools.Date.DateHelper.ToUniversalTimeStamp(),
+                };
+                new sdk_task_dal().Insert(task);
+                OperLogBLL.OperLogAdd<sdk_task>(task, task.id, userId, OPER_LOG_OBJ_CATE.PROJECT_TASK, "");
+            }
             return true;
         }
 
@@ -179,7 +218,7 @@ namespace EMT.DoneNOW.BLL
         {
             if (string.IsNullOrEmpty(ids))
                 return null;
-            return _dal.FindListBySql($"SELECT * from d_cost_code where delete_time = 0 and id in('{ids}')");
+            return _dal.FindListBySql($"SELECT * from d_cost_code where delete_time = 0 and id in({ids})");
         }
         /// <summary>
         /// 根据税种获取 代码
@@ -243,6 +282,40 @@ namespace EMT.DoneNOW.BLL
                 }
             }
         }
-
+        /// <summary>
+        /// 工作类型用，为全部的未过期的合同，添加一个例外因素
+        /// </summary>
+        public bool ExcludeContract(long codeId,long userId)
+        {
+            d_cost_code workType = GetCodeById(codeId);
+            if (workType.cate_id != (int)DicEnum.COST_CODE_CATE.GENERAL_ALLOCATION_CODE)
+                return false;
+            List<ctt_contract> conList = _dal.FindListBySql<ctt_contract>($"SELECT * from ctt_contract where delete_time = 0 and status_id =1 and start_date<='{DateTime.Now.ToString("yyyy-MM-dd")}' and end_date >='{DateTime.Now.ToString("yyyy-MM-dd")}'");
+            if (conList!=null&& conList.Count > 0)
+            {
+                ctt_contract_exclusion_cost_code_dal cceccDal = new ctt_contract_exclusion_cost_code_dal();
+                long timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                foreach (var con in conList)
+                {
+                    var thisExcCode = cceccDal.GetSinCode(con.id,codeId);
+                    if (thisExcCode == null)
+                    {
+                        thisExcCode = new ctt_contract_exclusion_cost_code()
+                        {
+                            id = cceccDal.GetNextIdCom(),
+                            contract_id = con.id,
+                            cost_code_id = codeId,
+                            create_time = timeNow,
+                            update_time = timeNow,
+                            create_user_id = userId,
+                            update_user_id = userId,
+                        };
+                        cceccDal.Insert(thisExcCode);
+                        OperLogBLL.OperLogAdd<ctt_contract_exclusion_cost_code>(thisExcCode, thisExcCode.id, userId, OPER_LOG_OBJ_CATE.CONTRACT_EXCLUSTION_COST, "");
+                    }
+                }
+            }
+            return true;
+        }
     }
 }

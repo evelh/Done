@@ -214,6 +214,7 @@
     <Content Include="Content\Ticket.css" />
     <Content Include="Content\TicketLabour.css" />
     <Content Include="Contract\AdjustLabour.aspx" />
+    <Content Include="Contract\MoveDeduction.aspx" />
     <Content Include="General\GeneralManage.aspx" />
     <Content Include="Images\ButtonIcons.svg" />
     <Content Include="Images\dashboard_administration.png" />
@@ -306,6 +307,7 @@
     <Content Include="Scripts\Search\system_degree.js" />
     <Content Include="Scripts\Search\system_degree_cate.js" />
     <Content Include="Scripts\Search\system_expense_approval_search.js" />
+    <Content Include="Scripts\Search\system_lines_business.js" />
     <Content Include="Scripts\Search\system_note_type.js" />
     <Content Include="Scripts\Search\system_organization.js" />
     <Content Include="Scripts\Search\system_payment_term.js" />
@@ -739,6 +741,8 @@
     <Content Include="SysSetting\ServiceBundle.aspx" />
     <Content Include="SysSetting\SystemSetting.aspx" />
     <Content Include="SysSetting\TaxCateManage.aspx" />
+    <Content Include="SysSetting\TaxRateManage.aspx" />
+    <Content Include="SysSetting\TaxRateTaxManage.aspx" />
     <Content Include="SysSetting\TimeApproval.aspx" />
     <Content Include="SysSetting\TransResource.aspx" />
     <Content Include="SysSetting\UserDefinedField.aspx" />
@@ -1691,6 +1695,13 @@
     </Compile>
     <Compile Include="Contract\InteralCostAddOrEdit.aspx.designer.cs">
       <DependentUpon>InteralCostAddOrEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Contract\MoveDeduction.aspx.cs">
+      <DependentUpon>MoveDeduction.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Contract\MoveDeduction.aspx.designer.cs">
+      <DependentUpon>MoveDeduction.aspx</DependentUpon>
     </Compile>
     <Compile Include="General\GeneralManage.aspx.cs">
       <DependentUpon>GeneralManage.aspx</DependentUpon>
@@ -2767,6 +2778,20 @@
     </Compile>
     <Compile Include="SysSetting\TaxCateManage.aspx.designer.cs">
       <DependentUpon>TaxCateManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\TaxRateManage.aspx.cs">
+      <DependentUpon>TaxRateManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\TaxRateManage.aspx.designer.cs">
+      <DependentUpon>TaxRateManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\TaxRateTaxManage.aspx.cs">
+      <DependentUpon>TaxRateTaxManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\TaxRateTaxManage.aspx.designer.cs">
+      <DependentUpon>TaxRateTaxManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\TimeApproval.aspx.cs">
       <DependentUpon>TimeApproval.aspx</DependentUpon>

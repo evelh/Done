@@ -319,6 +319,17 @@ namespace EMT.DoneNOW.BLL
             return _dal.FindListBySql(_dal.QueryStringDeleteFlag(sql));
         }
         /// <summary>
+        /// 根据类型和用户获取相关模板
+        /// </summary>
+        public List<sys_form_tmpl> GetTmplByType(int tmplType,long userId)
+        {
+            return _dal.FindListBySql($"SELECT * FROM sys_form_tmpl where delete_time = 0 AND (range_type_id={(int)DicEnum.RANG_TYPE.ALL} OR (create_user_id={userId} AND range_type_id={(int)DicEnum.RANG_TYPE.OWN}) or (range_type_id={(int)DicEnum.RANG_TYPE.DEPARTMENT} and EXISTS(SELECT 1 from sys_resource_department srd where srd.resource_id ={userId} and srd.department_id = range_department_id )))");
+        }
+
+
+
+
+        /// <summary>
         /// 模板的快速代码是否通过校验  true 通过校验
         /// </summary>
         public bool CheckTempCode(string code,long id = 0)
@@ -341,7 +352,7 @@ namespace EMT.DoneNOW.BLL
             return _dal.FindNoDeleteById(id);
         }
 
-
+        
         #region 商机模板管理
         /// <summary>
         /// 新增商机模板

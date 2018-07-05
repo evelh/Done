@@ -314,7 +314,7 @@
              <div class="TabBar" style="margin-top:5px;">
                  <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_REGION_CATE)
                     { %>SelectedState <%} %>" href="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_REGION_CATE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_TAX_REGION_CATE %>" id="">
-                    <span class="Text">税区税种</span>
+                    <span class="Text">税率</span>
                 </a>
                 <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_REGION)
                     { %>SelectedState <%} %>" href="../Common/SearchBodyFrame.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_REGION %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_TAX_REGION %>" id="">

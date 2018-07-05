@@ -101,7 +101,7 @@ namespace EMT.DoneNOW.Web
                 var json = new Tools.Serialize().SerializeJson(formTemplate);
                 if (formTemplate.account_id != null)
                 {
-                    var companyName = new CompanyBLL().GetCompany((long)formTemplate.account_id);   // todo  当客户删除后，表单模板查询的客户为null                  
+                    var companyName = new CompanyBLL().GetCompany((long)formTemplate.account_id);                   
                     if (companyName != null)
                     {
                         json = json.Substring(0, json.Length - 1);

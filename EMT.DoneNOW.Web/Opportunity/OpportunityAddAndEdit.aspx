@@ -233,13 +233,13 @@
                                 <td>
                                     <div class="clear">
                                         <label>一次性收益</label>
-                                        <input type="text" class="Calculation" name="one_time_revenue" id="one_time_revenue" value="<%=(!isAdd)&&(opportunity.one_time_revenue!=null)?opportunity.one_time_revenue.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                        <input type="text" class="Calculation" name="one_time_revenue" id="one_time_revenue" value="<%=(!isAdd)?opportunity.one_time_revenue.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                     </div>
                                 </td>
                                 <td>
                                     <div class="clear">
                                         <label>一次性成本</label>
-                                        <input type="text" class="Calculation" name="one_time_cost" id="one_time_cost" value="<%=(!isAdd)&&(opportunity.one_time_cost!=null)?opportunity.one_time_cost.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                        <input type="text" class="Calculation" name="one_time_cost" id="one_time_cost" value="<%=(!isAdd)?opportunity.one_time_cost.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                     </div>
                                 </td>
                             </tr>
@@ -247,13 +247,13 @@
                                 <td>
                                     <div class="clear">
                                         <label>月度收益</label>
-                                        <input type="text" class="Calculation" name="monthly_revenue" id="monthly_revenue" value="<%=(!isAdd)&&(opportunity.monthly_revenue!=null)?opportunity.monthly_revenue.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                        <input type="text" class="Calculation" name="monthly_revenue" id="monthly_revenue" value="<%=(!isAdd)?opportunity.monthly_revenue.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                     </div>
                                 </td>
                                 <td>
                                     <div class="clear">
                                         <label>月度成本</label>
-                                        <input type="text" class="Calculation" name="monthly_cost" id="monthly_cost" value="<%=(!isAdd)&&(opportunity.monthly_cost!=null)?opportunity.monthly_cost.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                        <input type="text" class="Calculation" name="monthly_cost" id="monthly_cost" value="<%=(!isAdd)?opportunity.monthly_cost.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                     </div>
                                 </td>
                             </tr>
@@ -261,13 +261,13 @@
                                 <td>
                                     <div class="clear">
                                         <label>季度收益</label>
-                                        <input type="text" class="Calculation" name="quarterly_revenue" id="quarterly_revenue" value="<%=(!isAdd)&&(opportunity.quarterly_revenue!=null)?opportunity.quarterly_revenue.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                        <input type="text" class="Calculation" name="quarterly_revenue" id="quarterly_revenue" value="<%=(!isAdd)?opportunity.quarterly_revenue.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                     </div>
                                 </td>
                                 <td>
                                     <div class="clear">
                                         <label>季度成本</label>
-                                        <input type="text" class="Calculation" name="quarterly_cost" id="quarterly_cost" value="<%=(!isAdd)&&(opportunity.quarterly_cost!=null)?opportunity.quarterly_cost.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                        <input type="text" class="Calculation" name="quarterly_cost" id="quarterly_cost" value="<%=(!isAdd)?opportunity.quarterly_cost.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                     </div>
                                 </td>
                             </tr>
@@ -275,13 +275,13 @@
                                 <td>
                                     <div class="clear">
                                         <label>半年收益</label>
-                                        <input type="text" class="Calculation" name="semi_annual_revenue" id="semi_annual_revenue" value="<%=(!isAdd)&&(opportunity.semi_annual_revenue!=null)?opportunity.semi_annual_revenue.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                        <input type="text" class="Calculation" name="semi_annual_revenue" id="semi_annual_revenue" value="<%=(!isAdd)?opportunity.semi_annual_revenue.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                     </div>
                                 </td>
                                 <td>
                                     <div class="clear">
                                         <label>半年成本</label>
-                                        <input type="text" class="Calculation" name="semi_annual_cost" id="semi_annual_cost" value="<%=(!isAdd)&&(opportunity.semi_annual_cost!=null)?opportunity.semi_annual_cost.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                        <input type="text" class="Calculation" name="semi_annual_cost" id="semi_annual_cost" value="<%=(!isAdd)?opportunity.semi_annual_cost.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                     </div>
                                 </td>
                             </tr>
@@ -289,13 +289,13 @@
                                 <td>
                                     <div class="clear">
                                         <label>年收益</label>
-                                        <input type="text" class="Calculation" name="yearly_revenue" id="yearly_revenue" value="<%=(!isAdd)&&(opportunity.yearly_revenue!=null)?opportunity.yearly_revenue.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                        <input type="text" class="Calculation" name="yearly_revenue" id="yearly_revenue" value="<%=(!isAdd)?opportunity.yearly_revenue.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                     </div>
                                 </td>
                                 <td>
                                     <div class="clear">
                                         <label>年成本</label>
-                                        <input type="text" class="Calculation" name="yearly_cost" id="yearly_cost" value="<%=(!isAdd)&&(opportunity.yearly_cost!=null)?opportunity.yearly_cost.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                        <input type="text" class="Calculation" name="yearly_cost" id="yearly_cost" value="<%=(!isAdd)?opportunity.yearly_cost.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                     </div>
                                 </td>
                             </tr>
@@ -373,7 +373,7 @@
                                 <td>
                                     <div class="clear">
                                         <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext1").show %></label>
-                                        <input type="text" class="extFiled" name="ext1" id="ext1" value="<%=(!isAdd)&&opportunity.ext1!=null?opportunity.ext1.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                        <input type="text" class="extFiled" name="ext1" id="ext1" value="<%=(!isAdd)?opportunity.ext1.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                     </div>
                                 </td>
                             </tr>
@@ -381,7 +381,7 @@
                                 <td>
                                     <div class="clear">
                                         <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext2").show %></label>
-                                        <input type="text" name="ext2" class="extFiled" id="ext2" value="<%=(!isAdd)&&opportunity.ext2!=null?opportunity.ext2.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                        <input type="text" name="ext2" class="extFiled" id="ext2" value="<%=(!isAdd)?opportunity.ext2.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                     </div>
                                 </td>
                             </tr>
@@ -389,7 +389,7 @@
                                 <td>
                                     <div class="clear">
                                         <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext3").show %></label>
-                                        <input type="text" name="ext3" class="extFiled" id="ext3ext3" value="<%=(!isAdd)&&opportunity.ext3!=null?opportunity.ext3.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                        <input type="text" name="ext3" class="extFiled" id="ext3ext3" value="<%=(!isAdd)?opportunity.ext3.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                     </div>
                                 </td>
                             </tr>
@@ -397,7 +397,7 @@
                                 <td>
                                     <div class="clear">
                                         <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext4").show %></label>
-                                        <input type="text" name="ext4" class="extFiled" id="ext4" value="<%=(!isAdd)&&opportunity.ext4!=null?opportunity.ext4.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                        <input type="text" name="ext4" class="extFiled" id="ext4" value="<%=(!isAdd)?opportunity.ext4.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                     </div>
                                 </td>
                             </tr>
@@ -405,7 +405,7 @@
                                 <td>
                                     <div class="clear">
                                         <label><%=advanced_field.FirstOrDefault(_=>_.val=="ext5").show %></label>
-                                        <input type="text" name="ext5" class="extFiled" id="ext5ext5" value="<%=(!isAdd)&&opportunity.ext5!=null?opportunity.ext5.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                        <input type="text" name="ext5" class="extFiled" id="ext5ext5" value="<%=(!isAdd)?opportunity.ext5.ToString():"" %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                     </div>
                                 </td>
                             </tr>
@@ -730,8 +730,10 @@
         });
         $("#spread_value").prop("disabled", true);
         $("#spread_unit").prop("disabled", true);
+        <% if (opportunity != null) { %>
         <%if (opportunity.spread_value != null || opportunity.spread_unit != null) {%>
         $("#opportunityRange").trigger("click");
+    <%}  %>
     <%}  %>
 
 

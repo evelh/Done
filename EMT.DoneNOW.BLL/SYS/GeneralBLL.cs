@@ -734,6 +734,19 @@ namespace EMT.DoneNOW.BLL
                  new ProductBLL().DeleteProductCate(id,user_id);
             }
 
+            if(table_id == (int)GeneralTableEnum.PROJECT_LINE_OF_BUSINESS)
+            {
+                var proList = _dal.FindListBySql<pro_project>($"SELECT * from pro_project where delete_time = 0 and line_of_business_id =" + id.ToString());
+                if (proList != null && proList.Count > 0)
+                {
+                    ProjectBLL proBll = new ProjectBLL();
+                    proList.ForEach(_ => {
+                        _.line_of_business_id = null;
+                        proBll.EditProjetc(_,user_id);
+                    });
+                }
+            }
+
             data.delete_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Now);
             data.delete_user_id = user_id;
             if (!_dal.Update(data))
@@ -1205,7 +1218,152 @@ namespace EMT.DoneNOW.BLL
         /// 获取到技术支持邮箱相关
         /// </summary>
         public d_general GetSupportEmail() => _dal.FindSignleBySql<d_general>($"select * from d_general where general_table_id = {(int)GeneralTableEnum.SYSTEM_SUPPORT_EMAIL} and delete_time = 0");
-        
+
+        #region 税率相关
+        /// <summary>
+        /// 根据Id获取
+        /// </summary>
+        public d_tax_region_cate GetRegionCate(long id) => new d_tax_region_cate_dal().FindById(id);
+        /// <summary>
+        /// 根据税区和税种获取
+        /// </summary>
+        public d_tax_region_cate GetRegionCateByRegionCate(long regionId, long cateId) => _dal.FindSignleBySql<d_tax_region_cate>($"SELECT * from d_tax_region_cate where delete_time =0 and tax_region_id = {regionId} and tax_cate_id = {cateId}");
+        /// <summary>
+        /// 税收类型的税区税种校验
+        /// </summary>
+        public bool CheckRegionCate(long regionId, long cateId,long id)
+        {
+            var thisCate = GetRegionCateByRegionCate(regionId,cateId);
+            if (thisCate != null&&thisCate.id!=id)
+                return false;
+            return true;
+        }
+        /// <summary>
+        /// 添加税收类型
+        /// </summary>
+        public bool AddRegionCate(d_tax_region_cate obj,long userId)
+        {
+            if (!CheckRegionCate(obj.tax_region_id, obj.tax_cate_id, obj.id))
+                return false;
+            d_tax_region_cate_dal dtrcDal = new d_tax_region_cate_dal();
+            obj.id = dtrcDal.GetNextIdCom();
+            obj.create_time = obj.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            obj.create_user_id = obj.update_user_id = userId;
+            dtrcDal.Insert(obj);
+            OperLogBLL.OperLogAdd<d_tax_region_cate>(obj, obj.id, userId, OPER_LOG_OBJ_CATE.D_TAX_REGION_CATE, "");
+            return true;
+        }
+        /// <summary>
+        /// 编辑税收类型
+        /// </summary>
+        public bool EditRegionCate(d_tax_region_cate obj, long userId)
+        {
+            var oldObj = GetRegionCate(obj.id);
+            if (oldObj == null)
+                return false;
+            if (!CheckRegionCate(obj.tax_region_id, obj.tax_cate_id, obj.id))
+                return false;
+            d_tax_region_cate_dal dtrcDal = new d_tax_region_cate_dal();
+            obj.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            obj.update_user_id = userId;
+            dtrcDal.Update(obj);
+            OperLogBLL.OperLogUpdate<d_tax_region_cate>(obj, oldObj, obj.id, userId, OPER_LOG_OBJ_CATE.D_TAX_REGION_CATE, "");
+            return true;
+        }
+        /// <summary>
+        /// 获取税收种类下的分税
+        /// </summary>
+        public List<d_tax_region_cate_tax> GetCateTaxList(long regionCateId) => _dal.FindListBySql<d_tax_region_cate_tax>($"SELECT * from d_tax_region_cate_tax where delete_time =0 and tax_region_cate_id ={regionCateId}");
+
+        /// <summary>
+        /// 获取分税
+        /// </summary>
+        public d_tax_region_cate_tax GetCateTax(long id) => _dal.FindSignleBySql<d_tax_region_cate_tax>($"SELECT * from d_tax_region_cate_tax where delete_time =0 and id ={id}");
+
+        /// <summary>
+        /// 获取分税
+        /// </summary>
+        public d_tax_region_cate_tax GetCateTax(long regionCateId,string name) => _dal.FindSignleBySql<d_tax_region_cate_tax>($"SELECT * from d_tax_region_cate_tax where delete_time =0 and tax_region_cate_id ={regionCateId} and tax_name='{name}'");
+        /// <summary>
+        /// 校验分税的名称，在税收类型下唯一
+        /// </summary>
+        public bool CheckCateTax(long regionCateId,string name,long id)
+        {
+            var thisCateTax = GetCateTax(regionCateId, name);
+            if (thisCateTax != null && thisCateTax.id != id)
+                return false;
+            return true;
+        }
+
+        /// <summary>
+        /// 添加税收类型分税
+        /// </summary>
+        public bool AddRegionCateTax(d_tax_region_cate_tax obj, long userId)
+        {
+            if (!CheckCateTax(obj.tax_region_cate_id, obj.tax_name, obj.id))
+                return false;
+            d_tax_region_cate_tax_dal dtrctDal = new d_tax_region_cate_tax_dal();
+            obj.id = dtrctDal.GetNextIdCom();
+            obj.create_time = obj.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            obj.create_user_id = obj.update_user_id = userId;
+            dtrctDal.Insert(obj);
+            OperLogBLL.OperLogAdd<d_tax_region_cate_tax>(obj, obj.id, userId, OPER_LOG_OBJ_CATE.D_TAX_REGION_CATE_TAX, "");
+            return true;
+        }
+        /// <summary>
+        /// 编辑税收类型分税
+        /// </summary>
+        public bool EditRegionCateTax(d_tax_region_cate_tax obj, long userId)
+        {
+            var oldObj = GetCateTax(obj.id);
+            if (oldObj == null)
+                return false;
+            if (!CheckCateTax(obj.tax_region_cate_id, obj.tax_name, obj.id))
+                return false;
+            d_tax_region_cate_tax_dal dtrctDal = new d_tax_region_cate_tax_dal();
+            obj.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+            obj.update_user_id = userId;
+            dtrctDal.Update(obj);
+            OperLogBLL.OperLogUpdate<d_tax_region_cate_tax>(obj, oldObj, obj.id, userId, OPER_LOG_OBJ_CATE.D_TAX_REGION_CATE_TAX, "");
+            return true;
+        }
+
+        /// <summary>
+        /// 删除税收种类
+        /// </summary>
+        public bool DeleteRegion(long id, long userId)
+        {
+            var obj = GetRegionCate(id);
+            if (obj == null)
+                return false;
+            new d_tax_region_cate_dal().SoftDelete(obj,userId);
+            OperLogBLL.OperLogDelete<d_tax_region_cate>(obj, obj.id, userId, OPER_LOG_OBJ_CATE.D_TAX_REGION_CATE, "");
+            var raxList = GetCateTaxList(id);
+            if (raxList != null && raxList.Count > 0)
+            {
+                d_tax_region_cate_tax_dal dtrctDal = new d_tax_region_cate_tax_dal();
+                raxList.ForEach(_ => {
+                    dtrctDal.SoftDelete(_,userId);
+                    OperLogBLL.OperLogDelete<d_tax_region_cate_tax>(_, _.id, userId, OPER_LOG_OBJ_CATE.D_TAX_REGION_CATE_TAX, "");
+                });
+            }
+                
+            return true;
+        }
+        /// <summary>
+        /// 删除分税
+        /// </summary>
+        public bool DeleteRegionTax(long id,long userId)
+        {
+            var obj = GetCateTax(id);
+            if (obj == null)
+                return false;
+            new d_tax_region_cate_tax_dal().SoftDelete(obj, userId);
+            OperLogBLL.OperLogDelete<d_tax_region_cate_tax>(obj, obj.id, userId, OPER_LOG_OBJ_CATE.D_TAX_REGION_CATE_TAX, "");
+            return true;
+        }
+
+        #endregion
 
     }
 }

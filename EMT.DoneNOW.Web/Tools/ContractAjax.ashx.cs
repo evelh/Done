@@ -209,6 +209,9 @@ namespace EMT.DoneNOW.Web
                     case "AjustServiceDate":
                         AjustServiceDate(context);
                         break;
+                    case "GetBlockInfo":
+                        GetBlockInfo(context);
+                        break;
                     default:
                         break;
                 }
@@ -895,6 +898,35 @@ namespace EMT.DoneNOW.Web
                     result = new ContractServiceBLL().AdjustServiceBundle(conSer, LoginUserId);
             }
             context.Response.Write(new EMT.Tools.Serialize().SerializeJson(result));
+        }
+        /// <summary>
+        /// 获取合同预付的相关信息
+        /// </summary>
+        void GetBlockInfo(HttpContext context)
+        {
+            long id = 0;
+            if (!string.IsNullOrEmpty(context.Request.QueryString["id"])&&long.TryParse(context.Request.QueryString["id"], out id))
+            {
+                var block = new ContractBlockBLL().GetBlockById(id);
+                if (block != null)
+                {
+                    var contract = new ContractBLL().GetContract(block.contract_id);
+                    if (contract != null)
+                    {
+                        decimal befotMoveNum = 0;
+                        if (contract.type_id== (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.RETAINER)
+                        {
+                            befotMoveNum = Convert.ToDecimal(new DAL.crm_account_dal().GetSingle($"SELECT round(b.rate*b.quantity - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id	AND delete_time = 0	),0),2) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.id = {block.id} "));
+                        }
+                        else if(contract.type_id == (int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.BLOCK_HOURS)
+                        {
+                            befotMoveNum = Convert.ToDecimal(new DAL.crm_account_dal().GetSingle($"SELECT sum(round(b.rate - ifnull((SELECT sum(extended_price)FROM crm_account_deduction WHERE contract_block_id = b.id AND delete_time = 0 ),0),2)) AS rate FROM ctt_contract_block b WHERE b.delete_time = 0 and b.id ={block.id} "));
+                        }
+
+                        WriteResponseJson(new { contractName = contract.name,date = block.start_date.ToString("yyyy-MM-dd")+" - "+ block.end_date.ToString("yyyy-MM-dd"), befotMoveNum = befotMoveNum.ToString("#0.0000") });
+                    }
+                }
+            }
         }
     }
 }

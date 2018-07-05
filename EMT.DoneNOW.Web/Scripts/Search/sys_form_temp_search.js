@@ -64,7 +64,7 @@ function InActive() {
         dataType: 'json',
         success: function (data) {
             if (data) {
-                LayerMsg("失活成功");
+                LayerMsg("停用成功");
             }
             setTimeout(function () { history.go(0); },800);
         },

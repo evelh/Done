@@ -1575,5 +1575,32 @@ namespace EMT.DoneNOW.BLL
             OperLogBLL.OperLogDelete<crm_account_deduction>(oldDed, oldDed.id, userId, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "");
             return true;
         }
+        /// <summary>
+        /// 移动条目
+        /// </summary>
+        public bool MoveDeduction(long dedId,long? blockId,long userId)
+        {
+            var thisDed = GetDeduction(dedId);
+            if (thisDed == null || thisDed.invoice_id != null)
+                return false;
+            if (blockId != null)
+            {
+                ctt_contract_block block = new ContractBlockBLL().GetBlockById((long)blockId);
+                if (block == null)
+                    return false;
+            }
+            if (thisDed.contract_block_id != blockId)
+            {
+                var oldDed = GetDeduction(dedId);
+                thisDed.contract_block_id = blockId;
+                thisDed.update_time = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                thisDed.update_user_id = userId;
+                new crm_account_deduction_dal().Update(thisDed);
+                OperLogBLL.OperLogUpdate<crm_account_deduction>(thisDed,oldDed, thisDed.id, userId, OPER_LOG_OBJ_CATE.ACCOUNT_DEDUCTION, "");
+                if (thisDed.contract_block_id != null)
+                    CheckBlockBalance((long)thisDed.contract_block_id, userId);
+            }
+            return true;
+        }
     }
 }

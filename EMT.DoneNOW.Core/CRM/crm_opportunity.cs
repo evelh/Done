@@ -53,33 +53,33 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public Int32? number_months { get; set; }
         [DataMember]
-        public Decimal? one_time_revenue { get; set; }
+        public Decimal one_time_revenue { get; set; }
         [DataMember]
-        public Decimal? one_time_cost { get; set; }
+        public Decimal one_time_cost { get; set; }
         [DataMember]
-        public Decimal? monthly_revenue { get; set; }
+        public Decimal monthly_revenue { get; set; }
         [DataMember]
-        public Decimal? monthly_cost { get; set; }
+        public Decimal monthly_cost { get; set; }
         [DataMember]
-        public Decimal? quarterly_revenue { get; set; }
+        public Decimal quarterly_revenue { get; set; }
         [DataMember]
-        public Decimal? quarterly_cost { get; set; }
+        public Decimal quarterly_cost { get; set; }
         [DataMember]
-        public Decimal? semi_annual_revenue { get; set; }
+        public Decimal semi_annual_revenue { get; set; }
         [DataMember]
         public String help_needed { get; set; }
         [DataMember]
         public SByte? use_quote { get; set; }
         [DataMember]
-        public Decimal? ext1 { get; set; }
+        public Decimal ext1 { get; set; }
         [DataMember]
-        public Decimal? ext2 { get; set; }
+        public Decimal ext2 { get; set; }
         [DataMember]
-        public Decimal? ext3 { get; set; }
+        public Decimal ext3 { get; set; }
         [DataMember]
-        public Decimal? ext4 { get; set; }
+        public Decimal ext4 { get; set; }
         [DataMember]
-        public Decimal? ext5 { get; set; }
+        public Decimal ext5 { get; set; }
         [DataMember]
         public DateTime? start_date { get; set; }
         [DataMember]
@@ -89,11 +89,11 @@ namespace EMT.DoneNOW.Core
         [DataMember]
         public String barriers { get; set; }
         [DataMember]
-        public Decimal? yearly_cost { get; set; }
+        public Decimal yearly_cost { get; set; }
         [DataMember]
-        public Decimal? semi_annual_cost { get; set; }
+        public Decimal semi_annual_cost { get; set; }
         [DataMember]
-        public Decimal? yearly_revenue { get; set; }
+        public Decimal yearly_revenue { get; set; }
         [DataMember]
         public String next_step { get; set; }
         [DataMember]

@@ -223,11 +223,11 @@ namespace EMT.DoneNOW.Web.Company
                 
                 monthClosedOppo = monthClosedOppoList.Count;
                 monthClosedOppoList.ForEach(_ => {
-                    prodessAmount += (_.ext1 ?? 0);
-                    trainsAmount += (_.ext2 ?? 0);
-                    hardwareAmount += (_.ext3 ?? 0);
-                    monthFeeAmount += (_.ext4 ?? 0);
-                    otherAmount += (_.ext5 ?? 0);
+                    prodessAmount +=_.ext1;
+                    trainsAmount += _.ext2 ;
+                    hardwareAmount += _.ext3 ;
+                    monthFeeAmount += _.ext4 ;
+                    otherAmount += _.ext5;
                     monthAmount += oppBLl.ReturnOppoRevenue(_.id);
                 });
             }

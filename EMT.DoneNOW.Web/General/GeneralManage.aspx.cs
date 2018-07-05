@@ -126,13 +126,15 @@ namespace EMT.DoneNOW.Web.General
                     thisGeneral.name = pageDic.name;
                 }
                 thisGeneral.is_active = pageDic.is_active;
+
+                if (tableId == (int)GeneralTableEnum.TICKET_STATUS || tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_TYPE || tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_TERM || tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_SHIP_TYPE || tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TAX_REGION)
+                {
+                    thisGeneral.ext1 = pageDic.ext1;
+                }
+
                 if (tableId == (int)DTO.GeneralTableEnum.TASK_SOURCE_TYPES)
                 {
                     thisGeneral.sort_order = pageDic.sort_order;
-                }
-                else if (tableId == (int)GeneralTableEnum.TICKET_STATUS|| tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_TYPE|| tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_TERM || tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_SHIP_TYPE|| tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.TAX_REGION)
-                {
-                    thisGeneral.ext1 = pageDic.ext1;
                 }
                 else if (tableId == (int)GeneralTableEnum.TASK_LIBRARY_CATE)
                 {
@@ -171,6 +173,18 @@ namespace EMT.DoneNOW.Web.General
                     thisGeneral.parent_id = pageDic.parent_id;
                     thisGeneral.code = pageDic.code;
                     thisGeneral.ext1 = pageDic.ext1;
+                }
+                else if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_TERM)
+                {
+                    thisGeneral.remark = pageDic.remark;
+                }
+                else if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_TYPE)
+                {
+                    thisGeneral.remark = pageDic.remark;
+                }
+                else if (tableId == (int)EMT.DoneNOW.DTO.GeneralTableEnum.PAYMENT_SHIP_TYPE)
+                {
+                    thisGeneral.remark = pageDic.remark;
                 }
             }
             

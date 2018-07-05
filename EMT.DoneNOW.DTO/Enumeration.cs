@@ -1110,7 +1110,9 @@ namespace EMT.DoneNOW.DTO
             SYS_WORKGROUP_RESOURCE=1459,                // 工作组员工   
             CHANGE_BOARD = 1460,                        // 变更委员会
             CHANGE_BOARD_PERSON = 1461,                 // 变更委员会成员
-            D_COST_CODE = 1464,                          // 物料代码
+            D_COST_CODE = 1464,                         // 物料代码
+            D_TAX_REGION_CATE = 1466,                   // 税收类型
+            D_TAX_REGION_CATE_TAX = 1467,               // 税收类型分税
 
         }
 
@@ -1484,6 +1486,7 @@ namespace EMT.DoneNOW.DTO
             PAID_TIME_OFF = 1817,              // 带薪休假
             RECURRING_TICKET_MASTER = 1818,    // 定期主工单
             TASKFIRE_TICKET = 1819,            // 内部 Client Portal 工单
+            INTERNAL_ALLOCATION_CODE = 1820,   // 内部工时
         }
         /// <summary>
         /// 工单问题类型 - 132
@@ -2224,7 +2227,8 @@ namespace EMT.DoneNOW.DTO
         DATA_IMPORT_LOG = 399,                      // 数据导入日志
         DATA_IMPORT_LOG_DETAIL = 400,               // 数据导入日志详情
         SYSTEM_NOTE_TYPE = 401,                                  // 系统设置-共享功能-备注类型           
-        SYSTEM_ORGANIZATION = 402,                               // 系统设置-组织管理-区域               
+        SYSTEM_ORGANIZATION = 402,                               // 系统设置-组织管理-区域   
+        SYSTEM_LINES_BUSINESS = 403,                             // 系统设置-组织管理-业务范围
         SYSTEM_SLA = 404,                                        // 系统设置-工作台-服务等级管理          
         SYSTEM_SLA_ITEM = 405,                                   // 系统设置-工作台-服务等级管理-条目     
         SYSTEM_TICKET_SUPPORT_EMAIL = 406,                       // 系统设置-工作台-支持邮箱             
