@@ -327,5 +327,10 @@ namespace EMT.DoneNOW.BLL
             return _dal.ExecuteDataTable(sql);
         }
 
+        public List<sys_role> GetRoleList()
+        {
+            return _dal.FindListBySql("SELECT * from sys_role where delete_time =0 and is_active =1");
+        }
+
     }
 }

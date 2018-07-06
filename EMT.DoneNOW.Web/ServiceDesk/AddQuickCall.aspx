@@ -56,6 +56,17 @@
                     <img src="../Images/cancel.png" alt="" />
                     关闭
                 </li>
+                <li style="float:right;background: white;border: 0px;display:block;">
+                    <select style="width:200px;" id="fromTmplId" name="fromTmplId">
+                        <option></option>
+                        <%if (tmplList != null && tmplList.Count > 0) {
+                                foreach (var tmpl in tmplList)
+                                {%>
+                                <option value="<%=tmpl.id %>"><%=tmpl.tmpl_name %></option>
+                               <% }
+                            } %>
+                    </select>
+                </li>
             </ul>
         </div>
         <div style="left: 0; overflow-x: auto; overflow-y: auto; position: fixed; right: 0; bottom: 0; top: 80px;">
@@ -813,6 +824,85 @@
     }
     function GetDataByContract() {
 
+    }
+
+
+
+    $("#fromTmplId").change(function () {
+        var thisValue = $(this).val();
+        if (thisValue != "") {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/FormTempAjax.ashx?act=GetTempObj&id=" + thisValue,
+                dataType: "json",
+                success: function (data) {
+                    if (data != "") {
+                        $("#form1").populateForm(data);
+                        // 客户，联系人。子问题类型，合同，主负责人角色，其他负责人，开始，结束时间
+                        if (data.account_id != "") {
+                            GetAccount(data.account_id);
+                            GetContactList();
+                            $("#contact_id").prop("disabled", false);
+                            if (data.contact_id != "") {
+                                $("#contact_id").val(data.contact_id);
+                            }
+                            else {
+                                $("#contact_id").val("");
+                            }
+                        }
+                        else {
+                            $("#accountName").val("");
+                            $("#accountNameHidden").val("");
+                            GetContactList();
+                            $("#contact_id").prop("disabled", true);
+                        }
+                        $("#issue_type_id").trigger("change");
+                        if (data.sub_issue_type_id != "") {
+                            $("#sub_issue_type_id").val(data.sub_issue_type_id);
+                        }
+                        GetContractById(data.contract_id);
+                        GetRoleByRes();
+                        if (data.role_id != "") {
+                            $("#role_id").val(data.role_id);
+                        }
+                        $("#OtherResIdHidden").val(data.second_resource_ids);
+                        GetOtherResData();
+                        var dateNow = '<%=DateTime.Now.ToString("yyyy-MM-dd") %>';
+                        if (data.estimated_begin_time != "") {
+                            $("#start_time").val(dateNow + " " + data.estimated_begin_time);
+                        }
+                        if (data.estimated_end_time != "") {
+                            $("#end_time").val(dateNow + " " + data.estimated_end_time);
+                        }
+                    }
+                },
+            });
+        }
+    })
+
+    function GetContractById(id) {
+        if (id != "" && id != undefined && id != null) {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/ContractAjax.ashx?act=property&contract_id=" + id +"&property=name",
+                success: function (data) {
+                    if (data != "") {
+                        $("#contractId").val(data);
+                        $("#contractIdHidden").val(id);
+                    }
+                    else {
+                        $("#contractId").val("");
+                        $("#contractIdHidden").val("");
+                    }
+                },
+            });
+        }
+        else {
+            $("#contractId").val("");
+            $("#contractIdHidden").val("");
+        }
     }
 
 </script>

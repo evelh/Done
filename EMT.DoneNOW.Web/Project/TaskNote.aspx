@@ -127,7 +127,7 @@
                     <i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;" class="icon-1"></i>
                     <input type="button" id="CloseButton" value="关闭" />
                 </li>
-                <li style="float:right;background: white;border: 0px;display:none;">
+                <li style="float:right;background: white;border: 0px;display:block;">
                     <select style="width:200px;" id="fromTmplId" name="fromTmplId">
                         <option></option>
                         <%if (tmplList != null && tmplList.Count > 0) {
@@ -768,7 +768,31 @@
                 dataType: "json",
                 success: function (data) {
                     if (data != "") {
-
+                        $("#form1").populateForm(data);
+                        if (data.announce == 1) {
+                            $("#isAnnounce").prop("checked", true);
+                        }
+                        else {
+                            $("#isAnnounce").prop("checked", false);
+                        }
+                        if (data.append_to_resolution==1) {
+                            $("#AppResol").prop("checked", true);
+                        }
+                        else {
+                            $("#AppResol").prop("checked", false);
+                        }
+                        if (data.append_to_resolution_incidents == 1) {
+                            $("#AppAllResol").prop("checked", true);
+                        }
+                        else {
+                            $("#AppAllResol").prop("checked", false);
+                        }
+                        if (data.apply_note_incidents == 1) {
+                            $("#CkAddAll").prop("checked", true);
+                        }
+                        else {
+                            $("#CkAddAll").prop("checked", false);
+                        }
                     }
                 },
             });

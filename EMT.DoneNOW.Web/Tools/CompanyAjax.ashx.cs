@@ -93,6 +93,9 @@ namespace EMT.DoneNOW.Web
                 case "GetAccountByIds":
                     GetAccountByIds(context);
                     break;
+                case "GetPartnerInfo":
+                    GetPartnerInfo(context);
+                    break;
                 default:
                     context.Response.Write("{\"code\": 1, \"msg\": \"参数错误！\"}");
                     return;
@@ -473,5 +476,39 @@ namespace EMT.DoneNOW.Web
                 }
             }
         }
+        /// <summary>
+        /// 获取合作伙伴的客户的相关信息
+        /// </summary>
+        void GetPartnerInfo(HttpContext context)
+        {
+            string sql = @"select ca.id,ca.name,CONCAT(dp.name,'-',dc.name,'-',dd.name)  as address_name,cl.address,cl.postal_code,ca.phone from crm_account ca 
+INNER JOIN crm_location cl
+ on ca.id = cl.account_id
+INNER JOIN d_district dc
+on cl.city_id =dc.id 
+INNER JOIN d_district dp
+on cl.province_id =dp.id 
+INNER JOIN d_district dd
+on cl.district_id =dd.id 
+ where ca.delete_time =0 and cl.delete_time =0 and cl.is_default=1 and ca.type_id =20";
+            var searchName = context.Request.QueryString["name"];
+            if (!string.IsNullOrEmpty(searchName))
+                sql += $" and ca.name like '%{searchName}%'";
+
+            var data = new CompanyBLL().GetBySql<PartnerAccoount>(sql);
+            if (data != null && data.Count > 0)
+                WriteResponseJson(data);
+        }
     }
+
+    public class PartnerAccoount
+    {
+        public long id;
+        public string name;
+        public string address_name;
+        public string address;
+        public string postal_code;
+        public string phone;
+    }
+
 }

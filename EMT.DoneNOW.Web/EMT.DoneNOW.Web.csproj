@@ -697,6 +697,7 @@
     <Content Include="ServiceDesk\MyQueueList.aspx" />
     <Content Include="ServiceDesk\Newsubcategory.aspx" />
     <Content Include="ServiceDesk\DeleteMasterTicket.aspx" />
+    <Content Include="ServiceDesk\OutsourceTicket.aspx" />
     <Content Include="ServiceDesk\QueueManage.aspx" />
     <Content Include="ServiceDesk\QueueResourceManage.aspx" />
     <Content Include="ServiceDesk\ServiceCall.aspx" />
@@ -2470,6 +2471,13 @@
     </Compile>
     <Compile Include="ServiceDesk\Newsubcategory.aspx.designer.cs">
       <DependentUpon>Newsubcategory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceDesk\OutsourceTicket.aspx.cs">
+      <DependentUpon>OutsourceTicket.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServiceDesk\OutsourceTicket.aspx.designer.cs">
+      <DependentUpon>OutsourceTicket.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServiceDesk\QueueManage.aspx.cs">
       <DependentUpon>QueueManage.aspx</DependentUpon>

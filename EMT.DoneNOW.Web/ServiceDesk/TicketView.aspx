@@ -140,7 +140,7 @@
                     </tr>
                 </tbody>
             </table>
-             <div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+             <div id="bookmark" style="color: white;" class="BookmarkButton <%if (thisBookMark != null)
                 { %>Selected<%} %> "
                 onclick="ChangeBookMark()">
                 <div class="LowerLeftPart"></div>
@@ -276,7 +276,7 @@
                          <span class="icon" style="background: url(../Images/Icons.png) no-repeat -182px -48px; width: 15px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
                     </a>
                 </li>
-                 <li class="DropDownButton" style="top: 72px; left: 1092px; display: none;" id="Down3">
+                 <li class="DropDownButton" style="top: 72px;display: none;float: right;right: 10px;left: auto;" id="Down3">
                     <div class="DropDownButtonDiv">
                         <div class="Group">
                             <div class="Content">
@@ -2832,7 +2832,7 @@
         });
 
         clipboard.on('success', function (e) {
-            console.log(e);
+            //console.log(e);
         });
     }
 

@@ -323,7 +323,7 @@ namespace EMT.DoneNOW.BLL
         /// </summary>
         public List<sys_form_tmpl> GetTmplByType(int tmplType,long userId)
         {
-            return _dal.FindListBySql($"SELECT * FROM sys_form_tmpl where delete_time = 0 AND (range_type_id={(int)DicEnum.RANG_TYPE.ALL} OR (create_user_id={userId} AND range_type_id={(int)DicEnum.RANG_TYPE.OWN}) or (range_type_id={(int)DicEnum.RANG_TYPE.DEPARTMENT} and EXISTS(SELECT 1 from sys_resource_department srd where srd.resource_id ={userId} and srd.department_id = range_department_id )))");
+            return _dal.FindListBySql($"SELECT * FROM sys_form_tmpl where delete_time = 0 and is_active =1 and form_type_id = {tmplType} AND (range_type_id={(int)DicEnum.RANG_TYPE.ALL} OR (create_user_id={userId} AND range_type_id={(int)DicEnum.RANG_TYPE.OWN}) or (range_type_id={(int)DicEnum.RANG_TYPE.DEPARTMENT} and EXISTS(SELECT 1 from sys_resource_department srd where srd.resource_id ={userId} and srd.department_id = range_department_id )))");
         }
 
 

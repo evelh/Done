@@ -90,7 +90,7 @@
                 </table>
                 <%if (!isAdd)
                     { %>
-                <div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                <div id="bookmark"  style="color: white;" class="BookmarkButton <%if (thisBookMark != null)
                 { %>Selected<%} %> "
                 onclick="ChangeBookMark()">
                 <div class="LowerLeftPart"></div>
