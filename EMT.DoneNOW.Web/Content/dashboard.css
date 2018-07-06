@@ -628,14 +628,13 @@ input[type=text], input[type=password] {
 }
 
     .ModeTitle .icon {
-        background-image: url('../Images/DecorationIcons.svg');
-        background-position: -370px 0;
-        height: 24px;
-        width: 24px;
+        background-image: url('../Images/navi.png');
+        height: 28px;
+        width: 28px;
         float: left;
         margin-left: 10px;
         margin-right: 10px;
-        margin-top: 5px;
+        margin-top: 2px;
     }
 
 .PresentationModeCancelButton {

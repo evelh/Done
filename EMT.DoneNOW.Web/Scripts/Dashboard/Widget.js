@@ -197,15 +197,14 @@ function BackAddWidgetSelectStep0() {
 function AddWidgetStepSelect() {
     if ($('input:radio[name="addWidgetType"]:checked').val() == "1") {
         AddWidgetStep1(null, 0);
-    } else if ($('input:radio[name="addWidgetType"]:checked').val() == "2") {
-    } else if ($('input:radio[name="addWidgetType"]:checked').val() == "3") {
+    } else if ($('input:radio[name="addWidgetType"]:checked').val() == "3" || $('input:radio[name="addWidgetType"]:checked').val() == "2") {
         LayerLoad();
         $("#WidgetSelectEntity").empty();
         for (var i = 0; i < widgetEntityList.length; i++) {
             $("#WidgetSelectEntity").append("<option value='" + widgetEntityList[i].id + "'>" + widgetEntityList[i].name + "</option>");
         }
         var SysWidgets;
-        requestData("/Tools/DashboardAjax.ashx?act=GetSysWidget", null, function (data) {
+        requestData("/Tools/DashboardAjax.ashx?act=GetSysWidget&type=" + $('input:radio[name="addWidgetType"]:checked').val(), null, function (data) {
             SysWidgets = data;
             SelectEntityChange();
             $('#AddWidget').hide();

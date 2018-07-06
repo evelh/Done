@@ -16,6 +16,8 @@ namespace EMT.DoneNOW.DTO
         public int theme_id;
         public sbyte auto_place;
         public sbyte is_shared;
+        public string filter;
+        public List<DictionaryEntryDto> filterVals;
         public List<DashboardWidgetDto> widgetList = new List<DashboardWidgetDto>();
     }
 

@@ -1621,7 +1621,14 @@
                         </ul>
                     </div>
                 </div>
+                <div style="width:100%;height:32px;position:relative;display:none;" id="tabFilterDiv"></div>
                 <div class="panel_content">
+                    <div class="ModeTitle">
+                        <div class="icon"></div>
+                        <span id="PresentTit"></span>   
+                        <div class="PresentationModeCancelButton" >
+                        </div>
+                    </div>
                     <ul></ul>
                 </div>
             </div>
@@ -1832,28 +1839,28 @@
                     <p>每分钟自动切换：</p>
                     <div class="Radiogroup">
                         <div class="radioitem">
-                            <input type="radio" checked='checked'>
-                            制表符级别的筛选器值，但不是制表符
+                            <input type="radio" value="1" id="dashPresent1" name="dashPresent">
+                            <label for="">选项卡级别过滤器数值切换，选项卡不切换</label>
                         </div>
                         <div class="radioitem">
-                            <input type="radio">
-                            制表符，但不是制表符级别的过滤器值
+                            <input type="radio" value="2" id="dashPresent2" name="dashPresent" checked="checked">
+                            <label for="">选项卡切换，选项卡级别过滤器数值不切换</label>
                         </div>
                         <div class="radioitem">
-                            <input type="radio">
-                            制表符级滤镜值，然后制表符
+                            <input type="radio" value="3" id="dashPresent3" name="dashPresent">
+                            <label for="">选项卡级别过滤器数值切换，然后选项卡切换</label>
                         </div>
                         <div class="radioitem">
-                            <input type="radio">
-                            没有（不要切换仪表板级别的筛选器值或仪表板）
+                            <input type="radio" value="4" id="dashPresent4" name="dashPresent">
+                            <label for="">不切换（选项卡级别过滤器数值和选项卡都不切换）</label>
                         </div>
                         <div class="radioitem">
-                            <input type="checkbox">
-                            这是一台共享/公用计算机（退出演示模式时将退出，小部件将不可用，并且小部件菜单将不可用）
+                            <input type="checkbox" id="dashPresentLogout">
+                            <label for="">当前为共用计算机（退出全屏后系统自动退出，同时不提供查看详情）</label>
                         </div>
                         <div class="radioitem">
-                            <input type="checkbox">
-                            使用我的工作区背景颜色/图案而不是灰色
+                            <input type="checkbox" id="dashPresentChangeBack">
+                            <label for="">背景颜色改为工作区颜色</label>
                         </div>
                     </div>
                 </div>
@@ -1918,9 +1925,6 @@
                 <div class="itemborderBottom"></div>
                 <div class="item" style="padding-top:20px; ">
                     <input type="radio" name="addWidgetType" id="addWidgetType2" value="2"><label for="addWidgetType2"> 从本人已存在的小窗口中复制</label>
-                </div>
-                <div class="item" style="padding-top:20px; ">
-                    <select name="addWidgetTypeCopy" id="addWidgetTypeCopy"></select>
                 </div>
                 <div class="itemborderBottom"></div>
                 <div class="item"  style="padding-top:20px;">

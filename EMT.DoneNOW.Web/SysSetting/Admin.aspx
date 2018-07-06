@@ -798,18 +798,6 @@
                                 <div class="Large Column">
                                     <div class="PageNavigationLinkGroup">
                                         <div class="PageNavigationLinkColumn">
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
                                         </div>
 
                                     </div>
@@ -853,44 +841,8 @@
                                 <div class="Large Column">
                                     <div class="PageNavigationLinkGroup">
                                         <div class="PageNavigationLinkColumn">
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
                                         </div>
                                         <div class="PageNavigationLinkColumn">
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
-                                            <div class="PageNavigationLink">
-                                                <a class="Button ButtonIcon Link NormalState chaxun">占位</a>
-                                                <div class="StandardText">介绍介绍</div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
