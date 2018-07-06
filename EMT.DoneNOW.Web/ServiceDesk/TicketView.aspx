@@ -34,6 +34,59 @@
 
         .TitleBarIcon {
         }
+           .BookmarkButton {
+            cursor: pointer;
+            display: inline-block;
+            height: 16px;
+            position: relative;
+            width: 16px;
+            float: right;
+            margin-top: 8px;
+        }
+
+            .BookmarkButton.Selected div {
+                border-color: #f9d959;
+            }
+
+            .BookmarkButton > .LowerLeftPart {
+                border-right-width: 8px;
+                border-bottom-width: 6px;
+                border-left-width: 8px;
+                top: 5px;
+                -moz-transform: rotate(35deg);
+                -webkit-transform: rotate(35deg);
+                -ms-transform: rotate(35deg);
+                transform: rotate(35deg);
+            }
+
+            .BookmarkButton > .LowerRightPart {
+                border-right-width: 8px;
+                border-bottom-width: 6px;
+                border-left-width: 8px;
+                top: 5px;
+                -moz-transform: rotate(-35deg);
+                -webkit-transform: rotate(-35deg);
+                -ms-transform: rotate(-35deg);
+                transform: rotate(-35deg);
+            }
+
+            .BookmarkButton > div.LowerLeftPart, .BookmarkButton > div.LowerRightPart, .BookmarkButton > div.UpperPart {
+                border-left-color: transparent;
+                border-right-color: transparent;
+                border-style: solid;
+                border-top: none;
+                height: 0;
+                position: absolute;
+                width: 0;
+            }
+
+            .BookmarkButton > .UpperPart {
+                border-bottom-width: 6px;
+                border-left-width: 3px;
+                border-right-width: 3px;
+                left: 5px;
+                top: 1px;
+            }
     </style>
 
 </head>
@@ -87,6 +140,13 @@
                     </tr>
                 </tbody>
             </table>
+             <div id="bookmark" style="color: white;" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> "
+                onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div>
         </div>
         <div class="ButtonBar">
             <ul>
@@ -216,7 +276,7 @@
                          <span class="icon" style="background: url(../Images/Icons.png) no-repeat -182px -48px; width: 15px; height: 16px; display: inline-block; margin: -2px 3px; margin-top: 3px;"></span>
                     </a>
                 </li>
-                 <li class="DropDownButton" style="top: 72px; left: 1092px; display: none;" id="Down3">
+                 <li class="DropDownButton" style="top: 72px;display: none;float: right;right: 10px;left: auto;" id="Down3">
                     <div class="DropDownButtonDiv">
                         <div class="Group">
                             <div class="Content">
@@ -2772,7 +2832,7 @@
         });
 
         clipboard.on('success', function (e) {
-            console.log(e);
+            //console.log(e);
         });
     }
 
@@ -2781,6 +2841,27 @@
     }
     function AddKnow() {
         window.open("../ServiceDesk/AddRepository.aspx?ticketId=<%=thisTicket.id.ToString() %>", "_blank", "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=800,height=700");
+    }
+
+    function ChangeBookMark() {
+        var url = '<%=Request.Url.LocalPath + "?id=" + thisTicket?.id %>';
+        var title = '查看工单:<%=thisTicket?.no + "-" + thisTicket?.title %>';
+        var isBook = $("#bookmark").hasClass("Selected");
+        $.ajax({
+            type: "GET",
+            url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    if (isBook) {
+                        $("#bookmark").removeClass("Selected");
+                    } else {
+                        $("#bookmark").addClass("Selected");
+                    }
+                }
+            }
+        })
     }
     
 </script>

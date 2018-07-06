@@ -23,6 +23,7 @@ namespace EMT.DoneNOW.Web.SaleOrder
         protected string type = "";
         protected string actType;
         protected string iframeSrc = "";
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -36,6 +37,7 @@ namespace EMT.DoneNOW.Web.SaleOrder
                     Response.End();
                     return;
                 }
+                thisBookMark = new IndexBLL().GetSingBook(Request.Url.LocalPath + "?id=" + sid, LoginUserId);
 
                 type = Request.QueryString["type"];
                 sale_order = new crm_sales_order_dal().GetSingleSale(long.Parse(sid));

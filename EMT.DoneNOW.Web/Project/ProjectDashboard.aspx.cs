@@ -21,9 +21,10 @@ namespace EMT.DoneNOW.Web.Project
         protected ProjectBLL proBll = new ProjectBLL();
         protected List<sys_resource> resList;
         protected int openIssueCount;
-
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
+            thisBookMark = new IndexBLL().GetSingBook(Request.Url.LocalPath, LoginUserId);
             const string proLimitJson = "{\"row\":\"7\",\"t1\":\"p\",\"col1\":\"0\",\"col2\":\"0\"}";
             var projectLimitSql = Convert.ToString(ppDal.GetSingle($"select f_rpt_getsql_limit('{proLimitJson}',{LoginUserId.ToString()})"));
 

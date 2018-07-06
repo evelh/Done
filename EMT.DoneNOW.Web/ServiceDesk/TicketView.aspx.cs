@@ -47,6 +47,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected List<d_general> ticketNoteTypeList = null;
         protected crm_contact_dal ccDal = new crm_contact_dal();
         protected sys_resource_dal srDal = new sys_resource_dal();
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -58,7 +59,7 @@ namespace EMT.DoneNOW.Web.ServiceDesk
                     if (thisTicket != null)
                     {
                         isAdd = false;
-                        
+                        thisBookMark = new IndexBLL().GetSingBook(Request.Url.LocalPath + "?id=" + taskId, LoginUserId);
                         ticketUdfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.TASK, thisTicket.id, tickUdfList);
                         thisAccount = new CompanyBLL().GetCompany(thisTicket.account_id);
                         if (thisTicket.contact_id != null)

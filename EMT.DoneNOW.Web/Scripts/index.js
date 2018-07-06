@@ -251,6 +251,7 @@ $(".RecentOverlay").on("mouseout", function () {
 
 //书签的下拉菜单
 $(".Bookmark").on("mousemove", function () {
+    LoadBook();
     $(this).addClass("HoverState");
     $(this).css("borderBottom", "1px solid #fff");
     $(".BookmarkDiv").show();
@@ -272,7 +273,7 @@ $(".BookmarkDiv").on("mouseout", function () {
     $(".Bookmark").css("borderBottom", "1px solid #d7d7d7");
     $(this).hide();
 });
-//书签的下拉菜单
+//调度工作室的下拉菜单
 $(".Calendar").on("mousemove", function () {
     $(this).addClass("HoverState");
     $(this).css("borderBottom", "1px solid #fff");

@@ -113,6 +113,7 @@ namespace EMT.DoneNOW.DTO
         DYNAMIC_END_DATE_TYPE = 197,            // 动态日期结束日期类型
         SYS_TICKET_RESOLUTION_METRICS = 206,    // 工单解决参数设置
         FORM_TMPL_QUICK_EMAIL_OBJECT = 207,     // 表单模板：发送对象
+        OUTSOURCE_RATE_TYPE = 209,              // 外包计费类型
         SYSTEM_LOGO = 212,                      // 系统LOGO
         OPPORTUNITY_SPREAD_UNIT = 213,          // 商机收入周期取值范围
         SYSTEM_SUPPORT_EMAIL = 215,             // 系统技术支持邮箱

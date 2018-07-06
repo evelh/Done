@@ -13,7 +13,12 @@
 </head>
 <body>
     <form id="form1" runat="server" style="min-width:500px;width:100%;">
-        <div class="header"><%=isAdd?"添加报价":"修改报价" %></div>
+        <div class="header"><%=isAdd?"添加报价":"修改报价" %><div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> " onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div></div>
         <div class="header-title">
             <ul>
                 <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;"></i>
@@ -23,6 +28,17 @@
                     <asp:Button ID="save_open_quote" runat="server" Text="保存并打开报价" BorderStyle="None" OnClick="save_open_quote_Click" />
                 </li>
                 <li id="close">关闭</li>
+                 <li style="float:right;background: white;border: 0px;display:block;">
+                    <select style="width:200px;" id="fromTmplId" name="fromTmplId">
+                        <option></option>
+                        <%if (tmplList != null && tmplList.Count > 0) {
+                                foreach (var tmpl in tmplList)
+                                {%>
+                                <option value="<%=tmpl.id %>"><%=tmpl.tmpl_name %></option>
+                               <% }
+                            } %>
+                    </select>
+                </li>
             </ul>
         </div>
         <%--  <div style="float: left;">
@@ -540,9 +556,22 @@
         InitArea(s3);  // 地址下拉框
         //change(0, s3);
         //change(1, s3);
-        <% if (isAdd)
+        <% if (!isAdd&&quote!=null)
     {%>
         GetDataBySelectCompany();  // 用于修改的时候赋值
+        <%if (quote.contact_id != null)
+    { %>
+        $("#contact_id").val(<%=quote.contact_id %>);
+        <%} %>
+        $("#opportunity_id").val(<%=quote.opportunity_id %>);
+         <%if (quote.tax_region_id != null)
+    { %>
+        $("#tax_region_id").val(<%=quote.tax_region_id %>);
+        <%} %>
+         <%if (quote.project_id != null)
+    { %>
+        $("#project_id").val(<%=quote.project_id %>);
+        <%} %>
        <%}%>
         var opportunity_idHidden = $("#opportunity_idHidden").val();
         if (opportunity_idHidden != "") {
@@ -738,6 +767,10 @@
         }
         else {
             $("#project_id").html("<option value='0'>暂无项目提案</option>");
+            $("#contact_id").html("");
+            $("#opportunity_id").html("");
+            $("#tax_region_id").val("0");
+            $("#project_id").html("<option value='0'>暂无项目提案</option>");
         }
     }
     // 添加项目提案
@@ -870,7 +903,7 @@
 
         var create_time = $("#create_time").text();
         if (create_time == "") {
-            alert("创建时间出错");
+            //alert("创建时间出错");
         }
         var projected_close_date = $("#projected_close_date").val();
       
@@ -881,7 +914,7 @@
         // 如果选择商机的话，默认为商机联系人
         var contact_id = $("#contact_id").val();
        // var opportunity_id = $("#opportunity_id").val();
-        if (contact_id == "" || contact_id ==0) {
+        if (contact_id == "" || contact_id == 0 || contact_id==null) {
             alert("请选择联系人");
             return false;
         }
@@ -1099,7 +1132,116 @@
         });
         $("#contact_id").val(contact_id);
     }
- 
-  
+    function ChangeBookMark() {
+        var url = '<%=Request.RawUrl %>';
+        var name = "<%=isAdd?"":":" %><%=quote?.name %>";
+        var title = '<%=isAdd?"新增":"编辑" %>报价' + name;
+        var isBook = $("#bookmark").hasClass("Selected");
+        $.ajax({
+            type: "GET",
+            url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    if (isBook) {
+                        $("#bookmark").removeClass("Selected");
+                    } else {
+                        $("#bookmark").addClass("Selected");
+                    }
+                }
+            }
+        })
+    }
+
+    $("#fromTmplId").change(function () {
+        var thisValue = $(this).val();
+        if (thisValue != "") {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/FormTempAjax.ashx?act=GetTempObj&id=" + thisValue,
+                dataType: "json",
+                success: function (data) {
+                    if (data != "") {
+                        $("#form1").populateForm(data);
+                        GetAccount(data.account_id);
+                        // 客户，商机名称，联系人，报价模板，激活状态，账单地址，配送地址  
+                        GetDataBySelectCompany();
+                        if (data.contact_id != "") {
+                            $("#contact_id").val(data.contact_id);
+                        }
+                        if (data.contact_id != "") {
+                            $("#contact_id").val(data.contact_id);
+                        }
+                        if (data.opportunity_id != "") {
+                            $("#opportunity_id").val(data.opportunity_id);
+                        } 
+                        if (data.tax_region_id != "") {
+                            $("#tax_region_id").val(data.tax_region_id);
+                        }
+                        if (data.quote_tmpl_id != "") {
+                            $("#quote_tmpl_id").val(data.quote_tmpl_id);
+                        }
+                        if (data.is_active == "1") {
+                            $("#is_active").prop("checked", true);
+                        }
+                        else {
+                            $("#is_active").prop("checked", false);
+                        }
+                        if (data.bill_to_as_sold_to == "1") {
+                            if (!$("#BillLocation").is(":checked")) {
+                                $("#BillLocation").trigger("click");
+                            }
+                        }
+                        else {
+                            if ($("#BillLocation").is(":checked")) {
+                                $("#BillLocation").trigger("click");
+                            }
+                        }
+                        if (data.ship_to_as_sold_to == "1") {
+                            if (!$("#ShipLocation").is(":checked")) {
+                                $("#ShipLocation").trigger("click");
+                            }
+                        }
+                        else {
+                            if ($("#ShipLocation").is(":checked")) {
+                                $("#ShipLocation").trigger("click");
+                            }
+                        }
+                        
+                        
+
+                        
+                    }
+                },
+            });
+        }
+    })
+
+    function GetAccount(id) {
+        if (id != "" && id != null && id != undefined) {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/CompanyAjax.ashx?act=property&account_id=" + id + "&property=name",
+                //dataType: "json",
+                success: function (data) {
+                    if (data != "") {
+                        $("#ParentComoanyName").val(data);
+                        $("#ParentComoanyNameHidden").val(id);
+                    }
+                    else {
+                        $("#ParentComoanyName").val("");
+                        $("#ParentComoanyNameHidden").val("");
+                    }
+                },
+            });
+        }
+        else {
+            $("#ParentComoanyName").val("");
+            $("#ParentComoanyNameHidden").val("");
+        }
+    }
 
 </script>

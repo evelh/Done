@@ -23,10 +23,12 @@ namespace EMT.DoneNOW.Web
         protected string actType;
         protected string type = "";
         protected string iframeSrc;
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+               
                 // var account_id = Request.QueryString["account_id"];      // 客户ID
                 var contact_id = Request.QueryString["id"];      // 联系人ID
 
@@ -37,6 +39,7 @@ namespace EMT.DoneNOW.Web
                 }
 
                 contact = contactBLL.GetContact(Convert.ToInt64(contact_id));
+                thisBookMark = new IndexBLL().GetSingBook(Request.Url.LocalPath + "?id=" + Convert.ToInt64(contact_id), LoginUserId);
                 if (contact != null)
                 {
                     account = companyBll.GetCompany(contact.account_id);

@@ -309,6 +309,9 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SYSTEM_CODE_LEDGER:
                     addBtn = "新增";
                     break;
+                case (int)DicEnum.QUERY_CATE.SYSTEM_TAX_REGION_CATE:
+                    addBtn = "新增税收类型";
+                    break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
                     addBtn = "新增内部成本";
                     break;
@@ -1686,6 +1689,7 @@ namespace EMT.DoneNOW.Web
                 case (long)QueryType.SYSTEM_SHIP_TYPE:
                 case (long)QueryType.SYSTEM_TAX_CATE:
                 case (long)QueryType.SYSTEM_TAX_REGION:
+                case (long)QueryType.SYSTEM_TAX_REGION_CATE:
                 case (long)QueryType.SYSTEM_NOTE_TYPE:
                 case (long)QueryType.SYSTEM_ORGANIZATION:
                 case (long)QueryType.SYSTEM_LINES_BUSINESS:

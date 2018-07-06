@@ -26,6 +26,7 @@ namespace EMT.DoneNOW.Web
         protected string param4;
         protected string param5;
         protected string param6;
+        protected Core.sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!int.TryParse(Request.QueryString["cat"], out catId))
@@ -39,6 +40,9 @@ namespace EMT.DoneNOW.Web
                 Response.Close();
                 return;
             }
+            thisBookMark = new IndexBLL().GetSingBook("/Common/SearchFrameSet.aspx?cat=" + catId, LoginUserId);
+            if (thisBookMark == null)
+                thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
             param1 = string.IsNullOrEmpty(Request.QueryString["param1"]) ? "" : Request.QueryString["param1"];
             param2 = string.IsNullOrEmpty(Request.QueryString["param2"]) ? "" : Request.QueryString["param2"];
             param3 = string.IsNullOrEmpty(Request.QueryString["param3"]) ? "" : Request.QueryString["param3"];

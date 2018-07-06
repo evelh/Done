@@ -42,7 +42,7 @@
     display: inline-block;
     height: 16px;
     position: absolute;
-    right: 10px;
+    right: 20px;
     top: 10px;
     width: 16px;
     border-radius: 50%;
@@ -273,6 +273,55 @@ a.Button.Link {
 .eee{
     width:114px;display: inline-block;float: left;
 }
+ .BookmarkButton {
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: relative;
+    width: 16px;
+    float:right;
+    margin-top: 8px;
+}
+             .BookmarkButton.Selected div {
+    border-color: #f9d959;
+}
+        .BookmarkButton>.LowerLeftPart {
+    border-right-width: 8px;
+    border-bottom-width: 6px;
+    border-left-width: 8px;
+    top: 5px;
+    -moz-transform: rotate(35deg);
+    -webkit-transform: rotate(35deg);
+    -ms-transform: rotate(35deg);
+    transform: rotate(35deg);
+}
+        .BookmarkButton>.LowerRightPart {
+    border-right-width: 8px;
+    border-bottom-width: 6px;
+    border-left-width: 8px;
+    top: 5px;
+    -moz-transform: rotate(-35deg);
+    -webkit-transform: rotate(-35deg);
+    -ms-transform: rotate(-35deg);
+    transform: rotate(-35deg);
+}
+        .BookmarkButton>div.LowerLeftPart, .BookmarkButton>div.LowerRightPart, .BookmarkButton>div.UpperPart {
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-style: solid;
+    border-top: none;
+    height: 0;
+    position: absolute;
+    width: 0;
+}
+        .BookmarkButton>.UpperPart {
+    border-bottom-width: 6px;
+    border-left-width: 3px;
+    border-right-width: 3px;
+    left: 5px;
+    top: 1px;
+}
+   
     </style>
 </head>
 <body>
@@ -280,7 +329,13 @@ a.Button.Link {
         <div class="TitleBar">
             <div class="Title">
                 <span class="text1">编辑销售订单</span>
-                <a href="###" class="help"></a>
+                <div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> " onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div>
+                <a href="###" class="help" style="display:none;"></a>
             </div>
         </div>
         <!--按钮-->
@@ -986,31 +1041,26 @@ a.Button.Link {
 
 
     }
-    // 获取到联系人列表
-    //function GetContact()
-    //{
-    //    // oldContactId
-    //    var oldContactId = $("#oldContactId").val();
-    //    $("#contact_id").html("");
-    //    $.ajax({
-    //        type: "GET",
-    //        async: false,
-    //        // 如果使用父客户的联系人 可以加入 &userParentContact=true 即可使用父客户联系人
-    //        url: "../Tools/CompanyAjax.ashx?act=contact&account_id=" + account_id,
-    //        // data: { CompanyName: companyName },
-    //        success: function (data) {
-    //            if (data != "") {
-    //                $("#contact_id").html(data);
-    //                if (oldContactId != "") {
-    //                    $("#contact_id").val(oldContactId);
-    //                }
-    //            }
-    //        },
-    //    });
+  
 
-    //}
-
-
-    // 根据客户ID填充联系人下拉框 -- todo 
-    // 地址选中后地址相关信息赋值 --todo
+    function ChangeBookMark() {
+        var url = '<%=Request.RawUrl %>';
+         var title = '编辑销售订单:<%=opportunity?.name %>';
+        var isBook = $("#bookmark").hasClass("Selected");
+        $.ajax({
+            type: "GET",
+            url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    if (isBook) {
+                        $("#bookmark").removeClass("Selected");
+                    } else {
+                        $("#bookmark").addClass("Selected");
+                    }
+                }
+            }
+        })
+     }
 </script>

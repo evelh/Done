@@ -147,6 +147,7 @@
                             <ul>
                                 <li onclick="Add()"><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -32px 0;" class="icon-1"></i>新增</li>
                             </ul>
+                            <span><%=thisCate.total_effective_tax_rate.ToString("#0.0000") %></span>
                         </div>
                         <div class="GridContainer">
                             <div style="height: 832px; width: 100%; overflow: auto; z-index: 0;">

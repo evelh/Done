@@ -949,7 +949,7 @@
                 { %>
             <div class="DivSectionWithHeader">
                 <div class="HeaderRow">
-                    <span id="" class="lblNormalClass" style="font-weight: bold; font-weight: bold;">快速服务预定</span>
+                    <span id="" class="lblNormalClass" style="font-weight: bold; font-weight: bold;">常规</span>
                 </div>
                 <div class="Content">
                     <table id="entireThing" cellpadding="0" cellspacing="0">
@@ -1106,7 +1106,7 @@
             </div>
             <div class="DivSectionWithHeader">
                 <div class="HeaderRow">
-                    <span id="" class="lblNormalClass" style="font-weight: bold; font-weight: bold;">Billing</span>
+                    <span id="" class="lblNormalClass" style="font-weight: bold; font-weight: bold;">计费</span>
                 </div>
                 <div class="Content">
                     <table cellpadding="0">
@@ -1142,7 +1142,7 @@
             </div>
             <div class="DivSectionWithHeader">
                 <div class="HeaderRow">
-                    <span id="" class="lblNormalClass" style="font-weight: bold; font-weight: bold;">Scheduling</span>
+                    <span id="" class="lblNormalClass" style="font-weight: bold; font-weight: bold;">分配</span>
                 </div>
                 <div class="Content">
                     <table cellpadding="0">
@@ -1448,7 +1448,7 @@
                                     </div>
                                     <div>
                                         <span id="">
-                                            <select name="" id="" class="txtBlack8Class">
+                                            <select name="quote_tmpl_id" id="quote_tmpl_id" class="txtBlack8Class">
                                                 <% if (quoteTempList != null && quoteTempList.Count > 0)
                                                     {
                                                         foreach (var quoteTemp in quoteTempList)

@@ -36,6 +36,12 @@
 
         <div class="Title">
             <span class="text1">报价项管理</span>
+            <div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> " onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div>
             <a href="###" class="collection"></a>
             <a href="###" class="help"></a>
         </div>
@@ -1915,4 +1921,24 @@
     function CreateInsPro() {
         window.open('../ConfigurationItem/QuoteItemWizard.aspx?quote_id=<%=quote==null?"":quote.id.ToString() %>', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.InstalledProductIwarid %>', 'left=200,top=200,width=960,height=750', false);
     }
+    function ChangeBookMark() {
+        var url = '<%=Request.RawUrl %>';
+         var title = '报价项管理:<%=quote?.name %>';
+        var isBook = $("#bookmark").hasClass("Selected");
+        $.ajax({
+            type: "GET",
+            url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    if (isBook) {
+                        $("#bookmark").removeClass("Selected");
+                    } else {
+                        $("#bookmark").addClass("Selected");
+                    }
+                }
+            }
+        })
+     }
 </script>

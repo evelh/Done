@@ -415,6 +415,12 @@
             <div class="Title">
                 <span class="text1"><%=isAdd ? "新增" : "修改" %>配置项</span>
                 <a href="###" class="collection"></a>
+                <div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> " onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div>
                 <a href="###" class="help"></a>
             </div>
         </div>
@@ -545,10 +551,7 @@
                                                         <td class="FieldLabel">
                                                             <%--<input type="hidden" id="id" name="id" value="<%=!isAdd?iProduct.id.ToString():"" %>"/>--%>
                                                             <%
-                                                                if (iProduct!=null)
-                                                                {
-                                                                    product = new EMT.DoneNOW.BLL.ProductBLL().GetProduct(iProduct.product_id);
-                                                                }
+                                                                
                                                             %>
                                                     产品 <span style="color: Red;">*</span>
                                                             <div>
@@ -1978,4 +1981,26 @@
         window.open("../ConfigurationItem/SwapConfigItemWizard.aspx?insProId=<%=iProduct.id %>", 'SwapInsPro', 'left=200,top=200,width=1080,height=800', false);
         <%} %>
     }
+
+    function ChangeBookMark() {
+        var url = '<%=Request.RawUrl %>';
+        var name = ":<%=isAdd?"":(product?.name) %>";
+        var title = '<%=isAdd?"新增":"编辑" %>配置项' + name;
+        var isBook = $("#bookmark").hasClass("Selected");
+        $.ajax({
+            type: "GET",
+            url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    if (isBook) {
+                        $("#bookmark").removeClass("Selected");
+                    } else {
+                        $("#bookmark").addClass("Selected");
+                    }
+                }
+            }
+        })
+     }
 </script>

@@ -27,10 +27,12 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected sys_resource callCreater = null;
         protected crm_contact ticketCon = null;
         protected List<sys_notify_tmpl> tempList = new sys_notify_tmpl_dal().GetTempByEvent(((int)DicEnum.NOTIFY_EVENT.SERVICE_CALL_CREATED_EDITED).ToString());
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+                thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
                 var callId = Request.QueryString["callId"];
                 var tickeTId = Request.QueryString["ticketId"];
                 if (!string.IsNullOrEmpty(callId))

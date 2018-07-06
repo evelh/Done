@@ -121,7 +121,14 @@
             <%} %>
 		</i>
 		<%=currentQuery.page_name %>
-        <%} %>     
+        <%} %>  
+         <div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> "
+                onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div>
 	</div>   <%}%>
     <%--合同管理--审批--%>
              <% if (currentQuery.page_name == "审批并提交")
@@ -669,5 +676,33 @@
     } %>
             if (parent.parent.hideHeader != undefined) {
                 $(".header").hide();
+                    }
+
+            function ChangeBookMark() {
+                var url = "";
+                <%if (thisBookMark != null){%>
+                url = '<%=thisBookMark.url %>';
+                <%}else{ %>
+                url = '<%="/Common/SearchFrameSet.aspx?cat="+catId %>';
+                <%} %>
+     var title = '<%=currentQuery.page_name %>';
+        var isBook = $("#bookmark").hasClass("Selected");
+        $.ajax({
+            type: "GET",
+            url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    if (isBook) {
+                        $("#bookmark").removeClass("Selected");
+                    } else {
+                        $("#bookmark").addClass("Selected");
+                    }
+                }
             }
+        })
+ }
+
+
 </script>

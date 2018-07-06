@@ -30,6 +30,7 @@ namespace EMT.DoneNOW.Web.Project
         protected string serOrder = ""; // 排序方式
         protected List<DictionaryEntryDto> tvbDto =new List<DictionaryEntryDto>();
         protected List<DictionaryEntryDto> expDto = new List<DictionaryEntryDto>();
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -38,6 +39,7 @@ namespace EMT.DoneNOW.Web.Project
                 thisTask = new sdk_task_dal().FindNoDeleteById(long.Parse(id));
                 if (thisTask != null&&thisTask.project_id!=null)
                 {
+                    thisBookMark = new IndexBLL().GetSingBook(Request.Url.LocalPath + "?id=" + id, LoginUserId);
                     tvbDto.Add(new DictionaryEntryDto("type", "类型", 0));
                     tvbDto.Add(new DictionaryEntryDto("time", "操作时间", 0));
                     tvbDto.Add(new DictionaryEntryDto("resouName", "员工", 0));

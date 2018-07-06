@@ -354,7 +354,13 @@
                         break;
                 }
             %>
-            <div class="Title"><span class="Text"><%=isAdd?"新增":"修改" %><%=type %></span><span class="SecondaryText"></span></div>
+            <div class="Title"><span class="Text"><%=isAdd?"新增":"修改" %><%=type %></span><span class="SecondaryText"></span><div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> "
+                onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div></div>
             <div class="TitleBarButton Star" id="za129bcc0139b41ea8e2f627eb64b9cd3" title="Bookmark this page">
                 <div class="TitleBarIcon Star"></div>
             </div>
@@ -3737,4 +3743,26 @@
         }
         return false;
     });
+
+    function ChangeBookMark() {
+        var url = '<%=Request.RawUrl %>';
+        var name = "<%=isAdd?"":$":{thisProject?.name}:{thisTask?.title}" %>";
+            var title = '<%=isAdd?"新增":"编辑" %>任务' + name;
+            var isBook = $("#bookmark").hasClass("Selected");
+            $.ajax({
+                type: "GET",
+                url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data) {
+                        if (isBook) {
+                            $("#bookmark").removeClass("Selected");
+                        } else {
+                            $("#bookmark").addClass("Selected");
+                        }
+                    }
+                }
+            })
+    }
 </script>

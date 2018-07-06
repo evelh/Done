@@ -25,9 +25,10 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected List<UserDefinedFieldDto> tickUdfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.TICKETS);
         protected List<UserDefinedFieldValue> ticketUdfValueList = null;
         protected List<sys_resource> resList = new DAL.sys_resource_dal().GetSourceList();
+        protected List<sys_form_tmpl> tmplList;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            tmplList = new FormTemplateBLL().GetTmplByType((int)DicEnum.FORM_TMPL_TYPE.QUICK_CALL, LoginUserId);
         }
 
         protected void save_close_Click(object sender, EventArgs e)

@@ -17,6 +17,59 @@
         .Large {
             margin-top: 15px;
         }
+         .BookmarkButton {
+            cursor: pointer;
+            display: inline-block;
+            height: 16px;
+            position: relative;
+            width: 16px;
+            float: right;
+            margin-top: 8px;
+        }
+
+            .BookmarkButton.Selected div {
+                border-color: #f9d959;
+            }
+
+            .BookmarkButton > .LowerLeftPart {
+                border-right-width: 8px;
+                border-bottom-width: 6px;
+                border-left-width: 8px;
+                top: 5px;
+                -moz-transform: rotate(35deg);
+                -webkit-transform: rotate(35deg);
+                -ms-transform: rotate(35deg);
+                transform: rotate(35deg);
+            }
+
+            .BookmarkButton > .LowerRightPart {
+                border-right-width: 8px;
+                border-bottom-width: 6px;
+                border-left-width: 8px;
+                top: 5px;
+                -moz-transform: rotate(-35deg);
+                -webkit-transform: rotate(-35deg);
+                -ms-transform: rotate(-35deg);
+                transform: rotate(-35deg);
+            }
+
+            .BookmarkButton > div.LowerLeftPart, .BookmarkButton > div.LowerRightPart, .BookmarkButton > div.UpperPart {
+                border-left-color: transparent;
+                border-right-color: transparent;
+                border-style: solid;
+                border-top: none;
+                height: 0;
+                position: absolute;
+                width: 0;
+            }
+
+            .BookmarkButton > .UpperPart {
+                border-bottom-width: 6px;
+                border-left-width: 3px;
+                border-right-width: 3px;
+                left: 5px;
+                top: 1px;
+            }
     </style>
 </head>
 <body>
@@ -860,6 +913,12 @@
                                 <img src="../Images/move-left.png" /></a>
                         </div>
                         <span class="text1" id="opname"></span>
+                        <input type="hidden" id="opurl"/>
+                        <div id="bookmark" class="BookmarkButton Selected" onclick="ChangeBookMark()">
+                            <div class="LowerLeftPart"></div>
+                            <div class="LowerRightPart"></div>
+                            <div class="UpperPart"></div>
+                        </div>
                         <a href="###" class="collection"></a>
                         <a href="###" class="help"></a>
                     </div>
@@ -885,12 +944,65 @@
         $(".chaxun").on("click", function () {
             $("#body").hide();
             var kk = $(this).text();
+            var thisUrl = $(this).attr("href");
+            if (thisUrl != undefined && thisUrl != "") {
+                thisUrl = thisUrl.substring(2, thisUrl.length);
+            }
+            console.log(thisUrl);
+            $("#opurl").val(thisUrl);
             $("#opname").text(kk);
             var kkk = $("#opname").text();
+            var isBook = $("#bookmark").hasClass("Selected");
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "../Tools/IndexAjax.ashx?act=GetBookByUrl&url=" + thisUrl,
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    if (data != "" && data!="error") {
+                        if (isBook) {
+                            $("#bookmark").removeClass("Selected");
+                        } else {
+                            $("#bookmark").addClass("Selected");
+                        }
+                    }
+                    else {
+                        if (isBook) {
+                            $("#bookmark").removeClass("Selected");
+                        }
+                    }
+                },
+                error: function (data) {
+                    debugger;
+                },
+            });
+            // 获取书签
+            // 校验
             setTimeout(function () {
                 $("#chaxun").show();
             }, 300)
         });
+        function ChangeBookMark() {
+            var url = $("#opurl").val();
+            var title = $("#opname").text();
+            var isBook = $("#bookmark").hasClass("Selected");
+            $.ajax({
+                type: "GET",
+                url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data) {
+                        if (isBook) {
+                            $("#bookmark").removeClass("Selected");
+                        } else {
+                            $("#bookmark").addClass("Selected");
+                        }
+                    }
+                }
+            })
+        }
         $("#black").click(function () {
             $("#chaxun").hide();
             $("#body").show();

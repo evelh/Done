@@ -245,7 +245,13 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div class="header"><%=isAdd?"新增":"编辑" %>服务预定</div>
+        <div class="header"><%=isAdd?"新增":"编辑" %>服务预定 <div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> "
+                onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div></div>
         <div class="header-title">
             <ul>
                 <li id="SaveClose">
@@ -814,4 +820,30 @@
         }
         $("#notifyConIds").val(ids);
     }
+    function ChangeBookMark() {
+        var url = '<%=Request.RawUrl %>';
+        var name = '';
+        <%if (thisCall != null)
+    {%>
+        name = ':<%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisCall.start_time).ToString("yyyy-MM-dd")+" - "+EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisCall.end_time).ToString("yyyy-MM-dd") %>';
+        <%} %>
+        var title = '<%=isAdd?"新增":"编辑" %>服务预定';
+        var isBook = $("#bookmark").hasClass("Selected");
+        $.ajax({
+            type: "GET",
+            url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    if (isBook) {
+                        $("#bookmark").removeClass("Selected");
+                    } else {
+                        $("#bookmark").addClass("Selected");
+                    }
+                }
+            }
+        })
+    }
+
 </script>

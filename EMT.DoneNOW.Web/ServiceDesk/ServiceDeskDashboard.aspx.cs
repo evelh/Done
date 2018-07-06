@@ -32,8 +32,10 @@ namespace EMT.DoneNOW.Web.ServiceDesk
         protected Dictionary<long, List<sdk_task>> productTickDic = new Dictionary<long, List<sdk_task>>();  // 产品分组
         protected Dictionary<string, int> countDic = new Dictionary<string, int>();
         protected List<sys_resource> limitResList;  // 权限过滤后的工单负责人
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
+            thisBookMark = new IndexBLL().GetSingBook(Request.Url.LocalPath, LoginUserId);
             refreshMin = Request.QueryString["refreshMin"];
             allTicketList = ticBll.GetAllTicket();
             countDic = ticBll.GetServiceDeskCount();

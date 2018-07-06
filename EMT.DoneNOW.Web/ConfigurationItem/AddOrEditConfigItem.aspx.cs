@@ -30,10 +30,12 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
         protected List<sys_resource> resList = new sys_resource_dal().GetSourceList();
         protected AttachmentBLL attBll = new AttachmentBLL();
         protected List<sys_notify_tmpl> tempList = new sys_notify_tmpl_dal().GetTempByEvent(DicEnum.NOTIFY_EVENT.CONFIGURATION_ITEM_CREATED);
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+                thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
                 iProduct_udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONFIGURATION_ITEMS);
                 var contract_id = Request.QueryString["contract_id"];
                 if (!string.IsNullOrEmpty(contract_id))
@@ -53,7 +55,7 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                     if (iProduct != null)
                     {
                         account = new CompanyBLL().GetCompany((long)iProduct.account_id);
-                        var product = new ivt_product_dal().FindNoDeleteById(iProduct.product_id);
+                        product = new ivt_product_dal().FindNoDeleteById(iProduct.product_id);
                    
                     }
                 }
@@ -97,7 +99,9 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                     //account_id = iProduct.account_id.ToString();
                     iProduct_udfValueList = new UserDefinedFieldsBLL().GetUdfValue(DicEnum.UDF_CATE.CONFIGURATION_ITEMS, iProduct.id, iProduct_udfList);
                     var isCopy = Request.QueryString["isCopy"];
-                    
+                   
+                    product = new EMT.DoneNOW.BLL.ProductBLL().GetProduct(iProduct.product_id);
+                  
                     isAdd = false;
                     if (!string.IsNullOrEmpty(isCopy) && isCopy == "1")
                         isAdd = true;

@@ -56,6 +56,13 @@
                 </ul>
             </i>
             联系人-<%=contact.name %><%=contact.suffix_id==null?"":sufix.First(_=>_.val.ToString()==contact.suffix_id.ToString()).show  %>|<%=contact.title %>-<%=account.name %>
+              <div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> "
+                onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div>
         </div>
 
         <div class="header-title">
@@ -324,7 +331,27 @@
       var Height = $(window).height() - 130 + "px";
       $("#ShowContact_Right").css("height", Height);
     })
-
+    function ChangeBookMark() {
+        //$("#bookmark").removeAttr("click");
+        var url = '<%=Request.Url.LocalPath %>?id=<%=contact?.id %>';
+        var title = '查看联系人:<%=contact?.name %>';
+        var isBook = $("#bookmark").hasClass("Selected");
+        $.ajax({
+            type: "GET",
+            url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    if (isBook) {
+                        $("#bookmark").removeClass("Selected");
+                    } else {
+                        $("#bookmark").addClass("Selected");
+                    }
+                }
+            }
+        })
+    }
     // 这个方法可以使iframe适应源页面的大小
     function iFrameHeight() {
         var ifm = document.getElementById("viewContact_iframe");

@@ -750,7 +750,7 @@
     function ChangeBookMark() {
         //$("#bookmark").removeAttr("click");
         var url = '<%=Request.Url.LocalPath %>?id=<%=crm_account.id %>';
-        var title = $('title').text();
+        var title = '查看客户:<%=crm_account?.name %>';
         var isBook = $("#bookmark").hasClass("Selected");
         $.ajax({
             type: "GET",

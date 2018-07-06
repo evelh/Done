@@ -15,6 +15,7 @@ namespace EMT.DoneNOW.Web.Project
     public partial class ProjectView : BasePage
     {
         protected pro_project thisProject = null;
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -30,7 +31,8 @@ namespace EMT.DoneNOW.Web.Project
                         Response.End();
                         return;
                     }
-                        
+                    thisBookMark = new IndexBLL().GetSingBook(Request.Url.LocalPath + "?id=" + id, LoginUserId);
+
 
                     var thisAccount = new CompanyBLL().GetCompany(thisProject.account_id);
                     ShowTitle.Text = "项目-"+thisProject.no+thisProject.name+"("+ thisAccount.name + ")";

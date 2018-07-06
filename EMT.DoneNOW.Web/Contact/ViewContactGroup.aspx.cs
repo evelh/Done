@@ -12,8 +12,10 @@ namespace EMT.DoneNOW.Web.Contact
     public partial class ViewContactGroup : BasePage
     {
         protected crm_contact_group thisGroup;
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
+            thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
             var groupId = Request.QueryString["groupId"];
             if (!string.IsNullOrEmpty(groupId))
                 thisGroup = new ContactBLL().GetGroupById(long.Parse(groupId));

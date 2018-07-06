@@ -22,10 +22,11 @@ namespace EMT.DoneNOW.Web
         protected string avatarPath = "/Images/pop.jpg";
         protected crm_account account = null;
         protected string callBackFiled = "";
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             bool is_edit = long.TryParse(Request.QueryString["id"], out id);
-
+            thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
             if (is_edit)
             {
                 if (AuthBLL.GetUserContactAuth(LoginUserId, LoginUser.security_Level_id, id).CanEdit == false)

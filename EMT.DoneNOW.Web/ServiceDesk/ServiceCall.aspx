@@ -47,7 +47,13 @@
         <input type="hidden" id="SaveType" name="SaveType" value=">" />
         <input type="hidden" id="AppTicketIds" name="AppTicketIds" />
         <input type="hidden" id="AppTicketIdsHidden" name="AppTicketIdsHidden" />
-        <div class="header"><%=isAdd?"新增":"编辑" %>服务预定</div>
+        <div class="header"><%=isAdd?"新增":"编辑" %>服务预定<div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> "
+                onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div></div>
         <div class="header-title">
             <ul>
                 <li id="SaveClose">
@@ -729,4 +735,32 @@
             iframe2.contentWindow.CheckPageTicket(ticketIds);
         }
     } 
+
+    function ChangeBookMark() {
+        var url = '<%=Request.RawUrl %>';
+        var name = "";
+            <%if (!isAdd)
+        {%>
+        name = ':<%=EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisCall.start_time).ToString("yyyy-MM-dd")+" - "+EMT.Tools.Date.DateHelper.ConvertStringToDateTime(thisCall.end_time).ToString("yyyy-MM-dd") %>';
+            <%} %>
+        var title = '<%=isAdd?"新增":"编辑" %>服务预定' + name;
+        var isBook = $("#bookmark").hasClass("Selected");
+        $.ajax({
+            type: "GET",
+            url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    if (isBook) {
+                        $("#bookmark").removeClass("Selected");
+                    } else {
+                        $("#bookmark").addClass("Selected");
+                    }
+                }
+            }
+        })
+    }
+
+   
 </script>

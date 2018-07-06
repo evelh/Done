@@ -18,7 +18,13 @@
 <body>
     <form id="form1" runat="server">
         <input type="hidden" id="ticket_id" value="<%=thisTicket!=null?thisTicket.id.ToString():"" %>" />
-        <div class="header"><%=isAdd?"新增":"编辑" %>定期主工单</div>
+        <div class="header"><%=isAdd?"新增":"编辑" %>定期主工单  <div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
+                { %>Selected<%} %> "
+                onclick="ChangeBookMark()">
+                <div class="LowerLeftPart"></div>
+                <div class="LowerRightPart"></div>
+                <div class="UpperPart"></div>
+            </div></div>
         <div class="header-title">
             <ul>
                 <li id="SaveNew">
@@ -1623,4 +1629,29 @@
         }
         $("#notifyResIds").val(ids);
     }
+    function ChangeBookMark() {
+        var url = '<%=Request.RawUrl %>';
+          var name = "";
+            <%if (!isAdd)
+        {%>
+          name = ':<%=thisTicket?.no + "-" + thisTicket?.title %>';
+            <%} %>
+            var title = '<%=isAdd?"新增":"编辑" %>定期主工单' + name;
+            var isBook = $("#bookmark").hasClass("Selected");
+            $.ajax({
+                type: "GET",
+                url: "../Tools/IndexAjax.ashx?act=BookMarkManage&url=" + url + "&title=" + title,
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    if (data) {
+                        if (isBook) {
+                            $("#bookmark").removeClass("Selected");
+                        } else {
+                            $("#bookmark").addClass("Selected");
+                        }
+                    }
+                }
+            })
+      }
 </script>

@@ -21,9 +21,11 @@ namespace EMT.DoneNOW.Web.Contract
         protected List<UserDefinedFieldDto> udfList;        // 自定义字段信息
         protected List<UserDefinedFieldValue> udfValues;    // 自定义字段值
         private ContractBLL bll = new ContractBLL();
+        protected sys_bookmark thisBookMark;
         protected void Page_Load(object sender, EventArgs e)
         {
             var contract_id = Convert.ToInt64(Request.QueryString["id"]);
+            thisBookMark = new IndexBLL().GetSingBook(Request.RawUrl, LoginUserId);
             contract = bll.GetContractEdit(contract_id);
 
             Dictionary<string, object> dics = bll.GetField();
