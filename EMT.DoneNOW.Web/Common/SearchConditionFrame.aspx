@@ -685,7 +685,6 @@
                 <%}else{ %>
                 url = '<%="/Common/SearchFrameSet.aspx?cat="+catId %>';
                 <%} %>
-                var 
      var title = '<%=currentQuery.page_name %>';
         var isBook = $("#bookmark").hasClass("Selected");
         $.ajax({
