@@ -128,9 +128,27 @@ namespace EMT.DoneNOW.BLL
         /// <returns></returns>
         public DashboardDto GetDashboardInfoById(long dsbdId, long userId)
         {
-            var dto = dal.FindSignleBySql<DashboardDto>($"select id,name,theme_id,widget_auto_place as auto_place,is_shared from sys_dashboard where id={dsbdId} and delete_time=0");
+            var dto = dal.FindSignleBySql<DashboardDto>($"select id,name,theme_id,widget_auto_place as auto_place,is_shared,filter_id as filter from sys_dashboard where id={dsbdId} and delete_time=0");
             if (dto != null)
                 dto.widgetList = GetWidgetListByDashboardId(dsbdId, userId);
+            else
+                return null;
+
+            if (!string.IsNullOrEmpty(dto.filter))
+            {
+                dto.filterVals = new List<DictionaryEntryDto>();
+                var dsbd = dal.FindById(dto.id);
+                var filterList = GetDashboardFilterPara();
+                var filter = filterList.Find(_ => _.id == long.Parse(dto.filter));
+                if (dsbd.filter_default_value == 0)     // 默认值是我的
+                {
+
+                }
+                else
+                {
+
+                }
+            }
 
             var themeList = new GeneralBLL().GetGeneralList((int)GeneralTableEnum.DASHBOARD_COLOR_THEME);
             var idx = themeList.FindIndex(_ => _.id == dto.theme_id);
@@ -141,6 +159,7 @@ namespace EMT.DoneNOW.BLL
 
             return dto;
         }
+        
 
         /// <summary>
         /// 获取仪表板的设置信息
@@ -1635,6 +1654,30 @@ namespace EMT.DoneNOW.BLL
         public List<string[]> GetSysWidgetList()
         {
             var list = wgtDal.FindListBySql("select id,entity_id,type_id,visual_type_id,name,description from sys_widget where dashboard_id is null and delete_time=0 order by sort_order asc");
+            var rtn = new List<string[]>();
+            foreach (var wgt in list)
+            {
+                rtn.Add(new string[]
+                {
+                    wgt.id.ToString(),
+                    wgt.entity_id.ToString(),
+                    wgt.type_id.ToString(),
+                    wgt.visual_type_id==null?"":wgt.visual_type_id.Value.ToString(),
+                    wgt.name,
+                    wgt.description
+                });
+            }
+            return rtn;
+        }
+
+        /// <summary>
+        /// 获取用户已存在的小窗口
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public List<string[]> GetExistWidgetList(long userId)
+        {
+            var list = wgtDal.FindListBySql($"select id,entity_id,type_id,visual_type_id,name,description from sys_widget where dashboard_id in (select dashboard_id from sys_dashboard_resource where resource_id={userId} and is_visible=1 and delete_time=0) and delete_time=0 ");
             var rtn = new List<string[]>();
             foreach (var wgt in list)
             {

@@ -347,7 +347,10 @@ namespace EMT.DoneNOW.Web
         /// </summary>
         private void GetSysWidget()
         {
-            WriteResponseJson(bll.GetSysWidgetList());
+            if (request.QueryString["type"] == "2")
+                WriteResponseJson(bll.GetExistWidgetList(LoginUserId));
+            else
+                WriteResponseJson(bll.GetSysWidgetList());
         }
 
         /// <summary>

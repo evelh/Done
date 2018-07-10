@@ -585,13 +585,13 @@ function InitDashboardInfo(data, opType) {
             return;
         }
         if (fltVal == 3975 || fltVal == 3978 || fltVal == 3980 || fltVal == 3981 || fltVal == 3982) {
+            $("#dashboardLimitType2").removeAttr("disabled");
+        } else {
             if ($("#dashboardLimitType2").prop("checked")) {
                 $("#dashboardLimitType1").prop("checked", true);
                 $("#dashboardLimitType2").prop("checked", false);
             }
             $("#dashboardLimitType2").attr("disabled", "disabled");
-        } else {
-            $("#dashboardLimitType2").removeAttr("disabled");
         }
         $("#dashboardDftValDiv").show();
         for (var i = 0; i < dashboardFilters.length; i++) {
@@ -753,3 +753,176 @@ function POPOpen(dom) {
     }
 
 }
+
+
+//全屏模式
+var PowerTime;      //演示定时器
+var PowerIndex = 0;   //演示面板初始值
+(function ($) {
+    $.support.fullscreen = supportFullScreen();
+    $.fn.fullScreen = function (props) {
+
+        if (!$.support.fullscreen || this.length != 1) {
+            return this;
+        }
+
+        if (fullScreenStatus()) {
+            cancelFullScreen();
+            return this;
+        }
+
+
+        var options = $.extend({
+            'background': '#111',
+            'callback': function () { }
+        }, props);
+
+
+        var fs = $('<div>', {
+            'css': {
+                'overflow-y': 'auto',
+                'width': '100%',
+                'height': '100%',
+                'align': 'center'
+            }
+        });
+
+        var elem = this;
+
+        elem.addClass('fullScreen');
+
+        fs.insertBefore(elem);
+        fs.append(elem);
+        requestFullScreen(fs.get(0));
+
+        fs.click(function (e) {
+            if (e.target == this) {
+                cancelFullScreen();
+            }
+        });
+
+        elem.cancel = function () {
+            cancelFullScreen();
+            return elem;
+        };
+
+        onFullScreenEvent(function (fullScreen) {
+
+            if (!fullScreen) {
+                elem.removeClass('fullScreen').insertBefore(fs);
+                fs.remove();
+                clearInterval(PowerTime)     //停止定时器
+                $('.ModeTitle').hide()
+                $('.panel_content > ul').css('padding-bottom', 0);
+                $('.panel_content > ul').css('overflow', '');
+                $('.panel_content > ul').css('background', '#fff');
+                $('.panel_content > ul').css('height', 'auto');
+                $('.panel_content').css({
+                    'overflow-y': 'scroll',
+                    'padding': 10,
+                    'height': 'auto'
+                })
+                $('.addShell').css('background', '#fff')
+            }
+            options.callback(fullScreen);
+        });
+
+        return elem;
+    };
+    function supportFullScreen() {
+        var doc = document.documentElement;
+
+        return ('requestFullscreen' in doc) ||
+            ('mozRequestFullScreen' in doc && document.mozFullScreenEnabled) ||
+            ('webkitRequestFullScreen' in doc);
+    }
+
+    function requestFullScreen(elem) {
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) {
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullScreen) {
+            elem.webkitRequestFullScreen();
+        }
+    }
+
+    function fullScreenStatus() {
+        return document.fullscreen ||
+            document.mozFullScreen ||
+            document.webkitIsFullScreen;
+    }
+
+    function cancelFullScreen() {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.webkitCancelFullScreen) {
+            document.webkitCancelFullScreen();
+        }
+
+    }
+
+    function onFullScreenEvent(callback) {
+        $(document).on("fullscreenchange mozfullscreenchange webkitfullscreenchange", function () {
+            callback(fullScreenStatus());
+        });
+    }
+
+    $('.PresentationModeCancelButton').click(function () {
+        cancelFullScreen()
+    })
+})(jQuery);
+//进入演示
+
+$(function () {
+
+    $("#EnterPresentationMode").click(function () {
+        var type = $("input:radio[name='dashPresent']:checked").val();
+        var filter = 0;
+        var tab = 0;
+        if (type == 1 || type == 3)
+            filter = 1;
+        if (type == 2 || type == 3)
+            tab = 1;
+        PowerTime = setInterval(function () {
+            $('.panel_content > ul > li').eq(PowerIndex).fadeIn().siblings().fadeOut();
+            $('.ModeTitle #PresentTit').html($('.panel_nav > ul > li').eq(PowerIndex).html())     //动态的标题
+            $('.panel_nav > ul > li').eq(PowerIndex).addClass('panel_nav_now').siblings().removeClass('panel_nav_now')
+            PowerIndex++;
+            if (PowerIndex == $('.panel_content > ul > li').length) {
+                PowerIndex = 0;
+            }
+        }, 60000);
+        $('#PresentationMode').hide()
+        $('#cover').hide()
+        $('.ModeTitle').show()
+        $('.panel_content > ul').css('background', '#E3E3E3');
+        $('.panel_content > ul').css('height', $(window).height());
+        $('.panel_content > ul').css('padding-bottom', 15);
+        $('.panel_content > ul').css('overflow-y', 'auto');
+        $('.panel_content').css({
+            'overflow-y': 'hidden',
+            'padding': 0,
+            'height': '100%'
+        })
+        $('.panel_content').fullScreen();
+        $('.addShell').css('background', '#E3E3E3')
+    })
+
+});
+
+
+
+//找到当前打开的面板 
+$.each($('.panel_content > ul > li'), function (i) {
+    // console.log($('.panel_content > ul > li').eq(i).is(':visible'))
+    if ($('.panel_content > ul > li').eq(i).is(':visible')) {
+        PowerIndex = i;
+    }
+})
+
+// 仪表板过滤器
+var crtDashboardFilter;
+var crtDashboardFilters;
