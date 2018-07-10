@@ -26,6 +26,7 @@ namespace EMT.DoneNOW.Web.SysSetting
                 thisCateTax = genBll.GetCateTax(id);
             if (thisCateTax != null)
             {
+                isAdd = false;
                 thisCate = genBll.GetRegionCate(thisCateTax.tax_region_cate_id);
             }
 

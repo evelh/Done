@@ -429,7 +429,7 @@
                             <div class="Content">
                                 <%if (CheckAuth("PRO_PROJECT_VIEW_SCHEDULE_TOOL_IMPORT_CSV"))
                                     { %>
-                                <div class="Button1" id="ImportFromExcelButton" tabindex="0">
+                                <div class="Button1" id="ImportFromExcelButton" tabindex="0" style="display:none;">
                                     <span class="Text">.CSV文件</span>
                                 </div>
                                 <%} %>
@@ -3747,5 +3747,9 @@
             ids = ids.substr(0, ids.length - 1);
         }
         $("#ToOtherResIdsHidden").val(ids);
+    }
+    function CloseReason() {
+        $("#ShowReason").hide();
+        $("#BackgroundOverLay").hide();
     }
 </script>

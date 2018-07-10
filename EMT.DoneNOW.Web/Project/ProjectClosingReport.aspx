@@ -8,6 +8,9 @@
     <title></title>
     <link href="../Content/reset.css" rel="stylesheet" />
     <style>
+        body{
+            background-color:white;
+        }
         #calDay {
             font-size: 12px;
             font-weight: 700;

@@ -543,7 +543,7 @@
                                     </div>
                                     <div class="Editor TextBox" data-editor-id="Title" data-rdp="Title">
                                         <div class="InputField">
-                                            <input id="title" type="text" value="<%=isAdd?"":isCopy?"(copy of)"+thisTask.title:thisTask.title %>" name="title" /><span class="CustomHtml"><a class="NormalState Button ButtonIcon IconOnly ProjectTask" id="TaskLibraryButton" tabindex="0" title="Task Library" onclick=""><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -16px -79px;"></span><span class="Text"></span></a></span>
+                                            <input id="title" type="text" value="<%=isAdd?"":isCopy?"(复制于)"+thisTask.title:thisTask.title %>" name="title" /><span class="CustomHtml"><a class="NormalState Button ButtonIcon IconOnly ProjectTask" id="TaskLibraryButton" tabindex="0" title="Task Library" onclick=""><span class="Icon" style="background: url(../Images/ButtonBarIcons.png) no-repeat -16px -79px;"></span><span class="Text"></span></a></span>
                                         </div>
                                     </div>
                                     <div class="EditorLabelContainer">

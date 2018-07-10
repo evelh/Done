@@ -309,9 +309,6 @@ namespace EMT.DoneNOW.Web
                 case (int)DicEnum.QUERY_CATE.SYSTEM_CODE_LEDGER:
                     addBtn = "新增";
                     break;
-                case (int)DicEnum.QUERY_CATE.SYSTEM_TAX_REGION_CATE:
-                    addBtn = "新增税收类型";
-                    break;
                 case (int)DicEnum.QUERY_CATE.CONTRACT_INTERNAL_COST:
                     addBtn = "新增内部成本";
                     break;
@@ -1367,8 +1364,8 @@ namespace EMT.DoneNOW.Web
                     ticketView.submenu = new List<PageContextMenuDto>() {
                         new PageContextMenuDto(){text = "查看工单", click_function = "ViewTicket()" },
                         new PageContextMenuDto(){ text = "工单历史", click_function = "TicketHistory()"},
-                        new PageContextMenuDto(){ text = "客户工单历史", click_function = "AccountTicketHistory()"},
-                        new PageContextMenuDto(){text = "查看报表", click_function = "ViewTicketReport()" },
+                        //new PageContextMenuDto(){ text = "客户工单历史", click_function = "AccountTicketHistory()"},
+                        //new PageContextMenuDto(){text = "查看报表", click_function = "ViewTicketReport()" },
                     };
                     contextMenu.Add(ticketView);
                     var ticketAdd = new PageContextMenuDto { text = "添加" };

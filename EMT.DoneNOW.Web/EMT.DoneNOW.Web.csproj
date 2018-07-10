@@ -716,6 +716,7 @@
     <Content Include="ServiceDesk\TicketManage.aspx" />
     <Content Include="SysSetting\AdjustResourceGoal.aspx" />
     <Content Include="SysSetting\ChangeBoardManage.aspx" />
+    <Content Include="SysSetting\ChangePassword.aspx" />
     <Content Include="SysSetting\CheckListLibrary.aspx" />
     <Content Include="SysSetting\CodeRuleManage.aspx" />
     <Content Include="SysSetting\CostCodeManage.aspx" />
@@ -2604,6 +2605,13 @@
     </Compile>
     <Compile Include="SysSetting\ChangeBoardManage.aspx.designer.cs">
       <DependentUpon>ChangeBoardManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SysSetting\ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SysSetting\ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
     </Compile>
     <Compile Include="SysSetting\CheckListLibrary.aspx.cs">
       <DependentUpon>CheckListLibrary.aspx</DependentUpon>

@@ -149,7 +149,7 @@
                                     </div>
                                         </div>
                                        <div id="RoleDiv" >
-                                    <span style="font-weight: 600;">以此角色费率向用户收费<span class="red">*</span></span>
+                                    <span style="font-weight: 600;margin-left:15px;">以此角色费率向用户收费<span class="red">*</span></span>
                                     <div class="clear">
                                         <select id="default_role_id" name="default_role_id">
                                             <option></option>
@@ -223,7 +223,7 @@
                             </tr>
                             <tr>
                                 <td colspan="4">
-                                    <textarea style="width:100%;resize: vertical;height:150px;" id="instructions" name="instructions"></textarea>
+                                    <textarea style="width:100%;resize: vertical;height:150px;min-height:150px;" id="instructions" name="instructions"></textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -233,7 +233,7 @@
                             </tr>
                              <tr>
                                 <td colspan="4">
-                                    <textarea style="width:100%;resize: vertical;height:150px;" id="description" name="description"><%=ticket?.description %></textarea>
+                                    <textarea style="width:100%;resize: vertical;height:150px;min-height:150px;" id="description" name="description"><%=ticket?.description %></textarea>
                                 </td>
                             </tr>
                         </table>
@@ -313,6 +313,7 @@
         $("#RoleDiv").show();
         $("#AmountDiv").hide();
         $("#authorized_hours").prop("disabled", false);
+        CheckAmount();
     })
     $("#rb3185").click(function () {
         $("#rate").prop("disabled", false);
@@ -321,6 +322,7 @@
         $("#AmountDiv").show();
         $("#authorized_hours").prop("disabled", true);
         $("#authorized_hours").val("");
+        CheckAmount();
     })
     $("#rb3186").click(function () {
         $("#rate").prop("disabled", true);
@@ -330,6 +332,7 @@
         $("#AmountDiv").hide();
         $("#authorized_hours").prop("disabled", true);
         $("#authorized_hours").val("");
+        CheckAmount();
     })
 
     function CheckAmount() {
@@ -339,7 +342,7 @@
         }
         var authorized_hours = $("#authorized_hours").val();
         if (authorized_hours == "" || authorized_hours == null || authorized_hours == undefined) {
-            authorized_hours = 0;
+            authorized_hours = 1;
         }
         var authorized_cost = $("#authorized_cost").val();
         if (authorized_cost == "" || authorized_cost == null || authorized_cost == undefined) {
@@ -350,7 +353,23 @@
         $("#TotalMoney").text(toDecimal2(amount));
 
     }
+    $("#rate").blur(function () {
+        CheckAmount();
+    });
 
+    $("#authorized_hours").blur(function () {
+        CheckAmount();
+    });
+    
+    $("#authorized_cost").blur(function () {
+        CheckAmount();
+    });
+
+    $("#save_close").click(function () {
+        // name = partnerAcc  的value 
+        // 必填项校验
+
+    })
 
 
 

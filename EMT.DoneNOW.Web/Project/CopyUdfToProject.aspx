@@ -13,7 +13,7 @@
     <form id="form1" runat="server">
         <div class="TitleBar">
             <div class="Title">
-                <span class="text1">完成项目向导</span>
+                <span class="text1">从商机复制向导</span>
                 <a href="###" class="help"></a>
             </div>
         </div>

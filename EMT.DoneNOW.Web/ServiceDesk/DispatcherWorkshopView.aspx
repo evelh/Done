@@ -173,7 +173,7 @@
                 <div class="UpperPart"></div>
             </div>
         <div class="UpperPart"></div>
-        <div class="help"></div>
+        
     </div>
     <input type="hidden" id="isSingle" value="<%=isSingResPage?"1":"" %>" />
     <div class="ButtonCollectionBase">

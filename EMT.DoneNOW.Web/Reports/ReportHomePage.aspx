@@ -85,6 +85,10 @@
                                     <div class="PageNavigationLinkGroup">
                                         <div class="PageNavigationLinkColumn">
                                             <div class="PageNavigationLink">
+                                                <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CRM_ACCOUNT_LABOURBYPROJECT %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">按照项目和员工统计工时</a>
+                                                <div class="StandardText">介绍介绍</div>
+                                            </div>
+                                            <div class="PageNavigationLink">
                                                 <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CRM_ACCOUNT_LABOURBYMONTH %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">按照员工和月份统计工时</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>

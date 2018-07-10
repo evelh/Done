@@ -7,6 +7,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>工时详情</title>
     <style>
+        body{
+            font-size:12px;
+        }
           .HeaderRow {
             background-color: #346a95;
             z-index: 100;

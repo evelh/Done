@@ -441,9 +441,15 @@
                                 <div class="Module">
                                     <div class="Normal ContextOverlayColumn">
                                         <div>
+                                            
                                             <div class="Group">
                                                 <div class="Heading">
                                                     <div class="Text">视图</div>
+                                                </div>
+                                                <div class="Content">
+                                                    <a class="Button ButtonIcon NormalState" href="ServiceDesk/ServiceDeskDashboard.aspx" target="PageFrame">
+                                                        <span class="Text">仪表板</span>
+                                                    </a>
                                                 </div>
                                                 <div class="Content">
                                                     <a class="Button ButtonIcon NormalState" onclick="window.open('../ServiceDesk/DispatchCalendar.aspx','<%=(int)EMT.DoneNOW.DTO.OpenWindow.DISPATCH_CALENDAR %>','left=0,top=0,width=1800,height=950', false);">
@@ -1402,6 +1408,12 @@
             <div class="User">
                 <div class="Name">
                     <a class="Button ButtonIcon Link"><%=LoginUser.name %></a>
+                </div>
+                 <div class="Separator">
+                    <div class="VerticalBar"></div>
+                </div>
+                <div class="SignOut">
+                    <a class="Button ButtonIcon Link" onclick="window.open('../SysSetting/ChangePassword','changePwd','left=200,top=200,width=550,height=650', false);">修改密码</a>
                 </div>
                 <div class="Separator">
                     <div class="VerticalBar"></div>

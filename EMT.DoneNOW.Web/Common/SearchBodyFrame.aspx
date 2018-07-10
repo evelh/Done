@@ -310,7 +310,7 @@
     <%} %>
               <% if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_REGION||(catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_CATE)||(catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_REGION_CATE))
                  {%>
-              <p><span onclick="AddTaxRegion()" style="padding: 3px;border: 1px solid #bcbcbc;margin-left: 10px;background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);">新增税区 </span><span onclick="AddTaxCate()" style="padding: 3px;border: 1px solid #bcbcbc;margin-left: 10px;background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);">新增税种 </span></p>
+              <p><span onclick="Add()" style="padding: 3px;border: 1px solid #bcbcbc;margin-left: 10px;background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);">新增税率 </span><span onclick="AddTaxRegion()" style="padding: 3px;border: 1px solid #bcbcbc;margin-left: 10px;background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);">新增税区 </span><span onclick="AddTaxCate()" style="padding: 3px;border: 1px solid #bcbcbc;margin-left: 10px;background: linear-gradient(to bottom,#fff 0,#d7d7d7 100%);">新增税种 </span></p>
              <div class="TabBar" style="margin-top:5px;">
                  <a class="Button ButtonIcon <%if (catId == (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_REGION_CATE)
                     { %>SelectedState <%} %>" href="../Common/SearchBodyFrame?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.SYSTEM_TAX_REGION_CATE %>&type=<%=(int)EMT.DoneNOW.DTO.QueryType.SYSTEM_TAX_REGION_CATE %>" id="">

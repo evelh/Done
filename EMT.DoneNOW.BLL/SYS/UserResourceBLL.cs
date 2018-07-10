@@ -991,8 +991,22 @@ namespace EMT.DoneNOW.BLL
             return _dal.FindListBySql($@"SELECT sr.id,sr.name from sys_resource sr where  sr.delete_time =0 and sr.is_active = 1 and id not in (
 SELECT resource_id from sys_resource_sales_quota where  year = {year} and month ={month} and delete_time =0)");
         }
-
-  
+        /// <summary>
+        /// 编辑员工的密码
+        /// </summary>
+        public bool ChangeUserPass(sys_user user,long userId)
+        {
+            var userDal = new sys_user_dal();
+            var userOld = userDal.FindById(user.id);
+            if (userOld == null)
+                return false;
+            if (userOld.password != user.password)
+            {
+                userDal.Update(user);
+                OperLogBLL.OperLogUpdate<sys_user>(user,userOld,user.id,userId,OPER_LOG_OBJ_CATE.RESOURCE,"修改员工密码");
+            }
+            return true;
+        }
 
     }
 }

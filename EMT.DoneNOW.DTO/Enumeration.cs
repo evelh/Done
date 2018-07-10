@@ -841,6 +841,7 @@ namespace EMT.DoneNOW.DTO
             SYSTEM_TICKET_SUB_ISSUE_SEARCH = 1700,         // 系统设置-问题和子问题类型-子问题查询
             SYSTEM_CHANGE_BOARD_SEARCH = 1701,             // 系统设置-变更委员会查询
             SYSTEM_CHECK_LIB_SEARCH = 1702,                // 系统设置-系统设置-检查单库查询
+            REPORT_CRM_ACCOUNT_LABOURBYPROJECT=1703,         // 报表-CRM-客户-按照项目和员工统计工时
             REPORT_CRM_ACCOUNT_LABOURBYMONTH=1704,         // 报表-CRM-客户-按照员工和月份统计工时
             REPORT_CRM_ACCOUNT_LABOURBYACCOUNT =1705,      // 报表-CRM-客户-按照客户统计工时
             REPORT_CRM_INSTALLPRODUCT_EXPIRE = 1706,       // 报表-CRM-配置项合同和配置项到期情况

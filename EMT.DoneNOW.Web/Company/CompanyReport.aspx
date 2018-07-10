@@ -505,23 +505,23 @@
                                                                 <tbody>
                                                                     <tr>
                                                                         <td id="txtBlack8" valign="top" width="30%"><b>专业费用:</b></td>
-                                                                        <td id="txtBlack8" valign="top" width="70%"><%=(oppo.ext1??0).ToString("#0.00") %></td>
+                                                                        <td id="txtBlack8" valign="top" width="70%"><%=(oppo.ext1).ToString("#0.00") %></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td id="txtBlack8" valign="top"><b>培训费用:</b></td>
-                                                                        <td id="txtBlack8" valign="top"><%=(oppo.ext2??0).ToString("#0.00") %></td>
+                                                                        <td id="txtBlack8" valign="top"><%=(oppo.ext2).ToString("#0.00") %></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td id="txtBlack8" valign="top"><b>硬件费用:</b></td>
-                                                                        <td id="txtBlack8" valign="top"><%=(oppo.ext3??0).ToString("#0.00") %></td>
+                                                                        <td id="txtBlack8" valign="top"><%=(oppo.ext3).ToString("#0.00") %></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td id="txtBlack8" valign="top"><b>月度使用情况:</b></td>
-                                                                        <td id="txtBlack8" valign="top"><%=(oppo.ext4??0).ToString("#0.00") %></td>
+                                                                        <td id="txtBlack8" valign="top"><%=(oppo.ext4).ToString("#0.00") %></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td id="txtBlack8" valign="top"><b>其他费用:</b></td>
-                                                                        <td id="txtBlack8" valign="top"><%=(oppo.ext5??0).ToString("#0.00") %></td>
+                                                                        <td id="txtBlack8" valign="top"><%=(oppo.ext5).ToString("#0.00") %></td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>

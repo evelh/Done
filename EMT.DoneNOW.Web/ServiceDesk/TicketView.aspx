@@ -241,7 +241,7 @@
                                     <span class="Icon"></span>
                                     <span class="Text">生成发票</span>
                                 </div>
-                                <div class="Button1" id="" tabindex="0" onclick="">
+                                <div class="Button1" id="" tabindex="0" onclick=""  style="display:none;">
                                     <span class="Icon"></span>
                                     <span class="Text">查看报表</span>
                                 </div>
@@ -249,7 +249,7 @@
                                     <span class="Icon"></span>
                                     <span class="Text">工单历史</span>
                                 </div>
-                                <div class="Button1" id="" tabindex="0" onclick="">
+                                <div class="Button1" id="" tabindex="0" onclick="" style="display:none;">
                                     <span class="Icon"></span>
                                     <span class="Text">客户服务详情</span>
                                 </div>
@@ -1303,7 +1303,7 @@
                                                 {
                                                     foreach (var change in changeList)
                                                     {%>
-                                            <option value="<%=change.id %>" <%=ticketOther != null && ticketOther.change_board_id == change.id ? "selected='selected'" : "" %><%=change.name %></option>
+                                            <option value="<%=change.id %>" <%=ticketOther != null && ticketOther.change_board_id == change.id ? "selected='selected'" : "" %>> <%=change.name %></option>
                                             <%}
                                                 } %>
                                         </select>
@@ -2133,7 +2133,7 @@
 <%--// 工具中的事件处理--%>
 <script>
     function TicketModify() {
-        window.open("../Project/TicketModify.aspx?ticketIds=<%=thisTicket.id %>", windowObj.ticket + windowType.manage, 'left=200,top=200,width=1080,height=800', false);
+        window.open("../ServiceDesk/TicketModify.aspx?ticketIds=<%=thisTicket.id %>", windowObj.ticket + windowType.manage, 'left=200,top=200,width=1080,height=800', false);
     }
     function MergeOtherTicketCallBack() {
         window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.TICKET_MERGE %>&field=toTicketId&callBack=MergeTicket&con2252=<%=thisTicket.account_id %>&con2253=<%=thisTicket.id %>&con2262=1", "<%=(int)EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>", 'left=200,top=200,width=600,height=800', false);

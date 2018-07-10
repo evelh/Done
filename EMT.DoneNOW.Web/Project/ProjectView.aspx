@@ -163,7 +163,7 @@
             </ul>
         </div>
         <div class="Right">
-             <div class="HeaderRow">
+             <div class="HeaderRow" style="color:white;">
                  <asp:Label ID="ShowTitle" runat="server" Text="Label"></asp:Label>
                  <div id="bookmark" class="BookmarkButton <%if (thisBookMark != null)
                 { %>Selected<%} %> "
