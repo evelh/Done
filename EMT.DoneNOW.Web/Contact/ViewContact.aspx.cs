@@ -74,6 +74,14 @@ namespace EMT.DoneNOW.Web
                         iframeSrc= "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.INSTALLEDPRODUCT + "&type=" + (int)QueryType.InstalledProductView + "&con966=" + contact_id;
                         actType = "配置项";
                         break;
+                    case "ticket":
+                        iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.MY_QUEUE_ACTIVE + "&group=215&con5602=" + contact_id + "&param1=ShowPara";
+                        actType = "工单";
+                        break;
+                    case "group":
+                        actType = "联系人组";
+                        iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.ACCOUNT_CONTACT_GROUP_SEARCH + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.ACCOUNT_CONTACT_GROUP_SEARCH ; // todo 添加参数
+                        break;
                     default:
                         iframeSrc = "";  // 默认
                         break;

@@ -610,36 +610,114 @@
 
 
             </div>
-            <div class="content clear" style="display: none;">
-                <%-- <%var user = EMT.DoneNOW.BLL.UserInfoBLL.GetUserInfo(GetLoginUserId()); %>
-            <div class="clear">
-                <input type="checkbox" name="" id="checkUser" />
-                <label><%=user.name %></label>
-                <input type="hidden" name="from_email" value="<%=user.email %>" />
-                <input type="checkbox" name="" id="CheckAccountManage" />
-                <label>客户经理</label>
+        
+              <div class="content clear" style="display: none;">
+                
+                <input type="hidden" id="notifyResIds" name="notifyResIds" />
+                <div id="pnlTab_2" style="height: 100%; width: 100%;">
+                    <div id="notificationTab" style="position: static;">
+                        <div class="Tab" id="NotificationDiv" style="width: 100%; overflow: auto;">
+                            <div id="ServiceControlNotification_mainPanel">
+                                <table id="ServiceControlNotification_notificationCheckboxTable" cellspacing="0" cellpadding="10" border="0" style="border-collapse: collapse; max-width: 500px;">
+                                    <tbody>
+                                        <tr>
+                                            <td class="checkboxPadding">
+                                                <span><span class="txtBlack8Class">
+                                                <input id="ckAccMan" type="checkbox" name="ckAccMan" style="vertical-align: middle;" /><label style="vertical-align: middle;width:70px;">客户经理</label></span></span>
+                                                <span><span class="txtBlack8Class">
+                                                <input id="CkCCMe" type="checkbox" name="CkCCMe" style="vertical-align: middle;" /><label style="vertical-align: middle;width:70px;">抄送给我</label></span></span>
+                                            </td>
+                                            <td class="checkboxPadding"></td>
+                                        </tr>
+                                        
+                                       
+                                        <tr valign="top">
+                                            <td id="ServiceControlNotification_employeeCell" style="padding-left: 10px;">
+                                                <table style="width: 100%;" cellspacing="0" cellpadding="0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td nowrap="" style="text-align:left;padding-left:18px;">
+                                                                <span id="ServiceControlNotification_employeesLabel" class="lblNormalClass" style="font-weight: bold;">员工</span>
+                                                                <span class="txtBlack8Class">(<a href="#" id="" onclick="LoadRes()">加载</a>)</span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="InnerGrid" style="background-color: White; height: 180px; margin-right: -11px;">
+                                                    <span id="ctrlNotification_dgEmployees" style="display: inline-block; height: 112px; width: 382px;float:left;"><span></span>
+                                                        <div id="reshtml" style="width: 350px; height: 150px; border: 1px solid #d7d7d7; margin-bottom: 20px;">
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="padding-left: 10px;">
+                                                <table cellspacing="0" cellpadding="0" width="100%" style="padding-top: 3px;" class="PaddingBottomForTd">
+                                                    <tbody>
+                                                        <tr id="" style="padding-top: 8px;">
+                                                            <td style="width: 80px;">
+                                                                <span id="" class="lblNormalClass" style="font-weight: bold; display: block; padding-right: 6px; white-space: nowrap;">其他邮件地址</span>
+                                                            </td>
+                                                            <td>
+                                                                <span id="" class="stretchTextBox" style="display: inline-block;">
+                                                                    <input name="notifyOthers" type="text" id="notifyOthers" class="txtBlack8Class" style="width: 523px;" /></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="width: 80px;">
+                                                                <span class="lblNormalClass" style="font-weight: bold; display: block; padding-right: 6px; white-space: nowrap;">模板</span>
+                                                            </td>
+                                                            <td>
+                                                                <span id="" style="display: inline-block;">
+                                                                    <select name="notifyTempId" id="notifyTempId" class="txtBlack8Class" style="width: 524px;">
+                                                                        <%if (tempList != null && tempList.Count > 0)
+                                                                            {
+                                                                                foreach (var temp in tempList)
+                                                                                {  %>
+                                                                        <option value="<%=temp.id %>"><%=temp.name %></option>
+                                                                        <%
+                                                                                }
+                                                                            } %>
+                                                                    </select>
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="width: 80px;">
+                                                                <span class="lblNormalClass" style="font-weight: bold; display: block; padding-right: 6px;">主题</span>
+                                                            </td>
+                                                            <td>
+                                                                <span class="stretchTextBox" style="display: inline-block;">
+                                                                    <input name="notifyTitle" type="text" value="" id="notifyTitle" class="txtBlack8Class" style="width: 523px;" /></span>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td style="width: 80px; vertical-align: top;">
+                                                                <span class="lblNormalClass" style="font-weight: bold; display: block; padding-right: 6px;">其他<br />
+                                                                    邮件文本</span>
+                                                            </td>
+                                                            <td style="padding-bottom: 0px; vertical-align: top;">
+                                                                <span id="" class="stretchTextArea" style="display: inline-block;">
+                                                                    <textarea name="notifyAppText" id="notifyAppText" class="txtBlack8Class" rows="3" style="width: 523px;"></textarea></span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                      
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-            <div class="clear">
-                <label>员工<a href="#">（加载员工）</a></label>
-                <select></select>
-            </div>
-            <div class="clear">
-                <label>其他邮件</label>
-                <input type="text" name="to_email" id="to_email" />
-            </div>
-            <div class="clear">
-                <label>通知模板</label>
-                <asp:DropDownList ID="notify_tmpl_id" runat="server"></asp:DropDownList>
-            </div>
-            <div class="clear">
-                <label>主题</label>
-                <input type="text" name="subject" id="subject" value="" />
-            </div>
-            <div class="clear">
-                <label>附加信息</label>
-                <input type="text" name="body_text" id="body_text" value="" />
-            </div>--%>
-            </div>
+
         </div>
     </form>
 </body>
@@ -1031,8 +1109,9 @@
             return false;
         }
 
-
-
+        $("select").prop("disabled", false);
+        $("input").prop("disabled", false);
+        GetResIds();
         return true;
     }
     function GetContactList() {
@@ -1132,5 +1211,40 @@
                 }
             }
         })
+    }
+</script>
+
+<script>
+    function LoadRes() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/ResourceAjax.ashx?act=GetResAndWorkGroup",
+            success: function (data) {
+                if (data != "") {
+                    var resList = JSON.parse(data);
+                    var resHtml = "";
+                    resHtml += "<div class='grid' style='overflow: auto;height: 147px;'><table width='100%' border='0' cellspacing='0' cellpadding='3'><thead><tr><td width='1%'></td><td width='33%'>员工姓名</td ><td width='33%'>邮箱地址</td></tr ></thead ><tbody>";// <input type='checkbox' id='checkAll'/>
+                    for (var i = 0; i < resList.length; i++) {
+                        resHtml += "<tr><td><input type='checkbox' value='" + resList[i].id + "' class='" + resList[i].type + "' /></td><td>" + resList[i].name + "</td><td><a href='mailto:" + resList[i].email + "'>" + resList[i].email + "</a></td></tr>";
+                    }
+                    resHtml += "</tbody></table></div>";
+
+                    $("#reshtml").html(resHtml);
+                }
+            },
+        });
+    }
+    function GetResIds() {
+        var ids = "";
+        $(".checkRes").each(function () {
+            if ($(this).is(":checked")) {
+                ids += $(this).val() + ',';
+            }
+        })
+        if (ids != "") {
+            ids = ids.substring(0, ids.length - 1);
+        }
+        $("#notifyResIds").val(ids);
     }
 </script>

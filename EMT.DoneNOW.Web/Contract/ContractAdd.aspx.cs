@@ -24,12 +24,20 @@ namespace EMT.DoneNOW.Web.Contract
         protected List<UserDefinedFieldDto> udfList;        // 自定义字段信息
         protected long contractId = 0;      // 新增成功的合同id
         private ContractBLL bll = new ContractBLL();
-
+        protected crm_quote quote;
+        protected crm_account account;
         protected void Page_Load(object sender, EventArgs e)
         {
             udfList = new UserDefinedFieldsBLL().GetUdf(DicEnum.UDF_CATE.CONTRACTS);
             resourceList = new DAL.sys_resource_dal().GetSourceList();
             roleList = new DAL.sys_role_dal().GetList();
+            long quoteId = 0;
+            if(!string.IsNullOrEmpty(Request.QueryString["quoteId"])&&long.TryParse(Request.QueryString["quoteId"],out quoteId))
+            {
+                quote = new QuoteBLL().GetQuote(quoteId);
+                if (quote != null)
+                    account = new CompanyBLL().GetCompany(quote.account_id);
+            }
 
             if (IsPostBack)
             {

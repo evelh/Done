@@ -27,6 +27,7 @@ namespace EMT.DoneNOW.Web.Opportunity
         protected string callBackFiled = "";
         protected sys_bookmark thisBookMark;
         protected List<d_general> spredList = new d_general_dal().GetGeneralByTableId((long)GeneralTableEnum.OPPORTUNITY_SPREAD_UNIT);
+        protected List<sys_notify_tmpl> tempList = new sys_notify_tmpl_dal().GetTempByEvent(((int)DicEnum.NOTIFY_EVENT.OPPORTUNITY_CREATEDOREDITED).ToString());
         protected void Page_Load(object sender, EventArgs e)
         {
             try

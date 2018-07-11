@@ -56,7 +56,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                     {
 
                         case "todo":
-                            iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.TODOS + "&type=" + (int)QueryType.Todos + "&group=112&con659=" + opportunity.id + "&param1=opportunityId&param2=" + opportunity.id;                              // 待办
+                            iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)DicEnum.QUERY_CATE.TODOS + "&type=" + (int)QueryType.Todos + "&group=112&con660=" + opportunity.id + "&param1=opportunityId&param2=" + opportunity.id;                              // 待办
                             actType = "待办";
                             break;                                                        
                         case "note":
@@ -66,6 +66,10 @@ namespace EMT.DoneNOW.Web.Opportunity
                         case "activity":
                             iframeSrc = "";                              // 活动
                             actType = "活动";
+                            break;
+                        case "ticket":
+                            iframeSrc = "../Common/SearchBodyFrame.aspx?cat=" + (int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.MY_QUEUE_ACTIVE + "&type=" + (int)EMT.DoneNOW.DTO.QueryType.MY_QUEUE_ACTIVE + "&group=215&con5603=" + opportunity.id + "&param1=ShowPara";
+                            actType = "工单";
                             break;
                         case "quoteItem":
                             var oppoQuoteList = new crm_quote_dal().GetQuoteByWhere($" and opportunity_id = {opportunity.id} ");

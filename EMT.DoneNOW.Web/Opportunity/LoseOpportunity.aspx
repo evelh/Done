@@ -406,14 +406,14 @@ textarea {
     </div>
     <!--第二页-->
     <div class="Workspace Workspace2" style="display: none;">
-        <div class="PageInstructions">Select the person(s) you would like to notify. Use "Other Email(s)" if you have a distribution list. Ex. distribution@yourcompany.com</div>
-     <%--   <div class="WizardSection">
+        <%--<div class="PageInstructions">Select the person(s) you would like to notify. Use "Other Email(s)" if you have a distribution list. Ex. distribution@yourcompany.com</div>--%>
+        <div class="WizardSection">
             <table cellspacing="0" cellpadding="0" width="100%">
                 <tbody>
                 <tr height="85%">
                     <td width="90%" valign="top">
                         <!--第二页主体-->
-                        <table cellspacing="0" cellpadding="0" width="100%">
+                        <table cellspacing="0" cellpadding="0" width="500px;">
                             <tbody>
                                 <tr>
                                     <td>
@@ -422,16 +422,16 @@ textarea {
                                                 <tbody>
                                                 <tr>
                                                     <td width="1%" class="FieldLabels">
-                                                        <input type="checkbox" origchecked="true">
+                                                       <input id="CkCCMe" type="checkbox" name="CkCCMe" style="vertical-align: middle;" />
                                                     </td>
                                                     <td width="65%" class="CheckboxLabels">
-                                                        &nbsp;Creator <span><b>Li, Hong</b></span>
+                                                        &nbsp;商机负责人 <span><b><%=ownRes?.name %></b></span>
                                                     </td>
                                                     <td width="1%" class="FieldLabels">
-                                                        <input type="checkbox" origchecked="true">
+                                                       <input id="CkTerrTeam" type="checkbox" name="CkTerrTeam" style="vertical-align: middle;" />
                                                     </td>
                                                     <td width="34%" class="CheckboxLabels">
-                                                        <span>Territory Team</span>
+                                                        <span>区域团队</span>
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -441,36 +441,16 @@ textarea {
                                 </tr>
                                 <tr>
                                     <td class="FieldLabels">
-                                        Resources
-                                        <span class="FieldLevelInstructions">
-                                            (<a id="load111">Load</a>)
-                                        </span>
+                                       <span id="ServiceControlNotification_employeesLabel" class="lblNormalClass" style="font-weight: bold;">员工</span>
+                                                                <span class="txtBlack8Class">(<a href="#" id="" onclick="LoadRes()">加载</a>)</span>
                                         <div>
-                                            <div class="grid" style="border: 1px solid silver;width: 560px;height: 160px;overflow: scroll;display: none;">
-                                                <table cellspacing="0" cellpadding="3" width="100%">
-                                                    <thead>
-                                                    <tr>
-                                                        <td width="1%">
-                                                            <input type="checkbox" style="margin-top: 3px;" id="all">
-                                                        </td>
-                                                        <td width="33%">Name</td>
-                                                        <td width="33%">Email</td>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr onmouseover="this.className = 'selected';" onmouseout="this.className = '';">
-                                                        <td><input type="checkbox" style="margin-top: 3px;"></td>
-                                                        <td nowrap>Administrator, Autotask</td>
-                                                        <td nowrap><a href="##">email地址</a></td>
-                                                    </tr>
-                                                    <tr onmouseover="this.className = 'selected';" onmouseout="this.className = '';">
-                                                        <td><input type="checkbox" style="margin-top: 3px;"></td>
-                                                        <td nowrap>Li, Hong</td>
-                                                        <td nowrap><a href="##">hong.li@itcat.net.cn</a></td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                                <input type="hidden" id="notifyResIds" name="notifyResIds" />
+                                      <div class="InnerGrid" style="background-color: White; height: 180px; margin-right: -11px;">
+                                                    <span id="ctrlNotification_dgEmployees" style="display: inline-block; height: 112px; width: 382px;float:left;"><span></span>
+                                                        <div id="reshtml" style="width: 350px; height: 150px; border: 1px solid #d7d7d7; margin-bottom: 20px;">
+                                                        </div>
+                                                    </span>
+                                                </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -481,9 +461,9 @@ textarea {
                                                 <tbody>
                                                 <tr>
                                                     <td width="20%" class="FieldLabels">
-                                                        Other Email(s):
+                                                      其他邮件地址
                                                         <div>
-                                                            <input type="text" style="width:549px;">
+                                                            <input name="notifyOthers" type="text" id="notifyOthers" class="txtBlack8Class" style="width: 523px;" />
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -498,7 +478,7 @@ textarea {
                 </tr>
                 </tbody>
             </table>
-        </div>--%>
+        </div>
         <div class="ButtonBar WizardButtonBar" style="width:97%;">
             <ul>
                 <!--上一层-->
@@ -533,8 +513,8 @@ textarea {
     </div>
     <!--第三页-->
     <div class="Workspace Workspace3" style="display: none;">
-        <div class="PageInstructions">Enter the subject and any additional message you would like for the notification.</div>
-      <%--  <div class="WizardSection">
+        <%--<div class="PageInstructions">Enter the subject and any additional message you would like for the notification.</div>--%>
+        <div class="WizardSection">
             <table cellspacing="0" cellpadding="0" width="100%">
                 <tbody>
                     <tr height="85%">
@@ -543,27 +523,35 @@ textarea {
                                 <tbody>
                                     <tr>
                                         <td class="FieldLabels">
-                                            Notification Template
+                                            模板
                                             <div>
-                                                <select style="width: 560px;">
-                                                    <option value="">sdgsgsgd</option>
-                                                </select>
+                                                <select name="notifyTempId" id="notifyTempId" class="txtBlack8Class" style="width: 524px;">
+                                                                        <%if (tempList != null && tempList.Count > 0)
+                                                                            {
+                                                                                foreach (var temp in tempList)
+                                                                                {  %>
+                                                                        <option value="<%=temp.id %>"><%=temp.name %></option>
+                                                                        <%
+                                                                                }
+                                                                            } %>
+                                                                    </select>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="FieldLabels">
-                                            Subject
+                                            主题
                                             <div>
-                                                <input type="text" style="width: 547px;" value="6516asdfsda">
+                                                  <span class="stretchTextBox" style="display: inline-block;">
+                                                                    <input name="notifyTitle" type="text" value="" id="notifyTitle" class="txtBlack8Class" style="width: 523px;" /></span>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="FieldLabels">
-                                            Additional Email Text
+                                            其他文本
                                             <div>
-                                                <textarea rows="11" style="width:547px"></textarea>
+                                                  <textarea name="notifyAppText" id="notifyAppText" class="txtBlack8Class" rows="3" style="width: 523px;"></textarea>
                                             </div>
                                         </td>
                                     </tr>
@@ -573,7 +561,7 @@ textarea {
                     </tr>
                 </tbody>
             </table>
-        </div>--%>
+        </div>
         <div class="ButtonBar WizardButtonBar" style="width:97%;">
             <ul>
                 <!--上一层-->
@@ -795,6 +783,7 @@ textarea {
     $("#b2").on("click", function () {
         $(".Workspace2").hide();
         $(".Workspace3").show();
+        GetResIds();
     });
     $("#a3").on("click", function () {
         $(".Workspace2").show();
@@ -834,5 +823,38 @@ textarea {
 <script>
     function chooseProduct() {
         window.open("../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.PRODUCT_CALLBACK %>&field=name", '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ProductSelect %>', 'left=200,top=200,width=600,height=800', false);
+    }
+
+    function LoadRes() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "../Tools/ResourceAjax.ashx?act=GetResAndWorkGroup",
+            success: function (data) {
+                if (data != "") {
+                    var resList = JSON.parse(data);
+                    var resHtml = "";
+                    resHtml += "<div class='grid' style='overflow: auto;height: 147px;'><table width='100%' border='0' cellspacing='0' cellpadding='3'><thead><tr><td width='1%'></td><td width='33%'>员工姓名</td ><td width='33%'>邮箱地址</td></tr ></thead ><tbody>";// <input type='checkbox' id='checkAll'/>
+                    for (var i = 0; i < resList.length; i++) {
+                        resHtml += "<tr><td><input type='checkbox' value='" + resList[i].id + "' class='" + resList[i].type + "' /></td><td>" + resList[i].name + "</td><td><a href='mailto:" + resList[i].email + "'>" + resList[i].email + "</a></td></tr>";
+                    }
+                    resHtml += "</tbody></table></div>";
+
+                    $("#reshtml").html(resHtml);
+                }
+            },
+        });
+    }
+    function GetResIds() {
+        var ids = "";
+        $(".checkRes").each(function () {
+            if ($(this).is(":checked")) {
+                ids += $(this).val() + ',';
+            }
+        })
+        if (ids != "") {
+            ids = ids.substring(0, ids.length - 1);
+        }
+        $("#notifyResIds").val(ids);
     }
 </script>

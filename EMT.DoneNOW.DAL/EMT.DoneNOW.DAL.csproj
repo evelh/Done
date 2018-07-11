@@ -175,6 +175,7 @@
     <Compile Include="SDK\sdk_task_milestone_dal.cs" />
     <Compile Include="SDK\sdk_task_other_dal.cs" />
     <Compile Include="SDK\sdk_task_other_person_dal.cs" />
+    <Compile Include="SDK\sdk_task_outsource_dal.cs" />
     <Compile Include="SDK\sdk_task_predecessor_dal.cs" />
     <Compile Include="SDK\sdk_task_relation_dal.cs" />
     <Compile Include="SDK\sdk_task_resource_dal.cs" />

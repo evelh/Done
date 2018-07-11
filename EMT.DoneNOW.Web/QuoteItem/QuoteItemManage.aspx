@@ -74,10 +74,10 @@
                         <%if (!IssaleOrder)
                             { %>
                         <li><a href="#" onclick="SetPrimaryQuote()">置为主报价</a></li>
-                        <li><a href="#"></a>导入报价项</li>
+                        <%--<li><a href="#"></a>导入报价项</li>--%>
                         <%} %>
                         <li><a onclick="CreateInsPro()">新建配置项</a></li>
-                        <li><a href="#"></a>新建定期服务合同</li>
+                        <li><a onclick="AddServiceContract()">新建定期服务合同</a></li>
                          <%if (!IssaleOrder)
                             { %>
                         <li><a onclick="window.open('../Opportunity/ViewOpportunity?id=<%=quote.opportunity_id %>','<%=(int)EMT.DoneNOW.DTO.OpenWindow.OpportunityView %>','left=200,top=200,width=960,height=750', false);">查看商机</a></li>
@@ -1940,5 +1940,9 @@
                 }
             }
         })
-     }
+    }
+
+    function AddServiceContract() {
+        window.open('../Contract/ContractAdd.aspx?quoteId=<%=quote?.id %>&type=<%=(int)EMT.DoneNOW.DTO.DicEnum.CONTRACT_TYPE.SERVICE %>', '<%=(int)EMT.DoneNOW.DTO.OpenWindow.ContractAdd %>', 'left=200,top=200,width=960,height=750', false);
+    }
 </script>

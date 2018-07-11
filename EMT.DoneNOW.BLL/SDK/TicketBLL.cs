@@ -4610,5 +4610,33 @@ namespace EMT.DoneNOW.BLL
         }
 
         public sdk_task GetTask(long id) => _dal.FindNoDeleteById(id);
+
+        /// <summary>
+        /// 工单外包
+        /// </summary>
+        public bool OutsourceTicket(sdk_task_outsource taskOut,long userId)
+        {
+            try
+            {
+                sdk_task_outsource_dal stoDal = new sdk_task_outsource_dal();    
+                long timeNow = Tools.Date.DateHelper.ToUniversalTimeStamp();
+                taskOut.id = stoDal.GetNextIdCom();
+                taskOut.create_time = taskOut.update_time = timeNow;
+                taskOut.create_user_id = taskOut.update_user_id = timeNow;
+                stoDal.Insert(taskOut);
+            }
+            catch 
+            {
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// 获取到该工单的外包 状态待确定，时间待处理
+        /// </summary>
+        public List<sdk_task_outsource> taskOutList(long taskId)
+        {
+            return _dal.FindListBySql<sdk_task_outsource>($"SELECT * from sdk_task_outsource where delete_time =0 and task_id = {taskId} and status_id = 3189");
+        }
     }
 }

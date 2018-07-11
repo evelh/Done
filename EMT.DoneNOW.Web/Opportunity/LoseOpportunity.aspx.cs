@@ -15,8 +15,10 @@ namespace EMT.DoneNOW.Web.Opportunity
     public partial class LoseOpportunity : BasePage
     {
         protected crm_opportunity opportunity = null;
+        protected sys_resource ownRes;
         protected crm_account account = null;
         protected sys_system_setting lostSetting = new SysSettingBLL().GetSetById(SysSettingEnum.CRM_OPPORTUNITY_LOSS_REASON);
+        protected List<sys_notify_tmpl> tempList = new sys_notify_tmpl_dal().GetTempByEvent(((int)DicEnum.NOTIFY_EVENT.OPPORTUNITY_LOST).ToString());
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -70,6 +72,7 @@ namespace EMT.DoneNOW.Web.Opportunity
                     {
                         account = new CompanyBLL().GetCompany(opportunity.account_id);
                         account_id = account.id.ToString();
+                        ownRes = new UserResourceBLL().GetResourceById(opportunity.resource_id); 
                     }
                 }
                 if (!string.IsNullOrEmpty(account_id))

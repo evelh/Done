@@ -1395,6 +1395,11 @@
 
     $(function () {
         GetContactList();
+        <%if (contact != null)
+    { %>
+        $("#contact_id").val('<%=contact.id %>');
+        <%} %>
+
          <%if (contract != null)
     { %>
         GetServiceByContract();

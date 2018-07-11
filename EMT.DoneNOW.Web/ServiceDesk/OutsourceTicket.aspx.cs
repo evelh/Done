@@ -33,7 +33,29 @@ namespace EMT.DoneNOW.Web.ServiceDesk
 
         protected void save_close_Click(object sender, EventArgs e)
         {
-
+            var pageOut = AssembleModel<sdk_task_outsource>();
+            var accountId = Request.Form["partnerAcc"];
+            if (!string.IsNullOrEmpty(accountId))
+                pageOut.account_id = long.Parse(Request.Form["partnerAcc"]);
+            pageOut.task_id = ticket.id;
+            pageOut.type_id = (int)DicEnum.OUTSOURCE_TYPE.SUBCONTRACTOR_PORTAL;
+            pageOut.outsourced_by_resource_id = LoginUserId;
+            pageOut.status_id = (int)DicEnum.OUTSOURCE_STATUS_TYPE.ACCEPTED; // 待确认，外包状态
+            if (!string.IsNullOrEmpty(Request.Form["chargeType"]))
+                pageOut.rate_type_id = int.Parse(Request.Form["chargeType"]);
+            var AdjustTime = DateTime.Now.AddHours(1);
+            if (!string.IsNullOrEmpty(Request.Form["AdjustTimeHidden"]))
+                AdjustTime = DateTime.Parse(Request.Form["AdjustTimeHidden"]);
+            pageOut.auto_decline_if_not_accepted_by_time = Tools.Date.DateHelper.ToUniversalTimeStamp(AdjustTime);
+            if (!string.IsNullOrEmpty(Request.Form["authorizedTime"]))
+                pageOut.authorized_time = Tools.Date.DateHelper.ToUniversalTimeStamp(DateTime.Parse(Request.Form["authorizedTime"]));
+            pageOut.decline_reason = string.Empty;
+            if (string.IsNullOrEmpty(pageOut.description))
+                pageOut.description = string.Empty;
+            if (string.IsNullOrEmpty(pageOut.instructions))
+                pageOut.instructions = string.Empty;
+            bool result = ticBll.OutsourceTicket(pageOut,LoginUserId);
+            ClientScript.RegisterStartupScript(this.GetType(), "提示信息", $"<script>alert('保存{(result ? "成功" : "失败")}!');self.opener.location.reload();window.close();</script>");
         }
     }
 }

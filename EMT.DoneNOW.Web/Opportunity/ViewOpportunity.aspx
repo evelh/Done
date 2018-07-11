@@ -45,7 +45,7 @@
                     <%}%>
                     <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_VIEW_TICKETS"))
                         { %>
-                    <li>工单</li>
+                    <li><a href="ViewOpportunity.aspx?id=<%=opportunity.id %>&type=ticket">工单</a></li>  
                     <%}%>
                     <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_VIEW_ATTACHMENT"))
                         { %>
@@ -123,8 +123,7 @@
                 <%}%>
                 <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_LIVELINK"))
                     { %>
-                <li>
-                    <input type="button" value="LiveLink" /></li>
+          
                 <%}%>
                 <%if (CheckAuth("CRM_OPPORTUNITY_VIEW_OPPORTUNITY_PRINT"))
                     { %>

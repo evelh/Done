@@ -59,7 +59,7 @@
                         <td>
                             <div class="clear" style="width:410px;">
                                 <label>客户<span class="red">*</span></label>
-                                <%if (isAdd)
+                                <%if (isAdd&&quote==null)
                                     { %>
                                 <input type="text" name="ParentComoanyName" id="ParentComoanyName" value="<%=isAdd ? ((isAdd && account != null) ? account.name : "") : companyBLL.GetCompany(quote.account_id).name %>" />
                                 <i onclick="chooseCompany();" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/data-selector.png) no-repeat;"></i>
@@ -83,7 +83,7 @@
                         <td>
                             <div class="clear">
                                 <label>商机名称</label>
-                                <%if (isAdd)
+                                <%if (isAdd&&quote==null)
                                     { %>
                                 <select name="opportunity_id" id="opportunity_id">
                                 </select><input type="hidden" name="opportunity_idHidden" id="opportunity_idHidden" value="<%=(isAdd && opportunity != null) ? opportunity.id.ToString() : (!isAdd ? quote.opportunity_id.ToString() : "") %>" />
@@ -103,7 +103,7 @@
                         <td>
                             <div class="clear">
                                 <label>报价名称<span class="red">*</span></label>
-                                <input type="text" name="name" id="name" value="<%=isAdd?(opportunity!=null?opportunity.name:""):quote.name %>" />
+                                <input type="text" name="name" id="name" value="<%=quote==null?(opportunity!=null?opportunity.name:""):quote.name %>" />
                             </div>
                         </td>
                         <td></td>
@@ -112,7 +112,7 @@
                         <td colspan="2">
                             <div class="clear">
                                 <label>报价描述</label>
-                                <textarea style="width: 180px;" name="description" id="description"><%=(!isAdd)&&(!string.IsNullOrEmpty(quote.description))?quote.description:"" %></textarea>
+                                <textarea style="width: 180px;" name="description" id="description"><%=quote?.description %></textarea>
 
 
                             </div>
@@ -124,7 +124,7 @@
                         <td>
                             <div class="clear">
                                 <label>报价ID</label>
-                                <span name="oid"><%=quote.oid %></span>
+                                <span name="oid"><%=quote?.oid %></span>
                             </div>
                         </td>
                     </tr>
@@ -142,7 +142,7 @@
                         <td>
                             <div class="clear">
                                 <label>有效日期</label>
-                                <input onclick="WdatePicker()" type="text" class="sl_cdt" name="effective_date" id="effective_date" value="<%=(!isAdd)&&(quote.effective_date!=null)?quote.effective_date.ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" />
+                                <input onclick="WdatePicker()" type="text" class="sl_cdt" name="effective_date" id="effective_date" value="<%=(quote?.effective_date!=null)?quote.effective_date.ToString("yyyy-MM-dd"):DateTime.Now.ToString("yyyy-MM-dd") %>" />
                             </div>
                         </td>
                     </tr>
@@ -150,7 +150,7 @@
                         <td>
                             <div class="clear">
                                 <label>过期日期</label>
-                                <input onclick="WdatePicker()" type="text" class="sl_cdt" name="expiration_date" id="expiration_date" value="<%=(!isAdd)&&(quote.expiration_date!=null)?quote.expiration_date.ToString("yyyy-MM-dd"):DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd") %>" />
+                                <input onclick="WdatePicker()" type="text" class="sl_cdt" name="expiration_date" id="expiration_date" value="<%=(quote?.expiration_date!=null)?quote.expiration_date.ToString("yyyy-MM-dd"):DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd") %>" />
                             </div>
                         </td>
                     </tr>
@@ -158,7 +158,7 @@
                         <td>
                             <div class="clear">
                                 <label>预计完成日期<span class="red">*</span></label>
-                                <input onclick="WdatePicker()" type="text" class="sl_cdt" name="projected_close_date" id="projected_close_date" value="<%=(!isAdd)&&(quote.projected_close_date!=null)?quote.projected_close_date.ToString("yyyy-MM-dd"):opportunity!=null&&opportunity.projected_close_date!=null?((DateTime)opportunity.projected_close_date).ToString("yyyy-MM-dd"): DateTime.Now.ToString("yyyy-MM-dd") %>" <%if (!isAdd)
+                                <input onclick="WdatePicker()" type="text" class="sl_cdt" name="projected_close_date" id="projected_close_date" value="<%=(quote?.projected_close_date!=null)?quote.projected_close_date.ToString("yyyy-MM-dd"):opportunity!=null&&opportunity.projected_close_date!=null?((DateTime)opportunity.projected_close_date).ToString("yyyy-MM-dd"): DateTime.Now.ToString("yyyy-MM-dd") %>" <%if (!isAdd)
                                     { %>
                                     disabled="disabled" <%} %> />
                             </div>
@@ -175,7 +175,7 @@
                                 <label>成交概率</label>
                                 <%if (isAdd)
                                     { %>
-                                <input type="text" name="probability" id="probability" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
+                                <input type="text" name="probability" id="probability"  value="<%=opportunity?.probability %>" maxlength="11" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')" />
                                 <%}
                                     else
                                     { %>
@@ -190,7 +190,7 @@
                                 <label>联系人<span class="red">*</span></label>
                                 <select name="contact_id" id="contact_id">
                                 </select>
-                                <input type="hidden" name="contact_idHidden" id="contact_idHidden" value="<%=(!isAdd&&quote.contact_id!=null)?quote.contact_id.ToString():"" %>" />
+                                <input type="hidden" name="contact_idHidden" id="contact_idHidden" value="<%=(quote?.contact_id!=null)?quote.contact_id.ToString():"" %>" />
                                 <i onclick="AddContact()" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                             </div>
                         </td>
@@ -202,7 +202,7 @@
                                 <%--<asp:DropDownList ID="project_id" runat="server"></asp:DropDownList>--%>
                                 <select name="project_id" id="project_id">
                                 </select>
-                                <input type="hidden" name="project_idHidden" id="project_idHidden" value="<%=(!isAdd&&quote.project_id!=null)?quote.project_id.ToString():"" %>"/>
+                                <input type="hidden" name="project_idHidden" id="project_idHidden" value="<%=(quote?.project_id!=null)?quote.project_id.ToString():"" %>"/>
                                 <i onclick="AddProjectProposal()" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>
                                 <i onclick="AddProposalFromTemp()" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -128px 0;"></i>
                              <%--   <i onclick="javascript:window.open('../Contact/AddContact.aspx','<%=EMT.DoneNOW.DTO.OpenWindow.ContactAdd %>')" style="width: 15px; height: 15px; float: left; margin-left: 5px; margin-top: 5px; background: url(../Images/ButtonBarIcons.png) no-repeat -80px 0;"></i>--%>
@@ -222,7 +222,7 @@
                         <td>
                             <div class="clear">
                                 <label>激活的电子报价单</label>
-                                <input type="checkbox" name="is_active" id="is_active" data-val="1" value="1" checked="<%=(!isAdd)&&(quote.is_active==1)?"checked":"" %>" />
+                                <input type="checkbox" name="is_active" id="is_active" data-val="1" value="1" checked="<%=(quote?.is_active==1)?"checked":"" %>" />
                             </div>
                         </td>
                     </tr>
@@ -247,7 +247,7 @@
                         <td>
                             <div class="clear">
                                 <label>外部报价编号</label>
-                                <input type="text" name="external_quote_no" id="external_quote_no" value="<%=(!isAdd)&&(!string.IsNullOrEmpty(quote.external_quote_no))?quote.external_quote_no:"" %>" />
+                                <input type="text" name="external_quote_no" id="external_quote_no" value="<%=(quote!=null)&&(!string.IsNullOrEmpty(quote.external_quote_no))?quote.external_quote_no:"" %>" />
                             </div>
                         </td>
                         <td></td>
@@ -257,7 +257,7 @@
                             <div class="clear">
                                 
                                 <label>报价注释</label>
-                                <textarea style="width:180px;" name="quote_comment" id="quote_comment"><%=(!isAdd)&&(!string.IsNullOrEmpty(quote.quote_comment))?quote.quote_comment:"" %></textarea>
+                                <textarea style="width:180px;" name="quote_comment" id="quote_comment"><%=quote?.quote_comment %></textarea>
                             </div>
                         </td>
 

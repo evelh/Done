@@ -280,9 +280,9 @@
                 <%}%>
                 <%if (CheckAuth("CRM_COMPANY_VIEW_COMPANY_FRIEND_LINK"))
                     { %>
-                <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
+               <%-- <li><i style="background: url(../Images/ButtonBarIcons.png) no-repeat -96px 0;"></i>
                     <!--style="display:none"-->
-                    <asp:Button ID="LiveLink" runat="server" Text="友情链接" BorderStyle="None" /></li>
+                    <asp:Button ID="LiveLink" runat="server" Text="友情链接" BorderStyle="None" /></li>--%>
                 <%}%>
             </ul>
         </div>

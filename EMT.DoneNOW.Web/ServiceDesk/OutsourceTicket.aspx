@@ -92,7 +92,10 @@
                 <div class="information clear" style="min-height: 100px;">
                     <p class="informationTitle" style="font-weight: 800;">合作伙伴</p>
                     <div style="padding-left: 20px;">
-                        <span style="float: left;">自动拒绝</span><span><input style="margin: -3px 8px;" maxlength="3" type="text" name="auto_decline_if_not_accepted_by_time" id="RefuseTime" class="ToDec2" value="1.00" /></span>
+                        <span style="float: left;">自动拒绝</span><span>
+                            <input style="margin: -3px 8px;" maxlength="3" type="text" id="RefuseTime" class="ToDec2" value="1.00" />
+                            <input type="hidden" name="AdjustTimeHidden" id="AdjustHidden" value="<%=DateTime.Now.AddHours(1).ToString("yyyy-MM-dd HH:mm") %>"/>
+                                                              </span>
                         <span>小时，将于</span><span id="AdjustText"><%=DateTime.Now.AddHours(1).ToString("yyyy-MM-dd HH:mm") %></span><span>自动拒绝</span>
                     </div>
                 </div>
@@ -207,7 +210,7 @@
                         <table border="none" cellspacing="" cellpadding="" style="width: 100%; max-width: 1000px; min-width: 400px;">
                             <tr>
                                 <td style="text-align:left;font-weight: 600;">要求完成时间<span style="color:red;">*</span></td>
-                                <td colspan="3"><input type="text" id="authorized_time" name ="authorized_time" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm' })"/></td>
+                                <td colspan="3"><input type="text" id="authorized_time" name ="authorizedTime" onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd HH:mm' })"/></td>
                             </tr>
                             <tr>
                                 <td style="text-align:left;font-weight: 600;">点击添加</td>
@@ -305,6 +308,7 @@
         var adjustText = ajustDate.getFullYear() + "-" + (ajustDate.getMonth() + 1) + "-" + ajustDate.getDate() + " " + ajustDate.getHours() + ":" + ajustDate.getMinutes();
 
         $("#AdjustText").text(adjustText);
+        $("#AdjustHidden").val(adjustText);
     })
 
     $("#rb3184").click(function () {
@@ -366,8 +370,93 @@
     });
 
     $("#save_close").click(function () {
-        // name = partnerAcc  的value 
-        // 必填项校验
+        var accountId = $("input[name = 'partnerAcc']").eq(0).val();
+        if (accountId == "" || accountId == null || accountId == undefined) {
+            LayerMsg("请选择合作伙伴");
+            return false;
+        }
+        var chargeType = $("input[name = 'chargeType']").eq(0).val();
+        if (chargeType == "" || chargeType == null || chargeType == undefined) {
+            LayerMsg("请选择计费类型");
+            return false;
+        }
+        var rate = $("#rate").val();
+        var cost_cost_code_id = $("#cost_cost_code_id").val();
+        var default_role_id = $("#default_role_id").val();
+        var flat_bill_amount = $("#flat_bill_amount").val(); 
+        var authorized_hours = $("#authorized_hours").val();
+        var authorized_cost = $("#authorized_cost").val();
+        var labor_cost_code_id = $("#labor_cost_code_id").val();
+        if (chargeType == '<%=(int)EMT.DoneNOW.DTO.DicEnum.OUTSOURCE_RATE_TYPE.FLAT %>') {
+            if (rate == "" || rate == null || rate == undefined) {
+                LayerMsg("请填写工时费率");
+                return false;
+            }
+            if (cost_cost_code_id == "" || cost_cost_code_id == null || cost_cost_code_id == undefined) {
+                LayerMsg("请选择工时计费代码");
+                return false;
+            }
+            if (default_role_id == "" || default_role_id == null || default_role_id == undefined) {
+                LayerMsg("请选择相关角色");
+                return false;
+            }
+            if (authorized_hours == "" || authorized_hours == null || authorized_hours == undefined) {
+                LayerMsg("请填写预估时间");
+                return false;
+            }
+            if (authorized_cost != "" && authorized_cost != null && authorized_cost != undefined) {
+                if (labor_cost_code_id == "" || labor_cost_code_id == null || labor_cost_code_id == undefined) {
+                    LayerMsg("请选择工时计费代码");
+                    return false;
+                }
+            }
+            
+        }
+        else if (chargeType == '<%=(int)EMT.DoneNOW.DTO.DicEnum.OUTSOURCE_RATE_TYPE.HOURLY %>'){
+            if (rate == "" || rate == null || rate == undefined) {
+                LayerMsg("请填写工时费率");
+                return false;
+            }
+            if (cost_cost_code_id == "" || cost_cost_code_id == null || cost_cost_code_id == undefined) {
+                LayerMsg("请选择工时计费代码");
+                return false;
+            }
+            if (flat_bill_amount == "" || flat_bill_amount == null || flat_bill_amount == undefined) {
+                LayerMsg("请填写向客户收费");
+                return false;
+            }
+            if (default_role_id == "" || default_role_id == null || default_role_id == undefined) {
+                LayerMsg("请选择相关角色");
+                return false;
+            }
+            
+            if (authorized_cost != "" && authorized_cost != null && authorized_cost != undefined) {
+                if (labor_cost_code_id == "" || labor_cost_code_id == null || labor_cost_code_id == undefined) {
+                    LayerMsg("请选择工时计费代码");
+                    return false;
+                }
+            }
+        }
+        else if (chargeType == '<%=(int)EMT.DoneNOW.DTO.DicEnum.OUTSOURCE_RATE_TYPE.NONE %>') {
+            if (default_role_id == "" || default_role_id == null || default_role_id == undefined) {
+                LayerMsg("请选择相关角色");
+                return false;
+            }
+            if (authorized_cost != "" && authorized_cost != null && authorized_cost != undefined) {
+                if (labor_cost_code_id == "" || labor_cost_code_id == null || labor_cost_code_id == undefined) {
+                    LayerMsg("请选择工时计费代码");
+                    return false;
+                }
+            }
+        }
+
+        var authorized_time = $("#authorized_time").val();
+        if (authorized_time == "" || authorized_time == null || authorized_time == undefined) {
+            LayerMsg("请填写要求完成时间！");
+            return false;
+        }
+        
+        return true;
 
     })
 

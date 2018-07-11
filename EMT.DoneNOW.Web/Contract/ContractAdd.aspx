@@ -63,7 +63,7 @@
                                             <td class="FieldLabels">
                                                 合同名称<span class="errorSmall">*</span>
                                                 <div>
-                                                    <input type="text" id="name" name="name" style="width: 278px; margin-right: 4px;"/>
+                                                    <input type="text" id="name" name="name" style="width: 278px; margin-right: 4px;" value="<%=quote?.name %>"/>
                                                 </div>
                                             </td>
                                             <td class="FieldLabels">
@@ -77,8 +77,8 @@
                                             <td class="FieldLabels">
                                                 公司名称<span class="errorSmall">*</span>
                                                 <div>
-                                                    <input type="text" id="companyName" disabled="disabled" style="width: 278px;" />
-                                                    <input type="hidden" id="companyNameHidden" name="account_id" />
+                                                    <input type="text" id="companyName" value="<%=account?.name %>" disabled="disabled" style="width: 278px;" />
+                                                    <input type="hidden" id="companyNameHidden" name="account_id" value="<%=account?.id %>" />
                                                     <img src="../Images/data-selector.png" onclick="window.open('../Common/SelectCallBack.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.COMPANY_CALLBACK %>&field=companyName&callBack=InitContact', '<%=EMT.DoneNOW.DTO.OpenWindow.CompanySelect %>', 'left=200,top=200,width=600,height=800', false)" style="vertical-align: middle;cursor: pointer;" />
                                                 </div>
                                             </td>
@@ -1062,3 +1062,8 @@
     </script>
 </body>
 </html>
+<script>
+        $(function () {
+            InitContact();
+        })
+</script>

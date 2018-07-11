@@ -45,10 +45,11 @@
                     <li onclick="window.location.href='ViewContact.aspx?id=<%=contact.id %>&type=opportunity'"><a>商机</a></li>
                   <%}%>
                   <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_VIEW_CONTACT_GROUP")) { %>
+                    <%--<li  onclick="window.location.href='ViewContact.aspx?id=<%=contact.id %>&type=group'"><a>联系人组</a></li>--%>
                     <li>联系人组</li>
                   <%}%>
                   <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_VIEW_TICKETS")) { %>
-                    <li>工单</li>
+                    <li  onclick="window.location.href='ViewContact.aspx?id=<%=contact.id %>&type=ticket'"><a>工单</a></li>
                   <%}%>
                   <%if (CheckAuth("CRM_CONTACT_VIEW_CONTACT_VIEW_CONFIGURATION_ITEM")) { %>
                     <li onclick="window.location.href='ViewContact.aspx?id=<%=contact.id %>&type=configura'"><a>配置项</a></li>

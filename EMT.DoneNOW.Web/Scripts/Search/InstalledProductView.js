@@ -157,11 +157,16 @@ function View(jdgshdfghsdfgsl) {
 }
 
 function Add() {
-    var url = "../ConfigurationItem/AddOrEditConfigItem.aspx";
+    var url = "../ConfigurationItem/AddOrEditConfigItem.aspx?";
     var account_id = $("input[name = 'con358']").val();
     if (account_id != undefined && account_id != "") {
-        url += "?account_id=" + account_id;
+        url += "account_id=" + account_id+"&";
     }
+    var contact_id = $("input[name = 'con966']").eq(0).val();
+    if (contact_id != undefined && contact_id != "" && contact_id != null) {
+        url += "contact_id=" + contact_id+"&";
+    }
+    
     window.open(url, windowObj.configurationItem + windowType.add, 'left=0,top=0,location=no,status=no,width=900,height=750', false);
 }
 var entityid;

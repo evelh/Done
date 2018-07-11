@@ -46,7 +46,7 @@
                 <li class="boders">常规信息</li>
                 <li>附加信息</li>
                 <li>用户自定义信息</li>
-                <li>自助服务台</li>
+                <%--<li>自助服务台</li>--%>
             </ul>
         </div>
         <div style="left: 0;overflow-x: auto;overflow-y: auto;position: fixed;right: 0;bottom: 0;top:136px;">
@@ -349,8 +349,8 @@
             </div>
         </div>
 
-        <div class="content clear" style="display: none">
-        </div>
+        <%--<div class="content clear" style="display: none">
+        </div>--%>
          </div>
     </form>
 

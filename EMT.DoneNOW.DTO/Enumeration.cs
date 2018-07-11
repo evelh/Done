@@ -1917,6 +1917,38 @@ namespace EMT.DoneNOW.DTO
             MAXIMUM_NEW_TICKETS = 3087,                   // 最大新建工单数
             MAXIMUM_AVERAGE_TICKETS_PER_RESOURCE = 3088,  // 人均最大平均工单数
         }
+        /// <summary>
+        /// 外包类型 - 208
+        /// </summary>
+        public enum OUTSOURCE_TYPE
+        {
+            OUTSOURCE_NETWORK = 3180,               // 网络平台
+            SUBCONTRACTOR_PORTAL = 3181,            // 合作伙伴portal
+        }
+        /// <summary>
+        /// 外包计费类型 -209
+        /// </summary>
+        public enum OUTSOURCE_RATE_TYPE
+        {
+            FLAT = 3184,                     // 固定价格
+            HOURLY = 3185,                   // 按工时
+            NONE = 3186,                     // 不计费
+        }
+        /// <summary>
+        /// 外包状态 - 210
+        /// </summary>
+        public enum OUTSOURCE_STATUS_TYPE
+        {
+            ALLOCATED = 3188,                   // 已分配
+            ACCEPTED = 3189,                    // 已接受
+            COMPLETED = 3190,                   // 已完成
+            REFUSE = 3191,                      // 拒绝
+            HAVE_IN_HAND = 3192,                // 进行中
+            UNSENT = 3193,                      // 未发送
+            TOBE_EXAMINED_APPROVED = 3194,      // 待审批
+            CANCEL = 3195,                      // 取消
+
+        }
 
         /// <summary>
         /// 数据导入对象类型 - 211
@@ -2201,6 +2233,8 @@ namespace EMT.DoneNOW.DTO
         SYSTEM_TICKET_SUB_ISSUE_SEARCH = 310,         // 系统设置-问题和子问题类型-子问题查询  
         SYSTEM_CHANGE_BOARD_SEARCH = 311,             // 系统设置-变更委员会查询   
         SYSTEM_CHECK_LIB_SEARCH = 312,                // 系统设置-系统设置-检查单库查询  
+        REPORT_CRM_OPPORTUNITY_STAGE_ANALYSIS = 324,         // 报表-CRM-商机-商机阶段分析    
+        REPORT_CRM_OPPORTUNITY_STAGE_ANALYSIS_DETAIL = 325,  // 报表-CRM-商机-商机阶段分析-详情
         SYSTEM_PROJECT_STATUS = 334,                  // 系统设置-项目状态  
         SYSTEM_TASK_LIBRARY_CATE = 335,               // 系统设置-任务种类
         SYSTEM_TASK_LIBRARY = 336,                    // 系统设置-任务库 

@@ -287,6 +287,7 @@
     <Content Include="Scripts\Search\report_contract_bill_tobill.js" />
     <Content Include="Scripts\Search\report_contract_bill_tobill_by_project.js" />
     <Content Include="Scripts\Search\report_contract_bill_tobill_by_res.js" />
+    <Content Include="Scripts\Search\report_crm_opportunity_stage_analysis.js" />
     <Content Include="Scripts\Search\report_resource_general_resource_month_worktime_money.js" />
     <Content Include="Scripts\Search\report_resource_general_resource_month_worktime_num.js" />
     <Content Include="Scripts\Search\report_resource_general_resource_year_worktime_money.js" />

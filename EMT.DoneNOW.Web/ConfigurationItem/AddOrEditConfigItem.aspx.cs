@@ -31,6 +31,7 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
         protected AttachmentBLL attBll = new AttachmentBLL();
         protected List<sys_notify_tmpl> tempList = new sys_notify_tmpl_dal().GetTempByEvent(DicEnum.NOTIFY_EVENT.CONFIGURATION_ITEM_CREATED);
         protected sys_bookmark thisBookMark;
+        protected crm_contact contact;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -45,6 +46,13 @@ namespace EMT.DoneNOW.Web.ConfigurationItem
                     {
                         account = new CompanyBLL().GetCompany(contract.account_id);
                     }
+                }
+                var contactId = Request.QueryString["contact_id"];
+                if (!string.IsNullOrEmpty(contactId))
+                {
+                    contact = new ContactBLL().GetContact(long.Parse(contactId));
+                    if (contact != null)
+                        account = new CompanyBLL().GetCompany(contact.account_id);
                 }
 
 

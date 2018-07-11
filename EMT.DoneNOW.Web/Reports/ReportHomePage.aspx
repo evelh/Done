@@ -208,10 +208,10 @@
                                                 <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CRM_OPPORTUNITY_STAGE_ANALYSIS %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">商机阶段分析</a>
                                                 <div class="StandardText">介绍介绍</div>
                                             </div>
-                                            <div class="PageNavigationLink">
+                                           <%-- <div class="PageNavigationLink">
                                                 <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CRM_OPPORTUNITY_STAGE_ANALYSIS_DETAIL %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">商机阶段分析详情</a>
                                                 <div class="StandardText">介绍介绍</div>
-                                            </div>
+                                            </div>--%>
                                             <div class="PageNavigationLink">
                                                 <a href="../Common/SearchFrameSet.aspx?cat=<%=(int)EMT.DoneNOW.DTO.DicEnum.QUERY_CATE.REPORT_CRM_OPPORTUNITY_QUOTA %>" target="PageFrame1" class="Button ButtonIcon Link NormalState chaxun">销售指标</a>
                                                 <div class="StandardText">介绍介绍</div>

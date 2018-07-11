@@ -43,6 +43,9 @@ function CloseQuote() {
         OpenWindow("../Quote/QuoteClose.aspx?id=" + entityid, windowObj.quote + windowType.manage);
     }
 }
+function CopyQuote() {
+    OpenWindow("../Quote/QuoteAddAndUpdate.aspx?copy=1&id=" + entityid, windowObj.quote + windowType.edit);
+}
 
 $(".dn_tr").bind("contextmenu", function (event) {
     clearInterval(Times);
